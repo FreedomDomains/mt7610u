@@ -1322,7 +1322,7 @@ typedef struct _BEACON_SYNC_STRUCT_ {
 
 
 /* configuration common to OPMODE_AP as well as OPMODE_STA */
-typedef struct _COMMON_CONFIG {
+struct common_config {
 	BOOLEAN bCountryFlag;
 	UCHAR CountryCode[3];
 #ifdef EXT_BUILD_CHANNEL_LIST
@@ -1633,7 +1633,7 @@ typedef struct _COMMON_CONFIG {
 #ifdef CONFIG_WIFI_TEST
 	ULONG WiFiTestFlags;
 #endif
-} COMMON_CONFIG, *PCOMMON_CONFIG;
+};
 
 #ifdef DBG_CTRL_SUPPORT
 /* DebugFlag definitions */
@@ -3079,7 +3079,7 @@ struct _RTMP_ADAPTER {
 	/* ------------------------------------------------------ */
 	/* common configuration to both OPMODE_STA and OPMODE_AP */
 	/* ------------------------------------------------------ */
-	COMMON_CONFIG CommonCfg;
+	struct common_config CommonCfg;
 	MLME_STRUCT Mlme;
 
 	/* AP needs those vaiables for site survey feature. */
