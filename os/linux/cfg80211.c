@@ -727,7 +727,7 @@ static int CFG80211_OpsStaGet(
 	{
 		pSinfo->txrate.flags = RATE_INFO_FLAGS_MCS;
 		if (StaInfo.TxRateFlags & RT_CMD_80211_TXRATE_BW_40)
-			pSinfo->txrate.flags |= RATE_INFO_FLAGS_40_MHZ_WIDTH;
+			pSinfo->txrate.bw = RATE_INFO_BW_40;
 		/* End of if */
 		if (StaInfo.TxRateFlags & RT_CMD_80211_TXRATE_SHORT_GI)
 			pSinfo->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
@@ -740,20 +740,21 @@ static int CFG80211_OpsStaGet(
 		pSinfo->txrate.legacy = StaInfo.TxRateMCS;
 	} /* End of if */
 
-	pSinfo->filled |= STATION_INFO_TX_BITRATE;
+	pSinfo->filled |= BIT(NL80211_STA_INFO_TX_BITRATE);
 
 	/* fill signal */
 	pSinfo->signal = StaInfo.Signal;
-	pSinfo->filled |= STATION_INFO_SIGNAL;
+	pSinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
 
 #ifdef CONFIG_AP_SUPPORT
 	/* fill tx count */
 	pSinfo->tx_packets = StaInfo.TxPacketCnt;
-	pSinfo->filled |= STATION_INFO_TX_PACKETS;
 
 	/* fill inactive time */
 	pSinfo->inactive_time = StaInfo.InactiveTime;
-	pSinfo->filled |= STATION_INFO_INACTIVE_TIME;
+	pSinfo->filled |= BIT(NL80211_STA_INFO_TX_PACKETS);
+	pSinfo->filled |= BIT(NL80211_STA_INFO_INACTIVE_TIME);
+
 #endif /* CONFIG_AP_SUPPORT */
 
 
@@ -1435,10 +1436,10 @@ static int CFG80211_OpsSurveyGet(
 
 	/* return the information to upper layer */
 	pSurvey->channel = ((CFG80211_CB *)(SurveyInfo.pCfg80211))->pCfg80211_Channels;
-	pSurvey->filled = SURVEY_INFO_CHANNEL_TIME_BUSY |
-						SURVEY_INFO_CHANNEL_TIME_EXT_BUSY;
-	pSurvey->channel_time_busy = SurveyInfo.ChannelTimeBusy; /* unit: us */
-	pSurvey->channel_time_ext_busy = SurveyInfo.ChannelTimeExtBusy;
+	pSurvey->filled = SURVEY_INFO_TIME_BUSY |
+			  SURVEY_INFO_TIME_EXT_BUSY;
+	pSurvey->time_busy = SurveyInfo.ChannelTimeBusy; /* unit: us */
+	pSurvey->time_ext_busy = SurveyInfo.ChannelTimeExtBusy;
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> busy time = %ld %ld\n",
 				(ULONG)SurveyInfo.ChannelTimeBusy,
