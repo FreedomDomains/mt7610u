@@ -50,7 +50,7 @@ typedef union _CMB_CTRL_STRUC{
 		UINT32		CsrUartMode:1;
 #else
 		UINT32     Rsv:2;
-		UINT32		LDO25_FRC_ON:1;//4      
+		UINT32		LDO25_FRC_ON:1;//4
 		UINT32		LDO25_LARGEA:1;
 		UINT32		LDO25_LEVEL:2;
 #endif
@@ -100,7 +100,7 @@ typedef union _CMB_CTRL_STRUC{
 #else
 		UINT32		LDO25_LEVEL:2;
 		UINT32		LDO25_LARGEA:1;
-		UINT32		LDO25_FRC_ON:1;//4      
+		UINT32		LDO25_FRC_ON:1;//4
 		UINT32       	Rsv:2;
 #endif /* RT65xx */
 		UINT32       	XTAL_RDY:1;

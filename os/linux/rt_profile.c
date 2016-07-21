@@ -34,7 +34,7 @@
 
 #ifdef SYSTEM_LOG_SUPPORT
 /* for wireless system event message */
-char const *pWirelessSysEventText[IW_SYS_EVENT_TYPE_NUM] = {    
+char const *pWirelessSysEventText[IW_SYS_EVENT_TYPE_NUM] = {
 	/* system status event */
     "had associated successfully",							/* IW_ASSOC_EVENT_FLAG */
     "had disassociated",									/* IW_DISASSOC_EVENT_FLAG */
@@ -46,12 +46,12 @@ char const *pWirelessSysEventText[IW_SYS_EVENT_TYPE_NUM] = {
     "occurred MIC different in Key Handshaking",			/* IW_MIC_DIFF_EVENT_FLAG */
     "occurred ICV error in RX",								/* IW_ICV_ERROR_EVENT_FLAG */
     "occurred MIC error in RX",								/* IW_MIC_ERROR_EVENT_FLAG */
-	"Group Key Handshaking timeout",						/* IW_GROUP_HS_TIMEOUT_EVENT_FLAG */ 
-	"Pairwise Key Handshaking timeout",						/* IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG */ 
-	"RSN IE sanity check failure",							/* IW_RSNIE_SANITY_FAIL_EVENT_FLAG */ 
-	"set key done in WPA/WPAPSK",							/* IW_SET_KEY_DONE_WPA1_EVENT_FLAG */ 
-	"set key done in WPA2/WPA2PSK",                         /* IW_SET_KEY_DONE_WPA2_EVENT_FLAG */ 
-	"connects with our wireless client",                    /* IW_STA_LINKUP_EVENT_FLAG */ 
+	"Group Key Handshaking timeout",						/* IW_GROUP_HS_TIMEOUT_EVENT_FLAG */
+	"Pairwise Key Handshaking timeout",						/* IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG */
+	"RSN IE sanity check failure",							/* IW_RSNIE_SANITY_FAIL_EVENT_FLAG */
+	"set key done in WPA/WPAPSK",							/* IW_SET_KEY_DONE_WPA1_EVENT_FLAG */
+	"set key done in WPA2/WPA2PSK",                         /* IW_SET_KEY_DONE_WPA2_EVENT_FLAG */
+	"connects with our wireless client",                    /* IW_STA_LINKUP_EVENT_FLAG */
 	"disconnects with our wireless client",                 /* IW_STA_LINKDOWN_EVENT_FLAG */
 	"scan completed",										/* IW_SCAN_COMPLETED_EVENT_FLAG */
 	"scan terminate!! Busy!! Enqueue fail!!",				/* IW_SCAN_ENQUEUE_FAIL_EVENT_FLAG */
@@ -134,11 +134,11 @@ NDIS_STATUS	RTMPReadParametersHook(
 	{
 		RtmpOSFSInfoChange(&osFSInfo, TRUE);
 		srcf = RtmpOSFileOpen(src, O_RDONLY, 0);
-		if (IS_FILE_OPEN_ERR(srcf)) 
+		if (IS_FILE_OPEN_ERR(srcf))
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("Open file \"%s\" failed!\n", src));
 		}
-		else 
+		else
 		{
 			retval =RtmpOSFileRead(srcf, buffer, MAX_INI_BUFFER_SIZE);
 			if (retval > 0)
@@ -190,7 +190,7 @@ NDIS_STATUS	RTMPReadParametersHook(
 
 		Support standard iw_event with IWEVCUSTOM. It is used below.
 
-		iwreq_data.data.flags is used to store event_flag that is defined by user. 
+		iwreq_data.data.flags is used to store event_flag that is defined by user.
 		iwreq_data.data.length is the length of the event log.
 
 		The format of the event log is composed of the entry's MAC address and
@@ -198,7 +198,7 @@ NDIS_STATUS	RTMPReadParametersHook(
 
 			ex: 11:22:33:44:55:66 has associated successfully
 
-		p.s. The requirement of Wireless Extension is v15 or newer. 
+		p.s. The requirement of Wireless Extension is v15 or newer.
 
 	========================================================================
 */
@@ -249,7 +249,7 @@ VOID RtmpDrvSendWirelessEvent(
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : The event(%0x02x) is not valid.\n", __FUNCTION__, event));			       		       		
 		return;
 	}	
- 
+
 	/*Allocate memory and copy the msg. */
 /*	if((pBuf = kmalloc(IW_CUSTOM_MAX_LEN, GFP_ATOMIC)) != NULL) */
 	os_alloc_mem(NULL, (UCHAR **)&pBuf, IW_CUSTOM_MAX_LEN);
@@ -270,7 +270,7 @@ VOID RtmpDrvSendWirelessEvent(
 		if (type == IW_SYS_EVENT_FLAG_START)
         {
 			pBufPtr += sprintf(pBufPtr, "%s", pWirelessSysEventText[event]);
-		    
+		
             if (Event_flag == IW_CHANNEL_CHANGE_EVENT_FLAG)
 		  	{
 			 	pBufPtr += sprintf(pBufPtr, "%3d", Rssi);
@@ -352,7 +352,7 @@ void announce_802_3_packet(
 #endif /* IKANOS_VX_1X0 */
 
 #ifdef INF_PPA_SUPPORT
-	if (ppa_hook_directpath_send_fn && pAd->PPAEnable==TRUE ) 
+	if (ppa_hook_directpath_send_fn && pAd->PPAEnable==TRUE )
 	{
 		RtmpOsPktInfPpaSend(pRxPkt);
 		pRxPkt=NULL;
@@ -393,7 +393,7 @@ void announce_802_3_packet(
 			RtmpOsPktProtocolAssign(pRxPkt);
 
 			RTMP_IRQ_LOCK(&pAd->page_lock, flags);
-			if(ra_sw_nat_hook_rx(pRxPkt)) 
+			if(ra_sw_nat_hook_rx(pRxPkt))
 			{
 				RtmpOsPktRcvHandle(pRxPkt);
 			}
@@ -450,7 +450,7 @@ void STA_MonPktSend(
 						ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI1, RSSI_1),
 						ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI2, RSSI_2));
 
-	pNetDev = get_netdev_from_bssid(pAd, BSS0); 
+	pNetDev = get_netdev_from_bssid(pAd, BSS0);
 	pRxPacket = pRxBlk->pRxPacket;
 	pHeader = pRxBlk->pHeader;
 	pData = pRxBlk->pData;

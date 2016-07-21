@@ -36,7 +36,7 @@
 
 
  UINT32 RalinkRate[256] = {
-	2,  4, 11, 22, 
+	2,  4, 11, 22,
 	12, 18, 24, 36, 48, 72, 96, 108, 109, 110, 111, 112, /* CCK and OFDM */
 	13, 26, 39, 52, 78, 104, 117, 130, 26, 52, 78, 104, 156, 208, 234, 260,
 	39, 78, 117, 156, 234, 312, 351, 390, /* BW 20, 800ns GI, MCS 0~23 */
@@ -55,7 +55,7 @@
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 	20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
 	40, 41, 42, 43, 44, 45, 46, 47 /* 3*3 */
-}; 
+};
 
 VOID RtmpDrvMaxRateGet(
 	IN	VOID					*pReserved,
@@ -85,11 +85,11 @@ VOID RtmpDrvMaxRateGet(
 	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
 		/* rate_index = 16 + ((UCHAR)pHtPhyMode->field.BW *16) + ((UCHAR)pHtPhyMode->field.ShortGI *32) + ((UCHAR)pHtPhyMode->field.MCS); */
 		rate_index = 16 + ((UCHAR)BW *24) + ((UCHAR)ShortGI *48) + ((UCHAR)MCS);
-	} else 
+	} else
 #endif /* DOT11_N_SUPPORT */
 		if (MODE == MODE_OFDM)
 			rate_index = (UCHAR)(MCS) + 4;
-		else 
+		else
 			rate_index = (UCHAR)(MCS);
 
 	if (rate_index < 0)
@@ -97,7 +97,7 @@ VOID RtmpDrvMaxRateGet(
 
 	if (rate_index > 255)
 		rate_index = 255;
-    
+
 	*pRate = RalinkRate[rate_index] * 500000;
 }
 
@@ -136,9 +136,9 @@ BOOLEAN RtmpOsCmdDisplayLenCheck(
 VOID WpaSendMicFailureToWpaSupplicant(
 	IN PNET_DEV pNetDev,
 	IN BOOLEAN bUnicast)
-{    
+{
 	char custom[IW_CUSTOM_MAX] = {0};
-    
+
 	snprintf(custom, sizeof(custom), "MLME-MICHAELMICFAILURE.indication");
 	if(bUnicast)
 		sprintf(custom, "%s unicast", custom);
@@ -191,7 +191,7 @@ int wext_notify_event_assoc(
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-VOID SendAssocIEsToWpaSupplicant( 
+VOID SendAssocIEsToWpaSupplicant(
 	IN PNET_DEV pNetDev,
 	IN UCHAR *ReqVarIEs,
 	IN UINT32 ReqVarIELen)

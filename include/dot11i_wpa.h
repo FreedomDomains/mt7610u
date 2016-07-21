@@ -30,7 +30,7 @@
 
 #include "rtmp_type.h"
 
-/* The length is the EAPoL-Key frame except key data field. 
+/* The length is the EAPoL-Key frame except key data field.
    Please refer to 802.11i-2004 ,Figure 43u in p.78 */
 #define MIN_LEN_OF_EAPOL_KEY_MSG	95	
 
@@ -181,7 +181,7 @@ typedef	struct GNU_PACKED _KEY_DESCRIPTER
 	UCHAR		KeyRsc[LEN_KEY_DESC_RSC];
 	UCHAR		KeyId[LEN_KEY_DESC_ID];
 	UCHAR		KeyMic[LEN_KEY_DESC_MIC];
-	UCHAR		KeyDataLen[2];	   
+	UCHAR		KeyDataLen[2];	
 	UCHAR		KeyData[0];
 }	KEY_DESCRIPTER, *PKEY_DESCRIPTER;
 

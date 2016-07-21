@@ -79,7 +79,7 @@
 
 /* 	
 	WFA recommend to restrict the encryption type in 11n-HT mode.
- 	So, the WEP and TKIP shall not be allowed to use HT rate. 
+ 	So, the WEP and TKIP shall not be allowed to use HT rate.
  */
 #define IS_INVALID_HT_SECURITY(_mode)		\
 	(((_mode) == Ndis802_11Encryption1Enabled) || \
@@ -256,7 +256,7 @@ VOID RTMPInsertRSNIE(
 	IN PUINT8 pmkid_ptr,
 	IN UINT8 pmkid_len);
 
-/* 
+/*
  =====================================	
  	function prototype in cmm_wpa.c
  =====================================	
@@ -406,7 +406,7 @@ PSTRING GetEapolMsgType(
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-/* 
+/*
  =====================================	
  	function prototype in cmm_wep.c
  =====================================	
@@ -434,7 +434,7 @@ BOOLEAN RTMPSoftDecryptWEP(
 	INOUT PUCHAR pData,
 	INOUT UINT16 *DataByteCnt);
 
-/* 
+/*
  =====================================	
  	function prototype in cmm_tkip.c
  =====================================	
@@ -461,7 +461,7 @@ VOID TKIP_GTK_KEY_UNWRAP(
 	IN UINT32 input_len,
 	OUT UCHAR *output_text);
 
-/* 
+/*
  =====================================	
  	function prototype in cmm_aes.c
  =====================================	

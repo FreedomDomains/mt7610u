@@ -1560,11 +1560,11 @@ enum WIFI_MODE{
 /* The signal threshold (RSSI) over new rate adaption */
 #define SIGNAL_THRESHOLD_OVER_NEW_RATE_ADAPT    -65
 
-/* After Linux 2.6.9, 
- * VLAN module use Private (from user) interface flags (netdevice->priv_flags). 
- * #define IFF_802_1Q_VLAN 0x1         --    802.1Q VLAN device.  in if.h     
+/* After Linux 2.6.9,
+ * VLAN module use Private (from user) interface flags (netdevice->priv_flags).
+ * #define IFF_802_1Q_VLAN 0x1         --    802.1Q VLAN device.  in if.h
  * ref to ip_sabotage_out() [ out->priv_flags & IFF_802_1Q_VLAN ] in br_netfilter.c
- * 
+ *
  * For this reason, we MUST use EVEN value in priv_flags
  */
 #define INT_MAIN			0x0100

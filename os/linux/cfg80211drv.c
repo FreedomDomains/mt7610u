@@ -607,7 +607,7 @@ BOOLEAN CFG80211DRV_Connect(
 	UINT32 SSIDLen;
 	RT_CMD_STA_IOCTL_SECURITY_ADV IoctlWpa;
 
-	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_INFRA_ON) && 
+	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_INFRA_ON) &&
             OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED))
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("CFG80211: Connected, disconnect first !\n"));
@@ -631,7 +631,7 @@ BOOLEAN CFG80211DRV_Connect(
 	memset(&SSID, 0, sizeof(SSID));
 	memcpy(SSID, pConnInfo->pSsid, SSIDLen);
 
-	if (pConnInfo->bWpsConnection) 
+	if (pConnInfo->bWpsConnection)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("WPS Connection onGoing.....\n"));
 		/* YF@20120327: Trigger Driver to Enable WPS function. */	
@@ -656,7 +656,7 @@ BOOLEAN CFG80211DRV_Connect(
 			DBGPRINT(RT_DEBUG_TRACE, ("WPA2\n"));
 			Set_AuthMode_Proc(pAd, "WPA2");
 		}
-		else 
+		else
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("WPA2PSK\n"));
 			Set_AuthMode_Proc(pAd, "WPA2PSK");
@@ -668,7 +668,7 @@ BOOLEAN CFG80211DRV_Connect(
 			DBGPRINT(RT_DEBUG_TRACE, ("WPA\n"));
 			Set_AuthMode_Proc(pAd, "WPA");
 		}
-		else 
+		else
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("WPAPSK\n"));
 			Set_AuthMode_Proc(pAd, "WPAPSK");
@@ -686,12 +686,12 @@ BOOLEAN CFG80211DRV_Connect(
 
 
 	/* set encryption mode */
-	if (pConnInfo->PairwiseEncrypType & RT_CMD_80211_CONN_ENCRYPT_CCMP) 
+	if (pConnInfo->PairwiseEncrypType & RT_CMD_80211_CONN_ENCRYPT_CCMP)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("AES\n"));
 		Set_EncrypType_Proc(pAd, "AES");
 	}
-	else if (pConnInfo->PairwiseEncrypType & RT_CMD_80211_CONN_ENCRYPT_TKIP) 
+	else if (pConnInfo->PairwiseEncrypType & RT_CMD_80211_CONN_ENCRYPT_TKIP)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("TKIP\n"));
 		Set_EncrypType_Proc(pAd, "TKIP");
@@ -708,7 +708,7 @@ BOOLEAN CFG80211DRV_Connect(
 	}
 	
 	/* Groupwise Key Information Setting */
-	IoctlWpa.flags = RT_CMD_STA_IOCTL_WPA_GROUP;    
+	IoctlWpa.flags = RT_CMD_STA_IOCTL_WPA_GROUP;
 	if (pConnInfo->GroupwiseEncrypType & RT_CMD_80211_CONN_ENCRYPT_CCMP)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("GTK AES\n"));
@@ -720,7 +720,7 @@ BOOLEAN CFG80211DRV_Connect(
 		DBGPRINT(RT_DEBUG_TRACE, ("GTK TKIP\n"));
 		IoctlWpa.value = RT_CMD_STA_IOCTL_WPA_GROUP_TKIP;
 		RtmpIoctl_rt_ioctl_siwauth(pAd, &IoctlWpa, 0);
-	} 
+	}
 
 
 	CFG80211DBG(RT_DEBUG_ERROR,

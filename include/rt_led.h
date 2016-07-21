@@ -93,7 +93,7 @@ void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd);
 void RTMPExitLEDMode(IN RTMP_ADAPTER *pAd);
 
 VOID RTMPSetLEDStatus(
-	IN PRTMP_ADAPTER 	pAd, 
+	IN PRTMP_ADAPTER 	pAd,
 	IN UCHAR			Status);
 
 #ifdef RTMP_MAC_USB
@@ -111,7 +111,7 @@ do{								\
 
 
 VOID RTMPSetSignalLED(
-	IN PRTMP_ADAPTER 	pAd, 
+	IN PRTMP_ADAPTER 	pAd,
 	IN NDIS_802_11_RSSI Dbm);
 
 

@@ -111,7 +111,7 @@ ULONG JapRadarType(
 }
 
 
-/* 
+/*
     ==========================================================================
     Description:
         Set channel switch Period
@@ -120,7 +120,7 @@ ULONG JapRadarType(
     ==========================================================================
 */
 INT	Set_CSPeriod_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	pAd->Dot11_H.CSPeriod = (USHORT) simple_strtol(arg, 0, 10);
@@ -130,7 +130,7 @@ INT	Set_CSPeriod_Proc(
 	return TRUE;
 }
 
-/* 
+/*
     ==========================================================================
     Description:
 		change channel moving time for DFS testing.
@@ -143,12 +143,12 @@ INT	Set_CSPeriod_Proc(
         None
 
     Note:
-        Usage: 
+        Usage:
                1.) iwpriv ra0 set ChMovTime=[value]
     ==========================================================================
 */
 INT Set_ChMovingTime_Proc(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN PSTRING arg)
 {
 	UINT8 Value;
@@ -164,7 +164,7 @@ INT Set_ChMovingTime_Proc(
 }
 
 
-/* 
+/*
     ==========================================================================
     Description:
 		Reset channel block status.
@@ -176,12 +176,12 @@ INT Set_ChMovingTime_Proc(
         None
 
     Note:
-        Usage: 
+        Usage:
                1.) iwpriv ra0 set ChMovTime=[value]
     ==========================================================================
 */
 INT Set_BlockChReset_Proc(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN PSTRING arg)
 {
 	INT i;
@@ -198,7 +198,7 @@ INT Set_BlockChReset_Proc(
 #if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
 
 INT	Set_RadarShow_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 #ifdef DFS_SUPPORT

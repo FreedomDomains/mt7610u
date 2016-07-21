@@ -48,7 +48,7 @@
 				1: 7991 octets(Max A-MSDU length in HT Cap set to 7935)
 				2: 11454 octets(Max A-MSDU length in HT Cap set to 7935)
 				3: reserved
-	ch_width: Supported Channel Width Set 
+	ch_width: Supported Channel Width Set
 		->Indicates the channel widths supported by the STA.
 				0: the STA does not support either 160 or 80+80 MHz
 				1: the STA support 160 MHz
@@ -87,7 +87,7 @@
 				0: not support
 				1: support				
 	cmp_st_num_bfer: Compressed Steering Number of Beamformer Antenna Supported
-		-> Beamformee's capability indicateing the max number of beamformer 
+		-> Beamformee's capability indicateing the max number of beamformer
 			antennas the beamformee can support when sending compressed
 			beamforming feedback
 				If SU beamformee capable, set to the max value minus 1.
@@ -108,7 +108,7 @@
 	vht_txop_ps: VHT TXOP PS
 		-> Indicates whether or not the AP supports VHT TXOP Power Save Mode or
 			whether or not the STA is in VHT TXOP Power Save Mode
-		->When tx by a VHT AP in the VHT Capabilities element included in Beacon, 
+		->When tx by a VHT AP in the VHT Capabilities element included in Beacon,
 			ProbeResp, AssocResp, and ReassocResp, frames:
 				0: if the VHT AP does not support VHT TXOP PS in the BSS.
 				1: if the VHT AP support TXOP PS in the BSS.
@@ -117,7 +117,7 @@
 				0: if the VHT STA is not in TXOP Power Save Mode.
 				1: if the VHT STA is in TXOP Power Save Mode.
 	htc_vht_cap: +HTC-VHT Capable
-		-> Indicates whether or not the STA supports receiving an HT Control 
+		-> Indicates whether or not the STA supports receiving an HT Control
 			field in the VHT format
 				0: if not support
 				1: if support
@@ -408,7 +408,7 @@ typedef struct GNU_PACKED _CH_SEG_PAIR{
 	max_txpwr: Maximum Transmit Power
 		-> Define the maximum transmit power limit of the tx bandwidth defined
 			by the VHT Transmit Power Envelop element. The Maximum Transmit
-			Power field is a 8 bit 2's complement signed integer in the range of 
+			Power field is a 8 bit 2's complement signed integer in the range of
 			-64 dBm to 63.5 dBm with a 0.5 dB step.
 
 	NOTE: The following two subfields may repeated as needed.

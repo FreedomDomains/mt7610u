@@ -84,8 +84,8 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd,
 					pbbpRegTb[Index].Register,
 					pbbpRegTb[Index].Value);
-			DBGPRINT(RT_DEBUG_TRACE, ("BBP_R%d=0x%x\n", 
-					pbbpRegTb[Index].Register, 
+			DBGPRINT(RT_DEBUG_TRACE, ("BBP_R%d=0x%x\n",
+					pbbpRegTb[Index].Register,
 					pbbpRegTb[Index].Value));
 		}
 	}
@@ -312,7 +312,7 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
 {
 	UCHAR idx = 0, val = 0;
 
-	if (((pAd->MACVersion & 0xf0000000) < 0x28830000) || 
+	if (((pAd->MACVersion & 0xf0000000) < 0x28830000) ||
 		(pAd->Antenna.field.RxPath == 1))
 	{
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpVal);
@@ -337,7 +337,7 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
 #endif /* RTMP_MAC_USB */
 
 
-			DBGPRINT(RT_DEBUG_INFO, 
+			DBGPRINT(RT_DEBUG_INFO,
 					("%s(Idx):Write(R%d,val:0x%x) to Chain(0x%x, idx:%d)\n",
 						__FUNCTION__, bbpId, bbpVal, rx_ch_idx, idx));
 		}
@@ -350,14 +350,14 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
 
 
 NDIS_STATUS AsicBBPReadWithRxChain(
-	IN RTMP_ADAPTER *pAd, 
-	IN UCHAR bbpId, 
+	IN RTMP_ADAPTER *pAd,
+	IN UCHAR bbpId,
 	IN CHAR *pBbpVal,
 	IN RX_CHAIN_IDX rx_ch_idx)
 {
 	UCHAR idx, val;
 
-	if (((pAd->MACVersion & 0xffff0000) < 0x28830000) || 
+	if (((pAd->MACVersion & 0xffff0000) < 0x28830000) ||
 		(pAd->Antenna.field.RxPath == 1))
 	{
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, pBbpVal);
@@ -376,7 +376,7 @@ NDIS_STATUS AsicBBPReadWithRxChain(
 			RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R27, &val);
 			val = (val & (~0x60)) | (idx << 5);
 #ifdef RTMP_MAC_USB
-			if ((IS_USB_INF(pAd)) && 
+			if ((IS_USB_INF(pAd)) &&
 			    (RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R27, val) == STATUS_SUCCESS))
 			{
 				RTMP_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, pBbpVal);
@@ -446,7 +446,7 @@ INT rtmp_bbp_is_ready(struct _RTMP_ADAPTER *pAd)
 	INT idx = 0;
 	UCHAR val;
 	
-	do 
+	do
 	{
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R0, &val);
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))			

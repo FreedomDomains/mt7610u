@@ -207,9 +207,9 @@ VOID AsicUpdateAutoFallBackTable(
 									break;
 							}
 						}
-						else 
+						else
 #ifdef AGS_SUPPORT
-						if ((bUseAGS == TRUE) && 
+						if ((bUseAGS == TRUE) &&
 							(pCurrTxRate->CurrMCS >= 16) && (pCurrTxRate->CurrMCS <= 23))
 						{
 							switch(pCurrTxRate->CurrMCS)
@@ -277,7 +277,7 @@ skipUpdate:
 	if (IS_RT2883(pAd) || IS_RT3883(pAd)
 #ifdef AGS_SUPPORT
 		|| (bUseAGS == TRUE)
-#endif /* AGS_SUPPORT */ 
+#endif /* AGS_SUPPORT */
 	)
 	{
 		RTMP_IO_WRITE32(pAd, TX_FBK_CFG_3S_0, Ht3SSCfg0.word);
@@ -353,7 +353,7 @@ VOID AsicUpdateProtect(
 	/* If the user want disable RtsThreshold and enbale Amsdu/Ralink-Aggregation, set the RtsThreshold as 4096*/
         if ((
 #ifdef DOT11_N_SUPPORT
-			(pAd->CommonCfg.BACapability.field.AmsduEnable) || 
+			(pAd->CommonCfg.BACapability.field.AmsduEnable) ||
 #endif /* DOT11_N_SUPPORT */
 			(pAd->CommonCfg.bAggregationCapable == TRUE))
             && pAd->CommonCfg.RtsThreshold == MAX_RTS_THRESHOLD)
@@ -399,7 +399,7 @@ VOID AsicUpdateProtect(
 		{
 			ProtCfg.field.ProtectRate = PhyMode; // OFDM 6Mbps
 		}
-		else 
+		else
 		{
 			ProtCfg.field.ProtectRate = 0x0000; // CCK 1Mbps
 			if (pAd->CommonCfg.MinTxRate > RATE_11)
@@ -524,15 +524,15 @@ VOID AsicUpdateProtect(
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -575,17 +575,17 @@ VOID AsicUpdateProtect(
 					RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -605,7 +605,7 @@ VOID AsicUpdateProtect(
 				{
 					ProtCfg.word = 0x01740003;	/*ERP use Protection bit is set, use protection rate at Clause 18..*/
 					ProtCfg4.word = 0x03f40003; /* Don't duplicate RTS/CTS in CCK mode. 0x03f40083; */
-				} 
+				}
 				/*Assign Protection method for 40MHz packets*/
 				ProtCfg4.field.ProtectCtrl = ASIC_RTS;
 				ProtCfg4.field.ProtectNav = ASIC_SHORTNAV;
@@ -630,17 +630,17 @@ VOID AsicUpdateProtect(
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -684,17 +684,17 @@ VOID AsicUpdateProtect(
 					RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					RTMP_IO_READ32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);  
+					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -772,9 +772,9 @@ VOID AsicBBPAdjust(RTMP_ADAPTER *pAd)
 	==========================================================================
  */
 VOID AsicSwitchChannel(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN UCHAR Channel,
-	IN BOOLEAN bScan) 
+	IN BOOLEAN bScan)
 {
 	UCHAR bw;
 #ifdef CONFIG_STA_SUPPORT
@@ -786,7 +786,7 @@ VOID AsicSwitchChannel(
 #endif /* CONFIG_STA_SUPPORT */
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF))
-		return; 
+		return;
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_SUSPEND);
 #ifdef CONFIG_STA_SUPPORT
@@ -849,8 +849,8 @@ VOID AsicSwitchChannel(
 	==========================================================================
  */
 VOID AsicLockChannel(
-	IN PRTMP_ADAPTER pAd, 
-	IN UCHAR Channel) 
+	IN PRTMP_ADAPTER pAd,
+	IN UCHAR Channel)
 {
 }
 
@@ -1136,7 +1136,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 
 	/* AutoTxAgc in EEPROM means temperature compensation enabled/diablded. */
 	if (bAutoTxAgc)
-	{ 
+	{
 		/* Current temperature */
 #ifdef RT65xx
 		if (IS_RT65XX(pAd))
@@ -1181,21 +1181,21 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 			pAd->TxPowerCtrl.idxTxPowerTable2 + pAd->TxPowerCtrl.LookupTableIndex,
 			TuningTableUpperBound));
 
-		TuningTableIndex0 = pAd->TxPowerCtrl.idxTxPowerTable 
-									+ pAd->TxPowerCtrl.LookupTableIndex 
+		TuningTableIndex0 = pAd->TxPowerCtrl.idxTxPowerTable
+									+ pAd->TxPowerCtrl.LookupTableIndex
 #ifdef DOT11_N_SUPPORT
 									+ pAd->TxPower[pAd->CommonCfg.CentralChannel-1].Power;
 #else
 									+ pAd->TxPower[pAd->CommonCfg.Channel-1].Power;
 #endif /* DOT11_N_SUPPORT */
-		/* The boundary verification */ 
+		/* The boundary verification */
 		TuningTableIndex0 = (TuningTableIndex0 > TuningTableUpperBound) ? TuningTableUpperBound : TuningTableIndex0;
-		TuningTableIndex0 = (TuningTableIndex0 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ? 
+		TuningTableIndex0 = (TuningTableIndex0 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ?
 							LOWERBOUND_TX_POWER_TUNING_ENTRY : TuningTableIndex0;
 		TxPowerTuningTableEntry0 = &TxPowerTuningTable[TuningTableIndex0 + TX_POWER_TUNING_ENTRY_OFFSET];
 		
-		TuningTableIndex1 = pAd->TxPowerCtrl.idxTxPowerTable2 
-									+ pAd->TxPowerCtrl.LookupTableIndex 
+		TuningTableIndex1 = pAd->TxPowerCtrl.idxTxPowerTable2
+									+ pAd->TxPowerCtrl.LookupTableIndex
 #ifdef DOT11_N_SUPPORT				
 									+ pAd->TxPower[pAd->CommonCfg.CentralChannel-1].Power2;
 #else
@@ -1203,7 +1203,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 #endif /* DOT11_N_SUPPORT */
 		/* The boundary verification */
 		TuningTableIndex1 = (TuningTableIndex1 > TuningTableUpperBound) ? TuningTableUpperBound : TuningTableIndex1;
-		TuningTableIndex1 = (TuningTableIndex1 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ? 
+		TuningTableIndex1 = (TuningTableIndex1 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ?
 							LOWERBOUND_TX_POWER_TUNING_ENTRY : TuningTableIndex1;
 		TxPowerTuningTableEntry1 = &TxPowerTuningTable[TuningTableIndex1 + TX_POWER_TUNING_ENTRY_OFFSET];
 			
@@ -1254,7 +1254,7 @@ VOID AsicResetBBPAgent(PRTMP_ADAPTER pAd)
 /*
 	==========================================================================
 	Description:
-		put PHY to sleep here, and set next wakeup timer. PHY doesn't not wakeup 
+		put PHY to sleep here, and set next wakeup timer. PHY doesn't not wakeup
 		automatically. Instead, MCU will issue a TwakeUpInterrupt to host after
 		the wakeup timer timeout. Driver has to issue a separate command to wake
 		PHY up.
@@ -1264,8 +1264,8 @@ VOID AsicResetBBPAgent(PRTMP_ADAPTER pAd)
 	==========================================================================
  */
 VOID AsicSleepThenAutoWakeup(
-	IN PRTMP_ADAPTER pAd, 
-	IN USHORT TbttNumToNextWakeUp) 
+	IN PRTMP_ADAPTER pAd,
+	IN USHORT TbttNumToNextWakeUp)
 {
 	RTMP_STA_SLEEP_THEN_AUTO_WAKEUP(pAd, TbttNumToNextWakeUp);
 }
@@ -1314,16 +1314,16 @@ VOID AsicForceWakeup(
 	==========================================================================
  */
 VOID AsicSetBssid(
-	IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pBssid) 
+	IN PRTMP_ADAPTER pAd,
+	IN PUCHAR pBssid)
 {
 	ULONG		  Addr4;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetBssid %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pBssid)));
 	
-	Addr4 = (ULONG)(pBssid[0]) | 
-			(ULONG)(pBssid[1] << 8)  | 
+	Addr4 = (ULONG)(pBssid[0]) |
+			(ULONG)(pBssid[1] << 8)  |
 			(ULONG)(pBssid[2] << 16) |
 			(ULONG)(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW0, Addr4);
@@ -1363,7 +1363,7 @@ VOID AsicSetBssid(
 	==========================================================================
  */
 VOID AsicEnableRDG(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
 	UINT32				Data = 0;
@@ -1387,7 +1387,7 @@ VOID AsicEnableRDG(
 	==========================================================================
  */
 VOID AsicDisableRDG(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
 	UINT32				Data = 0;
@@ -1406,7 +1406,7 @@ VOID AsicDisableRDG(
 	/*if ( pAd->CommonCfg.bEnableTxBurst )	*/
 	/*	Data |= 0x60;  for performance issue not set the TXOP to 0*/
 #endif
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE) 
+	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
 #ifdef DOT11_N_SUPPORT
 		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
 #endif /* DOT11_N_SUPPORT */
@@ -1431,7 +1431,7 @@ VOID AsicDisableRDG(
 	==========================================================================
  */
 VOID AsicDisableSync(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr;
 	
@@ -1459,7 +1459,7 @@ VOID AsicDisableSync(
 	==========================================================================
  */
 VOID AsicEnableBssSync(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr;
 
@@ -1483,7 +1483,7 @@ VOID AsicEnableBssSync(
 /*
 	==========================================================================
 	Description:
-	Note: 
+	Note:
 		BEACON frame in shared memory should be built ok before this routine
 		can be called. Otherwise, a garbage frame maybe transmitted out every
 		Beacon period.
@@ -1558,7 +1558,7 @@ VOID AsicEnableIbssSync(
 	csr9.field.BeaconInterval = pAd->CommonCfg.BeaconPeriod << 4; /* ASIC register in units of 1/16 TU*/
 	csr9.field.bTsfTicking = 1;
 	/*
-		(STA ad-hoc mode) Upon the reception of BEACON frame from associated BSS, 
+		(STA ad-hoc mode) Upon the reception of BEACON frame from associated BSS,
 		local TSF is updated with remote TSF only if the remote TSF is greater than local TSF
 	*/
 	csr9.field.TsfSyncMode = 2; /* sync TSF in IBSS mode*/
@@ -1721,13 +1721,13 @@ VOID AsicSetEdcaParm(
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
 			/* Tuning for Wi-Fi WMM S06*/
-			if (pAd->CommonCfg.bWiFiTest && 
+			if (pAd->CommonCfg.bWiFiTest &&
 				pEdcaParm->Aifsn[QID_AC_VI] == 10)
-				Ac2Cfg.field.Aifsn -= 1; 
+				Ac2Cfg.field.Aifsn -= 1;
 
 			/* Tuning for TGn Wi-Fi 5.2.32*/
 			/* STA TestBed changes in this item: conexant legacy sta ==> broadcom 11n sta*/
-			if (STA_TGN_WIFI_ON(pAd) && 
+			if (STA_TGN_WIFI_ON(pAd) &&
 				pEdcaParm->Aifsn[QID_AC_VI] == 10)
 			{
 				Ac0Cfg.field.Aifsn = 3;
@@ -1819,7 +1819,7 @@ VOID AsicSetEdcaParm(
 
 			/* Tuning for TGn Wi-Fi 5.2.32*/
 			/* STA TestBed changes in this item: connexant legacy sta ==> broadcom 11n sta*/
-			if (STA_TGN_WIFI_ON(pAd) && 
+			if (STA_TGN_WIFI_ON(pAd) &&
 				pEdcaParm->Aifsn[QID_AC_VI] == 10)
 			{
 				AifsnCsr.field.Aifsn0 = 3;
@@ -1885,7 +1885,7 @@ VOID AsicSetEdcaParm(
  */
 VOID 	AsicSetSlotTime(
 	IN PRTMP_ADAPTER pAd,
-	IN BOOLEAN bUseShortSlotTime) 
+	IN BOOLEAN bUseShortSlotTime)
 {
 	ULONG	SlotTime;
 	UINT32	RegValue = 0;
@@ -1931,7 +1931,7 @@ VOID 	AsicSetSlotTime(
 	
 	/* For some reasons, always set it to short slot time.*/
 	/* ToDo: Should consider capability with 11B*/
-#ifdef CONFIG_STA_SUPPORT 
+#ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
 		if (pAd->StaCfg.BssType == BSS_ADHOC)	
@@ -1953,7 +1953,7 @@ VOID 	AsicSetSlotTime(
 /*
 	========================================================================
 	Description:
-		Add Shared key information into ASIC. 
+		Add Shared key information into ASIC.
 		Update shared key, TxMic and RxMic to Asic Shared key table
 		Update its cipherAlg to Asic Shared key Mode.
 		
@@ -2126,7 +2126,7 @@ VOID AsicUpdateWCIDIVEIV(
 	RTMP_IO_WRITE32(pAd, offset, uIV);
 	RTMP_IO_WRITE32(pAd, offset + 4, uEIV);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx \n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx \n",
 									__FUNCTION__, WCID, uIV, uEIV));	
 }
 
@@ -2156,7 +2156,7 @@ VOID AsicUpdateRxWCIDTable(
     Note :
 		The key table selection rule :
     	1.	Wds-links and Mesh-links always use Pair-wise key table. 	
-		2. 	When the CipherAlg is TKIP, AES, SMS4 or the dynamic WEP is enabled, 
+		2. 	When the CipherAlg is TKIP, AES, SMS4 or the dynamic WEP is enabled,
 			it needs to set key into Pair-wise Key Table.
 		3.	The pair-wise key security mode is set NONE, it means as no security.
 		4.	In STA Adhoc mode, it always use shared key table.
@@ -2181,7 +2181,7 @@ VOID	AsicUpdateWcidAttributeEntry(
 	/* The limitation of HW WCID table */
 	if (/*Wcid < 1 ||*/ Wcid > 254)
 	{		
-		DBGPRINT(RT_DEBUG_WARN, ("%s: Wcid is invalid (%d). \n", 
+		DBGPRINT(RT_DEBUG_WARN, ("%s: Wcid is invalid (%d). \n",
 										__FUNCTION__, Wcid));	
 		return;
 	}
@@ -2211,13 +2211,13 @@ VOID	AsicUpdateWcidAttributeEntry(
 
 /*
 	==========================================================================
-	Description:   
+	Description:
 
 	IRQL = DISPATCH_LEVEL
 
 	==========================================================================
  */
-VOID AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx) 
+VOID AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
 {
 	UINT32 offset;
 	UCHAR cnt, cnt_s, cnt_e;
@@ -2258,7 +2258,7 @@ VOID AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
 /*
 	========================================================================
 	Description:
-		Add Pair-wise key material into ASIC. 
+		Add Pair-wise key material into ASIC.
 		Update pairwise key, TxMic and RxMic to Asic Pair-wise key table
 				
     Return:
@@ -2321,7 +2321,7 @@ VOID AsicAddPairwiseKeyEntry(
 /*
 	========================================================================
 	Description:
-		Remove Pair-wise key material from ASIC. 
+		Remove Pair-wise key material from ASIC.
 
     Return:
 	========================================================================
@@ -2331,10 +2331,10 @@ VOID AsicRemovePairwiseKeyEntry(
 	IN UCHAR		 Wcid)
 {
 	/* Set the specific WCID attribute entry as OPEN-NONE */
-	AsicUpdateWcidAttributeEntry(pAd, 
+	AsicUpdateWcidAttributeEntry(pAd,
 							  BSS0,
 							  0,
-							  CIPHER_NONE, 
+							  CIPHER_NONE,
 							  Wcid,
 							  PAIRWISEKEYTABLE);
 
@@ -2386,7 +2386,7 @@ BOOLEAN AsicSendCommandToMcuBBP(
 /*
 	========================================================================
 	Description:
-		For 1x1 chipset : 2070 / 3070 / 3090 / 3370 / 3390 / 5370 / 5390 
+		For 1x1 chipset : 2070 / 3070 / 3090 / 3370 / 3390 / 5370 / 5390
 		Usage :	1. Set Default Antenna as initialize
 				2. Antenna Diversity switching used
 				3. iwpriv command switch Antenna
@@ -2404,8 +2404,8 @@ VOID AsicSetRxAnt(
 
 
 VOID AsicTurnOffRFClk(
-	IN PRTMP_ADAPTER pAd, 
-	IN	UCHAR		Channel) 
+	IN PRTMP_ADAPTER pAd,
+	IN	UCHAR		Channel)
 {
 	if (pAd->chipOps.AsicRfTurnOff)
 	{
@@ -2504,10 +2504,10 @@ UINT32 StreamModeRegVal(
 /*
 	========================================================================
 	Description:
-		configure the stream mode of specific MAC or all MAC and set to ASIC. 
+		configure the stream mode of specific MAC or all MAC and set to ASIC.
 
 	Prameters:
-		pAd		 --- 
+		pAd		 ---
 		pMacAddr ---
 		bClear	 --- disable the stream mode for specific macAddr when
 						(pMacAddr!=NULL)
@@ -2533,17 +2533,17 @@ VOID AsicSetStreamMode(
 		streamWord = 0;
 
 	regAddr = TX_CHAIN_ADDR0_L + chainIdx * 8;
-	RTMP_IO_WRITE32(pAd, regAddr,  
-					(UINT32)(pMacAddr[0]) | 
-					(UINT32)(pMacAddr[1] << 8)  | 
-					(UINT32)(pMacAddr[2] << 16) | 
+	RTMP_IO_WRITE32(pAd, regAddr,
+					(UINT32)(pMacAddr[0]) |
+					(UINT32)(pMacAddr[1] << 8)  |
+					(UINT32)(pMacAddr[2] << 16) |
 					(UINT32)(pMacAddr[3] << 24));
 	
 	RTMP_IO_READ32(pAd, regAddr + 4, &regVal);
 	regVal &= (~0x000f0000);
-	RTMP_IO_WRITE32(pAd, regAddr + 4, 
-					(regVal | streamWord) | 
-					(UINT32)(pMacAddr[4]) | 
+	RTMP_IO_WRITE32(pAd, regAddr + 4,
+					(regVal | streamWord) |
+					(UINT32)(pMacAddr[4]) |
 					(UINT32)(pMacAddr[5] << 8));
 	
 }
@@ -2577,7 +2577,7 @@ VOID RtmpStreamModeInit(
 	==========================================================================
  */
 VOID AsicEnableRalinkBurstMode(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	UINT32				Data = 0;
 
@@ -2597,7 +2597,7 @@ VOID AsicEnableRalinkBurstMode(
 	==========================================================================
  */
 VOID AsicDisableRalinkBurstMode(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	UINT32				Data = 0;
 
@@ -2606,7 +2606,7 @@ VOID AsicDisableRalinkBurstMode(
 	Data = pAd->CommonCfg.RestoreBurstMode;
 	Data &= 0xFFFFFF00;
 
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE) 
+	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
 #ifdef DOT11_N_SUPPORT
 		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
 #endif // DOT11_N_SUPPORT //
@@ -2633,7 +2633,7 @@ VOID AsicLoadWOWFirmware(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN WOW)
 {
-	if (WOW) 
+	if (WOW)
 		pAd->WOW_Cfg.bWOWFirmware = TRUE;
 	else
 		pAd->WOW_Cfg.bWOWFirmware = FALSE;
@@ -2641,7 +2641,7 @@ VOID AsicLoadWOWFirmware(
 	RtmpAsicLoadFirmware(pAd);
 }
 
-/* In WOW mode, 8051 mcu will send null frame, and pick data from 0x7780 
+/* In WOW mode, 8051 mcu will send null frame, and pick data from 0x7780
  * the null frame includes TxWI and 802.11 header 						*/
 VOID AsicWOWSendNullFrame(
 	IN PRTMP_ADAPTER pAd,
@@ -2667,7 +2667,7 @@ VOID AsicWOWSendNullFrame(
 	DBGPRINT(RT_DEBUG_OFF, ("TxWI:\n"));
 	/* copy TxWI to MCU memory */
 	ptr = (PUCHAR)TxWI;
-	for (offset = 0; offset < TXWISize; offset += 4)  
+	for (offset = 0; offset < TXWISize; offset += 4)
 	{
 		RTMPMoveMemory(&Value, ptr+offset, 4);
 		DBGPRINT(RT_DEBUG_OFF, ("offset: %02d %08x\n", offset, Value));
@@ -2764,7 +2764,7 @@ INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
 						TX_AGG_CNT4, TX_AGG_CNT7,
 #endif
 #if MAX_AGG_CNT > 16
-						TX_AGG_CNT8, TX_AGG_CNT15, 
+						TX_AGG_CNT8, TX_AGG_CNT15,
 #endif
 	};
 
@@ -2827,17 +2827,17 @@ INT AsicSetChannel(RTMP_ADAPTER *pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BOOLEAN 
 	==========================================================================
  */
 VOID AsicSetApCliBssid(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pBssid,
-	IN UCHAR index) 
+	IN UCHAR index)
 {
 	UINT32		  Addr4 = 0;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetApCliBssid %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pBssid)));
 	
-	Addr4 = (UINT32)(pBssid[0]) | 
-			(UINT32)(pBssid[1] << 8)  | 
+	Addr4 = (UINT32)(pBssid[0]) |
+			(UINT32)(pBssid[1] << 8)  |
 			(UINT32)(pBssid[2] << 16) |
 			(UINT32)(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
@@ -2861,17 +2861,17 @@ VOID AsicSetApCliBssid(
 	==========================================================================
  */
 VOID AsicSetExtendedMacAddr(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pMacAddr,
-	IN UINT32 Idx) 
+	IN UINT32 Idx)
 {
 	UINT32		  Addr4 = 0;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetExtendedMacAddr %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pMacAddr)));
 	
-	Addr4 = (UINT32)(pMacAddr[0]) | 
-			(UINT32)(pMacAddr[1] << 8)  | 
+	Addr4 = (UINT32)(pMacAddr[0]) |
+			(UINT32)(pMacAddr[1] << 8)  |
 			(UINT32)(pMacAddr[2] << 16) |
 			(UINT32)(pMacAddr[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);

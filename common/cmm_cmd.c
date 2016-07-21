@@ -39,7 +39,7 @@
 
 	Return Value:
 	
-	IRQL = 
+	IRQL =
 	
 	Note:
 	
@@ -64,7 +64,7 @@ VOID	RTInitializeCmdQ(
 
 	Return Value:
 	
-	IRQL = 
+	IRQL =
 	
 	Note:
 	
@@ -95,7 +95,7 @@ VOID	RTThreadDequeueCmd(
 
 	Return Value:
 
-	IRQL = 
+	IRQL =
 	
 	Note:
 	

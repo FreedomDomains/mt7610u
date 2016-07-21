@@ -290,7 +290,7 @@ NDIS_STATUS MiniportMMRequest(
 #ifdef CONFIG_FPGA_MODE
 	if (pAd->fpga_ctl.fpga_on & 0x1) {
 		if (pAd->fpga_ctl.tx_kick_cnt > 0) {
-			if (pAd->fpga_ctl.tx_kick_cnt < 0xffff) 
+			if (pAd->fpga_ctl.tx_kick_cnt < 0xffff)
 				pAd->fpga_ctl.tx_kick_cnt--;
 		}
 		else
@@ -537,8 +537,8 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 		{
 			if (RtmpPktPmBitCheck(pAd) == TRUE)
 				pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
-			else if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) && 
-					INFRA_ON(pAd) && 
+			else if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) &&
+					INFRA_ON(pAd) &&
 					RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 			{
 				/* We are in scan progress, just let the PwrMgmt bit keep as it orginally should be */
@@ -626,7 +626,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 	/*pAd->CommonCfg.MlmeTransmit.field.MODE = 1;*/
 	
 	/*
-		management frame doesn't need encryption. 
+		management frame doesn't need encryption.
 		so use RESERVED_WCID no matter u are sending to specific wcid or not
 	*/
 	PID = PID_MGMT;
@@ -872,7 +872,7 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 #ifdef CONFIG_STA_SUPPORT
 #ifdef XLINK_SUPPORT
 		if ((pAd->OpMode == OPMODE_STA) &&
-			(ADHOC_ON(pAd)) /*&& 
+			(ADHOC_ON(pAd)) /*&&
 			(RX_FILTER_TEST_FLAG(pAd, fRX_FILTER_ACCEPT_PROMISCUOUS))*/)
 		{
 			if(pAd->StaCfg.PSPXlink)
@@ -1331,7 +1331,7 @@ VOID RTMPSuspendMsduTransmission(
 */
 VOID RTMPResumeMsduTransmission(
 	IN PRTMP_ADAPTER pAd)
-{  
+{
 	DBGPRINT(RT_DEBUG_TRACE,("SCAN done, resume MSDU transmission ...\n"));
 
 
@@ -1753,7 +1753,7 @@ VOID Update_Rssi_Sample(
 	BOOLEAN bInitial = FALSE;
 	CHAR Phymode = get_pkt_phymode_by_rxwi(pRxWI);
 
- 
+
 	if (!(pRssi->AvgRssi0 | pRssi->AvgRssi0X8 | pRssi->LastRssi0))
 		bInitial = TRUE;
 
@@ -1769,7 +1769,7 @@ VOID Update_Rssi_Sample(
 		}
 		else
 			pRssi->AvgRssi0X8 = (pRssi->AvgRssi0X8 - pRssi->AvgRssi0) + pRssi->LastRssi0;
- 
+
 		pRssi->AvgRssi0 = pRssi->AvgRssi0X8 >> 3;
 	}
 
@@ -1786,9 +1786,9 @@ VOID Update_Rssi_Sample(
 
 		pRssi->AvgSnr0 = pRssi->AvgSnr0X8 >> 3;
 	}
- 
+
 	if (rssi[1] != 0)
-	{   
+	{
 		pRssi->LastRssi1 = ConvertToRssi(pAd, (CHAR)rssi[1], RSSI_1);
 		if (bInitial)
 		{
@@ -1896,7 +1896,7 @@ if (0) {
 					 RTMP_TIME_AFTER((unsigned long)Now32, (unsigned long)(pBAEntry->LastIndSeqAtTimer+(REORDERING_PACKET_TIMEOUT)))
 	   				)
 				{
-					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n", 
+					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
 												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
 					hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
 					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
@@ -1995,7 +1995,7 @@ if (0) {
 					 RTMP_TIME_AFTER((unsigned long)Now32, (unsigned long)(pBAEntry->LastIndSeqAtTimer+(REORDERING_PACKET_TIMEOUT)))
 	   				)
 				{
-					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n", 
+					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
 												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
 					hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
 					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
@@ -2249,7 +2249,7 @@ PNDIS_PACKET RTMPDeFragmentDataFrame(
 			goto done; /* give up this frame*/
 		}
 
-        
+
 		/* Broadcom AP(BCM94704AGR) will send out LLC in fragment's packet, LLC only can accpet at first fragment.*/
 		/* In this case, we will dropt it.*/
 		
@@ -2412,7 +2412,7 @@ VOID RTMPUpdateSwCacheCipherInfo(
 	pHeader_802_11 = (HEADER_802_11 *) pHdr;
 	pMacEntry = pTxBlk->pMacEntry;
 
-	if (pMacEntry && pHeader_802_11->FC.Wep && 
+	if (pMacEntry && pHeader_802_11->FC.Wep &&
 		CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_SOFTWARE_ENCRYPT))	
 	{
 		PCIPHER_KEY pKey = &pMacEntry->PairwiseKey;
@@ -2432,10 +2432,10 @@ VOID RTMPUpdateSwCacheCipherInfo(
 
 #endif /* SOFT_ENCRYPT */
 
-/* 
+/*
 	==========================================================================
 	Description:
-		Send out a NULL frame to a specified STA at a higher TX rate. The 
+		Send out a NULL frame to a specified STA at a higher TX rate. The
 		purpose is to ensure the designated client is okay to received at this
 		rate.
 	==========================================================================
@@ -2460,7 +2460,7 @@ VOID RtmpEnqueueNullFrame(
 	pNullFr = (PHEADER_802_11) pFrame;
     Length = sizeof(HEADER_802_11);
 
-	if (NState == NDIS_STATUS_SUCCESS) 
+	if (NState == NDIS_STATUS_SUCCESS)
 	{
 
 		pNullFr->FC.Type = BTYPE_DATA;
@@ -2573,7 +2573,7 @@ INT ip_assembly_timeout(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, ULONG Now, U
 
 INT ip_assembly(
 	RTMP_ADAPTER *pAd,
-	UCHAR QueIdx, 
+	UCHAR QueIdx,
 	PNDIS_PACKET pPacket,
 	PACKET_INFO PacketInfo,
 	MAC_TABLE_ENTRY *pEntry)
@@ -2719,9 +2719,9 @@ INT ip_assembly(
 			else
 			{
 				/*
-				   bypass none-fist fragmented packets (we should not drop this packet) when 
-				   1. (pAd->TxSwQueue[QueIdx].Number >= (pAd->TxSwQMaxLen[QueIdx] >> 1) and 
-				   2. two fragmented buffer are empty 
+				   bypass none-fist fragmented packets (we should not drop this packet) when
+				   1. (pAd->TxSwQueue[QueIdx].Number >= (pAd->TxSwQMaxLen[QueIdx] >> 1) and
+				   2. two fragmented buffer are empty
 				 */
 				if (((*pAC_ID1) == -1) && ((*pAC_ID2) == -1))
 					goto go_original_path;

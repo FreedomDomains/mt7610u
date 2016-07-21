@@ -169,7 +169,7 @@ INT RtmpTimerQThread(
 	RtmpTimerQHandle(pAd);
 
 	DBGPRINT(RT_DEBUG_TRACE,( "<---%s\n",__FUNCTION__));
-	/* notify the exit routine that we're actually exiting now 
+	/* notify the exit routine that we're actually exiting now
 	 *
 	 * complete()/wait_for_completion() is similar to up()/down(),
 	 * except that complete() is safe in the case where the structure
@@ -191,7 +191,7 @@ INT RtmpTimerQThread(
 
 
 RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN RALINK_TIMER_STRUCT *pTimer)
 {
 	RTMP_TIMER_TASK_ENTRY *pQNode = NULL, *pQTail;
@@ -229,7 +229,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 
 
 BOOLEAN RtmpTimerQRemove(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN RALINK_TIMER_STRUCT *pTimer)
 {
 	RTMP_TIMER_TASK_ENTRY *pNode, *pPrev = NULL;

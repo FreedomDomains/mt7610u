@@ -34,7 +34,7 @@
 	========================================================================
 	
 	Routine Description:
-		Enable Wlan function. this action will enable wlan clock so that chip can accept command. So MUST put in the 
+		Enable Wlan function. this action will enable wlan clock so that chip can accept command. So MUST put in the
 		very beginning of Initialization. And put in the very LAST in the Halt function.
 
 	Arguments:
@@ -98,7 +98,7 @@ VOID ral_wlan_chip_onoff(
 	RTMPusecDelay(2);
 	
 	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-				DBGPRINT(RT_DEBUG_ERROR, 
+				DBGPRINT(RT_DEBUG_ERROR,
 		("<== %s():  pAd->WlanFunCtrl.word = 0x%x, Reg->WlanFunCtrl=0x%x!\n",
 		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
@@ -131,7 +131,7 @@ VOID dump_bw_info(RTMP_ADAPTER *pAd)
 				__FUNCTION__, band_cfg, core_r1, agc_r0, be_r0));
 		bw = ((core_r1 & 0x18) >> 3) & 0xff;
 		DBGPRINT(RT_DEBUG_TRACE, ("[CORE_R1]\n"));
-		DBGPRINT(RT_DEBUG_TRACE, ("\tTx/Rx BandwidthCtrl(CORE_R1[4:3])=%d(%s MHz)\n", 
+		DBGPRINT(RT_DEBUG_TRACE, ("\tTx/Rx BandwidthCtrl(CORE_R1[4:3])=%d(%s MHz)\n",
 					bw, bw_str[bw]));
 
 		DBGPRINT(RT_DEBUG_TRACE, ("[AGC_R0]\n"));
@@ -170,7 +170,7 @@ VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 	RTMP_SET_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
-	if (!IS_MT76x0(pAd)) 
+	if (!IS_MT76x0(pAd))
 	{
 		if (Stage == MLME_RADIO_OFF)
 			PWR_SAVING_OP(pAd, RADIO_OFF, 1, 0, 0, 0, 0);
@@ -305,9 +305,9 @@ VOID RT65xxDisableTxRx(
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_ACTIVE);
 	}
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s Tx success = %ld\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s Tx success = %ld\n",
 		__FUNCTION__, (ULONG)pAd->WlanCounters.TransmittedFragmentCount.u.LowPart));
-	DBGPRINT(RT_DEBUG_TRACE, ("%s Rx success = %ld\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s Rx success = %ld\n",
 		__FUNCTION__, (ULONG)pAd->WlanCounters.ReceivedFragmentCount.QuadPart));
 
 	StopDmaTx(pAd, Level);
@@ -582,7 +582,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 				
 		do
 		{
-			do 
+			do
 			{
 				RTMP_IO_READ32(pAd, CMB_CTRL, &CmbCtrl.word);
 
@@ -598,7 +598,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 
 			if (index >= MAX_CHECK_COUNT)
 			{
-				DBGPRINT(RT_DEBUG_ERROR, 
+				DBGPRINT(RT_DEBUG_ERROR,
 						("Lenny:[boundary]Check PLL_LD ..CMB_CTRL 0x%08x, index=%d!\n",
 						CmbCtrl.word, index));
 				/*

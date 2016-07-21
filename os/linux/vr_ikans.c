@@ -179,7 +179,7 @@ void IKANOS_DataFrameRx(
     apBuf->flags2 = 0;
 
     apClassify(IKANOS_PERAP_ID, apBuf, (void *)IKANOS_WlanPktFromAp);
-    dev_kfree_skb(pSkb); 
+    dev_kfree_skb(pSkb);
 } /* End of IKANOS_DataFrameRx */
 
 
@@ -249,8 +249,8 @@ Routine Description:
 	Get real interface index, used in get_netdev_from_bssid()
 
 Arguments:
-	pAd				- 
-	FromWhichBSSID	- 
+	pAd				-
+	FromWhichBSSID	-
 
 Return Value:
 	None

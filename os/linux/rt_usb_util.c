@@ -536,7 +536,7 @@ VOID RtmpOsUsbEmptyUrbCheck(
 	IN	UCHAR				*pPendingRx)
 {
 	UINT32 i = 0;
-	DECLARE_WAIT_QUEUE_HEAD(unlink_wakeup); 
+	DECLARE_WAIT_QUEUE_HEAD(unlink_wakeup);
 	DECLARE_WAITQUEUE(wait, current);
 
 
@@ -567,7 +567,7 @@ VOID RtmpOsUsbEmptyUrbCheck(
 		i++;
 	}
 	*ppWait = NULL;
-	remove_wait_queue (&unlink_wakeup, &wait); 
+	remove_wait_queue (&unlink_wakeup, &wait);
 }
 
 

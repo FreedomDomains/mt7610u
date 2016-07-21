@@ -51,4 +51,4 @@ VOID ChipOpsMCUHook(struct _RTMP_ADAPTER *pAd, enum MCU_TYPE MCUType);
 VOID MCUCtrlInit(struct _RTMP_ADAPTER *pAd);
 VOID MCUCtrlExit(struct _RTMP_ADAPTER *pAd);
 
-#endif 
+#endif

@@ -476,8 +476,8 @@ NTSTATUS RTUSBWriteMACRegister(
 
 	localVal = Value;
 
-	/* MT76xx HW has 4 byte alignment constrained */    
-	if (IS_MT76xx(pAd)) {   
+	/* MT76xx HW has 4 byte alignment constrained */
+	if (IS_MT76xx(pAd)) {
 		Status = RTUSBMultiWrite_nBytes(
 		pAd,
 		Offset,
@@ -1047,11 +1047,11 @@ NTSTATUS    RTUSB_VendorRequest(
 		return NDIS_STATUS_FAILURE;
 	}
 
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)) 
+	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("WIFI device has been disconnected\n"));
 		return NDIS_STATUS_FAILURE;
-	} 
+	}
 	else if (RTMP_TEST_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP))
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("MCU has entered sleep mode\n"));
@@ -1404,7 +1404,7 @@ static NTSTATUS ResetBulkInHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 	RTMPusecDelay(10000);
 	ntStatus = RTUSBReadMACRegister(pAd, MAC_CSR0, &MACValue);
 
-	/* It must be removed. Or ATE will have no RX success. */ 
+	/* It must be removed. Or ATE will have no RX success. */
 	if ((NT_SUCCESS(ntStatus) == TRUE) &&
 				(!(RTMP_TEST_FLAG(pAd, (fRTMP_ADAPTER_RESET_IN_PROGRESS | fRTMP_ADAPTER_RADIO_OFF |
 												fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST)))))
@@ -1531,10 +1531,10 @@ static NTSTATUS DelAsicWcidHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID SetAsicWcid;
 	SetAsicWcid = *((PRT_SET_ASIC_WCID)(CMDQelmt->buffer));
-        
+
 	if (SetAsicWcid.WCID >= MAX_LEN_OF_MAC_TABLE)
 		return NDIS_STATUS_FAILURE;
-        
+
         AsicDelWcidTab(pAd, (UCHAR)SetAsicWcid.WCID);
 
         return NDIS_STATUS_SUCCESS;
@@ -1774,7 +1774,7 @@ static NTSTATUS CmdRspEventCallback(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 {
 	RXFCE_INFO_CMD *pFceInfo = CMDQelmt->buffer;
 
-	(*msg_event_handler_tb[pFceInfo->evt_type])(pAd, CMDQelmt->buffer, 
+	(*msg_event_handler_tb[pFceInfo->evt_type])(pAd, CMDQelmt->buffer,
 												CMDQelmt->bufferlength);
 	
 	return NDIS_STATUS_SUCCESS;

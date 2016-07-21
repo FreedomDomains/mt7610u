@@ -305,9 +305,9 @@ VOID MlmeDynamicTxRateSwitching(
 	IN struct _RTMP_ADAPTER *pAd);
 
 VOID StaQuickResponeForRateUpExec(
-	IN PVOID SystemSpecific1, 
-	IN PVOID FunctionContext, 
-	IN PVOID SystemSpecific2, 
+	IN PVOID SystemSpecific1,
+	IN PVOID FunctionContext,
+	IN PVOID SystemSpecific2,
 	IN PVOID SystemSpecific3);
 
 VOID MlmeSetTxRate(

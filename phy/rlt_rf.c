@@ -109,7 +109,7 @@ done:
 
 	Return Value:
 
-	IRQL = 
+	IRQL =
 	
 	Note:
 	

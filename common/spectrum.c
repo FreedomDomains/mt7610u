@@ -30,75 +30,75 @@
 
 
 /* The regulatory information in the USA (US) */
-DOT11_REGULATORY_INFORMATION USARegulatoryInfo[] = 
+DOT11_REGULATORY_INFORMATION USARegulatoryInfo[] =
 {
 /*  "regulatory class"  "number of channels"  "Max Tx Pwr"  "channel list" */
     {0,	                {0,                   0,           {0}}}, /* Invlid entry*/
-    {1,                 {4,                   16,           {36, 40, 44, 48}}}, 
-    {2,                 {4,                   23,           {52, 56, 60, 64}}}, 
-    {3,                 {4,                   29,           {149, 153, 157, 161}}}, 
-    {4,                 {11,                  23,           {100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140}}}, 
-    {5,                 {5,                   30,           {149, 153, 157, 161, 165}}}, 
-    {6,                 {10,                  14,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}}, 
-    {7,                 {10,                  27,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}}, 
-    {8,                 {5,                   17,           {11, 13, 15, 17, 19}}}, 
-    {9,                 {5,                   30,           {11, 13, 15, 17, 19}}}, 
-    {10,                {2,                   20,           {21, 25}}}, 
-    {11,                {2,                   33,            {21, 25}}}, 
+    {1,                 {4,                   16,           {36, 40, 44, 48}}},
+    {2,                 {4,                   23,           {52, 56, 60, 64}}},
+    {3,                 {4,                   29,           {149, 153, 157, 161}}},
+    {4,                 {11,                  23,           {100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140}}},
+    {5,                 {5,                   30,           {149, 153, 157, 161, 165}}},
+    {6,                 {10,                  14,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}},
+    {7,                 {10,                  27,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}},
+    {8,                 {5,                   17,           {11, 13, 15, 17, 19}}},
+    {9,                 {5,                   30,           {11, 13, 15, 17, 19}}},
+    {10,                {2,                   20,           {21, 25}}},
+    {11,                {2,                   33,            {21, 25}}},
     {12,                {11,                  30,            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}}}
 };
 #define USA_REGULATORY_INFO_SIZE (sizeof(USARegulatoryInfo) / sizeof(DOT11_REGULATORY_INFORMATION))
 
 
 /* The regulatory information in Europe */
-DOT11_REGULATORY_INFORMATION EuropeRegulatoryInfo[] = 
+DOT11_REGULATORY_INFORMATION EuropeRegulatoryInfo[] =
 {
 /*  "regulatory class"  "number of channels"  "Max Tx Pwr"  "channel list" */
     {0,                 {0,                   0,           {0}}}, /* Invalid entry*/
-    {1,                 {4,                   20,           {36, 40, 44, 48}}}, 
-    {2,                 {4,                   20,           {52, 56, 60, 64}}}, 
-    {3,                 {11,                  30,           {100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140}}}, 
+    {1,                 {4,                   20,           {36, 40, 44, 48}}},
+    {2,                 {4,                   20,           {52, 56, 60, 64}}},
+    {3,                 {11,                  30,           {100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140}}},
     {4,                 {13,                  20,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}}}
 };
 #define EU_REGULATORY_INFO_SIZE (sizeof(EuropeRegulatoryInfo) / sizeof(DOT11_REGULATORY_INFORMATION))
 
 
 /* The regulatory information in Japan */
-DOT11_REGULATORY_INFORMATION JapanRegulatoryInfo[] = 
+DOT11_REGULATORY_INFORMATION JapanRegulatoryInfo[] =
 {
 /*  "regulatory class"  "number of channels"  "Max Tx Pwr"  "channel list" */
     {0,                 {0,                   0,           {0}}}, /* Invalid entry*/
-    {1,                 {4,                   22,           {34, 38, 42, 46}}}, 
-    {2,                 {3,                   24,           {8, 12, 16}}}, 
-    {3,                 {3,                   24,           {8, 12, 16}}}, 
-    {4,                 {3,                   24,           {8, 12, 16}}}, 
-    {5,                 {3,                   24,           {8, 12, 16}}}, 
-    {6,                 {3,                   22,           {8, 12, 16}}}, 
-    {7,                 {4,                   24,           {184, 188, 192, 196}}}, 
-    {8,                 {4,                   24,           {184, 188, 192, 196}}}, 
-    {9,                 {4,                   24,           {184, 188, 192, 196}}}, 
-    {10,                {4,                   24,           {184, 188, 192, 196}}}, 
-    {11,                {4,                   22,           {184, 188, 192, 196}}}, 
-    {12,                {4,                   24,           {7, 8, 9, 11}}}, 
-    {13,                {4,                   24,           {7, 8, 9, 11}}}, 
-    {14,                {4,                   24,           {7, 8, 9, 11}}}, 
-    {15,                {4,                   24,           {7, 8, 9, 11}}}, 
-    {16,                {6,                   24,           {183, 184, 185, 187, 188, 189}}}, 
-    {17,                {6,                   24,           {183, 184, 185, 187, 188, 189}}}, 
-    {18,                {6,                   24,           {183, 184, 185, 187, 188, 189}}}, 
-    {19,                {6,                   24,           {183, 184, 185, 187, 188, 189}}}, 
-    {20,                {6,                   17,           {183, 184, 185, 187, 188, 189}}}, 
-    {21,                {6,                   24,           {6, 7, 8, 9, 10, 11}}}, 
-    {22,                {6,                   24,           {6, 7, 8, 9, 10, 11}}}, 
-    {23,                {6,                   24,           {6, 7, 8, 9, 10, 11}}}, 
-    {24,                {6,                   24,           {6, 7, 8, 9, 10, 11}}}, 
-    {25,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}}, 
-    {26,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}}, 
-    {27,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}}, 
-    {28,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}}, 
-    {29,                {8,                   17,           {182, 183, 184, 185, 186, 187, 188, 189}}}, 
-    {30,                {13,                  23,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}}}, 
-    {31,                {1,                   23,           {14}}}, 
+    {1,                 {4,                   22,           {34, 38, 42, 46}}},
+    {2,                 {3,                   24,           {8, 12, 16}}},
+    {3,                 {3,                   24,           {8, 12, 16}}},
+    {4,                 {3,                   24,           {8, 12, 16}}},
+    {5,                 {3,                   24,           {8, 12, 16}}},
+    {6,                 {3,                   22,           {8, 12, 16}}},
+    {7,                 {4,                   24,           {184, 188, 192, 196}}},
+    {8,                 {4,                   24,           {184, 188, 192, 196}}},
+    {9,                 {4,                   24,           {184, 188, 192, 196}}},
+    {10,                {4,                   24,           {184, 188, 192, 196}}},
+    {11,                {4,                   22,           {184, 188, 192, 196}}},
+    {12,                {4,                   24,           {7, 8, 9, 11}}},
+    {13,                {4,                   24,           {7, 8, 9, 11}}},
+    {14,                {4,                   24,           {7, 8, 9, 11}}},
+    {15,                {4,                   24,           {7, 8, 9, 11}}},
+    {16,                {6,                   24,           {183, 184, 185, 187, 188, 189}}},
+    {17,                {6,                   24,           {183, 184, 185, 187, 188, 189}}},
+    {18,                {6,                   24,           {183, 184, 185, 187, 188, 189}}},
+    {19,                {6,                   24,           {183, 184, 185, 187, 188, 189}}},
+    {20,                {6,                   17,           {183, 184, 185, 187, 188, 189}}},
+    {21,                {6,                   24,           {6, 7, 8, 9, 10, 11}}},
+    {22,                {6,                   24,           {6, 7, 8, 9, 10, 11}}},
+    {23,                {6,                   24,           {6, 7, 8, 9, 10, 11}}},
+    {24,                {6,                   24,           {6, 7, 8, 9, 10, 11}}},
+    {25,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}},
+    {26,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}},
+    {27,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}},
+    {28,                {8,                   24,           {182, 183, 184, 185, 186, 187, 188, 189}}},
+    {29,                {8,                   17,           {182, 183, 184, 185, 186, 187, 188, 189}}},
+    {30,                {13,                  23,           {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}}},
+    {31,                {1,                   23,           {14}}},
     {32,                {4,                   22,           {52, 56, 60, 64}}}
 };
 #define JP_REGULATORY_INFO_SIZE (sizeof(JapanRegulatoryInfo) / sizeof(DOT11_REGULATORY_INFORMATION))
@@ -382,7 +382,7 @@ PMEASURE_REQ_ENTRY MeasureReqLookUp(
 
 	while (pEntry)
 	{
-		if (pEntry->DialogToken == DialogToken) 
+		if (pEntry->DialogToken == DialogToken)
 			break;
 		else
 		{
@@ -420,7 +420,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 		{
 			NdisGetSystemUpTime(&Now);
 			pEntry = &pTab->Content[i];
- 
+
 			if ((pEntry->Valid == TRUE)
 				&& RTMP_TIME_AFTER((unsigned long)Now, (unsigned long)(pEntry->lastTime + MQ_REQ_AGE_OUT)))
 			{
@@ -453,7 +453,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 
 				break;
 			}
- 
+
 			if (pEntry->Valid == FALSE)
 				break;
 		}
@@ -490,7 +490,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 		}
 
 		RTMP_SEM_UNLOCK(&pAd->CommonCfg.MeasureReqTabLock);
-	} 
+	}
 
 	return pEntry;
 }
@@ -509,7 +509,7 @@ VOID MeasureReqDelete(
 	}
 
 	/* if empty, return*/
-	if (pTab->Size == 0) 
+	if (pTab->Size == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("pMeasureReqTab empty.\n"));
 		return;
@@ -607,7 +607,7 @@ static PTPC_REQ_ENTRY TpcReqLookUp(
 
 	while (pEntry)
 	{
-		if (pEntry->DialogToken == DialogToken) 
+		if (pEntry->DialogToken == DialogToken)
 			break;
 		else
 		{
@@ -646,7 +646,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 		{
 			NdisGetSystemUpTime(&Now);
 			pEntry = &pTab->Content[i];
- 
+
 			if ((pEntry->Valid == TRUE)
 				&& RTMP_TIME_AFTER((unsigned long)Now, (unsigned long)(pEntry->lastTime + TPC_REQ_AGE_OUT)))
 			{
@@ -679,7 +679,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 
 				break;
 			}
- 
+
 			if (pEntry->Valid == FALSE)
 				break;
 		}
@@ -716,7 +716,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 		}
 
 		RTMP_SEM_UNLOCK(&pAd->CommonCfg.TpcReqTabLock);
-	} 
+	}
 
 	return pEntry;
 }
@@ -735,7 +735,7 @@ static VOID TpcReqDelete(
 	}
 
 	/* if empty, return*/
-	if (pTab->Size == 0) 
+	if (pTab->Size == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("pTpcReqTab empty.\n"));
 		return;
@@ -1041,7 +1041,7 @@ static VOID InsertMeasureReqIE(
 		3. Measure Token.
 		4. Measure Request Mode.
 		5. Measure Request Type.
-		6. Length of Report Infomation 
+		6. Length of Report Infomation
 		7. Pointer of Report Infomation Buffer.
 	
 	Return	: None.
@@ -1099,7 +1099,7 @@ VOID MakeMeasurementReqFrame(
 	IN UINT8 TotalLen,
 	IN UINT8 Category,
 	IN UINT8 Action,
-	IN UINT8 MeasureToken, 
+	IN UINT8 MeasureToken,
 	IN UINT8 MeasureReqMode,
 	IN UINT8 MeasureReqType,
 	IN UINT16 NumOfRepetitions)
@@ -1149,7 +1149,7 @@ VOID EnqueueMeasurementRep(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pDA,
 	IN UINT8 DialogToken,
-	IN UINT8 MeasureToken, 
+	IN UINT8 MeasureToken,
 	IN UINT8 MeasureReqMode,
 	IN UINT8 MeasureReqType,
 	IN UINT8 ReportInfoLen,
@@ -1355,7 +1355,7 @@ static VOID InsertChSwAnnIE(
  */
 VOID EnqueueChSwAnn(
 	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pDA, 
+	IN PUCHAR pDA,
 	IN UINT8 ChSwMode,
 	IN UINT8 NewCh)
 {
@@ -1487,7 +1487,7 @@ static VOID StartDFSProcedure(
   +----+-----+-----------+------------+-----------+
   | ID | Len |Ch Sw Mode | New Ch Num | Ch Sw Cnt |
   +----+-----+-----------+------------+-----------+
-    1    1        1           1            1      
+    1    1        1           1            1
 */
 static BOOLEAN PeerChSwAnnSanity(
 	IN PRTMP_ADAPTER pAd,
@@ -1522,11 +1522,11 @@ static BOOLEAN PeerChSwAnnSanity(
 				
 				result = TRUE;
                 break;
-            
+
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);        
+		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1841,8 +1841,8 @@ static BOOLEAN PeerTpcRepSanity(
 	==========================================================================
  */
 static VOID PeerChSwAnnAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 	CH_SW_ANN_INFO ChSwAnnInfo;
 	PFRAME_802_11 pFr = (PFRAME_802_11)Elem->Msg;
@@ -1866,7 +1866,7 @@ static VOID PeerChSwAnnAction(
 		if (Bssidx == BSS_NOT_FOUND)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("PeerChSwAnnAction - Bssidx is not found\n"));
-			return;  
+			return;
 		}
 
 		DBGPRINT(RT_DEBUG_TRACE, ("\n****Bssidx is %d, Channel = %d\n", index, pAd->ScanTab.BssEntry[Bssidx].Channel));
@@ -1954,8 +1954,8 @@ static VOID PeerMeasureReqAction(
 	==========================================================================
  */
 static VOID PeerMeasureReportAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 	MEASURE_REPORT_INFO MeasureReportInfo;
 	PFRAME_802_11 pFr = (PFRAME_802_11)Elem->Msg;
@@ -2022,8 +2022,8 @@ static VOID PeerMeasureReportAction(
 	==========================================================================
  */
 static VOID PeerTpcReqAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 	PFRAME_802_11 pFr = (PFRAME_802_11)Elem->Msg;
 	PUCHAR pFramePtr = pFr->Octet;
@@ -2065,8 +2065,8 @@ static VOID PeerTpcReqAction(
 	==========================================================================
  */
 static VOID PeerTpcRepAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 	UINT8 DialogToken;
 	TPC_REPORT_INFO TpcRepInfo;
@@ -2099,8 +2099,8 @@ static VOID PeerTpcRepAction(
 	==========================================================================
  */
 VOID PeerSpectrumAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 
 	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
@@ -2172,7 +2172,7 @@ VOID PeerSpectrumAction(
 	==========================================================================
  */
 INT Set_MeasureReq_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	UINT Aid = 1;
@@ -2271,7 +2271,7 @@ END_OF_MEASURE_REQ:
 }
 
 INT Set_TpcReq_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	UINT Aid;

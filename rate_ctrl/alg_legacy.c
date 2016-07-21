@@ -117,13 +117,13 @@ VOID MlmeDynamicTxRateSwitching(
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
 
 #ifdef RT3290
-			/* 
+			/*
 				If no traffic in the past 1-sec period, don't change TX rate,
 				but clear all bad history. because the bad history may affect the next
 				Chariot throughput test
 			*/
-			AccuTxTotalCnt = pAd->RalinkCounters.OneSecTxNoRetryOkCount + 
-						 pAd->RalinkCounters.OneSecTxRetryOkCount + 
+			AccuTxTotalCnt = pAd->RalinkCounters.OneSecTxNoRetryOkCount +
+						 pAd->RalinkCounters.OneSecTxRetryOkCount +
 						 pAd->RalinkCounters.OneSecTxFailCount;
 
 			if (IS_RT3290(pAd) &&
@@ -417,7 +417,7 @@ VOID MlmeDynamicTxRateSwitching(
 #ifdef DOT11_N_SUPPORT
 
 		/*
-			when Rssi > -65, there is a lot of interference usually. therefore, the 
+			when Rssi > -65, there is a lot of interference usually. therefore, the
 			algorithm tends to choose the mcs lower than the optimal one.
 			by increasing the thresholds, the chosen mcs will be closer to the optimal mcs
 		*/
@@ -548,10 +548,10 @@ VOID MlmeDynamicTxRateSwitching(
 	========================================================================
 */
 VOID StaQuickResponeForRateUpExec(
-	IN PVOID SystemSpecific1, 
-	IN PVOID FunctionContext, 
-	IN PVOID SystemSpecific2, 
-	IN PVOID SystemSpecific3) 
+	IN PVOID SystemSpecific1,
+	IN PVOID FunctionContext,
+	IN PVOID SystemSpecific2,
+	IN PVOID SystemSpecific3)
 {
 	PRTMP_ADAPTER			pAd = (PRTMP_ADAPTER)FunctionContext;
 	ULONG					i;
@@ -575,7 +575,7 @@ VOID StaQuickResponeForRateUpExec(
 	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = FALSE;
 
     /* walk through MAC table, see if need to change AP's TX rate toward each entry */
-	for (i = 1; i < MAX_LEN_OF_MAC_TABLE; i++) 
+	for (i = 1; i < MAX_LEN_OF_MAC_TABLE; i++)
 	{
 		pEntry = &pAd->MacTab.Content[i];
 
@@ -699,8 +699,8 @@ VOID StaQuickResponeForRateUpExec(
 					if (HwTxCnt)
 						HwErrRatio = (wcidTxCnt.field.reTryCnt * 100) / HwTxCnt;
 
-					DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s():TxErrRatio(Aid:%d, MCS:%d, Hw:0x%x-0x%x, Sw:0x%x-%x)\n", 
-							__FUNCTION__, pEntry->Aid, pEntry->HTPhyMode.field.MCS, 
+					DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s():TxErrRatio(Aid:%d, MCS:%d, Hw:0x%x-0x%x, Sw:0x%x-%x)\n",
+							__FUNCTION__, pEntry->Aid, pEntry->HTPhyMode.field.MCS,
 							HwTxCnt, HwErrRatio, TxTotalCnt, TxErrorRatio));
 
 					TxSuccess = wcidTxCnt.field.succCnt;
@@ -921,7 +921,7 @@ VOID MlmeOldRateAdapt(
 			go to last Non-BF rate. Otherwise just go to the down rate
 		*/
 		if ((pEntry->phyETxBf || pEntry->phyITxBf) &&
-			(DownRateIdx - pEntry->lastNonBfRate)<2 
+			(DownRateIdx - pEntry->lastNonBfRate)<2
 #ifdef DBG_CTRL_SUPPORT
 			&& ((pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)==0)
 #endif /* DBG_CTRL_SUPPORT */

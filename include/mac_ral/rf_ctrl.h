@@ -65,7 +65,7 @@
 /* @!Release
 	RF_CSR_KICK:1
 			Write - kick RF register read/write
-				0: do nothing        
+				0: do nothing
 				1: kick read/write process
 			Read - Polling RF register read/write
 				0: idle

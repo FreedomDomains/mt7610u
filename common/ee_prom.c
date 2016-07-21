@@ -143,7 +143,7 @@ static inline VOID EWEN(
 	ShiftOutBits(pAd, EEPROM_EWEN_OPCODE, 5);
 	ShiftOutBits(pAd, 0, 6);
 
-	EEpromCleanup(pAd);    
+	EEpromCleanup(pAd);
 }
 
 
@@ -166,7 +166,7 @@ static inline VOID EWDS(
 	ShiftOutBits(pAd, EEPROM_EWDS_OPCODE, 5);
 	ShiftOutBits(pAd, 0, 6);
 
-	EEpromCleanup(pAd);    
+	EEpromCleanup(pAd);
 }
 
 

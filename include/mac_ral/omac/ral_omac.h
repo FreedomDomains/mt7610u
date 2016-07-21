@@ -52,7 +52,7 @@
 		For AMSDU, this field is useless
 
 	WIV[b24]:
-		Wireless Info Valid. 
+		Wireless Info Valid.
 		1: if Driver already fill WI
 		0: if DMA needs to copy WI to correctposition
 
@@ -64,16 +64,16 @@
 		Software used for USB-based chipset, reserved for other interfaces.
 
 	uso[b28]:
-		UDP checksum enable. 
+		UDP checksum enable.
 		1: indicate this packet needs to do UDP checksum
 
 	cso[b29]:
-		Checksum offload. 
+		Checksum offload.
 		1: indicate this packet needs to do checksum
 
 	USBDMANextVLD[b30]:
 		Used for USB-based chipset, reserved for other interfaces.
-		Used ONLY in USB bulk Aggregation, host driver info DMA current 
+		Used ONLY in USB bulk Aggregation, host driver info DMA current
 		frame is not he last frame in current Tx queue
 
 	USBDMATxburst[b31]:
@@ -186,7 +186,7 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	UINT32		eTxBF:1; /* eTxBF enable */
 	UINT32		Sounding:1; /* Sounding enable */
 	UINT32		iTxBF:1; /* iTxBF enable */
-	UINT32		PHYMODE:2;  
+	UINT32		PHYMODE:2;
 	/* Word1 */
 	/* ex:  1c ff 38 00 means ACK=0, BAWinSize=7, MPDUtotalByteCnt = 0x38 */
 	UINT32		ACK:1;

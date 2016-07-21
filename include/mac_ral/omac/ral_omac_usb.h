@@ -41,7 +41,7 @@ typedef	union _USB_DMA_CFG_STRUC {
 		UINT32 RxBulkAggEn:1;        /*Enable Rx Bulk Aggregation */
 		UINT32 TxopHalt:1;        /*Halt TXOP count down when TX buffer is full. */
 		UINT32 TxClear:1;        /*Clear USB DMA TX path */
-		UINT32 rsv:2;        
+		UINT32 rsv:2;
 		UINT32 phyclear:1;        		/*phy watch dog enable. write 1 */
 		UINT32 RxBulkAggLmt:8;        /*Rx Bulk Aggregation Limit  in unit of 1024 bytes */
 		UINT32 RxBulkAggTOut:8;        /*Rx Bulk Aggregation TimeOut  in unit of 33ns */

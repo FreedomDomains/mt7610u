@@ -661,7 +661,7 @@ VOID RTMPDrvSTAOpen(
 //---Add by shiang for debug
 
 	/*
-		To reduce connection time, 
+		To reduce connection time,
 		do auto reconnect here instead of waiting STAMlmePeriodicExec to do auto reconnect.
 	*/
 	if (pAd->OpMode == OPMODE_STA)
@@ -708,7 +708,7 @@ VOID RTMPDrvSTAClose(
 		/* If dirver doesn't wake up firmware here,*/
 		/* NICLoadFirmware will hang forever when interface is up again.*/
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
-        {      
+        {
 		    AsicForceWakeup(pAd, TRUE);
         }
 
@@ -891,7 +891,7 @@ VOID RTMPInfClose(
 		{
 			MLME_DISASSOC_REQ_STRUCT	DisReq;
 			MLME_QUEUE_ELEM *MsgElem;/* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-    
+
 			os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 			if (MsgElem)
 			{
@@ -995,12 +995,12 @@ static void	WriteConfToDatFile(
 	RtmpOSFSInfoChange(&osFSInfo, TRUE);
 
 	file_r = RtmpOSFileOpen(fileName, O_RDONLY, 0);
-	if (IS_FILE_OPEN_ERR(file_r)) 
+	if (IS_FILE_OPEN_ERR(file_r))
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("-->1) %s: Error opening file %s\n", __FUNCTION__, fileName));
 		return;
 	}
-	else 
+	else
 	{
 		char tempStr[64] = {0};
 		while((rv = RtmpOSFileRead(file_r, tempStr, 64)) > 0)
@@ -1026,11 +1026,11 @@ static void	WriteConfToDatFile(
 	}
 
 	file_w = RtmpOSFileOpen(fileName, O_WRONLY|O_TRUNC, 0);
-	if (IS_FILE_OPEN_ERR(file_w)) 
+	if (IS_FILE_OPEN_ERR(file_w))
 	{
 		goto WriteFileOpenErr;
 	}
-	else 
+	else
 	{
 		offset = (PCHAR) rtstrstr((PSTRING) cfgData, "Default\n");
 		offset += strlen("Default\n");
@@ -1107,12 +1107,12 @@ static void	WriteConfToDatFile(
 		RtmpOSFileClose(file_w);
 	}
 
-WriteErr:   
+WriteErr:
 	if (pTempStr)
 /*		kfree(pTempStr); */
 		os_free_mem(NULL, pTempStr);
 ReadErr:
-WriteFileOpenErr:    
+WriteFileOpenErr:
 	if (cfgData)
 /*		kfree(cfgData); */
 		os_free_mem(NULL, cfgData);

@@ -204,7 +204,7 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 				*pTxAgcCompensate = -(TxAgcStep * (idx-1));			
 				DeltaPwr += (*pTxAgcCompensate);
 				DBGPRINT(RT_DEBUG_TRACE, ("-- Tx Power, BBP R49=%x, TssiRef=%x, TxAgcStep=%x, step = -%d\n",
-					                BbpR49.byte, TssiRef, TxAgcStep, idx-1));                    
+					                BbpR49.byte, TssiRef, TxAgcStep, idx-1));
 			}
 			else if (BbpR49.byte < pTssiPlusBoundary[1])
 			{
@@ -274,12 +274,12 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
  */
 
 VOID AsicAdjustTxPower(
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	CHAR		Rssi = -127;
 	CHAR		DeltaPwr = 0;
 	CHAR		TxAgcCompensate = 0;
-	CHAR		DeltaPowerByBbpR1 = 0; 
+	CHAR		DeltaPowerByBbpR1 = 0;
 	CHAR		TotalDeltaPower = 0; /* (non-positive number) including the transmit power controlled by the MAC and the BBP R1 */
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};	
 #ifdef SINGLE_SKU
@@ -293,7 +293,7 @@ VOID AsicAdjustTxPower(
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
 
-	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE) || 
+	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE) ||
 		RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 		return;
 
@@ -301,9 +301,9 @@ VOID AsicAdjustTxPower(
 	{
 		if(INFRA_ON(pAd))
 		{
-			Rssi = RTMPMaxRssi(pAd, 
-						   pAd->StaCfg.RssiSample.AvgRssi0, 
-						   pAd->StaCfg.RssiSample.AvgRssi1, 
+			Rssi = RTMPMaxRssi(pAd,
+						   pAd->StaCfg.RssiSample.AvgRssi0,
+						   pAd->StaCfg.RssiSample.AvgRssi1,
 						   pAd->StaCfg.RssiSample.AvgRssi2);
 		}
 	}
@@ -327,7 +327,7 @@ VOID AsicAdjustTxPower(
 	AsicPercentageDeltaPower(pAd, Rssi, &DeltaPwr,&DeltaPowerByBbpR1);
 
 	/* The transmit power controlled by the BBP */
-	TotalDeltaPower += DeltaPowerByBbpR1; 
+	TotalDeltaPower += DeltaPowerByBbpR1;
 	/* The transmit power controlled by the MAC */
 	TotalDeltaPower += DeltaPwr; 	
 
@@ -354,35 +354,35 @@ VOID GetSingleSkuDeltaPower(
 	IN 		PRTMP_ADAPTER 	pAd,
 	IN 		PCHAR 			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
-	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset) 
+	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset)
 {
 	INT		i, j;
 	CHAR	Value;
 	CHAR 	MinValue = 127;
 	UCHAR	BbpR1 = 0;
 	UCHAR  	TxPwrInEEPROM = 0xFF, CountryTxPwr = 0xFF, criterion;
-	UCHAR   	AdjustMaxTxPwr[(MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS * 8)]; 
+	UCHAR   	AdjustMaxTxPwr[(MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS * 8)];
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
 	
 	/* Get TX rate offset table which from EEPROM 0xDEh ~ 0xEFh */
 	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
 		
 	/* Handle regulatory max. TX power constraint */
-	if (pAd->CommonCfg.Channel > 14) 
+	if (pAd->CommonCfg.Channel > 14)
 	{
 		TxPwrInEEPROM = ((pAd->CommonCfg.DefineMaxTxPwr & 0xFF00) >> 8); /* 5G band */
 	}
-	else 
+	else
 	{
 		TxPwrInEEPROM = (pAd->CommonCfg.DefineMaxTxPwr & 0x00FF); /* 2.4G band */
 	}
 
-	CountryTxPwr = GetCuntryMaxTxPwr(pAd, pAd->CommonCfg.Channel); 
+	CountryTxPwr = GetCuntryMaxTxPwr(pAd, pAd->CommonCfg.Channel);
 
 	/* Use OFDM 6M as the criterion */
 	criterion = (UCHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[0].RegisterValue & 0x000F0000) >> 16);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: criterion=%d, TxPwrInEEPROM=%d, CountryTxPwr=%d\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: criterion=%d, TxPwrInEEPROM=%d, CountryTxPwr=%d\n",
 		__FUNCTION__, criterion, TxPwrInEEPROM, CountryTxPwr));
 
 	/* Adjust max. TX power according to the relationship of TX power in EEPROM */
@@ -392,7 +392,7 @@ VOID GetSingleSkuDeltaPower(
 		{
 			for (j=0; j<8; j++)
 			{
-				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); 
+				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F);
 
 				if (j < 4)
 				{
@@ -403,12 +403,12 @@ VOID GetSingleSkuDeltaPower(
 					AdjustMaxTxPwr[i*8+j] = TxPwrInEEPROM + (Value - criterion);
 				}
 
-				DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Default)Value=%d, %d\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Default)Value=%d, %d\n",
 					__FUNCTION__,
 					CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset,
-					i, 
-					j, 
-					Value, 
+					i,
+					j,
+					Value,
 					AdjustMaxTxPwr[i*8+j]));
 			}
 		}
@@ -420,12 +420,12 @@ VOID GetSingleSkuDeltaPower(
 
 				AdjustMaxTxPwr[i*8+j] = TxPwrInEEPROM + (Value - criterion);
 
-				DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Default)Value=%d, %d\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Default)Value=%d, %d\n",
 					__FUNCTION__,
-					CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset, 
-					i, 
-					j, 
-					Value, 
+					CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset,
+					i,
+					j,
+					Value,
 					AdjustMaxTxPwr[i*8+j]));
 			}
 		}
@@ -453,22 +453,22 @@ VOID GetSingleSkuDeltaPower(
 					
 					*(pSingleSKUTotalDeltaPwr+i) = (*(pSingleSKUTotalDeltaPwr+i) & ~(0x0000000F << j*4)) | (Value << j*4);
 
-					DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Exceed)Value=%d, %d\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Exceed)Value=%d, %d\n",
 						__FUNCTION__,
-						CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset, 
-						i, 
-						j, 
-						Value, 
+						CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset,
+						i,
+						j,
+						Value,
 						AdjustMaxTxPwr[i*8+j]));
 				}
 				else
 				{
 					DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, Value=%d, %d, no change\n",
 						__FUNCTION__,
-						CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset, 
-						i, 
-						j, 
-						Value, 
+						CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].MACRegisterOffset,
+						i,
+						j,
+						Value,
 						AdjustMaxTxPwr[i*8+j]));
 				}
 			}
@@ -483,15 +483,15 @@ VOID GetSingleSkuDeltaPower(
 			for (j=0; j<8; j++)
 			{
 				CHAR PwrChange;
-				/* 
+				/*
 				   After Single SKU, each data rate offset power value is saved in TotalDeltaPwr[].
 				   PwrChange will add SingleSKUDeltaPwr and TotalDeltaPwr[] for each data rate to calculate
 				   the final adjust output power value which is saved in MAC Reg. and BBP_R1.
 				*/
 				
-				/*   
-				   Value / TxPwr[] is get from eeprom 0xDEh ~ 0xEFh and increase or decrease the  
-				   20/40 Bandwidth Delta Value in eeprom 0x50h. 
+				/*
+				   Value / TxPwr[] is get from eeprom 0xDEh ~ 0xEFh and increase or decrease the
+				   20/40 Bandwidth Delta Value in eeprom 0x50h.
 				*/
 				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); /* 0 ~ 15 */
 
@@ -541,9 +541,9 @@ VOID AsicPercentageDeltaPower(
 	IN 		PRTMP_ADAPTER 		pAd,
 	IN		CHAR				Rssi,
 	INOUT	PCHAR				pDeltaPwr,
-	INOUT	PCHAR				pDeltaPowerByBbpR1) 
+	INOUT	PCHAR				pDeltaPowerByBbpR1)
 {
-	/* 
+	/*
 		Calculate delta power based on the percentage specified from UI.
 		E2PROM setting is calibrated for maximum TX power (i.e. 100%).
 		We lower TX power here according to the percentage specified from UI.
@@ -597,7 +597,7 @@ VOID AsicPercentageDeltaPower(
 
 VOID AsicCompensatePowerViaBBP(
 	IN 		PRTMP_ADAPTER 		pAd,
-	INOUT	PCHAR				pTotalDeltaPower) 
+	INOUT	PCHAR				pTotalDeltaPower)
 {
 	UCHAR mdsm_drop_pwr;
 	

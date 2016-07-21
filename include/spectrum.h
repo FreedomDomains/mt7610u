@@ -59,7 +59,7 @@ VOID MakeMeasurementReqFrame(
 	IN UINT8 TotalLen,
 	IN UINT8 Category,
 	IN UINT8 Action,
-	IN UINT8 MeasureToken, 
+	IN UINT8 MeasureToken,
 	IN UINT8 MeasureReqMode,
 	IN UINT8 MeasureReqType,
 	IN UINT16 NumOfRepetitions);
@@ -80,7 +80,7 @@ VOID EnqueueMeasurementRep(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pDA,
 	IN UINT8 DialogToken,
-	IN UINT8 MeasureToken, 
+	IN UINT8 MeasureToken,
 	IN UINT8 MeasureReqMode,
 	IN UINT8 MeasureReqType,
 	IN UINT8 ReportInfoLen,
@@ -139,7 +139,7 @@ VOID EnqueueTPCRep(
  */
 VOID EnqueueChSwAnn(
 	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pDA, 
+	IN PUCHAR pDA,
 	IN UINT8 ChSwMode,
 	IN UINT8 NewCh);
 #endif /* WDS_SUPPORT */
@@ -157,7 +157,7 @@ VOID EnqueueChSwAnn(
 	==========================================================================
  */
 VOID PeerSpectrumAction(
-    IN PRTMP_ADAPTER pAd, 
+    IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
 /*
@@ -170,15 +170,15 @@ VOID PeerSpectrumAction(
 	==========================================================================
  */
 INT Set_MeasureReq_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_TpcReq_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_PwrConstraint(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 

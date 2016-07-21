@@ -91,7 +91,7 @@ struct _RSSI_SAMPLE;
 
 #define IS_RT30xx(_pAd)		(((_pAd)->MACVersion & 0xfff00000) == 0x30700000||IS_RT3090A(_pAd)||IS_RT3390(_pAd))
 
-#define IS_RT3052B(_pAd)	(((_pAd)->CommonCfg.CID == 0x102) && (((_pAd)->CommonCfg.CN >> 16) == 0x3033)) 
+#define IS_RT3052B(_pAd)	(((_pAd)->CommonCfg.CID == 0x102) && (((_pAd)->CommonCfg.CN >> 16) == 0x3033))
 #define IS_RT3052(_pAd)		(((_pAd)->MACVersion == 0x28720200) && (_pAd->Antenna.field.TxPath == 2))
 #define IS_RT3050(_pAd)		(((_pAd)->MACVersion == 0x28720200) && ((_pAd)->RfIcType == RFIC_3020))
 #define IS_RT3350(_pAd)		(((_pAd)->MACVersion == 0x28720200) && ((_pAd)->RfIcType == RFIC_3320))
@@ -398,7 +398,7 @@ enum RXWI_FRQ_OFFSET_FIELD {
 #define EEPROM_COUNTRY_REG_OFFSET	3
 #define EEPROM_BBP_ARRAY_OFFSET		4
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) 
+#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
 /* */
 /* The TSSI over OFDM 54Mbps */
 /* */
@@ -490,7 +490,7 @@ typedef union _EEPROM_ANTENNA_STRUC {
 	(_pAd)->chipOps.eewrite((RTMP_ADAPTER *)(_pAd), (USHORT)(_offset), (USHORT)(_value))
 
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) 
+#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
 /* The Tx power tuning entry */
 typedef struct _TX_POWER_TUNING_ENTRY_STRUCT {
 	CHAR	RF_TX_ALC; 		/* 3390: RF R12[4:0]: Tx0 ALC, 5390: RF R49[5:0]: Tx0 ALC */
@@ -651,11 +651,11 @@ struct _RTMP_CHIP_CAP_ {
 	*/
 	UINT8 WPDMABurstSIZE;
 
-	/* 
- 	 * 0: MBSSID_MODE0 
- 	 * (The multiple MAC_ADDR/BSSID are distinguished by [bit2:bit0] of byte5) 
+	/*
+ 	 * 0: MBSSID_MODE0
+ 	 * (The multiple MAC_ADDR/BSSID are distinguished by [bit2:bit0] of byte5)
  	 * 1: MBSSID_MODE1
- 	 * (The multiple MAC_ADDR/BSSID are distinguished by [bit4:bit2] of byte0) 
+ 	 * (The multiple MAC_ADDR/BSSID are distinguished by [bit4:bit2] of byte0)
  	 */
 	UINT8 MBSSIDMode;
 
@@ -803,7 +803,7 @@ struct _RTMP_CHIP_OP_ {
 	/* Power save */
 	VOID (*EnableAPMIMOPS)(struct _RTMP_ADAPTER *pAd, IN BOOLEAN ReduceCorePower);
 	VOID (*DisableAPMIMOPS)(struct _RTMP_ADAPTER *pAd);
-	INT (*PwrSavingOP)(struct _RTMP_ADAPTER *pAd, UINT32 PwrOP, UINT32 PwrLevel, 
+	INT (*PwrSavingOP)(struct _RTMP_ADAPTER *pAd, UINT32 PwrOP, UINT32 PwrLevel,
 							UINT32 ListenInterval, UINT32 PreTBTTLeadTime,
 							UINT8 TIMByteOffset, UINT8 TIMBytePattern);
 

@@ -59,7 +59,7 @@ typedef struct _ATE_CHIP_STRUCT {
 }ATE_CHIP_STRUCT, *PATE_CHIP_STRUCT;
 
 typedef union _CAPTURE_MODE_SHARE_MEMORY {
-	struct 
+	struct
 	{
 		UINT32       LOW_BYTE0:8;
 		UINT32       LOW_BYTE1:8;
@@ -70,7 +70,7 @@ typedef union _CAPTURE_MODE_SHARE_MEMORY {
 }CAPTURE_MODE_SHARE_MEMORY, *PCAPTURE_MODE_SHARE_MEMORY;
 
 typedef struct _ATE_INFO {
-	PATE_CHIP_STRUCT pChipStruct; 
+	PATE_CHIP_STRUCT pChipStruct;
 	UCHAR Mode;
 	BOOLEAN PassiveMode;
 #ifdef RT3350
@@ -205,8 +205,8 @@ typedef struct _ATE_INFO {
 	ULONG PeriodicRound;
 } ATE_INFO, *PATE_INFO;
 
-/* 
-	Use bitmap to allow coexist of ATE_TXFRAME 
+/*
+	Use bitmap to allow coexist of ATE_TXFRAME
 	and ATE_RXFRAME(i.e.,to support LoopBack mode).
 */
 #define fATE_IDLE					0x00
@@ -421,7 +421,7 @@ VOID ATE_QA_Statistics(
 	IN PHEADER_802_11 pHeader);
 	
 INT RtmpDoAte(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN PSTRING wrq_name);
 
@@ -430,30 +430,30 @@ INT Set_TxStop_Proc(
 	IN PSTRING arg);
 
 INT Set_RxStop_Proc(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN PSTRING arg);
 
 #ifdef DBG
 INT Set_EERead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_EEWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_BBPRead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_BBPWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_RFWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
-#endif /* DBG */ 
+#endif /* DBG */
 #endif /* RALINK_QA */
 
 #ifdef RLT_RF
@@ -494,24 +494,24 @@ VOID rt_ee_write_bulk(
 	IN  USHORT length);
 
 INT Set_ATE_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_DA_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_SA_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_BSSID_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 
 INT	Set_ATE_CHANNEL_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_INIT_CHAN_Proc(
@@ -576,7 +576,7 @@ INT Set_ATE_READ_EXTERNAL_TSSI_Proc(
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 INT	Set_ATE_TX_POWER0_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TX_POWER1_Proc(
@@ -604,7 +604,7 @@ VOID ATEAsicExtraPowerOverMAC(
 	IN	PRTMP_ADAPTER	pAd);
 #ifdef RT3350
 INT	Set_ATE_PA_Bias_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 #endif /* RT3350 */
 
@@ -614,13 +614,13 @@ INT	Set_ATE_PA_Bias_Proc(
 
 #if defined(RT28xx) || defined(RT2880)
 INT	RT28xx_Set_ATE_TX_FREQ_OFFSET_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 INT	Set_ATE_TX_FREQ_OFFSET_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 
@@ -629,21 +629,21 @@ INT	Set_ATE_TX_FREQ_OFFSET_Proc(
 
 #if defined(RT28xx) || defined(RT2880)
 INT	RT28xx_Set_ATE_TX_BW_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 INT	Set_ATE_TX_BW_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TX_LENGTH_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TX_COUNT_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TX_MCS_Proc(
@@ -664,62 +664,62 @@ INT	Set_ATE_TX_GI_Proc(
 
 
 INT	Set_ATE_RX_FER_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Read_RF_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 #if (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF))
 INT Set_ATE_Write_RF1_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF2_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF3_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF4_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 #endif /* (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF)) */
 
 INT Set_ATE_Load_E2P_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Read_E2P_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 #ifdef LED_CONTROL_SUPPORT
 #endif /* LED_CONTROL_SUPPORT */
 
 INT	Set_ATE_AUTO_ALC_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_IPG_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_Payload_Proc(
-    IN  PRTMP_ADAPTER   pAd, 
+    IN  PRTMP_ADAPTER   pAd,
     IN  PSTRING         arg);
 
 
 #ifdef TXBF_SUPPORT
 INT	Set_ATE_TXBF_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TXSOUNDING_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_TXBF_DIVCAL_Proc(
@@ -731,37 +731,37 @@ INT	Set_ATE_TXBF_LNACAL_Proc(
 	IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_INIT_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_CAL_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_GOLDEN_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_VERIFY_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_VERIFY_NoComp_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_ATE_ForceBBP_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 #endif /* TXBF_SUPPORT */
 
 
 INT	Set_ATE_Show_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_ATE_Help_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 
@@ -825,9 +825,9 @@ VOID RT28xxATERxVGAInit(
 
 
 VOID  ATEPeriodicExec(
-	IN PVOID SystemSpecific1, 
-	IN PVOID FunctionContext, 
-	IN PVOID SystemSpecific2, 
+	IN PVOID SystemSpecific1,
+	IN PVOID FunctionContext,
+	IN PVOID SystemSpecific2,
 	IN PVOID SystemSpecific3);
 
 VOID ATEAsicSetTxRxPath(

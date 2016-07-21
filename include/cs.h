@@ -145,20 +145,20 @@ INT	Set_CarrierDebug_Proc(
 	IN	PSTRING 		arg);
 
 INT	Set_CarrierDelta_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_CarrierDivFlag_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT	Set_CarrierThrd_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 /* v2 functions */
 INT	Set_CarrierSymRund_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
 INT Set_CarrierMask_Proc(
@@ -186,7 +186,7 @@ VOID ToneRadarProgram_v2(
 	IN ULONG threshold);
 
 VOID ToneRadarProgram_v3(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN ULONG threshold);
 
 #ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT

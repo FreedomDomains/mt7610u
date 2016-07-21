@@ -26,7 +26,7 @@
 
 
 #include "rt_config.h"
- 
+
 #ifdef RALINK_QA
 NDIS_STATUS TXSTOP(
 	IN PRTMP_ADAPTER pAd)
@@ -94,12 +94,12 @@ NDIS_STATUS TXSTOP(
 	}
 
 	while (((pAd->BulkOutPending[0] == TRUE) ||
-			(pAd->BulkOutPending[1] == TRUE) || 
+			(pAd->BulkOutPending[1] == TRUE) ||
 			(pAd->BulkOutPending[2] == TRUE) ||
 			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))	
 			/* pAd->BulkFlags != 0 : wait bulk out finish */
 	{
-		do 
+		do
 		{
 			RTUSBCancelPendingBulkOutIRP(pAd);
 		} while (FALSE);			
@@ -167,7 +167,7 @@ NDIS_STATUS RXSTOP(
 	}
 
 	while (((pAd->BulkOutPending[0] == TRUE) ||
-			(pAd->BulkOutPending[1] == TRUE) || 
+			(pAd->BulkOutPending[1] == TRUE) ||
 			(pAd->BulkOutPending[2] == TRUE) ||
 			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))	
 			/* pAd->BulkFlags != 0 : wait bulk out finish */
@@ -203,7 +203,7 @@ static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 		pSrc = (src + i*4);
 		/* For alignment issue, we need a variable "Value". */
 		memmove(&Value, pSrc, 4);
-		Value = OS_HTONL(Value); 
+		Value = OS_HTONL(Value);
 		memmove(pDst, &Value, 4);		
 		pDst += 4;
 		pSrc += 4;
@@ -213,7 +213,7 @@ static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 	{
 		/* wish that it will never reach here */
 		memmove(&Value, pSrc, (len % 4));
-		Value = OS_HTONL(Value); 
+		Value = OS_HTONL(Value);
 		memmove(pDst, &Value, (len % 4));
 	}
 }
@@ -268,7 +268,7 @@ static VOID RTMP_IO_READ_BULK(PRTMP_ADAPTER pAd, UCHAR *dst, UINT32 offset, UINT
 
 
 VOID BubbleSort(INT32 size, INT32 array[])
-{ 
+{
 	INT32 outer, inner, temp;
 
 	for (outer = size-1;  outer>0;  outer--)
@@ -277,14 +277,14 @@ VOID BubbleSort(INT32 size, INT32 array[])
 		{
 			if (array[inner] > array[inner+1])
 			{
-				temp = array[inner]; 
-				array[inner]=array[inner+1]; 
+				temp = array[inner];
+				array[inner]=array[inner+1];
 				array[inner+1]=temp;
 			}
 		}
 	}
 	return;
-} 
+}
 
 
 VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
@@ -311,7 +311,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 	/* for Noise Level */
 	if (channel <= 14)
 	{
-		LNA_Gain = GainValue & 0x00FF;		 
+		LNA_Gain = GainValue & 0x00FF;		
 
 		RT28xx_EEPROM_READ16(pAd, EEPROM_RSSI_BG_OFFSET, OffsetValue);
 		Rssi0Offset = OffsetValue & 0x00FF;
@@ -459,7 +459,7 @@ static VOID ATE_BBPWrite(
 
 
 BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
-{ 
+{
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR tmp = 0, bbp_data = 0;
 
@@ -491,7 +491,7 @@ BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
 					pATEInfo->TxAntennaSel = 2;
 		            break;
 		        default:
-		            DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));    
+		            DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));
 		            return FALSE;
 		    }
 			break;/* case BBP_R1 */
@@ -531,13 +531,13 @@ BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
 					pATEInfo->RxAntennaSel = 3;
 		            break;
 		        default:
-		            DBGPRINT_ERR(("%s -- Impossible!  : return FALSE; \n", __FUNCTION__));    
+		            DBGPRINT_ERR(("%s -- Impossible!  : return FALSE; \n", __FUNCTION__));
 		            return FALSE;
 		    }
 			break;/* case BBP_R3 */
 
         default:
-            DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));    
+            DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));
             return FALSE;
 		
 	}
@@ -1939,8 +1939,8 @@ static  INT DO_RACFG_CMD_ATE_CALIBRATION(
 			case 9: /* QA DPD calibration */
 				if (value == ANT_ALL)
 				{
-					/* 
-						TX 2G DPD - Only 2.4G needs to do DPD Calibration. 
+					/*
+						TX 2G DPD - Only 2.4G needs to do DPD Calibration.
 					*/
 //					if (Channel <= 14)
 					RTMP_CHIP_CALIBRATION(pAd, DPD_CALIBRATION, 0x0);
@@ -2205,7 +2205,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_LNA_CAL(
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_LNA_CAL\n"));
 
 	band = OS_NTOHS(pRaCfg->status);
-	DBGPRINT(RT_DEBUG_TRACE, ("%s : band=0x%x(0x%x)\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s : band=0x%x(0x%x)\n",
 					__FUNCTION__, band, pRaCfg->status));
 	snprintf(bandStr, sizeof(bandStr), "%d\n", band);
 	Set_ATE_TXBF_LNACAL_Proc(pAd, &bandStr[0]);
@@ -2227,7 +2227,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_DIV_CAL(
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_DIV_CAL\n"));
 
 	band = OS_NTOHS(pRaCfg->status);
-	DBGPRINT(RT_DEBUG_TRACE, ("%s : band=0x%x(0x%x)\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s : band=0x%x(0x%x)\n",
 				__FUNCTION__, band, pRaCfg->status));
 	snprintf(bandStr, sizeof(bandStr), "%d\n", band);
 	Set_ATE_TXBF_DIVCAL_Proc(pAd, &bandStr[0]);
@@ -2613,7 +2613,7 @@ static INT32 RACfgCMDHandler(
 		TableIndex++;
 	}
 
-	/* In passive mode, only commands that read registers are allowed. */ 
+	/* In passive mode, only commands that read registers are allowed. */
 	if (pATEInfo->PassiveMode)
 	{
 		int entry, allowCmd = FALSE;
@@ -2658,7 +2658,7 @@ static INT32 RACfgCMDHandler(
 
 
 INT RtmpDoAte(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT		*wrq,
 	IN	PSTRING			wrq_name)
 {
@@ -2747,7 +2747,7 @@ VOID ATE_QA_Statistics(
 
 
 INT Set_TxStop_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	DBGPRINT(RT_DEBUG_TRACE,("Set_TxStop_Proc\n"));
@@ -2764,7 +2764,7 @@ INT Set_TxStop_Proc(
 
 
 INT Set_RxStop_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	DBGPRINT(RT_DEBUG_TRACE,("Set_RxStop_Proc\n"));
@@ -2782,7 +2782,7 @@ INT Set_RxStop_Proc(
 
 #ifdef DBG
 INT Set_EERead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	USHORT buffer[EEPROM_SIZE >> 1];
@@ -2805,7 +2805,7 @@ INT Set_EERead_Proc(
 
 
 INT Set_EEWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	USHORT offset = 0, value;
@@ -2839,7 +2839,7 @@ INT Set_EEWrite_Proc(
 
 
 INT Set_BBPRead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	UCHAR value = 0, offset;
@@ -2855,7 +2855,7 @@ INT Set_BBPRead_Proc(
 
 
 INT Set_BBPWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	USHORT offset = 0;
@@ -2884,7 +2884,7 @@ INT Set_BBPWrite_Proc(
 
 
 INT Set_RFWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	PSTRING p2, p3, p4;

@@ -131,7 +131,7 @@ struct cmd_msg {
 	BOOLEAN need_wait;
 	BOOLEAN need_rsp;
 	BOOLEAN need_retransmit;
-	RTMP_OS_COMPLETION ack_done; 
+	RTMP_OS_COMPLETION ack_done;
 	char *rsp_payload;
 	MSG_RSP_HANDLER rsp_handler;
 	enum cmd_msg_state state;
@@ -195,7 +195,7 @@ enum BW_SETTING {
 };
 
 /*
- * Command type table 
+ * Command type table
  */
 enum CMD_TYPE {
 	CMD_FUN_SET_OP = 1,
@@ -260,7 +260,7 @@ int andes_rf_read_modify_write(struct _RTMP_ADAPTER *ad, RF_R_M_W_REG *reg_pair,
 int andes_random_write(struct _RTMP_ADAPTER *ad, RTMP_REG_PAIR *reg_pair, u32 num);
 int andes_rf_random_write(struct _RTMP_ADAPTER *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
 int andes_fun_set(struct _RTMP_ADAPTER *ad, u32 fun_id, u32 param);
-int andes_pwr_saving(struct _RTMP_ADAPTER *ad, u32 op, u32 level, 
+int andes_pwr_saving(struct _RTMP_ADAPTER *ad, u32 op, u32 level,
 					 u32 listen_interval, u32 pre_tbtt_lead_time,
 					 u8 tim_byte_offset, u8 tim_byte_pattern);
 int andes_calibration(struct _RTMP_ADAPTER *ad, u32 cal_id, u32 param);

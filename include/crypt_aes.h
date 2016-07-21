@@ -155,7 +155,7 @@ INT AES_Key_Wrap (
     IN UINT  KeyLength,
     OUT UINT8 CipherText[],
     OUT UINT *CipherTextLength);
-        
+
 INT AES_Key_Unwrap (
     IN UINT8 CipherText[],
     IN UINT  CipherTextLength,

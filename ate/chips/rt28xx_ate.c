@@ -38,7 +38,7 @@ extern UCHAR NUM_OF_2850_CHNL;
     Description:
 
 	AsicSwitchChannel() dedicated for RT28xx ATE.
-    
+
 ==========================================================================
 */
 VOID RT28xxATEAsicSwitchChannel(
@@ -306,7 +306,7 @@ VOID RT28xxATEAsicSwitchChannel(
 		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R64, (0x37 - GET_LNA_GAIN(pAd)));
 
 		/* According the Rory's suggestion to solve the middle range issue. */
-		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0);        
+		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0);
 
 		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R82, 0xF2);
 
@@ -342,31 +342,31 @@ VOID RT28xxATEAsicSwitchChannel(
 
 	ATE_CHIP_RX_VGA_GAIN_INIT(pAd);
 
-	RtmpOsMsDelay(1);  
+	RtmpOsMsDelay(1);
 
 	if (Channel > 14)
 	{
 		/* When 5.5GHz band the LSB of TxPwr will be used to reduced 7dB or not. */
 		DBGPRINT(RT_DEBUG_TRACE, ("RT28xx:SwitchChannel#%d(RF=%d, %dT) to , R1=0x%08x, R2=0x%08x, R3=0x%08x, R4=0x%08x\n",
-								  Channel, 
-								  pAd->RfIcType, 
+								  Channel,
+								  pAd->RfIcType,
 								  pAd->Antenna.field.TxPath,
-								  pAd->LatchRfRegs.R1, 
-								  pAd->LatchRfRegs.R2, 
-								  pAd->LatchRfRegs.R3, 
+								  pAd->LatchRfRegs.R1,
+								  pAd->LatchRfRegs.R2,
+								  pAd->LatchRfRegs.R3,
 								  pAd->LatchRfRegs.R4));
 	}
 	else
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("RT28xx:SwitchChannel#%d(RF=%d, Pwr0=%u, Pwr1=%u, %dT) to , R1=0x%08x, R2=0x%08x, R3=0x%08x, R4=0x%08x\n",
-								  Channel, 
-								  pAd->RfIcType, 
+								  Channel,
+								  pAd->RfIcType,
 								  (R3 & 0x00003e00) >> 9,
 								  (R4 & 0x000007c0) >> 6,
 								  pAd->Antenna.field.TxPath,
-								  pAd->LatchRfRegs.R1, 
-								  pAd->LatchRfRegs.R2, 
-								  pAd->LatchRfRegs.R3, 
+								  pAd->LatchRfRegs.R1,
+								  pAd->LatchRfRegs.R2,
+								  pAd->LatchRfRegs.R3,
 								  pAd->LatchRfRegs.R4));
     }
 }
@@ -421,7 +421,7 @@ INT RT28xxATETxPwrHandler(
 				Bbp94 = BBPR94_DEFAULT + TxPower;
 		}
 		else
-		{  
+		{
 			/* 0 ~ 31 */
 			R = (ULONG) TxPower;
 			Bbp94 = BBPR94_DEFAULT;
@@ -445,7 +445,7 @@ INT RT28xxATETxPwrHandler(
 			bPowerReduce = TRUE;
 		}
 		else
-		{  
+		{
 			/* 0 ~ 15 */
 			R = (ULONG) TxPower;
 		}
@@ -497,7 +497,7 @@ INT RT28xxATETxPwrHandler(
 				R = (R << 10);		
 				R |= (pAd->LatchRfRegs.R3 & 0xffffc1ff);
 
-				/* Clear bit 9 of R3 to reduce 7dB. */ 
+				/* Clear bit 9 of R3 to reduce 7dB. */
 				pAd->LatchRfRegs.R3 = (R & (~(1 << 9)));
 			}
 			else
@@ -506,7 +506,7 @@ INT RT28xxATETxPwrHandler(
 				R = (R << 7);		
 				R |= (pAd->LatchRfRegs.R4 & 0xfffff83f);
 
-				/* Clear bit 6 of R4 to reduce 7dB. */ 
+				/* Clear bit 6 of R4 to reduce 7dB. */
 				pAd->LatchRfRegs.R4 = (R & (~(1 << 6)));
 			}
 		}
@@ -529,7 +529,7 @@ VOID RT28xxATERxVGAInit(
 		/* BG band */
 		R66 = (UCHAR)(0x2E + LNAGain);
 	}
-	else 
+	else
 	{
 		/* A band */
 		if (pATEInfo->TxWI.BW == BW_20)
@@ -551,17 +551,17 @@ VOID RT28xxATERxVGAInit(
 }
 
 
-/* 
+/*
 ==========================================================================
     Description:
         Set RT28xx/RT2880 ATE RF BW
-        
+
     Return:
         TRUE if all parameters are OK, FALSE otherwise
 ==========================================================================
 */
 INT	RT28xx_Set_ATE_TX_BW_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -727,7 +727,7 @@ INT	RT28xx_Set_ATE_TX_BW_Proc(
 
 
 INT	RT28xx_Set_ATE_TX_FREQ_OFFSET_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);

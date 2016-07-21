@@ -47,14 +47,14 @@
 
 //#define MRQ_FORCE_TX		//Force MRQ regardless the capability of the station
 
-/* 
+/*
 	eTxBfEnCond values:
-	 0:no etxbf, 
-	 1:etxbf update periodically, 
-	 2:etxbf updated if mcs changes in RateSwitchingAdapt() or APQuickResponeForRateUpExecAdapt(). 
+	 0:no etxbf,
+	 1:etxbf update periodically,
+	 2:etxbf updated if mcs changes in RateSwitchingAdapt() or APQuickResponeForRateUpExecAdapt().
 	 3:auto-selection: if mfb changes or timer expires, then send sounding packets <------not finished yet!!!
-	 note: 
-		when = 1 or 3, NO_SNDG_CNT_THRD controls the frequency to update the 
+	 note:
+		when = 1 or 3, NO_SNDG_CNT_THRD controls the frequency to update the
 		matrix(ETXBF_EN_COND=1) or activate the whole bf evaluation process(not defined)
 */
 
@@ -164,30 +164,30 @@ int ITxBFLNACalibration(
 	IN BOOLEAN gBand);
 
 void Read_TxBfProfile(
-	IN	RTMP_ADAPTER	*pAd, 
+	IN	RTMP_ADAPTER	*pAd,
 	IN	PROFILE_DATA	*prof,
 	IN	int				profileNum,
 	IN	BOOLEAN			implicitProfile);
 
 void Write_TxBfProfile(
-	IN	RTMP_ADAPTER	*pAd, 
+	IN	RTMP_ADAPTER	*pAd,
 	IN	PROFILE_DATA	*prof,
 	IN	int				profileNum);
 
 void Read_TagField(
-	IN	PRTMP_ADAPTER	pAd, 
+	IN	PRTMP_ADAPTER	pAd,
 	IN  UCHAR	*row,
 	IN  int		profileNum);
 	
 // Write_TagField - write a profile tagfield
 void Write_TagField(
-	IN	RTMP_ADAPTER *pAd, 
+	IN	RTMP_ADAPTER *pAd,
 	IN  UCHAR	*row,
 	IN  int		profileNum);
 	
 // displayTagfield - display one tagfield
 void displayTagfield(
-	IN	RTMP_ADAPTER *pAd, 
+	IN	RTMP_ADAPTER *pAd,
 	IN	int		profileNum,
 	IN	BOOLEAN implicitProfile);
 	
@@ -197,8 +197,8 @@ int Unpack_IBFValue(
 	IN int elemNum);
 
 int iCalcCalibration(
-	IN RTMP_ADAPTER *pAd, 
-	IN int calParams[2], 
+	IN RTMP_ADAPTER *pAd,
+	IN int calParams[2],
 	IN int profileNum);
 
 void ITxBFSetEEPROM(

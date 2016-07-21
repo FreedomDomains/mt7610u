@@ -334,11 +334,11 @@ void construct_mic_iv(
 	int i;
 
 	mic_iv[0] = 0x59;
-	if (qc_exists && a4_exists) 
+	if (qc_exists && a4_exists)
 		mic_iv[1] = mpdu[30] & 0x0f;    /* QoS_TC           */
-	if (qc_exists && !a4_exists) 
+	if (qc_exists && !a4_exists)
 		mic_iv[1] = mpdu[24] & 0x0f;   /* mute bits 7-4    */
-	if (!qc_exists) 
+	if (!qc_exists)
 		mic_iv[1] = 0x00;
 	for (i = 2; i < 8; i++)
 		mic_iv[i] = mpdu[i + 8];                    /* mic_iv[2:7] = A2[0:5] = mpdu[10:15] */
@@ -376,7 +376,7 @@ void aes128k128d(unsigned char *key, unsigned char *data, unsigned char *ciphert
 		if (round == 0)
 		{
 			xor_128(round_key, data, ciphertext);
-			next_key(round_key, round);         
+			next_key(round_key, round);
 		}
 		else if (round == 10)
 		{
@@ -433,7 +433,7 @@ void construct_ctr_preload(
 BOOLEAN RTMPSoftDecryptAES(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR	pData,
-	IN ULONG	DataByteCnt, 
+	IN ULONG	DataByteCnt,
 	IN PCIPHER_KEY	pWpaKey)
 {
 	UINT			HeaderLen;
@@ -480,7 +480,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	a4_exists = (from_ds & to_ds);
 	qc_exists = ((frame_subtype == 0x08) ||    /* Assumed QoS subtypes */
 				  (frame_subtype == 0x09) ||   /* Likely to change.    */
-				  (frame_subtype == 0x0a) || 
+				  (frame_subtype == 0x0a) ||
 				  (frame_subtype == 0x0b)
 				 );
 
@@ -507,7 +507,7 @@ BOOLEAN RTMPSoftDecryptAES(
 
 	payload_len = DataByteCnt - HeaderLen - 8 - 8;	/* 8 bytes for CCMP header , 8 bytes for MIC*/
 	payload_remainder = (payload_len) % 16;
-	num_blocks = (payload_len) / 16; 
+	num_blocks = (payload_len) / 16;
 	
 	
 
@@ -562,7 +562,7 @@ BOOLEAN RTMPSoftDecryptAES(
 							PN,
 							0);
 	NdisZeroMemory(padded_buffer, 16);
-	NdisMoveMemory(padded_buffer, pData + payload_index, 8); 
+	NdisMoveMemory(padded_buffer, pData + payload_index, 8);
 	
 	aes128k128d(pWpaKey->Key, ctr_preload, aes_out);
 
@@ -608,7 +608,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	aes128k128d(pWpaKey->Key, chain_buffer, aes_out);
 
 	/* iterate through each 16 byte payload block */
-	for (i = 0; i < num_blocks; i++)     
+	for (i = 0; i < num_blocks; i++)
 	{
 		bitwise_xor(aes_out, pData + payload_index, chain_buffer);
 		payload_index += 16;
@@ -687,26 +687,26 @@ VOID RTMPConstructCCMPAAD(
 	NdisMoveMemory(&aad_hdr[len], pHdr + 4, 3 * MAC_ADDR_LEN);
 	len += (3 * MAC_ADDR_LEN);
 
-	/*  SC - 
-		MPDU Sequence Control field, with the Sequence Number 
-		subfield (bits 4-15 of the Sequence Control field) 
-		masked to 0. The Fragment Number subfield is not modified. */	 
-	aad_hdr[len] = (*(pHdr + 22)) & 0x0f;   
+	/*  SC -
+		MPDU Sequence Control field, with the Sequence Number
+		subfield (bits 4-15 of the Sequence Control field)
+		masked to 0. The Fragment Number subfield is not modified. */	
+	aad_hdr[len] = (*(pHdr + 22)) & 0x0f;
 	aad_hdr[len + 1] = 0x00;
 	len += 2;
 	
 			
-	/* Append the Addr4 field if present. */ 
+	/* Append the Addr4 field if present. */
 	if (a4_exists)
 	{
 		NdisMoveMemory(&aad_hdr[len], pHdr + 24, MAC_ADDR_LEN);
 		len += MAC_ADDR_LEN;
 	}
 	
-	/*  QC - 
-		QoS Control field, if present, a 2-octet field that includes 
-		the MSDU priority. The QC TID field is used in the 
-		construction of the AAD and the remaining QC fields are 
+	/*  QC -
+		QoS Control field, if present, a 2-octet field that includes
+		the MSDU priority. The QC TID field is used in the
+		construction of the AAD and the remaining QC fields are
 		set to 0 for the AAD calculation (bits 4 to 15 are set to 0). */
 	if (qc_exists & a4_exists)
 	{
@@ -750,15 +750,15 @@ VOID RTMPConstructCCMPNonce(
 	UINT n_offset = 0;
 	INT i;
 
-	/* Decide the Priority Octet 
-		The Priority sub-field of the Nonce Flags field shall 
-		be set to the fixed value 0 when there is no QC field 
-		present in the MPDU header. When the QC field is present, 
-		bits 0 to 3 of the Priority field shall be set to the 
+	/* Decide the Priority Octet
+		The Priority sub-field of the Nonce Flags field shall
+		be set to the fixed value 0 when there is no QC field
+		present in the MPDU header. When the QC field is present,
+		bits 0 to 3 of the Priority field shall be set to the
 		value of the QC TID (bits 0 to 3 of the QC field).*/
-	if (qc_exists && a4_exists) 
+	if (qc_exists && a4_exists)
 		nonce_hdr[0] = (*(pHdr + 30)) & 0x0f;
-	if (qc_exists && !a4_exists) 
+	if (qc_exists && !a4_exists)
 		nonce_hdr[0] = (*(pHdr + 24)) & 0x0f;
 
 	n_offset += 1;
@@ -767,7 +767,7 @@ VOID RTMPConstructCCMPNonce(
 	NdisMoveMemory(&nonce_hdr[n_offset], pHdr + 10, MAC_ADDR_LEN);
 	n_offset += MAC_ADDR_LEN;
 
-	/* Fill in the PN. The PN field occupies octets 7¡V12. 
+	/* Fill in the PN. The PN field occupies octets 7¡V12.
 		The octets of PN shall be ordered so that PN0 is at octet index 12
 		and PN5 is at octet index 7. */
  	for (i = 0; i < 6; i++)
@@ -859,37 +859,37 @@ BOOLEAN RTMPSoftEncryptCCMP(
 	a4_exists = (from_ds & to_ds);
 	qc_exists = 0;
 	if (frame_type == BTYPE_DATA)
-	{                
-	qc_exists = ((frame_subtype == SUBTYPE_QDATA) || 
+	{
+	qc_exists = ((frame_subtype == SUBTYPE_QDATA) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFACK) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFPOLL) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFACK_CFPOLL));
 	}
 
 	/* Construct AAD header */
-	RTMPConstructCCMPAAD(pHdr, 
-						 (frame_type == BTYPE_DATA), 
+	RTMPConstructCCMPAAD(pHdr,
+						 (frame_type == BTYPE_DATA),
 						 a4_exists,
 						 qc_exists,
-						 aad_hdr, 
+						 aad_hdr,
 						 &aad_len);
 
 	/* Construct NONCE header */
-	RTMPConstructCCMPNonce(pHdr, 
+	RTMPConstructCCMPNonce(pHdr,
 						   a4_exists,
 						   qc_exists,
-						   (frame_type == BTYPE_MGMT), 
-						   pIV, 
+						   (frame_type == BTYPE_MGMT),
+						   pIV,
 						   nonce_hdr,
 						   &nonce_hdr_len);
 
 	/* CCM originator processing -
-	   Use the temporal key, AAD, nonce, and MPDU data to 
+	   Use the temporal key, AAD, nonce, and MPDU data to
 	   form the cipher text and MIC. */
-	if (AES_CCM_Encrypt(pData, DataLen, 
-					pKey, 16, 
-					nonce_hdr, nonce_hdr_len, 
-					aad_hdr, aad_len, LEN_CCMP_MIC, 
+	if (AES_CCM_Encrypt(pData, DataLen,
+					pKey, 16,
+					nonce_hdr, nonce_hdr_len,
+					aad_hdr, aad_len, LEN_CCMP_MIC,
 					pData, &out_len))
 		return FALSE;
 		
@@ -960,8 +960,8 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	a4_exists = (from_ds & to_ds);
 	qc_exists = 0;
 	if (frame_type == BTYPE_DATA)
-	{                        
-	qc_exists = ((frame_subtype == SUBTYPE_QDATA) || 
+	{
+	qc_exists = ((frame_subtype == SUBTYPE_QDATA) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFACK) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFPOLL) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFACK_CFPOLL));	
@@ -980,29 +980,29 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	cipherData_len = *DataLen - LEN_CCMP_HDR;
 		
 	/* Construct AAD header */
-	RTMPConstructCCMPAAD(pHdr, 
-						 (frame_type == BTYPE_DATA), 
+	RTMPConstructCCMPAAD(pHdr,
+						 (frame_type == BTYPE_DATA),
 						 a4_exists,
 						 qc_exists,
-						 aad_hdr, 
+						 aad_hdr,
 						 &aad_len);
 
 	/* Construct NONCE header */
-	RTMPConstructCCMPNonce(pHdr, 
+	RTMPConstructCCMPNonce(pHdr,
 						   a4_exists,
 						   qc_exists,
-						   (frame_type == BTYPE_MGMT), 
-						   pn, 
+						   (frame_type == BTYPE_MGMT),
+						   pn,
 						   nonce_hdr,
 						   &nonce_hdr_len);
 	
 	/* CCM recipient processing -
-	   uses the temporal key, AAD, nonce, MIC, 
+	   uses the temporal key, AAD, nonce, MIC,
 	   and MPDU cipher text data */
 	if (AES_CCM_Decrypt(cipherData_ptr, cipherData_len,
-					pKey->Key, 16, 
-					nonce_hdr, nonce_hdr_len, 
-					aad_hdr, aad_len, LEN_CCMP_MIC, 
+					pKey->Key, 16,
+					nonce_hdr, nonce_hdr_len,
+					aad_hdr, aad_len, LEN_CCMP_MIC,
 					pData, &out_len))
 		return FALSE;
 
@@ -1037,23 +1037,23 @@ VOID CCMP_test_vector(
 	/*UINT8 A1[6] =  {0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c};*/
 	/*UINT8 A2[6] =  {0x50, 0x30, 0xf1, 0x84, 0x44, 0x08};*/
 	/*UINT8 A3[6] =  {0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba};*/
-	UINT8 TK[16] = {0xc9, 0x7c, 0x1f, 0x67, 0xce, 0x37, 0x11, 0x85, 
+	UINT8 TK[16] = {0xc9, 0x7c, 0x1f, 0x67, 0xce, 0x37, 0x11, 0x85,
 				  	0x51, 0x4a, 0x8a, 0x19, 0xf2, 0xbd, 0xd5, 0x2f};
 	UINT8 PN[6] =  {0x0C, 0xE7, 0x76, 0x97, 0x03, 0xB5};					
-	UINT8 HDR[24]= {0x08, 0x48, 0xc3, 0x2c, 0x0f, 0xd2, 0xe1, 0x28, 
-					0xa5, 0x7c, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 
+	UINT8 HDR[24]= {0x08, 0x48, 0xc3, 0x2c, 0x0f, 0xd2, 0xe1, 0x28,
+					0xa5, 0x7c, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08,
 					0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba, 0x80, 0x33};
-	UINT8 AAD[22] = {0x08, 0x40, 0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c, 
-				     0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xab, 0xae, 
+	UINT8 AAD[22] = {0x08, 0x40, 0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c,
+				     0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xab, 0xae,
 				     0xa5, 0xb8, 0xfc, 0xba, 0x00, 0x00};
 	UINT8 CCMP_HDR[8] = {0x0c, 0xe7, 0x00, 0x20, 0x76, 0x97, 0x03, 0xb5};
-	UINT8 CCM_NONCE[13] = {0x00, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xb5, 
+	UINT8 CCM_NONCE[13] = {0x00, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xb5,
 						   0x03, 0x97, 0x76, 0xe7, 0x0c};
-	UINT8 P_TEXT_DATA[20] = {0xf8, 0xba, 0x1a, 0x55, 0xd0, 0x2f, 0x85, 0xae, 
-						     0x96, 0x7b, 0xb6, 0x2f, 0xb6, 0xcd, 0xa8, 0xeb, 
+	UINT8 P_TEXT_DATA[20] = {0xf8, 0xba, 0x1a, 0x55, 0xd0, 0x2f, 0x85, 0xae,
+						     0x96, 0x7b, 0xb6, 0x2f, 0xb6, 0xcd, 0xa8, 0xeb,
 						     0x7e, 0x78, 0xa0, 0x50};
 	UINT8 C_TEXT_DATA[28] = {0xf3, 0xd0, 0xa2, 0xfe, 0x9a, 0x3d, 0xbf, 0x23,
-							 0x42, 0xa6, 0x43, 0xe4, 0x32, 0x46, 0xe8, 0x0c, 
+							 0x42, 0xa6, 0x43, 0xe4, 0x32, 0x46, 0xe8, 0x0c,
 							 0x3c, 0x04, 0xd0, 0x19, 0x78, 0x45, 0xce, 0x0b,
 							 0x16, 0xf9, 0x76, 0x23};		
 	UINT8 res_buf[100];
@@ -1099,13 +1099,13 @@ VOID CCMP_test_vector(
 	NdisZeroMemory(res_buf, 100);	
 	NdisMoveMemory(res_buf, P_TEXT_DATA, sizeof(P_TEXT_DATA));
 	res_len = sizeof(C_TEXT_DATA);
-	if (AES_CCM_Encrypt(res_buf, sizeof(P_TEXT_DATA), 
-					TK, sizeof(TK), 
-					CCM_NONCE, sizeof(CCM_NONCE), 
-					AAD, sizeof(AAD), 8, 
+	if (AES_CCM_Encrypt(res_buf, sizeof(P_TEXT_DATA),
+					TK, sizeof(TK),
+					CCM_NONCE, sizeof(CCM_NONCE),
+					AAD, sizeof(AAD), 8,
 					res_buf, &res_len) == 0)
 	{
-		if (res_len == sizeof(C_TEXT_DATA) && 
+		if (res_len == sizeof(C_TEXT_DATA) &&
 				NdisEqualMemory(res_buf, C_TEXT_DATA, res_len))
 			printk("CCM_Encrypt is OK!!!\n");
 		else
@@ -1119,12 +1119,12 @@ VOID CCMP_test_vector(
 	NdisZeroMemory(res_buf, 100);
 	NdisMoveMemory(res_buf, C_TEXT_DATA, sizeof(C_TEXT_DATA));
 	res_len = sizeof(P_TEXT_DATA);
-	if (AES_CCM_Decrypt(res_buf, sizeof(C_TEXT_DATA), TK, 16, 
-					CCM_NONCE, sizeof(CCM_NONCE), 
-					AAD, sizeof(AAD), 8, 
+	if (AES_CCM_Decrypt(res_buf, sizeof(C_TEXT_DATA), TK, 16,
+					CCM_NONCE, sizeof(CCM_NONCE),
+					AAD, sizeof(AAD), 8,
 					res_buf, &res_len) == 0)
 	{
-		if (res_len == sizeof(P_TEXT_DATA) && 
+		if (res_len == sizeof(P_TEXT_DATA) &&
 				NdisEqualMemory(res_buf, P_TEXT_DATA, res_len))
 			printk("CCM_Decrypt is OK!!!\n");
 		else

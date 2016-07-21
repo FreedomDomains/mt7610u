@@ -82,7 +82,7 @@ UCHAR	NUM_OF_3020_CHNL = (sizeof(RtmpFreqItems3020) / sizeof(FREQUENCY_ITEM));
 
 FREQUENCY_ITEM *FreqItems3020 = RtmpFreqItems3020;
 
-#if defined(RT28xx) || defined(RT2883) 
+#if defined(RT28xx) || defined(RT2883)
 /* Reset the RFIC setting to new series    */
 RTMP_RF_REGS RF2850RegTable[] = {
 	/*	ch	 R1 		 R2 		 R3(TX0~4=0) R4*/
@@ -165,89 +165,89 @@ RTMP_RF_REGS RF2850RegTable[] = {
 UCHAR	NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
 #endif /* defined(RT28xx) || defined(RT2883) */
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) 
+#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
 
 /* The Tx power tuning entry*/
-const TX_POWER_TUNING_ENTRY_STRUCT TxPowerTuningTableOrg[] = 
+const TX_POWER_TUNING_ENTRY_STRUCT TxPowerTuningTableOrg[] =
 {
 /*	idxTxPowerTable		Tx power control over RF			Tx power control over MAC*/
 /*	(zero-based array)		{ RF R12[4:0]: Tx0 ALC},			{MAC 0x1314~0x1324}*/
-/*	0	*/				{0x00, 							-15}, 
-/*	1	*/				{0x01, 							-15}, 
-/*	2	*/				{0x00, 							-14}, 
-/*	3	*/				{0x01, 							-14}, 
-/*	4	*/				{0x00, 							-13}, 
-/*	5	*/				{0x01, 							-13}, 
-/*	6	*/				{0x00, 							-12}, 
-/*	7	*/				{0x01, 							-12}, 
-/*	8	*/				{0x00, 							-11}, 
-/*	9	*/				{0x01, 							-11}, 
-/*	10	*/				{0x00, 							-10}, 
-/*	11	*/				{0x01, 							-10}, 
-/*	12	*/				{0x00, 							-9}, 
-/*	13	*/				{0x01, 							-9}, 
-/*	14	*/				{0x00, 							-8}, 
-/*	15	*/				{0x01, 							-8}, 
-/*	16	*/				{0x00, 							-7}, 
-/*	17	*/				{0x01, 							-7}, 
-/*	18	*/				{0x00, 							-6}, 
-/*	19	*/				{0x01, 							-6}, 
-/*	20	*/				{0x00, 							-5}, 
-/*	21	*/				{0x01, 							-5}, 
-/*	22	*/				{0x00, 							-4}, 
-/*	23	*/				{0x01, 							-4}, 
-/*	24	*/				{0x00, 							-3}, 
-/*	25	*/				{0x01, 							-3}, 
-/*	26	*/				{0x00,							-2}, 
-/*	27	*/				{0x01, 							-2}, 
-/*	28	*/				{0x00, 							-1}, 
-/*	29	*/				{0x01, 							-1}, 
-/*	30	*/				{0x00,							0}, 
-/*	31	*/				{0x01,							0}, 
-/*	32	*/				{0x02,							0}, 
-/*	33	*/				{0x03,							0}, 
-/*	34	*/				{0x04,							0}, 
-/*	35	*/				{0x05,							0}, 
-/*	36	*/				{0x06,							0}, 
-/*	37	*/				{0x07,							0}, 
-/*	38	*/				{0x08,							0}, 
-/*	39	*/				{0x09,							0}, 
-/*	40	*/				{0x0A,							0}, 
-/*	41	*/				{0x0B,							0}, 
-/*	42	*/				{0x0C,							0}, 
-/*	43	*/				{0x0D,							0}, 
-/*	44	*/				{0x0E,							0}, 
-/*	45	*/				{0x0F,							0}, 
-/*	46	*/				{0x0F-1,							1}, 
-/*	47	*/				{0x0F,							1}, 
-/*	48	*/				{0x0F-1,							2}, 
-/*	49	*/				{0x0F,							2}, 
-/*	50	*/				{0x0F-1,							3}, 
-/*	51	*/				{0x0F,							3}, 
-/*	52	*/				{0x0F-1,							4}, 
-/*	53	*/				{0x0F,							4}, 
-/*	54	*/				{0x0F-1,							5}, 
-/*	55	*/				{0x0F,							5}, 
-/*	56	*/				{0x0F-1,							6}, 
-/*	57	*/				{0x0F,							6}, 
-/*	58	*/				{0x0F-1,							7}, 
-/*	59	*/				{0x0F,							7}, 
-/*	60	*/				{0x0F-1,							8}, 
-/*	61	*/				{0x0F,							8}, 
-/*	62	*/				{0x0F-1,							9}, 
-/*	63	*/				{0x0F,							9}, 
-/*	64	*/				{0x0F-1,							10}, 
-/*	65	*/				{0x0F,							10}, 
-/*	66	*/				{0x0F-1,							11}, 
-/*	67	*/				{0x0F,							11}, 
-/*	68	*/				{0x0F-1,							12}, 
-/*	69	*/				{0x0F,							12}, 
-/*	70	*/				{0x0F-1,							13}, 
-/*	71	*/				{0x0F,							13}, 
-/*	72	*/				{0x0F-1,							14}, 
-/*	73	*/				{0x0F,							14}, 
-/*	74	*/				{0x0F-1,							15}, 
-/*	75	*/				{0x0F,							15}, 
+/*	0	*/				{0x00, 							-15},
+/*	1	*/				{0x01, 							-15},
+/*	2	*/				{0x00, 							-14},
+/*	3	*/				{0x01, 							-14},
+/*	4	*/				{0x00, 							-13},
+/*	5	*/				{0x01, 							-13},
+/*	6	*/				{0x00, 							-12},
+/*	7	*/				{0x01, 							-12},
+/*	8	*/				{0x00, 							-11},
+/*	9	*/				{0x01, 							-11},
+/*	10	*/				{0x00, 							-10},
+/*	11	*/				{0x01, 							-10},
+/*	12	*/				{0x00, 							-9},
+/*	13	*/				{0x01, 							-9},
+/*	14	*/				{0x00, 							-8},
+/*	15	*/				{0x01, 							-8},
+/*	16	*/				{0x00, 							-7},
+/*	17	*/				{0x01, 							-7},
+/*	18	*/				{0x00, 							-6},
+/*	19	*/				{0x01, 							-6},
+/*	20	*/				{0x00, 							-5},
+/*	21	*/				{0x01, 							-5},
+/*	22	*/				{0x00, 							-4},
+/*	23	*/				{0x01, 							-4},
+/*	24	*/				{0x00, 							-3},
+/*	25	*/				{0x01, 							-3},
+/*	26	*/				{0x00,							-2},
+/*	27	*/				{0x01, 							-2},
+/*	28	*/				{0x00, 							-1},
+/*	29	*/				{0x01, 							-1},
+/*	30	*/				{0x00,							0},
+/*	31	*/				{0x01,							0},
+/*	32	*/				{0x02,							0},
+/*	33	*/				{0x03,							0},
+/*	34	*/				{0x04,							0},
+/*	35	*/				{0x05,							0},
+/*	36	*/				{0x06,							0},
+/*	37	*/				{0x07,							0},
+/*	38	*/				{0x08,							0},
+/*	39	*/				{0x09,							0},
+/*	40	*/				{0x0A,							0},
+/*	41	*/				{0x0B,							0},
+/*	42	*/				{0x0C,							0},
+/*	43	*/				{0x0D,							0},
+/*	44	*/				{0x0E,							0},
+/*	45	*/				{0x0F,							0},
+/*	46	*/				{0x0F-1,							1},
+/*	47	*/				{0x0F,							1},
+/*	48	*/				{0x0F-1,							2},
+/*	49	*/				{0x0F,							2},
+/*	50	*/				{0x0F-1,							3},
+/*	51	*/				{0x0F,							3},
+/*	52	*/				{0x0F-1,							4},
+/*	53	*/				{0x0F,							4},
+/*	54	*/				{0x0F-1,							5},
+/*	55	*/				{0x0F,							5},
+/*	56	*/				{0x0F-1,							6},
+/*	57	*/				{0x0F,							6},
+/*	58	*/				{0x0F-1,							7},
+/*	59	*/				{0x0F,							7},
+/*	60	*/				{0x0F-1,							8},
+/*	61	*/				{0x0F,							8},
+/*	62	*/				{0x0F-1,							9},
+/*	63	*/				{0x0F,							9},
+/*	64	*/				{0x0F-1,							10},
+/*	65	*/				{0x0F,							10},
+/*	66	*/				{0x0F-1,							11},
+/*	67	*/				{0x0F,							11},
+/*	68	*/				{0x0F-1,							12},
+/*	69	*/				{0x0F,							12},
+/*	70	*/				{0x0F-1,							13},
+/*	71	*/				{0x0F,							13},
+/*	72	*/				{0x0F-1,							14},
+/*	73	*/				{0x0F,							14},
+/*	74	*/				{0x0F-1,							15},
+/*	75	*/				{0x0F,							15},
 };
 #endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
 
@@ -346,7 +346,7 @@ VOID rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
 	pChipCap->WcidHwRsvNum = 255;
 
 /*
-	In 16-MBSS support mode, if AP-Client is enabled, 
+	In 16-MBSS support mode, if AP-Client is enabled,
 	the last 8-MBSS would be occupied for AP-Client using.
 */
 #ifdef APCLI_SUPPORT
@@ -572,8 +572,8 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): BW_%s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
 					__FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
-					pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth, 
-					pAd->CommonCfg.Channel, 
+					pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
+					pAd->CommonCfg.Channel,
 					pAd->CommonCfg.RegTransmitSetting.field.EXTCHA,
 					pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset));
 
@@ -592,7 +592,7 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 static VOID Default_ChipSwitchChannel(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel,
-	IN BOOLEAN bScan) 
+	IN BOOLEAN bScan)
 {
 	DBGPRINT(RT_DEBUG_ERROR, ("%s(): dummy channel switch function!\n", __FUNCTION__));
 }
@@ -733,7 +733,7 @@ UINT32 SetHWAntennaDivsersity(
 
 	return 0;
 }
-#endif // HW_ANTENNA_DIVERSITY_SUPPORT // 
+#endif // HW_ANTENNA_DIVERSITY_SUPPORT //
 
 
 
@@ -890,14 +890,14 @@ int RtmpChipOpsHook(VOID *pCB)
 
 #ifdef RTMP_EFUSE_SUPPORT
 	pChipCap->EFUSE_USAGE_MAP_START = 0x2d0;
-	pChipCap->EFUSE_USAGE_MAP_END = 0x2fc;      
+	pChipCap->EFUSE_USAGE_MAP_END = 0x2fc;
        	pChipCap->EFUSE_USAGE_MAP_SIZE = 45;
 #endif /* RTMP_EFUSE_SUPPORT */
 
 	pChipCap->VcoPeriod = 10;
 	pChipCap->FlgIsVcoReCalMode = VCO_CAL_DISABLE;
 	pChipCap->WPDMABurstSIZE = 2; /* default 64B */
-	pChipCap->MBSSIDMode = MBSSID_MODE0; 
+	pChipCap->MBSSIDMode = MBSSID_MODE0;
 
 
 	RtmpChipBcnInit(pAd);

@@ -36,12 +36,12 @@
 	(Fields to specify VHT channels).
 
 	dot11CurrentChannelBandwidth:
-		Channel bandwidth. Possible values are 
+		Channel bandwidth. Possible values are
 			cbw20, cbw40, cbw80, cbw160 and cbw80p80.
 	dot11CurrentChannelCenterFrequencyIndex1:
 		In 20 MHz, 40 MHz, 80 MHz and 160 MHz channels, denotes the channel
 			center frequency.
-		In 80+80 MHz channels, denotes the center frequency of the frequency 
+		In 80+80 MHz channels, denotes the center frequency of the frequency
 			segment 1, which is the frequency segment containing the primary
 			channel..
 		Valid range = 1, กK, 200.
@@ -57,13 +57,13 @@
 
 
 	Formula:
-	 A channel center frequency of 5.000 GHz shall be indicated by 
+	 A channel center frequency of 5.000 GHz shall be indicated by
 	 	dot11ChannelStartingFactor = 8000, and
 		dot11CurrentPrimaryChannel = 200.
 
 	 Channel starting frequency
 	 	= dot11ChannelStartingFactor กั 0500 kHz.
-	 
+	
 	Channel center frequency [MHz]
 		= Channel starting frequency + 5 * dot11CurrentChannelCenterFrequencyIndex
 
@@ -75,7 +75,7 @@
 		dot11CurrentChannelCenterFrequencyIndex1 = 42
 		dot11CurrentPrimaryChannel = 36
 		
-		=>is an 80 MHz channel with a center frequency of 5210 MHz and 
+		=>is an 80 MHz channel with a center frequency of 5210 MHz and
 			the primary 20 MHz channel centered at 5180 MHz.
 
 */

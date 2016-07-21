@@ -369,8 +369,8 @@ typedef spinlock_t			OS_NDIS_SPIN_LOCK;
 	Following lock/unlock definition used for BBP/RF register read/write.
 	Currently we don't use it to protect MAC register access.
 
-	For USB: 
-			we use binary semaphore to do the protection because all register 
+	For USB:
+			we use binary semaphore to do the protection because all register
 			access done in kernel thread and should allow task go sleep when
 			in protected status.
 
@@ -796,7 +796,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 {																\
 }
 
-//BURST_READ(_A, _R, 1, _pV);                             
+//BURST_READ(_A, _R, 1, _pV);
 #define RTMP_IO_READ32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
 
@@ -900,7 +900,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 		(RTPKT_TO_OSPKT(_pkt)->tail)
 #define SET_OS_PKT_DATATAIL(_pkt, _start, _len)	\
 		((RTPKT_TO_OSPKT(_pkt))->tail) = (ULONG)((_start) + (_len))
-#endif 
+#endif
 
 
 #define GET_OS_PKT_HEAD(_pkt) \
@@ -1201,7 +1201,7 @@ struct net_device *alloc_netdev(int sizeof_priv, const char *mask, void (*setup)
 
 INT rt28xx_ioctl(
 	IN	PNET_DEV		net_dev,
-	IN	OUT	struct ifreq	*rq, 
+	IN	OUT	struct ifreq	*rq,
 	IN	INT			cmd);
 
 extern int ra_mtd_write(int num, loff_t to, size_t len, const u_char *buf);
@@ -1255,7 +1255,7 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #endif
 #else
 #define RTUSB_URB_ALLOC_BUFFER(_dev, _size, _dma)	kmalloc(_size, GFP_ATOMIC)
-#define RTUSB_URB_FREE_BUFFER(_dev, _size, _addr, _dma)	kfree(_addr) 
+#define RTUSB_URB_FREE_BUFFER(_dev, _size, _addr, _dma)	kfree(_addr)
 #endif
 
 #define RTUSB_FILL_BULK_URB(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context) usb_fill_bulk_urb(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context)
@@ -1312,7 +1312,7 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #define RtmpUsbBulkRxComplete					RTUSBBulkRxComplete
 #define RtmpUsbBulkCmdRspEventComplete			RTUSBBulkCmdRspEventComplete
 												
-#if ((LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 51)) || (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18))) 
+#if ((LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 51)) || (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)))
 #define RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    RTUSBBulkOutDataPacketComplete(pURB)
 #define RTUSBBulkOutMLMEPacketComplete(Status, pURB, pt_regs)    RTUSBBulkOutMLMEPacketComplete(pURB)
 #define RTUSBBulkOutNullFrameComplete(Status, pURB, pt_regs)     RTUSBBulkOutNullFrameComplete(pURB)

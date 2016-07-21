@@ -35,14 +35,14 @@
         Sm - pointer to the dls state machine
     Note:
         The state machine looks like this
-        
+
                             DLS_IDLE
     MT2_MLME_DLS_REQUEST   MlmeDlsReqAction
     MT2_PEER_DLS_REQUEST   PeerDlsReqAction
     MT2_PEER_DLS_RESPONSE  PeerDlsRspAction
     MT2_MLME_DLS_TEARDOWN  MlmeTearDownAction
     MT2_PEER_DLS_TEARDOWN  PeerTearDownAction
-        
+
 	IRQL = PASSIVE_LEVEL
 
     ==========================================================================
@@ -80,7 +80,7 @@ void DlsStateMachineInit(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -179,7 +179,7 @@ VOID MlmeDlsReqAction(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -477,7 +477,7 @@ VOID PeerDlsReqAction(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -821,7 +821,7 @@ VOID PeerDlsRspAction(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -898,7 +898,7 @@ VOID MlmeDlsTearDownAction(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -962,7 +962,7 @@ VOID PeerDlsTearDownAction(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -1028,7 +1028,7 @@ VOID RTMPCheckDLSTimeOut(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -1411,7 +1411,7 @@ INT RTMPCheckDLSFrame(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -1480,7 +1480,7 @@ VOID RTMPSendDLSTearDownFrame(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -1617,7 +1617,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 /*
     ==========================================================================
     Description:
-        
+
 	IRQL = DISPATCH_LEVEL
 
     ==========================================================================
@@ -1783,7 +1783,7 @@ VOID DlsTimeoutAction(
 
 /*
 ================================================================
-Description : because DLS and CLI share the same WCID table in ASIC. 
+Description : because DLS and CLI share the same WCID table in ASIC.
 Mesh entry also insert to pAd->MacTab.content[].
 Also fills the pairwise key.
 Because front MAX_AID_BA entries have direct mapping to BAEntry, which is only used as CLI. So we insert Dls

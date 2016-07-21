@@ -311,7 +311,7 @@ typedef union _BBP_R47_STRUC {
 	struct
 	{
 		UCHAR	Adc6On:1;
-		UCHAR	Reserved:2; 
+		UCHAR	Reserved:2;
 		UCHAR	TssiMode:2;
 		UCHAR	TssiUpdateReq:1;
 		UCHAR	TssiReportSel:2;
@@ -326,7 +326,7 @@ typedef union _BBP_R47_STRUC {
 		UCHAR	TssiReportSel:2;
 		UCHAR	TssiUpdateReq:1;
 		UCHAR	TssiMode:2;
-		UCHAR	Reserved:2; 
+		UCHAR	Reserved:2;
 		UCHAR	Adc6On:1;
 	} field;
 	
@@ -584,7 +584,7 @@ typedef union _BBP_R182_STRUC {
 
 /*****************************************************************************
 	BBP register Read/Write marco definitions.
-	we read/write the bbp value by register's ID. 
+	we read/write the bbp value by register's ID.
 	Generate PER to test BA
  *****************************************************************************/
 	

@@ -45,7 +45,7 @@
 UCHAR WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
 
 INT Set_WfdEnable_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	BOOLEAN bEnable;
@@ -68,7 +68,7 @@ INT Set_WfdEnable_Proc(
 
 #ifdef RT_CFG80211_SUPPORT
 INT Set_WfdInsertIe_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	BOOLEAN bEnable;
@@ -113,7 +113,7 @@ INT Set_WfdInsertIe_Proc(
 #endif /* RT_CFG80211_SUPPORT */
 
 INT Set_WfdDeviceType_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	UCHAR DeviceType;
@@ -137,7 +137,7 @@ INT Set_WfdDeviceType_Proc(
 
 
 INT Set_WfdCouple_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	UCHAR coupled;
@@ -167,14 +167,14 @@ INT Set_WfdCouple_Proc(
 			break;
 	}
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Device Type = %d, Source Coupled = %d, Sink Coupled = %d\n", __FUNCTION__, 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Device Type = %d, Source Coupled = %d, Sink Coupled = %d\n", __FUNCTION__,
 		pAd->StaCfg.WfdCfg.DeviceType, pAd->StaCfg.WfdCfg.SourceCoupled, pAd->StaCfg.WfdCfg.SinkCoupled));
 
 	return TRUE;
 }
 
 INT Set_WfdSessionAvailable_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0)
@@ -193,7 +193,7 @@ INT Set_WfdSessionAvailable_Proc(
 }
 
 INT Set_WfdCP_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0)
@@ -213,7 +213,7 @@ INT Set_WfdCP_Proc(
 
 
 INT	Set_WfdRtspPort_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	INT32 RtspPort;
@@ -235,7 +235,7 @@ INT	Set_WfdRtspPort_Proc(
 
 
 INT	Set_WfdMaxThroughput_Proc(
-    IN  PRTMP_ADAPTER		pAd, 
+    IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
 {
 	INT32 Throughput;
@@ -256,7 +256,7 @@ INT	Set_WfdMaxThroughput_Proc(
 }
 
 INT Set_WfdLocalIp_Proc(
-	IN	PRTMP_ADAPTER		pAd, 
+	IN	PRTMP_ADAPTER		pAd,
 	IN	PSTRING 		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
@@ -267,7 +267,7 @@ INT Set_WfdLocalIp_Proc(
 	pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[0] = WFD_LOCAL_IP_ADDR_VERSION_IPV4;
 	RTMPMoveMemory(&pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], &ip_addr, sizeof(UINT32));
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: local IP Address = %d.%d.%d.%d\n", __FUNCTION__,
-			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], 
+			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[2],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[3],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[4]));
@@ -276,7 +276,7 @@ INT Set_WfdLocalIp_Proc(
 }
 
 INT Set_PeerRtspPort_Proc(
-	IN	PRTMP_ADAPTER		pAd, 
+	IN	PRTMP_ADAPTER		pAd,
 	IN	PSTRING 		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
@@ -541,7 +541,7 @@ ULONG InsertWfdSubelmtTlv(
 		}
 		case SUBID_WFD_SESSION_INFO:
 		{
-			INT i = 0, NumOfDev = 0; 
+			INT i = 0, NumOfDev = 0;
 			UCHAR P2pIdx = P2P_NOT_FOUND;
 			PRT_P2P_TABLE Tab = &pAd->P2pTable;
 
@@ -592,9 +592,9 @@ ULONG InsertWfdSubelmtTlv(
 						SessionInfo.MaxThroughput = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.max_throughput;
 						SessionInfo.CoupledSinkInfo = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_sink_status;
 
-						/* 
-							So far we cannot know the address of coupled devices, 
-						   	the coupled address will be filled "0" until WiFi Display spec. is ready for this part. 
+						/*
+							So far we cannot know the address of coupled devices,
+						   	the coupled address will be filled "0" until WiFi Display spec. is ready for this part.
 						*/
 						RTMPMoveMemory(&SessionInfo.CoupledPeerAddr[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_peer_addr[0], MAC_ADDR_LEN);
 						RTMPMoveMemory(pDest, &SessionInfo, sizeof(WFD_SESSION_INFO));
@@ -635,9 +635,9 @@ ULONG InsertWfdSubelmtTlv(
 }
 
 VOID WfdParseSubElmt(
-	IN PRTMP_ADAPTER 	pAd, 
+	IN PRTMP_ADAPTER 	pAd,
 	IN PWFD_ENTRY_INFO	pWfdEntryInfo,
-	IN VOID 			*Msg, 
+	IN VOID 			*Msg,
 	IN ULONG 			MsgLen)
 {
 	PWFD_COUPLED_SINK_INFO pSinkInfo;
@@ -797,11 +797,11 @@ VOID WfdParseSubElmt(
 		/* Forward buffer to next pEid */
 		if (RTMPEqualMemory(&pEid->Octet[0], WIFIDISPLAY_OUI, 4))
 		{
-			pEid = (PEID_STRUCT)((UCHAR*)pEid + pEid->Len + 2);    
+			pEid = (PEID_STRUCT)((UCHAR*)pEid + pEid->Len + 2);
 		}
 		
-		/* 
-			Since we get the next pEid, 
+		/*
+			Since we get the next pEid,
 		   	Predict the accumulated IeLen after adding the next pEid's length.
 		   	The accumulated IeLen is for checking length.
 		*/
@@ -815,7 +815,7 @@ VOID WfdParseSubElmt(
 
 VOID	WfdCfgInit(
 
-	IN PRTMP_ADAPTER pAd) 
+	IN PRTMP_ADAPTER pAd)
 {
 	PRT_WFD_CONFIG	pWfdcfg = &pAd->StaCfg.WfdCfg;
 

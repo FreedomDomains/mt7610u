@@ -51,11 +51,11 @@ UCHAR CipherWpa2Template[] = {
 	0x00, 0x00,		/* RSN capability */
 };
 
-/*  
+/*
 	==========================================================================
-	Description: 
+	Description:
 		association state machine init, including state transition and timer init
-	Parameters: 
+	Parameters:
 		S - pointer to the association state machine
 
 	IRQL = PASSIVE_LEVEL
@@ -147,7 +147,7 @@ VOID AssocStateMachineInit(
 /*
 	==========================================================================
 	Description:
-		Association timeout procedure. After association timeout, this function 
+		Association timeout procedure. After association timeout, this function
 		will be called and it will put a message into the MLME queue
 	Parameters:
 		Standard timer parameters
@@ -176,7 +176,7 @@ VOID AssocTimeout(
 /*
 	==========================================================================
 	Description:
-		Reassociation timeout procedure. After reassociation timeout, this 
+		Reassociation timeout procedure. After reassociation timeout, this
 		function will be called and put a message into the MLME queue
 	Parameters:
 		Standard timer parameters
@@ -205,7 +205,7 @@ VOID ReassocTimeout(
 /*
 	==========================================================================
 	Description:
-		Disassociation timeout procedure. After disassociation timeout, this 
+		Disassociation timeout procedure. After disassociation timeout, this
 		function will be called and put a message into the MLME queue
 	Parameters:
 		Standard timer parameters
@@ -672,7 +672,7 @@ VOID MlmeAssocReqAction(
 	Description:
 		mlme reassoc req handling procedure
 	Parameters:
-		Elem - 
+		Elem -
 	Pre:
 		-# SSID  (Adapter->StaCfg.ssid[])
 		-# BSSID (AP address, Adapter->StaCfg.bssid)
@@ -740,7 +740,7 @@ VOID MlmeReassocReqAction(
 		/* make frame, use bssid as the AP address?? */
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("ASSOC - Send RE-ASSOC request...\n"));
-		MgtMacHeaderInit(pAd, &ReassocHdr, SUBTYPE_REASSOC_REQ, 0, ApAddr, 
+		MgtMacHeaderInit(pAd, &ReassocHdr, SUBTYPE_REASSOC_REQ, 0, ApAddr,
 							ApAddr);
 		MakeOutgoingFrame(pOutBuffer, &FrameLen, sizeof (HEADER_802_11),
 				  &ReassocHdr, 2, &CapabilityInfo, 2,
@@ -989,7 +989,7 @@ VOID MlmeDisassocReqAction(
 	DBGPRINT(RT_DEBUG_ERROR,
 		 ("ASSOC - Send DISASSOC request[BSSID::%02x:%02x:%02x:%02x:%02x:%02x (Reason=%d)\n",
 		  PRINT_MAC(pDisassocReq->Addr), pDisassocReq->Reason));
-	MgtMacHeaderInit(pAd, &DisassocHdr, SUBTYPE_DISASSOC, 0, pDisassocReq->Addr, 
+	MgtMacHeaderInit(pAd, &DisassocHdr, SUBTYPE_DISASSOC, 0, pDisassocReq->Addr,
 						pDisassocReq->Addr);	/* patch peap ttls switching issue */
 	MakeOutgoingFrame(pOutBuffer, &FrameLen,
 			  sizeof (HEADER_802_11), &DisassocHdr,
@@ -1164,7 +1164,7 @@ VOID PeerAssocRspAction(
 				PFRAME_802_11 pFrame =  (PFRAME_802_11) (Elem->Msg);
 				RT_CFG80211_CONN_RESULT_INFORM(pAd, pAd->MlmeAux.Bssid,
                                 pAd->StaCfg.ReqVarIEs, pAd->StaCfg.ReqVarIELen,
-								&pFrame->Octet[6], 
+								&pFrame->Octet[6],
 								Elem->MsgLen - 6 - sizeof (HEADER_802_11),
                                 TRUE);
 
@@ -1233,7 +1233,7 @@ VOID PeerReassocRspAction(
 			RTMPCancelTimer(&pAd->MlmeAux.ReassocTimer,
 					&TimerCancelled);
 
-			if (Status == MLME_SUCCESS) 
+			if (Status == MLME_SUCCESS)
 			{
 				UCHAR MaxSupportedRateIn500Kbps = 0;
 				PMAC_TABLE_ENTRY pEntry = NULL;
@@ -1338,7 +1338,7 @@ VOID PeerReassocRspAction(
 /*
 	==========================================================================
 	Description:
-		procedures on IEEE 802.11/1999 p.376 
+		procedures on IEEE 802.11/1999 p.376
 	Parametrs:
 
 	IRQL = DISPATCH_LEVEL
@@ -1508,7 +1508,7 @@ VOID AssocPostProc(
 /*
 	==========================================================================
 	Description:
-		left part of IEEE 802.11/1999 p.374 
+		left part of IEEE 802.11/1999 p.374
 	Parameters:
 		Elem - MLME message containing the received frame
 
@@ -1536,11 +1536,11 @@ VOID PeerDisassocAction(
 
 
 			/*
-			   It is possible that AP sends dis-assoc frame(PeerDisassocAction) to STA 
-			   after driver enqueue MT2_MLME_DISASSOC_REQ (MlmeDisassocReqAction) 
+			   It is possible that AP sends dis-assoc frame(PeerDisassocAction) to STA
+			   after driver enqueue MT2_MLME_DISASSOC_REQ (MlmeDisassocReqAction)
 			   and set CntlMachine.CurrState = CNTL_WAIT_DISASSOC.
 			   DisassocTimer is useless because AssocMachine.CurrState will set to ASSOC_IDLE here.
-			   Therefore, we need to check CntlMachine.CurrState here and enqueue MT2_DISASSOC_CONF to 
+			   Therefore, we need to check CntlMachine.CurrState here and enqueue MT2_DISASSOC_CONF to
 			   reset CntlMachine.CurrState to CNTL_IDLE state again.
 			 */
 			if (pAd->Mlme.CntlMachine.CurrState ==
@@ -1677,8 +1677,8 @@ VOID InvalidStateWhenReassoc(
 }
 
 VOID InvalidStateWhenDisassociate(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem) 
+	IN PRTMP_ADAPTER pAd,
+	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
 	DBGPRINT(RT_DEBUG_TRACE,
@@ -1694,7 +1694,7 @@ VOID InvalidStateWhenDisassociate(
 	==========================================================================
 	Description:
 		right part of IEEE 802.11/1999 page 374
-	Note: 
+	Note:
 		This event should never cause ASSOC state machine perform state
 		transition, and has no relationship with CNTL machine. So we separate
 		this routine as a service outside of ASSOC state transition table.
@@ -1720,7 +1720,7 @@ VOID Cls3errAction(
 
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("ASSOC - Class 3 Error, Send DISASSOC frame\n"));
-	MgtMacHeaderInit(pAd, &DisassocHdr, SUBTYPE_DISASSOC, 0, pAddr, 
+	MgtMacHeaderInit(pAd, &DisassocHdr, SUBTYPE_DISASSOC, 0, pAddr,
 						pAd->CommonCfg.Bssid);	/* patch peap ttls switching issue */
 	MakeOutgoingFrame(pOutBuffer, &FrameLen,
 			  sizeof (HEADER_802_11), &DisassocHdr,

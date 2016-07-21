@@ -55,7 +55,7 @@ void Rtmp_Drv_Ops_##_func(VOID *__pDrvOps, VOID *__pNetOps, 	\
 	Rtmp_Drv_Ops_##_func
 
 
-#define xdef_to_str(s)   def_to_str(s) 
+#define xdef_to_str(s)   def_to_str(s)
 #define def_to_str(s)    #s
 
 
@@ -316,7 +316,7 @@ RTMP_DECLARE_DRV_OPS_FUNCTION(usb);
 #define RTMP_NET_TASK_STRUCT		OS_NET_TASK_STRUCT
 #define PRTMP_NET_TASK_STRUCT		POS_NET_TASK_STRUCT
 
-typedef struct completion RTMP_OS_COMPLETION; 
+typedef struct completion RTMP_OS_COMPLETION;
 
 #define RTMP_OS_INIT_COMPLETION(__pCompletion)	\
 		init_completion(__pCompletion)

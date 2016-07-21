@@ -71,7 +71,7 @@ INT LED_Array[16][12]={
 	========================================================================
 */
 VOID RTMPSetLEDStatus(
-	IN PRTMP_ADAPTER 	pAd, 
+	IN PRTMP_ADAPTER 	pAd,
 	IN UCHAR			Status)
 {
 	/*ULONG			data; */
@@ -129,7 +129,7 @@ VOID RTMPSetLEDStatus(
 			LinkStatus = LINK_STATUS_RADIO_ON;
 			MCUCmd = MCU_SET_LED_MODE;
 			break;
-		case LED_HALT: 
+		case LED_HALT:
 			LedMode = 0; /* Driver sets MAC register and MAC controls LED */
 		case LED_RADIO_OFF:
 			LinkStatus = LINK_STATUS_RADIO_OFF;
@@ -169,7 +169,7 @@ VOID RTMPSetLEDStatus(
 	/* */
 	if ((Status != LED_ON_SITE_SURVEY) && (Status != LED_POWER_UP) && (bIgnored == FALSE))
 		pAd->LedCntl.LedStatus = Status;
-    
+
 }
 
 
@@ -177,7 +177,7 @@ VOID RTMPSetLEDStatus(
 	========================================================================
 	
 	Routine Description:
-		Set LED Signal Stregth 
+		Set LED Signal Stregth
 
 	Arguments:
 		pAd						Pointer to our adapter
@@ -189,7 +189,7 @@ VOID RTMPSetLEDStatus(
 	IRQL = PASSIVE_LEVEL
 	
 	Note:
-		Can be run on any IRQL level. 
+		Can be run on any IRQL level.
 
 		According to Microsoft Zero Config Wireless Signal Stregth definition as belows.
 		<= -90  No Signal
@@ -201,7 +201,7 @@ VOID RTMPSetLEDStatus(
 	========================================================================
 */
 VOID RTMPSetSignalLED(
-	IN PRTMP_ADAPTER 	pAd, 
+	IN PRTMP_ADAPTER 	pAd,
 	IN NDIS_802_11_RSSI Dbm)
 {
 	UCHAR		nLed = 0;
@@ -227,7 +227,7 @@ VOID RTMPSetSignalLED(
 			nLed = 7;
 		else if (Dbm <= -57)
 			nLed = 15;
-		else 
+		else
 			nLed = 31;
 
 		/* */
@@ -292,7 +292,7 @@ void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd)
 		pLedCntl->LedACTCfg= 0x2221;
 
 #ifdef RTMP_MAC_USB
-		pLedCntl->LedPolarity = 0x5627; 
+		pLedCntl->LedPolarity = 0x5627;
 #endif /* RTMP_MAC_USB */
 	}
 	

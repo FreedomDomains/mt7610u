@@ -103,7 +103,7 @@
 /* Default content protection bit */
 #define WFD_CONTENT_PROTECT_DEFAULT			WFD_CP_NOT_SUPPORT
 
-typedef	struct GNU_PACKED _WFD_DEVICE_INFO 
+typedef	struct GNU_PACKED _WFD_DEVICE_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	USHORT DeviceType:2;
@@ -141,7 +141,7 @@ typedef	struct GNU_PACKED _WFD_COUPLED_SINK_INFO
 }	WFD_COUPLED_SINK_INFO, *PWFD_COUPLED_SINK_INFO;
 
 
-typedef	struct GNU_PACKED _WFD_SESSION_INFO 
+typedef	struct GNU_PACKED _WFD_SESSION_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	UCHAR 					Length;
@@ -189,7 +189,7 @@ typedef struct _WFD_SERV_DISC_QUERY_INFO
 } WFD_SERV_DISC_QUERY_INFO, *PWFD_SERV_DISC_QUERY_INFO;
 
 /* Store for WFD Entry Configuration */
-typedef struct _WFD_ENTRY_INFO 
+typedef struct _WFD_ENTRY_INFO
 {
 	UCHAR 	bWfdClient;
 	UCHAR	wfd_devive_type;
@@ -213,7 +213,7 @@ typedef struct _WFD_ENTRY_INFO
 } WFD_ENTRY_INFO, *PWFD_ENTRY_INFO;
 
 /* Store for WFD Configuration */
-typedef struct _RT_WFD_CONFIG 
+typedef struct _RT_WFD_CONFIG
 {
 	BOOLEAN bWfdEnable;
 #ifdef RT_CFG80211_SUPPORT

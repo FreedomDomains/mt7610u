@@ -147,7 +147,7 @@ PSTRING rtstrstr(PSTRING s1,const PSTRING s2)
 	
 	return NULL;
 }
- 
+
 /**
  * rstrtok - Split a string into tokens
  * @s: The string to be searched
@@ -191,7 +191,7 @@ INT delimitcnt(PSTRING s,PSTRING ct)
 {
 	INT count = 0;
 	/* point to the beginning of the line */
-	PSTRING token = s; 
+	PSTRING token = s;
 
 	for ( ;; )
 	{
@@ -200,17 +200,17 @@ INT delimitcnt(PSTRING s,PSTRING ct)
         if ( token == NULL )
 		{
 			/* advanced to the terminating null character */
-			break; 
+			break;
 		}
 		/* skip the delimiter */
-	    ++token; 
+	    ++token;
 
 		/*
 		 * Print the found text: use len with %.*s to specify field width.
 		 */
-        
+
 		/* accumulate delimiter count */
-	    ++count; 
+	    ++count;
 	}
     return count;
 }
@@ -231,8 +231,8 @@ int rtinet_aton(PSTRING cp, unsigned int *addr)
 	for (;;)
     {
          /*
-          * Collect number up to ``.''. 
-          * Values are specified as for C: 
+          * Collect number up to ``.''.
+          * Values are specified as for C:
           *	0x=hex, 0=octal, other=decimal.
           */
          val = 0;
@@ -274,43 +274,43 @@ int rtinet_aton(PSTRING cp, unsigned int *addr)
          else
              break;
      }
- 
+
      /*
       * Check for trailing junk.
       */
      while (*cp)
          if (!isspace((unsigned char) *cp++))
              return 0;
- 
+
      /*
       * Concoct the address according to the number of parts specified.
       */
      n = pp - parts + 1;
      switch (n)
      {
- 
+
          case 1:         /* a -- 32 bits */
              break;
- 
+
          case 2:         /* a.b -- 8.24 bits */
              if (val > 0xffffff)
                  return 0;
              val |= parts[0] << 24;
              break;
- 
+
          case 3:         /* a.b.c -- 8.8.16 bits */
              if (val > 0xffff)
                  return 0;
              val |= (parts[0] << 24) | (parts[1] << 16);
              break;
- 
+
          case 4:         /* a.b.c.d -- 8.8.8.8 bits */
              if (val > 0xff)
                  return 0;
              val |= (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8);
              break;
      }
-	      
+	
      *addr = OS_HTONL(val);
      return 1;
 
@@ -353,7 +353,7 @@ PSTRING RTMPFindSection(
 
     Arguments:
 	key			Pointer to key string
-	dest			Pointer to destination      
+	dest			Pointer to destination
 	destsize		The datasize of the destination
 	buffer		Pointer to the buffer to start find the key
 	bTrimSpace	Set true if you want to strip the space character of the result pattern
@@ -455,7 +455,7 @@ INT RTMPGetKeyParameter(
 
     Arguments:
         key                         Pointer to key string
-        dest                        Pointer to destination      
+        dest                        Pointer to destination
         destsize                    The datasize of the destination
         buffer                      Pointer to the buffer to start find the key
 
@@ -469,7 +469,7 @@ INT RTMPGetKeyParameter(
 */
 INT RTMPGetKeyParameterWithOffset(
     IN  PSTRING   key,
-    OUT PSTRING   dest,   
+    OUT PSTRING   dest,
     OUT	USHORT	*end_offset,		
     IN  INT     destsize,
     IN  PSTRING   buffer,
@@ -558,7 +558,7 @@ INT RTMPGetKeyParameterWithOffset(
            break;
     }
 
-    len = strlen(ptr);    
+    len = strlen(ptr);
     memset(dest, 0x00, destsize);
     strncpy(dest, ptr, len >= destsize ?  destsize: len);
 
@@ -595,7 +595,7 @@ static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  PSTRING buf
 	    ((KeyType == 0) && (KeyLen != 10) && (KeyLen != 26)) ||
 	    ((KeyType== 1) && (KeyLen != 5) && (KeyLen != 13)))
 	{
-		DBGPRINT(RT_DEBUG_ERROR, ("Key%dStr is Invalid key length(%ld) or Type(%ld)\n", 
+		DBGPRINT(RT_DEBUG_ERROR, ("Key%dStr is Invalid key length(%ld) or Type(%ld)\n",
 								KeyIdx+1, KeyLen, KeyType));
 		return FALSE;
 	}
@@ -630,7 +630,7 @@ static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, PSTRING tmpbuf,
 			DBGPRINT(RT_DEBUG_TRACE, ("DefaultKeyID(0~3)=%d\n", pAd->StaCfg.DefaultKeyId));
 		}
 #endif /* CONFIG_STA_SUPPORT */		
-	}	   
+	}	
 
 
 	for (idx = 0; idx < 4; idx++)
@@ -799,7 +799,7 @@ static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 
 #ifdef DOT11_VHT_AC
 static void VHTParametersHook(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN PSTRING pValueStr,
 	IN PSTRING pInput)
 {
@@ -893,7 +893,7 @@ void demo_mode_cfg(RTMP_ADAPTER *pAd)
 
 #ifdef DOT11_N_SUPPORT
 static void HTParametersHook(
-	IN	PRTMP_ADAPTER pAd, 
+	IN	PRTMP_ADAPTER pAd,
 	IN	PSTRING		  pValueStr,
 	IN	PSTRING		  pInput)
 {
@@ -1090,9 +1090,9 @@ static void HTParametersHook(
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
-			pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode = 
+			pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode =
 										RT_CfgSetFixedTxPhyMode(pValueStr);
-			DBGPRINT(RT_DEBUG_TRACE, ("Fixed Tx Mode = %d\n", 
+			DBGPRINT(RT_DEBUG_TRACE, ("Fixed Tx Mode = %d\n",
 											pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode));			
 		}
 #endif /* CONFIG_STA_SUPPORT */
@@ -1381,7 +1381,7 @@ void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, PSTRING PassPh)
 
 	if ((pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPAPSK) &&
 		(pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPA2PSK) &&
-		(pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPANone) 
+		(pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPANone)
 		)
 	{
 		ret = FALSE;
@@ -1447,9 +1447,9 @@ NDIS_STATUS RecoverConnectInfo(
 	pAd->StaCfg.WepStatus = pAd->StaCtIf.WepStatus;
 #ifdef WPA_SUPPLICANT_SUPPORT
 	pAd->StaCfg.IEEE8021X = pAd->StaCtIf.IEEE8021X;
-	pAd->StaCfg.DesireSharedKeyId = pAd->StaCtIf.DefaultKeyId; 
+	pAd->StaCfg.DesireSharedKeyId = pAd->StaCtIf.DefaultKeyId;
 #endif // WPA_SUPPLICANT_SUPPORT //
-	pAd->StaCfg.DefaultKeyId = pAd->StaCtIf.DefaultKeyId; 
+	pAd->StaCfg.DefaultKeyId = pAd->StaCtIf.DefaultKeyId;
 	NdisMoveMemory( pAd->StaCfg.PMK, pAd->StaCtIf.PMK, 32);
 	RTMPMoveMemory(pAd->StaCfg.WpaPassPhrase, pAd->StaCtIf.WpaPassPhrase, pAd->StaCfg.WpaPassPhraseLen);
 	pAd->StaCfg.WpaPassPhraseLen = pAd->StaCtIf.WpaPassPhraseLen;
@@ -1494,9 +1494,9 @@ NDIS_STATUS StoreConnectInfo(
 	pAd->StaCtIf.AuthMode = pAd->StaCfg.AuthMode;
 	pAd->StaCtIf.WepStatus = pAd->StaCfg.WepStatus;
 
-	pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DefaultKeyId; 
+	pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DefaultKeyId;
 #ifdef WPA_SUPPLICANT_SUPPORT
-	pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DesireSharedKeyId; 
+	pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DesireSharedKeyId;
 	pAd->StaCtIf.IEEE8021X = pAd->StaCfg.IEEE8021X;
 #endif // WPA_SUPPLICANT_SUPPORT //
 	NdisMoveMemory(pAd->StaCtIf.PMK, pAd->StaCfg.PMK, 32);
@@ -1517,7 +1517,7 @@ NDIS_STATUS StoreConnectInfo(
 
 #endif /* CREDENTIAL_STORE */
 
-#endif /* CONFIG_STA_SUPPORT */ 
+#endif /* CONFIG_STA_SUPPORT */
 
 
 void RTMPSetCountryCode(RTMP_ADAPTER *pAd, PSTRING CountryCode)
@@ -1559,7 +1559,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		{					
 			retval = RT_CfgSetMacAddress(pAd, tmpbuf);
 			if (retval)
-				DBGPRINT(RT_DEBUG_TRACE, ("MacAddress = %02x:%02x:%02x:%02x:%02x:%02x\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("MacAddress = %02x:%02x:%02x:%02x:%02x:%02x\n",
 											PRINT_MAC(pAd->CurrentAddress)));
 		}
 		/*CountryRegion*/
@@ -1928,8 +1928,8 @@ NDIS_STATUS	RTMPSetProfileParameters(
 				{
 					int j;
 					if(strlen(tmpbuf) != 17)  /*Mac address acceptable format 01:02:03:04:05:06 length 17*/
-						continue; 
-	    							    
+						continue;
+	    							
 					for (j=0; j<ETH_LENGTH_OF_ADDRESS; j++)
 					{
 						AtoH(tmpbuf, &pAd->CommonCfg.StreamModeMac[i][j], 1);
@@ -2062,7 +2062,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 							else if ((strcmp(tmpbuf, "WPA") == 0) || (strcmp(tmpbuf, "wpa") == 0))
 			                    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA;
 							else if ((strcmp(tmpbuf, "WPA2") == 0) || (strcmp(tmpbuf, "wpa2") == 0))
-							    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;  
+							    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	                        else
 	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeOpen;
@@ -2077,7 +2077,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		if(RTMPGetKeyParameter("EncrypType", tmpbuf, 128, pBuffer, TRUE))
 		{
 
-#ifdef CONFIG_STA_SUPPORT 
+#ifdef CONFIG_STA_SUPPORT
 			IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 			{
 				if ((strcmp(tmpbuf, "WEP") == 0) || (strcmp(tmpbuf, "wep") == 0))
@@ -2085,7 +2085,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 				else if ((strcmp(tmpbuf, "TKIP") == 0) || (strcmp(tmpbuf, "tkip") == 0))
 					pAd->StaCfg.WepStatus	= Ndis802_11Encryption2Enabled;													
 				else if ((strcmp(tmpbuf, "AES") == 0) || (strcmp(tmpbuf, "aes") == 0))
-					pAd->StaCfg.WepStatus	= Ndis802_11Encryption3Enabled;														 
+					pAd->StaCfg.WepStatus	= Ndis802_11Encryption3Enabled;														
 				else
 					pAd->StaCfg.WepStatus	= Ndis802_11WEPDisabled;													
 				RTMPSetSTACipherSuites(pAd, pAd->StaCfg.WepStatus);
@@ -2170,7 +2170,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 								pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeMAX_PSP;
 								pAd->StaCfg.DefaultListenCount = 5;
 							}							
-							else if ((strcmp(tmpbuf, "Fast_PSP") == 0) || (strcmp(tmpbuf, "fast_psp") == 0) 
+							else if ((strcmp(tmpbuf, "Fast_PSP") == 0) || (strcmp(tmpbuf, "fast_psp") == 0)
 								|| (strcmp(tmpbuf, "FAST_PSP") == 0))
 							{
 								/* do NOT turn on PSM bit here, wait until MlmeCheckForPsmChange()*/
@@ -2181,7 +2181,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 								pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeFast_PSP;
 								pAd->StaCfg.DefaultListenCount = 3;
 							}
-							else if ((strcmp(tmpbuf, "Legacy_PSP") == 0) || (strcmp(tmpbuf, "legacy_psp") == 0) 
+							else if ((strcmp(tmpbuf, "Legacy_PSP") == 0) || (strcmp(tmpbuf, "legacy_psp") == 0)
 								|| (strcmp(tmpbuf, "LEGACY_PSP") == 0))
 							{
 								/* do NOT turn on PSM bit here, wait until MlmeCheckForPsmChange()*/
@@ -2221,14 +2221,14 @@ NDIS_STATUS	RTMPSetProfileParameters(
 
 						if (lInfo > 90 || lInfo < 60)
 							pAd->StaCfg.dBmToRoam = -70;
-						else    
+						else
 							pAd->StaCfg.dBmToRoam = (CHAR)(-1)*lInfo;
 
 						DBGPRINT(RT_DEBUG_TRACE, ("RoamThreshold=%d  dBm\n", pAd->StaCfg.dBmToRoam));
 					}
 
 		
-						 
+						
 
 					if(RTMPGetKeyParameter("TGnWifiTest", tmpbuf, 10, pBuffer, TRUE))
 					{				
@@ -2402,8 +2402,8 @@ BOOLEAN RTMP_CardInfoRead(
 	RT28xx_EEPROM_READ16(pAd, EEPROM_NIC1_OFFSET, antenna.word);
 
 	if ((antenna.field.RfIcType == RFIC_2850) ||
-		(antenna.field.RfIcType == RFIC_2750) || 
-		(antenna.field.RfIcType == RFIC_2853) || 
+		(antenna.field.RfIcType == RFIC_2750) ||
+		(antenna.field.RfIcType == RFIC_2853) ||
 		(antenna.field.RfIcType == RFIC_3853) ||
 		(antenna.field.RfIcType == RFIC_7650) ||
 		(antenna.field.RfIcType == RFIC_7610U) ||
@@ -2440,7 +2440,7 @@ BOOLEAN RTMP_CardInfoRead(
 	RtmpOSFSInfoChange(&osFSInfo, TRUE);
 	/* open card information file*/
 	srcf = RtmpOSFileOpen(CARD_INFO_PATH, O_RDONLY, 0);
-	if (IS_FILE_OPEN_ERR(srcf)) 
+	if (IS_FILE_OPEN_ERR(srcf))
 	{
 		/* card information file does not exist */
 			DBGPRINT(RT_DEBUG_TRACE,
@@ -2720,7 +2720,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 	RtmpOSFSInfoChange(&osFSInfo, TRUE);
 	/* open card information file*/
 	srcf = RtmpOSFileOpen(SINGLE_SKU_TABLE_FILE_NAME, O_RDONLY, 0);
-	if (IS_FILE_OPEN_ERR(srcf)) 
+	if (IS_FILE_OPEN_ERR(srcf))
 	{
 		/* card information file does not exist */
 			DBGPRINT(RT_DEBUG_TRACE,

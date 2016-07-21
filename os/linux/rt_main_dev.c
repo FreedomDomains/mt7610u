@@ -250,7 +250,7 @@ Note:
 ========================================================================
 */
 int rt28xx_open(VOID *dev)
-{				 
+{				
 	struct net_device * net_dev = (struct net_device *)dev;
 	VOID *pAd = NULL;
 	int retval = 0;
@@ -462,7 +462,7 @@ PNET_DEV RtmpPhyNetDevInit(
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24)
 	SET_MODULE_OWNER(net_dev);
-#endif 
+#endif
 
 
 
@@ -497,7 +497,7 @@ VOID *RtmpNetEthConvertDevSearch(
 #else
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,22)
 		for_each_netdev(pNetDev)
-#else 
+#else
 	for (pNetDev = dev_base; pNetDev; pNetDev = pNetDev->next)
 #endif
 #endif
@@ -525,8 +525,8 @@ Return Value:
     0					
 
 Note:
-	This function is the entry point of Tx Path for Os delivery packet to 
-	our driver. You only can put OS-depened & STA/AP common handle procedures 
+	This function is the entry point of Tx Path for Os delivery packet to
+	our driver. You only can put OS-depened & STA/AP common handle procedures
 	in here.
 ========================================================================
 */
@@ -563,7 +563,7 @@ Note:
 ========================================================================
 */
 static int rt28xx_send_packets(
-	IN struct sk_buff *skb_p, 
+	IN struct sk_buff *skb_p,
 	IN struct net_device *net_dev)
 {
 	if (!(RTMP_OS_NETDEV_STATE_RUNNING(net_dev)))
@@ -622,8 +622,8 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 
 
 INT rt28xx_ioctl(
-	IN PNET_DEV net_dev, 
-	INOUT struct ifreq	*rq, 
+	IN PNET_DEV net_dev,
+	INOUT struct ifreq	*rq,
 	IN INT cmd)
 {
 	VOID *pAd = NULL;
@@ -682,7 +682,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 	if (pAd)
 	{
 		RT_CMD_STATS DrvStats, *pDrvStats = &DrvStats;
- 
+
 
 		//assign net device for RTMP_DRIVER_INF_STATS_GET()
 		pDrvStats->pNetDev = net_dev;
@@ -730,7 +730,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 
 
 BOOLEAN RtmpPhyNetDevExit(
-	IN VOID			*pAd, 
+	IN VOID			*pAd,
 	IN PNET_DEV		net_dev)
 {
 
@@ -773,7 +773,7 @@ int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 
 
 
-	return retval; 
+	return retval;
 	
 }
 
@@ -832,21 +832,21 @@ struct net_device_stats *RT28xx_get_wds_ether_stats(
 
 	  		pStats->multicast = pWdsStats->multicast; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.MulticastReceivedFrameCount.QuadPart;   // multicast packets received */
 	  		pStats->collisions = pWdsStats->collisions; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.OneCollision + pAd->WdsTab.WdsEntry[index].WdsCounter.MoreCollisions;  // Collision packets */
-	  
+	
 	  		pStats->rx_length_errors = 0;
 	  		pStats->rx_over_errors = pWdsStats->rx_over_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // receiver ring buff overflow */
 	  		pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
 	  		pStats->rx_frame_errors = pWdsStats->rx_frame_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RcvAlignmentErrors;          // recv'd frame alignment error */
 	  		pStats->rx_fifo_errors = pWdsStats->rx_fifo_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // recv'r fifo overrun */
 	  		pStats->rx_missed_errors = 0;                                            /* receiver missed packet */
-	  
+	
 	  		    /* detailed tx_errors */
 	  		pStats->tx_aborted_errors = 0;
 	  		pStats->tx_carrier_errors = 0;
 	  		pStats->tx_fifo_errors = 0;
 	  		pStats->tx_heartbeat_errors = 0;
 	  		pStats->tx_window_errors = 0;
-	  
+	
 	  		    /* for cslip etc */
 	  		pStats->rx_compressed = 0;
 	  		pStats->tx_compressed = 0;

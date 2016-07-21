@@ -57,7 +57,7 @@ VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
 VOID RT28xx_ChipSwitchChannel(
 	IN PRTMP_ADAPTER 			pAd,
 	IN UCHAR					Channel,
-	IN BOOLEAN					bScan) 
+	IN BOOLEAN					bScan)
 {
 	CHAR    TxPwer = 0, TxPwer2 = DEFAULT_RF_TX_POWER; /*Bbp94 = BBPR94_DEFAULT, TxPwer2 = DEFAULT_RF_TX_POWER;*/
 	UCHAR	index;
@@ -71,7 +71,7 @@ VOID RT28xx_ChipSwitchChannel(
 
 	/* Search Tx power value*/
 	/*
-		We can't use ChannelList to search channel, since some central channl's txpowr doesn't list 
+		We can't use ChannelList to search channel, since some central channl's txpowr doesn't list
 		in ChannelList, so use TxPower array instead.
 	*/
 	for (index = 0; index < MAX_NUM_OF_CHANNELS; index++)
@@ -154,7 +154,7 @@ VOID RT28xx_ChipSwitchChannel(
 						{
 							TxPwer2 = (TxPwer2 > 0xF) ? (0xF) : (TxPwer2);
 							R4 |= (TxPwer2 << 7) | (1 << 6);
-						}                        
+						}
 					}
 					else
 					{
@@ -203,14 +203,14 @@ VOID RT28xx_ChipSwitchChannel(
 			}
 
 			DBGPRINT(RT_DEBUG_TRACE, ("SwitchChannel#%d(RF=%d, Pwr0=%lu, Pwr1=%lu, %dT) to , R1=0x%08x, R2=0x%08x, R3=0x%08x, R4=0x%08x\n",
-										Channel, 
-										pAd->RfIcType, 
+										Channel,
+										pAd->RfIcType,
 										(R3 & 0x00003e00) >> 9,
 										(R4 & 0x000007c0) >> 6,
 										pAd->Antenna.field.TxPath,
-										pAd->LatchRfRegs.R1, 
-										pAd->LatchRfRegs.R2, 
-										pAd->LatchRfRegs.R3, 
+										pAd->LatchRfRegs.R1,
+										pAd->LatchRfRegs.R2,
+										pAd->LatchRfRegs.R3,
 										pAd->LatchRfRegs.R4));
 			break;
 
@@ -265,7 +265,7 @@ VOID RT28xx_ChipSwitchChannel(
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R62, (0x37 - lan_gain));
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R63, (0x37 - lan_gain));
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R64, (0x37 - lan_gain));
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0); /*(0x44 - lan_gain));   According the Rory's suggestion to solve the middle range issue.  */   
+		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0); /*(0x44 - lan_gain));   According the Rory's suggestion to solve the middle range issue.  */
 
 		/* Set the BBP_R82 value here */
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R82, 0xF2);
@@ -288,11 +288,11 @@ VOID RT28xx_ChipSwitchChannel(
 
 	/*
 		On 11A, We should delay and wait RF/BBP to be stable
-		and the appropriate time should be 1000 micro seconds 
+		and the appropriate time should be 1000 micro seconds
 		005/06/05 - On 11G, We also need this delay time. Otherwise it's difficult to pass the WHQL.
 
 	*/
-	RTMPusecDelay(1000);  
+	RTMPusecDelay(1000);
 }
 
 #endif /*RT28xx */

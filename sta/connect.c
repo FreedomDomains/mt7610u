@@ -163,12 +163,12 @@ VOID MlmeCntlMachinePerformAction(
 			/* scan completed, init to not FastScan */
 			pAd->StaCfg.bImprovedScan = FALSE;
 
-			if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) && (INFRA_ON(pAd)) 
+			if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) && (INFRA_ON(pAd))
 				&& ((pAd->LatchRfRegs.Channel == pAd->CommonCfg.Channel) ||(pAd->LatchRfRegs.Channel == pAd->CommonCfg.CentralChannel))
 )
 			{
-				RTMPSendNullFrame(pAd, 
-					pAd->CommonCfg.TxRate, 
+				RTMPSendNullFrame(pAd,
+					pAd->CommonCfg.TxRate,
 					(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? TRUE:FALSE),
 					PWR_ACTIVE);
 
@@ -213,8 +213,8 @@ VOID MlmeCntlMachinePerformAction(
 				if (Status == MLME_SUCCESS)
 				{
 					{
-						/* 
-							Maintain Scan Table 
+						/*
+							Maintain Scan Table
 							MaxBeaconRxTimeDiff: 120 seconds
 							MaxSameBeaconRxTimeCount: 1
 						*/
@@ -236,8 +236,8 @@ VOID MlmeCntlMachinePerformAction(
 	case CNTL_WAIT_OID_DISASSOC:
 		if (Elem->MsgType == MT2_DISASSOC_CONF) {
 			LinkDown(pAd, FALSE);
-/* 
-for android system , if connect ap1 and want to change to ap2 , 
+/*
+for android system , if connect ap1 and want to change to ap2 ,
 when disassoc from ap1 ,and send even_scan will direct connect to ap2 , not need to wait ui to scan and connect
 */
 			pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
@@ -428,7 +428,7 @@ VOID CntlOidSsidProc(
 	pAd->MlmeAux.AutoReconnectSsidLen = pAd->MlmeAux.SsidLen;
 
 	/*
-		step 2. 
+		step 2.
 		find all matching BSS in the lastest SCAN result (inBssTab)
 		and log them into MlmeAux.SsidBssTab for later-on iteration. Sort by RSSI order
 	*/
@@ -461,7 +461,7 @@ VOID CntlOidSsidProc(
 		    ) &&
 		    (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED)) {
 			/*
-				case 1.1 For WPA, WPA-PSK, 
+				case 1.1 For WPA, WPA-PSK,
 				if port is not secured, we have to redo connection process
 			*/
 			DBGPRINT(RT_DEBUG_TRACE,
@@ -1552,7 +1552,7 @@ VOID LinkUp(
 #endif /* DOT11_N_SUPPORT */
 
 	/*
-		We cannot move AsicSetBssid to PeerBeaconAtJoinAction because 
+		We cannot move AsicSetBssid to PeerBeaconAtJoinAction because
 		PeerBeaconAtJoinAction wouldn't be invoked in roaming case.
 	*/
 		AsicSetBssid(pAd, pAd->CommonCfg.Bssid);
@@ -1568,7 +1568,7 @@ VOID LinkUp(
 
 
 	/*
-		Call this for RTS protectionfor legacy rate, we will always enable RTS threshold, 
+		Call this for RTS protectionfor legacy rate, we will always enable RTS threshold,
 		but normally it will not hit
 	*/
 	AsicUpdateProtect(pAd, 0, (OFDMSETPROTECT | CCKSETPROTECT), TRUE, FALSE);
@@ -1603,7 +1603,7 @@ VOID LinkUp(
 
 	pAd->Dot11_H.RDMode = RD_NORMAL_MODE;
 
-	if (pAd->StaCfg.WepStatus <= Ndis802_11WEPDisabled) 
+	if (pAd->StaCfg.WepStatus <= Ndis802_11WEPDisabled)
 	{
 #ifdef WPA_SUPPLICANT_SUPPORT
 		if (pAd->StaCfg.WpaSupplicantUP &&
@@ -1624,7 +1624,7 @@ VOID LinkUp(
 		    && (pAd->CommonCfg.bIEEE80211H == 1)
 		    && RadarChannelCheck(pAd, pAd->CommonCfg.Channel)) {
 			;	/*Do nothing */
-		} 
+		}
 		else
 		{
 			AsicEnableIbssSync(pAd);
@@ -1734,8 +1734,8 @@ VOID LinkUp(
 			RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_CAN_GO_SLEEP);
 #endif /* PCIE_PS_SUPPORT */
 /*
- 		 for dhcp,issue ,wpa_supplicant ioctl too fast , at link_up, it will add key before driver remove key  
-		 move to assoc.c 
+ 		 for dhcp,issue ,wpa_supplicant ioctl too fast , at link_up, it will add key before driver remove key
+		 move to assoc.c
  */
 /*			RTMPWPARemoveAllKeys(pAd);*/
 			pAd->StaCfg.PortSecured = WPA_802_1X_PORT_NOT_SECURED;
@@ -1768,8 +1768,8 @@ VOID LinkUp(
 			AsicEnableBssSync(pAd);
 
 
-		/* 
-			Add BSSID to WCID search table 
+		/*
+			Add BSSID to WCID search table
 			We cannot move this to PeerBeaconAtJoinAction because PeerBeaconAtJoinAction wouldn't be invoked in roaming case.
 		*/		
 		AsicUpdateRxWCIDTable(pAd, BSSID_WCID, pAd->CommonCfg.Bssid);
@@ -1811,11 +1811,11 @@ VOID LinkUp(
 			}
 		}
 		/* For GUI ++ */
-		if (pAd->StaCfg.AuthMode < Ndis802_11AuthModeWPA) 
+		if (pAd->StaCfg.AuthMode < Ndis802_11AuthModeWPA)
 		{
 #ifdef WPA_SUPPLICANT_SUPPORT
-			if (((pAd->StaCfg.WpaSupplicantUP) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) && (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED)) 
-				|| ((pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled)) 
+			if (((pAd->StaCfg.WpaSupplicantUP) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) && (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED))
+				|| ((pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled))
 				|| (pAd->StaCfg.WepStatus == Ndis802_11WEPDisabled))
 #endif /* WPA_SUPPLICANT_SUPPORT */
 			{
@@ -2094,7 +2094,7 @@ VOID LinkUp(
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 	/*
-	   When AuthMode is WPA2-Enterprise and AP reboot or STA lost AP, 
+	   When AuthMode is WPA2-Enterprise and AP reboot or STA lost AP,
 	   WpaSupplicant would not send EapolStart to AP after STA re-connect to AP again.
 	   In this case, driver would send EapolStart to AP.
 	 */
@@ -2139,7 +2139,7 @@ VOID LinkUp(
 		If yes! we need to do extra handling, for example, remove the WPA key.
 		Otherwise on 4-way handshaking will faied, since the WPA key didn't be
 		remove while auto reconnect.
-		Disconnect request from AP, it means we will start afresh 4-way handshaking 
+		Disconnect request from AP, it means we will start afresh 4-way handshaking
 		on WPA mode.
 
 	==========================================================================
@@ -3022,7 +3022,7 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("%s():BW_%s, CtrlChannel=%d, CentralChannel=%d\n",
 		  __FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
-		  pAd->CommonCfg.Channel, 
+		  pAd->CommonCfg.Channel,
 		  pAd->CommonCfg.CentralChannel));
 
 	/* Save BBP_R66 value, it will be used in RTUSBResumeMsduTransmission */
@@ -3041,7 +3041,7 @@ VOID MaintainBssTable(
 	BOOLEAN	bDelEntry = FALSE;
 	ULONG	now_time = 0;
 
-	for (i = 0; i < total_bssNr; i++) 
+	for (i = 0; i < total_bssNr; i++)
 	{
 		PBSS_ENTRY	pBss = &Tab->BssEntry[i];
 
@@ -3075,8 +3075,8 @@ VOID MaintainBssTable(
 				if (pOldAddr)
 				{
 					RTMPZeroMemory(pOldAddr, MAX_VIE_LEN);
-					NdisMoveMemory(pOldAddr, 
-								   Tab->BssEntry[j + 1].pVarIeFromProbRsp, 
+					NdisMoveMemory(pOldAddr,
+								   Tab->BssEntry[j + 1].pVarIeFromProbRsp,
 								   Tab->BssEntry[j + 1].VarIeFromProbeRspLen);
 					Tab->BssEntry[j].pVarIeFromProbRsp = pOldAddr;
 				}
@@ -3127,7 +3127,7 @@ VOID AdjustChannelRelatedValue(
 		rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_ABOVE;
-	} 
+	}
 	else if ((pAd->CommonCfg.CentralChannel < pAd->CommonCfg.Channel) && (BandWidth == BW_40))
 	{
 		rf_channel = pAd->CommonCfg.CentralChannel;

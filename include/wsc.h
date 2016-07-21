@@ -92,7 +92,7 @@ static inline BOOLEAN WscCheckWSCHeader(
 		/* Wrong WSC SMI Vendor ID, Update WSC status */
 		return  FALSE;
 	}
-    
+
     /* Verify Vendor Type */
 	if (cpu2be32(get_unaligned32(&pWsc->VendorType)) != WSC_VENDOR_TYPE)
 	{

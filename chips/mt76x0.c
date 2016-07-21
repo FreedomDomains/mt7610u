@@ -352,7 +352,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
 	/*
 		XO
 	*/
-	{RF_BANK0,	RF_R08, 0x00}, 
+	{RF_BANK0,	RF_R08, 0x00},
 	{RF_BANK0,	RF_R09, 0x00},
 	{RF_BANK0,	RF_R10, 0x0C},
 	{RF_BANK0,	RF_R11, 0x00},
@@ -368,7 +368,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
 	/*
 		LDO
 	*/
-	{RF_BANK0,	RF_R19, 0x20}, 
+	{RF_BANK0,	RF_R19, 0x20},
 	/*
 		XO
 	*/
@@ -1131,7 +1131,7 @@ VOID InitFce(
 	Select 2.4/5GHz band
 */
 VOID SelectBandMT76x0(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel)
 {
 	if (!IS_MT76x0(pAd))
@@ -1143,11 +1143,11 @@ VOID SelectBandMT76x0(
 	
 	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
 
-	if (Channel <= 14) 
+	if (Channel <= 14)
 	{
 
 		/*
-			Select 2.4GHz 
+			Select 2.4GHz
 		*/
 		RF_RANDOM_WRITE(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
 
@@ -1162,7 +1162,7 @@ VOID SelectBandMT76x0(
 	else
 	{
 		/*
-			Select 5GHz 
+			Select 5GHz
 		*/
 		RF_RANDOM_WRITE(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
 
@@ -1189,7 +1189,7 @@ VOID SelectBandMT76x0(
 	Pll_idiv: frac comp R35[6:0]
 */
 VOID SetRfChFreqParametersMT76x0(
-	IN PRTMP_ADAPTER pAd, 
+	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel)
 {
 	UINT32 i = 0, RfBand = 0, MacReg = 0;
@@ -1225,7 +1225,7 @@ VOID SetRfChFreqParametersMT76x0(
 			else
 				pMT76x0_freq_item = &(MT76x0_Frequency_Plan[i]);
 
-			/* 
+			/*
 				R37
 			*/
 			rlt_rf_write(pAd, RF_BANK0, RF_R37, pMT76x0_freq_item->pllR37);
@@ -1410,7 +1410,7 @@ VOID SetRfChFreqParametersMT76x0(
 	{
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[i].BwBand)
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_BW_Switch[i].Bank,
 						MT76x0_RF_BW_Switch[i].Register,
 						MT76x0_RF_BW_Switch[i].Value);
@@ -1418,7 +1418,7 @@ VOID SetRfChFreqParametersMT76x0(
 		else if ((pAd->CommonCfg.BBPCurrentBW == (MT76x0_RF_BW_Switch[i].BwBand & 0xFF)) &&
 				 (RfBand & MT76x0_RF_BW_Switch[i].BwBand))
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_BW_Switch[i].Bank,
 						MT76x0_RF_BW_Switch[i].Register,
 						MT76x0_RF_BW_Switch[i].Value);
@@ -1429,7 +1429,7 @@ VOID SetRfChFreqParametersMT76x0(
 	{
 		if (MT76x0_RF_Band_Switch[i].BwBand & RfBand)
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_Band_Switch[i].Bank,
 						MT76x0_RF_Band_Switch[i].Register,
 						MT76x0_RF_Band_Switch[i].Value);
@@ -1450,13 +1450,13 @@ VOID SetRfChFreqParametersMT76x0(
 	{
 			if (MT76x0_RF_INT_PA_RegTb[i].BwBand & RfBand)
 			{
-				rlt_rf_write(pAd, 
+				rlt_rf_write(pAd,
 							MT76x0_RF_INT_PA_RegTb[i].Bank,
 							MT76x0_RF_INT_PA_RegTb[i].Register,
 							MT76x0_RF_INT_PA_RegTb[i].Value);
 
-				DBGPRINT(RT_DEBUG_INFO, ("%s: INT_PA_RegTb - B%d.R%02d = 0x%02x\n", 
-							__FUNCTION__, 
+				DBGPRINT(RT_DEBUG_INFO, ("%s: INT_PA_RegTb - B%d.R%02d = 0x%02x\n",
+							__FUNCTION__,
 							MT76x0_RF_INT_PA_RegTb[i].Bank,
 							MT76x0_RF_INT_PA_RegTb[i].Register,
 							MT76x0_RF_INT_PA_RegTb[i].Value));
@@ -1488,13 +1488,13 @@ VOID SetRfChFreqParametersMT76x0(
 		{
 			if (MT76x0_RF_EXT_PA_RegTb[i].BwBand & RfBand)
 			{
-				rlt_rf_write(pAd, 
+				rlt_rf_write(pAd,
 							MT76x0_RF_EXT_PA_RegTb[i].Bank,
 							MT76x0_RF_EXT_PA_RegTb[i].Register,
 							MT76x0_RF_EXT_PA_RegTb[i].Value);
 
-				DBGPRINT(RT_DEBUG_INFO, ("%s: EXT_PA_RegTb - B%d.R%02d = 0x%02x\n", 
-							__FUNCTION__, 
+				DBGPRINT(RT_DEBUG_INFO, ("%s: EXT_PA_RegTb - B%d.R%02d = 0x%02x\n",
+							__FUNCTION__,
 							MT76x0_RF_EXT_PA_RegTb[i].Bank,
 							MT76x0_RF_EXT_PA_RegTb[i].Register,
 							MT76x0_RF_EXT_PA_RegTb[i].Value));
@@ -1541,7 +1541,7 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 	{
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[IdReg].BwBand)
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_BW_Switch[IdReg].Bank,
 						MT76x0_RF_BW_Switch[IdReg].Register,
 						MT76x0_RF_BW_Switch[IdReg].Value);
@@ -1549,7 +1549,7 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 		else if ((BW_20 == (MT76x0_RF_BW_Switch[IdReg].BwBand & 0xFF)) &&
 				 (RF_G_BAND & MT76x0_RF_BW_Switch[IdReg].BwBand))
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_BW_Switch[IdReg].Bank,
 						MT76x0_RF_BW_Switch[IdReg].Register,
 						MT76x0_RF_BW_Switch[IdReg].Value);
@@ -1560,7 +1560,7 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 	{
 		if (MT76x0_RF_Band_Switch[IdReg].BwBand & RF_G_BAND)
 		{
-			rlt_rf_write(pAd, 
+			rlt_rf_write(pAd,
 						MT76x0_RF_Band_Switch[IdReg].Bank,
 						MT76x0_RF_Band_Switch[IdReg].Register,
 						MT76x0_RF_Band_Switch[IdReg].Value);
@@ -1570,7 +1570,7 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 	/*
 		Frequency calibration
 		E1: B0.R22<6:0>: xo_cxo<6:0>
-		E2: B0.R21<0>: xo_cxo<0>, B0.R22<7:0>: xo_cxo<8:1> 
+		E2: B0.R21<0>: xo_cxo<0>, B0.R22<7:0>: xo_cxo<8:1>
 	*/
 	RFValue = (UCHAR)(pAd->RfFreqOffset & 0xFF);
 	RFValue = min(RFValue, (UCHAR)0xBF); /* Max of 9-bit built-in crystal oscillator C1 code */
@@ -1579,7 +1579,7 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 	rlt_rf_read(pAd, RF_BANK0, RF_R22, &RFValue);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: B0.R22 = 0x%02x\n", __FUNCTION__, RFValue));
 
-	/* 
+	/*
 		Reset the DAC (Set B0.R73<7>=1, then set B0.R73<7>=0, and then set B0.R73<7>) during power up.
 	*/
 	rlt_rf_read(pAd, RF_BANK0, RF_R73, &RFValue);
@@ -1590,11 +1590,11 @@ static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 	RFValue |= 0x80;
 	rlt_rf_write(pAd, RF_BANK0, RF_R73, RFValue);	
 
-	/* 
-		vcocal_en (initiate VCO calibration (reset after completion)) - It should be at the end of RF configuration. 
+	/*
+		vcocal_en (initiate VCO calibration (reset after completion)) - It should be at the end of RF configuration.
 	*/
 	rlt_rf_read(pAd, RF_BANK0, RF_R04, &RFValue);
-	RFValue = ((RFValue & ~0x80) | 0x80); 
+	RFValue = ((RFValue & ~0x80) | 0x80);
 	rlt_rf_write(pAd, RF_BANK0, RF_R04, RFValue);
 	return;
 }
@@ -1633,7 +1633,7 @@ static VOID NICInitMT76x0MacRegisters(RTMP_ADAPTER *pAd)
 
 #ifdef HDR_TRANS_TX_SUPPORT
 	/*
-		Enable Header Translation TX 
+		Enable Header Translation TX
 	*/
 	RTMP_IO_READ32(pAd, HEADER_TRANS_CTRL_REG, &MacReg);
 	MacReg |= 0x1; /* 0x1: TX, 0x2: RX */
@@ -1928,8 +1928,8 @@ static VOID MT76x0_ChipSwitchChannel(
 		}
 	}
 
-	/* 
-		VCO calibration (mode 3) 
+	/*
+		VCO calibration (mode 3)
 	*/
 	MT76x0_VCO_CalibrationMode3(pAd, Channel);
 		
@@ -1969,10 +1969,10 @@ static VOID MT76x0_ChipSwitchChannel(
 		
 		if ((pAd->DefaultTargetPwr == 0x00) || (pAd->DefaultTargetPwr == 0xFF)) {
 			pAd->DefaultTargetPwr = 0x20;
-			DBGPRINT(RT_DEBUG_ERROR, ("%s: get target power error. Use default target power = 0x%x\n", 
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: get target power error. Use default target power = 0x%x\n",
 					__FUNCTION__, pAd->DefaultTargetPwr));
 		} else {
-			DBGPRINT(RT_DEBUG_TRACE, ("%s: DefaultTargetPwr = %d\n", 
+			DBGPRINT(RT_DEBUG_TRACE, ("%s: DefaultTargetPwr = %d\n",
 					__FUNCTION__, pAd->DefaultTargetPwr));
 		}
 
@@ -1993,7 +1993,7 @@ static VOID MT76x0_ChipSwitchChannel(
 				pAd->DefaultTargetPwr -= (delta_power & 0x3F);
 		}
 
-		DBGPRINT(RT_DEBUG_TRACE, ("DefaultTargetPwr = 0x%x, delta_power = 0x%x\n", 
+		DBGPRINT(RT_DEBUG_TRACE, ("DefaultTargetPwr = 0x%x, delta_power = 0x%x\n",
 			pAd->DefaultTargetPwr, delta_power));
 		
 		SkuBasePwr = MT76x0_GetSkuChannelBasePwr(pAd, Channel);
@@ -2011,7 +2011,7 @@ static VOID MT76x0_ChipSwitchChannel(
 		RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &RegValue);
 		RegValue = (RegValue & ~0x3F) | (ChannelPwrAdj & 0x3F);
 		RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, RegValue);
-		DBGPRINT(RT_DEBUG_TRACE, ("SkuBasePwr = 0x%x,  DefaultTargetPwr = 0x%x, ChannelPwrAdj = 0x%x(%d), 0x13B4: 0x%x\n", 
+		DBGPRINT(RT_DEBUG_TRACE, ("SkuBasePwr = 0x%x,  DefaultTargetPwr = 0x%x, ChannelPwrAdj = 0x%x(%d), 0x13B4: 0x%x\n",
 			SkuBasePwr, pAd->DefaultTargetPwr, ChannelPwrAdj, ChannelPwrAdj, RegValue));
 
 		MT76x0_UpdateSkuPwr(pAd, Channel);
@@ -2028,7 +2028,7 @@ static VOID MT76x0_ChipSwitchChannel(
 		RTMP_IO_WRITE32(pAd, XIFS_TIME_CFG, 0x33a41010);
 	} else {
 		RTMP_IO_WRITE32(pAd, XIFS_TIME_CFG, 0x33a4100A);
-	} 
+	}
 
 	RTMP_GetCurrentSystemTick(&New);
 	Diff = (New - Old) * 1000 / OS_HZ;
@@ -2203,24 +2203,24 @@ VOID MT76x0_AsicExtraPowerOverMAC(
 	UINT32 ExtraPwrOverMAC = 0;
 	UINT32 ExtraPwrOverTxPwrCfg7 = 0, ExtraPwrOverTxPwrCfg8 = 0, ExtraPwrOverTxPwrCfg9 = 0;
 
-	/* 
-		For OFDM_54 and HT_MCS_7, extra fill the corresponding register value into MAC 0x13D4 
+	/*
+		For OFDM_54 and HT_MCS_7, extra fill the corresponding register value into MAC 0x13D4
 		bit 21:16 -> HT/VHT MCS 7
 		bit 5:0 -> OFDM 54
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &ExtraPwrOverMAC);  
+	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for OFDM 54 */
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);  
+	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) << 8; /* Get Tx power for HT MCS 7 */			
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
 
-	/*  
-		For HT_MCS_15, extra fill the corresponding register value into MAC 0x13D8 
+	/*
+		For HT_MCS_15, extra fill the corresponding register value into MAC 0x13D8
 		bit 29:24 -> VHT 1SS MCS 9
 		bit 21:16 -> VHT 1SS MCS 8
 		bit 5:0 -> HT MCS 15
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);  
+	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);
 #ifdef DOT11_VHT_AC
 	ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */	
 #else
@@ -2228,15 +2228,15 @@ VOID MT76x0_AsicExtraPowerOverMAC(
 #endif /* DOT11_VHT_AC */
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
 
-	/* 
-		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC 
+	/*
+		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC
 		bit 5:0 -> STBC MCS 7
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);  
+	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg9 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for STBC MCS 7 */
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
 
-	DBGPRINT(RT_DEBUG_INFO, ("0x13D4 = 0x%08X, 0x13D8 = 0x%08X, 0x13D4 = 0x%08X\n", 
+	DBGPRINT(RT_DEBUG_INFO, ("0x13D4 = 0x%08X, 0x13D8 = 0x%08X, 0x13D4 = 0x%08X\n",
 			(UINT)ExtraPwrOverTxPwrCfg7, (UINT)ExtraPwrOverTxPwrCfg8, (UINT)ExtraPwrOverTxPwrCfg9));	
 }
 
@@ -2382,18 +2382,18 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	bw40_gband_delta = 0;
 #endif /* SINGLE_SKU_V2 */
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_gband_bw40_delta = %d, bw40_gband_delta = %d\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_gband_bw40_delta = %d, bw40_gband_delta = %d\n",
 		__FUNCTION__, dec_gband_bw40_delta, bw40_gband_delta));	
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_aband_bw40_delta = %d, bw40_aband_delta = %d\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_aband_bw40_delta = %d, bw40_aband_delta = %d\n",
 		__FUNCTION__, dec_aband_bw40_delta, bw40_aband_delta));
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_aband_bw80_delta = %d, bw80_aband_delta = %d\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_aband_bw80_delta = %d, bw80_aband_delta = %d\n",
 		__FUNCTION__, dec_aband_bw80_delta, bw80_aband_delta));
 
 	RT28xx_EEPROM_READ16(pAd, 0xDE, e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
 	RT28xx_EEPROM_READ16(pAd, 0xE0, e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> OFDM 12M/18M
 		bit 21:16 -> OFDM 6M/9M
 		bit 13:8 -> CCK 5.5M/11M
@@ -2402,7 +2402,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = (e2p_val2 << 16) | e2p_val;
 	pAd->Tx20MPwrCfgGBand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgGBand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1; 
+	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1;
 	pAd->Tx40MPwrCfgGBand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));
 
@@ -2410,7 +2410,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
 	RT28xx_EEPROM_READ16(pAd, 0xE4, e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> HT MCS=2,3, VHT 1SS MCS=2,3
 		bit 21:16 -> HT MCS=0,1, VHT 1SS MCS=0,1
 		bit 13:8 -> OFDM 48M
@@ -2419,8 +2419,8 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = (e2p_val2 << 16) | e2p_val;
 	pAd->Tx20MPwrCfgGBand[1] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgGBand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1; 
-	pAd->Tx40MPwrCfgGBand[1] = data; 
+	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1;
+	pAd->Tx40MPwrCfgGBand[1] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
 
 	RT28xx_EEPROM_READ16(pAd, 0xE6, e2p_val);
@@ -2436,15 +2436,15 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = (e2p_val2 << 16) | e2p_val;
 	pAd->Tx20MPwrCfgGBand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgGBand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1; 
-	pAd->Tx40MPwrCfgGBand[2] = data; 
+	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1;
+	pAd->Tx40MPwrCfgGBand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
 
 	RT28xx_EEPROM_READ16(pAd, 0xEA, e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
 	RT28xx_EEPROM_READ16(pAd, 0xEC, e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> HT/VHT STBC MCS=2, 3
 		bit 21:16 -> HT/VHT STBC MCS=0, 1
 		bit 13:8 -> HT MCS=14 (no need)
@@ -2453,13 +2453,13 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = (e2p_val2 << 16) | e2p_val;
 	pAd->Tx20MPwrCfgGBand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgGBand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1; 
-	pAd->Tx40MPwrCfgGBand[3] = data; 
+	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1;
+	pAd->Tx40MPwrCfgGBand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
 
 	RT28xx_EEPROM_READ16(pAd, 0xEE, e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
-	/* 
+	/*
 		bit 13:8 -> HT/VHT STBC MCS=6
 		bit 5:0 -> HT/VHT STBC MCS=4,5
 	*/
@@ -2473,7 +2473,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 
 	RT28xx_EEPROM_READ16(pAd, 0x120, e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> OFDM 12M/18M
 		bit 21:16 -> OFDM 6M/9M
 	*/
@@ -2481,7 +2481,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = data << 16;
 	pAd->Tx20MPwrCfgABand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgABand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16); 
+	data = (t4 << 24) | (t3 << 16);
 	pAd->Tx40MPwrCfgABand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));	
 
@@ -2489,7 +2489,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t1, &t2);
 	RT28xx_EEPROM_READ16(pAd, 0x124, e2p_val2);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val2, bw40_aband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> HT MCS=2,3, VHT 1SS MCS=2,3
 		bit 21:16 -> HT MCS=0,1, VHT 1SS MCS=0,1
 		bit 13:8 -> OFDM 48M
@@ -2498,7 +2498,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = (e2p_val2 << 16) | e2p_val;
 	pAd->Tx20MPwrCfgABand[1] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgABand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1; 
+	data = (t4 << 24) | (t3 << 16) | (t2 << 8) | t1;
 	pAd->Tx40MPwrCfgABand[1] = data;			
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
 
@@ -2511,13 +2511,13 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = e2p_val;
 	pAd->Tx20MPwrCfgABand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgABand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
-	data = (t2 << 8) | t1; 
+	data = (t2 << 8) | t1;
 	pAd->Tx40MPwrCfgABand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
 
 	RT28xx_EEPROM_READ16(pAd, 0xEC, e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> HT/VHT STBC MCS=2, 3
 		bit 21:16 -> HT/VHT STBC MCS=0, 1
 	*/
@@ -2525,13 +2525,13 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	data = data << 16;
 	pAd->Tx20MPwrCfgABand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx20MPwrCfgABand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
-	data = (t4 << 24) | (t3 << 16); 
+	data = (t4 << 24) | (t3 << 16);
 	pAd->Tx40MPwrCfgABand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
 
 	RT28xx_EEPROM_READ16(pAd, 0xEE, e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t1, &t2);
-	/* 
+	/*
 		bit 13:8 -> HT/VHT STBC MCS=6
 		bit 5:0 -> HT/VHT STBC MCS=4,5
 	*/
@@ -2544,11 +2544,11 @@ VOID mt76x0_read_per_rate_tx_pwr(
 	
 	RT28xx_EEPROM_READ16(pAd, 0x12C, e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw80_delta, e2p_val, bw80_aband_delta, &t3, &t4);
-	/* 
+	/*
 		bit 29:24 -> VHT 1SS MCS=9
 		bit 21:16 -> VHT 1SS MCS=8
 	*/
-	data = (t3 << 24) | (t3 << 16); 
+	data = (t3 << 24) | (t3 << 16);
 	pAd->Tx80MPwrCfgABand[0] = data;			
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx80MPwrCfgABand[0](0x13D8) = 0x%08X\n", __FUNCTION__, data));
 
@@ -2632,7 +2632,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("-->%s():\n", __FUNCTION__));
 		
-	/* 
+	/*
 		Init chip capabilities
 	*/
 	RTMP_IO_READ32(pAd, 0x00, &Value);	
@@ -2688,13 +2688,13 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 
 
 #ifdef CONFIG_STA_SUPPORT
-	pChipCap->init_vga_gain_5G = 0x54; 
+	pChipCap->init_vga_gain_5G = 0x54;
 	pChipCap->init_vga_gain_2G = 0x4E;
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RTMP_EFUSE_SUPPORT
 	pChipCap->EFUSE_USAGE_MAP_START = 0x1e0;
-	pChipCap->EFUSE_USAGE_MAP_END = 0x1FC;      
+	pChipCap->EFUSE_USAGE_MAP_END = 0x1FC;
 	pChipCap->EFUSE_USAGE_MAP_SIZE = 29;
 #endif /* RTMP_EFUSE_SUPPORT */
 
@@ -2725,7 +2725,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 	pChipCap->WMM0ACBulkOutAddr[3] = 0x7;
 	pChipCap->WMM1ACBulkOutAddr	= 0x9;
 	pChipCap->DataBulkInAddr = 0x84;
-	pChipCap->CommandRspBulkInAddr = 0x85;	 
+	pChipCap->CommandRspBulkInAddr = 0x85;	
 #endif /* RTMP_USB_SUPPORT */
 
 #ifdef MT7650
@@ -2754,7 +2754,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 	/*
 		Following function configure beacon related parameters
 		in pChipCap
-			FlgIsSupSpecBcnBuf / BcnMaxHwNum / 
+			FlgIsSupSpecBcnBuf / BcnMaxHwNum /
 			WcidHwRsvNum / BcnMaxHwSize / BcnBase[]
 	*/
 	rlt_bcn_buf_init(pAd);
@@ -2815,8 +2815,8 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 	pChipOps->AsicGetTxPowerOffset = MT76x0_AsicGetTxPowerOffset;
 	pChipOps->AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC;
 
-/* 
-	Following callback functions already initiailized in RtmpChipOpsHook() 
+/*
+	Following callback functions already initiailized in RtmpChipOpsHook()
 	1. Power save related
 */
 
@@ -2902,7 +2902,7 @@ VOID MT76x0_AntennaSelCtrl(
 		
 	if (e2p_val & 0x8000)
 	{
-		if ((pAd->NicConfig2.field.AntOpt == 0) 
+		if ((pAd->NicConfig2.field.AntOpt == 0)
 			&& (pAd->NicConfig2.field.AntDiversity == 1))
 		{
 			CmbCtrl |= BIT12; /* 0x20[12]=1 */
@@ -2991,7 +2991,7 @@ VOID MT76x0_VCO_CalibrationMode3(
 	Mode = (RFValue & 0x70);	
 	if (Mode == 0x30)
 	{
-		DBGPRINT(RT_DEBUG_TRACE, ("%s - Calibration Mode: Open loop, closed loop, and amplitude @ ch%d\n", 
+		DBGPRINT(RT_DEBUG_TRACE, ("%s - Calibration Mode: Open loop, closed loop, and amplitude @ ch%d\n",
 						__FUNCTION__, Channel));
 		/*
 			Calibration Mode - Open loop, closed loop, and amplitude:
@@ -3000,7 +3000,7 @@ VOID MT76x0_VCO_CalibrationMode3(
 			B0.R05.[7:0] bp_open_code: 0x0
 			B0.R04.[2:0] cal_bits: 000
 			B0.R03.[2:0] startup_time: 011
-			B0.R03.[6:4] settle_time: 
+			B0.R03.[6:4] settle_time:
 						80MHz channel: 110
 						40MHz channel: 101
 						20MHz channel: 100
@@ -3033,7 +3033,7 @@ VOID MT76x0_VCO_CalibrationMode3(
 		rlt_rf_write(pAd, RF_BANK0, RF_R03, RFValue);
 
 		rlt_rf_read(pAd, RF_BANK0, RF_R04, &RFValue);
-		RFValue = ((RFValue & ~(0x80)) | 0x80); 
+		RFValue = ((RFValue & ~(0x80)) | 0x80);
 		rlt_rf_write(pAd, RF_BANK0, RF_R04, RFValue);
 
 		RTMPusecDelay(2200);
@@ -3081,12 +3081,12 @@ VOID MT76x0_Calibration(
 		*/
 
 		/*
-			2 R-calibration 
+			2 R-calibration
 		*/
 		RTMP_CHIP_CALIBRATION(pAd, R_CALIBRATION, 0x0);
 
 		/*
-			3 VCO calibration (mode 3) 
+			3 VCO calibration (mode 3)
 		*/
 		MT76x0_VCO_CalibrationMode3(pAd, Channel);
 
@@ -3115,14 +3115,14 @@ VOID MT76x0_Calibration(
 		5  LC tank calibration
 		6  TX Filter BW --> not ready yet @20121003
 		7  RX Filter BW --> not ready yet @20121003
-		8  TX RF LOFT 
+		8  TX RF LOFT
 		9  TX I/Q
 		10 TX Group Delay		
 		11 RX I/Q
 		12 RX Group Delay
 		13 TSSI Zero Reference --> not ready yet @20121016
 		14 TX 2G DPD
-		15 TX 2G IM3 --> not ready yet @20121016 
+		15 TX 2G IM3 --> not ready yet @20121016
 		16 On-chip temp sensor reading --> not ready yet @20130129
 		17 RX DCOC calibration
 	*/
@@ -3179,7 +3179,7 @@ VOID MT76x0_Calibration(
 		/*			
 			8. RF LOFT-Calibration parameter
 				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15] 
+				Bit[8:15]
 					0: Full Calibration
 					1: Partial Calibration
 					2: G-Band Full Calibration + Save
@@ -3200,7 +3200,7 @@ VOID MT76x0_Calibration(
 		/*
 			9. TXIQ-Calibration parameter
 				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15] 
+				Bit[8:15]
 					0: Full Calibration
 					1: Partial Calibration
 					2: G-Band Full Calibration + Save
@@ -3221,7 +3221,7 @@ VOID MT76x0_Calibration(
 		/*
 			10. TX Group-Delay Calibation parameter
 				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15] 
+				Bit[8:15]
 					0: Full Calibration
 					1: Partial Calibration
 					2: G-Band Full Calibration + Save
@@ -3242,7 +3242,7 @@ VOID MT76x0_Calibration(
 		/*
 			11. RXIQ-Calibration parameter
 				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15] 
+				Bit[8:15]
 					0: Full Calibration
 					1: Partial Calibration
 					2: G-Band Full Calibration + Save
@@ -3263,7 +3263,7 @@ VOID MT76x0_Calibration(
 		/*
 			12. RX Group-Delay Calibation parameter
 				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15] 
+				Bit[8:15]
 					0: Full Calibration
 					1: Partial Calibration
 					2: G-Band Full Calibration + Save
@@ -3281,8 +3281,8 @@ VOID MT76x0_Calibration(
 			RTMP_CHIP_CALIBRATION(pAd, RX_GROUP_DELAY_CALIBRATION, 0x0);
 		}
 
-		/* 
-			14. TX 2G DPD - Only 2.4G needs to do DPD Calibration. 
+		/*
+			14. TX 2G DPD - Only 2.4G needs to do DPD Calibration.
 				Bit[0:7] (1~14 Channel)
 				Bit[8:15] (0:BW20, 1:BW40)
 				NOTE: disable DPD calibration for USB products
@@ -3322,7 +3322,7 @@ VOID MT76x0_TempSensor(
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
 	UINT32 reg_val = 0;
 	SHORT temperature = 0;
-	INT32 Dout = 0; 
+	INT32 Dout = 0;
 	UINT32 MTxCycle = 0;
 #ifdef RTMP_MAC_USB
 	UINT32 ret;
@@ -3345,7 +3345,7 @@ VOID MT76x0_TempSensor(
 	
 	/*
 		1. Set 0dB Gain:
-			WIFI_RF_CR_WRITE(7,73,0x02) 
+			WIFI_RF_CR_WRITE(7,73,0x02)
 	*/
 	rlt_rf_write(pAd, RF_BANK7, RF_R73, 0x02);
 
@@ -3394,9 +3394,9 @@ VOID MT76x0_TempSensor(
 	RTMP_BBP_IO_READ32(pAd, CORE_R35, &Dout);
 	Dout &= 0xFF;
 
-	if ((Dout & 0x80) == 0x00) 
+	if ((Dout & 0x80) == 0x00)
 		Dout &= 0x7F; /* Positive number */
-	else 
+	else
 		Dout |= 0xFFFFFF00; /* Negative number */
 				
 	/*
@@ -3779,7 +3779,7 @@ INT16 lin2dBd(
 			}
 		}
 	}
-	else 
+	else
 	{
 		while (mantisa > (0xFFFF))
 		{
@@ -4248,8 +4248,8 @@ BOOLEAN MT76x0_Enable9BitIchannelADC(
 		return FALSE;
 	}
 	
-	/* 
-		Read TSSI value 
+	/*
+		Read TSSI value
 	*/
 	RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
 
@@ -4292,7 +4292,7 @@ BOOLEAN MT76x0_Enable9BitIchannelADC(
 	bbp_val = 0x00080043;
 	RTMP_BBP_IO_WRITE32(pAd, CORE_R34, bbp_val);
 
-	/* 
+	/*
 		Read Info #3
 	*/
 	RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
@@ -4380,7 +4380,7 @@ BOOLEAN MT76x0_GetTargetPower(
 			return FALSE;
 		}
 
-		DBGPRINT(RT_DEBUG_TRACE, ("==> VHT Mode :: CurrentPower0 = %d, pAd->chipCap.tssi_table.VHT[%d].MCS_Power = %d\n", 
+		DBGPRINT(RT_DEBUG_TRACE, ("==> VHT Mode :: CurrentPower0 = %d, pAd->chipCap.tssi_table.VHT[%d].MCS_Power = %d\n",
 			CurrentPower0, Tx_Rate, pAd->chipCap.tssi_table.VHT[Tx_Rate].MCS_Power));
 		
 		*pTargetPower = (CHAR)(CurrentPower0 + pAd->chipCap.tssi_table.VHT[Tx_Rate].MCS_Power);
@@ -4487,11 +4487,11 @@ VOID MT76x0_EstimateDeltaPower(
 	
 	switch(TargetPA_mode)
 	{
-		case 0: 
+		case 0:
 			tssi_target = tssi_target;
 			DBGPRINT(RT_DEBUG_TRACE, ("==> (tssi_target = tssi_target) = %d\n", tssi_target));
 			break;
-		case 1: 
+		case 1:
 			if ( pAd->hw_cfg.cent_ch > 14 )
 			{
 				tssi_target = tssi_target + 0;
@@ -4503,7 +4503,7 @@ VOID MT76x0_EstimateDeltaPower(
 				DBGPRINT(RT_DEBUG_TRACE, ("==> (tssi_target = tssi_target + 29491) = %d\n", tssi_target));
 			}
 			break;
-		default: 
+		default:
 			tssi_target = tssi_target +  4424; // 0.54 * 8192
 			DBGPRINT(RT_DEBUG_TRACE, ("==> (tssi_target = tssi_target +  4424) = %d\n", tssi_target));
 			break;
@@ -4536,17 +4536,17 @@ VOID MT76x0_EstimateDeltaPower(
 	DBGPRINT(RT_DEBUG_TRACE, ("==> TXBE_OFFSET+R4 = 0x%X\n", BBP_Value));
 	switch( (BBP_Value&0x3) )
 	{
-		case 0: 
-			bbp_6db_power = 0; 
+		case 0:
+			bbp_6db_power = 0;
 			break;
-		case 1: 
-			bbp_6db_power = -49152; 
+		case 1:
+			bbp_6db_power = -49152;
 			break; //-6 dB*8192;
-		case 2: 
-			bbp_6db_power = -98304; 
+		case 2:
+			bbp_6db_power = -98304;
 			break; //-12 dB*8192;
-		case 3: 
-			bbp_6db_power = 49152; 
+		case 3:
+			bbp_6db_power = 49152;
 			break;  //6 dB*8192;
 	}
 	DBGPRINT(RT_DEBUG_TRACE, ("==> bbp_6db_power = %d\n", bbp_6db_power));
@@ -4556,11 +4556,11 @@ VOID MT76x0_EstimateDeltaPower(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==> tssi_target = %d\n", tssi_target / 8192));
 	tssi_dc = pAd->chipCap.tssi_current_DC;
-	DBGPRINT(RT_DEBUG_TRACE, ("==> TSSI_Linear0 = %d\n", TSSI_Linear)); 
-	DBGPRINT(RT_DEBUG_TRACE, ("==> tssi_dc = %d\n", tssi_dc)); 
+	DBGPRINT(RT_DEBUG_TRACE, ("==> TSSI_Linear0 = %d\n", TSSI_Linear));
+	DBGPRINT(RT_DEBUG_TRACE, ("==> tssi_dc = %d\n", tssi_dc));
 	
 	tssi_meas = lin2dBd( (TSSI_Linear - tssi_dc));
-	DBGPRINT(RT_DEBUG_TRACE, ("==> Linear to dB = %d\n", tssi_meas)); 
+	DBGPRINT(RT_DEBUG_TRACE, ("==> Linear to dB = %d\n", tssi_meas));
 
 	tssi_meas = tssi_meas *tssi_slope;
 	DBGPRINT(RT_DEBUG_TRACE, ("==> dB x slope = %d (0x%x), tssi_offset = %d(0x%x)\n", tssi_meas, tssi_meas, tssi_offset, tssi_offset));
@@ -4594,7 +4594,7 @@ VOID MT76x0_EstimateDeltaPower(
 
 	// stablize the compensation value
 	// if previous compensation result is better than current, skip the compensation
-	if( ((pAd->chipCap.tssi_pre_delta_pwr^tssi_delta_tmp) < 0) 
+	if( ((pAd->chipCap.tssi_pre_delta_pwr^tssi_delta_tmp) < 0)
 		&& ((tssi_delta_tmp < 4096) && (tssi_delta_tmp > -4096))
 		&& ((pAd->chipCap.tssi_pre_delta_pwr < 4096) && (pAd->chipCap.tssi_pre_delta_pwr > -4096)) )
 	{
@@ -4685,7 +4685,7 @@ BOOLEAN mt76x0_get_tssi_report(
 	
 	/*
 		1. Set 0dB Gain:
-			WIFI_RF_CR_WRITE(7,73,0x02) 
+			WIFI_RF_CR_WRITE(7,73,0x02)
 	*/
 	rlt_rf_write(pAd, RF_BANK7, RF_R73, 0x02);
 
@@ -4711,7 +4711,7 @@ BOOLEAN mt76x0_get_tssi_report(
 		5. Wait until it's done:
 			wait until 0x2088[4] = 0
 	*/
-	for (wait = 0; wait < 2000; wait++) 
+	for (wait = 0; wait < 2000; wait++)
 	{
 		RTMP_BBP_IO_READ32(pAd, CORE_R34, &reg_val);
 		if ((reg_val & 0x10) == 0)
@@ -4733,7 +4733,7 @@ BOOLEAN mt76x0_get_tssi_report(
 	*/
 	RTMP_BBP_IO_READ32(pAd, CORE_R35, &reg_val);
 	reg_val &= 0xFF;
-	if ((reg_val & 0x80) == 0x80) 
+	if ((reg_val & 0x80) == 0x80)
 		reg_val |= 0xFFFFFF00; /* Negative number */
 	*pTssiReport = reg_val;
 	
@@ -4764,7 +4764,7 @@ UCHAR MT76x0_GetSkuChannelBasePwr(
 	DlListForEachSafe(ch, ch_temp, &pAd->SingleSkuPwrList, CH_POWER, List)
 	{
 		if (channel == ch->channel) {
-			DBGPRINT(RT_DEBUG_TRACE, ("%s ==> channel = %d, ch->channel = %d\n", 
+			DBGPRINT(RT_DEBUG_TRACE, ("%s ==> channel = %d, ch->channel = %d\n",
 				__FUNCTION__, channel, ch->channel));
 			
 			if (channel <= 14) {
@@ -4823,7 +4823,7 @@ VOID MT76x0_WriteNewPerRatePwr(
 	UINT32 data;
 	UCHAR t1, t2, t3, t4;
 
-	/* 
+	/*
 		Bit 29:24 -> OFDM 12M/18M
 		Bit 21:16 -> OFDM 6M/9M
 		Bit 13:8 -> CCK 5.5M/11M
@@ -4840,13 +4840,13 @@ VOID MT76x0_WriteNewPerRatePwr(
 	
 	t4 = pAd->chipCap.rate_pwr_table.OFDM[2].MCS_Power;
 	t4 = (t4 & 0x80) ? ((t4 & 0x1f) | 0x20) : (t4 & 0x3f);
-	data = (t4 << 24)|(t3 << 16)|(t2 << 8)|t1; 
+	data = (t4 << 24)|(t3 << 16)|(t2 << 8)|t1;
 
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_0, data);
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_0, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_0, data));
 
-	/* 
+	/*
 		Bit 29:24 -> HT/VHT MCS 2/3
 		Bit 21:16 -> HT/VHT MCS 0/1
 		Bit 13:8 -> OFDM 48M
@@ -4863,7 +4863,7 @@ VOID MT76x0_WriteNewPerRatePwr(
 	
 	t4 = pAd->chipCap.rate_pwr_table.HT[2].MCS_Power;
 	t4 = (t4 & 0x80) ? ((t4 & 0x1f) | 0x20) : (t4 & 0x3f);
-	data = (t4 << 24)|(t3 << 16)|(t2 << 8)|t1; 
+	data = (t4 << 24)|(t3 << 16)|(t2 << 8)|t1;
 
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_1, data);
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &data);
@@ -4881,12 +4881,12 @@ VOID MT76x0_WriteNewPerRatePwr(
 	t2 = (t2 & 0x80) ? ((t2 & 0x1f) | 0x20) : (t2 & 0x3f);
 	
 	data &= 0xFFFF0000;
-	data = (t2 << 8) | t1; 
+	data = (t2 << 8) | t1;
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_2, data);
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_2, data));
 
-	/* 
+	/*
 		Bit 29:24 -> HT/VHT STBC MCS 2/3
 		Bit 21:16 -> HT/VHT STBC MCS 0/1
 	*/
@@ -4903,7 +4903,7 @@ VOID MT76x0_WriteNewPerRatePwr(
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_3, data));
 
-	/* 
+	/*
 		bit 13:8 -> HT/VHT STBC MCS 6
 		bit 5:0 -> HT/VHT STBC MCS 4/5
 	*/
@@ -4915,12 +4915,12 @@ VOID MT76x0_WriteNewPerRatePwr(
 	t2 = (t2 & 0x80) ? ((t2 & 0x1f) | 0x20) : (t2 & 0x3f);	
 
 	data &= 0xFFFF0000;
-	data = (t2 << 8) | t1; 
+	data = (t2 << 8) | t1;
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_4, data);
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_4, data));
 
-	/* 
+	/*
 		Bit 21:16 -> HT/VHT MCS 7
 		Bit 5:0 -> OFDM 54M
 	*/
@@ -4932,12 +4932,12 @@ VOID MT76x0_WriteNewPerRatePwr(
 	t3 = (t3 & 0x80) ? ((t3 & 0x1f) | 0x20) : (t3 & 0x3f);
 
 	data &= 0xFF00FF00;
-	data = (t3 << 16) | t1; 
+	data = (t3 << 16) | t1;
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_7, data);
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_7, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_7, data));
 
-	/* 
+	/*
 		Bit 29:24 -> VHT 1SS MCS 9
 		Bit 21:16 -> VHT 1SS MCS 8
 	*/
@@ -4954,7 +4954,7 @@ VOID MT76x0_WriteNewPerRatePwr(
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_8, &data);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - 0x%x: 0x%08X\n", __FUNCTION__, TX_PWR_CFG_8, data));
 
-	/* 
+	/*
 		Bit 5:0 -> HT/VHT STBC MCS 7
 	*/
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_9, &data);
@@ -4974,7 +4974,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 {
 	CH_POWER *ch, *ch_temp;
 	INT32 i, pwr_delta = 0;
-	UINT32 reg_val; 
+	UINT32 reg_val;
 	UCHAR ch_init_pwr = 0;
 	CHAR ch_delta_pwr = 0;
 	INT32 rate_pwr = 0;
@@ -5016,7 +5016,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 			{
 				pwr_delta = 0;
 				
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> CCK[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> CCK[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n",
 					__FUNCTION__, i, pAd->chipCap.rate_pwr_table.CCK[i].MCS_Power, DefaultTargetPwr, ch_delta_pwr));
 
 				rate_pwr = pAd->chipCap.rate_pwr_table.CCK[i].MCS_Power + DefaultTargetPwr + ch_delta_pwr;
@@ -5024,10 +5024,10 @@ UCHAR MT76x0_UpdateSkuPwr(
 				if ( pwr_delta > 0) //Power Exceed
 					pAd->chipCap.rate_pwr_table.CCK[i].MCS_Power -= pwr_delta;
 
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrCCK[%d] (%d) = rate_delta (%d)\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrCCK[%d] (%d) = rate_delta (%d)\n",
 					__FUNCTION__, rate_pwr, i, ch->PwrCCK[i], pwr_delta));
 				
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new CCK[%d].MCS_Power = %d\n\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new CCK[%d].MCS_Power = %d\n\n",
 					__FUNCTION__, i, pAd->chipCap.rate_pwr_table.CCK[i].MCS_Power));
 			}
 			
@@ -5035,7 +5035,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 			{
 				pwr_delta = 0;
 
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> OFDM[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> OFDM[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n",
 					__FUNCTION__, i, pAd->chipCap.rate_pwr_table.OFDM[i].MCS_Power, DefaultTargetPwr, ch_delta_pwr));
 
 				rate_pwr = pAd->chipCap.rate_pwr_table.OFDM[i].MCS_Power + DefaultTargetPwr + ch_delta_pwr;
@@ -5043,10 +5043,10 @@ UCHAR MT76x0_UpdateSkuPwr(
 				if ( pwr_delta > 0) //Power Exceed
 					pAd->chipCap.rate_pwr_table.OFDM[i].MCS_Power -= pwr_delta;
 
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrOFDM[%d] (%d) = rate_delta (%d)\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrOFDM[%d] (%d) = rate_delta (%d)\n",
 					__FUNCTION__, rate_pwr, i, ch->PwrOFDM[i], pwr_delta));
 				
-				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new OFDM[%d].MCS_Power = %d\n\n", 
+				DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new OFDM[%d].MCS_Power = %d\n\n",
 					__FUNCTION__, i, pAd->chipCap.rate_pwr_table.OFDM[i].MCS_Power));
 			}
 
@@ -5056,26 +5056,26 @@ UCHAR MT76x0_UpdateSkuPwr(
 					pwr_delta = 0;
 					rate_pwr = pAd->chipCap.rate_pwr_table.HT[i].MCS_Power + DefaultTargetPwr + ch_delta_pwr;
 
-					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> HT[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> HT[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n",
 						__FUNCTION__, i, pAd->chipCap.rate_pwr_table.HT[i].MCS_Power, DefaultTargetPwr, ch_delta_pwr));		
 			
 					if (pAd->CommonCfg.BBPCurrentBW == BW_20) {									
 						pwr_delta = rate_pwr - ch->PwrHT20[i];
 
-						DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrHT20[%d] (%d) = rate_delta (%d)\n", 
+						DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrHT20[%d] (%d) = rate_delta (%d)\n",
 							__FUNCTION__, rate_pwr, i, ch->PwrHT20[i], pwr_delta));
 					
 					} else if (pAd->CommonCfg.BBPCurrentBW == BW_40) {					
 						pwr_delta = rate_pwr - ch->PwrHT40[i];
 
-						DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrHT40[%d] (%d) = rate_delta (%d)\n", 
+						DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrHT40[%d] (%d) = rate_delta (%d)\n",
 							__FUNCTION__, rate_pwr, i, ch->PwrHT40[i], pwr_delta));
 					}
 
 					if ( pwr_delta > 0)
 						pAd->chipCap.rate_pwr_table.HT[i].MCS_Power -= pwr_delta;
 					
-					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new HT[%d].MCS_Power = %d\n\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new HT[%d].MCS_Power = %d\n\n",
 						__FUNCTION__, i, pAd->chipCap.rate_pwr_table.HT[i].MCS_Power));
 				}
 			}else if (pAd->CommonCfg.BBPCurrentBW == BW_80) {
@@ -5083,7 +5083,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 				{
 					pwr_delta = 0;
 									
-					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> VHT[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> VHT[%d].MCS_Power = %d, DefaultTargetPwr = %d, ch_delta_pwr = %d\n",
 						__FUNCTION__, i, pAd->chipCap.rate_pwr_table.VHT[i].MCS_Power, DefaultTargetPwr, ch_delta_pwr));
 
 					rate_pwr = pAd->chipCap.rate_pwr_table.VHT[i].MCS_Power + DefaultTargetPwr + ch_delta_pwr;
@@ -5091,7 +5091,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 					if (pAd->CommonCfg.BBPCurrentBW == BW_80)
 						pwr_delta = rate_pwr - ch->PwrVHT80[i];
 
-					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrVHT80[%d] (%d) = rate_delta (%d)\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> rate_pwr (%d) - ch->PwrVHT80[%d] (%d) = rate_delta (%d)\n",
 						__FUNCTION__, rate_pwr, i, ch->PwrVHT80[i], pwr_delta));
 				
 					if (pwr_delta > 0) {
@@ -5099,7 +5099,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 						pAd->chipCap.rate_pwr_table.HT[i].MCS_Power = pAd->chipCap.rate_pwr_table.VHT[i].MCS_Power;
 					}
 					
-					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new VHT[%d].MCS_Power = %d\n\n", 
+					DBGPRINT(RT_DEBUG_TRACE, ("%s ==> new VHT[%d].MCS_Power = %d\n\n",
 						__FUNCTION__, i, pAd->chipCap.rate_pwr_table.VHT[i].MCS_Power));
 				}
 			}
@@ -5134,7 +5134,7 @@ BOOLEAN get_temp_tx_alc_level(
 	INT idx = 0;
 
 	if ((temp_minus_bdy == NULL) || (temp_plus_bdy == NULL)) {
-		DBGPRINT(RT_DEBUG_ERROR, ("%s(): temp table boundary is NULL\n", __FUNCTION__)); 
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): temp table boundary is NULL\n", __FUNCTION__));
 		return FALSE;
 	}
 	
@@ -5146,15 +5146,15 @@ BOOLEAN get_temp_tx_alc_level(
 			*/
 			for (idx = 1; idx < max_bdy_level; idx++)
 			{
-				if (current_temp >= temp_minus_bdy[idx]) 
+				if (current_temp >= temp_minus_bdy[idx])
 					break; /* level range found */
 			}
 
 			/* The index is the step we should decrease, idx = 0 means there is nothing to compensate */
 			*comp_level = -(tx_alc_step * (idx-1));
-			DBGPRINT(RT_DEBUG_TRACE, 
+			DBGPRINT(RT_DEBUG_TRACE,
 				("-- Tx Power:: current_temp=%d, temp_ref=%d, tx_alc_step=%d, step = -%d, comp_level = %d\n",
-			    	current_temp, temp_ref, tx_alc_step, idx-1, *comp_level));                    
+			    	current_temp, temp_ref, tx_alc_step, idx-1, *comp_level));
 		} else if (current_temp > temp_plus_bdy[1]) {
 			/*	
 				Reading is smaller than the reference value check
@@ -5178,8 +5178,8 @@ BOOLEAN get_temp_tx_alc_level(
 				current_temp, temp_ref, tx_alc_step, 0));
 		}
 	} else {
-		DBGPRINT(RT_DEBUG_ERROR, ("%s(): enable_tx_alc = %s\n", 
-			__FUNCTION__, (enable_tx_alc) == TRUE ? "TRUE" : "FALSE")); 
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): enable_tx_alc = %s\n",
+			__FUNCTION__, (enable_tx_alc) == TRUE ? "TRUE" : "FALSE"));
 		return FALSE;
 	}
 
@@ -5193,7 +5193,7 @@ void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
 	PUCHAR temp_minus_bdy, temp_plus_bdy, tx_alc_comp;
 	UCHAR temp_ref;
 	
-	if ((pAd->CommonCfg.Channel > 14) ? 
+	if ((pAd->CommonCfg.Channel > 14) ?
 		(pAd->bAutoTxAgcA == FALSE) : (pAd->bAutoTxAgcG == FALSE))
 		return;
 
@@ -5230,16 +5230,16 @@ void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
 					8, /* to do: make a definition */
 					2,
 					pAd->CurrTemperature,
-					tx_alc_comp) == TRUE) 
+					tx_alc_comp) == TRUE)
 		{
 			UINT32 mac_val;
 			CHAR last_delta_pwr, delta_pwr = 0;
 			
 			/* adjust compensation value by MP temperature readings (i.e., e2p[77h]) */
-			if (pAd->CommonCfg.Channel <= 14) 
+			if (pAd->CommonCfg.Channel <= 14)
 				delta_pwr = pAd->TxAgcCompensateG - pAd->mp_delta_pwr;
 			else
-				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr; 
+				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr;
 			
 			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
 			/* 6-bit representation ==> 8-bit representation (2's complement) */
@@ -5254,26 +5254,26 @@ void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
 			delta_pwr = (delta_pwr & 0x80) ? \
 							((delta_pwr & 0x1f) | 0x20) : (delta_pwr & 0x3f);						
 			/*	
-				Write compensation value into TX_ALC_CFG_1, 
-				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1 
-			*/     
+				Write compensation value into TX_ALC_CFG_1,
+				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1
+			*/
 			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
 			RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, mac_val);
 
-			DBGPRINT(RT_DEBUG_TRACE, 
+			DBGPRINT(RT_DEBUG_TRACE,
 				("%s - delta_pwr = %d, TssiCalibratedOffset = %d, TssiMpOffset = %d, 0x13B4 = 0x%08x, %s = %d, DeltaPwrBeforeTempComp = %d, LastTempCompDeltaPwr =%d\n",
 				__FUNCTION__,
 				pAd->LastTempCompDeltaPwr,
 				pAd->TssiCalibratedOffset,
 				pAd->mp_delta_pwr,
 				mac_val,
-				(pAd->CommonCfg.Channel <= 14) ? "TxAgcCompensateG" : "TxAgcCompensateA", 
-				(pAd->CommonCfg.Channel <= 14) ? pAd->TxAgcCompensateG : pAd->TxAgcCompensateA, 
-				pAd->DeltaPwrBeforeTempComp, 
+				(pAd->CommonCfg.Channel <= 14) ? "TxAgcCompensateG" : "TxAgcCompensateA",
+				(pAd->CommonCfg.Channel <= 14) ? pAd->TxAgcCompensateG : pAd->TxAgcCompensateA,
+				pAd->DeltaPwrBeforeTempComp,
 				last_delta_pwr));	
 		} else {
-			DBGPRINT(RT_DEBUG_ERROR, ("%s(): failed to get the compensation level\n", __FUNCTION__)); 
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): failed to get the compensation level\n", __FUNCTION__));
 		}
 	}
 }
@@ -5345,9 +5345,9 @@ static void adjust_mp_temp(
 	mp_temp = e2p_value.field.Byte1;			
 
 	if (mp_temp < temp_minus_bdy[1]) {
-		/* 
+		/*
 			mp_temperature is larger than the reference value
-			check for how large we need to adjust the Tx power 
+			check for how large we need to adjust the Tx power
 		*/
 		for (idx = 1; idx < 8; idx++)
 		{
@@ -5355,17 +5355,17 @@ static void adjust_mp_temp(
 				break;
 		}
 
-		/* 
-			The index is the step we should decrease, 
+		/*
+			The index is the step we should decrease,
 			idx = 0 means there is no need to adjust the Tx power
 		*/
 		mp_offset = -(2 * (idx-1));
 		pAd->mp_delta_pwr = mp_offset;
-		DBGPRINT(RT_DEBUG_OFF, ("mp_temperature=0x%02x, step = -%d\n", mp_temp, idx-1));                    
+		DBGPRINT(RT_DEBUG_OFF, ("mp_temperature=0x%02x, step = -%d\n", mp_temp, idx-1));
 	} else if (mp_temp > temp_plus_bdy[1]) {
-		/* 
+		/*
 			mp_temperature is smaller than the reference value
-			check for how large we need to adjust the Tx power 
+			check for how large we need to adjust the Tx power
 		*/
 		for (idx = 1; idx < 8; idx++)
 		{
@@ -5373,8 +5373,8 @@ static void adjust_mp_temp(
 	            		break;
 		}
 
-		/* 
-			The index is the step we should increase, 
+		/*
+			The index is the step we should increase,
 			idx = 0 means there is no need to adjust the Tx power
 		*/
 		mp_offset = 2 * (idx-1);
@@ -5411,7 +5411,7 @@ BOOLEAN load_temp_tx_alc_table(
 	}
 
 	DBGPRINT(RT_DEBUG_OFF, ("%s(): load %s %s table from eeprom 0x%x to 0x%x (start_idx = %d)\n",
-		__FUNCTION__, 
+		__FUNCTION__,
 		(band == A_BAND) ? "5G" : "2.4G",
 		(table_sign == 1) ? "plus" : "minus",
 		e2p_start_addr, e2p_end_addr, start_idx));
@@ -5428,7 +5428,7 @@ BOOLEAN load_temp_tx_alc_table(
 		RT28xx_EEPROM_READ16(pAd, e2p_idx, e2p_value);
 
 		if (e2p_idx == e2p_start_addr) {
-			if (table_sign > 0) 
+			if (table_sign > 0)
 				bdy_table[table_idx++] = (UCHAR)((e2p_value >> 8) & 0xFF);
 			else
  				bdy_table[table_idx++] = (UCHAR)(e2p_value & 0xFF);
@@ -5451,7 +5451,7 @@ BOOLEAN load_temp_tx_alc_table(
 		return FALSE;
 	} else {	
 		for (table_idx = 0; table_idx < table_size; table_idx++)
-			DBGPRINT(RT_DEBUG_TRACE, ("\tboundary_table[%d] = %3d (0x%02X)\n", 
+			DBGPRINT(RT_DEBUG_TRACE, ("\tboundary_table[%d] = %3d (0x%02X)\n",
 				table_idx, (CHAR)bdy_table[table_idx], bdy_table[table_idx]));
 	}
 
@@ -5478,17 +5478,17 @@ void mt76x0_temp_tx_alc_init(PRTMP_ADAPTER pAd)
 	pAd->DeltaPwrBeforeTempComp = 0;
 	pAd->LastTempCompDeltaPwr = 0;
 	
-	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[0], 
+	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[0],
 								pAd->TssiPlusBoundaryA[0], pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryA[0], pAd->TssiPlusBoundaryA[0]);
 
-	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[1], 
+	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[1],
 								pAd->TssiPlusBoundaryA[1], pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryA[1], pAd->TssiPlusBoundaryA[1]);
 
-	adjust_temp_tx_alc_table(pAd, BG_BAND, pAd->TssiMinusBoundaryG, 
+	adjust_temp_tx_alc_table(pAd, BG_BAND, pAd->TssiMinusBoundaryG,
 								pAd->TssiPlusBoundaryG, pAd->TssiCalibratedOffset);
-	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryG, pAd->TssiPlusBoundaryG); 
+	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryG, pAd->TssiPlusBoundaryG);
 }
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
@@ -5501,7 +5501,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
 	if (IS_MT76x0(pAd)) {
 		RT28xx_EEPROM_READ16(pAd, 0xD0, e2p_value);
 		e2p_value = (e2p_value & 0xFF00) >> 8;
-		DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n", 
+		DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
 			__FUNCTION__, e2p_value));
 		
 		if ((e2p_value & 0xFF) == 0xFF) {
@@ -5512,7 +5512,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
 				
 			pAd->chipCap.TemperatureOffset = (SHORT)e2p_value;			
 		}
-		DBGPRINT(RT_DEBUG_OFF, ("%s: TemperatureOffset = 0x%x\n", 
+		DBGPRINT(RT_DEBUG_OFF, ("%s: TemperatureOffset = 0x%x\n",
 			__FUNCTION__, pAd->chipCap.TemperatureOffset));
 	}
 

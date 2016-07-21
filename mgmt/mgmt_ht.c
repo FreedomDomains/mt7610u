@@ -107,7 +107,7 @@ INT get_ht_max_mcs(RTMP_ADAPTER *pAd, UCHAR *desire_mcs, UCHAR *cap_mcs)
 
 INT get_ht_cent_ch(RTMP_ADAPTER *pAd, UCHAR *rf_bw, UCHAR *ext_ch)
 {
-	if ((pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth  == BW_40) && 
+	if ((pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth  == BW_40) &&
 		(pAd->CommonCfg.RegTransmitSetting.field.EXTCHA == EXTCHA_ABOVE)
 	)
 	{
@@ -115,8 +115,8 @@ INT get_ht_cent_ch(RTMP_ADAPTER *pAd, UCHAR *rf_bw, UCHAR *ext_ch)
 		*ext_ch = EXTCHA_ABOVE;
 		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel + 2;
 	}
-	else if ((pAd->CommonCfg.Channel > 2) && 
-			(pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth  == BW_40) && 
+	else if ((pAd->CommonCfg.Channel > 2) &&
+			(pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth  == BW_40) &&
 			(pAd->CommonCfg.RegTransmitSetting.field.EXTCHA == EXTCHA_BELOW))
 	{
 		*rf_bw = BW_40;
@@ -162,7 +162,7 @@ UCHAR get_cent_ch_by_htinfo(
 
 	Arguments:
 		pAd - Pointer to our adapter
-		phymode  - 
+		phymode  -
 
 	========================================================================
 */
@@ -177,7 +177,7 @@ VOID RTMPSetHT(
 	
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : HT_mode(%d), ExtOffset(%d), MCS(%d), BW(%d), STBC(%d), SHORTGI(%d)\n",
-										pHTPhyMode->HtMode, pHTPhyMode->ExtOffset, 
+										pHTPhyMode->HtMode, pHTPhyMode->ExtOffset,
 										pHTPhyMode->MCS, pHTPhyMode->BW,
 										pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
 			
@@ -222,8 +222,8 @@ VOID RTMPSetHT(
 	ht_cap->HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
 	ht_cap->HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
 	
-	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : AMsduSize = %d, MimoPs = %d, MpduDensity = %d, MaxRAmpduFactor = %d\n", 
-													rt_ht_cap->AmsduSize, 
+	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : AMsduSize = %d, MimoPs = %d, MpduDensity = %d, MaxRAmpduFactor = %d\n",
+													rt_ht_cap->AmsduSize,
 													rt_ht_cap->MimoPs,
 													rt_ht_cap->MpduDensity,
 													rt_ht_cap->MaxRAmpduFactor));
@@ -292,7 +292,7 @@ VOID RTMPSetHT(
 
 #ifdef DOT11_VHT_AC
 	if (pHTPhyMode->BW == BW_40 &&
-		pAd->CommonCfg.vht_bw == VHT_BW_80 && 
+		pAd->CommonCfg.vht_bw == VHT_BW_80 &&
 		pAd->CommonCfg.vht_cent_ch)
 		bw = BW_80;
 #endif /* DOT11_VHT_AC */
@@ -326,7 +326,7 @@ VOID RTMPSetHT(
 		}
 		else
 		{
-			ht_cap->HtCapInfo.RxSTBC = 0; 
+			ht_cap->HtCapInfo.RxSTBC = 0;
 			rt_ht_cap->RxSTBC = 0; 	
 		}
 	}
@@ -414,7 +414,7 @@ VOID RTMPSetHT(
 
 	Arguments:
 		pAd - Pointer to our adapter
-		phymode  - 
+		phymode  -
 
 	========================================================================
 */
@@ -471,11 +471,11 @@ VOID RTMPSetIndividualHT(
 #endif /* CONFIG_STA_SUPPORT */
 	/*
 		WFA recommend to restrict the encryption type in 11n-HT mode.
-	 	So, the WEP and TKIP are not allowed in HT rate. 
+	 	So, the WEP and TKIP are not allowed in HT rate.
 	*/
 	if (pAd->CommonCfg.HT_DisallowTKIP && IS_INVALID_HT_SECURITY(encrypt_mode))
 	{
-		DBGPRINT(RT_DEBUG_WARN, ("%s : Use legacy rate in WEP/TKIP encryption mode (apidx=%d)\n", 
+		DBGPRINT(RT_DEBUG_WARN, ("%s : Use legacy rate in WEP/TKIP encryption mode (apidx=%d)\n",
 									__FUNCTION__, apidx));
 		return;
 	}
@@ -490,7 +490,7 @@ VOID RTMPSetIndividualHT(
 	}
 			
 	pDesired_ht_phy->bHtEnable = TRUE;
-					 
+					
 	/* Decide desired Tx MCS*/
 	switch (TxStream)
 	{

@@ -206,7 +206,7 @@ VOID STARxDataFrameAnnounce(
 }
 
 
-#ifdef HDR_TRANS_SUPPORT 
+#ifdef HDR_TRANS_SUPPORT
 VOID STARxDataFrameAnnounce_Hdr_Trns(
 	IN PRTMP_ADAPTER pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
@@ -611,7 +611,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 #if defined(SOFT_ENCRYPT) || defined(ADHOC_WPA2PSK_SUPPORT)
 	/* Use software to decrypt the encrypted frame if necessary.
-	   If a received "encrypted" unicast packet(its WEP bit as 1) 
+	   If a received "encrypted" unicast packet(its WEP bit as 1)
 	   and it's passed to driver with "Decrypted" marked as 0 in pRxInfo. */
 	if ((pHeader->FC.Wep == 1) && (pRxInfo->Decrypted == 0)) {
 		PCIPHER_KEY pSwKey = NULL;
@@ -687,9 +687,9 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 	else if (pRxInfo->U2M)
 	{
 #ifdef RT65xx
-		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) + 
+		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) +
 									(pRxWI->RxWIBW << 7) +
-									(pRxWI->RxWISGI << 9) + 
+									(pRxWI->RxWISGI << 9) +
 									(pRxWI->RxWISTBC << 10) +
 									(pRxWI->RxWIPhyMode << 14));
 #else
@@ -793,7 +793,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 			return;
 		} else {
 			/*
-			   just return because RTMPDeFragmentDataFrame() will release rx packet, 
+			   just return because RTMPDeFragmentDataFrame() will release rx packet,
 			   if packet is fragmented
 			 */
 			return;
@@ -1084,7 +1084,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 #if defined(SOFT_ENCRYPT) || defined(ADHOC_WPA2PSK_SUPPORT)
 	/* Use software to decrypt the encrypted frame if necessary.
-	   If a received "encrypted" unicast packet(its WEP bit as 1) 
+	   If a received "encrypted" unicast packet(its WEP bit as 1)
 	   and it's passed to driver with "Decrypted" marked as 0 in pRxInfo. */
 	if ((pHeader->FC.Wep == 1) && (pRxInfo->Decrypted == 0)) {
 		PCIPHER_KEY pSwKey = NULL;
@@ -1152,9 +1152,9 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 	else if (pRxInfo->U2M)
 	{
 #ifdef RT65xx
-		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) + 
+		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) +
 									(pRxWI->RxWIBW << 7) +
-									(pRxWI->RxWISGI << 9) + 
+									(pRxWI->RxWISGI << 9) +
 									(pRxWI->RxWISTBC << 10) +
 									(pRxWI->RxWIPhyMode << 14));
 #else
@@ -1249,7 +1249,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 			return;
 		} else {
 			/*
-			   just return because RTMPDeFragmentDataFrame() will release rx packet, 
+			   just return because RTMPDeFragmentDataFrame() will release rx packet,
 			   if packet is fragmented
 			 */
 			return;
@@ -1451,7 +1451,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
 				packet, then processing the received packet.
 			2. the callee must take charge of release of packet
 			3. As far as driver is concerned, the rx packet must
-			   a. be indicated to upper layer or 
+			   a. be indicated to upper layer or
 			   b. be released if it is discarded
 		 */
 		pRxPacket = GetPacketFromRxRing(pAd, &RxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
@@ -1592,8 +1592,8 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 						
 					}
 
-					if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK)) 
-						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT 
+					if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK))
+						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT
 						&&  ((pRxBlk ->pData)[ 1] == MIMO_N_BEACONFORM //non-compressed beamforming report
 						|| (pRxBlk ->pData)[1] == MIMO_BEACONFORM)  )) //compressed beamforming report
 					{
@@ -1731,8 +1731,8 @@ BOOLEAN STAHandleRxDonePacket(
 					pRxBlk->DataSize -= 4;
 				}
 
-				if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK)) 
-						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT 
+				if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK))
+						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT
 						&&  ((pRxBlk ->pData)[ 1] == MIMO_N_BEACONFORM /* non-compressed beamforming report */
 						|| (pRxBlk ->pData)[1] == MIMO_BEACONFORM)  )) /* compressed beamforming report */
 				{
@@ -1913,8 +1913,8 @@ VOID STASendPackets(
 /*
 ========================================================================
 Routine Description:
-	This routine is used to do packet parsing and classification for Tx packet 
-	to STA device, and it will en-queue packets to our TxSwQueue depends on AC 
+	This routine is used to do packet parsing and classification for Tx packet
+	to STA device, and it will en-queue packets to our TxSwQueue depends on AC
 	class.
 	
 Arguments:
@@ -2052,10 +2052,10 @@ NDIS_STATUS STASendPacket(
 	}
 
 	/*
-	   STEP 1. Decide number of fragments required to deliver this MSDU. 
-	   The estimation here is not very accurate because difficult to 
-	   take encryption overhead into consideration here. The result 
-	   "NumberOfFrag" is then just used to pre-check if enough free 
+	   STEP 1. Decide number of fragments required to deliver this MSDU.
+	   The estimation here is not very accurate because difficult to
+	   take encryption overhead into consideration here. The result
+	   "NumberOfFrag" is then just used to pre-check if enough free
 	   TXD are available to hold this MSDU.
 	 */
 	if (*pSrcBufVA & 0x01)	/* fragmentation not allowed on multicast & broadcast */
@@ -2071,13 +2071,13 @@ NDIS_STATUS STASendPacket(
 #endif /* DOT11_N_SUPPORT */
 	else {
 		/*
-		   The calculated "NumberOfFrag" is a rough estimation because of various 
+		   The calculated "NumberOfFrag" is a rough estimation because of various
 		   encryption/encapsulation overhead not taken into consideration. This number is just
 		   used to make sure enough free TXD are available before fragmentation takes place.
-		   In case the actual required number of fragments of an NDIS packet 
+		   In case the actual required number of fragments of an NDIS packet
 		   excceeds "NumberOfFrag"caculated here and not enough free TXD available, the
-		   last fragment (i.e. last MPDU) will be dropped in RTMPHardTransmit() due to out of 
-		   resource, and the NDIS packet will be indicated NDIS_STATUS_FAILURE. This should 
+		   last fragment (i.e. last MPDU) will be dropped in RTMPHardTransmit() due to out of
+		   resource, and the NDIS packet will be indicated NDIS_STATUS_FAILURE. This should
 		   rarely happen and the penalty is just like a TX RETRY fail. Affordable.
 		 */
 
@@ -2453,7 +2453,7 @@ VOID STABuildWifiInfo(
 
 	if (pAd->StaCfg.BssType == BSS_INFRA) {
 #ifdef QOS_DLS_SUPPORT
-		if (bDLSFrame) 
+		if (bDLSFrame)
 			pWI->field.Mode = 0;	/* IBSS */
 		else
 #endif /* QOS_DLS_SUPPORT */
@@ -2520,9 +2520,9 @@ VOID STABuildCacheWifiInfo(
 		}
 	}
 
-	/* 
+	/*
 	   -----------------------------------------------------------------
-	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later. 
+	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later.
 	   -----------------------------------------------------------------
 	 */
 	if (pAd->CommonCfg.bAPSDForcePowerSave)
@@ -2628,7 +2628,7 @@ VOID STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 	/*
 	   -----------------------------------------------------------------
-	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later. 
+	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later.
 	   -----------------------------------------------------------------
 	 */
 	if (pAd->CommonCfg.bAPSDForcePowerSave)
@@ -2703,9 +2703,9 @@ VOID STABuildCache802_11Header(
 		}
 	}
 
-	/* 
+	/*
 	   -----------------------------------------------------------------
-	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later. 
+	   STEP 2. MAKE A COMMON 802.11 HEADER SHARED BY ENTIRE FRAGMENT BURST. Fill sequence later.
 	   -----------------------------------------------------------------
 	 */
 	if (pAd->CommonCfg.bAPSDForcePowerSave)
@@ -2881,7 +2881,7 @@ VOID STA_AMPDU_Frame_Tx(
 
 #ifdef SOFT_ENCRYPT
 		if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
-			/* Check if the original data has enough buffer 
+			/* Check if the original data has enough buffer
 			   to insert or append WPI related field. */
 			if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == FALSE) {
 				RELEASE_NDIS_PACKET(pAd, pTxBlk->pPacket,
@@ -2944,7 +2944,7 @@ VOID STA_AMPDU_Frame_Tx(
 			pTxBlk->MpduHeaderLen += 2;
 
 			/*
-			   build HTC+ 
+			   build HTC+
 			   HTC control field following QoS field
 			 */
 			bHTCPlus = FALSE;
@@ -3086,7 +3086,7 @@ VOID STA_AMPDU_Frame_Tx(
 				UCHAR iv_offset = 0, ext_offset = 0;
 
 				/*
-				   if original Ethernet frame contains no LLC/SNAP, 
+				   if original Ethernet frame contains no LLC/SNAP,
 				   then an extra LLC/SNAP encap is required
 				 */
 				EXTRA_LLCSNAP_ENCAP_FROM_PKT_OFFSET(pTxBlk->pSrcBufData - 2,
@@ -3274,7 +3274,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 
 		{
 			/*
-			   build HTC+ 
+			   build HTC+
 			   HTC control field following QoS field
 			 */
 			bHTCPlus = FALSE;
@@ -3394,7 +3394,7 @@ VOID STA_AMSDU_Frame_Tx(
 			RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		} else {
 			pHeaderBufPtr = &pTxBlk->HeaderBuf[0];
-			padding = ROUND_UP(LENGTH_AMSDU_SUBFRAMEHEAD + subFramePayloadLen, 4) - 
+			padding = ROUND_UP(LENGTH_AMSDU_SUBFRAMEHEAD + subFramePayloadLen, 4) -
 								(LENGTH_AMSDU_SUBFRAMEHEAD + subFramePayloadLen);
 			NdisZeroMemory(pHeaderBufPtr, padding + LENGTH_AMSDU_SUBFRAMEHEAD);
 			pHeaderBufPtr += padding;
@@ -3516,7 +3516,7 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 #ifdef SOFT_ENCRYPT
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
-		/* Check if the original data has enough buffer 
+		/* Check if the original data has enough buffer
 		   to insert or append WPI related field. */
 		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == FALSE) {
 			RELEASE_NDIS_PACKET(pAd, pTxBlk->pPacket, NDIS_STATUS_FAILURE);
@@ -3561,8 +3561,8 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 		UCHAR iv_offset = 0, ext_offset = 0;
 
 		/*
-		   if original Ethernet frame contains no LLC/SNAP, 
-		   then an extra LLC/SNAP encap is required 
+		   if original Ethernet frame contains no LLC/SNAP,
+		   then an extra LLC/SNAP encap is required
 		 */
 		EXTRA_LLCSNAP_ENCAP_FROM_PKT_OFFSET(pTxBlk->pSrcBufData - 2,
 						    pTxBlk->pExtraLlcSnapEncap);
@@ -3604,8 +3604,8 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 		/*
 		   Insert LLC-SNAP encapsulation - 8 octets
 
-		   if original Ethernet frame contains no LLC/SNAP, 
-		   then an extra LLC/SNAP encap is required 
+		   if original Ethernet frame contains no LLC/SNAP,
+		   then an extra LLC/SNAP encap is required
 		 */
 		EXTRA_LLCSNAP_ENCAP_FROM_PKT_START(pTxBlk->pSrcBufHeader,
 						   pTxBlk->pExtraLlcSnapEncap);
@@ -3792,7 +3792,7 @@ VOID STA_ARalink_Frame_Tx(
 			    STA_Build_ARalink_Frame_Header(pAd, pTxBlk);
 
 			/*
-			   It's ok write the TxWI here, because the TxWI->TxWIMPDUByteCnt 
+			   It's ok write the TxWI here, because the TxWI->TxWIMPDUByteCnt
 			   will be updated after final frame was handled.
 			 */
 			RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
@@ -3818,7 +3818,7 @@ VOID STA_ARalink_Frame_Tx(
 			pHeaderBufPtr = &pTxBlk->HeaderBuf[0];
 			pTxBlk->MpduHeaderLen = 0;
 
-			/* 
+			/*
 			   A-Ralink sub-sequent frame header is the same as 802.3 header.
 			   DA(6)+SA(6)+FrameType(2)
 			 */
@@ -3912,7 +3912,7 @@ VOID STA_Fragment_Frame_Tx(
 
 #ifdef SOFT_ENCRYPT
 	/*
-	   Check if the original data has enough buffer 
+	   Check if the original data has enough buffer
 	   to insert or append extended field.
 	 */
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
@@ -4005,8 +4005,8 @@ VOID STA_Fragment_Frame_Tx(
 		/*
 		   Insert LLC-SNAP encapsulation - 8 octets
 
-		   if original Ethernet frame contains no LLC/SNAP, 
-		   then an extra LLC/SNAP encap is required 
+		   if original Ethernet frame contains no LLC/SNAP,
+		   then an extra LLC/SNAP encap is required
 		 */
 		EXTRA_LLCSNAP_ENCAP_FROM_PKT_START(pTxBlk->pSrcBufHeader,
 						   pTxBlk->pExtraLlcSnapEncap);
@@ -4039,7 +4039,7 @@ VOID STA_Fragment_Frame_Tx(
 
 		/*
 		   NOTE: DON'T refer the skb->len directly after following copy. Becasue the length is not adjust
-		   to correct lenght, refer to pTxBlk->SrcBufLen for the packet length in following progress. 
+		   to correct lenght, refer to pTxBlk->SrcBufLen for the packet length in following progress.
 		 */
 		NdisMoveMemory(pTxBlk->pSrcBufData + pTxBlk->SrcBufLen,
 			       &pAd->PrivateInfo.Tx.MIC[0], 8);
@@ -4232,7 +4232,7 @@ VOID STA_Fragment_Frame_Tx(
 	========================================================================
 
 	Routine Description:
-		Copy frame from waiting queue into relative ring buffer and set 
+		Copy frame from waiting queue into relative ring buffer and set
 	appropriate ASIC register to kick hardware encryption before really
 	sent out to air.
 		
@@ -4262,7 +4262,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 	/*
 	   ---------------------------------------------
 	   STEP 0. DO SANITY CHECK AND SOME EARLY PREPARATION.
-	   ---------------------------------------------        
+	   ---------------------------------------------
 	 */
 	ASSERT(pTxBlk->TxPacketList.Number);
 	if (pTxBlk->TxPacketList.Head == NULL) {
@@ -4282,7 +4282,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 
 	/* ------------------------------------------------------------------
 	   STEP 1. WAKE UP PHY
-	   outgoing frame always wakeup PHY to prevent frame lost and 
+	   outgoing frame always wakeup PHY to prevent frame lost and
 	   turn off PSM bit to improve performance
 	   ------------------------------------------------------------------
 	   not to change PSM bit, just send this frame out?
@@ -4322,7 +4322,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 #ifdef CLIENT_WDS
 	if (!MAC_ADDR_EQUAL		/* 4 MAC Addresses */
 			((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
-			pAd->CurrentAddress)) 
+			pAd->CurrentAddress))
 		bDoHdrTrans = FALSE;
 	else
 #endif /* CLIENT_WDS */

@@ -844,7 +844,7 @@ VOID UAPSD_SP_AUE_Handle(
 				DBGPRINT(RT_DEBUG_TRACE, ("uapsd> aux: close a SP.\n\n\n"));
 #endif /* UAPSD_DEBUG */
             }
-        } 
+        }
 
 		RTMP_SEM_UNLOCK(&pAd->UAPSDEOSPLock);
 	}

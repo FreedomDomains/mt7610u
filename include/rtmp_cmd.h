@@ -474,7 +474,7 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_CONNECT {
 
 
 
-	UINT8 *pBssid;  
+	UINT8 *pBssid;
 	
 	BOOLEAN bWpsConnection;
 #ifdef DOT11W_PMF_SUPPORT

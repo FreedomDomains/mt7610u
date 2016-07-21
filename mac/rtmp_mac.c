@@ -34,7 +34,7 @@
 	Routine Description:
 		Calculates the duration which is required to transmit out frames
 	with given size and specified rate.
-					  
+					
 	Arguments:
 		pTxWI		Pointer to head of each MPDU to HW.
 		Ack 		Setting for Ack requirement bit
@@ -81,7 +81,7 @@ VOID RTMPWriteTxWI(
 		pMac = &pAd->MacTab.Content[WCID];
 
 	
-	/* 
+	/*
 		Always use Long preamble before verifiation short preamble functionality works well.
 		Todo: remove the following line if short preamble functionality works
 	*/
@@ -305,7 +305,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 		else if (pMacEntry->MmpsMode == MMPS_STATIC)
 		{
 			/* Static MIMO Power Save Mode*/
-			if ((pTransmit->field.MODE == MODE_HTMIX || pTransmit->field.MODE == MODE_HTGREENFIELD) && 
+			if ((pTransmit->field.MODE == MODE_HTMIX || pTransmit->field.MODE == MODE_HTGREENFIELD) &&
 				(pTransmit->field.MCS > 7))
 			{
 				pTxWI->TxWIMCS = 7;
@@ -351,7 +351,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 	{
 		pTxWI->TxWIPHYMODE = pAd->fpga_ctl.tx_data_phy;
 		pTxWI->TxWIMCS = pAd->fpga_ctl.tx_data_mcs;
-		pTxWI->TxWILDPC = pAd->fpga_ctl.tx_data_ldpc; 
+		pTxWI->TxWILDPC = pAd->fpga_ctl.tx_data_ldpc;
 		pTxWI->TxWIBW = pAd->fpga_ctl.tx_data_bw;
 		pTxWI->TxWIShortGI = pAd->fpga_ctl.tx_data_gi;
 		if (pAd->fpga_ctl.data_basize)
@@ -360,8 +360,8 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 #endif /* CONFIG_FPGA_MODE */
 
 #ifdef MCS_LUT_SUPPORT
-	if ((RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT)) && 
-		(pTxWI->TxWIWirelessCliID < 128) && 
+	if ((RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT)) &&
+		(pTxWI->TxWIWirelessCliID < 128) &&
 		(pMacEntry && pMacEntry->bAutoTxRateSwitch == TRUE))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
@@ -374,7 +374,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 		rate_ctrl.field.STBC = pTxWI->TxWISTBC;
 		rate_ctrl.field.ShortGI = pTxWI->TxWIShortGI;
 		rate_ctrl.field.BW = pTxWI->TxWIBW;
-		rate_ctrl.field.MCS = pTxWI->TxWIMCS; 
+		rate_ctrl.field.MCS = pTxWI->TxWIMCS;
 		if (rate_ctrl.word == pTransmit->word)
 			pTxWI->TxWILutEn = 1;
 		pTxWI->TxWILutEn = 0;
@@ -541,8 +541,8 @@ VOID RTMPWriteTxWI_Cache(
 #endif /* CONFIG_FPGA_MODE */
 
 #ifdef MCS_LUT_SUPPORT
-	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) && 
-		(pTxWI->TxWIWirelessCliID < 128) && 
+	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) &&
+		(pTxWI->TxWIWirelessCliID < 128) &&
 		(pMacEntry && pMacEntry->bAutoTxRateSwitch == TRUE))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
@@ -555,7 +555,7 @@ VOID RTMPWriteTxWI_Cache(
 		rate_ctrl.field.STBC = pTxWI->TxWISTBC;
 		rate_ctrl.field.ShortGI = pTxWI->TxWIShortGI;
 		rate_ctrl.field.BW = pTxWI->TxWIBW;
-		rate_ctrl.field.MCS = pTxWI->TxWIMCS; 
+		rate_ctrl.field.MCS = pTxWI->TxWIMCS;
 		if (rate_ctrl.word == pTransmit->word)
 			pTxWI->TxWILutEn = 1;
 		pTxWI->TxWILutEn = 0;

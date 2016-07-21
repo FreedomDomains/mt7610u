@@ -275,8 +275,8 @@ NTSTATUS RTUSBReadEEPROM16(
 	OUT	USHORT *pData);
 
 NTSTATUS RTUSBWriteEEPROM16(
-	IN struct _RTMP_ADAPTER *pAd, 
-	IN USHORT offset, 
+	IN struct _RTMP_ADAPTER *pAd,
+	IN USHORT offset,
 	IN USHORT value);
 #endif /* RTMP_USB_SUPPORT */
 

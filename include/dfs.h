@@ -32,7 +32,7 @@
   *
   *	DFS Radar related definitions.
   *
-  ************************************************************************/ 
+  ************************************************************************/
 
 #ifdef DFS_SUPPORT
 #define RADAR_DEBUG_SHOW_RAW_EVENT		0x01  /* Show the 384-bytes raw data of event buffer */
@@ -154,7 +154,7 @@
 	}																			\
 }
 #endif /* MT76x0 */
-		 
+		
 #define DFS_EVENT_PRINT(_DfsEvent)		\
 		DBGPRINT(RT_DEBUG_ERROR, ( "EngineId = %u, Timestamp = %u, Width = %u\n",	\
 		_DfsEvent.EngineId, _DfsEvent.TimeStamp, _DfsEvent.Width));
@@ -282,7 +282,7 @@ typedef struct _DFS_EVENT{
 #ifdef MT76x0
 	UINT16 phase;
 	UINT8 power_stable_counter;
-	UINT16 current_power; 
+	UINT16 current_power;
 #endif /* MT76x0 */
 }DFS_EVENT, *PDFS_EVENT;
 

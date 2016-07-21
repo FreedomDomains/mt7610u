@@ -155,8 +155,8 @@ static VOID ATEWriteTxWI(
 		txwi_n->BAWinSize = BASize;	
 
 		txwi_n->wcid = WCID;
-		txwi_n->MPDUtotalByteCnt = Length; 
-		txwi_n->TxPktId = PID; 
+		txwi_n->MPDUtotalByteCnt = Length;
+		txwi_n->TxPktId = PID;
 		
 		txwi_n->BW = Transmit.field.BW;
 		txwi_n->ShortGI = Transmit.field.ShortGI;
@@ -184,8 +184,8 @@ static VOID ATEWriteTxWI(
 		txwi_o->BAWinSize = BASize;	
 
 		txwi_o->wcid = WCID;
-		txwi_o->MPDUtotalByteCnt = Length; 
-		txwi_o->PacketId = PID; 
+		txwi_o->MPDUtotalByteCnt = Length;
+		txwi_o->PacketId = PID;
 		
 		txwi_o->BW = Transmit.field.BW;
 		txwi_o->ShortGI = Transmit.field.ShortGI;
@@ -267,7 +267,7 @@ INT ATESetUpFrame(
 		
 		/* fill 802.11 header */
 #ifdef RALINK_QA
-		if (pATEInfo->bQATxStart == TRUE) 
+		if (pATEInfo->bQATxStart == TRUE)
 		{
 			pHeader80211 = NdisMoveMemory(&(pAd->NullFrame),
 				pATEInfo->Header, pATEInfo->HLen);
@@ -284,7 +284,7 @@ INT ATESetUpFrame(
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RALINK_QA
-		if (pATEInfo->bQATxStart == TRUE) 
+		if (pATEInfo->bQATxStart == TRUE)
 		{
 			/* modify sequence number... */
 			if (pATEInfo->TxDoneCount == 0)
@@ -309,7 +309,7 @@ INT ATESetUpFrame(
 		pTxInfo = (TXINFO_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
 
 #ifdef RALINK_QA
-		if (pATEInfo->bQATxStart == TRUE) 
+		if (pATEInfo->bQATxStart == TRUE)
 		{
 			/* Avoid to exceed the range of WirelessPacket[]. */
 			ASSERT(pATEInfo->TxInfo.TxInfoPktLen <= (MAX_FRAME_SIZE - 34/* == 2312 */));
@@ -369,7 +369,7 @@ INT ATESetUpFrame(
 #endif /* RTMP_MAC */
 
 		/* fill TxWI */
-		if (pATEInfo->bQATxStart == TRUE) 
+		if (pATEInfo->bQATxStart == TRUE)
 		{
 			TxHTPhyMode.field.BW = bw;
 			TxHTPhyMode.field.ShortGI = sgi;
@@ -377,7 +377,7 @@ INT ATESetUpFrame(
 			TxHTPhyMode.field.MCS = mcs;
 			TxHTPhyMode.field.MODE = phymode;
 			ATEWriteTxWI(pAd, pTxWI, frag, ts,
-				ampdu, ack, nseq, 
+				ampdu, ack, nseq,
 				basize, BSSID_WCID,
 				mpdu_len /* include 802.11 header */,
 				pid,
@@ -404,7 +404,7 @@ INT ATESetUpFrame(
 
 		/* prepare frame payload */
 #ifdef RALINK_QA
-		if (pATEInfo->bQATxStart == TRUE) 
+		if (pATEInfo->bQATxStart == TRUE)
 		{
 			/* copy the pattern one by one to the frame payload */
 			if ((pATEInfo->PLen != 0) && (pATEInfo->DLen != 0))
@@ -435,7 +435,7 @@ INT ATESetUpFrame(
 		/* Always add 4 extra bytes at every packet. */
 		padLen = TransferBufferLength - OrgBufferLength + 4;/* 4 == last packet padding */
 
-		/* 
+		/*
 			RTMP_PKT_TAIL_PADDING == 11.
 			[11 == 3(max 4 byte padding) + 4(last packet padding) + 4(MaxBulkOutsize align padding)]		
 		*/
@@ -510,7 +510,7 @@ VOID ATE_RTUSBBulkOutDataPacket(
 	BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 
 	/* Increase total transmit byte counter. */
-	pAd->RalinkCounters.OneSecTransmittedByteCount +=  pNullContext->BulkOutSize; 
+	pAd->RalinkCounters.OneSecTransmittedByteCount +=  pNullContext->BulkOutSize;
 	pAd->RalinkCounters.TransmittedByteCount +=  pNullContext->BulkOutSize;
 
 	/* Clear ATE frame bulk out flag. */
@@ -626,7 +626,7 @@ INT ATEResetBulkOut(
 	pNullContext->IRPPending = TRUE;
 
 	/*
-		If driver is still in ATE TXFRAME mode, 
+		If driver is still in ATE TXFRAME mode,
 		keep on transmitting ATE frames.
 	*/
 	DBGPRINT(RT_DEBUG_TRACE, ("pATEInfo->Mode == %d\npAd->ContinBulkOut == %d\npAd->BulkOutRemained == %d\n",
@@ -660,7 +660,7 @@ INT ATEResetBulkOut(
 
 	Return Value:
 
-	IRQL = 
+	IRQL =
 	
 	Note:
 	

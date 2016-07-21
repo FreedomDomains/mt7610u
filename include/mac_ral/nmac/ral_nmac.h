@@ -197,7 +197,7 @@ typedef	struct GNU_PACKED _TXWI_NMAC {
 	UINT32		STBC:1;
 	UINT32		eTxBF:1;
 	UINT32		iTxBF:1;
-	UINT32		PHYMODE:3;  
+	UINT32		PHYMODE:3;
 
 	/* Word1 */
 	/* ex:  1c ff 38 00 means ACK=0, BAWinSize=7, MPDUtotalByteCnt = 0x38 */
@@ -491,7 +491,7 @@ typedef struct GNU_PACKED _HW_RATE_CTRL_STRUCT_{
 	UINT16 STBC:1;
 	UINT16 eTxBF:1;
 	UINT16 iTxBF:1;
-	UINT16 PHYMODE:3;  
+	UINT16 PHYMODE:3;
 #endif /* RT_BIG_ENDIAN */
 }HW_RATE_CTRL_STRUCT;
 
@@ -677,12 +677,12 @@ typedef union _TSO_CTRL_STRUC {
 #define PIFS_TX_CFG     0x13EC    // PIFS setting
 
 //----------------------------------------------------------------
-// Header Translation 
+// Header Translation
 //----------------------------------------------------------------
 
-/* 
-	WIFI INFO for TX translation 
-	|TXINO|TXWI|WIFI INFO|802.3 MAC Header|Pyaload| 
+/*
+	WIFI INFO for TX translation
+	|TXINO|TXWI|WIFI INFO|802.3 MAC Header|Pyaload|
 */
 
 #ifdef HDR_TRANS_SUPPORT
@@ -728,10 +728,10 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC {
 } WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
-/* 
-	header translation control register 
+/*
+	header translation control register
 	bit0 --> TX translation enable
-	bit1 --> RX translation enable 
+	bit1 --> RX translation enable
 */
 #define HEADER_TRANS_CTRL_REG	0x0260
 #define HT_TX_ENABLE			0x1
@@ -762,7 +762,7 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC {
 } HDR_TRANS_CTRL_STRUC, *PHDR_TRANS_CTRL_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
-/* RX header translation enable by WCID */ 
+/* RX header translation enable by WCID */
 #define HT_RX_WCID_EN_BASE	0x0264
 #define HT_RX_WCID_OFFSET	32
 #ifdef RT63xx

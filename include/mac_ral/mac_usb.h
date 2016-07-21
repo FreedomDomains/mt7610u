@@ -259,7 +259,7 @@ typedef struct _CMD_RSP_CONTEXT
 	PURB pUrb;
 	BOOLEAN IRPPending;
 	BOOLEAN InUse;
-	BOOLEAN Readable; 
+	BOOLEAN Readable;
 	ra_dma_addr_t data_dma;
 } CMD_RSP_CONTEXT, *PCMD_RSP_CONTEXT;
 
@@ -279,7 +279,7 @@ typedef struct _CMD_RSP_CONTEXT
 
 /******************************************************************************
 
-  	USB TX Related MACRO 
+  	USB TX Related MACRO
   	
 ******************************************************************************/
 #define RTMP_START_DEQUEUE(pAd, QueIdx, irqFlags)				\
@@ -348,15 +348,15 @@ typedef struct _CMD_RSP_CONTEXT
 /* ----------------- RX Related MACRO ----------------- */
 
 
-/* 
+/*
   *	Device Hardware Interface Related MACRO
   */
 #define RTMP_IRQ_INIT(pAd)				do{}while(0)
 #define RTMP_IRQ_ENABLE(pAd)			do{}while(0)
 
 
-/* 
-  *	MLME Related MACRO 
+/*
+  *	MLME Related MACRO
   */
 #define RTMP_MLME_HANDLER(pAd)			RTUSBMlmeUp(&(pAd->mlmeTask))
 
@@ -377,7 +377,7 @@ typedef struct _CMD_RSP_CONTEXT
 
 
 /*
-  *	Power Save Related MACRO 
+  *	Power Save Related MACRO
   */
 #ifdef CONFIG_STA_SUPPORT
 #define RTMP_PS_POLL_ENQUEUE(pAd)						\

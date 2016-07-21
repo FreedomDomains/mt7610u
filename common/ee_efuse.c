@@ -69,7 +69,7 @@ typedef	union	_EFUSE_CTRL_STRUC {
 		UINT32            EFSROM_LDO_ON_TIME:2;
 		UINT32            EFSROM_LDO_OFF_TIME:6;
 		UINT32            EFSROM_MODE:2;
-		UINT32            EFSROM_AOUT:6;   
+		UINT32            EFSROM_AOUT:6;
 	}	field;
 	UINT32			word;
 }	EFUSE_CTRL_STRUC, *PEFUSE_CTRL_STRUC;
@@ -90,13 +90,13 @@ typedef	union	_EFUSE_CTRL_STRUC {
 #endif /* RT_BIG_ENDIAN */
 
 static UCHAR eFuseReadRegisters(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	PRTMP_ADAPTER	pAd,
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	OUT	USHORT* pData);
 
-VOID eFuseReadPhysical( 
-	IN	PRTMP_ADAPTER	pAd, 
+VOID eFuseReadPhysical(
+	IN	PRTMP_ADAPTER	pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
   	OUT	PUSHORT lpOutBuffer,
@@ -104,17 +104,17 @@ VOID eFuseReadPhysical(
 
 static VOID eFusePhysicalWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,	
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	OUT	USHORT* pData);
 
 static NTSTATUS eFuseWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	IN	USHORT* pData);
 
-static VOID eFuseWritePhysical( 
+static VOID eFuseWritePhysical(
 	IN	PRTMP_ADAPTER	pAd,	
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
@@ -124,8 +124,8 @@ static VOID eFuseWritePhysical(
 
 static NTSTATUS eFuseWriteRegistersFromBin(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	IN	USHORT* pData);
 
 
@@ -143,9 +143,9 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 ========================================================================
 */
 UCHAR eFuseReadRegisters(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	PRTMP_ADAPTER	pAd,
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	OUT	USHORT* pData)
 {
 	EFUSE_CTRL_STRUC		eFuseCtrlStruc;
@@ -219,7 +219,7 @@ UCHAR eFuseReadRegisters(
 		/*The return byte statrs from S. Therefore, the little-endian will return BA, the Big-endian will return DC.*/
 		/*For returning the bottom 2 bytes, the Big-endian should shift right 2-bytes.*/
 #ifdef RT_BIG_ENDIAN
-		data = data << (8*((Offset & 0x3)^0x2));		  
+		data = data << (8*((Offset & 0x3)^0x2));		
 #else
 		data = data >> (8*(Offset & 0x3));		
 #endif /* RT_BIG_ENDIAN */
@@ -244,10 +244,10 @@ UCHAR eFuseReadRegisters(
 	
 ========================================================================
 */
-VOID eFusePhysicalReadRegisters( 
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+VOID eFusePhysicalReadRegisters(
+	IN	PRTMP_ADAPTER	pAd,
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	OUT	USHORT* pData)
 {
 	EFUSE_CTRL_STRUC		eFuseCtrlStruc;
@@ -330,12 +330,12 @@ VOID eFusePhysicalReadRegisters(
 	
 ========================================================================
 */
-VOID eFuseReadPhysical( 
-	IN	PRTMP_ADAPTER	pAd, 
+VOID eFuseReadPhysical(
+	IN	PRTMP_ADAPTER	pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
   	OUT	PUSHORT lpOutBuffer,
-  	IN	ULONG nOutBufferSize  
+  	IN	ULONG nOutBufferSize
 )
 {
 	USHORT* pInBuf = (USHORT*)lpInBuffer;
@@ -377,7 +377,7 @@ NTSTATUS eFuseRead(
 	for(i=0; i<Length; i+=2)
 	{
 		EFSROM_AOUT = eFuseReadRegisters(pAd, Offset+i, 2, &pData[i/2]);
-	} 
+	}
 	return Status;
 }
 
@@ -396,8 +396,8 @@ NTSTATUS eFuseRead(
 */
 static VOID eFusePhysicalWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,	
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	OUT	USHORT* pData)
 {
 	EFUSE_CTRL_STRUC		eFuseCtrlStruc;
@@ -532,8 +532,8 @@ static VOID eFusePhysicalWriteRegisters(
 */
 static NTSTATUS eFuseWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	IN	USHORT* pData)
 {
 	USHORT	i, Loop=0, StartBlock=0, EndBlock=0;
@@ -549,20 +549,20 @@ static NTSTATUS eFuseWriteRegisters(
 	/*set start block and end block number, start from tail of mapping table*/
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_END % 2) != 0)
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1;
 	}
 	else
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END;
 	}
 
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_START % 2) != 0)
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1;
 	}
 	else
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START;
 	}
 	/*Step 0. find the entry in the mapping table*/
 	/*The address of EEPROM is 2-bytes alignment.*/
@@ -670,7 +670,7 @@ static NTSTATUS eFuseWriteRegisters(
 		tmpaddr = addr;
 
 		if(addr % 2 != 0)
-			addr = addr -1; 
+			addr = addr -1;
 		InBuf[0] = addr;
 		InBuf[1] = 2;
 
@@ -683,7 +683,7 @@ static NTSTATUS eFuseWriteRegisters(
 		/* write the logical address*/
 		if(tmpaddr%2 != 0) 	
 			InBuf[2] = tmpOffset<<8;	
-		else          
+		else
 			InBuf[2] = tmpOffset;
 
 		eFuseWritePhysical(pAd,&InBuf[0], 6, NULL, 0);
@@ -749,14 +749,14 @@ static NTSTATUS eFuseWriteRegisters(
 			tmpaddr = addr;
 
 			if(addr % 2 != 0)
-				addr = addr -1; 
+				addr = addr -1;
 			InBuf[0] = addr;
 			InBuf[1] = 2;		
 			
 			eFuseReadPhysical(pAd, &InBuf[0], 4, &InBuf[2], 2);				
 
 			/* write the logical address*/
-			if(tmpaddr%2 != 0) 
+			if(tmpaddr%2 != 0)
 			{
 				/* Invalidate the high byte*/
 				for (i=8; i<15; i++)
@@ -803,12 +803,12 @@ static NTSTATUS eFuseWriteRegisters(
 	
 ========================================================================
 */
-static VOID eFuseWritePhysical( 
+static VOID eFuseWritePhysical(
 	IN	PRTMP_ADAPTER	pAd,	
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
   	PUCHAR lpOutBuffer,
-  	ULONG nOutBufferSize  
+  	ULONG nOutBufferSize
 )
 {
 	USHORT* pInBuf = (USHORT*)lpInBuffer;
@@ -849,7 +849,7 @@ static VOID eFuseWritePhysical(
 	
 ========================================================================
 */
-NTSTATUS eFuseWrite(  
+NTSTATUS eFuseWrite(
    	IN	PRTMP_ADAPTER	pAd,
 	IN	USHORT			Offset,
 	IN	PUSHORT			pData,
@@ -909,7 +909,7 @@ NTSTATUS eFuseWrite(
 	
 ========================================================================
 */
-INT set_eFuseGetFreeBlockCount_Proc(  
+INT set_eFuseGetFreeBlockCount_Proc(
    	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg)
 {
@@ -980,13 +980,13 @@ INT	set_eFuseLoadFromBin_Proc(
 	RtmpOSFSInfoChange(&osfsInfo, TRUE);
 
 	srcf = RtmpOSFileOpen(src, O_RDONLY, 0);
-	if (IS_FILE_OPEN_ERR(srcf)) 
+	if (IS_FILE_OPEN_ERR(srcf))
 	{
 		DBGPRINT_ERR(("--> Error opening file %s\n", src));
 		retval = FALSE;
 		goto recoverFS;
 	}
-	else 
+	else
 	{
 		/* The object must have a read method*/
 		while(RtmpOSFileRead(srcf, &buffer[TotalByte], 1)==1)
@@ -1063,8 +1063,8 @@ recoverFS:
 
 static NTSTATUS eFuseWriteRegistersFromBin(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	USHORT Offset, 
-	IN	USHORT Length, 
+	IN	USHORT Offset,
+	IN	USHORT Length,
 	IN	USHORT* pData)
 {
 	USHORT	i,StartBlock=0,EndBlock=0;
@@ -1084,20 +1084,20 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 	/*set start block and end block number, start from tail of mapping table*/
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_END % 2) != 0)
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1;
 	}
 	else
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_END;
 	}
 
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_START % 2) != 0)
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1;
 	}
 	else
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_START;
 	}
 	
 	do
@@ -1287,7 +1287,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 		tmpaddr = addr;
 
 		if(addr % 2 != 0)
-			addr = addr -1; 
+			addr = addr -1;
 		InBuf[0] = addr;
 		InBuf[1] = 2;
 
@@ -1300,7 +1300,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 		/* write the logical address*/
 		if(tmpaddr%2 != 0) 	
 			InBuf[2] = tmpOffset<<8;	
-		else          
+		else
 			InBuf[2] = tmpOffset;
 
 		eFuseWritePhysical(pAd,&InBuf[0], 6, NULL, 0);
@@ -1371,14 +1371,14 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 			tmpaddr = addr;
 
 			if(addr % 2 != 0)
-				addr = addr -1; 
+				addr = addr -1;
 			InBuf[0] = addr;
 			InBuf[1] = 2;		
 			
 			eFuseReadPhysical(pAd, &InBuf[0], 4, &InBuf[2], 2);				
 
 			/* write the logical address*/
-			if(tmpaddr%2 != 0) 
+			if(tmpaddr%2 != 0)
 			{
 				/* Invalidate the high byte*/
 				for (i=8; i<15; i++)
@@ -1413,7 +1413,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 
 
 int rtmp_ee_efuse_read16(
-	IN RTMP_ADAPTER *pAd, 
+	IN RTMP_ADAPTER *pAd,
 	IN USHORT Offset,
 	OUT USHORT *pValue)
 {
@@ -1430,8 +1430,8 @@ int rtmp_ee_efuse_read16(
 
 
 int rtmp_ee_efuse_write16(
-	IN RTMP_ADAPTER *pAd, 
-	IN USHORT Offset, 
+	IN RTMP_ADAPTER *pAd,
+	IN USHORT Offset,
 	IN USHORT data)
 {
     if (pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
@@ -1521,12 +1521,12 @@ INT eFuseLoadEEPROM(
 	if (src && *src)
 	{
 		srcf = RtmpOSFileOpen(src, O_RDONLY, 0);
-		if (IS_FILE_OPEN_ERR(srcf)) 
+		if (IS_FILE_OPEN_ERR(srcf))
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("--> Error opening %s\n", src));
 			return FALSE;
 		}
-		else 
+		else
 		{
 
 				memset(pAd->EEPROMImage, 0x00, MAX_EEPROM_BIN_FILE_SIZE);
@@ -1586,12 +1586,12 @@ INT eFuseWriteEeeppromBuf(
 	{
 		srcf = RtmpOSFileOpen(src, O_WRONLY|O_CREAT, 0);
 
-		if (IS_FILE_OPEN_ERR(srcf)) 
+		if (IS_FILE_OPEN_ERR(srcf))
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("--> Error opening %s\n", src));
 			return FALSE;
 		}
-		else 
+		else
 		{
 
 			RtmpOSFileWrite(srcf, (PSTRING)pAd->EEPROMImage,MAX_EEPROM_BIN_FILE_SIZE);
@@ -1619,7 +1619,7 @@ INT eFuseWriteEeeppromBuf(
 }
 
 
-VOID eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd, 
+VOID eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
 	PUINT EfuseFreeBlock)
 {
 	
@@ -1636,20 +1636,20 @@ VOID eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
 	/* find first free block*/
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_START % 2) != 0)
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_START-1;
 	}
 	else
 	{
-		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_START; 
+		StartBlock = pAd->chipCap.EFUSE_USAGE_MAP_START;
 	}
 
 	if( (pAd->chipCap.EFUSE_USAGE_MAP_END % 2) != 0)
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_END-1;
 	}
 	else
 	{
-		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_END; 
+		EndBlock = pAd->chipCap.EFUSE_USAGE_MAP_END;
 	}
 
 	for (i = StartBlock; i <= EndBlock; i+=2)
