@@ -933,10 +933,6 @@ ifeq ($(PLATFORM),INF_AMAZON_SE)
 WFLAGS += -DRT_BIG_ENDIAN -DINF_AMAZON_SE
 endif
 
-ifeq ($(PLATFORM),RALINK_3052)
-WFLAGS += -DPLATFORM_RALINK_3052
-endif
-
 ifeq ($(PLATFORM),FREESCALE8377)
 #EXTRA_CFLAGS := -v -I$(RT28xx_DIR)/include -I$(LINUX_SRC)/include $(WFLAGS)-O2 -Wall -Wstrict-prototypes -Wno-trigraphs 
 #export EXTRA_CFLAGS
@@ -951,16 +947,6 @@ endif
 
 #kernel build options for 2.4
 # move to Makefile outside LINUX_SRC := /opt/star/kernel/linux-2.4.27-star
-
-ifeq ($(PLATFORM),RALINK_3052)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS)
-export CFLAGS
-endif
-
-ifeq ($(PLATFORM), RALINK_2880)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS)
-export CFLAGS
-endif
 
 ifeq ($(PLATFORM),STAR)
 CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -Uarm -fno-common -pipe -mapcs-32 -D__LINUX_ARM_ARCH__=4 -march=armv4  -mshort-load-bytes -msoft-float -Uarm -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS)
