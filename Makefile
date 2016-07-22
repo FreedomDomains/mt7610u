@@ -5,9 +5,7 @@ else
 RT28xx_MODE = $(WIFI_MODE)
 endif
 
-ifeq ($(TARGET),)
 TARGET = LINUX
-endif
 
 # CHIPSET
 # rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062, rt3562, rt3593, rt3573
@@ -23,10 +21,7 @@ MODULE = $(word 1, $(CHIPSET))
 #OS ABL - YES or NO
 OSABL = NO
 
-ifneq ($(TARGET),THREADX)
-#RT28xx_DIR = home directory of RT28xx source code
 RT28xx_DIR = $(shell pwd)
-endif
 
 include $(RT28xx_DIR)/os/linux/config.mk
 
@@ -41,22 +36,7 @@ PLATFORM = PC
 RELEASE = DPO
 
 
-ifeq ($(TARGET),LINUX)
 MAKE = make
-endif
-
-ifeq ($(TARGET), UCOS)
-MAKE = make
-endif
-ifeq ($(TARGET),THREADX)
-MAKE = gmake
-endif
-
-ifeq ($(TARGET), ECOS)
-MAKE = make
-MODULE = $(shell pwd | sed "s/.*\///" ).o
-export MODULE
-endif
 
 ifeq ($(PLATFORM),PC)
 # Linux 2.6
@@ -72,13 +52,7 @@ export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUD
 # The targets that may be used.
 PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi osabl
 
-ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
-else
-all: $(TARGET)
-endif 
-
-
 
 build_tools:
 	$(MAKE) -C tools
@@ -166,12 +140,6 @@ ifeq ($(TARGET), LINUX)
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif	
-ifeq ($(TARGET), UCOS)
-	$(MAKE) -C os/ucos clean MODE=$(RT28xx_MODE)
-endif
-ifeq ($(TARGET), ECOS)
-	$(MAKE) -C os/ecos clean MODE=$(RT28xx_MODE)
-endif
 
 uninstall:
 ifeq ($(TARGET), LINUX)
