@@ -528,7 +528,7 @@ VOID RTMPCkipInsertCMIC(
 		{
 			NdisMoveMemory(ckip_ck + i * pKey->KeyLen,
 							pKey->Key,
-							pKey->KeyLen);			
+							pKey->KeyLen);
 		}
 		NdisMoveMemory(ckip_ck + i * pKey->KeyLen,
 						pKey->Key,
@@ -537,7 +537,7 @@ VOID RTMPCkipInsertCMIC(
 	else
 	{
 		NdisMoveMemory(ckip_ck, pKey->Key, pKey->KeyLen);
-	}	
+	}
     RTMPCkipMicInit(&mic_ctx, ckip_ck);
     RTMPMicUpdate(&mic_ctx, pDA, MAC_ADDR_LEN);            /* MIC <-- DA */
     RTMPMicUpdate(&mic_ctx, pSA, MAC_ADDR_LEN);            /* MIC <-- SA */

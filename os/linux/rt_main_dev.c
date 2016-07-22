@@ -112,7 +112,7 @@ int MainVirtualIF_close(IN struct net_device *net_dev)
 {
     VOID *pAd = NULL;
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	/* Sanity check for pAd */
 	if (pAd == NULL)
@@ -159,14 +159,14 @@ int MainVirtualIF_open(IN struct net_device *net_dev)
 {
     VOID *pAd = NULL;
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	/* Sanity check for pAd */
 	if (pAd == NULL)
 		return 0; /* close ok */
 
 
-#ifdef IFUP_IN_PROBE	
+#ifdef IFUP_IN_PROBE
 	while (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
 	{
 		OS_WAIT(10);
@@ -175,7 +175,7 @@ int MainVirtualIF_open(IN struct net_device *net_dev)
 #else
 	if (VIRTUAL_IF_UP(pAd) != 0)
 		return -1;
-#endif /* IFUP_IN_PROBE */	
+#endif /* IFUP_IN_PROBE */
 
 	/* increase MODULE use count */
 	RT_MOD_INC_USE_COUNT();
@@ -211,8 +211,8 @@ int rt28xx_close(VOID *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
     VOID	*pAd = NULL;
-	
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> rt28xx_close\n"));
 
@@ -250,7 +250,7 @@ Note:
 ========================================================================
 */
 int rt28xx_open(VOID *dev)
-{				
+{
 	struct net_device * net_dev = (struct net_device *)dev;
 	VOID *pAd = NULL;
 	int retval = 0;
@@ -271,7 +271,7 @@ int rt28xx_open(VOID *dev)
 	if (sizeof(ra_dma_addr_t) < sizeof(dma_addr_t))
 		DBGPRINT(RT_DEBUG_ERROR, ("Fatal error for DMA address size!!!\n"));
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	/* Sanity check for pAd */
 	if (pAd == NULL)
@@ -281,7 +281,7 @@ int rt28xx_open(VOID *dev)
 		return -1;
 	}
 
-	RTMP_DRIVER_MCU_SLEEP_CLEAR(pAd);	
+	RTMP_DRIVER_MCU_SLEEP_CLEAR(pAd);
 
 	RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
 
@@ -293,7 +293,7 @@ int rt28xx_open(VOID *dev)
 	RTMP_DRIVER_USB_INTF_GET(pAd, &intf);
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
-	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);	
+	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
 #else
 	pm_usage_cnt = intf->pm_usage_cnt;
 #endif
@@ -306,7 +306,7 @@ int rt28xx_open(VOID *dev)
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("rt28xx_open autopm_resume fail ------\n"));
 			return (-1);;
-		}			
+		}
 	}
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
@@ -467,7 +467,7 @@ PNET_DEV RtmpPhyNetDevInit(
 
 
 	return net_dev;
-	
+
 }
 
 
@@ -483,7 +483,7 @@ VOID *RtmpNetEthConvertDevSearch(
 	struct net_device *net_dev = (struct net_device *)net_dev_;
 	struct net *net;
 	net = dev_net(net_dev);
-	
+
 	BUG_ON(!net);
 	for_each_netdev(net, pNetDev)
 #else
@@ -522,7 +522,7 @@ Arguments:
     sk_buff *skb		the pointer refer to a sk_buffer.
 
 Return Value:
-    0					
+    0
 
 Note:
 	This function is the entry point of Tx Path for Os delivery packet to
@@ -537,7 +537,7 @@ int rt28xx_packet_xmit(void *skbsrc)
 	VOID *pAd = NULL;
 	PNDIS_PACKET pPacket = (PNDIS_PACKET) skb;
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 
 	return RTMPSendPackets((NDIS_HANDLE)pAd, (PPNDIS_PACKET) &pPacket, 1,
@@ -589,7 +589,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 	RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
 
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("rt28xx_get_wireless_stats --->\n"));
@@ -614,7 +614,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 	pStats->qual.noise = pDrvIwStats->noise;
 	pStats->discard.nwid = 0;     /* Rx : Wrong nwid/essid */
 	pStats->miss.beacon = 0;      /* Missed beacons/superframe */
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("<--- rt28xx_get_wireless_stats\n"));
 	return pStats;
 }
@@ -630,7 +630,7 @@ INT rt28xx_ioctl(
 	INT ret = 0;
 	ULONG OpMode;
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	if (pAd == NULL)
 	{
@@ -677,7 +677,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 	struct net_device_stats *pStats;
 
 	if (net_dev)
-		GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+		GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	if (pAd)
 	{
@@ -721,7 +721,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 	    /* for cslip etc */
 	    pStats->rx_compressed = 0;
 	    pStats->tx_compressed = 0;
-		
+
 		return pStats;
 	}
 	else
@@ -750,23 +750,23 @@ BOOLEAN RtmpPhyNetDevExit(
 	}
 
 	return TRUE;
-	
+
 }
 
 
 /*******************************************************************************
 
 	Device IRQ related functions.
-	
+
  *******************************************************************************/
 int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 {
 	ULONG infType;
 	VOID *pAd = NULL;
 	int retval = 0;
-	
-	GET_PAD_FROM_NET_DEV(pAd, pNetDev);	
-	
+
+	GET_PAD_FROM_NET_DEV(pAd, pNetDev);
+
 	ASSERT(pAd);
 
 	RTMP_DRIVER_INF_TYPE_GET(pAd, &infType);
@@ -774,7 +774,7 @@ int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 
 
 	return retval;
-	
+
 }
 
 #ifdef WDS_SUPPORT
@@ -832,21 +832,21 @@ struct net_device_stats *RT28xx_get_wds_ether_stats(
 
 	  		pStats->multicast = pWdsStats->multicast; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.MulticastReceivedFrameCount.QuadPart;   // multicast packets received */
 	  		pStats->collisions = pWdsStats->collisions; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.OneCollision + pAd->WdsTab.WdsEntry[index].WdsCounter.MoreCollisions;  // Collision packets */
-	
+
 	  		pStats->rx_length_errors = 0;
 	  		pStats->rx_over_errors = pWdsStats->rx_over_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // receiver ring buff overflow */
 	  		pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
 	  		pStats->rx_frame_errors = pWdsStats->rx_frame_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RcvAlignmentErrors;          // recv'd frame alignment error */
 	  		pStats->rx_fifo_errors = pWdsStats->rx_fifo_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // recv'r fifo overrun */
 	  		pStats->rx_missed_errors = 0;                                            /* receiver missed packet */
-	
+
 	  		    /* detailed tx_errors */
 	  		pStats->tx_aborted_errors = 0;
 	  		pStats->tx_carrier_errors = 0;
 	  		pStats->tx_fifo_errors = 0;
 	  		pStats->tx_heartbeat_errors = 0;
 	  		pStats->tx_window_errors = 0;
-	
+
 	  		    /* for cslip etc */
 	  		pStats->rx_compressed = 0;
 	  		pStats->tx_compressed = 0;

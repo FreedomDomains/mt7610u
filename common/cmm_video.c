@@ -59,7 +59,7 @@ VOID TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
 	INT qIdx;
 	QUEUE_HEADER *pTxQ, *pEntry;
 	PNDIS_PACKET pPacket;
-	
+
 	RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
 	pAd->TxSwQMaxLen = qLen;
 	for (qIdx = 0; qIdx < NUM_OF_TX_RING; qIdx++)
@@ -78,7 +78,7 @@ VOID TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
 		}
 	}
 	RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
-	
+
 	DBGPRINT(RT_DEBUG_OFF, ("%s():Set TxSwQMaxLen as %d\n",
 			__FUNCTION__, pAd->TxSwQMaxLen));
 }
@@ -103,7 +103,7 @@ VOID VideoTurbineDynamicTune(
 
 		Set_RateAdaptInterval(pAd, "100:50");
 		TxSwQDepthAdjust(pAd, 1024);
-			
+
 	}
 	else
 	{

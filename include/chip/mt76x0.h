@@ -63,8 +63,8 @@ struct _RTMP_ADAPTER;
 typedef struct _TSO_INFO_{
 	UINT32 mss:16;
 	UINT32 ips:8;
-	UINT32 tups:6;	
-	UINT32 tcp:1;	
+	UINT32 tups:6;
+	UINT32 tcp:1;
 	UINT32 rsv:1;
 }TSO_INFO;
 #else
@@ -92,7 +92,7 @@ typedef struct _RT8592_FREQ_ITEM {
 	UINT8 mod;
 	UINT8 R;
 } RT8592_FREQ_ITEM;
-	
+
 /*
 	R37
 	R36
@@ -128,7 +128,7 @@ typedef struct _MT76x0_FREQ_ITEM {
 	UINT8 pllR30_b7; /* sdm_reset_n */
 	UINT8 pllR30_b6b2; /* sdmmash_prbs,sin */
 	UINT8 pllR30_b1; /* sdm_bp */
-	UINT16 pll_n; /* R30<0>, R29<7:0> (hex) */	
+	UINT16 pll_n; /* R30<0>, R29<7:0> (hex) */
 	UINT8 pllR28_b7b6; /* isi,iso */
 	UINT8 pllR28_b5b4; /* pfd_dly */
 	UINT8 pllR28_b3b2; /* clksel option */

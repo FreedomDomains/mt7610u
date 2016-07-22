@@ -329,7 +329,7 @@ typedef union _BBP_R47_STRUC {
 		UCHAR	Reserved:2;
 		UCHAR	Adc6On:1;
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R47_STRUC, *PBBP_R47_STRUC;
 #endif
@@ -358,7 +358,7 @@ typedef union _BBP_R49_STRUC {
 		UCHAR	bypassTSSIAverage:1; /* 0: the average TSSI (the average of the 16 samples), 1: the current TSSI */
 		UCHAR	adc5_in_sel:1; /* 0: TSSI (from the external components, old version), 1: PSI (internal components, new version - RT3390) */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R49_STRUC, *PBBP_R49_STRUC;
 #endif
@@ -389,7 +389,7 @@ typedef union _BBP_R105_STRUC {
 		UCHAR	EnableSIGRemodulation:1; /* Enable the channel estimation updates based on remodulation of L-SIG and HT-SIG symbols. */
 		UCHAR	Reserve1:4; /* Reserved field */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R105_STRUC, *PBBP_R105_STRUC;
 #endif
@@ -416,7 +416,7 @@ typedef union _BBP_R106_STRUC {
 		UCHAR	ShortGI_Offset40:4; /* Delay GI remover when the short GI is detected in 40MHz band (40M sampling rate) */
 		UCHAR	EnableLowPowerFSD:1; /* enable/disable the low power FSD */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R106_STRUC, *PBBP_R106_STRUC;
 #endif
@@ -441,7 +441,7 @@ typedef union _BBP_R109_STRUC {
 		UCHAR	Tx0PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
 		UCHAR	Tx1PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R109_STRUC, *PBBP_R109_STRUC;
 #endif
@@ -466,7 +466,7 @@ typedef union _BBP_R110_STRUC {
 		UCHAR	AllTxPowerCtrl:4; /* All transmitters' fine power control in 0.1dB (valid: 0~10) */
 		UCHAR	Tx2PowerCtrl:4; /* Tx2 power control in 0.1dB step (valid: 0~10) */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R110_STRUC, *PBBP_R110_STRUC;
 #endif
@@ -489,7 +489,7 @@ typedef union _BBP_R179_STRUC {
 	{
 		UCHAR	DataIndex1:8; /* Data index #1 */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R179_STRUC, *PBBP_R179_STRUC;
 #endif /* RT_BIG_ENDIAN */
@@ -512,7 +512,7 @@ typedef union _BBP_R180_STRUC {
 	{
 		UCHAR	DataIndex2:8; /* Data index #2 */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R180_STRUC, *PBBP_R180_STRUC;
 #endif /* RT_BIG_ENDIAN */
@@ -535,7 +535,7 @@ typedef union _BBP_R182_STRUC {
 	{
 		UCHAR	DataArray:8; /* Data array indexed by BBP R179 and R180 */
 	} field;
-	
+
 	UCHAR		byte;
 } BBP_R182_STRUC, *PBBP_R182_STRUC;
 #endif /* RT_BIG_ENDIAN */
@@ -587,7 +587,7 @@ typedef union _BBP_R182_STRUC {
 	we read/write the bbp value by register's ID.
 	Generate PER to test BA
  *****************************************************************************/
-	
+
 #ifdef CARRIER_DETECTION_SUPPORT
 /*TONE_RADAR_DETECT_V2*/
 #define RTMP_CARRIER_IO_READ8(_A, _I, _V)               \

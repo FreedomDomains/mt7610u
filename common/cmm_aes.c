@@ -438,12 +438,12 @@ BOOLEAN RTMPSoftDecryptAES(
 {
 	UINT			HeaderLen;
 	UCHAR			PN[6];
-	UINT			payload_len;	
+	UINT			payload_len;
 	UINT			num_blocks;
 	UINT			payload_remainder;
 	USHORT			fc;
 	UCHAR			fc0;
-	UCHAR			fc1;	
+	UCHAR			fc1;
 	UINT			frame_type;
 	UINT			frame_subtype;
 	UINT			from_ds;
@@ -458,7 +458,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	UCHAR 			padded_buffer[16];
 	UCHAR 			mic_iv[16];
 	UCHAR 			mic_header1[16];
-	UCHAR 			mic_header2[16];	
+	UCHAR 			mic_header2[16];
 	UCHAR			MIC[8];
 	UCHAR			TrailMIC[8];
 
@@ -469,10 +469,10 @@ BOOLEAN RTMPSoftDecryptAES(
 	fc0 = *pData;
 	fc1 = *(pData + 1);
 
-	fc = *((PUSHORT)pData);	
+	fc = *((PUSHORT)pData);
 
 	frame_type = ((fc0 >> 2) & 0x03);
-	frame_subtype = ((fc0 >> 4) & 0x0f);	
+	frame_subtype = ((fc0 >> 4) & 0x0f);
 
 	from_ds = (fc1 & 0x2) >> 1;
 	to_ds = (fc1 & 0x1);
@@ -485,7 +485,7 @@ BOOLEAN RTMPSoftDecryptAES(
 				 );
 
 	HeaderLen = 24;
-	
+
 	if (a4_exists)
 		HeaderLen += 6;
 
@@ -508,13 +508,13 @@ BOOLEAN RTMPSoftDecryptAES(
 	payload_len = DataByteCnt - HeaderLen - 8 - 8;	/* 8 bytes for CCMP header , 8 bytes for MIC*/
 	payload_remainder = (payload_len) % 16;
 	num_blocks = (payload_len) / 16;
-	
-	
+
+
 
 	/* Find start of payload*/
 	payload_index = HeaderLen + 8; /*IV+EIV*/
 
-	for (i=0; i< num_blocks; i++)	
+	for (i=0; i< num_blocks; i++)
 	{
 		construct_ctr_preload(ctr_preload,
 								a4_exists,
@@ -530,10 +530,10 @@ BOOLEAN RTMPSoftDecryptAES(
 		payload_index += 16;
 	}
 
-	
+
 	/* If there is a short final block, then pad it*/
 	/* encrypt it and copy the unpadded part back */
-	
+
 	if (payload_remainder > 0)
 	{
 		construct_ctr_preload(ctr_preload,
@@ -553,7 +553,7 @@ BOOLEAN RTMPSoftDecryptAES(
 		payload_index += payload_remainder;
 	}
 
-	
+
 	/* Descrypt the MIC*/
 	construct_ctr_preload(ctr_preload,
 							a4_exists,
@@ -563,17 +563,17 @@ BOOLEAN RTMPSoftDecryptAES(
 							0);
 	NdisZeroMemory(padded_buffer, 16);
 	NdisMoveMemory(padded_buffer, pData + payload_index, 8);
-	
+
 	aes128k128d(pWpaKey->Key, ctr_preload, aes_out);
 
-	bitwise_xor(aes_out, padded_buffer, chain_buffer);	
+	bitwise_xor(aes_out, padded_buffer, chain_buffer);
 
 	NdisMoveMemory(TrailMIC, chain_buffer, 8);
-	
-	
-	
+
+
+
 	/* Calculate MIC*/
-	
+
 
 	/*Force the protected frame bit on*/
 	*(pData + 1) = *(pData + 1) | 0x40;
@@ -622,7 +622,7 @@ BOOLEAN RTMPSoftDecryptAES(
 		NdisMoveMemory(padded_buffer, pData + payload_index, payload_remainder);
 
 		bitwise_xor(aes_out, padded_buffer, chain_buffer);
-		aes128k128d(pWpaKey->Key, chain_buffer, aes_out);		
+		aes128k128d(pWpaKey->Key, chain_buffer, aes_out);
 	}
 
 	/* aes_out contains padded mic, discard most significant*/
@@ -645,18 +645,18 @@ BOOLEAN RTMPSoftDecryptAES(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Construct AAD of CCMP.
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
 		It's described in IEEE Std 802.11-2007.
 		The AAD is constructed from the MPDU header.
-		
+
 	========================================================================
 */
 VOID RTMPConstructCCMPAAD(
@@ -682,7 +682,7 @@ VOID RTMPConstructCCMPAAD(
 	aad_hdr[1] = (*(pHdr + 1)) & 0xc7;
 	aad_hdr[1] = aad_hdr[1] | 0x40;
 	len = 2;
-	
+
 	/* Append Addr 1, 2 & 3 */
 	NdisMoveMemory(&aad_hdr[len], pHdr + 4, 3 * MAC_ADDR_LEN);
 	len += (3 * MAC_ADDR_LEN);
@@ -690,19 +690,19 @@ VOID RTMPConstructCCMPAAD(
 	/*  SC -
 		MPDU Sequence Control field, with the Sequence Number
 		subfield (bits 4-15 of the Sequence Control field)
-		masked to 0. The Fragment Number subfield is not modified. */	
+		masked to 0. The Fragment Number subfield is not modified. */
 	aad_hdr[len] = (*(pHdr + 22)) & 0x0f;
 	aad_hdr[len + 1] = 0x00;
 	len += 2;
-	
-			
+
+
 	/* Append the Addr4 field if present. */
 	if (a4_exists)
 	{
 		NdisMoveMemory(&aad_hdr[len], pHdr + 24, MAC_ADDR_LEN);
 		len += MAC_ADDR_LEN;
 	}
-	
+
 	/*  QC -
 		QoS Control field, if present, a 2-octet field that includes
 		the MSDU priority. The QC TID field is used in the
@@ -719,23 +719,23 @@ VOID RTMPConstructCCMPAAD(
 		aad_hdr[len] = (*(pHdr + 24)) & 0x0f;   /* Qos_TC */
 		aad_hdr[len + 1] = 0x00;
 		len += 2;
-	}	
+	}
 
-	*aad_len = len;	
+	*aad_len = len;
 }
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Construct NONCE header of CCMP.
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
-				
+
 	========================================================================
 */
 VOID RTMPConstructCCMPNonce(
@@ -743,7 +743,7 @@ VOID RTMPConstructCCMPNonce(
 	IN UINT8 a4_exists,
 	IN UINT8 qc_exists,
 	IN BOOLEAN isMgmtFrame,
-	IN UCHAR *pn,		
+	IN UCHAR *pn,
 	OUT UCHAR *nonce_hdr,
 	OUT UINT *nonce_hdr_len)
 {
@@ -763,7 +763,7 @@ VOID RTMPConstructCCMPNonce(
 
 	n_offset += 1;
 
-	/* Fill in MPDU Address A2 field */	
+	/* Fill in MPDU Address A2 field */
 	NdisMoveMemory(&nonce_hdr[n_offset], pHdr + 10, MAC_ADDR_LEN);
 	n_offset += MAC_ADDR_LEN;
 
@@ -775,34 +775,34 @@ VOID RTMPConstructCCMPNonce(
 	n_offset += LEN_PN;
 
 	*nonce_hdr_len = n_offset;
-	
+
 }
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Construct CCMP header.
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
 		It's a 8-octets header.
-				
+
 	========================================================================
 */
 VOID RTMPConstructCCMPHdr(
         IN UINT8 key_idx,
-	IN UCHAR *pn,		
+	IN UCHAR *pn,
 	OUT UCHAR *ccmp_hdr)
 {
 	NdisZeroMemory(ccmp_hdr, LEN_CCMP_HDR);
 
 	ccmp_hdr[0] = pn[0];
 	ccmp_hdr[1] = pn[1];
-	ccmp_hdr[3] = (key_idx <<6) | 0x20;	
+	ccmp_hdr[3] = (key_idx <<6) | 0x20;
 	ccmp_hdr[4] = pn[2];
 	ccmp_hdr[5] = pn[3];
 	ccmp_hdr[6] = pn[4];
@@ -811,15 +811,15 @@ VOID RTMPConstructCCMPHdr(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
-					
+
 	========================================================================
 */
 BOOLEAN RTMPSoftEncryptCCMP(
@@ -835,10 +835,10 @@ BOOLEAN RTMPSoftEncryptCCMP(
 	UINT8 a4_exists, qc_exists;
 	UINT8 aad_hdr[30];
 	UINT aad_len = 0;
-	UINT8 nonce_hdr[13];	
+	UINT8 nonce_hdr[13];
 	UINT32 nonce_hdr_len = 0;
 	UINT32 out_len = DataLen + 8;
-		
+
 #ifdef RT_BIG_ENDIAN
 	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
 #endif
@@ -849,12 +849,12 @@ BOOLEAN RTMPSoftEncryptCCMP(
 
 	/* Indicate type and subtype of Frame Control field */
 	frame_type = (((*pHdr) >> 2) & 0x03);
-	frame_subtype = (((*pHdr) >> 4) & 0x0f);	
+	frame_subtype = (((*pHdr) >> 4) & 0x0f);
 
 	/* Indicate the fromDS and ToDS */
 	from_ds = ((*(pHdr + 1)) & 0x2) >> 1;
 	to_ds = ((*(pHdr + 1)) & 0x1);
-			
+
 	/* decide if the Address 4 exist or QoS exist */
 	a4_exists = (from_ds & to_ds);
 	qc_exists = 0;
@@ -892,26 +892,26 @@ BOOLEAN RTMPSoftEncryptCCMP(
 					aad_hdr, aad_len, LEN_CCMP_MIC,
 					pData, &out_len))
 		return FALSE;
-		
+
 #ifdef RT_BIG_ENDIAN
 	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
 #endif
-	
+
 	return TRUE;
 }
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Decrypt data with CCMP.
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
-		
+
 	========================================================================
 */
 BOOLEAN RTMPSoftDecryptCCMP(
@@ -926,11 +926,11 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	UINT8 a4_exists, qc_exists;
 	UINT8 aad_hdr[30];
 	UINT aad_len = 0;
-	UINT8 pn[LEN_PN];	
+	UINT8 pn[LEN_PN];
 	PUCHAR cipherData_ptr;
 	UINT32 cipherData_len;
-	UINT8 nonce_hdr[13];	
-	UINT32 nonce_hdr_len = 0;	
+	UINT8 nonce_hdr[13];
+	UINT32 nonce_hdr_len = 0;
 	UINT32 out_len = *DataLen;
 
 #ifdef RT_BIG_ENDIAN
@@ -950,7 +950,7 @@ BOOLEAN RTMPSoftDecryptCCMP(
 
 	/* Indicate type and subtype of Frame Control field */
 	frame_type = (((*pHdr) >> 2) & 0x03);
-	frame_subtype = (((*pHdr) >> 4) & 0x0f);	
+	frame_subtype = (((*pHdr) >> 4) & 0x0f);
 
 	/* Indicate the fromDS and ToDS */
 	from_ds = ((*(pHdr + 1)) & 0x2) >> 1;
@@ -964,9 +964,9 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	qc_exists = ((frame_subtype == SUBTYPE_QDATA) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFACK) ||
 				 (frame_subtype == SUBTYPE_QDATA_CFPOLL) ||
-				 (frame_subtype == SUBTYPE_QDATA_CFACK_CFPOLL));	
+				 (frame_subtype == SUBTYPE_QDATA_CFACK_CFPOLL));
         }
-			
+
 	/* Extract PN and from CCMP header */
 	pn[0] =	pData[0];
 	pn[1] = pData[1];
@@ -978,7 +978,7 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	/* skip ccmp header */
 	cipherData_ptr = pData + LEN_CCMP_HDR;
 	cipherData_len = *DataLen - LEN_CCMP_HDR;
-		
+
 	/* Construct AAD header */
 	RTMPConstructCCMPAAD(pHdr,
 						 (frame_type == BTYPE_DATA),
@@ -995,7 +995,7 @@ BOOLEAN RTMPSoftDecryptCCMP(
 						   pn,
 						   nonce_hdr,
 						   &nonce_hdr_len);
-	
+
 	/* CCM recipient processing -
 	   uses the temporal key, AAD, nonce, MIC,
 	   and MPDU cipher text data */
@@ -1017,16 +1017,16 @@ BOOLEAN RTMPSoftDecryptCCMP(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		CCMP test vector
 
 	Arguments:
-		
+
 	Return Value:
 
-	Note:		
-					
+	Note:
+
 	========================================================================
 */
 VOID CCMP_test_vector(
@@ -1039,7 +1039,7 @@ VOID CCMP_test_vector(
 	/*UINT8 A3[6] =  {0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba};*/
 	UINT8 TK[16] = {0xc9, 0x7c, 0x1f, 0x67, 0xce, 0x37, 0x11, 0x85,
 				  	0x51, 0x4a, 0x8a, 0x19, 0xf2, 0xbd, 0xd5, 0x2f};
-	UINT8 PN[6] =  {0x0C, 0xE7, 0x76, 0x97, 0x03, 0xB5};					
+	UINT8 PN[6] =  {0x0C, 0xE7, 0x76, 0x97, 0x03, 0xB5};
 	UINT8 HDR[24]= {0x08, 0x48, 0xc3, 0x2c, 0x0f, 0xd2, 0xe1, 0x28,
 					0xa5, 0x7c, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08,
 					0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba, 0x80, 0x33};
@@ -1055,7 +1055,7 @@ VOID CCMP_test_vector(
 	UINT8 C_TEXT_DATA[28] = {0xf3, 0xd0, 0xa2, 0xfe, 0x9a, 0x3d, 0xbf, 0x23,
 							 0x42, 0xa6, 0x43, 0xe4, 0x32, 0x46, 0xe8, 0x0c,
 							 0x3c, 0x04, 0xd0, 0x19, 0x78, 0x45, 0xce, 0x0b,
-							 0x16, 0xf9, 0x76, 0x23};		
+							 0x16, 0xf9, 0x76, 0x23};
 	UINT8 res_buf[100];
 	UINT res_len = 0;
 
@@ -1096,7 +1096,7 @@ VOID CCMP_test_vector(
 	}
 
 	/* Encrypt action */
-	NdisZeroMemory(res_buf, 100);	
+	NdisZeroMemory(res_buf, 100);
 	NdisMoveMemory(res_buf, P_TEXT_DATA, sizeof(P_TEXT_DATA));
 	res_len = sizeof(C_TEXT_DATA);
 	if (AES_CCM_Encrypt(res_buf, sizeof(P_TEXT_DATA),
@@ -1114,7 +1114,7 @@ VOID CCMP_test_vector(
 			hex_dump("CCM_Encrypt", res_buf, res_len);
 		}
 	}
-	
+
 	/* Decrypt action */
 	NdisZeroMemory(res_buf, 100);
 	NdisMoveMemory(res_buf, C_TEXT_DATA, sizeof(C_TEXT_DATA));
@@ -1132,8 +1132,8 @@ VOID CCMP_test_vector(
 			printk("\n!!!CCM_Decrypt is FAILURE!!!\n\n");
 			hex_dump("CCM_Decrypt", res_buf, res_len);
 		}
-	}	
-	
+	}
+
 	printk("== CCMP test vector == \n");
 
 	}

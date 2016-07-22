@@ -100,19 +100,19 @@ UINT FCSTAB_32[256] =
 
 	Routine	Description:
 		Calculate a new FCS given the current FCS and the new data.
-		
+
 	Arguments:
 		Fcs	      the original FCS value
 		Cp          pointer to the data which will be calculate the FCS
 		Len         the length of the data
-		
+
 	Return Value:
 		UINT - FCS 32 bits
-		
+
 	IRQL = DISPATCH_LEVEL
 
 	Note:
-	
+
 	========================================================================
 */
 UINT	RTMP_CALC_FCS32(
@@ -130,22 +130,22 @@ UINT	RTMP_CALC_FCS32(
 	========================================================================
 
 	Routine	Description:
-		Init WEP function.	
-		
+		Init WEP function.
+
 	Arguments:
       pAd		Pointer to our adapter
 		pKey        Pointer to the WEP KEY
 		KeyId		   WEP Key ID
 		KeyLen      the length of WEP KEY
 		pDest       Pointer to the destination which Encryption data will store in.
-		
+
 	Return Value:
 		None
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
-	
+
 	========================================================================
 */
 VOID	RTMPInitWepEngine(
@@ -153,18 +153,18 @@ VOID	RTMPInitWepEngine(
 	IN	PUCHAR			pKey,
 	IN	UCHAR			KeyLen,
 	OUT	ARC4_CTX_STRUC  *pARC4_CTX)
-{	
+{
 /*	UCHAR   seed[16];*/
 	PUCHAR	seed = NULL;
 	UINT8	seed_len;
-		
+
 	os_alloc_mem(NULL, (UCHAR **)&seed, sizeof(UCHAR)*16);
 	if (seed == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: seed Allocate memory fail!!!\n", __FUNCTION__));
 		return;
 	}
-	
+
 	/* WEP seed construction */
 	NdisZeroMemory(seed, 16);
 	NdisMoveMemory(seed, pIv, 3);
@@ -173,7 +173,7 @@ VOID	RTMPInitWepEngine(
 
 	/* RC4 uses a pseudo-random number generator (PRNG)
 	   to generate a key stream */
-	ARC4_INIT(pARC4_CTX, &seed[0], seed_len);    		
+	ARC4_INIT(pARC4_CTX, &seed[0], seed_len);
 
 	if (seed != NULL)
 		os_free_mem(NULL, seed);
@@ -181,24 +181,24 @@ VOID	RTMPInitWepEngine(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Construct WEP IV header.
 
 	Arguments:
-		
+
 	Return Value:
 
 	Note:
 		It's a 4-octets header.
-				
+
 	========================================================================
 */
 VOID RTMPConstructWEPIVHdr(
 	IN	UINT8 			key_idx,
-	IN	UCHAR			*pn,	
+	IN	UCHAR			*pn,
 	OUT	UCHAR			*iv_hdr)
-{	
+{
 	NdisZeroMemory(iv_hdr, LEN_WEP_IV_HDR);
 
 	NdisMoveMemory(iv_hdr, pn, LEN_WEP_TSC);
@@ -211,17 +211,17 @@ VOID RTMPConstructWEPIVHdr(
 	========================================================================
 
 	Routine	Description:
-		WEP MPDU cryptographic encapsulation 	
-		
+		WEP MPDU cryptographic encapsulation
+
 	Arguments:
 		pAdapter		Pointer to our adapter
 		pSrc        Pointer to the received data
 		Len         the length of the received data
-		
+
 	Return Value:
-		
+
 	Note:
-	
+
 	========================================================================
 */
 BOOLEAN	RTMPSoftEncryptWEP(
@@ -249,7 +249,7 @@ BOOLEAN	RTMPSoftEncryptWEP(
 
 	/* Initialize WEP key stream */
 	RTMPInitWepEngine(pIvHdr,
-					  pKey->Key, 					
+					  pKey->Key,
 					  pKey->KeyLen,
 					  ARC4_CTX);
 
@@ -275,19 +275,19 @@ BOOLEAN	RTMPSoftEncryptWEP(
 	========================================================================
 
 	Routine	Description:
-		Decrypt received WEP data	
-		
+		Decrypt received WEP data
+
 	Arguments:
 		pAdapter		Pointer to our adapter
 		pSrc        Pointer to the received data
 		Len         the length of the received data
-		
+
 	Return Value:
 		TRUE        Decrypt WEP data success
 		FALSE       Decrypt WEP data failed
-		
+
 	Note:
-	
+
 	========================================================================
 */
 BOOLEAN	RTMPSoftDecryptWEP(
@@ -304,7 +304,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
 	UINT16			ciphertext_len;
 	UINT			trailfcs;
 	UINT    		crc32;
-	
+
 	os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
 	if (ARC4_CTX == NULL)
 	{
@@ -320,14 +320,14 @@ BOOLEAN	RTMPSoftDecryptWEP(
 
 	/* Initialize WEP key stream */
 	RTMPInitWepEngine(pData,
-					  pKey->Key, 					
+					  pKey->Key,
 					  pKey->KeyLen,
 					  ARC4_CTX);
 
 	/* Skip the WEP IV header (4-bytes) */
 	ciphertext_ptr = pData + LEN_WEP_IV_HDR;
 	ciphertext_len = *DataByteCnt - LEN_WEP_IV_HDR;
-	
+
 	/* Decrypt the WEP MPDU. It shall include plaintext and ICV.
 	   The result output would overwrite the original WEP IV header position */
 	ARC4_Compute(ARC4_CTX,
@@ -355,7 +355,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
 
 	/* Update the total data length */
 	*DataByteCnt = plaintext_len;
-	
+
 	if (ARC4_CTX != NULL)
 		os_free_mem(NULL, ARC4_CTX);
 

@@ -146,6 +146,6 @@ UCHAR GetChannelFlag(
 
 UINT16 TotalChNum(
 	IN PCH_DESC pChDesc);
-	
+
 #endif /* __CHLIST_H__ */
 

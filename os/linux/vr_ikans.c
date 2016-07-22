@@ -110,7 +110,7 @@ Arguments:
 	netdev			- our WLAN network device
 
 Return Value:
-	
+
 
 Note:
 ========================================================================
@@ -197,7 +197,7 @@ Arguments:
 	netdev			- our WLAN network device
 
 Return Value:
-	
+
 
 Note:
 ========================================================================

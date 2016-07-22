@@ -37,7 +37,7 @@ NDIS_STATUS TXSTOP(
 	UCHAR			BbpData = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("ATE : ===> %s\n", __FUNCTION__));
-	
+
 	atemode = pATEInfo->Mode;
 	pATEInfo->Mode &= ATE_TXSTOP;
 	pATEInfo->bQATxStart = FALSE;
@@ -61,7 +61,7 @@ NDIS_STATUS TXSTOP(
 			/* No Carrier Suppression set BBP R24 bit0=0 */
 			ATE_BBP_CTS_TX_SIN_WAVE_DISABLE(pAd, BBP_R24, &BbpData);
 		}
-	}		
+	}
 
 	/*
 		We should free some resource which was allocated
@@ -96,13 +96,13 @@ NDIS_STATUS TXSTOP(
 	while (((pAd->BulkOutPending[0] == TRUE) ||
 			(pAd->BulkOutPending[1] == TRUE) ||
 			(pAd->BulkOutPending[2] == TRUE) ||
-			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))	
+			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))
 			/* pAd->BulkFlags != 0 : wait bulk out finish */
 	{
 		do
 		{
 			RTUSBCancelPendingBulkOutIRP(pAd);
-		} while (FALSE);			
+		} while (FALSE);
 
 		RtmpOsMsDelay(500);
 	}
@@ -169,14 +169,14 @@ NDIS_STATUS RXSTOP(
 	while (((pAd->BulkOutPending[0] == TRUE) ||
 			(pAd->BulkOutPending[1] == TRUE) ||
 			(pAd->BulkOutPending[2] == TRUE) ||
-			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))	
+			(pAd->BulkOutPending[3] == TRUE)) && (pAd->BulkFlags != 0))
 			/* pAd->BulkFlags != 0 : wait bulk out finish */
 	{
 		do
 		{
 			RTUSBCancelPendingBulkOutIRP(pAd);
 		} while (FALSE);
-		
+
 		RtmpOsMsDelay(500);
 	}
 
@@ -196,7 +196,7 @@ static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 {
 	UINT32 i, Value = 0;
 	UCHAR *pDst = NULL, *pSrc = NULL;
-	
+
 	for (i = 0 ; i < (len >> 2); i++)
 	{
 		pDst = (dst + i*4);
@@ -204,7 +204,7 @@ static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 		/* For alignment issue, we need a variable "Value". */
 		memmove(&Value, pSrc, 4);
 		Value = OS_HTONL(Value);
-		memmove(pDst, &Value, 4);		
+		memmove(pDst, &Value, 4);
 		pDst += 4;
 		pSrc += 4;
 	}
@@ -224,7 +224,7 @@ static VOID memcpy_exs(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 	ULONG i;
 	{
 		USHORT *pDst, *pSrc;
-		
+
 		pDst = (USHORT *) dst;
 		pSrc = (USHORT *) src;
 
@@ -234,7 +234,7 @@ static VOID memcpy_exs(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 			pDst++;
 			pSrc++;
 		}
-		
+
 		if ((len % 2) != 0)
 		{
 			memcpy(pDst, pSrc, (len % 2));
@@ -256,7 +256,7 @@ static VOID RTMP_IO_READ_BULK(PRTMP_ADAPTER pAd, UCHAR *dst, UINT32 offset, UINT
 		pDst = (dst + (index << 2));
 		RTMP_IO_READ32(pAd, offset, &Value);
 		DBGPRINT(RT_DEBUG_TRACE,("mac r 0x%04X=0x%08X\n", offset, Value));
-		
+
 		Value = OS_HTONL(Value);
 		memmove(pDst, &Value, 4);
 		offset += 4;
@@ -300,7 +300,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 	USHORT	    GainValue = 0, OffsetValue = 0;
 
 	ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R66, &Org_BBP66value);
-	ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R69, &Org_BBP69value);	
+	ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R69, &Org_BBP69value);
 	ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R70, &Org_BBP70value);
 
 	/************************************************************************/
@@ -311,7 +311,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 	/* for Noise Level */
 	if (channel <= 14)
 	{
-		LNA_Gain = GainValue & 0x00FF;		
+		LNA_Gain = GainValue & 0x00FF;
 
 		RT28xx_EEPROM_READ16(pAd, EEPROM_RSSI_BG_OFFSET, OffsetValue);
 		Rssi0Offset = OffsetValue & 0x00FF;
@@ -331,14 +331,14 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 		RT28xx_EEPROM_READ16(pAd, (EEPROM_RSSI_A_OFFSET + 2)/* 0x4C */, OffsetValue);
 		Rssi2Offset = OffsetValue & 0x00FF;
 	}
-	/***********************************************************************/	
+	/***********************************************************************/
 	{
 		pATEInfo->Channel = channel;
 		ATEAsicSwitchChannel(pAd);
 		RtmpOsMsDelay(5);
 
 		data = 0x10;
-		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R66, data);	
+		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R66, data);
 		data = 0x40;
 		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, data);
 		data = 0x40;
@@ -354,7 +354,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 		for (column = 0; column < 10; column++)
 		{
 			ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R50, &BbpR50Rssi0);
-			ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R51, &BbpR51Rssi1);	
+			ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R51, &BbpR51Rssi1);
 			ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R52, &BbpR52Rssi2);
 
 			RtmpOsMsDelay(10);
@@ -401,7 +401,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 
 		RtmpOsMsDelay(5);
 
-		BubbleSort(10, RSSI[0]); /* 1R */		
+		BubbleSort(10, RSSI[0]); /* 1R */
 
 		if ( pAd->Antenna.field.RxPath >= 2 ) /* 2R */
 		{
@@ -411,13 +411,13 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 		if ( pAd->Antenna.field.RxPath >= 3 ) /* 3R */
 		{
 			BubbleSort(10, RSSI[2]);
-		}	
+		}
 	}
 
 	pATEInfo->Channel = Org_Channel;
 	ATEAsicSwitchChannel(pAd);
 
-	/* restore original value */	
+	/* restore original value */
 
 	ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, Org_BBP69value);
 	ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R70, Org_BBP70value);
@@ -539,7 +539,7 @@ BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
         default:
             DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));
             return FALSE;
-		
+
 	}
 	return TRUE;
 }
@@ -559,7 +559,7 @@ static INT ResponseToGUI(
 
 	if (copy_to_user((pwrq)->u.data.pointer, (UCHAR *)(pRaCfg), (pwrq)->u.data.length))
 	{
-		
+
 		DBGPRINT_ERR(("copy_to_user() fail in %s\n", __FUNCTION__));
 		return (-EFAULT);
 	}
@@ -579,10 +579,10 @@ static  INT DO_RACFG_CMD_ATE_START(
 
 	pATEInfo->bQAEnabled = TRUE;
 	DBGPRINT(RT_DEBUG_TRACE,("pATEInfo->bQAEnabled = %s\n", (pATEInfo->bQAEnabled)? "TRUE":"FALSE"));
-	
+
 	/* Prepare feedback as soon as we can to avoid QA timeout. */
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
-	
+
 #ifdef	CONFIG_RT2880_ATE_CMD_NEW
 	Set_ATE_Proc(pAd, "ATESTART");
 #else
@@ -623,7 +623,7 @@ static  INT DO_RACFG_CMD_ATE_STOP(
 		*/
 		memcpy((UCHAR *)&pATEInfo->AtePid,
 						(&pRaCfg->data[0]) - 2/* == sizeof(pRaCfg->status) */,
-						sizeof(pATEInfo->AtePid));					
+						sizeof(pATEInfo->AtePid));
 
 		/* Prepare feedback as soon as we can to avoid QA timeout. */
 		ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
@@ -634,7 +634,7 @@ static  INT DO_RACFG_CMD_ATE_STOP(
 			DBGPRINT_ERR(("%s : unable to kill ate thread\n", RTMP_OS_NETDEV_GET_DEVNAME(pAd->net_dev)));
 #endif /* LINUX */
 	}
-		
+
 
 	/* AP/STA may be already in ATE_STOP mode due to cmd from QA. */
 	if (ATE_ON(pAd))
@@ -659,13 +659,13 @@ static  INT DO_RACFG_CMD_RF_WRITE_ALL(
 {
 	UINT32 R1, R2, R3, R4;
 	USHORT channel;
-	
+
 	memcpy(&R1, pRaCfg->data-2, 4);
 	memcpy(&R2, pRaCfg->data+2, 4);
 	memcpy(&R3, pRaCfg->data+6, 4);
 	memcpy(&R4, pRaCfg->data+10, 4);
-	memcpy(&channel, pRaCfg->data+14, 2);		
-	
+	memcpy(&channel, pRaCfg->data+14, 2);
+
 	pAd->LatchRfRegs.R1 = OS_NTOHL(R1);
 	pAd->LatchRfRegs.R2 = OS_NTOHL(R2);
 	pAd->LatchRfRegs.R3 = OS_NTOHL(R3);
@@ -689,7 +689,7 @@ static  INT DO_RACFG_CMD_E2PROM_READ16(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	UINT16	offset=0, value=0;
-	USHORT  tmp=0;				
+	USHORT  tmp=0;
 
 	offset = OS_NTOHS(pRaCfg->status);
 	RT28xx_EEPROM_READ16(pAd, offset, tmp);
@@ -699,7 +699,7 @@ static  INT DO_RACFG_CMD_E2PROM_READ16(
 	DBGPRINT(RT_DEBUG_TRACE,("e2p r %02Xh=0x%02X\n"
 		, (offset&0x00FF)+1, (value&0xFF00)>>8));
 	value = OS_HTONS(value);
-	
+
 	memcpy(pRaCfg->data, &value, 2);
 
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status)+2, NDIS_STATUS_SUCCESS);
@@ -714,7 +714,7 @@ static  INT DO_RACFG_CMD_E2PROM_WRITE16(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	USHORT	offset, value;
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&value, pRaCfg->data, 2);
 	value = OS_NTOHS(value);
@@ -781,7 +781,7 @@ static  INT DO_RACFG_CMD_IO_READ(
 	UCHAR rltbank, rltregID, rltrfValue;
 #endif /* RLT_RF */
 #endif /* RT65xx */
-	
+
 	memcpy(&offset, &pRaCfg->status, 4);
 	offset = OS_NTOHL(offset);
 
@@ -869,7 +869,7 @@ static  INT DO_RACFG_CMD_IO_WRITE(
 	UCHAR rltbank, rltregID, rltrfValue;
 #endif /* RLT_RF */
 #endif /* RT65xx */
-					
+
 	memcpy(&offset, pRaCfg->data-2, 4);
 	memcpy(&value, pRaCfg->data+2, 4);
 
@@ -883,7 +883,7 @@ static  INT DO_RACFG_CMD_IO_WRITE(
 	value = OS_NTOHL(value);
 
 	RTMP_IO_WRITE32(pAd, offset, value);
-	
+
 #ifdef RT6352
 	if (IS_RT6352(pAd))
 	{
@@ -934,7 +934,7 @@ static  INT DO_RACFG_CMD_IO_WRITE(
 	DBGPRINT(RT_DEBUG_WARN,("mac w 0x%04X=0x%08X\n", offset, value));
 #endif /* !RT65xx */
 #endif /* !RT6352 */
-			
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -948,7 +948,7 @@ static  INT DO_RACFG_CMD_IO_READ_BULK(
 {
 	UINT32	offset;
 	USHORT	len;
-	
+
 	memcpy(&offset, &pRaCfg->status, 4);
 	offset = OS_NTOHL(offset);
 
@@ -980,14 +980,14 @@ static  INT DO_RACFG_CMD_BBP_READ8(
 {
 	USHORT	offset;
 	UCHAR	value;
-	
+
 	value = 0;
 	offset = OS_NTOHS(pRaCfg->status);
 
 	ATE_BBPRead(pAd, offset, &value);
 	DBGPRINT(RT_DEBUG_WARN,("bbp r R%u=0x%02X\n", offset, value));
 	pRaCfg->data[0] = value;
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status)+1, NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -1001,7 +1001,7 @@ static  INT DO_RACFG_CMD_BBP_WRITE8(
 {
 	USHORT	offset;
 	UCHAR	value;
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&value, pRaCfg->data, 1);
 	ATE_BBPWrite(pAd, offset, value);
@@ -1011,7 +1011,7 @@ static  INT DO_RACFG_CMD_BBP_WRITE8(
 	{
 		SyncTxRxConfig(pAd, offset, value);
 	}
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -1024,15 +1024,15 @@ static  INT DO_RACFG_CMD_BBP_READ_ALL(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	USHORT bbp_reg_index;
-	
+
 	for (bbp_reg_index = 0; bbp_reg_index < pAd->chipCap.MaxNumOfBbpId+1; bbp_reg_index++)
 	{
 		pRaCfg->data[bbp_reg_index] = 0;
 		ATE_BBPRead(pAd, bbp_reg_index, &pRaCfg->data[bbp_reg_index]);
 	}
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status)+ pAd->chipCap.MaxNumOfBbpId+1, NDIS_STATUS_SUCCESS);
-	
+
 	return NDIS_STATUS_SUCCESS;
 }
 
@@ -1092,7 +1092,7 @@ static  INT DO_RACFG_CMD_CLEAR_COUNTER(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	
+
 	pATEInfo->U2M = 0;
 	pATEInfo->OtherData = 0;
 	pATEInfo->Beacon = 0;
@@ -1104,7 +1104,7 @@ static  INT DO_RACFG_CMD_CLEAR_COUNTER(
 	pATEInfo->TxHCCA = 0;
 	pATEInfo->TxMgmt = 0;
 	pATEInfo->TxDoneCount = 0;
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -1167,7 +1167,7 @@ static  INT DO_RACFG_CMD_TX_START(
 #endif /* RT_BIG_ENDIAN */
 #endif /* RTMP_MAC_USB */
 
-		NdisMoveMemory(&pATEInfo->TxWI, pRaCfg->data + 2, TXWISize);						
+		NdisMoveMemory(&pATEInfo->TxWI, pRaCfg->data + 2, TXWISize);
 #ifdef RT_BIG_ENDIAN
 		RTMPWIEndianChange(pAd, (PUCHAR)&pATEInfo->TxWI, TYPE_TXWI);
 #endif /* RT_BIG_ENDIAN */
@@ -1230,7 +1230,7 @@ static  INT DO_RACFG_CMD_GET_TX_STATUS(
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UINT32 count=0;
-	
+
 	count = OS_HTONL(pATEInfo->TxDoneCount);
 	NdisMoveMemory(pRaCfg->data, &count, 4);
 
@@ -1272,7 +1272,7 @@ static  INT DO_RACFG_CMD_RX_START(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_RX_START\n"));
 
 	pATEInfo->bQARxStart = TRUE;
@@ -1281,7 +1281,7 @@ static  INT DO_RACFG_CMD_RX_START(
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
-}	
+}
 
 
 static  INT DO_RACFG_CMD_RX_STOP(
@@ -1341,7 +1341,7 @@ static  INT DO_RACFG_CMD_ATE_START_TX_FRAME(
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
-}	
+}
 
 
 static  INT DO_RACFG_CMD_ATE_SET_BW(
@@ -1353,15 +1353,15 @@ static  INT DO_RACFG_CMD_ATE_SET_BW(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_BW\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_BW\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
 	snprintf((char *)str, sizeof(str), "%d", value);
 
 	Set_ATE_TX_BW_Proc(pAd, str);
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -1378,7 +1378,7 @@ static  INT DO_RACFG_CMD_ATE_SET_TX_POWER0(
 
 	NdisZeroMemory(str, LEN_OF_ARG);
 
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER0\n"));				
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER0\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1400,8 +1400,8 @@ static  INT DO_RACFG_CMD_ATE_SET_TX_POWER1(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER1\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER1\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1424,8 +1424,8 @@ static  INT DO_RACFG_CMD_ATE_SET_TX_POWER2(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER2\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_POWER2\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1449,7 +1449,7 @@ static  INT DO_RACFG_CMD_ATE_SET_FREQ_OFFSET(
 
 	NdisZeroMemory(str, LEN_OF_ARG);
 
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_FREQ_OFFSET\n"));				
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_FREQ_OFFSET\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1468,7 +1468,7 @@ static  INT DO_RACFG_CMD_ATE_GET_STATISTICS(
 	IN  struct ate_racfghdr *pRaCfg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_GET_STATISTICS\n"));
 
 	memcpy_exl(pAd, &pRaCfg->data[0], (UCHAR *)&pATEInfo->TxDoneCount, 4);
@@ -1481,7 +1481,7 @@ static  INT DO_RACFG_CMD_ATE_GET_STATISTICS(
 	memcpy_exl(pAd, &pRaCfg->data[28], (UCHAR *)&pAd->Counters8023.RxNoBuffer, 4);
 	memcpy_exl(pAd, &pRaCfg->data[32], (UCHAR *)&pAd->WlanCounters.FrameDuplicateCount.u.LowPart, 4);
 	memcpy_exl(pAd, &pRaCfg->data[36], (UCHAR *)&pAd->RalinkCounters.OneSecFalseCCACnt, 4);
-	
+
 	if (pATEInfo->RxAntennaSel == 0)
 	{
 		INT32 RSSI0 = 0;
@@ -1499,7 +1499,7 @@ static  INT DO_RACFG_CMD_ATE_GET_STATISTICS(
 	else
 	{
 		INT32 RSSI0 = 0;
-	
+
 		RSSI0 = (INT32)(pATEInfo->LastRssi0 - pAd->BbpRssiToDbmDelta);
 		memcpy_exl(pAd, &pRaCfg->data[40], (UCHAR *)&RSSI0, 4);
 		ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status)+44, NDIS_STATUS_SUCCESS);
@@ -1520,7 +1520,7 @@ static  INT DO_RACFG_CMD_ATE_RESET_COUNTER(
 
 	NdisZeroMemory(str, LEN_OF_ARG);
 
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_RESET_COUNTER\n"));				
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_RESET_COUNTER\n"));
 
 	snprintf((char *)str, sizeof(str), "%d", value);
 	Set_ResetStatCounter_Proc(pAd, str);
@@ -1536,14 +1536,14 @@ static  INT DO_RACFG_CMD_ATE_RESET_COUNTER(
 static  INT DO_RACFG_CMD_ATE_SEL_TX_ANTENNA(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN  struct ate_racfghdr *pRaCfg)	
+	IN  struct ate_racfghdr *pRaCfg)
 {
 	SHORT    value = 0;
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SEL_TX_ANTENNA\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SEL_TX_ANTENNA\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1565,8 +1565,8 @@ static  INT DO_RACFG_CMD_ATE_SEL_RX_ANTENNA(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SEL_RX_ANTENNA\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SEL_RX_ANTENNA\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1588,8 +1588,8 @@ static  INT DO_RACFG_CMD_ATE_SET_PREAMBLE(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_PREAMBLE\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_PREAMBLE\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1611,8 +1611,8 @@ static  INT DO_RACFG_CMD_ATE_SET_CHANNEL(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_CHANNEL\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_CHANNEL\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1682,8 +1682,8 @@ static  INT DO_RACFG_CMD_ATE_SET_RATE(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_RATE\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_RATE\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1705,8 +1705,8 @@ static  INT DO_RACFG_CMD_ATE_SET_TX_FRAME_LEN(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_FRAME_LEN\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_FRAME_LEN\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1728,8 +1728,8 @@ static  INT DO_RACFG_CMD_ATE_SET_TX_FRAME_COUNT(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_FRAME_COUNT\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_SET_TX_FRAME_COUNT\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
 	value = OS_NTOHS(value);
@@ -1768,11 +1768,11 @@ static  INT DO_RACFG_CMD_ATE_E2PROM_READ_BULK(
 	USHORT offset;
 	USHORT len;
 	USHORT buffer[EEPROM_SIZE >> 1];
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&len, pRaCfg->data, 2);
 	len = OS_NTOHS(len);
-	
+
 	rt_ee_read_all(pAd, (USHORT *)buffer);
 
 	if (offset + len <= EEPROM_SIZE)
@@ -1794,7 +1794,7 @@ static  INT DO_RACFG_CMD_ATE_E2PROM_WRITE_BULK(
 	USHORT offset;
 	USHORT len;
 	USHORT buffer[EEPROM_SIZE >> 1];
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&len, pRaCfg->data, 2);
 	len = OS_NTOHS(len);
@@ -1826,12 +1826,12 @@ static  INT DO_RACFG_CMD_ATE_IO_WRITE_BULK(
 {
 	UINT32 offset, pos, value;
 	USHORT len;
-	
+
 	memcpy(&offset, &pRaCfg->status, 4);
 	offset = OS_NTOHL(offset);
 	memcpy(&len, pRaCfg->data+2, 2);
 	len = OS_NTOHS(len);
-	
+
 	for (pos = 0; pos < len; pos += 4)
 	{
 		memcpy_exl(pAd, (UCHAR *)&value, pRaCfg->data+4+pos, 4);
@@ -1853,16 +1853,16 @@ static  INT DO_RACFG_CMD_ATE_BBP_READ_BULK(
 	USHORT offset;
 	USHORT len;
 	USHORT pos;
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&len, pRaCfg->data, 2);
 	len = OS_NTOHS(len);
-	
-	DBGPRINT(RT_DEBUG_WARN,("\n\n"));	
+
+	DBGPRINT(RT_DEBUG_WARN,("\n\n"));
 	for (pos = offset; pos < (offset+len); pos++)
 	{
 		pRaCfg->data[pos - offset] = 0;
-		
+
 		ATE_BBPRead(pAd, pos, &pRaCfg->data[pos - offset]);
 		DBGPRINT(RT_DEBUG_WARN,("bbp r R%u=0x%02X\n"
 			, pos, pRaCfg->data[pos - offset]));
@@ -1884,19 +1884,19 @@ static  INT DO_RACFG_CMD_ATE_BBP_WRITE_BULK(
 	USHORT len;
 	USHORT pos;
 	UCHAR *value;
-	
+
 	offset = OS_NTOHS(pRaCfg->status);
 	memcpy(&len, pRaCfg->data, 2);
 	len = OS_NTOHS(len);
-					
-	DBGPRINT(RT_DEBUG_WARN,("\n\n"));					
+
+	DBGPRINT(RT_DEBUG_WARN,("\n\n"));
 	for (pos = offset; pos < (offset+len); pos++)
 	{
 		value = pRaCfg->data + 2 + (pos - offset);
 		ATE_BBPWrite(pAd, pos,  *value);
 		DBGPRINT(RT_DEBUG_WARN,("bbp w R%u=0x%02X\n", pos, *value));
 	}
-	DBGPRINT(RT_DEBUG_WARN,("\n\n"));					
+	DBGPRINT(RT_DEBUG_WARN,("\n\n"));
 
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
@@ -1915,8 +1915,8 @@ static  INT DO_RACFG_CMD_ATE_CALIBRATION(
 	STRING	str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
-	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_CALIBRATION\n"));				
+
+	DBGPRINT(RT_DEBUG_TRACE,("RACFG_CMD_ATE_CALIBRATION\n"));
 
 	memcpy((PUCHAR)&cal_id, pRaCfg->data-2, 4);
 	cal_id = OS_NTOHL(cal_id);
@@ -1972,7 +1972,7 @@ static  INT DO_RACFG_CMD_ATE_CALIBRATION(
 				break;
 		}
 	}
-	
+
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status), NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -2008,7 +2008,7 @@ static  INT DO_RACFG_CMD_ATE_RF_READ_BULK_BANK(
 		DBGPRINT(RT_DEBUG_TRACE,("rf bank%u r R%u=0x%02X\n"
 			, bank, pos, pRaCfg->data[pos - offset]));
 	}
-	
+
 	ResponseToGUI(pRaCfg, wrq, 2/* sizeof(pRaCfg->status) */+len, NDIS_STATUS_SUCCESS);
 
 	return NDIS_STATUS_SUCCESS;
@@ -2025,7 +2025,7 @@ static  INT DO_RACFG_CMD_ATE_RF_WRITE_BULK_BANK(
 	USHORT len;
 	USHORT pos;
 	UCHAR *value;
-	
+
 	bank = OS_NTOHS(pRaCfg->status);
 	memcpy(&offset, pRaCfg->data, 2 /* sizeof(offset) */);
 	offset = OS_NTOHS(offset);
@@ -2059,7 +2059,7 @@ static  INT DO_RACFG_CMD_TX_START_V2(
 #ifdef RTMP_MAC_USB
 	UINT8 TxInfoSize = 4;
 #endif /* RTMP_MAC_USB */
-	
+
 	if ((pATEInfo->TxStatus != 0) && (pATEInfo->Mode & ATE_TXFRAME))
 	{
 		DBGPRINT_ERR(("%s : Ate Tx is already running,"
@@ -2119,7 +2119,7 @@ static  INT DO_RACFG_CMD_TX_START_V2(
 		pATEInfo->TxWILen = OS_NTOHS(pATEInfo->TxWILen);
 		DBGPRINT(RT_DEBUG_TRACE,("TxWILen = %d\n", pATEInfo->TxWILen));
 		TXWISize = pATEInfo->TxWILen;
-		NdisMoveMemory(&pATEInfo->TxWI, pRaCfg->data+4+2, pATEInfo->TxWILen);							
+		NdisMoveMemory(&pATEInfo->TxWI, pRaCfg->data+4+2, pATEInfo->TxWILen);
 #ifdef RT_BIG_ENDIAN
 		RTMPWIEndianChange(pAd, (PUCHAR)&pATEInfo->TxWI, TYPE_TXWI);
 #endif /* RT_BIG_ENDIAN */
@@ -2201,7 +2201,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_LNA_CAL(
 {
 	USHORT band;
 	CHAR bandStr[32] = {0};
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_LNA_CAL\n"));
 
 	band = OS_NTOHS(pRaCfg->status);
@@ -2223,7 +2223,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_DIV_CAL(
 {
 	USHORT band;
 	CHAR bandStr[32] = {0};
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_DIV_CAL\n"));
 
 	band = OS_NTOHS(pRaCfg->status);
@@ -2248,7 +2248,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_PHASE_CAL(
 	BOOLEAN	result = FALSE;
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_PHASE_CAL\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
@@ -2273,7 +2273,7 @@ static  INT DO_RACFG_CMD_ATE_TXBF_GOLDEN_INIT(
 	STRING    str[LEN_OF_ARG];
 
 	NdisZeroMemory(str, LEN_OF_ARG);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("DO_RACFG_CMD_ATE_TXBF_GOLDEN_INIT\n"));
 
 	memcpy((PUCHAR)&value, (PUCHAR)&(pRaCfg->status), 2);
@@ -2352,7 +2352,7 @@ static INT32 DO_RACFG_CMD_ATE_SHOW_PARAM(
 	INT32 Status = NDIS_STATUS_SUCCESS;
 	UINT32 Len;
 	ATE_EX_PARAM ATEExParam;
-	
+
 	ATEExParam.mode = pATEInfo->Mode;
 	ATEExParam.TxPower0 = pATEInfo->TxPower0;
 	ATEExParam.TxPower1 = pATEInfo->TxPower1;
@@ -2401,7 +2401,7 @@ static INT32 DO_RACFG_CMD_ATE_SHOW_PARAM(
 	NdisMoveMemory(pRaCfg->data, &ATEExParam, Len);
 
 	ResponseToGUI(pRaCfg, wrq, sizeof(pRaCfg->status) + Len, NDIS_STATUS_SUCCESS);
-	
+
 	return Status;
 }
 
@@ -2415,7 +2415,7 @@ typedef INT (*RACFG_CMD_HANDLER)(
 static RACFG_CMD_HANDLER RACFG_CMD_SET1[] =
 {
 	/* cmd id start from 0x0 */
-	DO_RACFG_CMD_RF_WRITE_ALL,/* 0x0000 */	
+	DO_RACFG_CMD_RF_WRITE_ALL,/* 0x0000 */
 	DO_RACFG_CMD_E2PROM_READ16,/* 0x0001 */
 	DO_RACFG_CMD_E2PROM_WRITE16,/* 0x0002 */
 	DO_RACFG_CMD_E2PROM_READ_ALL,/* 0x0003 */
@@ -2579,7 +2579,7 @@ RACFG_CMD_TABLE RACFG_CMD_TABLES[]={
 		sizeof(RACFG_CMD_SET5) / sizeof(RACFG_CMD_HANDLER),
 		0xff00,
 	}
-	
+
 };
 
 
@@ -2595,7 +2595,7 @@ static INT32 RACfgCMDHandler(
 
 	Command_Id = OS_NTOHS(pRaCfg->command_id);
 	DBGPRINT(RT_DEBUG_TRACE,("\n%s: Command_Id = 0x%04x !\n", __FUNCTION__, Command_Id));
-	
+
 	while (TableIndex < (sizeof(RACFG_CMD_TABLES) / sizeof(RACFG_CMD_TABLE)))
 	{
  		int cmd_index = 0;
@@ -2605,7 +2605,7 @@ static INT32 RACfgCMDHandler(
 			RACFG_CMD_HANDLER *pCmdSet;
 
 			pCmdSet = RACFG_CMD_TABLES[TableIndex].cmdSet;
-			
+
 			if (pCmdSet[cmd_index] != NULL)
 				Status = (*pCmdSet[cmd_index])(pAd, wrq, pRaCfg);
 			break;
@@ -2673,10 +2673,10 @@ INT RtmpDoAte(
 		Status = -ENOMEM;
 		goto ERROR0;
 	}
-				
+
 	NdisZeroMemory(pRaCfg, sizeof(struct ate_racfghdr));
 	Status = copy_from_user((PUCHAR)pRaCfg, wrq->u.data.pointer, wrq->u.data.length);
-	
+
 	if (Status)
 	{
 		Status = -EFAULT;
@@ -2684,7 +2684,7 @@ INT RtmpDoAte(
 	}
 
 	ATEMagicNum = OS_NTOHL(pRaCfg->magic_no);
-	
+
 	switch(ATEMagicNum)
 	{
 		case RACFG_MAGIC_NO:
@@ -2696,7 +2696,7 @@ INT RtmpDoAte(
 			DBGPRINT_ERR(("Unknown magic number of RACFG command = %x\n", ATEMagicNum));
 			break;
 	}
-	
+
  ERROR1:
 	os_free_mem(NULL, pRaCfg);
  ERROR0:
@@ -2788,7 +2788,7 @@ INT Set_EERead_Proc(
 	USHORT buffer[EEPROM_SIZE >> 1];
 	USHORT *p;
 	INT offset;
-	
+
 	rt_ee_read_all(pAd, (USHORT *)buffer);
 	p = buffer;
 
@@ -2810,12 +2810,12 @@ INT Set_EEWrite_Proc(
 {
 	USHORT offset = 0, value;
 	PSTRING p2 = arg;
-	
+
 	while ((*p2 != ':') && (*p2 != '\0'))
 	{
 		p2++;
 	}
-	
+
 	if (*p2 == ':')
 	{
 		A2Hex(offset, arg);
@@ -2825,13 +2825,13 @@ INT Set_EEWrite_Proc(
 	{
 		A2Hex(value, arg);
 	}
-	
+
 	if (offset >= EEPROM_SIZE)
 	{
-		DBGPRINT_ERR(("Offset can not exceed EEPROM_SIZE( == 0x%04x)\n", EEPROM_SIZE));	
+		DBGPRINT_ERR(("Offset can not exceed EEPROM_SIZE( == 0x%04x)\n", EEPROM_SIZE));
 		return FALSE;
 	}
-	
+
 	RT28xx_EEPROM_WRITE16(pAd, offset, value);
 
 	return TRUE;
@@ -2844,12 +2844,12 @@ INT Set_BBPRead_Proc(
 {
 	UCHAR value = 0, offset;
 
-	A2Hex(offset, arg);	
-			
+	A2Hex(offset, arg);
+
 	ATE_BBPRead(pAd, offset, &value);
 
 	DBGPRINT(RT_DEBUG_OFF, ("%x\n", value));
-		
+
 	return TRUE;
 }
 
@@ -2861,20 +2861,20 @@ INT Set_BBPWrite_Proc(
 	USHORT offset = 0;
 	PSTRING p2 = arg;
 	UCHAR value;
-	
+
 	while ((*p2 != ':') && (*p2 != '\0'))
 	{
 		p2++;
 	}
-	
+
 	if (*p2 == ':')
 	{
-		A2Hex(offset, arg);	
-		A2Hex(value, p2 + 1);	
+		A2Hex(offset, arg);
+		A2Hex(value, p2 + 1);
 	}
 	else
 	{
-		A2Hex(value, arg);	
+		A2Hex(value, arg);
 	}
 
 	ATE_BBPWrite(pAd, offset, value);
@@ -2889,17 +2889,17 @@ INT Set_RFWrite_Proc(
 {
 	PSTRING p2, p3, p4;
 	UINT32 R1, R2, R3, R4;
-	
+
 	p2 = arg;
 
 	while ((*p2 != ':') && (*p2 != '\0'))
 	{
 		p2++;
 	}
-	
+
 	if (*p2 != ':')
 		return FALSE;
-	
+
 	p3 = p2 + 1;
 
 	while((*p3 != ':') && (*p3 != '\0'))
@@ -2909,7 +2909,7 @@ INT Set_RFWrite_Proc(
 
 	if (*p3 != ':')
 		return FALSE;
-	
+
 	p4 = p3 + 1;
 
 	while ((*p4 != ':') && (*p4 != '\0'))
@@ -2920,17 +2920,17 @@ INT Set_RFWrite_Proc(
 	if (*p4 != ':')
 		return FALSE;
 
-		
-	A2Hex(R1, arg);	
-	A2Hex(R2, p2 + 1);	
-	A2Hex(R3, p3 + 1);	
-	A2Hex(R4, p4 + 1);	
-	
+
+	A2Hex(R1, arg);
+	A2Hex(R2, p2 + 1);
+	A2Hex(R3, p3 + 1);
+	A2Hex(R4, p4 + 1);
+
 	RTMP_RF_IO_WRITE32(pAd, R1);
 	RTMP_RF_IO_WRITE32(pAd, R2);
 	RTMP_RF_IO_WRITE32(pAd, R3);
 	RTMP_RF_IO_WRITE32(pAd, R4);
-	
+
 	return TRUE;
 }
 #endif /* DBG */

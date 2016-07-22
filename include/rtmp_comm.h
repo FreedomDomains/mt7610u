@@ -232,7 +232,7 @@ extern ULONG OS_NumOfPktAlloc, OS_NumOfPktFree;
 
 /* ======================== Interface ======================================= */
 typedef enum _RTMP_INF_TYPE_
-{	
+{
 	RTMP_DEV_INF_UNKNOWN = 0,
 	RTMP_DEV_INF_PCI = 1,
 	RTMP_DEV_INF_USB = 2,
@@ -380,7 +380,7 @@ typedef struct  _PACKET_INFO    {
 
 /* 2-byte Frame control field */
     typedef struct GNU_PACKED {
-	
+
 #ifdef RT_BIG_ENDIAN
 	USHORT Order:1;		/* Strict order expected */
 	USHORT Wep:1;		/* Wep data */

@@ -105,10 +105,10 @@ Routine Description:
 	RTMP_Usb_AutoPM_Put_Interface
 
 Arguments:
-	
+
 
 Return Value:
-	
+
 
 Note:
 ========================================================================
@@ -123,11 +123,11 @@ int RTMP_Usb_AutoPM_Put_Interface (
 	struct usb_interface	*intf =(struct usb_interface *)intfsrc;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
-		pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);	
+		pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
 #else
 		pm_usage_cnt = intf->pm_usage_cnt;
 #endif
-		
+
 		if (pm_usage_cnt == 1)
 		{
 			rausb_autopm_put_interface(intf);
@@ -145,10 +145,10 @@ Routine Description:
 	RTMP_Usb_AutoPM_Get_Interface
 
 Arguments:
-	
+
 
 Return Value: (-1)  error (resume fail )    1 success ( resume success)  2  (do  nothing)
-	
+
 
 Note:
 ========================================================================
@@ -163,7 +163,7 @@ int RTMP_Usb_AutoPM_Get_Interface (
 	struct usb_interface	*intf =(struct usb_interface *)intfsrc;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
-	pm_usage_cnt = (INT)atomic_read(&intf->pm_usage_cnt);	
+	pm_usage_cnt = (INT)atomic_read(&intf->pm_usage_cnt);
 #else
 	pm_usage_cnt = intf->pm_usage_cnt;
 #endif
@@ -171,14 +171,14 @@ int RTMP_Usb_AutoPM_Get_Interface (
 	if (pm_usage_cnt == 0)
 	{
 		int res=1;
-		
+
 		res = rausb_autopm_get_interface(intf);
 		if (res)
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("AsicSwitchChannel autopm_resume fail ------\n"));
 			return (-1);
-		}			
-			
+		}
+
 	}
 	return 2;
 
@@ -558,7 +558,7 @@ VOID RtmpOsUsbEmptyUrbCheck(
 			break;
 		}
 		RTMP_SEM_UNLOCK(pBulkInLock);
-		
+
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,9)
 		msleep(UNLINK_TIMEOUT_MS);	/*Time in millisecond */
 #else

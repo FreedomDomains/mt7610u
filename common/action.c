@@ -78,7 +78,7 @@ VOID ActionStateMachineInit(
 
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_PUBLIC_CATE, (STATE_MACHINE_FUNC)PeerPublicAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_RM_CATE, (STATE_MACHINE_FUNC)PeerRMAction);
-	
+
 	StateMachineSetAction(S, ACT_IDLE, MT2_MLME_QOS_CATE, (STATE_MACHINE_FUNC)MlmeQOSAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_MLME_DLS_CATE, (STATE_MACHINE_FUNC)MlmeDLSAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_ACT_INVALID, (STATE_MACHINE_FUNC)MlmeInvalidAction);
@@ -106,7 +106,7 @@ VOID MlmeADDBAAction(
 
 	pInfo = (MLME_ADDBA_REQ_STRUCT *)Elem->Msg;
 	NdisZeroMemory(&Frame, sizeof(FRAME_ADDBA_REQ));
-	
+
 	if(MlmeAddBAReqSanity(pAd, Elem->Msg, Elem->MsgLen, Addr) &&
 		VALID_WCID(pInfo->Wcid))
 	{
@@ -128,7 +128,7 @@ VOID MlmeADDBAAction(
 		{
 			pBAEntry =&pAd->BATable.BAOriEntry[Idx];
 		}
-		
+
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
@@ -176,7 +176,7 @@ VOID MlmeADDBAAction(
 		MiniportMMRequest(pAd, (MGMT_USE_QUEUE_FLAG | MapUserPriorityToAccessCategory[pInfo->TID]), pOutBuffer, FrameLen);
 
 		MlmeFreeMemory(pAd, pOutBuffer);
-		
+
 		DBGPRINT(RT_DEBUG_TRACE, ("BA - Send ADDBA request. StartSeq = %x,  FrameLen = %ld. BufSize = %d\n", Frame.BaStartSeq.field.StartSeq, FrameLen, Frame.BaParm.BufSize));
     }
 }
@@ -204,12 +204,12 @@ VOID MlmeDELBAAction(
 	FRAME_DELBA_REQ  Frame;
 	ULONG		FrameLen;
 	FRAME_BAR	FrameBar;
-	
-	pInfo = (MLME_DELBA_REQ_STRUCT *)Elem->Msg;	
+
+	pInfo = (MLME_DELBA_REQ_STRUCT *)Elem->Msg;
 	/* must send back DELBA */
 	NdisZeroMemory(&Frame, sizeof(FRAME_DELBA_REQ));
 	DBGPRINT(RT_DEBUG_TRACE, ("==> MlmeDELBAAction(), Initiator(%d) \n", pInfo->Initiator));
-	
+
 	if(MlmeDelBAReqSanity(pAd, Elem->Msg, Elem->MsgLen) &&
 		VALID_WCID(pInfo->Wcid))
 	{
@@ -273,7 +273,7 @@ VOID MlmeDELBAAction(
 		Frame.ReasonCode = 39; /* Time Out*/
 		*(USHORT *)(&Frame.DelbaParm) = cpu2le16(*(USHORT *)(&Frame.DelbaParm));
 		Frame.ReasonCode = cpu2le16(Frame.ReasonCode);
-		
+
 		MakeOutgoingFrame(pOutBuffer,               &FrameLen,
 		              sizeof(FRAME_DELBA_REQ),    &Frame,
 		              END_OF_ARGS);
@@ -351,7 +351,7 @@ VOID PeerBAAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
-	
+
 	switch(Action)
 	{
 		case ADDBA_REQ:
@@ -419,7 +419,7 @@ ULONG BuildIntolerantChannelRep(
 	for ( k = 0;k < 7;k++)
 	{
 		TmpRegClass = RegClassArray[k];
-		
+
 		idx = 0;
 		/* Find Channel report with the same regulatory class in 2.4GHz.*/
 		for ( i = 0;i < pAd->CommonCfg.TriggerEventTab.EventANo;i++)
@@ -427,7 +427,7 @@ ULONG BuildIntolerantChannelRep(
 			if (pAd->CommonCfg.TriggerEventTab.EventA[i].bValid == TRUE)
 			{
 				if (pAd->CommonCfg.TriggerEventTab.EventA[i].RegClass == TmpRegClass)
-				{				
+				{
 					for (j = 0;j < idx;j++)
 					{
 						if (ChannelList[j] == (UCHAR)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel)
@@ -456,7 +456,7 @@ ULONG BuildIntolerantChannelRep(
 			FrameLen += (3 + idx);
 			ReadOffset += (3 + idx);
 		}
-		
+
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR,("ACT-BuildIntolerantChannelRep(Size=%ld)\n", FrameLen));
@@ -465,12 +465,12 @@ ULONG BuildIntolerantChannelRep(
 	return FrameLen;
 }
 
-/*	
+/*
 	==========================================================================
 	Description:
 	After scan, Update 20/40 BSS Coexistence IE and send out.
 	According to 802.11n D3.03 11.14.10
-		
+
 	Parameters:
 	==========================================================================
  */
@@ -521,18 +521,18 @@ VOID Send2040CoexistAction(
 		return;
 	}
 
-	ActHeaderInit(pAd, &Frame.Hdr, pAd->MacTab.Content[Wcid].Addr, pAd->CurrentAddress, pAd->CommonCfg.Bssid);	
+	ActHeaderInit(pAd, &Frame.Hdr, pAd->MacTab.Content[Wcid].Addr, pAd->CurrentAddress, pAd->CommonCfg.Bssid);
 
 	Frame.Category = CATEGORY_PUBLIC;
 	Frame.Action = ACTION_BSS_2040_COEXIST; /*COEXIST_2040_ACTION;*/
-	
+
 	MakeOutgoingFrame(pOutBuffer,				&FrameLen,
 				  sizeof(FRAME_ACTION_HDR),	  &Frame,
 				  1,                                &BssCoexistIe,
 				  1,                                &HtLen,
 				  1,                                &pAd->CommonCfg.BSSCoexist2040.word,
 				  END_OF_ARGS);
-	
+
 	if (bAddIntolerantCha == TRUE)
 		IntolerantChaRepLen = BuildIntolerantChannelRep(pAd, pOutBuffer + FrameLen);
 
@@ -542,16 +542,16 @@ VOID Send2040CoexistAction(
 								IntolerantChaRepLen, pAd->CommonCfg.BSSCoexist2040.word));
 	if (!((IntolerantChaRepLen == 0) && (pAd->CommonCfg.BSSCoexist2040.word == 0)))
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen + IntolerantChaRepLen);
-		
+
 	MlmeFreeMemory(pAd, pOutBuffer);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE,("ACT - Send2040CoexistAction( BSSCoexist2040 = 0x%x )  \n", pAd->CommonCfg.BSSCoexist2040.word));
 }
 
 VOID UpdateBssScanParm(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	OVERLAP_BSS_SCAN_IE	APBssScan)
-{									
+{
 	pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor = le2cpu16(APBssScan.DelayFactor); /*APBssScan.DelayFactor[1] * 256 + APBssScan.DelayFactor[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if ((pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor <5) || (pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor > 100))
@@ -567,7 +567,7 @@ VOID UpdateBssScanParm(
 		/*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11BssWidthTriggerScanInt out of range !!!!)  \n"));*/
 		pAd->CommonCfg.Dot11BssWidthTriggerScanInt = 900;
 	}
-		
+
 	pAd->CommonCfg.Dot11OBssScanPassiveDwell = le2cpu16(APBssScan.ScanPassiveDwell); /*APBssScan.ScanPassiveDwell[1] * 256 + APBssScan.ScanPassiveDwell[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if ((pAd->CommonCfg.Dot11OBssScanPassiveDwell < 5) ||(pAd->CommonCfg.Dot11OBssScanPassiveDwell > 1000))
@@ -575,7 +575,7 @@ VOID UpdateBssScanParm(
 		/*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveDwell out of range !!!!)  \n"));*/
 		pAd->CommonCfg.Dot11OBssScanPassiveDwell = 20;
 	}
-	
+
 	pAd->CommonCfg.Dot11OBssScanActiveDwell = le2cpu16(APBssScan.ScanActiveDwell); /*APBssScan.ScanActiveDwell[1] * 256 + APBssScan.ScanActiveDwell[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if ((pAd->CommonCfg.Dot11OBssScanActiveDwell < 10) ||(pAd->CommonCfg.Dot11OBssScanActiveDwell > 1000))
@@ -583,7 +583,7 @@ VOID UpdateBssScanParm(
 		/*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveDwell out of range !!!!)  \n"));*/
 		pAd->CommonCfg.Dot11OBssScanActiveDwell = 10;
 	}
-	
+
 	pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel = le2cpu16(APBssScan.PassiveTalPerChannel); /*APBssScan.PassiveTalPerChannel[1] * 256 + APBssScan.PassiveTalPerChannel[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if ((pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel < 200) ||(pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel > 10000))
@@ -591,7 +591,7 @@ VOID UpdateBssScanParm(
 		/*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveTotalPerChannel out of range !!!!)  \n"));*/
 		pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel = 200;
 	}
-	
+
 	pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel = le2cpu16(APBssScan.ActiveTalPerChannel); /*APBssScan.ActiveTalPerChannel[1] * 256 + APBssScan.ActiveTalPerChannel[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if ((pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel < 20) ||(pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel > 10000))
@@ -599,7 +599,7 @@ VOID UpdateBssScanParm(
 		/*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveTotalPerChannel out of range !!!!)  \n"));*/
 		pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel = 20;
 	}
-	
+
 	pAd->CommonCfg.Dot11OBssScanActivityThre = le2cpu16(APBssScan.ScanActThre); /*APBssScan.ScanActThre[1] * 256 + APBssScan.ScanActThre[0];*/
 	/* out of range defined in MIB... So fall back to default value.*/
 	if (pAd->CommonCfg.Dot11OBssScanActivityThre > 100)
@@ -622,7 +622,7 @@ BOOLEAN ChannelSwitchSanityCheck(
 	IN    UCHAR  Secondary)
 {
 	UCHAR		i;
-	
+
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
 		return FALSE;
 
@@ -643,7 +643,7 @@ BOOLEAN ChannelSwitchSanityCheck(
 
 	if (i == pAd->ChannelListNum)
 		return FALSE;
-	
+
 	return TRUE;
 }
 
@@ -669,7 +669,7 @@ VOID ChannelSwitchAction(
 		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
 		pAd->MacTab.Content[Wcid].HTPhyMode.field.BW = 0;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
-		pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset = 0;		
+		pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset = 0;
 
 		rf_bw = BW_20;
 		rf_channel = pAd->CommonCfg.Channel;
@@ -691,7 +691,7 @@ VOID ChannelSwitchAction(
 
 	if (rf_channel != 0) {
 		AsicSetChannel(pAd, rf_channel, rf_bw, Secondary, FALSE);
-		
+
 		DBGPRINT(RT_DEBUG_TRACE, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d \n",
 					__FUNCTION__, (rf_bw == BW_40 ? 40 : 20),
 					pAd->CommonCfg.Channel,
@@ -721,16 +721,16 @@ VOID PeerPublicAction(
 				BSS_2040_COEXIST_ELEMENT		*pCoexistInfo;
 				BSS_2040_COEXIST_IE 			*pBssCoexistIe;
 				BSS_2040_INTOLERANT_CH_REPORT	*pIntolerantReport = NULL;
-				
+
 				if (Elem->MsgLen <= (LENGTH_802_11 + sizeof(BSS_2040_COEXIST_ELEMENT)) )
 				{
 					DBGPRINT(RT_DEBUG_ERROR, ("ACTION - 20/40 BSS Coexistence Management Frame length too short! len = %ld!\n", Elem->MsgLen));
 					break;
-				}			
+				}
 				DBGPRINT(RT_DEBUG_TRACE, ("ACTION - 20/40 BSS Coexistence Management action----> \n"));
 				hex_dump("CoexistenceMgmtFrame", Elem->Msg, Elem->MsgLen);
 
-				
+
 				pCoexistInfo = (BSS_2040_COEXIST_ELEMENT *) &Elem->Msg[LENGTH_802_11+2];
 				/*hex_dump("CoexistInfo", (PUCHAR)pCoexistInfo, sizeof(BSS_2040_COEXIST_ELEMENT));*/
 				if (Elem->MsgLen >= (LENGTH_802_11 + sizeof(BSS_2040_COEXIST_ELEMENT) + sizeof(BSS_2040_INTOLERANT_CH_REPORT)))
@@ -738,7 +738,7 @@ VOID PeerPublicAction(
 					pIntolerantReport = (BSS_2040_INTOLERANT_CH_REPORT *)((PUCHAR)pCoexistInfo + sizeof(BSS_2040_COEXIST_ELEMENT));
 				}
 				/*hex_dump("IntolerantReport ", (PUCHAR)pIntolerantReport, sizeof(BSS_2040_INTOLERANT_CH_REPORT));*/
-				
+
 				if(pAd->CommonCfg.bBssCoexEnable == FALSE || (pAd->CommonCfg.bForty_Mhz_Intolerant == TRUE))
 				{
 					DBGPRINT(RT_DEBUG_TRACE, ("20/40 BSS CoexMgmt=%d, bForty_Mhz_Intolerant=%d, ignore this action!!\n",
@@ -772,7 +772,7 @@ VOID PeerPublicAction(
 			break;
 	}
 
-}	
+}
 
 
 static VOID ReservedAction(
@@ -840,7 +840,7 @@ static VOID respond_ht_information_exchange_action(
 	HTINFOframe.Action = HT_INFO_EXCHANGE;
 	HTINFOframe.HT_Info.Request = 0;
 	HTINFOframe.HT_Info.Forty_MHz_Intolerant = pAd->CommonCfg.HtCapability.HtCapInfo.Forty_Mhz_Intolerant;
-	HTINFOframe.HT_Info.STA_Channel_Width	 = pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth;	
+	HTINFOframe.HT_Info.STA_Channel_Width	 = pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth;
 
 	MakeOutgoingFrame(pOutBuffer,					&FrameLen,
 					  sizeof(FRAME_HT_INFO),	&HTINFOframe,
@@ -859,7 +859,7 @@ VOID PeerHTAction(
 {
 	UCHAR Action = Elem->Msg[LENGTH_802_11+1];
 	MAC_TABLE_ENTRY *pEntry;
-	
+
 	if (Elem->Wcid >= MAX_LEN_OF_MAC_TABLE)
 		return;
 
@@ -888,7 +888,7 @@ VOID PeerHTAction(
 				pEntry->HTPhyMode.field.BW = pEntry->MaxHTPhyMode.field.BW &
 											pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth;
 			}
-			
+
 			break;
 
 		case SMPS_ACTION:
@@ -907,12 +907,12 @@ VOID PeerHTAction(
 
 		case SETPCO_ACTION:
 			break;
-			
+
 		case MIMO_CHA_MEASURE_ACTION:
 			break;
-			
+
 		case HT_INFO_EXCHANGE:
-			{			
+			{
 				HT_INFORMATION_OCTET *pHT_info;
 
 				pHT_info = (HT_INFORMATION_OCTET *) &Elem->Msg[LENGTH_802_11+2];
@@ -932,12 +932,12 @@ VOID PeerHTAction(
 	==========================================================================
 	Description:
 		Retry sending ADDBA Reqest.
-		
+
 	IRQL = DISPATCH_LEVEL
-	
+
 	Parametrs:
 	p8023Header: if this is already 802.3 format, p8023Header is NULL
-	
+
 	Return	: TRUE if put into rx reordering buffer, shouldn't indicaterxhere.
 				FALSE , then continue indicaterx at this moment.
 	==========================================================================
@@ -1009,7 +1009,7 @@ VOID SendRefreshBAR(
 				DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));
 				return;
 			}
-				
+
 			Sequence = pEntry->TxSeq[TID];
 
 
@@ -1029,7 +1029,7 @@ VOID SendRefreshBAR(
 			if (1)	/* Now we always send BAR.*/
 			{
 				/*MiniportMMRequestUnlock(pAd, 0, pOutBuffer, FrameLen);*/
-				MiniportMMRequest(pAd, (MGMT_USE_QUEUE_FLAG | MapUserPriorityToAccessCategory[TID]), pOutBuffer, FrameLen);				
+				MiniportMMRequest(pAd, (MGMT_USE_QUEUE_FLAG | MapUserPriorityToAccessCategory[TID]), pOutBuffer, FrameLen);
 
 			}
 			MlmeFreeMemory(pAd, pOutBuffer);
@@ -1081,13 +1081,13 @@ VOID BarHeaderInit(
 	==========================================================================
 	Description:
 		Insert Category and action code into the action frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
 		3. category code of the frame.
 		4. action code of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */

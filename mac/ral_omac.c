@@ -62,7 +62,7 @@ INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, UCHAR *snr)
 			snr[0] = rxwi->RxWISNR0;
 			break;
 	}
-	
+
 	return 0;
 }
 

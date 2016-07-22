@@ -32,7 +32,7 @@
 int bin2h(char *infname, char *outfname, char *fw_name)
 {
 	int ret = 0;
-    FILE *infile, *outfile;	
+    FILE *infile, *outfile;
     unsigned char c;
     int i=0;
 
@@ -61,14 +61,14 @@ int bin2h(char *infname, char *outfname, char *fw_name)
 		char cc[3];
 
 		c = getc(infile);
-	
+
 		if (feof(infile))
 	   		break;
-	
+
 		memset(cc,0,2);
-	
-		if (i >= 16) {	
-	   		fputs("\n", outfile);	
+
+		if (i >= 16) {
+	   		fputs("\n", outfile);
 	   		i = 0;
 		}
 
@@ -82,7 +82,7 @@ int bin2h(char *infname, char *outfname, char *fw_name)
     fputs("} ;\n", outfile);
     fclose(infile);
     fclose(outfile);
-}	
+}
 
 int main(int argc ,char *argv[])
 {
@@ -108,8 +108,8 @@ int main(int argc ,char *argv[])
     if(!chipset) {
 		printf("Environment value \"CHIPSET\" not export \n");
 		return -1;
-    }	
-	
+    }
+
 	if (strlen(rt28xxdir) > (sizeof(infname)-100)) {
 		printf("Environment value \"PWD\" is too long!\n");
 		return -1;
@@ -316,4 +316,4 @@ int main(int argc ,char *argv[])
 	}
 
     exit(0);
-}	
+}

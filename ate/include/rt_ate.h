@@ -44,10 +44,10 @@ typedef struct _ATE_CHIP_STRUCT {
 	VOID	(*AsicSetTxRxPath)(PRTMP_ADAPTER pAd);
 	VOID	(*AdjustTxPower)(PRTMP_ADAPTER pAd);
 	VOID	(*AsicExtraPowerOverMAC)(PRTMP_ADAPTER pAd);
-	
+
 	/* command handlers */
 	INT		(*Set_BW_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
-	INT		(*Set_FREQ_OFFSET_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);	
+	INT		(*Set_FREQ_OFFSET_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
 
 	/* variables */
 	INT maxTxPwrCnt;
@@ -55,7 +55,7 @@ typedef struct _ATE_CHIP_STRUCT {
 	BOOLEAN bBBPStoreTXCARRSUPP;
 	BOOLEAN bBBPStoreTXCONT;
 	BOOLEAN bBBPLoadATESTOP;
-		
+
 }ATE_CHIP_STRUCT, *PATE_CHIP_STRUCT;
 
 typedef union _CAPTURE_MODE_SHARE_MEMORY {
@@ -380,7 +380,7 @@ typedef struct _ATE_INFO {
 #define BULK_OUT_LOCK(pLock, IrqFlags)	\
 		if(1 /*!(in_interrupt() & 0xffff0000)*/)	\
 			RTMP_IRQ_LOCK((pLock), IrqFlags);
-		
+
 #define BULK_OUT_UNLOCK(pLock, IrqFlags)	\
 		if(1 /*!(in_interrupt() & 0xffff0000)*/)	\
 			RTMP_IRQ_UNLOCK((pLock), IrqFlags);
@@ -419,7 +419,7 @@ VOID ATE_QA_Statistics(
 	IN RXWI_STRUC *pRxWI,
 	IN RXINFO_STRUC *pRxInfo,
 	IN PHEADER_802_11 pHeader);
-	
+
 INT RtmpDoAte(
 	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
@@ -771,7 +771,7 @@ VOID ATEAsicAdjustTxPower(
 
 VOID ATESampleRssi(
 	IN PRTMP_ADAPTER	pAd,
-	IN RXWI_STRUC *pRxWI);	
+	IN RXWI_STRUC *pRxWI);
 
 
 #ifdef RTMP_MAC_USB

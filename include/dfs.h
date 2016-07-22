@@ -154,7 +154,7 @@
 	}																			\
 }
 #endif /* MT76x0 */
-		
+
 #define DFS_EVENT_PRINT(_DfsEvent)		\
 		DBGPRINT(RT_DEBUG_ERROR, ( "EngineId = %u, Timestamp = %u, Width = %u\n",	\
 		_DfsEvent.EngineId, _DfsEvent.TimeStamp, _DfsEvent.Width));
@@ -299,14 +299,14 @@ typedef struct _DFS_SW_DETECT_PARAM{
 	USHORT dfs_width_ch0_err_L;
 	USHORT dfs_width_ch0_err_H;
 	UCHAR dfs_check_loop;
-	UCHAR dfs_declare_thres;	
+	UCHAR dfs_declare_thres;
 	ULONG dfs_w_counter;
 	DFS_EVENT PreDfsEvent;		/* previous radar event */
 	UINT32 EvtDropAdjTime;		/* timing threshold for adjacent event */
 	UINT sw_idx[NEW_DFS_MAX_CHANNEL];
 	UINT hw_idx[NEW_DFS_MAX_CHANNEL];
-	UINT pr_idx[NEW_DFS_MAX_CHANNEL];	
-	USHORT dfs_t_idx[NEW_DFS_MAX_CHANNEL];	
+	UINT pr_idx[NEW_DFS_MAX_CHANNEL];
+	USHORT dfs_t_idx[NEW_DFS_MAX_CHANNEL];
 	USHORT dfs_w_idx[NEW_DFS_MAX_CHANNEL];
 	USHORT dfs_w_last_idx[NEW_DFS_MAX_CHANNEL];
 	NewDFSDebugPort DFS_W[NEW_DFS_MAX_CHANNEL][NEW_DFS_DBG_PORT_ENT_NUM];
@@ -314,7 +314,7 @@ typedef struct _DFS_SW_DETECT_PARAM{
 	/*UCHAR	ce_sw_id_check;*/
 	/*USHORT	ce_sw_t_diff;*/
 	/*ULONG fcc_5_counter;*/
-	/* CE Staggered radar / weather radar */	
+	/* CE Staggered radar / weather radar */
 #ifdef DFS_DEBUG
 	/* Roger debug */
 	UCHAR DebugPort[384];
@@ -355,9 +355,9 @@ typedef struct _RADAR_DETECT_STRUCT {
 	BOOLEAN DfsRssiHighFromCfg;
 	BOOLEAN DfsRssiLowFromCfg;
 	BOOLEAN DfsRssiHighCfgValid;
-	BOOLEAN DfsRssiLowCfgValid;	
-	BOOLEAN DFSParamFromConfig;	
-	BOOLEAN use_tasklet;	
+	BOOLEAN DfsRssiLowCfgValid;
+	BOOLEAN DFSParamFromConfig;
+	BOOLEAN use_tasklet;
 	DFS_VERSION dfs_func;
 	BOOLEAN DFSWatchDogIsRunning;
 	UCHAR radarDeclared;
@@ -379,7 +379,7 @@ typedef struct _RADAR_DETECT_STRUCT {
 	INT		ch_idle_sum;
 	UCHAR fdf_num;
 	USHORT ch_busy_threshold[MAX_FDF_NUMBER];
-	INT		rssi_threshold[MAX_FDF_NUMBER];	
+	INT		rssi_threshold[MAX_FDF_NUMBER];
 	UCHAR McuRadarDebug;
 	USHORT McuRadarTick;
 	ULONG RadarTimeStampHigh;

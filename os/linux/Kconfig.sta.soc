@@ -1,6 +1,6 @@
 config RT2860V2_STA
 	tristate "Ralink RT2860 802.11n STA support"
-	depends on NET_RADIO 
+	depends on NET_RADIO
 
 config  RT2860V2_STA_WPA_SUPPLICANT
 	bool "WPA Supplicant"
@@ -69,7 +69,7 @@ config  RT2860V2_STA_INTELLIGENT_RATE_ADAPTION
 config  RT2860V2_STA_TXBF
 	bool "Tx Bean Forming Support (Only 3883)"
 	depends on RT2860V2_STA
-	depends on RALINK_RT3883 
+	depends on RALINK_RT3883
 
 config  RT2860V2_STA_RTMP_INTERNAL_TX_ALC
 	bool "TSSI Compensation"

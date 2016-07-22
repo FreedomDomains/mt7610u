@@ -32,7 +32,7 @@
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Enable Wlan function. this action will enable wlan clock so that chip can accept command. So MUST put in the
 		very beginning of Initialization. And put in the very LAST in the Halt function.
@@ -44,7 +44,7 @@
 		None
 
 	IRQL <= DISPATCH_LEVEL
-	
+
 	Note:
 		Before Enable RX, make sure you have enabled Interrupt.
 	========================================================================
@@ -93,10 +93,10 @@ VOID ral_wlan_chip_onoff(
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-	RTMP_IO_FORCE_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);	
+	RTMP_IO_FORCE_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 	pAd->WlanFunCtrl.word = WlanFunCtrl.word;
 	RTMPusecDelay(2);
-	
+
 	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 				DBGPRINT(RT_DEBUG_ERROR,
 		("<== %s():  pAd->WlanFunCtrl.word = 0x%x, Reg->WlanFunCtrl=0x%x!\n",
@@ -125,7 +125,7 @@ VOID dump_bw_info(RTMP_ADAPTER *pAd)
 		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc_r0);
 		RTMP_BBP_IO_READ32(pAd, TXBE_R0, &be_r0);
 		RTMP_IO_READ32(pAd, TX_BAND_CFG, &band_cfg);
-		
+
 		/*  Tx/RX : control channel setting */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s():RegisterSetting: TX_BAND_CFG=0x%x, CORE_R1=0x%x, AGC1_R0=0x%x, TXBE_R0=0x%x\n",
 				__FUNCTION__, band_cfg, core_r1, agc_r0, be_r0));
@@ -166,7 +166,7 @@ VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 			return;
 		}
 	}
-	
+
 	RTMP_SET_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
@@ -208,7 +208,7 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 	POS_COOKIE  pObj = (POS_COOKIE) pAd->OS_Cookie;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
-	
+
 	if( (RTMP_Usb_AutoPM_Get_Interface(pObj->pUsb_Dev,pObj->intf)) == 1)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: autopm_resume success\n", __FUNCTION__));
@@ -225,7 +225,7 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
-	
+
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
 		RT65xx_WLAN_ChipOnOff(pAd, TRUE, FALSE);
 
@@ -238,10 +238,10 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 	if (pAd->StaCfg.PSPXlink)
 		rx_filter_flag = PSPXLINK;
 	else
-#endif /* XLINK_SUPPORT */	
+#endif /* XLINK_SUPPORT */
 		rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
-	
-	
+
+
 	RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);
 	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x0c);
 
@@ -249,7 +249,7 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF);
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_SUSPEND);
-	
+
 	/* Send Bulkin IRPs after flag fRTMP_ADAPTER_IDLE_RADIO_OFF is cleared.*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -273,7 +273,7 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_UP(&pAd->hw_atomic);
 	}
-	
+
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
 	if (!IS_MT76x0(pAd)) {
@@ -373,7 +373,7 @@ VOID RT65xxDisableTxRx(
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Tx idle max(0x%08x)\n", MacReg));
 		bResetWLAN = TRUE;
 	}
-	
+
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == FALSE)
 	{
 		if (Level == RTMP_HALT)
@@ -403,26 +403,26 @@ VOID RT65xxDisableTxRx(
 	{
 		bFree = TRUE;
 		RTMP_IO_READ32(pAd, 0x430, &MacReg);
-		
+
 		if (MacReg & (0x00FF0000))
 			bFree = FALSE;
-		
+
 		RTMP_IO_READ32(pAd, 0xa30, &MacReg);
-		
+
 		if (MacReg != 0)
 			bFree = FALSE;
-		
+
 		RTMP_IO_READ32(pAd, 0xa34, &MacReg);
-		
+
 		if (MacReg != 0)
 			bFree = FALSE;
-		
+
 		if (bFree && (CheckFreeTimes > 20) && (!is_inband_cmd_processing(pAd)))
 			break;
-		
+
 		if (bFree)
 			CheckFreeTimes++;
-		
+
 		if (MacReg == 0xFFFFFFFF)
 		{
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
@@ -434,13 +434,13 @@ VOID RT65xxDisableTxRx(
 		RTUSBBulkReceive(pAd);
 #endif /* RTMP_MAC_USB */
 	}
-	
+
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
-	
+
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check RxQ page count max\n"));
-		
+
 		RTMP_IO_READ32(pAd, 0x0a30, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a30 = 0x%08x\n", MacReg));
 
@@ -468,7 +468,7 @@ VOID RT65xxDisableTxRx(
 			return;
 		}
 	}
-	
+
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Rx idle max(0x%08x)\n", MacReg));
@@ -482,7 +482,7 @@ VOID RT65xxDisableTxRx(
 	{
 		if (!pAd->chipCap.IsComboChip)
 			NICEraseFirmware(pAd);
-		
+
 		/*
  		 * Disable RF/MAC and do not do reset WLAN under below cases
  		 * 1. Combo card
@@ -495,7 +495,7 @@ VOID RT65xxDisableTxRx(
 
 		RT65xx_WLAN_ChipOnOff(pAd, FALSE, bResetWLAN);
 	}
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
 }
 
@@ -532,11 +532,11 @@ VOID RT65xx_WLAN_ChipOnOff(
 		{
 			/*
 				Restore all HW default value and reset RF.
-			*/					
+			*/
 			WlanFunCtrl.field.WLAN_RESET = 1;
 			WlanFunCtrl.field.WLAN_RESET_RF = 1;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);	
+			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 			RTMPusecDelay(20);
 			WlanFunCtrl.field.WLAN_RESET = 0;
 			WlanFunCtrl.field.WLAN_RESET_RF = 0;
@@ -564,7 +564,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-	RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);	
+	RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 	RTMPusecDelay(20);
 
 	if (bOn)
@@ -575,11 +575,11 @@ VOID RT65xx_WLAN_ChipOnOff(
 
 	if (bOn == TRUE)
 	{
-		UINT index = 0;		
+		UINT index = 0;
 		CMB_CTRL_STRUC CmbCtrl;
-		
+
 		CmbCtrl.word = 0;
-				
+
 		do
 		{
 			do
@@ -616,7 +616,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 			{
 				break;
 			}
-		}			
+		}
 		while (TRUE);
 	}
 

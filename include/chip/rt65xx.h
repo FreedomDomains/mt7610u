@@ -52,7 +52,7 @@ struct _RTMP_ADAPTER;
 typedef union _COEXCFG0_STRUC{
 	struct{
 		UINT32       	COEX_CFG1:8;
-		UINT32       	COEX_CFG0:8;		
+		UINT32       	COEX_CFG0:8;
 		UINT32       	FIX_WL_RF_LNA:2;
 		UINT32		FIX_BT_H_PA:3;
 		UINT32		FIX_BT_L_PA:3;

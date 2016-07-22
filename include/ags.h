@@ -54,7 +54,7 @@ typedef struct _RTMP_RA_AGS_TB {
 
 	UCHAR Nss:2; // NSS_XXX (VHT only)
 	UCHAR rsv2:6; // Reserved
-	
+
 	UCHAR	CurrMCS;
 	UCHAR	TrainUp;
 	UCHAR	TrainDown;

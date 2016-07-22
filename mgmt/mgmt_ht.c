@@ -38,7 +38,7 @@ INT ht_mode_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILITY_IE 
 		pEntry->MaxHTPhyMode.field.MODE = MODE_HTGREENFIELD;
 	}
 	else
-	{	
+	{
 		pEntry->MaxHTPhyMode.field.MODE = MODE_HTMIX;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo2.NonGfPresent = 1;
 		pAd->MacTab.fAnyStationNonGF = TRUE;
@@ -50,12 +50,12 @@ INT ht_mode_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILITY_IE 
 		pEntry->MaxHTPhyMode.field.ShortGI = ((my->ShortGIfor40) & (peer->HtCapInfo.ShortGIfor40));
 	}
 	else
-	{	
+	{
 		pEntry->MaxHTPhyMode.field.BW = BW_20;
 		pEntry->MaxHTPhyMode.field.ShortGI = ((my->ShortGIfor20) & (peer->HtCapInfo.ShortGIfor20));
 		pAd->MacTab.fAnyStation20Only = TRUE;
 	}
-				
+
 	return TRUE;
 }
 
@@ -88,8 +88,8 @@ INT get_ht_max_mcs(RTMP_ADAPTER *pAd, UCHAR *desire_mcs, UCHAR *cap_mcs)
 
 
 	for (i=23; i>=0; i--)
-	{	
-		j = i/8;	
+	{
+		j = i/8;
 		bitmask = (1<<(i-(j*8)));
 		if ((desire_mcs[j] & bitmask) && (cap_mcs[j] & bitmask))
 		{
@@ -139,7 +139,7 @@ UCHAR get_cent_ch_by_htinfo(
 	HT_CAPABILITY_IE *ht_cap)
 {
 	UCHAR cent_ch;
-	
+
 	if ((ht_op->ControlChan > 2)&&
 		(ht_op->AddHtInfo.ExtChanOffset == EXTCHA_BELOW) &&
 		(ht_cap->HtCapInfo.ChannelWidth == BW_40))
@@ -149,7 +149,7 @@ UCHAR get_cent_ch_by_htinfo(
 		cent_ch = ht_op->ControlChan + 2;
 	else
 		cent_ch = ht_op->ControlChan;
-	
+
 	return cent_ch;
 }
 
@@ -174,13 +174,13 @@ VOID RTMPSetHT(
 	INT bw;
 	RT_HT_CAPABILITY *rt_ht_cap = &pAd->CommonCfg.DesiredHtPhy;
 	HT_CAPABILITY_IE *ht_cap= &pAd->CommonCfg.HtCapability;
-	
+
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : HT_mode(%d), ExtOffset(%d), MCS(%d), BW(%d), STBC(%d), SHORTGI(%d)\n",
 										pHTPhyMode->HtMode, pHTPhyMode->ExtOffset,
 										pHTPhyMode->MCS, pHTPhyMode->BW,
 										pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
-			
+
 	/* Don't zero supportedHyPhy structure.*/
 	RTMPZeroMemory(ht_cap, sizeof(HT_CAPABILITY_IE));
 	RTMPZeroMemory(&pAd->CommonCfg.AddHTInfo, sizeof(pAd->CommonCfg.AddHTInfo));
@@ -221,13 +221,13 @@ VOID RTMPSetHT(
 	ht_cap->HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
 	ht_cap->HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
 	ht_cap->HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : AMsduSize = %d, MimoPs = %d, MpduDensity = %d, MaxRAmpduFactor = %d\n",
 													rt_ht_cap->AmsduSize,
 													rt_ht_cap->MimoPs,
 													rt_ht_cap->MpduDensity,
 													rt_ht_cap->MaxRAmpduFactor));
-	
+
 	if(pHTPhyMode->HtMode == HTMODE_GF)
 	{
 		ht_cap->HtCapInfo.GF = 1;
@@ -235,7 +235,7 @@ VOID RTMPSetHT(
 	}
 	else
 		rt_ht_cap->GF = 0;
-	
+
 	/* Decide Rx MCSSet*/
 	switch (RxStream)
 	{
@@ -261,7 +261,7 @@ VOID RTMPSetHT(
 	{
 		ht_cap->MCSSet[4] = 0x1; /* MCS 32*/
 		ht_cap->HtCapInfo.ChannelWidth = 1;
-		if (pAd->CommonCfg.Channel <= 14) 		
+		if (pAd->CommonCfg.Channel <= 14)
 			ht_cap->HtCapInfo.CCKmodein40 = 1;
 
 		rt_ht_cap->ChannelWidth = 1;
@@ -275,7 +275,7 @@ VOID RTMPSetHT(
 		if ((pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd)
 		)
 		{
-			rtmp_bbp_set_ctrlch(pAd, pHTPhyMode->ExtOffset);	
+			rtmp_bbp_set_ctrlch(pAd, pHTPhyMode->ExtOffset);
 				bw = BW_40;
 		}
 	}
@@ -309,9 +309,9 @@ VOID RTMPSetHT(
 		else
 		{
 			ht_cap->HtCapInfo.TxSTBC = 0;
-			rt_ht_cap->TxSTBC = 0; 	
+			rt_ht_cap->TxSTBC = 0;
 		}
-		
+
 		/*
 			RxSTBC
 				0: not support,
@@ -327,7 +327,7 @@ VOID RTMPSetHT(
 		else
 		{
 			ht_cap->HtCapInfo.RxSTBC = 0;
-			rt_ht_cap->RxSTBC = 0; 	
+			rt_ht_cap->RxSTBC = 0;
 		}
 	}
 	else
@@ -350,11 +350,11 @@ VOID RTMPSetHT(
 		rt_ht_cap->ShortGIfor20 = 0;
 		rt_ht_cap->ShortGIfor40 = 0;
 	}
-	
+
 	/* We support link adaptation for unsolicit MCS feedback, set to 2.*/
 	pAd->CommonCfg.AddHTInfo.ControlChan = pAd->CommonCfg.Channel;
 	/* 1, the extension channel above the control channel. */
-	
+
 	/* EDCA parameters used for AP's own transmission*/
 	if (pAd->CommonCfg.APEdcaParm.bValid == FALSE)
 	{
@@ -363,7 +363,7 @@ VOID RTMPSetHT(
 		pAd->CommonCfg.APEdcaParm.Aifsn[1] = 7;
 		pAd->CommonCfg.APEdcaParm.Aifsn[2] = 1;
 		pAd->CommonCfg.APEdcaParm.Aifsn[3] = 1;
-	
+
 		pAd->CommonCfg.APEdcaParm.Cwmin[0] = 4;
 		pAd->CommonCfg.APEdcaParm.Cwmin[1] = 4;
 		pAd->CommonCfg.APEdcaParm.Cwmin[2] = 3;
@@ -376,8 +376,8 @@ VOID RTMPSetHT(
 
 		pAd->CommonCfg.APEdcaParm.Txop[0]  = 0;
 		pAd->CommonCfg.APEdcaParm.Txop[1]  = 0;
-		pAd->CommonCfg.APEdcaParm.Txop[2]  = 94;	
-		pAd->CommonCfg.APEdcaParm.Txop[3]  = 47;	
+		pAd->CommonCfg.APEdcaParm.Txop[2]  = 94;
+		pAd->CommonCfg.APEdcaParm.Txop[3]  = 47;
 	}
 	AsicSetEdcaParm(pAd, &pAd->CommonCfg.APEdcaParm);
 
@@ -421,12 +421,12 @@ VOID RTMPSetHT(
 VOID RTMPSetIndividualHT(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR apidx)
-{	
+{
 	RT_PHY_INFO *pDesired_ht_phy = NULL;
-	UCHAR TxStream = pAd->CommonCfg.TxStream;		
+	UCHAR TxStream = pAd->CommonCfg.TxStream;
 	UCHAR DesiredMcs = MCS_AUTO;
 	UCHAR encrypt_mode = Ndis802_11EncryptionDisabled;
-						
+
 	do
 	{
 
@@ -434,12 +434,12 @@ VOID RTMPSetIndividualHT(
 
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{		
-			pDesired_ht_phy = &pAd->StaCfg.DesiredHtPhyInfo;					
+		{
+			pDesired_ht_phy = &pAd->StaCfg.DesiredHtPhyInfo;
 			DesiredMcs = pAd->StaCfg.DesiredTransmitSetting.field.MCS;
 			encrypt_mode = pAd->StaCfg.WepStatus;
 			break;
-		}	
+		}
 #endif /* CONFIG_STA_SUPPORT */
 	} while (FALSE);
 
@@ -455,15 +455,15 @@ VOID RTMPSetIndividualHT(
 	if ((TxStream == 1) && ((DesiredMcs >= MCS_8) && (DesiredMcs <= MCS_15)))
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("RTMPSetIndividualHT: MCS(%d) is invalid in 1S, reset it as MCS_7\n", DesiredMcs));
-		DesiredMcs = MCS_7;		
+		DesiredMcs = MCS_7;
 	}
 
 	if ((pAd->CommonCfg.DesiredHtPhy.ChannelWidth == BW_20) && (DesiredMcs == MCS_32))
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("RTMPSetIndividualHT: MCS_32 is only supported in 40-MHz, reset it as MCS_0\n"));
-		DesiredMcs = MCS_0;		
+		DesiredMcs = MCS_0;
 	}
-	   		
+	
 #ifdef CONFIG_STA_SUPPORT
 	if ((pAd->OpMode == OPMODE_STA) && (pAd->StaCfg.BssType == BSS_INFRA) && (apidx == MIN_NET_DEVICE_FOR_MBSSID))
 		;
@@ -488,9 +488,9 @@ VOID RTMPSetIndividualHT(
 		DBGPRINT(RT_DEBUG_TRACE, ("%s : HT is disabled\n", __FUNCTION__));
 		return;
 	}
-			
+
 	pDesired_ht_phy->bHtEnable = TRUE;
-					
+
 	/* Decide desired Tx MCS*/
 	switch (TxStream)
 	{
@@ -510,11 +510,11 @@ VOID RTMPSetIndividualHT(
 			else if (DesiredMcs <= MCS_15)
 			{
 				ULONG mode;
-				
+
 				mode = DesiredMcs / 8;
 				if (mode < 2)
 					pDesired_ht_phy->MCSSet[mode] = (1 << (DesiredMcs - mode * 8));
-			}			
+			}
 			break;
 
 		case 3:
@@ -534,7 +534,7 @@ VOID RTMPSetIndividualHT(
 					pDesired_ht_phy->MCSSet[mode] = (1 << (DesiredMcs - mode * 8));
 			}
 			break;
-	}							
+	}
 
 	if(pAd->CommonCfg.DesiredHtPhy.ChannelWidth == BW_40)
 	{
@@ -562,9 +562,9 @@ VOID RTMPSetIndividualHT(
 	========================================================================
 	Routine Description:
 		Clear the desire HT info per interface
-		
+
 	Arguments:
-	
+
 	========================================================================
 */
 VOID RTMPDisableDesiredHtInfo(
@@ -604,7 +604,7 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 	SetHT.MCS = MCS_AUTO;
 	SetHT.BW = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.BW;
 	SetHT.STBC = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.STBC;
-	SetHT.SHORTGI = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.ShortGI;		
+	SetHT.SHORTGI = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.ShortGI;
 
 	RTMPSetHT(pAd, &SetHT);
 
@@ -626,11 +626,11 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 	========================================================================
 	Routine Description:
 		Update HT IE from our capability.
-		
+
 	Arguments:
 		Send all HT IE in beacon/probe rsp/assoc rsp/action frame.
-		
-	
+
+
 	========================================================================
 */
 VOID RTMPUpdateHTIE(
@@ -641,7 +641,7 @@ VOID RTMPUpdateHTIE(
 {
 	RTMPZeroMemory(pHtCapability, sizeof(HT_CAPABILITY_IE));
 	RTMPZeroMemory(pAddHtInfo, sizeof(ADD_HT_INFO_IE));
-	
+
 		pHtCapability->HtCapInfo.ChannelWidth = pRtHt->ChannelWidth;
 		pHtCapability->HtCapInfo.MimoPs = pRtHt->MimoPs;
 		pHtCapability->HtCapInfo.GF = pRtHt->GF;
@@ -658,7 +658,7 @@ VOID RTMPUpdateHTIE(
 		pAddHtInfo->AddHtInfo2.OperaionMode = pRtHt->OperaionMode;
 		pAddHtInfo->AddHtInfo2.NonGfPresent = pRtHt->NonGfPresent;
 		RTMPMoveMemory(pAddHtInfo->MCSSet, /*pRtHt->MCSSet*/pMcsSet, 4); /* rt2860 only support MCS max=32, no need to copy all 16 uchar.*/
-	
+
         DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <== \n"));
 }
 

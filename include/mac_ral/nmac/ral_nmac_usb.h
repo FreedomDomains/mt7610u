@@ -62,7 +62,7 @@ typedef union _CMB_CTRL_STRUC{
 		UINT32		AUX_OPT_Bit4_RemovePCIePhyClk_WLANOff:1;
 		UINT32		AUX_OPT_Bit3_PLLOn_L1:1;
 		UINT32		AUX_OPT_Bit2_PCIeCoreClkOn_L1:1;
-		UINT32		AUX_OPT_Bit1_PCIePhyClkOn_L1:1;	
+		UINT32		AUX_OPT_Bit1_PCIePhyClkOn_L1:1;
 		UINT32		AUX_OPT_Bit0_InterfaceClk_40Mhz:1;
 	}field;
 	UINT32 word;
@@ -71,7 +71,7 @@ typedef union _CMB_CTRL_STRUC{
 typedef union _CMB_CTRL_STRUC{
 	struct{
 		UINT32		AUX_OPT_Bit0_InterfaceClk_40Mhz:1;
-		UINT32		AUX_OPT_Bit1_PCIePhyClkOn_L1:1;	
+		UINT32		AUX_OPT_Bit1_PCIePhyClkOn_L1:1;
 		UINT32		AUX_OPT_Bit2_PCIeCoreClkOn_L1:1;
 		UINT32		AUX_OPT_Bit3_PLLOn_L1:1;
 		UINT32		AUX_OPT_Bit4_RemovePCIePhyClk_WLANOff:1;
@@ -80,7 +80,7 @@ typedef union _CMB_CTRL_STRUC{
 		UINT32		AUX_OPT_Bit7_KeepInterfaceClk:1;
 		UINT32		AUX_OPT_Bit8_AuxPower_Exists:1;
 		UINT32		AUX_OPT_Bit9_GPIO3_as_GPIO:1;
-		UINT32		AUX_OPT_Bit10_NotSwap_WL_LED_ACT_RDY:1;	
+		UINT32		AUX_OPT_Bit10_NotSwap_WL_LED_ACT_RDY:1;
 		UINT32		AUX_OPT_Bit11_Rsv:1;
 		UINT32		AUX_OPT_Bit12_TRSW0_as_WLAN_ANT_SEL:1;
 		UINT32		AUX_OPT_Bit13_GPIO7_as_GPIO:1;

@@ -9,7 +9,7 @@ TARGET = LINUX
 
 # CHIPSET
 # rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062, rt3562, rt3593, rt3573
-# rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592, 
+# rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592,
 # rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
 
 ifeq ($(CHIPSET),)
@@ -44,7 +44,7 @@ LINUX_SRC = /lib/modules/$(shell uname -r)/build
 # Linux 2.4 Change to your local setting
 #LINUX_SRC = /usr/src/linux-2.4
 LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
-CROSS_COMPILE = 
+CROSS_COMPILE =
 endif
 
 export OSABL PWD RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
@@ -82,7 +82,7 @@ ifeq ($(OSABL),YES)
 endif
 	rm -f os/linux/$(MODULE)_ap.ko.lzma
 	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
-else	
+else
 ifeq ($(RT28xx_MODE),APSTA)
 	cp -f $(PWD)/os/linux/$(MODULE)_apsta.ko /tftpboot
 ifeq ($(OSABL),YES)
@@ -121,14 +121,14 @@ endif
 ifeq ($(RT28xx_MODE),STA)
 	cp $(PWD)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
 	cp $(PWD)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
-endif	
+endif
 
 clean:
 ifeq ($(TARGET), LINUX)
 	cp -f os/linux/Makefile.clean os/linux/Makefile
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
-endif	
+endif
 
 uninstall:
 ifeq ($(TARGET), LINUX)
@@ -141,7 +141,7 @@ ifeq ($(TARGET), LINUX)
 endif
 
 libwapi:
-	cp -f os/linux/Makefile.libwapi.6 $(PWD)/os/linux/Makefile	
+	cp -f os/linux/Makefile.libwapi.6 $(PWD)/os/linux/Makefile
 	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 
 osutil:

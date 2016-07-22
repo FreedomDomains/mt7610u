@@ -106,7 +106,7 @@ VOID MlmeCntlInit(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID MlmeCntlMachinePerformAction(
@@ -151,9 +151,9 @@ VOID MlmeCntlMachinePerformAction(
 	case CNTL_WAIT_OID_LIST_SCAN:
 		if (Elem->MsgType == MT2_SCAN_CONF) {
 			USHORT	Status = MLME_SUCCESS;
-				
+
 			NdisMoveMemory(&Status, Elem->Msg, sizeof(USHORT));
-				
+
 			/* Resume TxRing after SCANING complete. We hope the out-of-service time */
 			/* won't be too long to let upper layer time-out the waiting frames */
 			RTMPResumeMsduTransmission(pAd);
@@ -179,7 +179,7 @@ VOID MlmeCntlMachinePerformAction(
 				DBGPRINT(RT_DEBUG_TRACE, ("%s -- Send null frame pAd->StaCfg.Psm=%d\n", __FUNCTION__,pAd->StaCfg.Psm));
 
 			}
-			
+
 #ifdef LED_CONTROL_SUPPORT
 			/* */
 			/* Set LED status to previous status. */
@@ -220,7 +220,7 @@ VOID MlmeCntlMachinePerformAction(
 						*/
 						MaintainBssTable(pAd, &pAd->ScanTab, 120, 2);
 					}
-					
+
 				{
 					RTMPSendWirelessEvent(pAd, IW_SCAN_COMPLETED_EVENT_FLAG, NULL, BSS0, 0);
 
@@ -269,7 +269,7 @@ when disassoc from ap1 ,and send even_scan will direct connect to ap2 , not need
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlIdleProc(
@@ -391,7 +391,7 @@ VOID CntlOidScanProc(
 		Before calling this routine, user desired SSID should already been
 		recorded in CommonCfg.Ssid[]
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlOidSsidProc(
@@ -418,7 +418,7 @@ VOID CntlOidSsidProc(
 	NdisMoveMemory(pAd->StaCfg.ConnectinfoSsid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->StaCfg.ConnectinfoSsidLen = pOidSsid->SsidLength;
 	pAd->StaCfg.ConnectinfoBssType = pAd->StaCfg.BssType;
-	
+
 
 
 	/* Update Reconnect Ssid, that user desired to connect. */
@@ -557,7 +557,7 @@ VOID CntlOidSsidProc(
 		    && (MlmeValidateSSID(pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen) == TRUE)
 		    ) {
 			MLME_SCAN_REQ_STRUCT ScanReq;
-			
+
 			if (pAd->MlmeAux.BssType == BSS_ADHOC)
 				pAd->StaCfg.bNotFirstScan = TRUE;
 			DBGPRINT(RT_DEBUG_TRACE, ("CntlOidSsidProc():CNTL - No matching BSS, start a new scan\n"));
@@ -570,7 +570,7 @@ VOID CntlOidSsidProc(
 					sizeof (MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
 				pAd->Mlme.CntlMachine.CurrState =	CNTL_WAIT_SCAN_FOR_CONNECT;
 			}
-			else	
+			else
 			{
 				ScanParmFill(pAd, &ScanReq, (PSTRING) pAd->MlmeAux.Ssid,
 					     pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
@@ -578,10 +578,10 @@ VOID CntlOidSsidProc(
 					    sizeof (MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
 				pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_LIST_SCAN;
 			}
-			
+
 			/* Reset Missed scan number */
 			NdisGetSystemUpTime(&pAd->StaCfg.LastScanTime);
-			pAd->StaCfg.bNotFirstScan = TRUE;				
+			pAd->StaCfg.bNotFirstScan = TRUE;
 		} else {
 
 			if ((pAd->CommonCfg.CountryRegion & 0x7f) == REGION_33_BG_BAND)
@@ -612,7 +612,7 @@ VOID CntlOidSsidProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlOidRTBssidProc(
@@ -853,7 +853,7 @@ VOID CntlMlmeRoamingProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlOidDLSSetupProc(
@@ -1007,7 +1007,7 @@ VOID CntlOidDLSSetupProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitDisassocProc(
@@ -1056,7 +1056,7 @@ VOID CntlWaitDisassocProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitJoinProc(
@@ -1136,7 +1136,7 @@ VOID CntlWaitJoinProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitStartProc(
@@ -1192,7 +1192,7 @@ VOID CntlWaitStartProc(
 				if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 					pAd->MlmeAux.vht_cap_len) {
 					RT_VHT_CAP *rt_vht_cap = &pAd->StaActive.SupVhtCap;
-					
+
 					COPY_VHT_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
 					rt_vht_cap->vht_bw = BW_80;
 					rt_vht_cap->sgi_80m = pAd->MlmeAux.vht_cap.vht_cap.sgi_80M;
@@ -1236,7 +1236,7 @@ VOID CntlWaitStartProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitAuthProc(
@@ -1299,7 +1299,7 @@ VOID CntlWaitAuthProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitAuthProc2(
@@ -1359,7 +1359,7 @@ VOID CntlWaitAuthProc2(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitAssocProc(
@@ -1393,7 +1393,7 @@ VOID CntlWaitAssocProc(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID CntlWaitReassocProc(
@@ -1471,7 +1471,7 @@ VOID AdhocTurnOnQos(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID LinkUp(
@@ -1541,7 +1541,7 @@ VOID LinkUp(
 		OPSTATUS_SET_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
 	}
 	DBGPRINT(RT_DEBUG_TRACE, ("!!!%s LINK UP !!! \n", (BssType == BSS_ADHOC ? "ADHOC" : "Infra")));
-			
+
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("!!! LINK UP !!! (BssType=%d, AID=%d, ssid=%s, Channel=%d, CentralChannel = %d)\n",
 		  BssType, pAd->StaActive.Aid, pAd->CommonCfg.Ssid,
@@ -1771,7 +1771,7 @@ VOID LinkUp(
 		/*
 			Add BSSID to WCID search table
 			We cannot move this to PeerBeaconAtJoinAction because PeerBeaconAtJoinAction wouldn't be invoked in roaming case.
-		*/		
+		*/
 		AsicUpdateRxWCIDTable(pAd, BSSID_WCID, pAd->CommonCfg.Bssid);
 
 		/* If WEP is enabled, add paiewise and shared key */
@@ -2128,10 +2128,10 @@ VOID LinkUp(
 	Arguments:
 		pAd				- Pointer to our adapter
 		IsReqFromAP		- Request from AP
-		
-	Return Value:		
+
+	Return Value:
 		None
-		
+
 	IRQL = DISPATCH_LEVEL
 
 	Note:
@@ -2495,7 +2495,7 @@ VOID LinkDown(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID IterateOnBssTab(
@@ -2631,7 +2631,7 @@ VOID IterateOnBssTab2(
 		/* no more BSS */
 		UCHAR rf_channel = 0, rf_bw;
 		INT ext_ch;
-			
+
 #ifdef DOT11_N_SUPPORT
 #endif /* DOT11_N_SUPPORT */
 		{
@@ -2658,7 +2658,7 @@ VOID IterateOnBssTab2(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID JoinParmFill(
@@ -2674,7 +2674,7 @@ VOID JoinParmFill(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID ScanParmFill(
@@ -2698,7 +2698,7 @@ VOID ScanParmFill(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID DlsParmFill(
@@ -2717,7 +2717,7 @@ VOID DlsParmFill(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID StartParmFill(
@@ -2738,7 +2738,7 @@ VOID StartParmFill(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 VOID AuthParmFill(
@@ -2757,7 +2757,7 @@ VOID AuthParmFill(
 	Description:
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
  */
 #ifdef RTMP_MAC_USB
@@ -2779,7 +2779,7 @@ VOID MlmeCntlConfirm(
 
 	IRQL = PASSIVE_LEVEL
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
 */
 ULONG MakeIbssBeacon(
@@ -2991,7 +2991,7 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 {
 	UCHAR rf_channel, rf_bw;
 	INT ext_ch;
-	
+
 
 	pAd->CommonCfg.CentralChannel = pAd->MlmeAux.CentralChannel;
 	pAd->CommonCfg.Channel = pAd->MlmeAux.Channel;
@@ -3056,18 +3056,18 @@ VOID MaintainBssTable(
 
 		NdisGetSystemUpTime(&now_time);
 		if (RTMP_TIME_AFTER(now_time, pBss->LastBeaconRxTime + (MaxRxTimeDiff * OS_HZ)))
-			bDelEntry = TRUE;		
+			bDelEntry = TRUE;
 		else if (pBss->SameRxTimeCount > MaxSameRxTimeCount)
 			bDelEntry = TRUE;
-		
+
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED)
 			&& NdisEqualMemory(pBss->Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen))
 			bDelEntry = FALSE;
-		
+
 		if (bDelEntry)
 		{
 			UCHAR *pOldAddr = NULL;
-			
+
 			for (j = i; j < total_bssNr - 1; j++)
 			{
 				pOldAddr = Tab->BssEntry[j].pVarIeFromProbRsp;
@@ -3088,7 +3088,7 @@ VOID MaintainBssTable(
 			{
 				RTMPZeroMemory(pOldAddr, MAX_VIE_LEN);
 			}
-			
+
 			total_bssNr -= 1;
 		}
 	}

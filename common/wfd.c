@@ -86,7 +86,7 @@ INT Set_WfdInsertIe_Proc(
 				(pCfg80211_CB->pCfg80211_Wdev->wiphy->interface_modes & BIT(NL80211_IFTYPE_P2P_GO)))
 			{
 				bEnable = simple_strtol(arg, 0, 10);
-				
+
 				if (bEnable == TRUE)
 				{
 					pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = TRUE;
@@ -186,9 +186,9 @@ INT Set_WfdSessionAvailable_Proc(
 		pAd->StaCfg.WfdCfg.SessionAvail = WFD_SESSION_NOT_AVAILABLE;
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: Session Available out of range, using default\n", __FUNCTION__, pAd->StaCfg.WfdCfg.SessionAvail));
 	}
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Session Available = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.SessionAvail));
-	
+
 	return TRUE;
 }
 
@@ -217,9 +217,9 @@ INT	Set_WfdRtspPort_Proc(
     IN  PSTRING			arg)
 {
 	INT32 RtspPort;
-	
+
 	RtspPort = simple_strtol(arg, 0, 10);
-	
+
 	if ((RtspPort < 0) || (65535 < RtspPort))
 	{
 		pAd->StaCfg.WfdCfg.RtspPort = WFD_RTSP_DEFAULT_PORT;
@@ -239,7 +239,7 @@ INT	Set_WfdMaxThroughput_Proc(
     IN  PSTRING			arg)
 {
 	INT32 Throughput;
-	
+
 	Throughput = simple_strtol(arg, 0, 10);
 
 	if ((Throughput <= 0)|| (65535 < Throughput))
@@ -301,7 +301,7 @@ INT Set_PeerRtspPort_Proc(
 					DBGPRINT(RT_DEBUG_TRACE, ("P2P Entry[%d][%02x:%02x:%02x:%02x:%02x:%02x]\n", pEntry->P2pInfo.p2pIndex, PRINT_MAC(pEntry->Addr)));
 					DBGPRINT(RT_DEBUG_TRACE, ("RTSP_PORT = %d.\n", pAd->P2pTable.Client[pEntry->P2pInfo.p2pIndex].WfdEntryInfo.rtsp_port));
 					if (P2pIdx != P2P_NOT_FOUND)
-						RtspPort = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.rtsp_port;	
+						RtspPort = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.rtsp_port;
 					else
 					{
 						RtspPort = WFD_RTSP_DEFAULT_PORT;
@@ -355,7 +355,7 @@ VOID WfdMakeWfdIE(
 			for (i=0; i<TempLen; i++)
 				DBGPRINT(RT_DEBUG_INFO, ("%02x ", *(pData+i)));
 			DBGPRINT(RT_DEBUG_INFO, ("\n"));
-			
+
 			Len += TempLen;
 			pData += TempLen;
 		}
@@ -364,7 +364,7 @@ VOID WfdMakeWfdIE(
 
 	*(pOutBuf+1) = (Len-2);
 	*pIeLen = Len;
-	
+
 	return;
 }
 
@@ -605,7 +605,7 @@ ULONG InsertWfdSubelmtTlv(
 
 						pDest += 24;
 					}
-				}			
+				}
 
 				Length = 24*NumOfDev + 3;
 			}
@@ -675,7 +675,7 @@ VOID WfdParseSubElmt(
 //			printk("AccuWfdIeLen = %d. EidLen = %04x\n", AccuWfdIELen, pEid->Len);
 			/* The value of AccuP2PIELen shall reduce the length of OUI (4) */
 			AccuWfdIELen -= 4;
-			
+
 			AttriLen = pWfdEid->Len[1] + (pWfdEid->Len[0] << 8);
 			Length = 0;
 //			printk("AttriLen = %d.  WfdEid = %d.  WfdEidLen = %x %x\n", AttriLen, pWfdEid->Eid, pWfdEid->Len[1], pWfdEid->Len[0]);
@@ -686,7 +686,7 @@ VOID WfdParseSubElmt(
 			{
 //				printk(">> Eid = %d.\n", pWfdEid->Eid);
 				switch (pWfdEid->Eid)
-				{						
+				{
 					case SUBID_WFD_DEVICE_INFO:
 					{
 						pWfd_info = &(pWfdEid->Octet[0]);
@@ -777,7 +777,7 @@ VOID WfdParseSubElmt(
 					default:
 						DBGPRINT(RT_DEBUG_ERROR, (" SUBID_WFD_ unknown  Eid = %x \n", pWfdEid->Eid));
 						hex_dump("WfdParseSubElement::", Msg, MsgLen);
-						break;						
+						break;
 				}
 //				printk("<< Length = %d. AttriLen = %d. AccuWfdIELen = %d.\n", Length, AttriLen, AccuWfdIELen);
 				Length = Length + 3 + AttriLen;  /* Eid[1] + Len[2] + content[Len] */
@@ -799,7 +799,7 @@ VOID WfdParseSubElmt(
 		{
 			pEid = (PEID_STRUCT)((UCHAR*)pEid + pEid->Len + 2);
 		}
-		
+
 		/*
 			Since we get the next pEid,
 		   	Predict the accumulated IeLen after adding the next pEid's length.
@@ -819,7 +819,7 @@ VOID	WfdCfgInit(
 {
 	PRT_WFD_CONFIG	pWfdcfg = &pAd->StaCfg.WfdCfg;
 
-	RTMPZeroMemory(&pAd->StaCfg.WfdCfg, sizeof(RT_WFD_CONFIG));	
+	RTMPZeroMemory(&pAd->StaCfg.WfdCfg, sizeof(RT_WFD_CONFIG));
 	pWfdcfg->bWfdEnable = TRUE;
 #ifdef RT_CFG80211_SUPPORT
 	pWfdcfg->bSuppInsertWfdIe = FALSE;

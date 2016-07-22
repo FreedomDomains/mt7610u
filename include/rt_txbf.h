@@ -178,19 +178,19 @@ void Read_TagField(
 	IN	PRTMP_ADAPTER	pAd,
 	IN  UCHAR	*row,
 	IN  int		profileNum);
-	
+
 // Write_TagField - write a profile tagfield
 void Write_TagField(
 	IN	RTMP_ADAPTER *pAd,
 	IN  UCHAR	*row,
 	IN  int		profileNum);
-	
+
 // displayTagfield - display one tagfield
 void displayTagfield(
 	IN	RTMP_ADAPTER *pAd,
 	IN	int		profileNum,
 	IN	BOOLEAN implicitProfile);
-	
+
 // Unpack an ITxBF matrix element from a row of bytes
 int Unpack_IBFValue(
 	IN UCHAR *row,

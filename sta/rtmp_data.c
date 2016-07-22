@@ -721,7 +721,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 						   &pEntry->RssiSample,
 						   pRxWI);
 		}else
-		
+
 		if (ADHOC_ON(pAd)) {
 			MAC_TABLE_ENTRY *pAdhocEntry = NULL;
 			pAdhocEntry = MacTableLookup(pAd, pHeader->Addr2);
@@ -987,7 +987,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 #ifdef CONFIG_RX_CSO_SUPPORT
 	if (RTMP_TEST_MORE_FLAG(pAd, fRTMP_ADAPTER_RX_CSO_SUPPORT))
-	{			
+	{
 		if ( pRxFceInfo->l3l4_done )
 		{
 
@@ -1404,7 +1404,7 @@ VOID STAHandleRxControlFrame(
 		None
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
 		This routine has to maintain Rx ring read pointer.
 		Need to consider QOS DATA format when converting to 802.3
@@ -1589,7 +1589,7 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 					if (pHeader->FC.Order) {
 						pRxBlk->pData += 4;
 						pRxBlk->DataSize -= 4;
-						
+
 					}
 
 					if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK))
@@ -1645,7 +1645,7 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 						RxBlk.pTransData = (UCHAR *) pHeader +  36; /* 36 byte - RX WIFI Size ( 802.11 Header ) */
 						RxBlk.TransDataSize = pRxWI->RxWIMPDUByteCnt;
 						RxBlk.DataSize += 36;
-						
+
 
 						STAHandleRxDataFrame_Hdr_Trns(pAd, &RxBlk);
 					}
@@ -1786,7 +1786,7 @@ BOOLEAN STAHandleRxDonePacket(
 			case BTYPE_CNTL:
 				STAHandleRxControlFrame(pAd, pRxBlk);
 				break;
-		
+
 			default:
 				RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_FAILURE);
 				break;
@@ -1812,7 +1812,7 @@ BOOLEAN STAHandleRxDonePacket(
 		pAd 	Pointer to our adapter
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	========================================================================
 */
 VOID RTMPHandleTwakeupInterrupt(
@@ -1831,9 +1831,9 @@ Arguments:
     NDIS_HANDLE 	MiniportAdapterContext	Pointer refer to the device handle, i.e., the pAd.
 	PPNDIS_PACKET	ppPacketArray			The packet array need to do transmission.
 	UINT			NumberOfPackets			Number of packet in packet array.
-	
+
 Return Value:
-	NONE					
+	NONE
 
 Note:
 	This function do early checking and classification for send-out packet.
@@ -1916,7 +1916,7 @@ Routine Description:
 	This routine is used to do packet parsing and classification for Tx packet
 	to STA device, and it will en-queue packets to our TxSwQueue depends on AC
 	class.
-	
+
 Arguments:
 	pAd    		Pointer to our adapter
 	pPacket 	Pointer to send packet
@@ -2171,20 +2171,20 @@ NDIS_STATUS STASendPacket(
 	Routine Description:
 		This subroutine will scan through releative ring descriptor to find
 		out avaliable free ring descriptor and compare with request size.
-		
+
 	Arguments:
 		pAd Pointer to our adapter
 		QueIdx		Selected TX Ring
-		
+
 	Return Value:
 		NDIS_STATUS_FAILURE 	Not enough free descriptor
 		NDIS_STATUS_SUCCESS 	Enough free descriptor
 
 	IRQL = PASSIVE_LEVEL
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
-	
+
 	========================================================================
 */
 
@@ -2832,7 +2832,7 @@ VOID STA_AMPDU_Frame_Tx(
 	BOOLEAN			bHTCPlus;
 	UINT8 TXWISize = pAd->chipCap.TXWISize;
 
-	
+
 	ASSERT(pTxBlk);
 
 	while (pTxBlk->TxPacketList.Head) {
@@ -2964,14 +2964,14 @@ VOID STA_AMPDU_Frame_Tx(
 					NdisZeroMemory(pHeaderBufPtr, sizeof(HT_CONTROL));
 					((PHT_CONTROL)pHeaderBufPtr)->RDG = 1;
 				}
-				
+
 				bHTCPlus = TRUE;
 			}
 
 #ifdef TXBF_SUPPORT
 			pTxBlk->TxSndgPkt = SNDG_TYPE_DISABLE;
 
-			NdisAcquireSpinLock(&pMacEntry->TxSndgLock);	
+			NdisAcquireSpinLock(&pMacEntry->TxSndgLock);
 			if (pMacEntry->TxSndgType >= SNDG_TYPE_SOUNDING)
 			{
 				DBGPRINT(RT_DEBUG_TRACE, ("--Sounding in AMPDU: TxSndgType=%d, MCS=%d\n",
@@ -2984,7 +2984,7 @@ VOID STA_AMPDU_Frame_Tx(
 					bHTCPlus = TRUE;
 					NdisZeroMemory(pHeaderBufPtr, sizeof(HT_CONTROL));
 				}
-	
+
 				if (pMacEntry->TxSndgType == SNDG_TYPE_SOUNDING)
 				{
 					// Select compress if supported. Otherwise select noncompress
@@ -3012,13 +3012,13 @@ VOID STA_AMPDU_Frame_Tx(
 					pTxBlk->TxNDPSndgBW = pMacEntry->sndgBW;
 					pTxBlk->TxNDPSndgMcs = pMacEntry->sndgMcs;
 				}
-	
+
 				pTxBlk->TxSndgPkt = pMacEntry->TxSndgType;
 				pMacEntry->TxSndgType = SNDG_TYPE_DISABLE;
 			}
-			
+
 			NdisReleaseSpinLock(&pMacEntry->TxSndgLock);
-				
+
 #ifdef MFB_SUPPORT
 #if defined(MRQ_FORCE_TX)//have to replace this by the correct condition!!!
 			pMacEntry->HTCapability.ExtHtCapInfo.MCSFeedback = MCSFBK_MRQ;
@@ -3226,7 +3226,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 	BOOLEAN			bHTCPlus;
 	UINT8 TXWISize = pAd->chipCap.TXWISize;
 	PWIFI_INFO_STRUC pWI;
-	
+
 	ASSERT(pTxBlk);
 
 	while (pTxBlk->TxPacketList.Head) {
@@ -3268,7 +3268,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 
 		if (bVLANPkt)
 			pWI->field.VLAN = TRUE;
-	
+
 		pWI->field.TID = (pTxBlk->UserPriority & 0x0F);
 
 
@@ -3288,7 +3288,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 					/* mark HTC bit */
 					pWI->field.RDG = 1;
 				}
-				
+
 				bHTCPlus = TRUE;
 			}
 
@@ -4235,19 +4235,19 @@ VOID STA_Fragment_Frame_Tx(
 		Copy frame from waiting queue into relative ring buffer and set
 	appropriate ASIC register to kick hardware encryption before really
 	sent out to air.
-		
+
 	Arguments:
 		pAd 	Pointer to our adapter
 		PNDIS_PACKET	Pointer to outgoing Ndis frame
 		NumberOfFrag	Number of fragment required
-		
+
 	Return Value:
 		None
 
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
-	
+
 	========================================================================
 */
 NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
@@ -4355,7 +4355,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 		if (bDoHdrTrans)
 			STA_Legacy_Frame_Tx_Hdr_Trns(pAd, pTxBlk);
 		else
-#endif /* HDR_TRANS_SUPPORT */			
+#endif /* HDR_TRANS_SUPPORT */
 			STA_Legacy_Frame_Tx(pAd, pTxBlk);
 		break;
 		}

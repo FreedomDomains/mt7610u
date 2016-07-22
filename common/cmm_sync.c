@@ -45,7 +45,7 @@ extern UINT16 const Country_Region_GroupNum_5GHZ;
 
 	IRQL = PASSIVE_LEVEL
 	IRQL = DISPATCH_LEVEL
-	
+
 	==========================================================================
  */
 VOID BuildChannelList(
@@ -77,7 +77,7 @@ VOID BuildChannelList(
 		if (!bRegionFound)
 		{
 			DBGPRINT(RT_DEBUG_ERROR,("CountryRegion=%d not support", pAd->CommonCfg.CountryRegion));
-			return;		
+			return;
 		}
 
 		if (num > 0)
@@ -96,7 +96,7 @@ VOID BuildChannelList(
 			{
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelListFlag failed\n", __FUNCTION__));
 				os_free_mem(NULL, pChannelList);
-				return;	
+				return;
 			}
 
 			for (i = 0; i < num; i++)
@@ -190,7 +190,7 @@ VOID BuildChannelList(
 #ifdef DOT11_N_SUPPORT
 				if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
 					pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
-#endif /* DOT11_N_SUPPORT */	
+#endif /* DOT11_N_SUPPORT */
 
 				for (j=0; j<15; j++)
 				{
@@ -206,7 +206,7 @@ VOID BuildChannelList(
 		}
 	}
 
-	pAd->ChannelListNum = index;	
+	pAd->ChannelListNum = index;
 	DBGPRINT(RT_DEBUG_TRACE,("country code=%d/%d, RFIC=%d, PHY mode=%d, support %d channels\n",
 		pAd->CommonCfg.CountryRegion, pAd->CommonCfg.CountryRegionForABand, pAd->RfIcType, pAd->CommonCfg.PhyMode, pAd->ChannelListNum));
 
@@ -223,7 +223,7 @@ VOID BuildChannelList(
 	}
 #endif /* RT_CFG80211_SUPPORT */
 
-#ifdef DBG	
+#ifdef DBG
 	for (i=0;i<pAd->ChannelListNum;i++)
 	{
 		DBGPRINT_RAW(RT_DEBUG_TRACE,("BuildChannel # %d :: Pwr0 = %d, Pwr1 =%d, Flags = %x\n ",
@@ -271,7 +271,7 @@ UCHAR NextChannel(
 {
 	int i;
 	UCHAR next_channel = 0;
-			
+
 	for (i = 0; i < (pAd->ChannelListNum - 1); i++)
 	{
 		if (channel == pAd->ChannelList[i].Channel)
@@ -294,7 +294,7 @@ UCHAR NextChannel(
 			break;
 	}
 		}
-		
+
 	}
 	return next_channel;
 }
@@ -329,7 +329,7 @@ VOID ChangeToCellPowerLimit(
 	*/
 	if (AironetCellPowerLimit == 0xFF)
 		return;
-	
+
 	if (AironetCellPowerLimit < 6) /*Used Lowest Power Percentage.*/
 		pAd->CommonCfg.TxPowerPercentage = 6;
 	else if (AironetCellPowerLimit < 9)
@@ -345,7 +345,7 @@ VOID ChangeToCellPowerLimit(
 
 	if (pAd->CommonCfg.TxPowerPercentage > pAd->CommonCfg.TxPowerDefault)
 		pAd->CommonCfg.TxPowerPercentage = pAd->CommonCfg.TxPowerDefault;
-	
+
 }
 
 

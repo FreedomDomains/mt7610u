@@ -478,7 +478,7 @@ VOID RTMP_P2P_Remove(
 #endif /* WOW_SUPPORT */
 
 //#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-//#endif /* CONFIG_PM */	
+//#endif /* CONFIG_PM */
 
 #define RTMP_DRIVER_AP_SSID_GET(__pAd, pData)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_AP_BSSID_GET, 0, pData, 0)
@@ -559,12 +559,12 @@ VOID RTMP_P2P_Remove(
 
 #define RTMP_DRIVER_80211_BEACON_ADD(__pAd, __pBeacon) \
    	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_80211_BEACON_ADD, 0, __pBeacon, 0)
-   	
+
 #define RTMP_DRIVER_80211_BEACON_SET(__pAd, __pBeacon) \
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_80211_BEACON_SET, 0, __pBeacon, 0)
 
 #define RTMP_DRIVER_80211_GEN_IE_SET(__pAd, __pData, __Len)    \
-    RTMP_STA_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE, 0, __pData, __Len, 0)	
+    RTMP_STA_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE, 0, __pData, __Len, 0)
 
 #endif /* RT_CFG80211_SUPPORT */
 
@@ -634,7 +634,7 @@ VOID RTMP_P2P_Remove(
 
 #define RTMP_DRIVER_MAC_ADDR_GET(__pAd, __pMacAddr)							\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_MAC_ADDR_GET, 0, __pMacAddr, 0)
-	
+
 #define RTMP_DRIVER_ADAPTER_CSO_SUPPORT_TEST(__pAd, __flag)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_ADAPTER_CSO_SUPPORT_TEST, 0,  __flag, 0)
 

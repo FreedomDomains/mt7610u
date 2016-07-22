@@ -390,7 +390,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 
 #define PCI_MAP_SINGLE_DEV(_handle, _ptr, _size, _sd_idx, _dir)				\
 	linux_pci_map_single(_handle, _ptr, _size, _sd_idx, _dir)
-	
+
 #define PCI_UNMAP_SINGLE(_pAd, _ptr, _size, _dir)						\
 	linux_pci_unmap_single(((POS_COOKIE)(_pAd->OS_Cookie))->pci_dev, _ptr, _size, _dir)
 
@@ -772,7 +772,7 @@ extern ULONG RtmpOsGetUnalignedlong(
 				else														\
 					PACKET_CB(_p, 11) &= (~RTMP_PACKET_SPECIFIC_LLCSNAP);	\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_LLCSNAP(_p)		(PACKET_CB(_p, 11) & RTMP_PACKET_SPECIFIC_LLCSNAP)
 
 /* IP */
@@ -783,7 +783,7 @@ extern ULONG RtmpOsGetUnalignedlong(
 				else													\
 					PACKET_CB(_p, 11) &= (~RTMP_PACKET_SPECIFIC_IPV4);	\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_IPV4(_p)		(PACKET_CB(_p, 11) & RTMP_PACKET_SPECIFIC_IPV4)
 
 /* TDLS */
@@ -794,7 +794,7 @@ extern ULONG RtmpOsGetUnalignedlong(
 				else																		\
 					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_TDLS);	\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_TDLS(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_TDLS)
 
 /* If this flag is set, it indicates that this EAPoL frame MUST be clear. */

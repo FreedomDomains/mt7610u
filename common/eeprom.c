@@ -52,7 +52,7 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
 				pAd->chipCap.EFUSE_USAGE_MAP_START,
 				pAd->chipCap.EFUSE_USAGE_MAP_END));
 
-		return 0 ;	
+		return 0 ;
 	}
 	else
 	{
@@ -60,7 +60,7 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
 		DBGPRINT(RT_DEBUG_OFF, ("NVM is EEPROM\n"));
 	}
 #endif /* RTMP_EFUSE_SUPPORT */
-			
+
 	switch(infType)
 	{
 

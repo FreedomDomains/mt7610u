@@ -59,7 +59,7 @@ UCHAR CipherWpa2Template[] = {
 		S - pointer to the association state machine
 
 	IRQL = PASSIVE_LEVEL
-	
+
 	==========================================================================
  */
 VOID AssocStateMachineInit(
@@ -641,7 +641,7 @@ VOID MlmeAssocReqAction(
 		{
 			ULONG	WfdIeLen, WfdIeBitmap;
 			PUCHAR	ptr;
-			
+
 			ptr = pOutBuffer + FrameLen;
 			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
 				(0x1 << SUBID_WFD_COUPLED_SINK_INFO);
@@ -891,7 +891,7 @@ VOID MlmeReassocReqAction(
 		{
 			ULONG	WfdIeLen, WfdIeBitmap;
 			PUCHAR	ptr;
-			
+
 			ptr = pOutBuffer + FrameLen;
 			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
 				(0x1 << SUBID_WFD_COUPLED_SINK_INFO);
@@ -1105,11 +1105,11 @@ VOID PeerAssocRspAction(
 					For preventing finding MacTable Hash index malfunction,
 					we need to do MacTableDeleteEntry here.
 				*/
-				pEntry = MacTableLookup(pAd, pAd->CommonCfg.Bssid);	
-				if (pEntry)	
+				pEntry = MacTableLookup(pAd, pAd->CommonCfg.Bssid);
+				if (pEntry)
 				{
 					MacTableDeleteEntry(pAd, pEntry->Aid, pEntry->Addr);
-					pEntry = NULL;	
+					pEntry = NULL;
 				}
 
 				MaxSupportedRateIn500Kbps = dot11_max_sup_rate(SupRateLen, &SupRate[0],
@@ -1220,7 +1220,7 @@ VOID PeerReassocRspAction(
 		return;
 	}
 	NdisZeroMemory((UCHAR *)ie_list, sizeof(IE_LISTS));
-	
+
 	if (PeerAssocRspSanity(pAd, Elem->Msg, Elem->MsgLen, Addr2,
 			       &CapabilityInfo, &Status, &Aid, SupRate,
 			       &SupRateLen, ExtRate, &ExtRateLen, &HtCapability,
@@ -1243,16 +1243,16 @@ VOID PeerReassocRspAction(
 					For preventing finding MacTable Hash index malfunction,
 					we need to do MacTableDeleteEntry here.
 				*/
-				pEntry = MacTableLookup(pAd, pAd->CommonCfg.Bssid);	
-				if (pEntry)	
+				pEntry = MacTableLookup(pAd, pAd->CommonCfg.Bssid);
+				if (pEntry)
 				{
 					MacTableDeleteEntry(pAd, pEntry->Aid, pEntry->Addr);
-					pEntry = NULL;	
+					pEntry = NULL;
 				}
 
 				MaxSupportedRateIn500Kbps = dot11_max_sup_rate(SupRateLen, &SupRate[0], ExtRateLen, &ExtRate[0]);
 
-				
+
 				/* go to procedure listed on page 376 */
 				AssocPostProc(pAd, Addr2, CapabilityInfo, Aid,
 					      SupRate, SupRateLen, ExtRate,

@@ -72,7 +72,7 @@ static BOOLEAN USBDevConfigInit(
 	IN struct usb_device 	*dev,
 	IN struct usb_interface *intf,
 	IN VOID					*pAd);
-	
+
 
 VOID RT28XXVendorSpecificCheck(
 	IN struct usb_device 	*dev,
@@ -120,7 +120,7 @@ static BOOLEAN USBDevConfigInit(
 
 	/* get # of enpoints */
 	pConfig->NumberOfPipes = iface_desc->bNumEndpoints;
-	DBGPRINT(RT_DEBUG_TRACE, ("NumEndpoints=%d\n", iface_desc->bNumEndpoints));		
+	DBGPRINT(RT_DEBUG_TRACE, ("NumEndpoints=%d\n", iface_desc->bNumEndpoints));
 
 	/* Configure Pipes */
 	endpoint = &iface_desc->endpoint[0];
@@ -161,7 +161,7 @@ static BOOLEAN USBDevConfigInit(
 	RT28XXVendorSpecificCheck(dev, pAd);
 
 	return TRUE;
-	
+
 }
 
 static void *rtusb_probe(struct usb_device *dev, UINT interface,
@@ -179,7 +179,7 @@ static void *rtusb_probe(struct usb_device *dev, UINT interface,
 	rv = rt2870_probe(intf, dev, id, &pAd);
 	if (rv != 0)
 		pAd = NULL;
-	
+
 	return (void *)pAd;
 }
 
@@ -229,7 +229,7 @@ static BOOLEAN USBDevConfigInit(
 
 	/* get # of enpoints  */
 	pConfig->NumberOfPipes = iface_desc->desc.bNumEndpoints;
-	DBGPRINT(RT_DEBUG_TRACE, ("NumEndpoints=%d\n", iface_desc->desc.bNumEndpoints));		
+	DBGPRINT(RT_DEBUG_TRACE, ("NumEndpoints=%d\n", iface_desc->desc.bNumEndpoints));
 
 	/* Configure Pipes */
 	BulkOutIdx = 0;
@@ -291,23 +291,23 @@ static BOOLEAN USBDevConfigInit(
 	usb_set_intfdata(intf, pAd);
 	RTMP_DRIVER_USB_CONFIG_INIT(pAd, pConfig);
 	RT28XXVendorSpecificCheck(dev, pAd);
-	
+
 	return TRUE;
-	
+
 }
 
 
 
 static int rtusb_probe (struct usb_interface *intf,
 						const USB_DEVICE_ID *id)
-{	
+{
 	VOID *pAd;
 	struct usb_device *dev;
 	int rv;
 
 	dev = interface_to_usbdev(intf);
 	dev = usb_get_dev(dev);
-	
+
 	rv = rt2870_probe(intf, dev, id, &pAd);
 	if (rv != 0)
 	{
@@ -324,7 +324,7 @@ static int rtusb_probe (struct usb_interface *intf,
 			rv = -ENOMEM;
 		}
 	}
-#endif /* IFUP_IN_PROBE */	
+#endif /* IFUP_IN_PROBE */
 	return rv;
 }
 
@@ -336,10 +336,10 @@ static void rtusb_disconnect(struct usb_interface *intf)
 
 
 	pAd = usb_get_intfdata(intf);
-#ifdef IFUP_IN_PROBE	
+#ifdef IFUP_IN_PROBE
 	VIRTUAL_IF_DOWN(pAd);
-#endif /* IFUP_IN_PROBE */	
-	usb_set_intfdata(intf, NULL);	
+#endif /* IFUP_IN_PROBE */
+	usb_set_intfdata(intf, NULL);
 
 	rt2870_disconnect(dev, pAd);
 
@@ -347,21 +347,21 @@ static void rtusb_disconnect(struct usb_interface *intf)
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 	printk("rtusb_disconnect usb_autopm_put_interface \n");
 	usb_autopm_put_interface(intf);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)	
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	printk(" ^^rt2870_disconnect ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
 #else
 	printk(" rt2870_disconnect ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
 #endif
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
-	
+
 }
 
 
 struct usb_driver rtusb_driver = {
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,15)
 	.owner = THIS_MODULE,
-#endif	
+#endif
 	.name=RTMP_DRV_NAME,
 	.probe=rtusb_probe,
 	.disconnect=rtusb_disconnect,
@@ -392,7 +392,7 @@ static int rt2870_suspend(
 {
 	struct net_device *net_dev;
 	VOID *pAd = usb_get_intfdata(intf);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("===> rt2870_suspend()\n"));
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
@@ -409,7 +409,7 @@ static int rt2870_suspend(
 		RTMP_DRIVER_ADAPTER_END_DISSASSOCIATE(pAd);
 #endif
 		RTMP_DRIVER_ADAPTER_IDLE_RADIO_OFF_TEST(pAd, &Flag);
-		
+
 		if(!Flag)
 		{
 			RTMP_DRIVER_ADAPTER_RT28XX_USB_ASICRADIO_OFF(pAd);
@@ -446,7 +446,7 @@ static int rt2870_resume(
 	UCHAR Flag;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
-	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);	
+	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
 #else
 	pm_usage_cnt = intf->pm_usage_cnt;
 #endif
@@ -504,7 +504,7 @@ INT __init rtusb_init(void)
 /* Deinit driver module */
 VOID __exit rtusb_exit(void)
 {
-	usb_deregister(&rtusb_driver);	
+	usb_deregister(&rtusb_driver);
 	printk("<--- rtusb exit\n");
 }
 
@@ -620,12 +620,12 @@ static int rt2870_probe(
 /*	INT 		pm_usage_cnt; */
 	INT		 res =1 ;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif /* CONFIG_PM */	
+#endif /* CONFIG_PM */
 
-	
+
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===>rt2870_probe()!\n"));
-	
+
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
@@ -643,7 +643,7 @@ static int rt2870_probe(
          intf->pm_usage_cnt = 1;
 	 printk(" rt2870_probe ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
 #endif
-	
+
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
@@ -692,12 +692,12 @@ static int rt2870_probe(
 		goto err_out_free_radev;
 
 	RtmpRaDevCtrlInit(pAd, RTMP_DEV_INF_USB);
-	
+
 /*NetDevInit============================================== */
 	net_dev = RtmpPhyNetDevInit(pAd, &netDevHook);
 	if (net_dev == NULL)
 		goto err_out_free_radev;
-	
+
 	/* Here are the net_device structure with usb specific parameters. */
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 	/* for supporting Network Manager.
@@ -763,18 +763,18 @@ static int rt2870_probe(
 
 	return 0;
 
-	/* --------------------------- ERROR HANDLE --------------------------- */	
+	/* --------------------------- ERROR HANDLE --------------------------- */
 err_out_free_netdev:
 	RtmpOSNetDevFree(net_dev);
-	
+
 err_out_free_radev:
 	RTMPFreeAdapter(pAd);
-	
+
 err_out:
 	*ppAd = NULL;
 
 	return -1;
-	
+
 }
 
 

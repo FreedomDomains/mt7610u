@@ -51,9 +51,9 @@ INT SetCommonVHT(RTMP_ADAPTER *pAd)
 		return FALSE;
 	}
 
-	
+
 	pAd->CommonCfg.vht_cent_ch = vht_cent_ch_freq(pAd, pAd->CommonCfg.Channel);
-		
+
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): Config VHT parameters!cent_ch=%d!vht_cent_ch = %d, vht_cent_ch2 = %d\n",
 				__FUNCTION__, cent_ch, pAd->CommonCfg.vht_cent_ch, pAd->CommonCfg.vht_cent_ch2));
 	return TRUE;

@@ -30,11 +30,11 @@
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Calculates the duration which is required to transmit out frames
 	with given size and specified rate.
-					
+
 	Arguments:
 		pTxWI		Pointer to head of each MPDU to HW.
 		Ack 		Setting for Ack requirement bit
@@ -46,12 +46,12 @@
 		Length		Frame length
 		TxPreamble	Short or Long preamble when using CCK rates
 		QueIdx - 0-3, according to 802.11e/d4.4 June/2003
-		
+
 	Return Value:
 		None
-	
+
 	See also : BASmartHardTransmit()    !!!
-	
+
 	========================================================================
 */
 VOID RTMPWriteTxWI(
@@ -80,7 +80,7 @@ VOID RTMPWriteTxWI(
 	if (WCID < MAX_LEN_OF_MAC_TABLE)
 		pMac = &pAd->MacTab.Content[WCID];
 
-	
+
 	/*
 		Always use Long preamble before verifiation short preamble functionality works well.
 		Todo: remove the following line if short preamble functionality works
@@ -94,7 +94,7 @@ VOID RTMPWriteTxWI(
 	pTxWI->TxWIAMPDU = AMPDU;
 	pTxWI->TxWIACK = Ack;
 	pTxWI->TxWITXOP= Txopmode;
-	
+
 	pTxWI->TxWINSEQ = NSeq;
 	/* John tune the performace with Intel Client in 20 MHz performance*/
 #ifdef DOT11_N_SUPPORT
@@ -130,11 +130,11 @@ VOID RTMPWriteTxWI(
 	}
 #endif /* TXBF_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
-		
+
 	pTxWI->TxWIWirelessCliID = WCID;
 	pTxWI->TxWIMPDUByteCnt = Length;
 	pTxWI->TxWIPacketId = PID;
-	
+
 	/* If CCK or OFDM, BW must be 20*/
 	pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
 #ifdef DOT11_N_SUPPORT
@@ -143,7 +143,7 @@ VOID RTMPWriteTxWI(
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 #endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
-	
+
 	pTxWI->TxWIMCS = pTransmit->field.MCS;
 	pTxWI->TxWIPHYMODE = pTransmit->field.MODE;
 	pTxWI->TxWICFACK = CfAck;
@@ -207,7 +207,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 	*/
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);
 	NdisZeroMemory(pTxWI, TXWISize);
-	
+
 	pTxWI->TxWIFRAG = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAllowFrag);
 	pTxWI->TxWIACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
 	pTxWI->TxWITXOP = pTxBlk->FrameGap;
@@ -316,7 +316,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 		pTxWI->TxWIMpduDensity = pMacEntry->MpduDensity;
 	}
 #endif /* DOT11_N_SUPPORT */
-	
+
 #ifdef TXBF_SUPPORT
 	if (pTxBlk->TxSndgPkt > SNDG_TYPE_DISABLE)
 	{
@@ -324,7 +324,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 		pTxWI->TxWIAMPDU = FALSE;
 	}
 #endif /* TXBF_SUPPORT */
-	
+
 #ifdef DBG_DIAGNOSE
 	if (pTxBlk->QueIdx== 0)
 	{
@@ -342,8 +342,8 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 	{
 		if(pTxWI->TxWIPHYMODE == MODE_CCK)
 			pTxWI->TxWIPacketId = 6;
-	}	
-#endif /* INF_AMAZON_SE */	
+	}
+#endif /* INF_AMAZON_SE */
 
 
 #ifdef CONFIG_FPGA_MODE
@@ -393,12 +393,12 @@ VOID RTMPWriteTxWI_Cache(
 	MAC_TABLE_ENTRY *pMacEntry;
 #ifdef DOT11_N_SUPPORT
 #endif /* DOT11_N_SUPPORT */
-	
-	
+
+
 	/* update TXWI */
 	pMacEntry = pTxBlk->pMacEntry;
 	pTransmit = pTxBlk->pTransmit;
-	
+
 	if (pMacEntry->bAutoTxRateSwitch)
 	{
 		pTxWI->TxWITXOP = IFS_HTTXOP;
@@ -418,7 +418,7 @@ VOID RTMPWriteTxWI_Cache(
 
 		/* set PID for TxRateSwitching*/
 		pTxWI->TxWIPacketId = pTransmit->field.MCS;
-		
+
 	}
 
 #ifdef DOT11_N_SUPPORT
@@ -546,7 +546,7 @@ VOID RTMPWriteTxWI_Cache(
 		(pMacEntry && pMacEntry->bAutoTxRateSwitch == TRUE))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
-		
+
 		rate_ctrl.field.MODE = pTxWI->TxWIPHYMODE;
 #ifdef TXBF_SUPPORT
 		rate_ctrl.field.iTxBF = pTxWI->iTxBF;
@@ -612,7 +612,7 @@ INT rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, INT extch)
 
 	if (val != band_cfg)
 		RTMP_IO_WRITE32(pAd, TX_BAND_CFG, val);
-	
+
 	return TRUE;
 }
 

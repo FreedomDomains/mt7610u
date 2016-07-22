@@ -473,7 +473,7 @@ typedef union _EEPROM_ANTENNA_STRUC {
 		USHORT RfIcType:4;			/* see E2PROM document */
 		USHORT BoardType:2; 		/* 0: mini card; 1: USB pen */
 		USHORT Rsv:1;
-		USHORT RssiIndicationMode:1; 	/* RSSI indication mode */	
+		USHORT RssiIndicationMode:1; 	/* RSSI indication mode */
 	} field;
 	USHORT word;
 } EEPROM_ANTENNA_STRUC, *PEEPROM_ANTENNA_STRUC;
@@ -558,7 +558,7 @@ struct _RTMP_CHIP_CAP_ {
 	UINT8 WcidHwRsvNum;	/* hardware available WCID number */
 	UINT16 BcnMaxHwSize;	/* hardware maximum beacon size */
 	UINT16 BcnBase[HW_BEACON_MAX_NUM];	/* hardware beacon base address */
-	
+
 	/* function */
 	/* use UINT8, not bit-or to speed up driver */
 	BOOLEAN FlgIsHwWapiSup;
@@ -568,7 +568,7 @@ struct _RTMP_CHIP_CAP_ {
 #define VCO_CAL_DISABLE		0	/* not support */
 #define VCO_CAL_MODE_1		1	/* toggle RF7[0] */
 #define VCO_CAL_MODE_2		2	/* toggle RF3[7] */
-#define VCO_CAL_MODE_3		3	/* toggle RF4[7] */	
+#define VCO_CAL_MODE_3		3	/* toggle RF4[7] */
 	UINT8	FlgIsVcoReCalMode;
 
 	BOOLEAN FlgIsHwAntennaDiversitySup;
@@ -585,7 +585,7 @@ struct _RTMP_CHIP_CAP_ {
 
 	enum ASIC_CAP asic_caps;
 	enum PHY_CAP phy_caps;
-	
+
 #ifdef TXRX_SW_ANTDIV_SUPPORT
 	BOOLEAN bTxRxSwAntDiv;
 #endif /* TXRX_SW_ANTDIV_SUPPORT */
@@ -708,7 +708,7 @@ struct _RTMP_CHIP_CAP_ {
 	UINT8 WMM1ACBulkOutAddr;
 	UINT8 CommandBulkOutAddr;
 #endif
-	
+
 	enum MCU_TYPE MCUType;
 	UCHAR *FWImageName;
 	UCHAR *MACRegisterVer;
@@ -819,7 +819,7 @@ struct _RTMP_CHIP_OP_ {
 	/* AGC */
 	VOID (*ChipAGCInit)(struct _RTMP_ADAPTER *pAd, UCHAR bw);
 	UCHAR (*ChipAGCAdjust)(struct _RTMP_ADAPTER *pAd, CHAR Rssi, UCHAR OrigR66Value);
-	
+
 	/* Channel */
 	VOID (*ChipSwitchChannel)(struct _RTMP_ADAPTER *pAd, UCHAR ch, enum SWITCH_CHANNEL_STAGE Stage);
 
@@ -841,10 +841,10 @@ struct _RTMP_CHIP_OP_ {
 				IN PCHAR 				pDeltaPowerByBbpR1);
 
 
-	
+
 	VOID (*AsicGetTxPowerOffset)(struct _RTMP_ADAPTER *pAd, ULONG *TxPwr);
 	VOID (*AsicExtraPowerOverMAC)(struct _RTMP_ADAPTER *pAd);
-	
+
 	/* Antenna */
 	VOID (*AsicAntennaDefaultReset)(struct _RTMP_ADAPTER *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
 	VOID (*SetRxAnt)(struct _RTMP_ADAPTER *pAd, UCHAR Ant);
@@ -854,13 +854,13 @@ struct _RTMP_CHIP_OP_ {
 
 	/* high power tuning */
 	VOID (*HighPowerTuning)(struct _RTMP_ADAPTER *pAd, struct _RSSI_SAMPLE *pRssi);
-	
+
 	/* Others */
 	VOID (*NetDevNickNameInit)(IN struct _RTMP_ADAPTER *pAd);
 
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
-	
+
 	VOID (*AsicResetBbpAgent)(IN struct _RTMP_ADAPTER *pAd);
 
 #ifdef CARRIER_DETECTION_SUPPORT
@@ -868,7 +868,7 @@ struct _RTMP_CHIP_OP_ {
 #endif /* CARRIER_DETECTION_SUPPORT */
 	VOID (*CckMrcStatusCtrl)(struct _RTMP_ADAPTER *pAd);
 	VOID (*RadarGLRTCompensate)(struct _RTMP_ADAPTER *pAd);
-	
+
 	VOID (*Calibration)(struct _RTMP_ADAPTER *pAd, UINT32 CalibrationID, UINT32 Parameter);
 	VOID (*SecondCCADetection)(struct _RTMP_ADAPTER *pAd);
 
@@ -895,7 +895,7 @@ struct _RTMP_CHIP_OP_ {
 	void (*AsicRadioOff)(struct _RTMP_ADAPTER *ad, u8 Stage);
 
 	void (*MCUCtrlInit)(struct _RTMP_ADAPTER *ad);
-	
+
 	void (*MCUCtrlExit)(struct _RTMP_ADAPTER *ad);
 
 	void (*usb_cfg_read)(struct _RTMP_ADAPTER *ad, u32 *value);
@@ -914,7 +914,7 @@ do {	\
 		if (__pAd->chipOps.DisableAPMIMOPS != NULL)	\
 			__pAd->chipOps.DisableAPMIMOPS(__pAd);	\
 } while (0)
-	
+
 #define PWR_SAVING_OP(__pAd, __PwrOP, __PwrLevel, __ListenInterval, \
 						__PreTBTTLeadTime, __TIMByteOffset, __TIMBytePattern)	\
 do {	\
@@ -952,7 +952,7 @@ do {	\
 do {	\
 		if (__pAd->chipOps.ATETssiCalibrationExtend != NULL)	\
 			__pAd->chipOps.ATETssiCalibrationExtend(__pAd, __pData);	\
-} while (0)	
+} while (0)
 
 #define RTMP_CHIP_ATE_READ_EXTERNAL_TSSI(__pAd, __pData)	\
 do {	\
@@ -965,7 +965,7 @@ do {	\
 		if (__pAd->chipOps.AsicGetTxPowerOffset != NULL)	\
 			__pAd->chipOps.AsicGetTxPowerOffset(__pAd, __pCfgOfTxPwrCtrlOverMAC);	\
 } while (0)
-		
+
 #define RTMP_CHIP_ASIC_AUTO_AGC_OFFSET_GET(	\
 		__pAd, __pDeltaPwr, __pTotalDeltaPwr, __pAgcCompensate, __pDeltaPowerByBbpR1)	\
 do {	\
@@ -1181,7 +1181,7 @@ do {	\
 	if (_ad->chipOps.usb_cfg_write != NULL)	\
 		_ad->chipOps.usb_cfg_write(_ad, _value);	\
 } while (0)
-		
+
 int RtmpChipOpsHook(VOID *pCB);
 VOID RtmpChipBcnInit(struct _RTMP_ADAPTER *pAd);
 VOID RtmpChipBcnSpecInit(struct _RTMP_ADAPTER *pAd);

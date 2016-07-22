@@ -52,7 +52,7 @@ INT LED_Array[16][12]={
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Set LED Status
 
@@ -65,9 +65,9 @@ INT LED_Array[16][12]={
 
 	IRQL = PASSIVE_LEVEL
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
-	
+
 	========================================================================
 */
 VOID RTMPSetLEDStatus(
@@ -109,7 +109,7 @@ VOID RTMPSetLEDStatus(
 
 		LED_CMD = LED_Array[LedMode][Status];
 	}
-	
+
 	switch (Status)
 	{
 		case LED_LINK_DOWN:
@@ -162,7 +162,7 @@ VOID RTMPSetLEDStatus(
 			AsicSendCommandToMcu(pAd, MCUCmd, 0xff, LedMode, LinkStatus, FALSE);
 	}
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: MCUCmd:0x%x, LED Mode:0x%x, LinkStatus:0x%x\n", __FUNCTION__, MCUCmd, LedMode, LinkStatus));
-	
+
     /* */
 	/* Keep LED status for LED SiteSurvey mode. */
 	/* After SiteSurvey, we will set the LED mode to previous status. */
@@ -175,7 +175,7 @@ VOID RTMPSetLEDStatus(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Set LED Signal Stregth
 
@@ -187,7 +187,7 @@ VOID RTMPSetLEDStatus(
 		None
 
 	IRQL = PASSIVE_LEVEL
-	
+
 	Note:
 		Can be run on any IRQL level.
 
@@ -197,7 +197,7 @@ VOID RTMPSetLEDStatus(
 		<= -71  Low
 		<= -67  Good
 		<= -57  Very Good
-		 > -57  Excellent		
+		 > -57  Excellent
 	========================================================================
 */
 VOID RTMPSetSignalLED(
@@ -295,7 +295,7 @@ void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd)
 		pLedCntl->LedPolarity = 0x5627;
 #endif /* RTMP_MAC_USB */
 	}
-	
+
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (UCHAR)pLedCntl->LedAGCfg, (UCHAR)(pLedCntl->LedAGCfg >> 8), FALSE);
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (UCHAR)pLedCntl->LedACTCfg, (UCHAR)(pLedCntl->LedACTCfg >> 8), FALSE);
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (UCHAR)pLedCntl->LedPolarity, (UCHAR)(pLedCntl->LedPolarity >> 8), FALSE);

@@ -447,7 +447,7 @@ UCHAR RateSwitchTableAdapt11N3S[] = {
 #ifdef DOT11_VHT_AC
 /*
 	VHT-capable rate table
-	
+
 	Each row has 10 bytes of data.
 
 	1. First row contains table info, which is initial used item after assoc:
@@ -465,7 +465,7 @@ UCHAR RateSwitchTableAdapt11N3S[] = {
 	[nSS]:
 		Number of Spatial Stream
 
-	Note: downMCS, upMCS3, upMCS2 and upMCS1 are zero-based array index.	
+	Note: downMCS, upMCS3, upMCS2 and upMCS1 are zero-based array index.
 */
 /* 1x1 VHT-capable rate table */
 UCHAR RateTableVht1S[] =
@@ -691,7 +691,7 @@ VOID asic_mcs_lut_update(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 		rate_ctrl.ShortGI = pEntry->HTPhyMode.field.ShortGI;
 		rate_ctrl.BW = pEntry->HTPhyMode.field.BW;
 		rate_ctrl.MCS = pEntry->HTPhyMode.field.MCS;
-			
+
 		wcid_offset = MAC_MCS_LUT_BASE + (pEntry->Aid * 8);
 
 		RTMP_IO_WRITE32(pAd, wcid_offset, pEntry->HTPhyMode.word);
@@ -990,7 +990,7 @@ VOID MlmeSelectTxRateTable(
 #endif /* AGS_SUPPORT */
 				{
 					if (pAd->LatchRfRegs.Channel <= 14)
-					*ppTable = RateSwitchTable11N1S;				
+					*ppTable = RateSwitchTable11N1S;
 					else
 						*ppTable = RateSwitchTable11N1SForABand;
 				}
@@ -1170,7 +1170,7 @@ VOID MlmeSelectTxRateTable(
 				if (pAd->LatchRfRegs.Channel <= 14)
 					*ppTable = RateSwitchTable11N2S;
 				else
-					*ppTable = RateSwitchTable11N2SForABand;			
+					*ppTable = RateSwitchTable11N2SForABand;
 			}
 			break;
 		}
@@ -1213,7 +1213,7 @@ VOID MlmeSelectTxRateTable(
 						if ((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
 							*ppTable = RateSwitchTable11N1S;
 						else
-							*ppTable = RateSwitchTable11N1SForABand;	
+							*ppTable = RateSwitchTable11N1SForABand;
 					}
 					else
 					{
@@ -1271,7 +1271,7 @@ VOID MlmeSelectTxRateTable(
 #endif /* DOT11_N_SUPPORT */
 			)
 		{/* B only AP*/
-			*ppTable = RateSwitchTable11B;			
+			*ppTable = RateSwitchTable11B;
 			break;
 		}
 
@@ -1283,7 +1283,7 @@ VOID MlmeSelectTxRateTable(
 #endif /* DOT11_N_SUPPORT */
 			)
 		{/* B/G  mixed AP*/
-			*ppTable = RateSwitchTable11BG;			
+			*ppTable = RateSwitchTable11BG;
 			break;
 		}
 
@@ -1294,7 +1294,7 @@ VOID MlmeSelectTxRateTable(
 #endif /* DOT11_N_SUPPORT */
 			)
 		{/* G only AP*/
-			*ppTable = RateSwitchTable11G;			
+			*ppTable = RateSwitchTable11G;
 			break;
 		}
 #ifdef DOT11_N_SUPPORT
@@ -1339,7 +1339,7 @@ VOID MlmeSelectTxRateTable(
 				else if (pAd->CommonCfg.TxStream == 2)
 				{
 					*ppTable = RateSwitchTable11N2S;
-					DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));	
+					DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));
 				}
 				else
 				{
@@ -1366,7 +1366,7 @@ VOID MlmeSelectTxRateTable(
 				else if (pAd->CommonCfg.TxStream == 2)
 				{
 					*ppTable = RateSwitchTable11N2S;
-					DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));	
+					DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));
 				}
 				else
 				{
@@ -2036,10 +2036,10 @@ VOID RTMPSetSupportMCS(
 		else
 		{
 			UCHAR RateDefault[8] = {0x82, 0x84, 0x8b, 0x96, 0x12, 0x24, 0x48, 0x6c};
-			
+
 			NdisMoveMemory(SupportedRates, RateDefault, 8);
 			SupportedRatesLen = 8;
-			
+
 			DBGPRINT(RT_DEBUG_TRACE,("%s():wrong SUPP RATES., Len=%d\n",
 							__FUNCTION__, SupRateLen));
 		}
@@ -2133,7 +2133,7 @@ VOID RTMPSetSupportMCS(
 				pEntry->SupportOFDMMCS[MCS_7] = TRUE;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
-		}	
+		}
 	}
 
 	if (HtCapabilityLen)
@@ -2180,7 +2180,7 @@ VOID RTMPSetSupportMCS(
 					}
 				case 1:
 					if (vht_cap->mcs_set.rx_mcs_map.mcs_ss1 < VHT_MCS_CAP_NA)
-					{							
+					{
 						for (i = 0; i <= 7; i++)
 							pEntry->SupportVHTMCS[i] = TRUE;
 						/*

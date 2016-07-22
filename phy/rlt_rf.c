@@ -47,7 +47,7 @@ NDIS_STATUS rlt_rf_write(
 	} else {
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
 		UINT i = 0;
-	
+
 
 #ifdef RTMP_MAC_USB
 		if (IS_USB_INF(pAd)) {
@@ -102,7 +102,7 @@ done:
 
 /*
 	========================================================================
-	
+
 	Routine Description: Read RT30xx RF register through MAC
 
 	Arguments:
@@ -110,9 +110,9 @@ done:
 	Return Value:
 
 	IRQL =
-	
+
 	Note:
-	
+
 	========================================================================
 */
 NDIS_STATUS rlt_rf_read(
@@ -127,10 +127,10 @@ NDIS_STATUS rlt_rf_read(
 		reg.Bank = bank;
 		reg.Register = regID;
 		RF_RANDOM_READ(pAd, &reg, 1);
-	
+
 		*pValue = reg.Value;
 	} else {
-	
+
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
 		UINT i=0, k=0;
 
@@ -151,30 +151,30 @@ NDIS_STATUS rlt_rf_read(
 		{
 			if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 				goto done;
-			
+
 			RTMP_IO_READ32(pAd, RF_CSR_CFG, &rfcsr.word);
 
 			if (rfcsr.field.RF_CSR_KICK == BUSY)
 					continue;
-		
+
 			rfcsr.word = 0;
 			rfcsr.field.RF_CSR_WR = 0;
 			rfcsr.field.RF_CSR_KICK = 1;
 			rfcsr.field.RF_CSR_REG_ID = regID;
 			rfcsr.field.RF_CSR_REG_BANK = bank;
 			RTMP_IO_WRITE32(pAd, RF_CSR_CFG, rfcsr.word);
-		
+
 			for (k=0; k<MAX_BUSY_COUNT; k++)
 			{
 				if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 					goto done;
-				
+
 				RTMP_IO_READ32(pAd, RF_CSR_CFG, &rfcsr.word);
 
 				if (rfcsr.field.RF_CSR_KICK == IDLE)
 					break;
 			}
-		
+
 			if ((rfcsr.field.RF_CSR_KICK == IDLE) &&
 				(rfcsr.field.RF_CSR_REG_ID == regID) &&
 				(rfcsr.field.RF_CSR_REG_BANK == bank))
@@ -185,7 +185,7 @@ NDIS_STATUS rlt_rf_read(
 		}
 
 		if (rfcsr.field.RF_CSR_KICK == BUSY)
-		{																	
+		{
 			DBGPRINT_ERR(("RF read R%d=0x%X fail, i[%d], k[%d]\n", regID, rfcsr.word,i,k));
 			goto done;
 		}

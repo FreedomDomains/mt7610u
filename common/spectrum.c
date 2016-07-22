@@ -150,7 +150,7 @@ UINT8 GetRegulatoryMaxTxPwr(
 		{
 			if (channel == pChannelSet->ChannelList[ChIdx])
 				return pChannelSet->MaxTxPwr;
-		
+
 		}
 		if (ChIdx == pChannelSet->NumberOfChannels)
 			return 0xff;
@@ -283,7 +283,7 @@ CHAR RTMP_GetTxPwr(
 		case MODE_OFDM:
 			Value = TxPwr[1];
 			TxPwrRef = (Value & 0x00000f00) >> 8;
-			
+
 			break;
 
 #ifdef DOT11_N_SUPPORT
@@ -392,7 +392,7 @@ PMEASURE_REQ_ENTRY MeasureReqLookUp(
 	}
 
 	RTMP_SEM_UNLOCK(&pAd->CommonCfg.MeasureReqTabLock);
-	
+
 	return pEntry;
 }
 
@@ -617,7 +617,7 @@ static PTPC_REQ_ENTRY TpcReqLookUp(
 	}
 
 	RTMP_SEM_UNLOCK(&pAd->CommonCfg.TpcReqTabLock);
-	
+
 	return pEntry;
 }
 
@@ -782,9 +782,9 @@ static VOID TpcReqDelete(
 	==========================================================================
 	Description:
 		Get Current TimeS tamp.
-		
+
 	Parametrs:
-	
+
 	Return	: Current Time Stamp.
 	==========================================================================
  */
@@ -799,9 +799,9 @@ static UINT64 GetCurrentTimeStamp(
 	==========================================================================
 	Description:
 		Get Current Transmit Power.
-		
+
 	Parametrs:
-	
+
 	Return	: Current Time Stamp.
 	==========================================================================
  */
@@ -816,9 +816,9 @@ static UINT8 GetCurTxPwr(
 	==========================================================================
 	Description:
 		Get Current Transmit Power.
-		
+
 	Parametrs:
-	
+
 	Return	: Current Time Stamp.
 	==========================================================================
  */
@@ -893,12 +893,12 @@ VOID InsertChannelRepIE(
 	==========================================================================
 	Description:
 		Insert Dialog Token into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
 		3. Dialog token.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -922,11 +922,11 @@ VOID InsertDialogToken(
 	==========================================================================
 	Description:
 		Insert TPC Request IE into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -953,13 +953,13 @@ VOID InsertDialogToken(
 	==========================================================================
 	Description:
 		Insert TPC Report IE into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
 		3. Transmit Power.
 		4. Link Margin.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -994,7 +994,7 @@ VOID InsertTpcReportIE(
 	==========================================================================
 	Description:
 		Insert Measure Request IE into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
@@ -1005,7 +1005,7 @@ VOID InsertTpcReportIE(
 		7. Measure Start time.
 		8. Measure Duration.
 
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1034,7 +1034,7 @@ static VOID InsertMeasureReqIE(
 	==========================================================================
 	Description:
 		Insert Measure Report IE into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
@@ -1043,7 +1043,7 @@ static VOID InsertMeasureReqIE(
 		5. Measure Request Type.
 		6. Length of Report Infomation
 		7. Pointer of Report Infomation Buffer.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1060,7 +1060,7 @@ static VOID InsertMeasureReportIE(
 	UINT8 ElementID = IE_MEASUREMENT_REPORT;
 
 	Len = sizeof(MEASURE_REPORT_INFO) + ReportLnfoLen;
-		
+
 	MakeOutgoingFrame(pFrameBuf,					&TempLen,
 						1,							&ElementID,
 						1,							&Len,
@@ -1085,10 +1085,10 @@ static VOID InsertMeasureReportIE(
 	Description:
 		Prepare Measurement request action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1138,10 +1138,10 @@ VOID MakeMeasurementReqFrame(
 	Description:
 		Prepare Measurement report action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1189,7 +1189,7 @@ VOID EnqueueMeasurementRep(
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
 	MlmeFreeMemory(pAd, pOutBuffer);
 
-	return;	
+	return;
 }
 
 /*
@@ -1197,10 +1197,10 @@ VOID EnqueueMeasurementRep(
 	Description:
 		Prepare TPC Request action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1247,10 +1247,10 @@ VOID EnqueueTPCReq(
 	Description:
 		Prepare TPC Report action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1299,14 +1299,14 @@ VOID EnqueueTPCRep(
 	==========================================================================
 	Description:
 		Insert Channel Switch Announcement IE into frame.
-		
+
 	Parametrs:
 		1. frame buffer pointer.
 		2. frame length.
 		3. channel switch announcement mode.
 		4. new selected channel.
 		5. channel switch announcement count.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1344,12 +1344,12 @@ static VOID InsertChSwAnnIE(
 	Description:
 		Prepare Channel Switch Announcement action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
 		2. Channel switch announcement mode.
 		2. a New selected channel.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1471,13 +1471,13 @@ static VOID StartDFSProcedure(
 	==========================================================================
 	Description:
 		Channel Switch Announcement action frame sanity check.
-		
+
 	Parametrs:
 		1. MLME message containing the received frame
 		2. message length.
 		3. Channel switch announcement infomation buffer.
-		
-	
+
+
 	Return	: None.
 	==========================================================================
  */
@@ -1519,7 +1519,7 @@ static BOOLEAN PeerChSwAnnSanity(
 				NdisMoveMemory(&pChSwAnnInfo->ChSwMode, eid_ptr->Octet, 1);
 				NdisMoveMemory(&pChSwAnnInfo->Channel, eid_ptr->Octet + 1, 1);
 				NdisMoveMemory(&pChSwAnnInfo->ChSwCnt, eid_ptr->Octet + 2, 1);
-				
+
 				result = TRUE;
                 break;
 
@@ -1536,12 +1536,12 @@ static BOOLEAN PeerChSwAnnSanity(
 	==========================================================================
 	Description:
 		Measurement request action frame sanity check.
-		
+
 	Parametrs:
 		1. MLME message containing the received frame
 		2. message length.
 		3. Measurement request infomation buffer.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1590,7 +1590,7 @@ static BOOLEAN PeerMeasureReqSanity(
 				pMeasureReq->MeasureStartTime = SWAP64(MeasureStartTime);
 				NdisMoveMemory(&MeasureDuration, ptr + 9, 2);
 				pMeasureReq->MeasureDuration = SWAP16(MeasureDuration);
-				
+
 				result = TRUE;
 				break;
 
@@ -1607,13 +1607,13 @@ static BOOLEAN PeerMeasureReqSanity(
 	==========================================================================
 	Description:
 		Measurement report action frame sanity check.
-		
+
 	Parametrs:
 		1. MLME message containing the received frame
 		2. message length.
 		3. Measurement report infomation buffer.
 		4. basic report infomation buffer.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1682,7 +1682,7 @@ static BOOLEAN PeerMeasureReportSanity(
 					NdisMoveMemory(&pReport->MeasureStartTime, ptr + 1, 8);
 					NdisMoveMemory(&pReport->MeasureDuration, ptr + 9, 2);
 					NdisMoveMemory(&pReport->Map, ptr + 11, 1);
-					
+
 				}
 				else if (pMeasureReportInfo->ReportType == RM_CCA)
 				{
@@ -1692,7 +1692,7 @@ static BOOLEAN PeerMeasureReportSanity(
 					NdisMoveMemory(&pReport->MeasureStartTime, ptr + 1, 8);
 					NdisMoveMemory(&pReport->MeasureDuration, ptr + 9, 2);
 					NdisMoveMemory(&pReport->CCA_Busy_Fraction, ptr + 11, 1);
-					
+
 				}
 				else if (pMeasureReportInfo->ReportType == RM_RPI_HISTOGRAM)
 				{
@@ -1719,12 +1719,12 @@ static BOOLEAN PeerMeasureReportSanity(
 	==========================================================================
 	Description:
 		TPC Request action frame sanity check.
-		
+
 	Parametrs:
 		1. MLME message containing the received frame
 		2. message length.
 		3. Dialog Token.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1767,20 +1767,20 @@ static BOOLEAN PeerTpcReqSanity(
 		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
 	}
 
-	return result;	
+	return result;
 }
 
 /*
 	==========================================================================
 	Description:
 		TPC Report action frame sanity check.
-		
+
 	Parametrs:
 		1. MLME message containing the received frame
 		2. message length.
 		3. Dialog Token.
 		4. TPC Report IE.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1826,17 +1826,17 @@ static BOOLEAN PeerTpcRepSanity(
 		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
 	}
 
-	return result;	
+	return result;
 }
 
 /*
 	==========================================================================
 	Description:
 		Channel Switch Announcement action frame handler.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1884,7 +1884,7 @@ static VOID PeerChSwAnnAction(
 			LinkDown(pAd, FALSE);
 			MlmeQueueInit(pAd, &pAd->Mlme.Queue);
 		    RTMPusecDelay(1000000);		/* use delay to prevent STA do reassoc*/
-					
+
 			/* channel sanity check*/
 			for (index = 0 ; index < pAd->ChannelListNum; index++)
 			{
@@ -1915,10 +1915,10 @@ static VOID PeerChSwAnnAction(
 	==========================================================================
 	Description:
 		Measurement Request action frame handler.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -1946,10 +1946,10 @@ static VOID PeerMeasureReqAction(
 	==========================================================================
 	Description:
 		Measurement Report action frame handler.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -2014,10 +2014,10 @@ static VOID PeerMeasureReportAction(
 	==========================================================================
 	Description:
 		TPC Request action frame handler.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -2057,10 +2057,10 @@ static VOID PeerTpcReqAction(
 	==========================================================================
 	Description:
 		TPC Report action frame handler.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -2091,10 +2091,10 @@ static VOID PeerTpcRepAction(
 	Description:
 		Spectrun action frames Handler such as channel switch annoucement,
 		measurement report, measurement request actions frames.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -2137,7 +2137,7 @@ VOID PeerSpectrumAction(
 
 				/* 802.11h only has Channel Switch Announcement IE. */
 				RTMPMoveMemory(&ChannelSwitch, &Elem->Msg[LENGTH_802_11+4], sizeof (CHA_SWITCH_ANNOUNCE_IE));
-					
+
 				/* 802.11n D3.03 adds secondary channel offset element in the end.*/
 				if (Elem->MsgLen ==  (LENGTH_802_11 + 2 + sizeof (CHA_SWITCH_ANNOUNCE_IE) + sizeof (SEC_CHA_OFFSET_IE)))
 				{
@@ -2165,9 +2165,9 @@ VOID PeerSpectrumAction(
 /*
 	==========================================================================
 	Description:
-		
+
 	Parametrs:
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -2222,7 +2222,7 @@ INT Set_MeasureReq_Proc(
 				break;
 		}
 		ArgIdx++;
-	}	
+	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s::Aid = %d, MeasureReqType=%d MeasureCh=%d\n", __FUNCTION__, Aid, MeasureReqType, MeasureCh));
 	if (!VALID_WCID(Aid))

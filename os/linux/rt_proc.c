@@ -88,7 +88,7 @@ ssize_t video_Update_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -115,7 +115,7 @@ ssize_t video_Enable_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -142,7 +142,7 @@ ssize_t video_ClassifierEnable_set(struct file *file, const char __user * buffer
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -169,7 +169,7 @@ ssize_t video_HighTxMode_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -196,7 +196,7 @@ ssize_t video_TxPwr_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -223,7 +223,7 @@ ssize_t video_VideoMCSEnable_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -250,7 +250,7 @@ ssize_t video_VideoMCS_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -277,7 +277,7 @@ ssize_t video_TxBASize_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -304,7 +304,7 @@ ssize_t video_TxLifeTimeMode_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -331,7 +331,7 @@ ssize_t video_TxLifeTime_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 10);
 
@@ -358,7 +358,7 @@ ssize_t video_TxRetryLimit_set(struct file *file, const char __user * buffer,
 
 		if (copy_from_user(buf, buffer, count))
 			return -EFAULT;
-		
+
 		if (buf)
 			val = simple_strtoul(buf, NULL, 16);
 
@@ -460,7 +460,7 @@ int wl_video_proc_exit(void)
 
 	if (entry_wl_video_Enable)
 		remove_proc_entry("Enable", proc_ralink_wl_video);
-	
+
 	if (entry_wl_video_ClassifierEnable)
 		remove_proc_entry("ClassifierEnabl", proc_ralink_wl_video);
 
@@ -520,7 +520,7 @@ int wl_proc_exit(void)
 		remove_proc_entry("wl", procRegDir);
 #endif /* VIDEO_TURBINE_SUPPORT */
 
-	
+
 	return 0;
 }
 #else

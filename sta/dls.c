@@ -1358,15 +1358,15 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 
 	Routine	Description:
 		Check if the frame can be sent through DLS direct link interface
-		
+
 	Arguments:
 		pAd		Pointer	to adapter
-		
+
 	Return Value:
 		DLS entry index
-		
+
 	Note:
-	
+
 	========================================================================
 */
 INT RTMPCheckDLSFrame(

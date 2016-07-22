@@ -63,7 +63,7 @@
 
 	 Channel starting frequency
 	 	= dot11ChannelStartingFactor กั 0500 kHz.
-	
+
 	Channel center frequency [MHz]
 		= Channel starting frequency + 5 * dot11CurrentChannelCenterFrequencyIndex
 
@@ -74,7 +74,7 @@
 		dot11CurrentChannelBandwidth = 80 MHz
 		dot11CurrentChannelCenterFrequencyIndex1 = 42
 		dot11CurrentPrimaryChannel = 36
-		
+
 		=>is an 80 MHz channel with a center frequency of 5210 MHz and
 			the primary 20 MHz channel centered at 5180 MHz.
 
@@ -103,7 +103,7 @@ VOID dump_vht_cap(RTMP_ADAPTER *pAd, VHT_CAP_IE *vht_ie)
 	VHT_CAP_INFO *vht_cap = &vht_ie->vht_cap;
 	VHT_MCS_SET *vht_mcs = &vht_ie->mcs_set;
 
-	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_CAP IE\n"));	
+	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_CAP IE\n"));
 	hex_dump("VHT CAP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_CAP_IE));
 
 	DBGPRINT(RT_DEBUG_OFF, ("VHT Capabilities Info Field\n"));
@@ -117,7 +117,7 @@ VOID dump_vht_cap(RTMP_ADAPTER *pAd, VHT_CAP_IE *vht_ie)
 	DBGPRINT(RT_DEBUG_OFF, ("\tSU BeamformerCap=%d\n", vht_cap->bfer_cap_su));
 	DBGPRINT(RT_DEBUG_OFF, ("\tSU BeamformeeCap=%d\n", vht_cap->bfee_cap_su));
 	DBGPRINT(RT_DEBUG_OFF, ("\tCompressedSteeringNumOfBeamformerAnt=%d\n", vht_cap->cmp_st_num_bfer));
-	DBGPRINT(RT_DEBUG_OFF, ("\tNumber of Sounding Dimensions=%d\n", vht_cap->num_snd_dimension));	
+	DBGPRINT(RT_DEBUG_OFF, ("\tNumber of Sounding Dimensions=%d\n", vht_cap->num_snd_dimension));
 	DBGPRINT(RT_DEBUG_OFF, ("\tMU BeamformerCap=%d\n", vht_cap->bfer_cap_mu));
 	DBGPRINT(RT_DEBUG_OFF, ("\tMU BeamformeeCap=%d\n", vht_cap->bfee_cap_mu));
 	DBGPRINT(RT_DEBUG_OFF, ("\tVHT TXOP PS=%d\n", vht_cap->vht_txop_ps));
@@ -139,8 +139,8 @@ VOID dump_vht_op(RTMP_ADAPTER *pAd, VHT_OP_IE *vht_ie)
 {
 	VHT_OP_INFO *vht_op = &vht_ie->vht_op_info;
 	VHT_MCS_MAP *vht_mcs = &vht_ie->basic_mcs_set;
-	
-	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_OP IE\n"));	
+
+	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_OP IE\n"));
 	hex_dump("VHT OP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_OP_IE));
 
 	DBGPRINT(RT_DEBUG_OFF, ("VHT Operation Info Field\n"));
@@ -231,14 +231,14 @@ INT vht_mode_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, VHT_CAP_IE *cap,
 		pEntry->MaxHTPhyMode.field.ShortGI = (cap->vht_cap.sgi_80M);
 		pEntry->MaxHTPhyMode.field.STBC = (cap->vht_cap.rx_stbc > 1 ? 1 : 0);
 	}
-				
+
 	return TRUE;
 }
 
 
 INT get_vht_op_ch_width(RTMP_ADAPTER *pAd)
 {
-	
+
 	return TRUE;
 }
 
@@ -297,7 +297,7 @@ INT build_vht_pwr_envelope(RTMP_ADAPTER *pAd, UCHAR *buf)
 {
 	INT len = 0;
 
-	
+
 	return len;
 }
 
@@ -306,7 +306,7 @@ INT build_vht_pwr_envelope(RTMP_ADAPTER *pAd, UCHAR *buf)
 	Defined in IEEE 802.11AC
 
 	Appeared in Beacon, (Re)AssocResp, ProbResp frames
-*/	
+*/
 INT build_vht_op_ie(RTMP_ADAPTER *pAd, UCHAR *buf)
 {
 	VHT_OP_IE vht_op;
@@ -354,11 +354,11 @@ INT build_vht_op_ie(RTMP_ADAPTER *pAd, UCHAR *buf)
 			else
 #endif
 			vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_7;
-			break;			
+			break;
 	}
 
 	NdisMoveMemory((UCHAR *)buf, (UCHAR *)&vht_op, sizeof(VHT_OP_IE));
-	
+
 	return sizeof(VHT_OP_IE);
 }
 
@@ -388,7 +388,7 @@ INT build_vht_cap_ie(RTMP_ADAPTER *pAd, UCHAR *buf)
 			vht_cap_ie.vht_cap.tx_stbc = 1;
 		else
 			vht_cap_ie.vht_cap.tx_stbc = 0;
-		
+
 		if (pAd->CommonCfg.RxStream >= 1)
 			vht_cap_ie.vht_cap.rx_stbc = 1; // TODO: is it depends on the number of our antennas?
 		else
@@ -497,7 +497,7 @@ INT build_vht_ies(RTMP_ADAPTER *pAd, UCHAR *buf, UCHAR frm)
 
 		len += build_vht_op_ie(pAd, (UCHAR *)(buf + len));
 	}
-	
+
 	return len;
 }
 

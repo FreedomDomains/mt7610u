@@ -57,7 +57,7 @@ typedef struct _RTMP_RA_LEGACY_TB
 	UCHAR	BW:2;
 	UCHAR	Mode:3;
 	UCHAR	Rsv2:1;
-#endif	
+#endif
 	UCHAR   CurrMCS;
 	UCHAR   TrainUp;
 	UCHAR   TrainDown;
@@ -72,7 +72,7 @@ typedef struct  _RTMP_RA_GRP_TB
 	UCHAR   ItemNo;
 #ifdef RT_BIG_ENDIAN
 	UCHAR	Rsv2:1;
-	UCHAR	Mode:3;	
+	UCHAR	Mode:3;
 	UCHAR	BW:2;
 	UCHAR	ShortGI:1;
 	UCHAR	STBC:1;
@@ -82,7 +82,7 @@ typedef struct  _RTMP_RA_GRP_TB
 	UCHAR	BW:2;
 	UCHAR	Mode:3;
 	UCHAR	Rsv2:1;
-#endif	
+#endif
 	UCHAR   CurrMCS;
 	UCHAR   TrainUp;
 	UCHAR   TrainDown;

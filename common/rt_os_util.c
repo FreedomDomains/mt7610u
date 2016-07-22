@@ -120,7 +120,7 @@ VOID RtmpMeshDown(
 
 
 
-	
+
 BOOLEAN RtmpOsCmdDisplayLenCheck(
 	IN UINT32 LenSrc,
 	IN UINT32 Offset)
@@ -144,7 +144,7 @@ VOID WpaSendMicFailureToWpaSupplicant(
 		sprintf(custom, "%s unicast", custom);
 
 	RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (PUCHAR)custom, strlen(custom));
-	
+
 	return;
 }
 #endif /* defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT) */
@@ -184,7 +184,7 @@ int wext_notify_event_assoc(
 #endif
 
 	return 0;
-	
+
 }
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 

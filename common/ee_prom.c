@@ -67,7 +67,7 @@ static inline USHORT ShiftInBits(
 
 		RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
 		LowerClock(pAd, &x); /*prevent read failed*/
-		
+
 		x &= ~(EEDI);
 		if(x & EEDO)
 		    data |= 1;
@@ -120,7 +120,7 @@ static inline VOID EEpromCleanup(
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
 
 	RaiseClock(pAd, &x);
-	LowerClock(pAd, &x);	
+	LowerClock(pAd, &x);
 }
 
 
@@ -238,7 +238,7 @@ int rtmp_ee_prom_write16(
 		RaiseClock(pAd, &x);
 		LowerClock(pAd, &x);
 	}
-	
+
 	/* output the read_opcode ,register number and data in that order */
 	ShiftOutBits(pAd, EEPROM_WRITE_OPCODE, 3);
 	ShiftOutBits(pAd, Offset, pAd->EEPROMAddressNum);
@@ -257,7 +257,7 @@ int rtmp_ee_prom_write16(
 
 
 	return NDIS_STATUS_SUCCESS;
-	
+
 }
 
 

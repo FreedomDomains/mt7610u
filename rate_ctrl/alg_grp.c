@@ -502,7 +502,7 @@ UCHAR MlmeSelectTxRateAdapt(
 		if (pTable == RateTableVht2S)
 		{
 			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: GRP: 2*2, RssiOffset=%d\n", __FUNCTION__, RssiOffset));
-			
+
 			/* 2x2 peer device (Adhoc, DLS or AP) */
 			if (mcs[15] && (Rssi > (-69 + RssiOffset)))
 				TxRateIdx = mcs[15];
@@ -520,13 +520,13 @@ UCHAR MlmeSelectTxRateAdapt(
 				TxRateIdx = mcs[9];
 			else
 				TxRateIdx = mcs[0];
-			
+
 			pEntry->mcsGroup = 2;
 		}
 		else if (pTable == RateTableVht1S)
 		{
 			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: GRP: 1*1, RssiOffset=%d\n", __FUNCTION__, RssiOffset));
-			
+
 			/* 1x1 peer device (Adhoc, DLS or AP) */
 			if (mcs[9] && (Rssi > (-67 + RssiOffset)))
 				TxRateIdx = mcs[9];
@@ -548,13 +548,13 @@ UCHAR MlmeSelectTxRateAdapt(
 				TxRateIdx = mcs[1];
 			else
 				TxRateIdx = mcs[0];
-			
+
 			pEntry->mcsGroup = 1;
 		}
 		else
 		{
 			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: GRP: 1*1, RssiOffset=%d\n", __FUNCTION__, RssiOffset));
-			
+
 			/* 1x1 peer device (Adhoc, DLS or AP) */
 			if (mcs[7] && (Rssi > (-71 + RssiOffset)))
 				TxRateIdx = mcs[7];
@@ -572,7 +572,7 @@ UCHAR MlmeSelectTxRateAdapt(
 				TxRateIdx = mcs[1];
 			else
 				TxRateIdx = mcs[0];
-			
+
 			pEntry->mcsGroup = 1;
 		}
 	}
@@ -1618,7 +1618,7 @@ INT	Set_PerThrdAdj_Proc(
 	for (i=0; i<MAX_LEN_OF_MAC_TABLE; i++){
 		pAd->MacTab.Content[i].perThrdAdj = simple_strtol(arg, 0, 10);
 	}
-	return TRUE;	
+	return TRUE;
 }
 
 /* Set_LowTrafficThrd_Proc - set threshold for reverting to default MCS based on RSSI */

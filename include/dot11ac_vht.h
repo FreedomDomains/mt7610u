@@ -85,7 +85,7 @@
 	bfee_cap_su: SU Beamformee Capable
 		-> Indicates support for operation as a single user beamformee
 				0: not support
-				1: support				
+				1: support
 	cmp_st_num_bfer: Compressed Steering Number of Beamformer Antenna Supported
 		-> Beamformee's capability indicateing the max number of beamformer
 			antennas the beamformee can support when sending compressed
@@ -189,7 +189,7 @@ typedef struct GNU_PACKED _VHT_CAP_INFO{
 	UINT32 max_ampdu_exp:3;
 	UINT32 vht_link_adapt:2;
 	UINT32 rx_ant_consistency:1;
-	UINT32 tx_ant_consistency:1;	
+	UINT32 tx_ant_consistency:1;
 	UINT32 rsv:2;
 #endif /* RT_BIG_ENDIAN */
 }VHT_CAP_INFO;
@@ -276,9 +276,9 @@ typedef struct GNU_PACKED _VHT_MCS_SET{
 	struct _VHT_MCS_MAP tx_mcs_map;
 	UINT16 rsv:3;
 	UINT16 rx_high_rate:13;
-	struct _VHT_MCS_MAP rx_mcs_map;	
+	struct _VHT_MCS_MAP rx_mcs_map;
 #else
-	struct _VHT_MCS_MAP rx_mcs_map;	
+	struct _VHT_MCS_MAP rx_mcs_map;
 	UINT16 rx_high_rate:13;
 	UINT16 rsv:3;
 	struct _VHT_MCS_MAP tx_mcs_map;
@@ -315,7 +315,7 @@ typedef struct GNU_PACKED _VHT_CAP_IE{
 
 	The operation of VHT STAs in the BSS is controlled by the HT Operation
 	element and the VHT Operation element.
-	
+
 	ch_width: Channel Width
 		-> This field, together with the HT Operation element STA Channel Width
 			field, defines the BSS operating channel width.
@@ -334,7 +334,7 @@ typedef struct GNU_PACKED _VHT_CAP_IE{
 			frequency index for the 80MHz channel of frequency segment 1 on
 			which the VHT BSS operates.
 		->Set 0 for 20MHz or 40MHz operating channel width.
-			
+
 	center_freq_2: Channel Center Frequency Segment 2
 		-> Defines the seg 2 channel center frequency for an 80+80MHz VHT BSS
 		->For a 80+80MHz operating channel width, indicates the channel center
@@ -354,7 +354,7 @@ typedef struct GNU_PACKED _VHT_OP_INFO{
 
 	The operation of VHT STAs in the BSS is controlled by the HT Operation
 	element and the VHT Operation element.
-	
+
 	eid: Element ID
 			192 (IE_VHT_OP)
 	len: Length
@@ -373,7 +373,7 @@ typedef struct GNU_PACKED _VHT_OP_IE{
 	Wide Bandwidth Channel Switch element, figure 8-401bx
 
 	included in the Channel Switch Announcement frames.
-	
+
 	new_ch_width: New STA Channel Width
 	center_freq_1: New Channel Center Frequency Segment 1
 	center_freq_2: New Channel Center Frequency Segment 2
@@ -393,7 +393,7 @@ typedef struct GNU_PACKED _WIDE_BW_CH_SWITCH_IE{
 	IEEE 802.11AC D2.0, sec 8.4.2.164
 	VHT Transmit Power Envelope element
 
-	
+
 */
 typedef struct GNU_PACKED _CH_SEG_PAIR{
 	UINT8 ch_center_freq;
@@ -472,7 +472,7 @@ typedef struct GNU_PACKED _NDPA_PKT{
 }DNPA_PKT;
 
 
-	
+
 #endif /* __DOT11AC_VHT_H */
 
 #endif /* DOT11_VHT_AC */

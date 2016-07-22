@@ -151,9 +151,9 @@ VOID MlmeDynamicTxRateSwitching(
 #ifdef AGS_SUPPORT
 			if (SUPPORT_AGS(pAd))
 			{
-				
+
 				/* Gather the statistics information*/
-				
+
 				AGSStatisticsInfo.RSSI = Rssi;
 				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
 				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
@@ -189,9 +189,9 @@ VOID MlmeDynamicTxRateSwitching(
 #ifdef AGS_SUPPORT
 			if (SUPPORT_AGS(pAd))
 			{
-				
+
 				/* Gather the statistics information*/
-				
+
 				AGSStatisticsInfo.RSSI = Rssi;
 				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
 				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
@@ -241,7 +241,7 @@ VOID MlmeDynamicTxRateSwitching(
 			if (0) //IS_RT3290(pAd) &&  ((AccuTxTotalCnt > 150) || (pAd->AntennaDiversityInfo.AntennaDiversityState == 1)) && (pAd->CommonCfg.BBPCurrentBW == BW_40))
 			{
 				WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
-				
+
 				RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 				if ((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == FALSE))
 				{
@@ -322,7 +322,7 @@ VOID MlmeDynamicTxRateSwitching(
 				}
 				TmpIdx--;
 			}
-		}		
+		}
 		else if ((pCurrTxRate->Mode <= MODE_OFDM) && (pEntry->SupportRateMode < SUPPORT_HT_MODE))
 		{
 			TmpIdx = CurrRateIdx + 1;
@@ -660,9 +660,9 @@ VOID StaQuickResponeForRateUpExec(
 #ifdef AGS_SUPPORT
 			if (SUPPORT_AGS(pAd))
 			{
-				
+
 				/* Gather the statistics information*/
-				
+
 				AGSStatisticsInfo.RSSI = Rssi;
 				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
 				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
@@ -714,9 +714,9 @@ VOID StaQuickResponeForRateUpExec(
 #ifdef AGS_SUPPORT
 			if (SUPPORT_AGS(pAd))
 			{
-				
+
 				/* Gather the statistics information*/
-				
+
 				AGSStatisticsInfo.RSSI = Rssi;
 				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
 				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
@@ -731,11 +731,11 @@ VOID StaQuickResponeForRateUpExec(
 #ifdef AGS_SUPPORT
 		if (AGS_IS_USING(pAd, pTable))
 		{
-			
+
 			/* The dynamic Tx rate switching for AGS (Adaptive Group Switching)*/
-			
+
 			StaQuickResponeForRateUpExecAGS(pAd, pEntry, pTable, TableSize, &AGSStatisticsInfo, InitTxRateIdx);
-			
+
 			continue; /* Skip the remaining procedure of the old Tx rate switching*/
 		}
 #endif /* AGS_SUPPORT */

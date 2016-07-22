@@ -90,7 +90,7 @@
 #endif
 #define NUM_OF_LOCAL_TXBUF      2
 #define TXD_SIZE		16	/* TXD_SIZE = TxD + TxInfo */
-#define RXD_SIZE		16	
+#define RXD_SIZE		16
 
 #define RXINFO_OFFSET	12
 

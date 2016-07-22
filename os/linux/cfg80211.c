@@ -899,7 +899,7 @@ static int CFG80211_OpsKeyAdd(
 	KeyInfo.KeyBuf[pParams->key_len] = 0x00;
 	KeyInfo.KeyId = KeyIdx;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))		
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	KeyInfo.bPairwise = Pairwise;
 #endif
 	KeyInfo.KeyLen = pParams->key_len;
@@ -942,7 +942,7 @@ static int CFG80211_OpsKeyAdd(
 			KeyInfo.KeyType = RT_CMD_80211_KEY_AES_CMAC;
 			KeyInfo.KeyId = KeyIdx;
 			KeyInfo.bPairwise = FALSE;
-			KeyInfo.KeyLen = pParams->key_len;			
+			KeyInfo.KeyLen = pParams->key_len;
 	}
 #endif /* LINUX_VERSION_CODE */
 #endif /* DOT11W_PMF_SUPPORT */
@@ -1167,7 +1167,7 @@ static int CFG80211_OpsConnect(
 	Pairwise |= pSme->crypto.ciphers_pairwise[0];
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("Pairwise %x\n", pSme->crypto.ciphers_pairwise[0]));
-	
+
 	for(Idx=0; Idx<pSme->crypto.n_akm_suites; Idx++)
 		Keymgmt |= pSme->crypto.akm_suites[Idx];
 	/* End of for */
@@ -1219,7 +1219,7 @@ static int CFG80211_OpsConnect(
 	if (WpaVersion & NL80211_WPA_VERSION_1) {
 		ConnInfo.WpaVer = 1;
 	}
-	
+
 	if (WpaVersion & NL80211_WPA_VERSION_2) {
 		ConnInfo.WpaVer = 2;
 	}
@@ -1229,8 +1229,8 @@ static int CFG80211_OpsConnect(
 		ConnInfo.FlgIs8021x = TRUE;
 	else
 		ConnInfo.FlgIs8021x = FALSE;
-	
-	CFG80211DBG(RT_DEBUG_ERROR, ("Auth_type %x\n", pSme->auth_type));	
+
+	CFG80211DBG(RT_DEBUG_ERROR, ("Auth_type %x\n", pSme->auth_type));
 	if (pSme->auth_type == NL80211_AUTHTYPE_SHARED_KEY)
 		ConnInfo.AuthType = Ndis802_11AuthModeShared;
 	else if (pSme->auth_type == NL80211_AUTHTYPE_OPEN_SYSTEM)
@@ -1249,7 +1249,7 @@ static int CFG80211_OpsConnect(
 		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_TKIP;
 	}
 	else if ((Pairwise == WLAN_CIPHER_SUITE_WEP40) ||
-			(Pairwise & WLAN_CIPHER_SUITE_WEP104)) 	
+			(Pairwise & WLAN_CIPHER_SUITE_WEP104))
 	{
 		CFG80211DBG(RT_DEBUG_ERROR, ("WLAN_CIPHER_SUITE_WEP...\n"));
 		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_WEP;
@@ -1308,7 +1308,7 @@ static int CFG80211_OpsConnect(
 	{
 		ConnInfo.bWpsConnection= TRUE;
 	}
-	
+
 	/* %NULL if not specified (auto-select based on scan)*/
 	if (pSme->bssid != NULL)
 	{
@@ -1371,7 +1371,7 @@ static int CFG80211_OpsRFKill(
 	MAC80211_PAD_GET(pAd, pWiphy);
 
 	RTMP_DRIVER_80211_RFKILL(pAd, &active);
-	wiphy_rfkill_set_hw_state(pWiphy, !active);	
+	wiphy_rfkill_set_hw_state(pWiphy, !active);
 	return active;
 }
 
@@ -1594,9 +1594,9 @@ static int CFG80211_OpsSetBeacon(
     VOID *pAd;
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
-	
+
     CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
-    MAC80211_PAD_GET(pAd, pWiphy);	
+    MAC80211_PAD_GET(pAd, pWiphy);
 
     hex_dump("Beacon head", info->head, info->head_len);
     hex_dump("Beacon tail", info->tail, info->tail_len);
@@ -1606,17 +1606,17 @@ static int CFG80211_OpsSetBeacon(
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
     CFG80211DBG(RT_DEBUG_TRACE, ("80211>ssid = %s \n", info->ssid));
     CFG80211DBG(RT_DEBUG_TRACE, ("80211>ssid_len = %s \n", info->ssid_len));
-    	
+
     CFG80211DBG(RT_DEBUG_TRACE, ("80211>beacon_ies_len = %d \n", info->beacon_ies_len));
     CFG80211DBG(RT_DEBUG_TRACE, ("80211>proberesp_ies_len = %d \n", info->proberesp_ies_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211>assocresp_ies_len = %d \n", info->assocresp_ies_len));		
+    CFG80211DBG(RT_DEBUG_TRACE, ("80211>assocresp_ies_len = %d \n", info->assocresp_ies_len));
 
     if (info->proberesp_ies_len > 0 && info->proberesp_ies)
         RTMP_DRIVER_80211_AP_PROBE_RSP(pAd, info->proberesp_ies, info->proberesp_ies_len);
 
 	if (info->assocresp_ies_len > 0 && info->assocresp_ies)
-		RTMP_DRIVER_80211_AP_ASSOC_RSP(pAd, info->assocresp_ies, info->assocresp_ies_len);	
-#endif    		
+		RTMP_DRIVER_80211_AP_ASSOC_RSP(pAd, info->assocresp_ies, info->assocresp_ies_len);
+#endif
 
     os_alloc_mem(NULL, &beacon_head_buf, info->head_len);
     NdisCopyMemory(beacon_head_buf, info->head, info->head_len);
@@ -1636,8 +1636,8 @@ static int CFG80211_OpsSetBeacon(
 
     if (beacon_head_buf)
         os_free_mem(NULL, beacon_head_buf);
-	
-	if (beacon_tail_buf)	
+
+	if (beacon_tail_buf)
 	    os_free_mem(NULL, beacon_tail_buf);
 
     return 0;
@@ -1652,7 +1652,7 @@ static int CFG80211_OpsAddBeacon(
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
-    MAC80211_PAD_GET(pAd, pWiphy);	
+    MAC80211_PAD_GET(pAd, pWiphy);
     CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
 
     hex_dump("Beacon head", info->head, info->head_len);
@@ -1693,8 +1693,8 @@ static int CFG80211_OpsAddBeacon(
 
     if (beacon_head_buf)
         os_free_mem(NULL, beacon_head_buf);
-	
-	if (beacon_tail_buf)	
+
+	if (beacon_tail_buf)
 	    os_free_mem(NULL, beacon_tail_buf);
 
     return 0;
@@ -1722,9 +1722,9 @@ static int CFG80211_OpsStartAp(
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
-    MAC80211_PAD_GET(pAd, pWiphy);	
+    MAC80211_PAD_GET(pAd, pWiphy);
     CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
-	
+
 	if (settings->beacon.head_len > 0)
 	{
 		os_alloc_mem(NULL, &beacon_head_buf, settings->beacon.head_len);
@@ -1764,9 +1764,9 @@ static int CFG80211_OpsChangeBeacon(
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
-    MAC80211_PAD_GET(pAd, pWiphy);	
+    MAC80211_PAD_GET(pAd, pWiphy);
     CFG80211DBG(RT_DEBUG_TRACE, ("80211> %s ==>\n", __FUNCTION__));
-	
+
 	if (info->head_len > 0)
 	{
 		os_alloc_mem(NULL, &beacon_head_buf, info->head_len);

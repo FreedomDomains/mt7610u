@@ -38,13 +38,13 @@ extern VOID SelectBandMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
 extern VOID SetRfChFreqParametersMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
 extern VOID MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
 extern VOID MT76x0_VCO_CalibrationMode3(struct _RTMP_ADAPTER *pAd, UCHAR Channel);
-extern VOID MT76x0_Calibration(struct _RTMP_ADAPTER *pAd, 
+extern VOID MT76x0_Calibration(struct _RTMP_ADAPTER *pAd,
 			UCHAR Channel, BOOLEAN bPowerOn, BOOLEAN bDoTSSI, BOOLEAN bFullCal);
 #ifdef RTMP_TEMPERATURE_TX_ALC
-extern BOOLEAN mt76x0_get_tssi_report(PRTMP_ADAPTER pAd, 
+extern BOOLEAN mt76x0_get_tssi_report(PRTMP_ADAPTER pAd,
 			BOOLEAN bResetTssiInfo, PCHAR pTssiReport);
 extern BOOLEAN get_temp_tx_alc_level(PRTMP_ADAPTER pAd, BOOLEAN enable_tx_alc,
-			CHAR temp_ref, PCHAR temp_minus_bdy, PCHAR temp_plus_bdy, 
+			CHAR temp_ref, PCHAR temp_minus_bdy, PCHAR temp_plus_bdy,
 			UINT8 max_bdy_level, UINT8 tx_alc_step, CHAR current_temp, PCHAR comp_level);
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
@@ -75,7 +75,7 @@ static INT ate_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch)
 			be &= (~0x03);
 			break;
 	}
-	
+
 	if (agc != agc_r0)
 		RTMP_BBP_IO_WRITE32(pAd, AGC1_R0, agc);
 
@@ -107,20 +107,20 @@ static VOID mt76x0_ate_bbp_adjust(
     Description:
 
 	AsicSwitchChannel() dedicated for MT76x0 ATE.
-    
+
 	==========================================================================
 */
 static VOID mt76x0_ate_switch_channel(
     	IN PRTMP_ADAPTER	pAd)
-{	
+{
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UINT32 idx = 0, rf_phy_mode, rf_bw = RF_BW_20;
 	UCHAR channel = 0;
-	
+
 	SYNC_CHANNEL_WITH_QA(pATEInfo, &channel);
 	mt76x0_ate_bbp_adjust(pAd);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s::Channel = %d, TXWI_N.BW = %d , RFFreqOffset = %d, TxPower0 = %d\n", 
+	DBGPRINT(RT_DEBUG_TRACE, ("%s::Channel = %d, TXWI_N.BW = %d , RFFreqOffset = %d, TxPower0 = %d\n",
 					__FUNCTION__, channel, pATEInfo->TxWI.TXWI_N.BW, pATEInfo->RFFreqOffset, pATEInfo->TxPower0));
 
 	if (channel > 14)
@@ -164,7 +164,7 @@ static VOID mt76x0_ate_switch_channel(
 				}
 				else
 					eLNAgain -= (pAd->BLNAGain*2);
-				
+
 				RTMP_BBP_IO_WRITE32(pAd, MT76x0_BPP_SWITCH_Tab[idx].RegDate.Register,
 						(MT76x0_BPP_SWITCH_Tab[idx].RegDate.Value&(~0x0000FF00))|(eLNAgain << 8));
 			}
@@ -176,15 +176,15 @@ static VOID mt76x0_ate_switch_channel(
 		}
 	}
 
-	/* 
-		VCO calibration (mode 3) 
+	/*
+		VCO calibration (mode 3)
 	*/
 	MT76x0_VCO_CalibrationMode3(pAd, channel);
 
 	MT76x0_Calibration(pAd, channel, TRUE, TRUE, TRUE);
 
 	pAd->LatchRfRegs.Channel = channel;
-	
+
 	RTMPusecDelay(100000);
 }
 
@@ -217,7 +217,7 @@ static INT mt76x0_ate_tx_pwr_handler(
 	}
 	mac_val |= (0x2F2F << 16);
 	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_0, mac_val);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("%s::TxPower%d=%d\n", __FUNCTION__, index, tx_pwr));
 	return TRUE;
 }
@@ -230,7 +230,7 @@ VOID mt76x0_ate_update_per_rate_pwr(
 	PATE_INFO pATEInfo = &(pAd->ate);
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC rate_pwr_table;
 	INT32 idx = 0;
-	
+
 	DBGPRINT(RT_DEBUG_INFO, ("-->%s\n", __FUNCTION__));
 
 	NdisZeroMemory(&rate_pwr_table, sizeof(rate_pwr_table));
@@ -241,7 +241,7 @@ VOID mt76x0_ate_update_per_rate_pwr(
 	rate_pwr_table.TxPwrCtrlOverMAC[2].MACRegisterOffset = TX_PWR_CFG_2;
 	rate_pwr_table.TxPwrCtrlOverMAC[3].MACRegisterOffset = TX_PWR_CFG_3;
 	rate_pwr_table.TxPwrCtrlOverMAC[4].MACRegisterOffset = TX_PWR_CFG_4;
-	
+
 	if (pATEInfo->TxWI.TXWI_N.BW == BW_20) {
 		if (pATEInfo->Channel > 14) {
 			for (idx = 0; idx < rate_pwr_table.NumOfEntries; idx++)
@@ -259,7 +259,7 @@ VOID mt76x0_ate_update_per_rate_pwr(
 				rate_pwr_table.TxPwrCtrlOverMAC[idx].RegisterValue = pAd->Tx40MPwrCfgGBand[idx];
 		}
 	}
-	
+
 	NdisCopyMemory(per_rate_pwr, (UCHAR *)&rate_pwr_table, sizeof(rate_pwr_table));
 	DBGPRINT(RT_DEBUG_INFO, ("<--%s\n", __FUNCTION__));
 }
@@ -268,7 +268,7 @@ VOID mt76x0_ate_update_per_rate_pwr(
 void mt76x0_ate_adjust_per_rate_pwr(
 	IN PRTMP_ADAPTER 	pAd)
 {
-	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC rate_pwr_table = {0};	
+	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC rate_pwr_table = {0};
 	INT32 mac_idx = 0;
 
 	DBGPRINT(RT_DEBUG_INFO,("-->%s\n", __FUNCTION__));
@@ -279,7 +279,7 @@ void mt76x0_ate_adjust_per_rate_pwr(
 	{
 		TX_POWER_CONTROL_OVER_MAC_ENTRY *rate_pwr_entry;
 		rate_pwr_entry = &rate_pwr_table.TxPwrCtrlOverMAC[mac_idx];
-		
+
 		if (rate_pwr_entry->RegisterValue != 0xFFFFFFFF) {
 			RTMP_IO_WRITE32(pAd, rate_pwr_entry->MACRegisterOffset, rate_pwr_entry->RegisterValue);
 		}
@@ -299,8 +299,8 @@ void mt76x0_ate_asic_adjust_tx_pwr(
 	BOOLEAN bResetTssiInfo = TRUE, enable_tx_alc;
 	PUCHAR temp_minus_bdy, temp_plus_bdy, tx_alc_comp;
 	UCHAR temp_ref;
-	
-	if ((pATEInfo->Channel > 14) ? 
+
+	if ((pATEInfo->Channel > 14) ?
 		(pAd->bAutoTxAgcA == FALSE) : (pAd->bAutoTxAgcG == FALSE))
 		return;
 
@@ -328,7 +328,7 @@ void mt76x0_ate_asic_adjust_tx_pwr(
 	}
 
 	if (mt76x0_get_tssi_report(pAd, bResetTssiInfo, &pAd->CurrTemperature) == TRUE) {
-		if (get_temp_tx_alc_level(	
+		if (get_temp_tx_alc_level(
 					pAd,
 					enable_tx_alc,
 					temp_ref,
@@ -337,21 +337,21 @@ void mt76x0_ate_asic_adjust_tx_pwr(
 					8, /* to do: make a definition */
 					2,
 					pAd->CurrTemperature,
-					tx_alc_comp) == TRUE) 
+					tx_alc_comp) == TRUE)
 		{
 			UINT32 mac_val;
 			CHAR last_delta_pwr, delta_pwr = 0;
-			
+
 			/* adjust compensation value by MP temperature readings (i.e., e2p[77h]) */
-			if (pATEInfo->Channel <= 14) 
+			if (pATEInfo->Channel <= 14)
 				delta_pwr = pAd->TxAgcCompensateG - pAd->mp_delta_pwr;
 			else
-				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr; 
-			
+				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr;
+
 			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
 			/* 6-bit representation ==> 8-bit representation (2's complement) */
 			pAd->DeltaPwrBeforeTempComp = (mac_val & 0x20) ? \
-											((mac_val & 0x3F) | 0xC0): (mac_val & 0x3f);		
+											((mac_val & 0x3F) | 0xC0): (mac_val & 0x3f);
 
 			last_delta_pwr = pAd->LastTempCompDeltaPwr;
 			pAd->LastTempCompDeltaPwr = delta_pwr;
@@ -359,45 +359,45 @@ void mt76x0_ate_asic_adjust_tx_pwr(
 			delta_pwr += pAd->DeltaPwrBeforeTempComp;
 			/* 8-bit representation ==> 6-bit representation (2's complement) */
 			delta_pwr = (delta_pwr & 0x80) ? \
-							((delta_pwr & 0x1f) | 0x20) : (delta_pwr & 0x3f);						
-			/*	
-				Write compensation value into TX_ALC_CFG_1, 
-				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1 
-			*/     
+							((delta_pwr & 0x1f) | 0x20) : (delta_pwr & 0x3f);
+			/*
+				Write compensation value into TX_ALC_CFG_1,
+				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1
+			*/
 			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
 			RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, mac_val);
 
-			DBGPRINT(RT_DEBUG_OFF, 
+			DBGPRINT(RT_DEBUG_OFF,
 				("%s - delta_pwr = %d, TssiCalibratedOffset = %d, TssiMpOffset = %d, 0x13B4 = 0x%08x, %s = %d, DeltaPwrBeforeTempComp = %d, LastTempCompDeltaPwr =%d\n",
 				__FUNCTION__,
 				pAd->LastTempCompDeltaPwr,
 				pAd->TssiCalibratedOffset,
 				pAd->mp_delta_pwr,
 				mac_val,
-				(pATEInfo->Channel <= 14) ? "TxAgcCompensateG" : "TxAgcCompensateA", 
-				(pATEInfo->Channel <= 14) ? pAd->TxAgcCompensateG : pAd->TxAgcCompensateA, 
-				pAd->DeltaPwrBeforeTempComp, 
-				last_delta_pwr));	
+				(pATEInfo->Channel <= 14) ? "TxAgcCompensateG" : "TxAgcCompensateA",
+				(pATEInfo->Channel <= 14) ? pAd->TxAgcCompensateG : pAd->TxAgcCompensateA,
+				pAd->DeltaPwrBeforeTempComp,
+				last_delta_pwr));
 		} else {
-			DBGPRINT(RT_DEBUG_OFF, ("%s(): failed to get the compensation level\n", __FUNCTION__)); 
+			DBGPRINT(RT_DEBUG_OFF, ("%s(): failed to get the compensation level\n", __FUNCTION__));
 		}
 	}
 }
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
 
-/* 
+/*
 	==========================================================================
     Description:
         Set MT76x0 ATE RF BW
-        
+
     Return:
         TRUE if all parameters are OK, FALSE otherwise
 	==========================================================================
 */
 static INT mt76x0_ate_set_tx_bw_proc(
-	IN PRTMP_ADAPTER	pAd, 
+	IN PRTMP_ADAPTER	pAd,
 	IN PSTRING			arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -411,22 +411,22 @@ static INT mt76x0_ate_set_tx_bw_proc(
 		pATEInfo->TxWI.TXWI_N.BW = BW_80;
 	else
 		return FALSE;
-	
+
 	return TRUE;
 }
 
 
-/* 
+/*
 	==========================================================================
     Description:
         Set MT76x0 ATE RF central frequency offset
-        
+
     Return:
         TRUE if all parameters are OK, FALSE otherwise
 	==========================================================================
 */
 static INT mt76x0_ate_set_tx_freq_offset_proc(
-	IN PRTMP_ADAPTER	pAd, 
+	IN PRTMP_ADAPTER	pAd,
 	IN PSTRING			arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -438,15 +438,15 @@ static INT mt76x0_ate_set_tx_freq_offset_proc(
 		DBGPRINT_ERR(("%s::Range of frequency offset should be 0~191\n", __FUNCTION__));
 		return FALSE;
 	}
-	
-	rf_val = (UCHAR)(pATEInfo->RFFreqOffset & 0xFF); 
+
+	rf_val = (UCHAR)(pATEInfo->RFFreqOffset & 0xFF);
 	rf_val = min(rf_val, 0xBF);
 	rlt_rf_write(pAd, RF_BANK0, RF_R22, rf_val);
 
 	return TRUE;
 }
 
- 
+
 struct _ATE_CHIP_STRUCT mt76x0ate =
 {
 	/* Functions */
@@ -460,7 +460,7 @@ struct _ATE_CHIP_STRUCT mt76x0ate =
 	.AdjustTxPower = mt76x0_ate_asic_adjust_tx_pwr,
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 	.AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC,
-	
+
 	/* Command handlers */
 	.Set_BW_Proc = mt76x0_ate_set_tx_bw_proc,
 	.Set_FREQ_OFFSET_Proc = mt76x0_ate_set_tx_freq_offset_proc,
@@ -468,7 +468,7 @@ struct _ATE_CHIP_STRUCT mt76x0ate =
 	/* Variables */
 	.maxTxPwrCnt = 5,
 	.bBBPStoreTXCARR = FALSE,
-	.bBBPStoreTXCARRSUPP = FALSE,	
+	.bBBPStoreTXCARRSUPP = FALSE,
 	.bBBPStoreTXCONT = FALSE,
 	.bBBPLoadATESTOP = FALSE,
 };

@@ -36,7 +36,7 @@
 
 /*
 	TXINFO fields defintion:
-	
+
 	USBDMATxPktLen[b0~b14]:
 		Total bytes of all sub-frame. ONLY for USB bulk Aggregation
 	IPOffset[b15~b18]:
@@ -134,7 +134,7 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	UINT32		ShortGI:1;
 	UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
 	UINT32		MCS:7;
-	
+
 	UINT32		rsv:1;
 	UINT32		TXRPT:1;
 	UINT32		Autofallback:1; /* TX rate auto fallback disable */
@@ -143,7 +143,7 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	UINT32		txop:2;
 	UINT32		MpduDensity:3;
 	UINT32		AMPDU:1;
-	
+
 	UINT32		TS:1;
 	UINT32		CFACK:1;
 	UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
@@ -169,7 +169,7 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
 	UINT32		CFACK:1;
 	UINT32		TS:1;
-		
+
 	UINT32		AMPDU:1;
 	UINT32		MpduDensity:3;
 	UINT32		txop:2;	/*FOR "THIS" frame. 0:HT TXOP rule , 1:PIFS TX ,2:Backoff, 3:sifs only when previous frame exchange is successful. */
@@ -178,7 +178,7 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	UINT32		Autofallback:1; /* TX rate auto fallback disable */
 	UINT32		TXRPT:1;
 	UINT32		rsv:1;
-	
+
 	UINT32		MCS:7;
 	UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
 	UINT32		ShortGI:1;
@@ -238,7 +238,7 @@ typedef	struct GNU_PACKED _RXWI_OMAC{
 	UINT32		bss_idx:3;
 	UINT32		key_idx:2;
 	UINT32		wcid:8;
-	
+
 	/* Word 1 */
 	UINT32		phy_mode:2;              /* 1: this RX frame is unicast to me */
 	UINT32		iTxBF:1; /* iTxBF enable */
@@ -250,19 +250,19 @@ typedef	struct GNU_PACKED _RXWI_OMAC{
 	UINT32		mcs:7;
 	UINT32		SEQUENCE:12;
 	UINT32		FRAG:4;
-	
+
 	/* Word 2 */
 	UINT32		rsv1:8;
 	UINT32		RSSI2:8;
 	UINT32		RSSI1:8;
 	UINT32		RSSI0:8;
-	
+
 	/* Word 3 */
 	UINT32		FOFFSET:8;
 	UINT32		SNR2:8;
 	UINT32		SNR1:8;
 	UINT32		SNR0:8;
-	
+
 	UINT32		rsv3;
 
 }	RXWI_OMAC, *PRXWI_OMAC;
@@ -352,7 +352,7 @@ typedef	struct GNU_PACKED _RXWI_OMAC{
 
 /* This resgiser is ONLY be supported for RT3883 or later.
    It conflicted with BCN#0 offset of previous chipset. */
-#define WAPI_PN_TABLE_BASE		0x7800		
+#define WAPI_PN_TABLE_BASE		0x7800
 #define WAPI_PN_ENTRY_SIZE   		8
 
 #endif /* __RAL_OMAC_H__ */

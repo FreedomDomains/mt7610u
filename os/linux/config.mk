@@ -62,7 +62,7 @@ HAS_QOS_DLS_SUPPORT=n
 #Support for EXT_CHANNEL
 HAS_EXT_BUILD_CHANNEL_LIST=n
 
-#Support for IDS 
+#Support for IDS
 HAS_IDS_SUPPORT=n
 
 
@@ -72,7 +72,7 @@ HAS_SNMP_SUPPORT=n
 #Support features of 802.11n Draft3
 HAS_DOT11N_DRAFT3_SUPPORT=y
 
-#Support features of Single SKU. 
+#Support features of Single SKU.
 HAS_SINGLE_SKU_SUPPORT=n
 
 #Support features of 802.11n
@@ -83,7 +83,7 @@ HAS_DOT11_VHT_SUPPORT=y
 
 
 
-#Support for 2860/2880 co-exist 
+#Support for 2860/2880 co-exist
 HAS_RT2880_RT2860_COEXIST=n
 
 HAS_KTHREAD_SUPPORT=n
@@ -512,7 +512,7 @@ CHIPSET_DAT = 2870
 
 ifneq ($(findstring $(RT28xx_MODE),AP),)
 ifeq ($(HAS_CS_SUPPORT), y)
-WFLAGS += -DCARRIER_DETECTION_FIRMWARE_SUPPORT 
+WFLAGS += -DCARRIER_DETECTION_FIRMWARE_SUPPORT
 endif
 endif
 
@@ -611,7 +611,7 @@ endif
 
 ifneq ($(or $(findstring mt7650e,$(CHIPSET))$(findstring mt7630e,$(CHIPSET)),$(findstring mt7610e,$(CHIPSET))),)
 WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_PCI -DRTMP_PCI_SUPPORT -DA_BAND_SUPPORT -DRX_DMA_SCATTER -DNEW_MBSSID_MODE -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
-#-DRTMP_FREQ_CALIBRATION_SUPPORT -DVCORECAL_SUPPORT 
+#-DRTMP_FREQ_CALIBRATION_SUPPORT -DVCORECAL_SUPPORT
 #-DENHANCE_NEW_MBSSID_MODE
 ifneq ($(findstring $(RT28xx_MODE),AP),)
 #WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
@@ -796,7 +796,7 @@ endif
 
 ifneq ($(findstring $(RT28xx_MODE),AP),)
 ifeq ($(HAS_CS_SUPPORT), y)
-WFLAGS +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT 
+WFLAGS +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
 endif
 endif
 
@@ -847,12 +847,5 @@ endif
 # move to Makefile outside LINUX_SRC := /opt/star/kernel/linux-2.4.27-star
 
 ifeq ($(PLATFORM),PC)
-    ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	# Linux 2.4
-	CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS)
-	export CFLAGS
-    else
-	# Linux 2.6
-	EXTRA_CFLAGS := $(WFLAGS) 
-    endif
+	EXTRA_CFLAGS := $(WFLAGS)
 endif

@@ -244,7 +244,7 @@ VOID SupportRate(
 
 BOOLEAN ApScanRunning(
 	IN PRTMP_ADAPTER pAd);
-	
+
 #ifdef DOT11N_DRAFT3
 VOID APOverlappingBSSScan(
 	IN RTMP_ADAPTER *pAd);

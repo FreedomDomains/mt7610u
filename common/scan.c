@@ -35,10 +35,10 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
 	USHORT Status;
 #endif /* CONFIG_STA_SUPPORT */
 	INT bw, ch;
-	
-	//printk("pAd->hw_cfg.bbp_bw = %d\n", pAd->hw_cfg.bbp_bw);	
+
+	//printk("pAd->hw_cfg.bbp_bw = %d\n", pAd->hw_cfg.bbp_bw);
 	if (pAd->CommonCfg.BBPCurrentBW != pAd->hw_cfg.bbp_bw)
-	{	
+	{
 		rtmp_bbp_set_bw(pAd, pAd->hw_cfg.bbp_bw);
 
 		AsicSwitchChannel(pAd, pAd->CommonCfg.CentralChannel, FALSE);
@@ -178,7 +178,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 	}
 #endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
-	
+
 	/* There is no need to send broadcast probe request if active scan is in effect.*/
 	SsidLen = 0;
 	if ((ScanType == SCAN_ACTIVE) || (ScanType == FAST_SCAN_ACTIVE)
@@ -237,9 +237,9 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
 				NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 			}
-#else				
+#else
 			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
@@ -258,7 +258,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 							END_OF_ARGS);
 #endif /* RT_BIG_ENDIAN */
 		}
-		else				
+		else
 		{
 			HtLen = sizeof(HT_CAPABILITY_IE);
 #ifdef RT_BIG_ENDIAN
@@ -270,9 +270,9 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
 				NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 			}
-#else				
+#else
 			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
@@ -310,7 +310,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
 #ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
-		(pAd->MlmeAux.Channel > 14)) {		
+		(pAd->MlmeAux.Channel > 14)) {
 		FrameLen += build_vht_ies(pAd, (UCHAR *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
 	}
 #endif /* DOT11_VHT_AC */
@@ -322,7 +322,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 		(pAd->StaCfg.WpsProbeReqIeLen != 0))
 	{
 		ULONG 		WpsTmpLen = 0;
-		
+
 		MakeOutgoingFrame(frm_buf + FrameLen,              &WpsTmpLen,
 						pAd->StaCfg.WpsProbeReqIeLen,	pAd->StaCfg.pWpsProbeReqIe,
 						END_OF_ARGS);
@@ -377,7 +377,7 @@ VOID ScanNextChannel(
 	RALINK_TIMER_STRUCT *sc_timer;
 	UINT stay_time = 0;
 	UCHAR ImprovedScan_MaxScanChannelCnt;
-			
+
 
 #ifdef RALINK_ATE
 	/* Nothing to do in ATE mode. */
@@ -413,7 +413,7 @@ VOID ScanNextChannel(
 	{
 		pAd->Mlme.SyncMachine.CurrState = SYNC_IDLE;
 		MlmeCntlConfirm(pAd, MT2_SCAN_CONF, MLME_FAIL_NO_RESOURCE);
-	}	
+	}
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* RTMP_MAC_USB */
 	else
@@ -467,7 +467,7 @@ VOID ScanNextChannel(
 			sc_timer = &pAd->MlmeAux.APScanTimer;
 		else
 			sc_timer = &pAd->MlmeAux.ScanTimer;
-			
+
 		/* We need to shorten active scan time in order for WZC connect issue */
 		/* Chnage the channel scan time for CISCO stuff based on its IAPP announcement */
 		if (ScanType == FAST_SCAN_ACTIVE)
@@ -494,9 +494,9 @@ VOID ScanNextChannel(
 			else
 				stay_time = MAX_CHANNEL_TIME;
 		}
-				
+
 		RTMPSetTimer(sc_timer, stay_time);
-			
+
 		if (SCAN_MODE_ACT(ScanType))
 		{
 			if (scan_active(pAd, OpMode, ScanType) == FALSE)
@@ -504,7 +504,7 @@ VOID ScanNextChannel(
 		}
 
 		/* For SCAN_CISCO_PASSIVE, do nothing and silently wait for beacon or other probe reponse*/
-		
+
 #ifdef CONFIG_STA_SUPPORT
 		if (OpMode == OPMODE_STA)
 			pAd->Mlme.SyncMachine.CurrState = SCAN_LISTEN;

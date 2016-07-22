@@ -30,7 +30,7 @@
 
 
 FREQUENCY_ITEM RtmpFreqItems3020[] =
-{	
+{
 	/* ISM : 2.4 to 2.483 GHz,  11g */
 	/*-CH---N-------R---K-----------*/
 	{1,    241,  2,  2},
@@ -50,7 +50,7 @@ FREQUENCY_ITEM RtmpFreqItems3020[] =
 };
 
 FREQUENCY_ITEM FreqItems3020_Xtal20M[] =
-{	
+{
 	/*
 	 * RF_R08:
 	 * <7:0>: pll_N<7:0>
@@ -117,7 +117,7 @@ RTMP_RF_REGS RF2850RegTable[] = {
 
 		/* 802.11 HyperLan 2*/
 		{100, 0x98402ec8, 0x984c06b2, 0x98178a55, 0x980ed783},
-		
+
 		/* 2008.04.30 modified */
 		/* The system team has AN to improve the EVM value */
 		/* for channel 102 to 108 for the RT2850/RT2750 dual band solution.*/
@@ -499,7 +499,7 @@ static UCHAR ChipAGCAdjust(
 {
 	UCHAR R66 = OrigR66Value;
 	CHAR lanGain = GET_LNA_GAIN(pAd);
-	
+
 	if (pAd->LatchRfRegs.Channel <= 14)
 	{	/*BG band*/
 		R66 = 0x2E + lanGain;
@@ -568,7 +568,7 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, 0x12);
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R70, 0x0A);
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R73, 0x10);
-	}	
+	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): BW_%s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
 					__FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
@@ -611,7 +611,7 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 	}
 	else
 	{	//A band
-		{	
+		{
 			if (BandWidth == BW_20)
 				R66 = (UCHAR)(0x32 + (lan_gain * 5) / 3);
 #ifdef DOT11_N_SUPPORT
@@ -636,7 +636,7 @@ static VOID AsicAntennaDefaultReset(
 		pAntenna->field.TxPath = 1;
 		pAntenna->field.RxPath = 2;
 	}
-	DBGPRINT(RT_DEBUG_WARN, ("E2PROM error, hard code as 0x%04x\n", pAntenna->word));	
+	DBGPRINT(RT_DEBUG_WARN, ("E2PROM error, hard code as 0x%04x\n", pAntenna->word));
 }
 
 
@@ -665,7 +665,7 @@ UINT32 SetHWAntennaDivsersity(
 
 		// RF_R29 bit7:6
 		RT28xx_EEPROM_READ16(pAd, EEPROM_RSSI_GAIN, value);
-		
+
 		RT30xxReadRFRegister(pAd, RF_R29, &RFValue);
 		RFValue &= 0x3f; // clear bit7:6
 		RFValue |= (value << 6);
@@ -675,7 +675,7 @@ UINT32 SetHWAntennaDivsersity(
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R47, &BBPValue);
 		BBPValue |= 0x80;
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R47, BBPValue);
-	
+
 		BBPValue = 0xbe;
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R150, BBPValue);
 		BBPValue = 0xb0;
@@ -744,15 +744,15 @@ INT WaitForAsicReady(
 	UINT32 mac_val = 0, reg = MAC_CSR0;
 	int idx = 0;
 
-#ifdef RT3290	
+#ifdef RT3290
 	if (IS_RT3290(pAd))
 		reg = ASIC_VERSION;
 #endif /* RT3290 */
 	do
 	{
-		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))			
+		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return FALSE;
-		
+
 		RTMP_IO_READ32(pAd, reg, &mac_val);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return TRUE;
@@ -764,7 +764,7 @@ INT WaitForAsicReady(
 				("%s(0x%x):AsicNotReady!\n",
 				__FUNCTION__, mac_val));
 
-		
+
 	return FALSE;
 }
 
@@ -827,7 +827,7 @@ int RtmpChipOpsHook(VOID *pCB)
 
 	RTMP_IO_READ32(pAd, MAC_CSR0, &MacValue);
 	pAd->MACVersion = MacValue;
-	
+
 	if (pAd->MACVersion == 0xffffffff)
 		return -1;
 

@@ -247,7 +247,7 @@ typedef union _EEPROM_TX_PWR_OFFSET_STRUC
 		UCHAR	Byte1;	/* High Byte */
 		UCHAR	Byte0;	/* Low Byte */
 	} field;
-	
+
 	USHORT		word;
 } EEPROM_TX_PWR_OFFSET_STRUC, *PEEPROM_TX_PWR_OFFSET_STRUC;
 #else

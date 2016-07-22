@@ -77,7 +77,7 @@ INT ComputeChecksum(
 
 UINT GenerateWpsPinCode(
 	IN	PRTMP_ADAPTER	pAd,
-    IN  BOOLEAN         bFromApcli,	
+    IN  BOOLEAN         bFromApcli,
 	IN	UCHAR			apidx)
 {
 	UCHAR	macAddr[MAC_ADDR_LEN];
@@ -95,7 +95,7 @@ UINT GenerateWpsPinCode(
 
 	iPin = iPin % 10000000;
 
-	
+
 	checksum = ComputeChecksum( iPin );
 	iPin = iPin*10 + checksum;
 
@@ -140,14 +140,14 @@ INT RT_CfgSetCountryRegion(
 {
 	LONG region;
 	UCHAR *pCountryRegion;
-	
+
 	region = simple_strtol(arg, 0, 10);
 
 	if (band == BAND_24G)
 		pCountryRegion = &pAd->CommonCfg.CountryRegion;
 	else
 		pCountryRegion = &pAd->CommonCfg.CountryRegionForABand;
-	
+
     /*
                1. If this value is set before interface up, do not reject this value.
                2. Country can be set only when EEPROM not programmed
@@ -173,7 +173,7 @@ INT RT_CfgSetCountryRegion(
 	}
 
 	return TRUE;
-	
+
 }
 
 
@@ -241,7 +241,7 @@ UCHAR cfgmode_2_wmode(UCHAR cfg_mode)
 	DBGPRINT(RT_DEBUG_OFF, ("cfg_mode=%d\n", cfg_mode));
 	if (cfg_mode >= PHY_MODE_MAX)
 		cfg_mode =  PHY_MODE_MAX;
-	
+
 	return CFG_WMODE_MAP[cfg_mode * 2 + 1];
 }
 
@@ -262,7 +262,7 @@ BOOLEAN wmode_band_equal(UCHAR smode, UCHAR tmode)
 {
 	BOOLEAN eq = FALSE;
 	UCHAR *str1, *str2;
-	
+
 	if ((WMODE_CAP_5G(smode) == WMODE_CAP_5G(tmode)) &&
 		(WMODE_CAP_2G(smode) == WMODE_CAP_2G(tmode)))
 		eq = TRUE;
@@ -280,7 +280,7 @@ BOOLEAN wmode_band_equal(UCHAR smode, UCHAR tmode)
 		os_free_mem(NULL, str1);
 	if (str2)
 		os_free_mem(NULL, str2);
-		
+
 	return eq;
 }
 
@@ -315,7 +315,7 @@ INT RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, PSTRING arg)
 		DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Equal!\n"));
 	else
 		DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Not Equal!\n"));
-	
+
 	pAd->CommonCfg.PhyMode = wmode;
 	pAd->CommonCfg.cfg_wmode = wmode;
 
@@ -406,7 +406,7 @@ INT	RT_CfgSetWepKey(
 			pSharedKey->KeyLen = KeyLen;
 			NdisMoveMemory(pSharedKey->Key, keyString, KeyLen);
 			break;
-			
+
 		case 10: /*wep 40 Hex type*/
 		case 26: /*wep 104 Hex type*/
 			for(i=0; i < KeyLen; i++)
@@ -418,7 +418,7 @@ INT	RT_CfgSetWepKey(
 			pSharedKey->KeyLen = KeyLen/2 ;
 			AtoH(keyString, pSharedKey->Key, pSharedKey->KeyLen);
 			break;
-			
+
 		default: /*Invalid argument */
 			DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetWepKey(keyIdx=%d):Invalid argument (arg=%s)\n", keyIdx, keyString));
 			return FALSE;
@@ -473,7 +473,7 @@ INT RT_CfgSetWPAPSKKey(
 	else
 	{
 	    RtmpPasswordHash(keyString, pHashStr, hashStrLen, keyMaterial);
-	    NdisMoveMemory(pPMKBuf, keyMaterial, 32);		
+	    NdisMoveMemory(pPMKBuf, keyMaterial, 32);
 	}
 
 	return TRUE;
@@ -509,15 +509,15 @@ INT	RT_CfgSetFixedTxPhyMode(PSTRING arg)
 	}
 
 	return fix_tx_mode;
-					
-}	
+
+}
 
 INT	RT_CfgSetMacAddress(
 	IN 	PRTMP_ADAPTER 	pAd,
 	IN	PSTRING			arg)
 {
 	INT	i, mac_len;
-	
+
 	/* Mac address acceptable format 01:02:03:04:05:06 length 17 */
 	mac_len = strlen(arg);
 	if(mac_len != 17)
@@ -536,7 +536,7 @@ INT	RT_CfgSetMacAddress(
 	{
 		AtoH(arg, &pAd->CurrentAddress[i], 1);
 		arg = arg + 3;
-	}	
+	}
 
 	pAd->bLocalAdminMAC = TRUE;
 	return TRUE;
@@ -546,14 +546,14 @@ INT	RT_CfgSetTxMCSProc(PSTRING arg, BOOLEAN *pAutoRate)
 {
 	INT	Value = simple_strtol(arg, 0, 10);
 	INT	TxMcs;
-	
+
 	if ((Value >= 0 && Value <= 23) || (Value == 32)) /* 3*3*/
 	{
 		TxMcs = Value;
 		*pAutoRate = FALSE;
 	}
 	else
-	{		
+	{
 		TxMcs = MCS_AUTO;
 		*pAutoRate = TRUE;
 	}
@@ -571,7 +571,7 @@ INT	RT_CfgSetAutoFallBack(
 
 	RTMP_IO_READ32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);
 	tx_rty_cfg.field.TxautoFBEnable = (AutoFallBack) ? 1 : 0;
-	RTMP_IO_WRITE32(pAd, TX_RTY_CFG, tx_rty_cfg.word);	
+	RTMP_IO_WRITE32(pAd, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetAutoFallBack::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
 	return TRUE;
 }
@@ -746,7 +746,7 @@ INT RTMP_COM_IoctlHandle(
 				RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL, NULL, 0);
 			}
 			break;
-			
+
 		case CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_TEST:
 		/* test driver state to fRTMP_ADAPTER_SUSPEND */
 			//*(UCHAR *)pData = RTMP_TEST_FLAG(pAd,fRTMP_ADAPTER_SUSPEND);
@@ -783,7 +783,7 @@ INT RTMP_COM_IoctlHandle(
 
 //#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif
-//#endif /* CONFIG_PM */	
+//#endif /* CONFIG_PM */
 
 		case CMD_RTPRIV_IOCTL_AP_BSSID_GET:
 			if (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED)
@@ -1001,7 +1001,7 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_INF_STATS_GET:
 			/* get statistics */
-			{			
+			{
 				RT_CMD_STATS *pStats = (RT_CMD_STATS *)pData;
 				pStats->pStats = pAd->stats;
 				if(pAd->OpMode == OPMODE_STA)
@@ -1032,7 +1032,7 @@ INT RTMP_COM_IoctlHandle(
 			pStats->level = 0;
 			pStats->noise = 0;
 			pStats->pStats = pAd->iw_stats;
-			
+
 #ifdef CONFIG_STA_SUPPORT
 			if (pAd->OpMode == OPMODE_STA)
 			{
@@ -1042,7 +1042,7 @@ INT RTMP_COM_IoctlHandle(
 
 			/*check if the interface is down*/
 			if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
-				return NDIS_STATUS_FAILURE;	
+				return NDIS_STATUS_FAILURE;
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1123,15 +1123,15 @@ INT RTMP_COM_IoctlHandle(
 
 			RT28xx_EEPROM_READ16(pAd, 0x04, Addr01);
 			RT28xx_EEPROM_READ16(pAd, 0x06, Addr23);
-			RT28xx_EEPROM_READ16(pAd, 0x08, Addr45);			
-			
-			PermanentAddress[0] = (UCHAR)(Addr01 & 0xff);		
+			RT28xx_EEPROM_READ16(pAd, 0x08, Addr45);
+
+			PermanentAddress[0] = (UCHAR)(Addr01 & 0xff);
 			PermanentAddress[1] = (UCHAR)(Addr01 >> 8);
 			PermanentAddress[2] = (UCHAR)(Addr23 & 0xff);
 			PermanentAddress[3] = (UCHAR)(Addr23 >> 8);
 			PermanentAddress[4] = (UCHAR)(Addr45 & 0xff);
-			PermanentAddress[5] = (UCHAR)(Addr45 >> 8);				
-			
+			PermanentAddress[5] = (UCHAR)(Addr45 >> 8);
+
 			for(i=0; i<6; i++)
 				*(UCHAR *)(pData+i) = PermanentAddress[i];
 			break;
@@ -1256,10 +1256,10 @@ INT	Set_Antenna_Proc(
 					pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
 			break;
 	}
-	
+
 	return TRUE;
 }
-			
+
 
 
 #ifdef MT76x0

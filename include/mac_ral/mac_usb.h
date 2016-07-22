@@ -274,13 +274,13 @@ typedef struct _CMD_RSP_CONTEXT
 
 #define RTMP_WRITE_FIRMWARE(_pAd, _pFwImage, _FwLen)		\
 	RTUSBFirmwareWrite(_pAd, _pFwImage, _FwLen)
-	
+
 
 
 /******************************************************************************
 
   	USB TX Related MACRO
-  	
+
 ******************************************************************************/
 #define RTMP_START_DEQUEUE(pAd, QueIdx, irqFlags)				\
 			{													\
@@ -312,26 +312,26 @@ typedef struct _CMD_RSP_CONTEXT
 		do{}while(0)
 
 #define NEED_QUEUE_BACK_FOR_AGG(_pAd, _QueIdx, _freeNum, _TxFrameType) 		\
-		((_TxFrameType == TX_RALINK_FRAME) && (RTUSBNeedQueueBackForAgg(_pAd, _QueIdx)))	
+		((_TxFrameType == TX_RALINK_FRAME) && (RTUSBNeedQueueBackForAgg(_pAd, _QueIdx)))
 
 #define HAL_WriteSubTxResource(pAd, pTxBlk, bIsLast, pFreeNumber)	\
 			RtmpUSB_WriteSubTxResource(pAd, pTxBlk, bIsLast, pFreeNumber)
-	
+
 #define HAL_WriteTxResource(pAd, pTxBlk,bIsLast, pFreeNumber)	\
 			RtmpUSB_WriteSingleTxResource(pAd, pTxBlk, bIsLast, pFreeNumber)
 
 #define HAL_WriteFragTxResource(pAd, pTxBlk, fragNum, pFreeNumber) \
 			RtmpUSB_WriteFragTxResource(pAd, pTxBlk, fragNum, pFreeNumber)
-			
+
 #define HAL_WriteMultiTxResource(pAd, pTxBlk,frameNum, pFreeNumber)	\
 			RtmpUSB_WriteMultiTxResource(pAd, pTxBlk,frameNum, pFreeNumber)
-	
+
 #define HAL_FinalWriteTxResource(pAd, pTxBlk, totalMPDUSize, TxIdx)	\
 			RtmpUSB_FinalWriteTxResource(pAd, pTxBlk, totalMPDUSize, TxIdx)
 
 #define HAL_LastTxIdx(pAd, QueIdx,TxIdx) \
 			/*RtmpUSBDataLastTxIdx(pAd, QueIdx,TxIdx)*/
-	
+
 #define HAL_KickOutTx(pAd, pTxBlk, QueIdx)	\
 			RtmpUSBDataKickOut(pAd, pTxBlk, QueIdx)
 

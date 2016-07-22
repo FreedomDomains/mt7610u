@@ -58,7 +58,7 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 {
 	INT Index = 0;
 	UCHAR R0 = 0xff;
-	
+
 	/* Read BBP register, make sure BBP is up and running before write new data*/
 	if (rtmp_bbp_is_ready(pAd)== FALSE)
 		return NDIS_STATUS_FAILURE;
@@ -78,7 +78,7 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 	if (pAd->chipCap.pBBPRegTable)
 	{
 		REG_PAIR *pbbpRegTb = pAd->chipCap.pBBPRegTable;
-		
+
 		for (Index = 0; Index < pAd->chipCap.bbpRegTbSize; Index++)
 		{
 			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd,
@@ -110,7 +110,7 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 	}
 
 	return NDIS_STATUS_SUCCESS;
-	
+
 }
 
 
@@ -132,7 +132,7 @@ INT rtmp_bbp_tx_comp_init(RTMP_ADAPTER *pAd, INT adc_insel, INT tssi_mode)
 {
 	UCHAR bbp_val, rf_val;
 
-	
+
 	/* Set BBP_R47 */
 	RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R47, &bbp_val);
 	bbp_val &= 0xe7;
@@ -153,7 +153,7 @@ INT rtmp_bbp_set_txdac(struct _RTMP_ADAPTER *pAd, INT tx_dac)
 {
 	UCHAR val, old_val = 0;
 
-	
+
 	RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R1, &old_val);
 	val = old_val & (~0x18);
 	switch (tx_dac)
@@ -181,7 +181,7 @@ INT rtmp_bbp_set_rxpath(struct _RTMP_ADAPTER *pAd, INT rxpath)
 {
 	UCHAR val = 0;
 
-	
+
 	RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R3, &val);
 	val &= (~0x18);
 	if(rxpath == 3)
@@ -265,7 +265,7 @@ INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw)
 			break;
 		case BW_10:
 			val |= 0x08;
-			break;	
+			break;
 	}
 
 	if (val != old_val) {
@@ -281,7 +281,7 @@ INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw)
 	}
 
 	pAd->CommonCfg.BBPCurrentBW = bw;
-	
+
 	return TRUE;
 }
 
@@ -289,7 +289,7 @@ INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw)
 INT rtmp_bbp_set_mmps(struct _RTMP_ADAPTER *pAd, BOOLEAN ReduceCorePower)
 {
 	UCHAR bbp_val, org_val;
-	
+
 	RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R3, &org_val);
 	bbp_val = org_val;
 	if (ReduceCorePower)
@@ -318,12 +318,12 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpVal);
 		return NDIS_STATUS_SUCCESS;
 	}
-	
+
 	while (rx_ch_idx != 0)
 	{
 		if (idx >= pAd->Antenna.field.RxPath)
 			break;
-		
+
 		if (rx_ch_idx & 0x01)
 		{
 			RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R27, &val);
@@ -445,11 +445,11 @@ INT rtmp_bbp_is_ready(struct _RTMP_ADAPTER *pAd)
 {
 	INT idx = 0;
 	UCHAR val;
-	
+
 	do
 	{
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R0, &val);
-		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))			
+		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return FALSE;
 		DBGPRINT(RT_DEBUG_TRACE, ("BBP version = %x\n", val));
 	} while ((++idx < 20) && ((val == 0xff) || (val == 0x00)));

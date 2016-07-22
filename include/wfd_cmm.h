@@ -132,11 +132,11 @@ typedef	struct GNU_PACKED _WFD_DEVICE_INFO
 typedef	struct GNU_PACKED _WFD_COUPLED_SINK_INFO
 {
 #ifndef RT_BIG_ENDIAN
-	UCHAR CoupledStat:2;					
+	UCHAR CoupledStat:2;
 	UCHAR Rsvd:6;
 #else
 	UCHAR Rsvd:6;
-	UCHAR CoupledStat:2;					
+	UCHAR CoupledStat:2;
 #endif
 }	WFD_COUPLED_SINK_INFO, *PWFD_COUPLED_SINK_INFO;
 
@@ -149,7 +149,7 @@ typedef	struct GNU_PACKED _WFD_SESSION_INFO
 	UCHAR 					Bssid[MAC_ADDR_LEN];
 	WFD_DEVICE_INFO 		WfdDevInfo;
 	USHORT					MaxThroughput;
-	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;									
+	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;
 	UCHAR 					CoupledPeerAddr[MAC_ADDR_LEN];
 #else
 	UCHAR 					CoupledPeerAddr[MAC_ADDR_LEN];

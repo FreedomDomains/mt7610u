@@ -176,7 +176,7 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 			{
 				BbpR49.byte = (BbpR49.byte & 0x1F);
 			}
-				
+
 			/* (p) TssiPlusBoundaryG[0] = 0 = (m) TssiMinusBoundaryG[0] */
 			/* compensate: +4     +3   +2   +1    0   -1   -2   -3   -4 * steps */
 			/* step value is defined in pAd->TxAgcStepG for tx power value */
@@ -201,7 +201,7 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 				}
 				/* The index is the step we should decrease, idx = 0 means there is nothing to compensate */
 
-				*pTxAgcCompensate = -(TxAgcStep * (idx-1));			
+				*pTxAgcCompensate = -(TxAgcStep * (idx-1));
 				DeltaPwr += (*pTxAgcCompensate);
 				DBGPRINT(RT_DEBUG_TRACE, ("-- Tx Power, BBP R49=%x, TssiRef=%x, TxAgcStep=%x, step = -%d\n",
 					                BbpR49.byte, TssiRef, TxAgcStep, idx-1));
@@ -281,7 +281,7 @@ VOID AsicAdjustTxPower(
 	CHAR		TxAgcCompensate = 0;
 	CHAR		DeltaPowerByBbpR1 = 0;
 	CHAR		TotalDeltaPower = 0; /* (non-positive number) including the transmit power controlled by the MAC and the BBP R1 */
-	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};	
+	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
 #ifdef SINGLE_SKU
 	CHAR		TotalDeltaPowerOri = 0;
 	UCHAR		SingleSKUBbpR1Offset = 0;
@@ -322,28 +322,28 @@ VOID AsicAdjustTxPower(
 			TotalDeltaPower,
 			TxAgcCompensate,
 			DeltaPowerByBbpR1));
-		
+
 	/* Get delta power based on the percentage specified from UI */
 	AsicPercentageDeltaPower(pAd, Rssi, &DeltaPwr,&DeltaPowerByBbpR1);
 
 	/* The transmit power controlled by the BBP */
 	TotalDeltaPower += DeltaPowerByBbpR1;
 	/* The transmit power controlled by the MAC */
-	TotalDeltaPower += DeltaPwr; 	
+	TotalDeltaPower += DeltaPwr;
 
 #ifdef SINGLE_SKU
 	if (pAd->CommonCfg.bSKUMode == TRUE)
 	{
 		/* Re calculate delta power while enabling Single SKU */
 		GetSingleSkuDeltaPower(pAd, &TotalDeltaPower, (PULONG)&SingleSKUTotalDeltaPwr, &SingleSKUBbpR1Offset);
-	
+
 		TotalDeltaPowerOri = TotalDeltaPower;
 	}
 	else
 #endif /* SINGLE_SKU */
 	{
 		AsicCompensatePowerViaBBP(pAd, &TotalDeltaPower);
-	}			
+	}
 
 
 }
@@ -363,10 +363,10 @@ VOID GetSingleSkuDeltaPower(
 	UCHAR  	TxPwrInEEPROM = 0xFF, CountryTxPwr = 0xFF, criterion;
 	UCHAR   	AdjustMaxTxPwr[(MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS * 8)];
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
-	
+
 	/* Get TX rate offset table which from EEPROM 0xDEh ~ 0xEFh */
 	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
-		
+
 	/* Handle regulatory max. TX power constraint */
 	if (pAd->CommonCfg.Channel > 14)
 	{
@@ -444,13 +444,13 @@ VOID GetSingleSkuDeltaPower(
 				if (AdjustMaxTxPwr[i*8+j] > CountryTxPwr)
 				{
 					Value = (AdjustMaxTxPwr[i*8+j] - CountryTxPwr);
-					
+
 					if (Value > 0xF)
 					{
 						/* The output power is larger than Country Regulatory over 15dBm, the origianl design has overflow case */
 						DBGPRINT(RT_DEBUG_ERROR,("%s: Value overflow - %d\n", __FUNCTION__, Value));
 					}
-					
+
 					*(pSingleSKUTotalDeltaPwr+i) = (*(pSingleSKUTotalDeltaPwr+i) & ~(0x0000000F << j*4)) | (Value << j*4);
 
 					DBGPRINT(RT_DEBUG_TRACE, ("%s: offset = 0x%04X, i/j=%d/%d, (Exceed)Value=%d, %d\n",
@@ -488,7 +488,7 @@ VOID GetSingleSkuDeltaPower(
 				   PwrChange will add SingleSKUDeltaPwr and TotalDeltaPwr[] for each data rate to calculate
 				   the final adjust output power value which is saved in MAC Reg. and BBP_R1.
 				*/
-				
+
 				/*
 				   Value / TxPwr[] is get from eeprom 0xDEh ~ 0xEFh and increase or decrease the
 				   20/40 Bandwidth Delta Value in eeprom 0x50h.
@@ -504,9 +504,9 @@ VOID GetSingleSkuDeltaPower(
 				PwrChange -= *pTotalDeltaPower;
 
 				Value -= PwrChange;
-				
+
 				if (MinValue > Value)
-					MinValue = Value;				
+					MinValue = Value;
 			}
 		}
 	}
@@ -548,7 +548,7 @@ VOID AsicPercentageDeltaPower(
 		E2PROM setting is calibrated for maximum TX power (i.e. 100%).
 		We lower TX power here according to the percentage specified from UI.
 	*/
-	
+
 	if (pAd->CommonCfg.TxPowerPercentage >= 100) /* AUTO TX POWER control */
 	{
 #ifdef CONFIG_STA_SUPPORT
@@ -600,7 +600,7 @@ VOID AsicCompensatePowerViaBBP(
 	INOUT	PCHAR				pTotalDeltaPower)
 {
 	UCHAR mdsm_drop_pwr;
-	
+
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <Before BBP R1> TotalDeltaPower = %d dBm\n", __FUNCTION__, *pTotalDeltaPower));
 
 
@@ -632,13 +632,13 @@ VOID AsicCompensatePowerViaBBP(
 #endif /* RT65xx */
 	{
 		UCHAR	BbpR1 = 0;
-	
+
 		/* The BBP R1 controls the transmit power for all rates */
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R1, &BbpR1);
-		BbpR1 &= ~MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK;	
+		BbpR1 &= ~MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK;
 		BbpR1 |= mdsm_drop_pwr;
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R1, BbpR1);
-		
+
 		DBGPRINT(RT_DEBUG_INFO, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X \n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
 	}
 }
@@ -646,10 +646,10 @@ VOID AsicCompensatePowerViaBBP(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Read initial Tx power per MCS and BW from EEPROM
-		
+
 	Arguments:
 		Adapter						Pointer to our adapter
 
@@ -659,7 +659,7 @@ VOID AsicCompensatePowerViaBBP(
 	IRQL = PASSIVE_LEVEL
 
 	Note:
-		
+
 	========================================================================
 */
 VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
@@ -691,8 +691,8 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 
 
 	/* For default one, go here!! */
-	{	
-		
+	{
+
 		/* Get power delta for 20MHz and 40MHz.*/
 		DBGPRINT(RT_DEBUG_TRACE, ("Txpower per Rate\n"));
 		RT28xx_EEPROM_READ16(pAd, EEPROM_TXPOWER_DELTA, value2);
@@ -703,7 +703,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 		{
 			if ((value2 & 0x80))
 				Gpwrdelta = (value2&0xf);
-			
+
 			if ((value2 & 0x40))
 				bGpwrdeltaMinus = FALSE;
 			else
@@ -718,12 +718,12 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 				bApwrdeltaMinus = FALSE;
 			else
 				bApwrdeltaMinus = TRUE;
-		}	
+		}
 		DBGPRINT(RT_DEBUG_TRACE, ("Gpwrdelta = %x, Apwrdelta = %x .\n", Gpwrdelta, Apwrdelta));
 
-		
+
 		/* Get Txpower per MCS for 20MHz in 2.4G.*/
-		
+
 		for (i=0; i<5; i++)
 		{
 			RT28xx_EEPROM_READ16(pAd, EEPROM_TXPOWER_BYRATE_20MHZ_2_4G + i*4, value);
@@ -768,7 +768,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 					t4 = value_4-(Apwrdelta);
 				else
 					t4 = 0;
-			}				
+			}
 			Adata = t1 + (t2<<4) + (t3<<8) + (t4<<12);
 			if (bGpwrdeltaMinus == FALSE)
 			{
@@ -803,9 +803,9 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 					t4 = value_4-(Gpwrdelta);
 				else
 					t4 = 0;
-			}				
+			}
 			Gdata = t1 + (t2<<4) + (t3<<8) + (t4<<12);
-			
+
 			RT28xx_EEPROM_READ16(pAd, EEPROM_TXPOWER_BYRATE_20MHZ_2_4G + i*4 + 2, value);
 
 			/* use value_1 ~ value_4 for code size reduce */
@@ -847,7 +847,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 					t4 = value_4-(Apwrdelta);
 				else
 					t4 = 0;
-			}				
+			}
 			Adata |= ((t1<<16) + (t2<<20) + (t3<<24) + (t4<<28));
 			if (bGpwrdeltaMinus == FALSE)
 			{
@@ -882,16 +882,16 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 					t4 = value_4-(Gpwrdelta);
 				else
 					t4 = 0;
-			}				
+			}
 			Gdata |= ((t1<<16) + (t2<<20) + (t3<<24) + (t4<<28));
 			data |= (value<<16);
 
-			/* For 20M/40M Power Delta issue */		
+			/* For 20M/40M Power Delta issue */
 			pAd->Tx20MPwrCfgABand[i] = data;
 			pAd->Tx20MPwrCfgGBand[i] = data;
 			pAd->Tx40MPwrCfgABand[i] = Adata;
 			pAd->Tx40MPwrCfgGBand[i] = Gdata;
-			
+
 			if (data != 0xffffffff)
 				RTMP_IO_WRITE32(pAd, TX_PWR_CFG_0 + i*4, data);
 			DBGPRINT_RAW(RT_DEBUG_TRACE, ("20MHz BW, 2.4G band-%lx,  Adata = %lx,  Gdata = %lx \n", data, Adata, Gdata));
@@ -902,10 +902,10 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Read initial channel power parameters from EEPROM
-		
+
 	Arguments:
 		Adapter						Pointer to our adapter
 
@@ -915,7 +915,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 	IRQL = PASSIVE_LEVEL
 
 	Note:
-		
+
 	========================================================================
 */
 VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
@@ -944,14 +944,14 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 			{
 			if ((Power.field.Byte0 > 31) || (Power.field.Byte0 < 0))
 				pAd->TxPower[i * 2].Power = DEFAULT_RF_TX_POWER;
-			}				
+			}
 
 			pAd->TxPower[i * 2 + 1].Power = Power.field.Byte1;
 			if(!IS_RT3390(pAd)) // 3370 has different Tx power range
 			{
 			if ((Power.field.Byte1 > 31) || (Power.field.Byte1 < 0))
 				pAd->TxPower[i * 2 + 1].Power = DEFAULT_RF_TX_POWER;
-			}				
+			}
 
 			if ((Power2.field.Byte0 > 31) || (Power2.field.Byte0 < 0))
 				pAd->TxPower[i * 2].Power2 = DEFAULT_RF_TX_POWER;
@@ -964,12 +964,12 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 				pAd->TxPower[i * 2 + 1].Power2 = Power2.field.Byte1;
 		}
 	}
-	
+
 
 	{
 		if (IS_RT5592(pAd))
 			return;
-		
+
 		/* 1. U-NII lower/middle band: 36, 38, 40; 44, 46, 48; 52, 54, 56; 60, 62, 64 (including central frequency in BW 40MHz)*/
 		/* 1.1 Fill up channel*/
 		choffset = 14;
@@ -998,15 +998,15 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 				pAd->TxPower[i * 2 + choffset + 0].Power = Power.field.Byte0;
 
 			if ((Power.field.Byte1 < 16) && (Power.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;
 
 			if ((Power2.field.Byte0 < 16) && (Power2.field.Byte0 >= -7))
 				pAd->TxPower[i * 2 + choffset + 0].Power2 = Power2.field.Byte0;
 
 			if ((Power2.field.Byte1 < 16) && (Power2.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;
 		}
-		
+
 		/* 2. HipperLAN 2 100, 102 ,104; 108, 110, 112; 116, 118, 120; 124, 126, 128; 132, 134, 136; 140 (including central frequency in BW 40MHz)*/
 		/* 2.1 Fill up channel*/
 		choffset = 14 + 12;
@@ -1038,13 +1038,13 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 				pAd->TxPower[i * 2 + choffset + 0].Power = Power.field.Byte0;
 
 			if ((Power.field.Byte1 < 16) && (Power.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;
 
 			if ((Power2.field.Byte0 < 16) && (Power2.field.Byte0 >= -7))
 				pAd->TxPower[i * 2 + choffset + 0].Power2 = Power2.field.Byte0;
 
 			if ((Power2.field.Byte1 < 16) && (Power2.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;
 		}
 
 		/* 3. U-NII upper band: 149, 151, 153; 157, 159, 161; 165, 167, 169; 171, 173 (including central frequency in BW 40MHz)*/
@@ -1084,13 +1084,13 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 				pAd->TxPower[i * 2 + choffset + 0].Power = Power.field.Byte0;
 
 			if ((Power.field.Byte1 < 16) && (Power.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power = Power.field.Byte1;
 
 			if ((Power2.field.Byte0 < 16) && (Power2.field.Byte0 >= -7))
 				pAd->TxPower[i * 2 + choffset + 0].Power2 = Power2.field.Byte0;
 
 			if ((Power2.field.Byte1 < 16) && (Power2.field.Byte1 >= -7))
-				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;			
+				pAd->TxPower[i * 2 + choffset + 1].Power2 = Power2.field.Byte1;
 		}
 	}
 
@@ -1098,7 +1098,7 @@ VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 	/* 4. Print and Debug*/
 	/*choffset = 14 + 12 + 16 + 7;*/
 	choffset = 14 + 12 + 16 + 11;
-	
+
 
 }
 

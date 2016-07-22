@@ -116,7 +116,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 	UINT index;
 	NDIS_STATUS Status;
-	
+
 	if (pAd == NULL)
 		return FALSE;
 
@@ -133,7 +133,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 		OSCCTL_STRUC osCtrl = {.word = 0};
 		CMB_CTRL_STRUC cmbCtrl = {.word = 0};
 		WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
-			
+
 		RTMPEnableWlan(pAd, TRUE, TRUE);
 
 		RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
@@ -142,12 +142,12 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 			WlanFunCtrl.field.PCIE_APP0_CLK_REQ = TRUE;
 			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 		}
-			
+
 		//Enable ROSC_EN first then CAL_REQ
 		RTMP_IO_READ32(pAd, OSCCTL, &osCtrl.word);
 		osCtrl.field.ROSC_EN = TRUE; /* HW force */
-		RTMP_IO_WRITE32(pAd, OSCCTL, osCtrl.word);	
-		
+		RTMP_IO_WRITE32(pAd, OSCCTL, osCtrl.word);
+
 		osCtrl.field.ROSC_EN = TRUE; /* HW force */
 		osCtrl.field.CAL_REQ = TRUE;
 		osCtrl.field.REF_CYCLE = 0x27;
@@ -167,7 +167,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	{
 		PLL_CTRL_STRUC PllCtrl;
 		RTMP_IO_READ32(pAd, PLL_CTRL, &PllCtrl.word);
-		PllCtrl.field.VCO_FIXED_CURRENT_CONTROL = 0x1;			
+		PllCtrl.field.VCO_FIXED_CURRENT_CONTROL = 0x1;
 		RTMP_IO_WRITE32(pAd, PLL_CTRL, PllCtrl.word);
 	}
 #endif /* RT3290 */
@@ -198,7 +198,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 #ifdef DOT11_N_SUPPORT
 	/* Allocate BA Reordering memory*/
-	if (ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != TRUE)		
+	if (ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != TRUE)
 		goto err1;
 #endif /* DOT11_N_SUPPORT */
 
@@ -221,13 +221,13 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	RT28XXDMADisable(pAd);
 
 	Status = NICLoadFirmware(pAd);
-	
+
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT_ERR(("NICLoadFirmware failed, Status[=0x%08x]\n", Status));
 		goto err1;
 	}
-	
+
 	MCU_CTRL_INIT(pAd);
 
 	/* Disable interrupts here which is as soon as possible*/
@@ -238,28 +238,28 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #else
 	Status = RTMPAllocTxRxRingMemory(pAd);
 #endif /* RESOURCE_PRE_ALLOC */
-	
+
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT_ERR(("RTMPAllocTxRxMemory failed, Status[=0x%08x]\n", Status));
 		goto err2;
 	}
-	
+
 	Status = RtmpNetTaskInit(pAd);
 	if (Status != NDIS_STATUS_SUCCESS)
 		goto err5;
-	
+
 #ifdef WLAN_SKB_RECYCLE
     skb_queue_head_init(&pAd->rx0_recycle);
 #endif /* WLAN_SKB_RECYCLE */
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE);
-	
+
 	/* initialize MLME*/
 	Status = RtmpMgmtTaskInit(pAd);
 	if (Status != NDIS_STATUS_SUCCESS)
 		goto err3;
-	
+
 #ifdef RMTP_RBUS_SUPPORT
 #ifdef VIDEO_TURBINE_SUPPORT
 	VideoConfigInit(pAd);
@@ -281,13 +281,13 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT_ERR(("MeasureReqTabInit failed, Status[=0x%08x]\n",Status));
-		goto err6;	
+		goto err6;
 	}
 	Status = TpcReqTabInit(pAd);
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT_ERR(("TpcReqTabInit failed, Status[=0x%08x]\n",Status));
-		goto err6;	
+		goto err6;
 	}
 
 	/* Init the hardware, we need to init asic before read registry, otherwise mac register will be reset*/
@@ -298,7 +298,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 		if (Status != NDIS_STATUS_SUCCESS)
 		goto err6;
 	}
-	
+
 	Status = MlmeInit(pAd);
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
@@ -366,11 +366,11 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 #ifdef LED_CONTROL_SUPPORT
 	/* Send LED Setting to MCU */
-	RTMPInitLEDMode(pAd);	
+	RTMPInitLEDMode(pAd);
 #endif /* LED_CONTROL_SUPPORT */
 
 	NICInitAsicFromEEPROM(pAd); /* rt2860b */
-	
+
 #ifdef RALINK_ATE
 	if (ATEInit(pAd) != NDIS_STATUS_SUCCESS)
 	{
@@ -456,10 +456,10 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS);
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_REMOVE_IN_PROGRESS);
 
-		
+
 		/* Support multiple BulkIn IRP,*/
 		/* the value on pAd->CommonCfg.NumOfBulkInIRP may be large than 1.*/
-		
+
 		for(index=0; index<pAd->CommonCfg.NumOfBulkInIRP; index++)
 		{
 			RTUSBBulkReceive(pAd);
@@ -540,7 +540,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	if (IS_RT3290(pAd))
 	{
 		WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
-		RTMP_MAC_PWRSV_EN(pAd, TRUE, TRUE);	
+		RTMP_MAC_PWRSV_EN(pAd, TRUE, TRUE);
 		//
 		// Too much time for reading efuse(enter/exit L1), and our device will hang up
 		// Enable L1
@@ -568,13 +568,13 @@ err6:
 
 	MeasureReqTabExit(pAd);
 	TpcReqTabExit(pAd);
-err5:	
+err5:
 	RtmpNetTaskExit(pAd);
 	UserCfgExit(pAd);
-err4:	
+err4:
 	MlmeHalt(pAd);
 	RTMP_TimerListRelease(pAd);
-err3:	
+err3:
 	RtmpMgmtTaskExit(pAd);
 #ifdef RTMP_TIMER_TASK_SUPPORT
 	NdisFreeSpinLock(&pAd->TimerQLock);
@@ -687,7 +687,7 @@ VOID RTMPDrvSTAClose(
 
 #ifdef CREDENTIAL_STORE
 	if (pAd->IndicateMediaState == NdisMediaStateConnected)
-	{	
+	{
 		StoreConnectInfo(pAd);
 	}
 	else
@@ -738,10 +738,10 @@ VOID RTMPDrvSTAClose(
 			RTMPusecDelay(1000);
 		}
 	}
-	
+
 	/* Stop Mlme state machine*/
 	MlmeHalt(pAd);
-	
+
 	/* Close net tasklets*/
 	RtmpNetTaskExit(pAd);
 
@@ -770,7 +770,7 @@ VOID RTMPDrvSTAClose(
 	RtmpMgmtTaskExit(pAd);
 
 	//MCU_CTRL_EXIT(pAd);
-	
+
 
 	/* Free IRQ*/
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
@@ -912,7 +912,7 @@ VOID RTMPInfClose(
 /*			kfree(MsgElem);*/
 			os_free_mem(NULL, MsgElem);
 			}
-			
+
 			RTMPusecDelay(1000);
 		}
 
@@ -1042,7 +1042,7 @@ static void	WriteConfToDatFile(
 			RtmpOSFileClose(file_w);
 			goto WriteErr;
 		}
-			
+
 		for (;;)
 		{
 			int i = 0;
@@ -1139,7 +1139,7 @@ INT write_dat_file_thread (
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: pTask is NULL\n", __FUNCTION__));
 		return 0;
 	}
-	
+
 	pAd = (PRTMP_ADAPTER)RTMP_OS_TASK_DATA_GET(pTask);
 
 	if (pAd == NULL)
@@ -1152,9 +1152,9 @@ INT write_dat_file_thread (
 
 	/* Update ssid, auth mode and encr type to DAT file */
 	WriteConfToDatFile(pAd);
-	
+
 		RtmpOSTaskNotifyToExit(pTask);
-	
+
 	return 0;
 }
 

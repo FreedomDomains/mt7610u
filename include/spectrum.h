@@ -45,10 +45,10 @@ CHAR RTMP_GetTxPwr(
 	Description:
 		Prepare Measurement request action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -69,10 +69,10 @@ VOID MakeMeasurementReqFrame(
 	Description:
 		Prepare Measurement report action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -91,10 +91,10 @@ VOID EnqueueMeasurementRep(
 	Description:
 		Prepare TPC Request action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -108,10 +108,10 @@ VOID EnqueueTPCReq(
 	Description:
 		Prepare TPC Report action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -128,12 +128,12 @@ VOID EnqueueTPCRep(
 	Description:
 		Prepare Channel Switch Announcement action frame and enqueue it into
 		management queue waiting for transmition.
-		
+
 	Parametrs:
 		1. the destination mac address of the frame.
 		2. Channel switch announcement mode.
 		2. a New selected channel.
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -149,10 +149,10 @@ VOID EnqueueChSwAnn(
 	Description:
 		Spectrun action frames Handler such as channel switch annoucement,
 		measurement report, measurement request actions frames.
-		
+
 	Parametrs:
 		Elme - MLME message containing the received frame
-	
+
 	Return	: None.
 	==========================================================================
  */
@@ -163,9 +163,9 @@ VOID PeerSpectrumAction(
 /*
 	==========================================================================
 	Description:
-		
+
 	Parametrs:
-	
+
 	Return	: None.
 	==========================================================================
  */

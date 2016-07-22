@@ -81,7 +81,7 @@ typedef union  _MCU_LEDCS_STRUC {
 		UCHAR		Polarity:1;
 		UCHAR		LedMode:7;
 #else
-		UCHAR		LedMode:7;		
+		UCHAR		LedMode:7;
 		UCHAR		Polarity:1;
 #endif /* RT_BIG_ENDIAN */
 	} field;
@@ -106,7 +106,7 @@ do{								\
 	else\
 		RTEnqueueInternalCmd(pAd, CMDTHREAD_SET_LED_STATUS, &LEDStatus, sizeof(LEDStatus));	\
 }while(0)
-	
+
 #endif /* RTMP_MAC_USB */
 
 

@@ -31,11 +31,11 @@
 
 
 VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
-{	
+{
 	if (pAd->MACVersion != 0x28600100)
 		return;
 
-	
+
 	if (bw == BW_20)
 	{
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, 0x16);
@@ -146,7 +146,7 @@ VOID RT28xx_ChipSwitchChannel(
 						if ((TxPwer2 >= -7) && (TxPwer2 < 0))
 						{
 							TxPwer2 = (7+TxPwer2);
-							
+
 							R4 |= (TxPwer2 << 7);
 							DBGPRINT(RT_DEBUG_TRACE, ("%s(): TxPwer2=%d \n", __FUNCTION__, TxPwer2));
 						}
@@ -217,7 +217,7 @@ VOID RT28xx_ChipSwitchChannel(
 		default:
 			DBGPRINT(RT_DEBUG_TRACE, ("SwitchChannel#%d : unknown RFIC=%d\n", Channel, pAd->RfIcType));
 			break;
-	}	
+	}
 
 	/* Change BBP setting during siwtch from a->g, g->a*/
 	lan_gain = GET_LNA_GAIN(pAd);
@@ -225,7 +225,7 @@ VOID RT28xx_ChipSwitchChannel(
 	{
 		ULONG	TxPinCfg = 0x00050F0A; /*Gary 2007/08/09 0x050A0A*/
 		CHAR lan_gain = GET_LNA_GAIN(pAd);
-			
+
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R62, (0x37 - lan_gain));
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R63, (0x37 - lan_gain));
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R64, (0x37 - lan_gain));

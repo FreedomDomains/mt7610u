@@ -31,21 +31,21 @@ void inc_byte_array(UCHAR *counter, int len);
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Process MIC error indication and record MIC error timer.
-		
+
 	Arguments:
 		pAd 	Pointer to our adapter
 		pWpaKey 		Pointer to the WPA key structure
-		
+
 	Return Value:
 		None
-		
+
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
-	
+
 	========================================================================
 */
 VOID	RTMPReportMicError(
@@ -68,20 +68,20 @@ VOID	RTMPReportMicError(
 		if ((pAd->StaCfg.LastMicErrorTime + (60 * OS_HZ)) < Now)
 		{
 			/* Update Last MIC error time, this did not violate two MIC errors within 60 seconds */
-			pAd->StaCfg.LastMicErrorTime = Now; 		
+			pAd->StaCfg.LastMicErrorTime = Now;
 		}
 		else
 		{
 
 				RTMPSendWirelessEvent(pAd, IW_COUNTER_MEASURES_EVENT_FLAG, pAd->MacTab.Content[BSSID_WCID].Addr, BSS0, 0);
 
-			pAd->StaCfg.LastMicErrorTime = Now; 		
+			pAd->StaCfg.LastMicErrorTime = Now;
 			/* Violate MIC error counts, MIC countermeasures kicks in */
 			pAd->StaCfg.MicErrCnt++;
 			/*
 			 We shall block all reception
 			 We shall clean all Tx ring and disassoicate from AP after next EAPOL frame
-			
+
 			 No necessary to clean all Tx ring, on RTMPHardTransmit will stop sending non-802.1X EAPOL packets
 			 if pAd->StaCfg.MicErrCnt greater than 2.
 			*/
@@ -115,15 +115,15 @@ INT	    WpaCheckEapCode(
 	IN  USHORT				FrameLen,
 	IN  USHORT				OffSet)
 {
-	
+
 	PUCHAR	pData;
 	INT	result = 0;
-		
+
 	if( FrameLen < OffSet + LENGTH_EAPOL_H + LENGTH_EAP_H )
 		return result;
-		
+
 	pData = pFrame + OffSet;		/* skip offset bytes */
- 	
+
 	if(*(pData+1) == EAPPacket) 	/* 802.1x header - Packet Type */
 	{
 		 result = *(pData+4);		/* EAP header - Code */
@@ -152,7 +152,7 @@ VOID	WpaMicFailureReportFrame(
 	pAd->Sequence = ((pAd->Sequence) + 1) & (MAX_SEQ_NUMBER);
 
 	/* init 802.3 header and Fill Packet */
-	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);	
+	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
 	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
@@ -164,10 +164,10 @@ VOID	WpaMicFailureReportFrame(
 
 	pPacket = (PEAPOL_PACKET)mpool;
 	NdisZeroMemory(pPacket, TX_EAPOL_BUFFER);
-	
+
 	pPacket->ProVer	= EAPOL_VER;
 	pPacket->ProType	= EAPOLKey;
-	
+
 	pPacket->KeyDesc.Type = WPA1_KEY_DESC;
 
     /* Request field presented */
@@ -288,12 +288,12 @@ VOID WpaStaPairwiseKeySetting(
 	PMAC_TABLE_ENTRY pEntry;
 
 	pEntry = &pAd->MacTab.Content[BSSID_WCID];
-	
+
 	/* Pairwise key shall use key#0  */
 	pSharedKey = &pAd->SharedKey[BSS0][0];
 
 	NdisMoveMemory(pAd->StaCfg.PTK, pEntry->PTK, LEN_PTK);
-	
+
 	/* Prepare pair-wise key information into shared key table */
 	NdisZeroMemory(pSharedKey, sizeof(CIPHER_KEY));
 	pSharedKey->KeyLen = LEN_TK;
@@ -315,7 +315,7 @@ VOID WpaStaPairwiseKeySetting(
 	NdisMoveMemory(pEntry->PairwiseKey.RxMic, &pAd->StaCfg.PTK[48], LEN_TKIP_MIC);
 	NdisMoveMemory(pEntry->PairwiseKey.TxMic, &pAd->StaCfg.PTK[48+LEN_TKIP_MIC], LEN_TKIP_MIC);
 	pEntry->PairwiseKey.CipherAlg = pSharedKey->CipherAlg;
-	
+
 	/* Update pairwise key information to ASIC Shared Key Table	 */
 	RTMP_ASIC_SHARED_KEY_TABLE(pAd,
 						  BSS0,
@@ -331,7 +331,7 @@ VOID WpaStaPairwiseKeySetting(
 						SHAREDKEYTABLE);
 
 	RTMP_SET_PORT_SECURED(pAd);
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("%s : AID(%d) port secured\n", __FUNCTION__, pEntry->Aid));
 
 }
@@ -373,23 +373,23 @@ VOID WpaStaGroupKeySetting(
 
 /*
 	========================================================================
-	
+
 	Routine Description:
 		Send EAPoL-Start packet to AP.
 
 	Arguments:
 		pAd         - NIC Adapter pointer
-		
+
 	Return Value:
 		None
-		
+
 	IRQL = DISPATCH_LEVEL
-	
+
 	Note:
 		Actions after link up
 		1. Change the correct parameters
 		2. Send EAPOL - START
-		
+
 	========================================================================
 */
 VOID    WpaSendEapolStart(
@@ -398,19 +398,19 @@ VOID    WpaSendEapolStart(
 {
 	IEEE8021X_FRAME		Packet;
 	UCHAR               Header802_3[14];
-	
+
 	DBGPRINT(RT_DEBUG_TRACE, ("-----> WpaSendEapolStart\n"));
 
 	NdisZeroMemory(Header802_3,sizeof(UCHAR)*14);
 
 	MAKE_802_3_HEADER(Header802_3, pBssid, &pAd->CurrentAddress[0], EAPOL);
-	
+
 	/* Zero message 2 body */
 	NdisZeroMemory(&Packet, sizeof(Packet));
 	Packet.Version = EAPOL_VER;
 	Packet.Type    = EAPOLStart;
 	Packet.Length  = cpu2be16(0);
-	
+
 	/* Copy frame to Tx ring */
 	RTMPToWirelessSta((PRTMP_ADAPTER)pAd, &pAd->MacTab.Content[BSSID_WCID],
 					 Header802_3, LENGTH_802_3, (PUCHAR)&Packet, 4, TRUE);

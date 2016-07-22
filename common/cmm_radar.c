@@ -186,8 +186,8 @@ INT Set_BlockChReset_Proc(
 {
 	INT i;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: Reset channel block status.\n", __FUNCTION__));	
-	
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: Reset channel block status.\n", __FUNCTION__));
+
 	for (i=0; i<pAd->ChannelListNum; i++)
 		pAd->ChannelList[i].RemainingTimeForUse = 0;
 
@@ -248,7 +248,7 @@ INT	Set_RadarShow_Proc(
 		printk("T_Matched_2 = %lu\n", pDfsSwParam->T_Matched_2);
 		printk("T_Matched_3 = %lu\n", pDfsSwParam->T_Matched_3);
 		printk("T_Matched_4 = %lu\n", pDfsSwParam->T_Matched_4);
-		printk("T_Matched_5 = %lu\n", pDfsSwParam->T_Matched_5);		
+		printk("T_Matched_5 = %lu\n", pDfsSwParam->T_Matched_5);
 #endif /* DFS_DEBUG */
 
 	printk("pAd->Dot11_H.ChMovingTime = %d\n", pAd->Dot11_H.ChMovingTime);

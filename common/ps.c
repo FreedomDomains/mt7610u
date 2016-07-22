@@ -32,7 +32,7 @@
 	========================================================================
 	Routine Description:
 		This routine is used to do insert packet into power-saveing queue.
-	
+
 	Arguments:
 		pAd: Pointer to our adapter
 		pPacket: Pointer to send packet
@@ -66,8 +66,8 @@ NDIS_STATUS RtmpInsertPsQueue(
 	{
 		if (pMacEntry->PsQueue.Number >= MAX_PACKETS_IN_PS_QUEUE)
 		{
-			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);			
-			return NDIS_STATUS_FAILURE;			
+			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+			return NDIS_STATUS_FAILURE;
 		}
 		else
 		{
@@ -303,7 +303,7 @@ BOOLEAN RtmpPsIndicate(
 
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
 	{
-		return PWR_ACTIVE;	
+		return PWR_ACTIVE;
 	}
 
 	pEntry = &pAd->MacTab.Content[Wcid];
@@ -406,7 +406,7 @@ VOID RtmpPsModeChange(
 				pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeMAX_PSP;
 			pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeMAX_PSP;
 			pAd->StaCfg.DefaultListenCount = 5;
-		}							
+		}
 		else if (PsMode == Ndis802_11PowerModeFast_PSP)
 		{
 			// do NOT turn on PSM bit here, wait until MlmeCheckForPsmChange()

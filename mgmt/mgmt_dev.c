@@ -31,7 +31,7 @@
 struct wifi_dev *get_wdev_by_idx(RTMP_ADAPTER *pAd, INT idx)
 {
 	struct wifi_dev *wdev = NULL;
-	
+
 	do
 	{
 
@@ -41,7 +41,7 @@ struct wifi_dev *get_wdev_by_idx(RTMP_ADAPTER *pAd, INT idx)
 		{
 			wdev = &pAd->StaCfg.wdev;
 			break;
-		}	
+		}
 #endif /* CONFIG_STA_SUPPORT */
 	} while (FALSE);
 

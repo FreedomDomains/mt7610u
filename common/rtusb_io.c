@@ -532,7 +532,7 @@ int read_reg(
 	int ret;
 	u8 req;
 	u32 io_value;
-	
+
 	if (base == 0x40)
 		req = 0x47;
 	else if (base == 0x41)
@@ -612,7 +612,7 @@ NTSTATUS	RTUSBReadBBPRegister(
 	}
 
 	RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
-	
+
 	if (BbpCsr.field.Busy == BUSY)
 	{
 		DBGPRINT_ERR(("BBP read R%d=0x%x fail\n", Id, BbpCsr.word));
@@ -672,7 +672,7 @@ NTSTATUS RTUSBWriteBBPRegister(
 	}
 
 	RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
-	
+
 	if (BusyCnt == MAX_BUSY_COUNT)
 	{
 		DBGPRINT_ERR(("BBP write R%d=0x%x fail\n", Id, BbpCsr.word));
@@ -738,7 +738,7 @@ NTSTATUS	RTUSBWriteRFRegister(
 
 done:
 	RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
-	
+
 	return status;
 }
 
@@ -1075,7 +1075,7 @@ NTSTATUS    RTUSB_VendorRequest(
 
 		do {
 				RTUSB_CONTROL_MSG(pObj->pUsb_Dev, 0, Request, RequestType, Value, Index, pAd->UsbVendorReqBuf, TransferBufferLength, CONTROL_TIMEOUT_JIFFIES, RET);
-				
+
 			if (RET < 0 ) {
 				DBGPRINT(RT_DEBUG_OFF, ("#\n"));
 				if (RET == RTMP_USB_CONTROL_MSG_ENODEV)
@@ -1645,7 +1645,7 @@ static NTSTATUS UpdateProtectHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 	pAsicProtectInfo = (PRT_ASIC_PROTECT_INFO)CMDQelmt->buffer;
 	AsicUpdateProtect(pAd, pAsicProtectInfo->OperationMode, pAsicProtectInfo->SetMask,
 							pAsicProtectInfo->bDisableBGProtect, pAsicProtectInfo->bNonGFExist);
-	
+
 	return NDIS_STATUS_SUCCESS;
 }
 
@@ -1776,7 +1776,7 @@ static NTSTATUS CmdRspEventCallback(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 	(*msg_event_handler_tb[pFceInfo->evt_type])(pAd, CMDQelmt->buffer,
 												CMDQelmt->bufferlength);
-	
+
 	return NDIS_STATUS_SUCCESS;
 }
 
