@@ -1,4 +1,4 @@
-include $(RT28xx_DIR)/os/linux/config.mk
+include $(PWD)/os/linux/config.mk
 
 obj_wsc :=
 obj_vht :=
@@ -454,7 +454,7 @@ install:
 	rm -rf $(DAT_PATH)
 	$(shell [ ! -f /etc/Wireless ] && mkdir /etc/Wireless)
 	mkdir $(DAT_PATH)
-	cp $(RT28xx_DIR)/$(DAT_FILE_NAME) $(DAT_PATH)/.
+	cp $(PWD)/$(DAT_FILE_NAME) $(DAT_PATH)/.
 	install -d $(LINUX_SRC_MODULE)
 	install -m 644 -c $(addsuffix .ko,$(MOD_NAME)) $(LINUX_SRC_MODULE)
 	/sbin/depmod -a ${shell uname -r}

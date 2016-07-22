@@ -94,14 +94,14 @@ int main(int argc ,char *argv[])
     char *chipset, *token;
 	char *wow, *rt28xx_mode;
 
-    rt28xxdir = (char *)getenv("RT28xx_DIR");
+    rt28xxdir = (char *)getenv("PWD");
     chipset = (char *)getenv("CHIPSET");
 	memcpy(chipsets, chipset, strlen(chipset));
 	wow = (char *)getenv("HAS_WOW_SUPPORT");
 	rt28xx_mode = (char *)getenv("RT28xx_MODE");
 
     if(!rt28xxdir) {
-		printf("Environment value \"RT28xx_DIR\" not export \n");
+		printf("Environment value \"PWD\" not export \n");
 	 	return -1;
     }
 
@@ -111,7 +111,7 @@ int main(int argc ,char *argv[])
     }	
 	
 	if (strlen(rt28xxdir) > (sizeof(infname)-100)) {
-		printf("Environment value \"RT28xx_DIR\" is too long!\n");
+		printf("Environment value \"PWD\" is too long!\n");
 		return -1;
 	}
 

@@ -21,11 +21,11 @@ MODULE = $(word 1, $(CHIPSET))
 #OS ABL - YES or NO
 OSABL = NO
 
-RT28xx_DIR = $(shell pwd)
+PWD = $(shell pwd)
 
-include $(RT28xx_DIR)/os/linux/config.mk
+include $(PWD)/os/linux/config.mk
 
-RTMP_SRC_DIR = $(RT28xx_DIR)/RT$(MODULE)
+RTMP_SRC_DIR = $(PWD)/RT$(MODULE)
 
 #PLATFORM: Target platform
 PLATFORM = PC
@@ -47,7 +47,7 @@ LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
 CROSS_COMPILE = 
 endif
 
-export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
+export OSABL PWD RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
 PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi osabl
@@ -56,52 +56,52 @@ all: build_tools $(TARGET)
 
 build_tools:
 	$(MAKE) -C tools
-	$(RT28xx_DIR)/tools/bin2h
+	$(PWD)/tools/bin2h
 
 test:
 	$(MAKE) -C tools test
 
 LINUX:
 ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.util $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
+	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 endif
-	cp -f os/linux/Makefile.6 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
+	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 
 ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.netif $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
+	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 ifeq ($(RT28xx_MODE),AP)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_ap.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_ap.ko /tftpboot
 ifeq ($(OSABL),YES)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_ap_util.ko /tftpboot
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_ap_net.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_ap_util.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_ap_net.ko /tftpboot
 endif
 	rm -f os/linux/$(MODULE)_ap.ko.lzma
 	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
 else	
 ifeq ($(RT28xx_MODE),APSTA)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_apsta.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_apsta.ko /tftpboot
 ifeq ($(OSABL),YES)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_apsta_util.ko /tftpboot
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_apsta_net.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_apsta_util.ko /tftpboot
+	cp -f $(PWD)/os/linux/$(MODULE)_apsta_net.ko /tftpboot
 endif
 else
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta.ko /tftpboot 2>/dev/null || :
+	cp -f $(PWD)/os/linux/$(MODULE)_sta.ko /tftpboot 2>/dev/null || :
 ifeq ($(OSABL),YES)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta_util.ko /tftpboot 2>/dev/null || :
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta_net.ko /tftpboot 2>/dev/null || :
+	cp -f $(PWD)/os/linux/$(MODULE)_sta_util.ko /tftpboot 2>/dev/null || :
+	cp -f $(PWD)/os/linux/$(MODULE)_sta_net.ko /tftpboot 2>/dev/null || :
 endif
 endif
 endif
 
 
 release: build_tools
-	$(MAKE) -C $(RT28xx_DIR)/striptool -f Makefile.release clean
-	$(MAKE) -C $(RT28xx_DIR)/striptool -f Makefile.release
+	$(MAKE) -C $(PWD)/striptool -f Makefile.release clean
+	$(MAKE) -C $(PWD)/striptool -f Makefile.release
 	striptool/striptool.out
 ifeq ($(RELEASE), DPO)
 	gcc -o striptool/banner striptool/banner.c
@@ -111,16 +111,16 @@ endif
 
 prerelease:
 ifeq ($(MODULE), 2880)
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release.2880 prerelease
+	$(MAKE) -C $(PWD)/os/linux -f Makefile.release.2880 prerelease
 else
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release prerelease
+	$(MAKE) -C $(PWD)/os/linux -f Makefile.release prerelease
 endif
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPB $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPA $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPC $(RTMP_SRC_DIR)/os/linux/.
+	cp $(PWD)/os/linux/Makefile.DPB $(RTMP_SRC_DIR)/os/linux/.
+	cp $(PWD)/os/linux/Makefile.DPA $(RTMP_SRC_DIR)/os/linux/.
+	cp $(PWD)/os/linux/Makefile.DPC $(RTMP_SRC_DIR)/os/linux/.
 ifeq ($(RT28xx_MODE),STA)
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
+	cp $(PWD)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
+	cp $(PWD)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
 endif	
 
 clean:
@@ -132,61 +132,33 @@ endif
 
 uninstall:
 ifeq ($(TARGET), LINUX)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.4 uninstall
-else
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.6 uninstall
-endif
+	$(MAKE) -C $(PWD)/os/linux -f Makefile.6 uninstall
 endif
 
 install:
 ifeq ($(TARGET), LINUX)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.4 install
-else
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.6 install
-endif
+	$(MAKE) -C $(PWD)/os/linux -f Makefile.6 install
 endif
 
 libwapi:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.libwapi.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
-	cp -f os/linux/Makefile.libwapi.6 $(RT28xx_DIR)/os/linux/Makefile	
-	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules	
-endif	
+	cp -f os/linux/Makefile.libwapi.6 $(PWD)/os/linux/Makefile	
+	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 
 osutil:
 ifeq ($(OSABL),YES)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4.util $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
-	cp -f os/linux/Makefile.6.util $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-endif
+	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 osnet:
 ifeq ($(OSABL),YES)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4.netif $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
-	cp -f os/linux/Makefile.6.netif $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-endif
+	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 osdrv:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
-	cp -f os/linux/Makefile.6 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-endif
+	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
+	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
