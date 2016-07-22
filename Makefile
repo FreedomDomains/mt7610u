@@ -61,17 +61,6 @@ build_tools:
 test:
 	$(MAKE) -C tools test
 
-UCOS:
-	$(MAKE) -C os/ucos/ MODE=$(RT28xx_MODE)
-	echo $(RT28xx_MODE)
-
-ECOS:
-	$(MAKE) -C os/ecos/ MODE=$(RT28xx_MODE)
-	cp -f os/ecos/$(MODULE) $(MODULE)
-
-THREADX:
-	$(MAKE) -C $(RT28xx_DIR)/os/Threadx -f $(RT28xx_DIR)/os/ThreadX/Makefile
-
 LINUX:
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.util $(RT28xx_DIR)/os/linux/Makefile
