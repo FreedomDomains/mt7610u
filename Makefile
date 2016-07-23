@@ -49,7 +49,7 @@ endif
 export OSABL PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean libwapi osabl
+PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean osabl
 
 all: build_tools $(TARGET)
 
@@ -128,10 +128,6 @@ ifeq ($(TARGET), LINUX)
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif
-
-libwapi:
-	cp -f os/linux/Makefile.libwapi.6 $(PWD)/os/linux/Makefile
-	$(MAKE) -C  $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 osutil:
 ifeq ($(OSABL),YES)
