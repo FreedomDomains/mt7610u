@@ -18,9 +18,6 @@ endif
 
 MODULE = $(word 1, $(CHIPSET))
 
-#OS ABL - YES or NO
-OSABL = NO
-
 PWD = $(shell pwd)
 
 include $(PWD)/os/linux/config.mk
@@ -46,7 +43,7 @@ KSRC = /lib/modules/$(shell uname -r)/build
 CROSS_COMPILE =
 endif
 
-export OSABL PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
+export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
 PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean osabl
@@ -61,39 +58,18 @@ test:
 	$(MAKE) -C tools test
 
 LINUX:
-ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
-endif
 	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
 	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
-ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
-endif
-
 ifeq ($(RT28xx_MODE),AP)
 	cp -f $(PWD)/os/linux/$(MODULE)_ap.ko /tftpboot
-ifeq ($(OSABL),YES)
-	cp -f $(PWD)/os/linux/$(MODULE)_ap_util.ko /tftpboot
-	cp -f $(PWD)/os/linux/$(MODULE)_ap_net.ko /tftpboot
-endif
 	rm -f os/linux/$(MODULE)_ap.ko.lzma
 	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
 else
 ifeq ($(RT28xx_MODE),APSTA)
 	cp -f $(PWD)/os/linux/$(MODULE)_apsta.ko /tftpboot
-ifeq ($(OSABL),YES)
-	cp -f $(PWD)/os/linux/$(MODULE)_apsta_util.ko /tftpboot
-	cp -f $(PWD)/os/linux/$(MODULE)_apsta_net.ko /tftpboot
-endif
 else
 	cp -f $(PWD)/os/linux/$(MODULE)_sta.ko /tftpboot 2>/dev/null || :
-ifeq ($(OSABL),YES)
-	cp -f $(PWD)/os/linux/$(MODULE)_sta_util.ko /tftpboot 2>/dev/null || :
-	cp -f $(PWD)/os/linux/$(MODULE)_sta_net.ko /tftpboot 2>/dev/null || :
-endif
 endif
 endif
 
@@ -130,16 +106,8 @@ ifeq ($(TARGET), LINUX)
 endif
 
 osutil:
-ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
-endif
 
 osnet:
-ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
-endif
 
 osdrv:
 	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
