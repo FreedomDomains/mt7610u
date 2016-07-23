@@ -46,7 +46,7 @@ endif
 export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean osabl
+PHONY += all build_tools test LINUX clean
 
 all: build_tools $(TARGET)
 
@@ -73,45 +73,12 @@ else
 endif
 endif
 
-
-release: build_tools
-	$(MAKE) -C $(PWD)/striptool -f Makefile.release clean
-	$(MAKE) -C $(PWD)/striptool -f Makefile.release
-	striptool/striptool.out
-ifeq ($(RELEASE), DPO)
-	gcc -o striptool/banner striptool/banner.c
-	./striptool/banner -b striptool/copyright.gpl -s DPO/ -d DPO_GPL -R
-	./striptool/banner -b striptool/copyright.frm -s DPO_GPL/include/firmware.h
-endif
-
-prerelease:
-ifeq ($(MODULE), 2880)
-	$(MAKE) -C $(PWD)/os/linux -f Makefile.release.2880 prerelease
-else
-	$(MAKE) -C $(PWD)/os/linux -f Makefile.release prerelease
-endif
-	cp $(PWD)/os/linux/Makefile.DPB $(RTMP_SRC_DIR)/os/linux/.
-	cp $(PWD)/os/linux/Makefile.DPA $(RTMP_SRC_DIR)/os/linux/.
-	cp $(PWD)/os/linux/Makefile.DPC $(RTMP_SRC_DIR)/os/linux/.
-ifeq ($(RT28xx_MODE),STA)
-	cp $(PWD)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
-	cp $(PWD)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
-endif
-
 clean:
 ifeq ($(TARGET), LINUX)
 	cp -f os/linux/Makefile.clean os/linux/Makefile
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif
-
-osutil:
-
-osnet:
-
-osdrv:
-	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
