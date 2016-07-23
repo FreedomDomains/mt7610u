@@ -40,14 +40,14 @@ MAKE = make
 
 ifeq ($(PLATFORM),PC)
 # Linux 2.6
-LINUX_SRC = /lib/modules/$(shell uname -r)/build
+KSRC = /lib/modules/$(shell uname -r)/build
 # Linux 2.4 Change to your local setting
-#LINUX_SRC = /usr/src/linux-2.4
+#KSRC = /usr/src/linux-2.4
 LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
 CROSS_COMPILE =
 endif
 
-export OSABL PWD RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
+export OSABL PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
 PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi osabl
@@ -64,14 +64,14 @@ test:
 LINUX:
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 ifeq ($(RT28xx_MODE),AP)
@@ -142,23 +142,23 @@ endif
 
 libwapi:
 	cp -f os/linux/Makefile.libwapi.6 $(PWD)/os/linux/Makefile
-	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C  $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 osutil:
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.util $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 osnet:
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.netif $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 endif
 
 osdrv:
 	cp -f os/linux/Makefile.6 $(PWD)/os/linux/Makefile
-	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(PWD)/os/linux modules
+	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
