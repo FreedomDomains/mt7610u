@@ -60,17 +60,8 @@ test:
 LINUX:
 	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
-ifeq ($(RT28xx_MODE),AP)
-	rm -f os/linux/$(MODULE)_ap.ko.lzma
-	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
-else
-endif
-
 clean:
-ifeq ($(TARGET), LINUX)
-	cp -f os/linux/Makefile.clean os/linux/Makefile
 	$(MAKE) -C os/linux clean
-endif
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
