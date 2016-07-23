@@ -831,34 +831,8 @@ int RtmpChipOpsHook(VOID *pCB)
 	if (pAd->MACVersion == 0xffffffff)
 		return -1;
 
-#ifdef RT65xx
-	RTMP_IO_READ32(pAd, ASIC_VERSION, &MacValue);
-	pAd->MacIcVersion = MacValue;
-
-	if (pAd->MacIcVersion == 0xffffffff)
-		return -1;
-#endif /* RT65xx */
-
 	/* default init */
 	RTMP_DRS_ALG_INIT(pAd, RATE_ALG_LEGACY);
-
-
-
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-	{
-		RT3290_Init(pAd);
-		goto done;
-	}
-#endif /* RT290 */
-
-#ifdef RT8592
-	if (IS_RT8592(pAd)) {
-		RT85592_Init(pAd);
-		goto done;
-	}
-#endif /* RT8592 */
 
 #ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
@@ -867,87 +841,7 @@ int RtmpChipOpsHook(VOID *pCB)
 	}
 #endif /* MT76x0 */
 
-
-
-	/* init default value whatever chipsets */
-	/* default pChipOps content will be 0x00 */
-	pChipCap->bbpRegTbSize = 0;
-	pChipCap->MaxNumOfRfId = 31;
-	pChipCap->MaxNumOfBbpId = 136;
-	pChipCap->SnrFormula = SNR_FORMULA1;
-	pChipCap->RfReg17WtMethod = RF_REG_WT_METHOD_NONE;
-	pChipCap->TXWISize = 16;
-	pChipCap->RXWISize = 16;
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
-	pChipCap->TxPowerTuningTable_2G = TxPowerTuningTableOrg;
-#ifdef A_BAND_SUPPORT
-	pChipCap->TxPowerTuningTable_5G = TxPowerTuningTableOrg;
-#endif /* A_BAND_SUPPORT */
-#endif /* defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) */
-	pChipOps->AsicMacInit = NULL;
-	pChipOps->AsicBbpInit = NULL;
-	pChipOps->AsicRfInit = NULL;
-
-#ifdef RTMP_EFUSE_SUPPORT
-	pChipCap->EFUSE_USAGE_MAP_START = 0x2d0;
-	pChipCap->EFUSE_USAGE_MAP_END = 0x2fc;
-       	pChipCap->EFUSE_USAGE_MAP_SIZE = 45;
-#endif /* RTMP_EFUSE_SUPPORT */
-
-	pChipCap->VcoPeriod = 10;
-	pChipCap->FlgIsVcoReCalMode = VCO_CAL_DISABLE;
-	pChipCap->WPDMABurstSIZE = 2; /* default 64B */
-	pChipCap->MBSSIDMode = MBSSID_MODE0;
-
-
-	RtmpChipBcnInit(pAd);
-
-	pChipOps->RxSensitivityTuning = RxSensitivityTuning;
-#ifdef CONFIG_STA_SUPPORT
-	pChipOps->ChipAGCAdjust = ChipAGCAdjust;
-#endif /* CONFIG_STA_SUPPORT */
-	pChipOps->ChipBBPAdjust = ChipBBPAdjust;
-	pChipOps->ChipSwitchChannel = Default_ChipSwitchChannel;
-
-	/* TX ALC */
-	pChipCap->bTempCompTxALC = FALSE;
-	pChipOps->AsicGetTxPowerOffset = NULL;
-	pChipOps->InitDesiredTSSITable = NULL;
-	pChipOps->AsicTxAlcGetAutoAgcOffset = NULL;
-	pChipOps->AsicExtraPowerOverMAC = NULL;
-
-	pChipOps->ChipAGCInit = Default_ChipAGCInit;
-	pChipOps->AsicAntennaDefaultReset = AsicAntennaDefaultReset;
-	pChipOps->NetDevNickNameInit = NetDevNickNameInit;
-	/* Init value. If pChipOps->AsicResetBbpAgent==NULL, "AsicResetBbpAgent" as default. If your chipset has specific routine, please re-hook it at self init function */
-	pChipOps->AsicResetBbpAgent = NULL;
-
-
-#ifdef RT28xx
-	pChipOps->ChipSwitchChannel = RT28xx_ChipSwitchChannel;
-#endif /* RT28xx */
-#ifdef CARRIER_DETECTION_SUPPORT
-	pChipCap->carrier_func = DISABLE_TONE_RADAR;
-	pChipOps->ToneRadarProgram = NULL;
-#endif /* CARRIER_DETECTOIN_SUPPORT */
-#ifdef DFS_SUPPORT
-	pChipCap->DfsEngineNum = 4;
-#endif /* DFS_SUPPORT */
-	pChipOps->CckMrcStatusCtrl = NULL;
-	pChipOps->RadarGLRTCompensate = NULL;
-
-	/*
-		2nd CCA detection
-	*/
-	pChipCap->b2ndCCACheck = FALSE;
-
-	/* We depends on RfICType and MACVersion to assign the corresponding operation callbacks. */
-
-
-
-#if defined(RT3883) || defined(RT3290) || defined(RT65xx)
 done:
-#endif /* defined(RT3883) || defined(RT3290) */
 	DBGPRINT(RT_DEBUG_TRACE, ("Chip specific bbpRegTbSize=%d!\n", pChipCap->bbpRegTbSize));
 	DBGPRINT(RT_DEBUG_TRACE, ("Chip VCO calibration mode = %d!\n", pChipCap->FlgIsVcoReCalMode));
 	return ret;
