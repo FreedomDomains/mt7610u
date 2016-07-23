@@ -62,15 +62,9 @@ LINUX:
 	$(MAKE) -C $(KSRC) SUBDIRS=$(PWD)/os/linux modules
 
 ifeq ($(RT28xx_MODE),AP)
-	cp -f $(PWD)/os/linux/$(MODULE)_ap.ko /tftpboot
 	rm -f os/linux/$(MODULE)_ap.ko.lzma
 	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
 else
-ifeq ($(RT28xx_MODE),APSTA)
-	cp -f $(PWD)/os/linux/$(MODULE)_apsta.ko /tftpboot
-else
-	cp -f $(PWD)/os/linux/$(MODULE)_sta.ko /tftpboot 2>/dev/null || :
-endif
 endif
 
 clean:
