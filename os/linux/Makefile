@@ -93,12 +93,6 @@ endif
 #ifdef CONFIG_STA_SUPPORT
 ifeq ($(RT28xx_MODE), STA)
 MOD_NAME = $(MODULE)_sta
-ifeq ($(PLATFORM),MT85XX)
-MOD_NAME = rtsta
-endif
-ifeq ($(PLATFORM),MT53XX)
-MOD_NAME = rtsta
-endif
 DAT_PATH = /etc/Wireless/RT$(CHIPSET_DAT)STA
 DAT_FILE_NAME = conf/RT$(CHIPSET_DAT)STA.dat
 endif
