@@ -190,9 +190,6 @@ STA_DRIVER_BUILD := 20141022-1327
 
 #################################################
 
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-
 ifndef $(WFLAGS)
 WFLAGS := -DSTA_DRIVER_BUILD="\"${STA_DRIVER_BUILD}\""
 else
@@ -836,9 +833,10 @@ MAKE = make
 ifeq ($(PLATFORM),PC)
 # Linux 2.6
 KSRC = /lib/modules/$(shell uname -r)/build
-# Linux 2.4 Change to your local setting
-#KSRC = /usr/src/linux-2.4
 CROSS_COMPILE =
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
+SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
+ARCH ?= $(SUBARCH)
 endif
 
 export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
@@ -856,7 +854,7 @@ test:
 	$(MAKE) -C tools test
 
 modules:
-	$(MAKE) -C $(KSRC) M=$(PWD) modules
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(PWD) modules
 
 clean:
 	rm -f common/*.o
