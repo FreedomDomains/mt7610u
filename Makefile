@@ -846,7 +846,7 @@ export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE
 # The targets that may be used.
 PHONY += all build_tools test LINUX clean
 
-all: build_tools $(TARGET)
+all: build_tools modules
 
 build_tools:
 	$(MAKE) -C tools
@@ -855,7 +855,7 @@ build_tools:
 test:
 	$(MAKE) -C tools test
 
-LINUX:
+modules:
 	$(MAKE) -C $(KSRC) M=$(PWD) modules
 
 clean:
