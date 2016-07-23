@@ -43,14 +43,13 @@ ifeq ($(PLATFORM),PC)
 KSRC = /lib/modules/$(shell uname -r)/build
 # Linux 2.4 Change to your local setting
 #KSRC = /usr/src/linux-2.4
-LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
 CROSS_COMPILE =
 endif
 
-export OSABL PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
+export OSABL PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi osabl
+PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean libwapi osabl
 
 all: build_tools $(TARGET)
 
@@ -128,16 +127,6 @@ ifeq ($(TARGET), LINUX)
 	cp -f os/linux/Makefile.clean os/linux/Makefile
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
-endif
-
-uninstall:
-ifeq ($(TARGET), LINUX)
-	$(MAKE) -C $(PWD)/os/linux -f Makefile.6 uninstall
-endif
-
-install:
-ifeq ($(TARGET), LINUX)
-	$(MAKE) -C $(PWD)/os/linux -f Makefile.6 install
 endif
 
 libwapi:

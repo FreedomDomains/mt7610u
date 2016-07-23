@@ -1,6 +1,6 @@
 include $(PWD)/os/linux/config.mk
 
-PHONY := clean install uninstall
+PHONY := clean
 
 clean:
 	rm -f ../../common/*.o
