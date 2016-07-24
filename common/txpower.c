@@ -35,7 +35,7 @@
 #define MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK		0x03
 
 
-VOID AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
+void AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
 {
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC;
 	DBGPRINT(RT_DEBUG_INFO, ("-->AsicGetTxPowerOffset\n"));
@@ -126,7 +126,7 @@ VOID AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
 }
 
 
-VOID AsicGetAutoAgcOffsetForExternalTxAlc(
+void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN PRTMP_ADAPTER 			pAd,
 	IN char *					pDeltaPwr,
 	IN char *					pTotalDeltaPwr,
@@ -273,7 +273,7 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 	==========================================================================
  */
 
-VOID AsicAdjustTxPower(
+void AsicAdjustTxPower(
 	IN PRTMP_ADAPTER pAd)
 {
 	CHAR		Rssi = -127;
@@ -350,7 +350,7 @@ VOID AsicAdjustTxPower(
 
 
 #ifdef SINGLE_SKU
-VOID GetSingleSkuDeltaPower(
+void GetSingleSkuDeltaPower(
 	IN 		PRTMP_ADAPTER 	pAd,
 	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
@@ -537,7 +537,7 @@ VOID GetSingleSkuDeltaPower(
 #endif /* SINGLE_SKU */
 
 
-VOID AsicPercentageDeltaPower(
+void AsicPercentageDeltaPower(
 	IN 		PRTMP_ADAPTER 		pAd,
 	IN		CHAR				Rssi,
 	INOUT	char *			pDeltaPwr,
@@ -595,7 +595,7 @@ VOID AsicPercentageDeltaPower(
 }
 
 
-VOID AsicCompensatePowerViaBBP(
+void AsicCompensatePowerViaBBP(
 	IN 		PRTMP_ADAPTER 		pAd,
 	INOUT	char *			pTotalDeltaPower)
 {
@@ -662,7 +662,7 @@ VOID AsicCompensatePowerViaBBP(
 
 	========================================================================
 */
-VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
+void RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 {
 	ULONG		data, Adata, Gdata;
 	USHORT		i, value, value2;
@@ -918,7 +918,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 
 	========================================================================
 */
-VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
+void RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 {
 	UINT32					i, choffset;
 	EEPROM_TX_PWR_STRUC	    Power;

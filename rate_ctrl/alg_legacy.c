@@ -48,7 +48,7 @@
 		call this routine every second
 	==========================================================================
  */
-VOID MlmeDynamicTxRateSwitching(
+void MlmeDynamicTxRateSwitching(
 	IN PRTMP_ADAPTER pAd)
 {
 	PUCHAR					pTable;
@@ -547,7 +547,7 @@ VOID MlmeDynamicTxRateSwitching(
 
 	========================================================================
 */
-VOID StaQuickResponeForRateUpExec(
+void StaQuickResponeForRateUpExec(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -891,7 +891,7 @@ VOID StaQuickResponeForRateUpExec(
 			pEntry->CurrTxRateIndex = new rate index
 			pEntry->TxQuality is updated
 */
-VOID MlmeOldRateAdapt(
+void MlmeOldRateAdapt(
 	IN PRTMP_ADAPTER 	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN UCHAR			CurrRateIdx,

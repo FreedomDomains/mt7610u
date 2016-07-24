@@ -191,7 +191,7 @@ ULONG	RTMPTkipGetUInt32(
 
 	========================================================================
 */
-VOID	RTMPTkipPutUInt32(
+void RTMPTkipPutUInt32(
 	IN OUT	PUCHAR		pDst,
 	IN		ULONG		val)
 {
@@ -223,7 +223,7 @@ VOID	RTMPTkipPutUInt32(
 
 	========================================================================
 */
-VOID RTMPTkipSetMICKey(
+void RTMPTkipSetMICKey(
 	IN	PTKIP_KEY_INFO	pTkip,
 	IN	PUCHAR			pMICKey)
 {
@@ -256,7 +256,7 @@ VOID RTMPTkipSetMICKey(
 
 	========================================================================
 */
-VOID	RTMPTkipAppendByte(
+void RTMPTkipAppendByte(
 	IN	PTKIP_KEY_INFO	pTkip,
 	IN	UCHAR 			uChar)
 {
@@ -301,7 +301,7 @@ VOID	RTMPTkipAppendByte(
 
 	========================================================================
 */
-VOID	RTMPTkipAppend(
+void RTMPTkipAppend(
 	IN	PTKIP_KEY_INFO	pTkip,
 	IN	PUCHAR			pSrc,
 	IN	UINT			nBytes)
@@ -332,7 +332,7 @@ VOID	RTMPTkipAppend(
 		the MIC Value is store in pAd->PrivateInfo.MIC
 	========================================================================
 */
-VOID	RTMPTkipGetMIC(
+void RTMPTkipGetMIC(
 	IN	PTKIP_KEY_INFO	pTkip)
 {
 	/* Append the minimum padding*/
@@ -373,7 +373,7 @@ VOID	RTMPTkipGetMIC(
 
 	========================================================================
 */
-VOID	RTMPInitMICEngine(
+void RTMPInitMICEngine(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PUCHAR			pKey,
 	IN	PUCHAR			pDA,
@@ -481,7 +481,7 @@ BOOLEAN	RTMPTkipCompareMICValue(
 
 	========================================================================
 */
-VOID	RTMPCalculateMICValue(
+void RTMPCalculateMICValue(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PNDIS_PACKET	pPacket,
 	IN	PUCHAR			pEncap,
@@ -579,7 +579,7 @@ UINT rotr1(UINT a)
 	return b;
 }
 
-VOID RTMPTkipMixKey(
+void RTMPTkipMixKey(
 	UCHAR *key,
 	UCHAR *ta,
 	ULONG pnl, /* Least significant 16 bits of PN */
@@ -857,7 +857,7 @@ BOOLEAN RTMPSoftDecryptTKIP(
 
 	========================================================================
 */
-VOID TKIP_GTK_KEY_WRAP(
+void TKIP_GTK_KEY_WRAP(
     IN UCHAR    *key,
     IN UCHAR	*iv,
     IN UCHAR    *input_text,
@@ -895,7 +895,7 @@ VOID TKIP_GTK_KEY_WRAP(
 		os_free_mem(NULL, pARC4_CTX);
 }
 
-VOID TKIP_GTK_KEY_UNWRAP(
+void TKIP_GTK_KEY_UNWRAP(
     IN UCHAR    *key,
     IN UCHAR	*iv,
     IN UCHAR    *input_text,

@@ -42,7 +42,7 @@ INT MCURandomWrite(PRTMP_ADAPTER pAd, RTMP_REG_PAIR *RegPair, UINT32 Num)
 		RTMP_IO_WRITE32(pAd, RegPair->Register, RegPair->Value);
 }
 
-VOID ChipOpsMCUHook(PRTMP_ADAPTER pAd, enum MCU_TYPE MCUType)
+void ChipOpsMCUHook(PRTMP_ADAPTER pAd, enum MCU_TYPE MCUType)
 {
 
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;

@@ -54,7 +54,7 @@ ULONG JapRadarType(
 	IN PRTMP_ADAPTER pAd);
 
 
-VOID RadarDetectPeriodic(
+void RadarDetectPeriodic(
 	IN PRTMP_ADAPTER	pAd);
 
 INT	Set_CSPeriod_Proc(
@@ -74,10 +74,10 @@ INT	Set_RadarShow_Proc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
-VOID CckMrcStatusCtrl(
+void CckMrcStatusCtrl(
 	IN PRTMP_ADAPTER pAd);
 
-VOID RadarGLRTCompensate(
+void RadarGLRTCompensate(
 	IN PRTMP_ADAPTER pAd);
 
 #endif /*defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)*/

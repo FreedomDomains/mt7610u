@@ -62,7 +62,7 @@ UCHAR CipherWpa2Template[] = {
 
 	==========================================================================
  */
-VOID AssocStateMachineInit(
+void AssocStateMachineInit(
 	IN PRTMP_ADAPTER pAd,
 	IN STATE_MACHINE *S,
 	OUT STATE_MACHINE_FUNC Trans[])
@@ -156,7 +156,7 @@ VOID AssocStateMachineInit(
 
 	==========================================================================
  */
-VOID AssocTimeout(
+void AssocTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -185,7 +185,7 @@ VOID AssocTimeout(
 
 	==========================================================================
  */
-VOID ReassocTimeout(
+void ReassocTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -214,7 +214,7 @@ VOID ReassocTimeout(
 
 	==========================================================================
  */
-VOID DisassocTimeout(
+void DisassocTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -253,7 +253,7 @@ VOID DisassocTimeout(
 
 	==========================================================================
  */
-VOID MlmeAssocReqAction(
+void MlmeAssocReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -684,7 +684,7 @@ VOID MlmeAssocReqAction(
 
 	==========================================================================
  */
-VOID MlmeReassocReqAction(
+void MlmeReassocReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
@@ -927,7 +927,7 @@ VOID MlmeReassocReqAction(
 
 	==========================================================================
  */
-VOID MlmeDisassocReqAction(
+void MlmeDisassocReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1047,7 +1047,7 @@ VOID MlmeDisassocReqAction(
 
 	==========================================================================
  */
-VOID PeerAssocRspAction(
+void PeerAssocRspAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1193,7 +1193,7 @@ VOID PeerAssocRspAction(
 
 	==========================================================================
  */
-VOID PeerReassocRspAction(
+void PeerReassocRspAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1345,7 +1345,7 @@ VOID PeerReassocRspAction(
 
 	==========================================================================
  */
-VOID AssocPostProc(
+void AssocPostProc(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pAddr2,
 	IN USHORT CapabilityInfo,
@@ -1516,7 +1516,7 @@ VOID AssocPostProc(
 
 	==========================================================================
  */
-VOID PeerDisassocAction(
+void PeerDisassocAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1594,7 +1594,7 @@ VOID PeerDisassocAction(
 
 	==========================================================================
  */
-VOID AssocTimeoutAction(
+void AssocTimeoutAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1615,7 +1615,7 @@ VOID AssocTimeoutAction(
 
 	==========================================================================
  */
-VOID ReassocTimeoutAction(
+void ReassocTimeoutAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1636,7 +1636,7 @@ VOID ReassocTimeoutAction(
 
 	==========================================================================
  */
-VOID DisassocTimeoutAction(
+void DisassocTimeoutAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1648,7 +1648,7 @@ VOID DisassocTimeoutAction(
 		    0);
 }
 
-VOID InvalidStateWhenAssoc(
+void InvalidStateWhenAssoc(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1662,7 +1662,7 @@ VOID InvalidStateWhenAssoc(
 		    0);
 }
 
-VOID InvalidStateWhenReassoc(
+void InvalidStateWhenReassoc(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1676,7 +1676,7 @@ VOID InvalidStateWhenReassoc(
 		    0);
 }
 
-VOID InvalidStateWhenDisassociate(
+void InvalidStateWhenDisassociate(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1703,7 +1703,7 @@ VOID InvalidStateWhenDisassociate(
 
 	==========================================================================
  */
-VOID Cls3errAction(
+void Cls3errAction(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pAddr)
 {

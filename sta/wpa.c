@@ -48,7 +48,7 @@ void inc_byte_array(UCHAR *counter, int len);
 
 	========================================================================
 */
-VOID	RTMPReportMicError(
+void RTMPReportMicError(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PCIPHER_KEY 	pWpaKey)
 {
@@ -134,7 +134,7 @@ INT	    WpaCheckEapCode(
 
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-VOID	WpaMicFailureReportFrame(
+void WpaMicFailureReportFrame(
 	IN  PRTMP_ADAPTER   pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -263,7 +263,7 @@ void inc_byte_array(UCHAR *counter, int len)
 	}
 }
 
-VOID WpaDisassocApAndBlockAssoc(
+void WpaDisassocApAndBlockAssoc(
     IN void *SystemSpecific1,
     IN void *FunctionContext,
     IN void *SystemSpecific2,
@@ -281,7 +281,7 @@ VOID WpaDisassocApAndBlockAssoc(
 	pAd->StaCfg.bBlockAssoc = TRUE;
 }
 
-VOID WpaStaPairwiseKeySetting(
+void WpaStaPairwiseKeySetting(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PCIPHER_KEY pSharedKey;
@@ -336,7 +336,7 @@ VOID WpaStaPairwiseKeySetting(
 
 }
 
-VOID WpaStaGroupKeySetting(
+void WpaStaGroupKeySetting(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PCIPHER_KEY 		pSharedKey;
@@ -392,7 +392,7 @@ VOID WpaStaGroupKeySetting(
 
 	========================================================================
 */
-VOID    WpaSendEapolStart(
+void    WpaSendEapolStart(
 	IN	PRTMP_ADAPTER	pAd,
 	IN  PUCHAR          pBssid)
 {

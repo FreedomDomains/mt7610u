@@ -223,7 +223,7 @@ INT Show_AGS_Proc(
 	Return Value:
 		None
 */
-VOID MlmeDynamicTxRateSwitchingAGS(
+void MlmeDynamicTxRateSwitchingAGS(
 	IN PRTMP_ADAPTER pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN PUCHAR pTable,
@@ -861,7 +861,7 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 	Return Value:
 		None
 */
-VOID StaQuickResponeForRateUpExecAGS(
+void StaQuickResponeForRateUpExecAGS(
 	IN PRTMP_ADAPTER pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN PUCHAR pTable,

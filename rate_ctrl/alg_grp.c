@@ -33,7 +33,7 @@
 	MlmeSetMcsGroup - set initial mcsGroup based on supported MCSs
 		On exit pEntry->mcsGroup is set to the mcsGroup
 */
-VOID MlmeSetMcsGroup(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void MlmeSetMcsGroup(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 {
 #ifdef DOT11N_SS3_SUPPORT
 	if ((pEntry->HTCapability.MCSSet[2] == 0xff) && (pAd->CommonCfg.TxStream == 3))
@@ -291,7 +291,7 @@ UCHAR MlmeSelectDownRate(
 		mcs23GI - the MCS23 entry will have this guard interval
 		mcs - table of MCS index into the Rate Table. -1 => not supported
 */
-VOID MlmeGetSupportedMcsAdapt(
+void MlmeGetSupportedMcsAdapt(
 	IN PRTMP_ADAPTER pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN UCHAR mcs23GI,
@@ -801,7 +801,7 @@ BOOLEAN MlmeRAHybridRule(
 			pEntry->CurrTxRateIndex = new rate index
 			pEntry->TxQuality is updated
 */
-VOID MlmeNewRateAdapt(
+void MlmeNewRateAdapt(
 	IN PRTMP_ADAPTER 	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN UCHAR			UpRateIdx,
@@ -1036,7 +1036,7 @@ VOID MlmeNewRateAdapt(
 
 
 #ifdef CONFIG_STA_SUPPORT
-VOID StaQuickResponeForRateUpExecAdapt(
+void StaQuickResponeForRateUpExecAdapt(
 	IN PRTMP_ADAPTER	pAd,
 	IN ULONG i,
 	IN CHAR  Rssi)
@@ -1296,7 +1296,7 @@ VOID StaQuickResponeForRateUpExecAdapt(
 }
 
 
-VOID MlmeDynamicTxRateSwitchingAdapt(
+void MlmeDynamicTxRateSwitchingAdapt(
     IN PRTMP_ADAPTER pAd,
 	IN ULONG i,
 	IN ULONG TxSuccess,

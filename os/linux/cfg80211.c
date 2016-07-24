@@ -175,7 +175,7 @@ static INT32 CFG80211_RegNotifier(
 	{																\
 		ULONG *__pPriv;												\
 		__pPriv = (ULONG *)(wiphy_priv(__pWiphy));					\
-		__pAd = (VOID *)(*__pPriv);									\
+		__pAd = (void *)(*__pPriv);									\
 		if (__pAd == NULL)											\
 		{															\
 			DBGPRINT(RT_DEBUG_ERROR,								\
@@ -223,7 +223,7 @@ static int CFG80211_OpsChannelSet(
 	IN enum nl80211_channel_type	ChannelType)
 #endif /* LINUX_VERSION_CODE */
 {
-	VOID *pAd;
+	void *pAd;
 	CFG80211_CB *p80211CB;
 	CMD_RTPRIV_IOCTL_80211_CHAN ChanInfo;
 	UINT32 ChanId;
@@ -316,7 +316,7 @@ static int CFG80211_OpsVirtualInfChg(
 	struct vif_params				*pParams)
 #endif /* LINUX_VERSION_CODE */
 {
-	VOID *pAd;
+	void *pAd;
 	CFG80211_CB *pCfg80211_CB;
 	struct net_device *pNetDev;
 	UINT32 Filter;
@@ -430,7 +430,7 @@ static int CFG80211_OpsScan(
 #endif /* LINUX_VERSION_CODE: 3.6.0 */
 {
 #ifdef CONFIG_STA_SUPPORT
-	VOID *pAd;
+	void *pAd;
 	CFG80211_CB *pCfg80211_CB;
 #ifdef WPA_SUPPLICANT_SUPPORT
 	struct iw_scan_req IwReq;
@@ -526,7 +526,7 @@ static int CFG80211_OpsIbssJoin(
 	IN struct net_device			*pNdev,
 	IN struct cfg80211_ibss_params	*pParams)
 {
-	VOID *pAd;
+	void *pAd;
 	CMD_RTPRIV_IOCTL_80211_IBSS IbssInfo;
 
 
@@ -571,7 +571,7 @@ static int CFG80211_OpsIbssLeave(
 	IN struct wiphy					*pWiphy,
 	IN struct net_device			*pNdev)
 {
-	VOID *pAd;
+	void *pAd;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
@@ -706,7 +706,7 @@ static int CFG80211_OpsStaGet(
 	IN u8							*pMac,
 	IN struct station_info				*pSinfo)
 {
-	VOID *pAd;
+	void *pAd;
 	CMD_RTPRIV_IOCTL_80211_STA StaInfo;
 
 
@@ -788,7 +788,7 @@ static int CFG80211_OpsStaDump(
 	IN u8							*pMac,
 	IN struct station_info				*pSinfo)
 {
-	VOID *pAd;
+	void *pAd;
 
 
 	if (Idx != 0)
@@ -873,7 +873,7 @@ static int CFG80211_OpsKeyAdd(
 	IN struct key_params				*pParams)
 #endif /* LINUX_VERSION_CODE */
 {
-	VOID *pAd;
+	void *pAd;
 	CMD_RTPRIV_IOCTL_80211_KEY KeyInfo;
 	CFG80211_CB *p80211CB;
 	p80211CB = NULL;
@@ -1091,7 +1091,7 @@ static int CFG80211_OpsKeyDefaultSet(
 	IN u8							KeyIdx)
 #endif /* LINUX_VERSION_CODE */
 {
-	VOID *pAd;
+	void *pAd;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
@@ -1138,7 +1138,7 @@ static int CFG80211_OpsConnect(
 	IN struct net_device				*pNdev,
 	IN struct cfg80211_connect_params	*pSme)
 {
-	VOID *pAd;
+	void *pAd;
 	CMD_RTPRIV_IOCTL_80211_CONNECT ConnInfo;
 	struct ieee80211_channel *pChannel = pSme->channel;
 	INT32 Pairwise = 0;
@@ -1345,7 +1345,7 @@ static int CFG80211_OpsDisconnect(
 	IN struct net_device				*pNdev,
 	IN u16								ReasonCode)
 {
-	VOID *pAd;
+	void *pAd;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
@@ -1364,7 +1364,7 @@ static int CFG80211_OpsDisconnect(
 static int CFG80211_OpsRFKill(
 	IN struct wiphy						*pWiphy)
 {
-	VOID		*pAd;
+	void 	*pAd;
 	BOOLEAN		active;
 
 
@@ -1376,7 +1376,7 @@ static int CFG80211_OpsRFKill(
 }
 
 
-VOID CFG80211_RFKillStatusUpdate(
+void CFG80211_RFKillStatusUpdate(
 	IN void *						pAd,
 	IN BOOLEAN							active)
 {
@@ -1419,7 +1419,7 @@ static int CFG80211_OpsSurveyGet(
 	IN struct survey_info				*pSurvey)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
-	VOID *pAd;
+	void *pAd;
 	CMD_RTPRIV_IOCTL_80211_SURVEY SurveyInfo;
 
 
@@ -1478,7 +1478,7 @@ static int CFG80211_OpsPmksaSet(
 	IN struct cfg80211_pmksa			*pPmksa)
 {
 #ifdef CONFIG_STA_SUPPORT
-	VOID *pAd;
+	void *pAd;
 	RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
 
@@ -1523,7 +1523,7 @@ static int CFG80211_OpsPmksaDel(
 	IN struct cfg80211_pmksa			*pPmksa)
 {
 #ifdef CONFIG_STA_SUPPORT
-	VOID *pAd;
+	void *pAd;
 	RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
 
@@ -1566,7 +1566,7 @@ static int CFG80211_OpsPmksaFlush(
 	IN struct net_device				*pNdev)
 {
 #ifdef CONFIG_STA_SUPPORT
-	VOID *pAd;
+	void *pAd;
 	RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
 
@@ -1591,7 +1591,7 @@ static int CFG80211_OpsSetBeacon(
         struct net_device *netdev,
         struct beacon_parameters *info)
 {
-    VOID *pAd;
+    void *pAd;
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
@@ -1648,7 +1648,7 @@ static int CFG80211_OpsAddBeacon(
         struct net_device *netdev,
         struct beacon_parameters *info)
 {
-    VOID *pAd;
+    void *pAd;
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
@@ -1704,7 +1704,7 @@ static int CFG80211_OpsDelBeacon(
         struct wiphy *pWiphy,
         struct net_device *netdev)
 {
-    VOID *pAd;
+    void *pAd;
     MAC80211_PAD_GET(pAd, pWiphy);
 
     CFG80211DBG(RT_DEBUG_OFF, ("80211> %s ==>\n", __FUNCTION__));
@@ -1718,7 +1718,7 @@ static int CFG80211_OpsStartAp(
 	struct net_device *netdev,
 	struct cfg80211_ap_settings *settings)
 {
-    VOID *pAd;
+    void *pAd;
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
@@ -1760,7 +1760,7 @@ static int CFG80211_OpsChangeBeacon(
 	struct net_device *netdev,
 	struct cfg80211_beacon_data *info)
 {
-    VOID *pAd;
+    void *pAd;
     CMD_RTPRIV_IOCTL_80211_BEACON bcn;
     UCHAR *beacon_head_buf, *beacon_tail_buf;
 
@@ -1797,7 +1797,7 @@ static int CFG80211_OpsStopAp(
 	struct wiphy *pWiphy,
 	struct net_device *netdev)
 {
-	VOID *pAd;
+	void *pAd;
 	MAC80211_PAD_GET(pAd, pWiphy);
 
 	CFG80211DBG(RT_DEBUG_OFF, ("80211> %s ==>\n", __FUNCTION__));
@@ -1949,7 +1949,7 @@ Note:
 static struct wireless_dev *CFG80211_WdevAlloc(
 	IN CFG80211_CB					*pCfg80211_CB,
 	IN CFG80211_BAND				*pBandInfo,
-	IN VOID 						*pAd,
+	IN void 						*pAd,
 	IN struct device				*pDev)
 {
 	struct wireless_dev *pWdev;
@@ -2051,7 +2051,7 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211_Register(
-	IN VOID						*pAd,
+	IN void 					*pAd,
 	IN struct device			*pDev,
 	IN struct net_device		*pNetDev)
 {
@@ -2125,13 +2125,13 @@ static INT32 CFG80211_RegNotifier(
 	IN struct wiphy					*pWiphy,
 	IN struct regulatory_request	*pRequest)
 {
-	VOID *pAd;
+	void *pAd;
 	ULONG *pPriv;
 
 
 	/* sanity check */
 	pPriv = (ULONG *)(wiphy_priv(pWiphy));
-	pAd = (VOID *)(*pPriv);
+	pAd = (void *)(*pPriv);
 
 	if (pAd == NULL)
 	{
@@ -2237,7 +2237,7 @@ static INT32 CFG80211_RegNotifier(
 {
 	struct device *pDev = pWiphy->dev.parent;
 	struct net_device *pNetDev = dev_get_drvdata(pDev);
-	VOID *pAd = (VOID *)RTMP_OS_NETDEV_GET_PRIV(pNetDev);
+	void *pAd = (void *)RTMP_OS_NETDEV_GET_PRIV(pNetDev);
 	UINT32 ReqType = Request;
 
 

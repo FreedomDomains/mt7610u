@@ -57,8 +57,8 @@
 	40, 41, 42, 43, 44, 45, 46, 47 /* 3*3 */
 };
 
-VOID RtmpDrvMaxRateGet(
-	IN	VOID					*pReserved,
+void RtmpDrvMaxRateGet(
+	IN	void 				*pReserved,
 /*	IN	PHTTRANSMIT_SETTING		pHtPhyMode,
 */
 	IN	u8					MODE,
@@ -111,10 +111,10 @@ char *rtstrchr(const char * s, int c)
 }
 
 
-VOID RtmpMeshDown(
-	IN VOID *pDrvCtrlBK,
+void RtmpMeshDown(
+	IN void *pDrvCtrlBK,
 	IN BOOLEAN WaitFlag,
-	IN BOOLEAN	 (*RtmpMeshLinkCheck)(IN VOID *pAd))
+	IN BOOLEAN	 (*RtmpMeshLinkCheck)(IN void *pAd))
 {
 }
 
@@ -133,7 +133,7 @@ BOOLEAN RtmpOsCmdDisplayLenCheck(
 
 
 #if defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
-VOID WpaSendMicFailureToWpaSupplicant(
+void WpaSendMicFailureToWpaSupplicant(
 	IN PNET_DEV pNetDev,
 	IN BOOLEAN bUnicast)
 {
@@ -191,7 +191,7 @@ int wext_notify_event_assoc(
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-VOID SendAssocIEsToWpaSupplicant(
+void SendAssocIEsToWpaSupplicant(
 	IN PNET_DEV pNetDev,
 	IN UCHAR *ReqVarIEs,
 	IN UINT32 ReqVarIELen)
@@ -215,7 +215,7 @@ VOID SendAssocIEsToWpaSupplicant(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 
-INT32  RtPrivIoctlSetVal(VOID)
+INT32  RtPrivIoctlSetVal(void)
 {
     return (INT32)RTPRIV_IOCTL_SET;
 }

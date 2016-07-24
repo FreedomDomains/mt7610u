@@ -85,7 +85,7 @@ void DlsStateMachineInit(
 
     ==========================================================================
  */
-VOID MlmeDlsReqAction(
+void MlmeDlsReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -184,7 +184,7 @@ VOID MlmeDlsReqAction(
 
     ==========================================================================
  */
-VOID PeerDlsReqAction(
+void PeerDlsReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -482,7 +482,7 @@ VOID PeerDlsReqAction(
 
     ==========================================================================
  */
-VOID PeerDlsRspAction(
+void PeerDlsRspAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -826,7 +826,7 @@ VOID PeerDlsRspAction(
 
     ==========================================================================
  */
-VOID MlmeDlsTearDownAction(
+void MlmeDlsTearDownAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -903,7 +903,7 @@ VOID MlmeDlsTearDownAction(
 
     ==========================================================================
  */
-VOID PeerDlsTearDownAction(
+void PeerDlsTearDownAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -967,7 +967,7 @@ VOID PeerDlsTearDownAction(
 
     ==========================================================================
  */
-VOID RTMPCheckDLSTimeOut(
+void RTMPCheckDLSTimeOut(
 	IN PRTMP_ADAPTER pAd)
 {
 	ULONG i;
@@ -1416,7 +1416,7 @@ INT RTMPCheckDLSFrame(
 
     ==========================================================================
  */
-VOID RTMPSendDLSTearDownFrame(
+void RTMPSendDLSTearDownFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pDA)
 {
@@ -1750,7 +1750,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	return NStatus;
 }
 
-VOID DlsTimeoutAction(
+void DlsTimeoutAction(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,

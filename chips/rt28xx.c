@@ -30,7 +30,7 @@
 #include "rt_config.h"
 
 
-VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
+void RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
 {
 	if (pAd->MACVersion != 0x28600100)
 		return;
@@ -54,7 +54,7 @@ VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
 }
 
 
-VOID RT28xx_ChipSwitchChannel(
+void RT28xx_ChipSwitchChannel(
 	IN PRTMP_ADAPTER 			pAd,
 	IN UCHAR					Channel,
 	IN BOOLEAN					bScan)

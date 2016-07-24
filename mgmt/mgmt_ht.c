@@ -166,7 +166,7 @@ UCHAR get_cent_ch_by_htinfo(
 
 	========================================================================
 */
-VOID RTMPSetHT(
+void RTMPSetHT(
 	IN RTMP_ADAPTER *pAd,
 	IN OID_SET_HT_PHYMODE *pHTPhyMode)
 {
@@ -418,7 +418,7 @@ VOID RTMPSetHT(
 
 	========================================================================
 */
-VOID RTMPSetIndividualHT(
+void RTMPSetIndividualHT(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR apidx)
 {
@@ -567,7 +567,7 @@ VOID RTMPSetIndividualHT(
 
 	========================================================================
 */
-VOID RTMPDisableDesiredHtInfo(
+void RTMPDisableDesiredHtInfo(
 	IN	PRTMP_ADAPTER		pAd)
 {
 
@@ -633,7 +633,7 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 
 	========================================================================
 */
-VOID RTMPUpdateHTIE(
+void RTMPUpdateHTIE(
 	IN RT_HT_CAPABILITY	*pRtHt,
 	IN UCHAR *pMcsSet,
 	OUT HT_CAPABILITY_IE *pHtCapability,

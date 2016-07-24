@@ -486,12 +486,12 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_CONNECT {
 typedef struct __CMD_RTPRIV_IOCTL_80211_REG_NOTIFY {
 
 	UCHAR Alpha2[2];
-	VOID *pWiphy;
+	void *pWiphy;
 } CMD_RTPRIV_IOCTL_80211_REG_NOTIFY;
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_SURVEY {
 
-	VOID *pCfg80211;
+	void *pCfg80211;
 /*	UINT64 ChannelTime; */ /* idle + busy, not support */
 	UINT64 ChannelTimeBusy;
 	UINT64 ChannelTimeExtBusy;
@@ -596,16 +596,16 @@ typedef struct __RT_CMD_USB_DEV_CONFIG {
 	IN USHORT BulkInMaxPacketSize;
 	IN u8 BulkOutEpAddr[6];
 	IN USHORT BulkOutMaxPacketSize;
-	IN VOID *pConfig;
+	IN void *pConfig;
 } RT_CMD_USB_DEV_CONFIG;
 
 typedef struct __RT_CMD_CFG80211_CONFIG {
-	IN VOID *pCfgDev;
-	IN VOID(
+	IN void *pCfgDev;
+	IN void(
 	*CFG80211_Register) (
-	IN VOID * pAd,
-	IN VOID * pDev,
-	IN VOID * pNetDev);
+	IN void * pAd,
+	IN void * pDev,
+	IN void * pNetDev);
 } RT_CMD_CFG80211_CONFIG;
 
 typedef struct __RT_CMD_WAIT_QUEUE_LIST {
@@ -617,13 +617,13 @@ typedef struct __RT_CMD_WAIT_QUEUE_LIST {
 
 typedef struct __RT_CMD_INF_UP_DOWN {
 
-	IN	int (*rt28xx_open)(VOID *net_dev);
-	IN	int (*rt28xx_close)(VOID *net_dev);
+	IN	int (*rt28xx_open)(void *net_dev);
+	IN	int (*rt28xx_close)(void *net_dev);
 } RT_CMD_INF_UP_DOWN;
 
 typedef struct __RT_CMD_STATS {
-	IN VOID *pNetDev;
-	OUT VOID *pStats;	/* point to pAd->stats */
+	IN void *pNetDev;
+	OUT void *pStats;	/* point to pAd->stats */
 
 	OUT unsigned long rx_packets;	/* total packets received       */
 	OUT unsigned long tx_packets;	/* total packets transmitted */
@@ -645,7 +645,7 @@ typedef struct __RT_CMD_IW_STATS {
 	ULONG priv_flags;
 	UCHAR *dev_addr;
 
-	VOID *pStats;		/* point to pAd->iw_stats */
+	void *pStats;		/* point to pAd->iw_stats */
 
 	u8 qual;
 	u8 level;
@@ -655,14 +655,14 @@ typedef struct __RT_CMD_IW_STATS {
 
 typedef struct __RT_CMD_PCIE_INIT {
 
-	IN VOID *pPciDev;
+	IN void *pPciDev;
 	IN UINT32 ConfigDeviceID;
 	IN UINT32 ConfigSubsystemVendorID;
 	IN UINT32 ConfigSubsystemID;
 } RT_CMD_PCIE_INIT;
 
 typedef struct __RT_CMD_AP_IOCTL_CONFIG {
-	IN VOID *net_dev;
+	IN void *net_dev;
 	IN ULONG priv_flags;
 	IN char *pCmdData;
 	IN INT32 CmdId_RTPRIV_IOCTL_SET;

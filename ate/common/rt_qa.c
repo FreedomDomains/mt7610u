@@ -192,7 +192,7 @@ NDIS_STATUS RXSTOP(
 }
 
 
-static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
+static void memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 {
 	UINT32 i, Value = 0;
 	UCHAR *pDst = NULL, *pSrc = NULL;
@@ -219,7 +219,7 @@ static VOID memcpy_exl(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 }
 
 
-static VOID memcpy_exs(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
+static void memcpy_exs(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 {
 	ULONG i;
 	{
@@ -245,7 +245,7 @@ static VOID memcpy_exs(PRTMP_ADAPTER pAd, UCHAR *dst, UCHAR *src, ULONG len)
 }
 
 
-static VOID RTMP_IO_READ_BULK(PRTMP_ADAPTER pAd, UCHAR *dst, UINT32 offset, UINT32 len)
+static void RTMP_IO_READ_BULK(PRTMP_ADAPTER pAd, UCHAR *dst, UINT32 offset, UINT32 len)
 {
 	UINT32 index, Value = 0;
 	UCHAR *pDst;
@@ -267,7 +267,7 @@ static VOID RTMP_IO_READ_BULK(PRTMP_ADAPTER pAd, UCHAR *dst, UINT32 offset, UINT
 }
 
 
-VOID BubbleSort(INT32 size, INT32 array[])
+void BubbleSort(INT32 size, INT32 array[])
 {
 	INT32 outer, inner, temp;
 
@@ -287,7 +287,7 @@ VOID BubbleSort(INT32 size, INT32 array[])
 }
 
 
-VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
+void CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	INT32		RSSI0, RSSI1, RSSI2;
@@ -426,7 +426,7 @@ VOID CalNoiseLevel(PRTMP_ADAPTER pAd, UCHAR channel, INT32 RSSI[3][10])
 }
 
 
-static VOID ATE_BBPRead(
+static void ATE_BBPRead(
 		IN	PRTMP_ADAPTER	pAd,
 		IN	UCHAR			offset,
 		IN  UCHAR			*pValue)
@@ -442,7 +442,7 @@ static VOID ATE_BBPRead(
 }
 
 
-static VOID ATE_BBPWrite(
+static void ATE_BBPWrite(
 		IN	PRTMP_ADAPTER	pAd,
 		IN	UCHAR			offset,
 		IN  UCHAR			value)
@@ -2704,7 +2704,7 @@ INT RtmpDoAte(
 }
 
 
-VOID ATE_QA_Statistics(
+void ATE_QA_Statistics(
 	IN RTMP_ADAPTER *pAd,
 	IN RXWI_STRUC *pRxWI,
 	IN RXINFO_STRUC *pRxInfo,

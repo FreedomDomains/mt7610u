@@ -42,9 +42,9 @@ RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
 RTMP_PCI_CONFIG RtmpPciConfig, *pRtmpPciConfig = &RtmpPciConfig;
 RTMP_USB_CONFIG RtmpUsbConfig, *pRtmpUsbConfig = &RtmpUsbConfig;
 
-VOID RtmpDrvOpsInit(
-	OUT VOID *pDrvOpsOrg,
-	INOUT VOID *pDrvNetOpsOrg,
+void RtmpDrvOpsInit(
+	OUT void *pDrvOpsOrg,
+	INOUT void *pDrvNetOpsOrg,
 	IN RTMP_PCI_CONFIG *pPciConfig,
 	IN RTMP_USB_CONFIG *pUsbConfig)
 {
@@ -111,7 +111,7 @@ RTMP_BUILD_DRV_OPS_FUNCTION_BODY
 #endif /* LINUX */
 
 
-int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
+int rt28xx_init(void *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 	UINT index;
@@ -614,8 +614,8 @@ err0:
 
 
 #ifdef CONFIG_STA_SUPPORT
-VOID RTMPDrvSTAOpen(
-	IN VOID *pAdSrc)
+void RTMPDrvSTAOpen(
+	IN void *pAdSrc)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	UINT32 reg = 0;
@@ -676,9 +676,9 @@ VOID RTMPDrvSTAOpen(
 
 }
 
-VOID RTMPDrvSTAClose(
-	IN VOID *pAdSrc,
-	IN VOID *net_dev)
+void RTMPDrvSTAClose(
+	IN void *pAdSrc,
+	IN void *net_dev)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	BOOLEAN Cancelled;
@@ -836,8 +836,8 @@ VOID RTMPDrvSTAClose(
 }
 #endif
 
-VOID RTMPInfClose(
-	IN VOID				*pAdSrc)
+void RTMPInfClose(
+	IN void 			*pAdSrc)
 {
 	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)pAdSrc;
 
@@ -948,7 +948,7 @@ VOID RTMPInfClose(
 
 
 PNET_DEV RtmpPhyNetDevMainCreate(
-	IN VOID				*pAdSrc)
+	IN void 			*pAdSrc)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	PNET_DEV pDevNew;

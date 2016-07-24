@@ -27,7 +27,7 @@
 
 #include "rt_config.h"
 
-VOID STARxEAPOLFrameIndicate(
+void STARxEAPOLFrameIndicate(
 	IN PRTMP_ADAPTER pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
@@ -127,7 +127,7 @@ VOID STARxEAPOLFrameIndicate(
 }
 
 
-VOID STARxDataFrameAnnounce(
+void STARxDataFrameAnnounce(
 	IN PRTMP_ADAPTER pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
@@ -207,7 +207,7 @@ VOID STARxDataFrameAnnounce(
 
 
 #ifdef HDR_TRANS_SUPPORT
-VOID STARxDataFrameAnnounce_Hdr_Trns(
+void STARxDataFrameAnnounce_Hdr_Trns(
 	IN PRTMP_ADAPTER pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
@@ -347,7 +347,7 @@ BOOLEAN STACheckTkipMICValue(
   3. set payload size including LLC to DataSize
   4. set some flags with RX_BLK_SET_FLAG()
 */
-VOID STAHandleRxDataFrame(
+void STAHandleRxDataFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN RX_BLK *pRxBlk)
 {
@@ -813,7 +813,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 
 #ifdef HDR_TRANS_SUPPORT
-VOID STAHandleRxDataFrame_Hdr_Trns(
+void STAHandleRxDataFrame_Hdr_Trns(
 	IN PRTMP_ADAPTER pAd,
 	IN RX_BLK *pRxBlk)
 {
@@ -1269,7 +1269,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 #endif /* HDR_TRANS_SUPPORT */
 
 
-VOID STAHandleRxMgmtFrame(
+void STAHandleRxMgmtFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN RX_BLK *pRxBlk)
 {
@@ -1360,7 +1360,7 @@ VOID STAHandleRxMgmtFrame(
 }
 
 
-VOID STAHandleRxControlFrame(
+void STAHandleRxControlFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN RX_BLK *pRxBlk)
 {
@@ -1815,7 +1815,7 @@ BOOLEAN STAHandleRxDonePacket(
 
 	========================================================================
 */
-VOID RTMPHandleTwakeupInterrupt(
+void RTMPHandleTwakeupInterrupt(
 	IN PRTMP_ADAPTER pAd)
 {
 	AsicForceWakeup(pAd, FALSE);
@@ -1840,7 +1840,7 @@ Note:
 	You only can put OS-depened & STA related code in here.
 ========================================================================
 */
-VOID STASendPackets(
+void STASendPackets(
 	IN NDIS_HANDLE MiniportAdapterContext,
 	IN PPNDIS_PACKET ppPacketArray,
 	IN UINT NumberOfPackets)
@@ -2246,7 +2246,7 @@ NDIS_STATUS RTMPFreeTXDRequest(
 #endif /* RTMP_MAC_USB */
 
 
-VOID RTMPSendNullFrame(
+void RTMPSendNullFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR TxRate,
 	IN BOOLEAN bQosNull,
@@ -2330,7 +2330,7 @@ Decide WEP bit and cipher suite to be used. Same cipher suite should be used for
 	WepStatus is Ndis802_11Encryption1Enabled but the key will use PairwiseKey
 	Instead of the SharedKey, SharedKey Length may be Zero.
 */
-VOID STAFindCipherAlgorithm(
+void STAFindCipherAlgorithm(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -2400,7 +2400,7 @@ VOID STAFindCipherAlgorithm(
 
 
 #ifdef HDR_TRANS_SUPPORT
-VOID STABuildWifiInfo(
+void STABuildWifiInfo(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -2472,7 +2472,7 @@ VOID STABuildWifiInfo(
 }
 
 
-VOID STABuildCacheWifiInfo(
+void STABuildCacheWifiInfo(
 	IN RTMP_ADAPTER *pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR *pWiInfo)
@@ -2533,7 +2533,7 @@ VOID STABuildCacheWifiInfo(
 #endif /* HDR_TRANS_SUPPORT */
 
 
-VOID STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
+void STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *wifi_hdr;
 #ifdef QOS_DLS_SUPPORT
@@ -2639,7 +2639,7 @@ VOID STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 
 #ifdef DOT11_N_SUPPORT
-VOID STABuildCache802_11Header(
+void STABuildCache802_11Header(
 	IN RTMP_ADAPTER *pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR *pHeader)
@@ -2819,7 +2819,7 @@ static inline PUCHAR STA_Build_AMSDU_Frame_Header(
 }
 
 
-VOID STA_AMPDU_Frame_Tx(
+void STA_AMPDU_Frame_Tx(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -3213,7 +3213,7 @@ VOID STA_AMPDU_Frame_Tx(
 
 
 #ifdef HDR_TRANS_SUPPORT
-VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
+void STA_AMPDU_Frame_Tx_Hdr_Trns(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -3345,7 +3345,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 #endif /* HDR_TRANS_SUPPORT */
 
 
-VOID STA_AMSDU_Frame_Tx(
+void STA_AMSDU_Frame_Tx(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -3480,7 +3480,7 @@ VOID STA_AMSDU_Frame_Tx(
 #endif /* DOT11_N_SUPPORT */
 
 
-VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
+void STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *wifi_hdr;
 	UCHAR *pHeaderBufPtr;
@@ -3657,7 +3657,7 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 
 #ifdef HDR_TRANS_SUPPORT
-VOID STA_Legacy_Frame_Tx_Hdr_Trns(
+void STA_Legacy_Frame_Tx_Hdr_Trns(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -3746,7 +3746,7 @@ VOID STA_Legacy_Frame_Tx_Hdr_Trns(
 }
 #endif /* HDR_TRANS_SUPPORT */
 
-VOID STA_ARalink_Frame_Tx(
+void STA_ARalink_Frame_Tx(
 	IN PRTMP_ADAPTER pAd,
 	IN TX_BLK * pTxBlk)
 {
@@ -3873,7 +3873,7 @@ VOID STA_ARalink_Frame_Tx(
 }
 
 
-VOID STA_Fragment_Frame_Tx(
+void STA_Fragment_Frame_Tx(
 	IN RTMP_ADAPTER *pAd,
 	IN TX_BLK *pTxBlk)
 {
@@ -4390,7 +4390,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 }
 
 
-VOID Sta_Announce_or_Forward_802_3_Packet(
+void Sta_Announce_or_Forward_802_3_Packet(
 	IN PRTMP_ADAPTER pAd,
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR FromWhichBSSID)

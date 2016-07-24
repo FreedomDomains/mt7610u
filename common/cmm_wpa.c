@@ -50,7 +50,7 @@ UCHAR       OUI_WPA2_PSK_SHA256[4]   = {0x00, 0x0F, 0xAC, 0x06};
 
 
 
-static VOID	ConstructEapolKeyData(
+static void ConstructEapolKeyData(
 	IN	PMAC_TABLE_ENTRY	pEntry,
 	IN	UCHAR			GroupKeyWepStatus,
 	IN	UCHAR			keyDescVer,
@@ -61,23 +61,23 @@ static VOID	ConstructEapolKeyData(
 	IN	UCHAR			RSNIE_LEN,
 	OUT PEAPOL_PACKET   pMsg);
 
-static VOID WpaEAPPacketAction(
+static void WpaEAPPacketAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
-static VOID WpaEAPOLASFAlertAction(
+static void WpaEAPOLASFAlertAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
-static VOID WpaEAPOLLogoffAction(
+static void WpaEAPOLLogoffAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
-static VOID WpaEAPOLStartAction(
+static void WpaEAPOLStartAction(
     IN PRTMP_ADAPTER    pAd,
     IN MLME_QUEUE_ELEM  *Elem);
 
-static VOID WpaEAPOLKeyAction(
+static void WpaEAPOLKeyAction(
     IN PRTMP_ADAPTER    pAd,
     IN MLME_QUEUE_ELEM  *Elem);
 
@@ -89,7 +89,7 @@ static VOID WpaEAPOLKeyAction(
         S - pointer to the association state machine
     ==========================================================================
  */
-VOID WpaStateMachineInit(
+void WpaStateMachineInit(
     IN  PRTMP_ADAPTER   pAd,
     IN  STATE_MACHINE *S,
     OUT STATE_MACHINE_FUNC Trans[])
@@ -112,19 +112,19 @@ VOID WpaStateMachineInit(
     Return:
     ==========================================================================
 */
-VOID WpaEAPPacketAction(
+void WpaEAPPacketAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 }
 
-VOID WpaEAPOLASFAlertAction(
+void WpaEAPOLASFAlertAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 }
 
-VOID WpaEAPOLLogoffAction(
+void WpaEAPOLLogoffAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
@@ -137,7 +137,7 @@ VOID WpaEAPOLLogoffAction(
     Return:
     ==========================================================================
 */
-VOID WpaEAPOLStartAction(
+void WpaEAPOLStartAction(
     IN PRTMP_ADAPTER    pAd,
     IN MLME_QUEUE_ELEM  *Elem)
 {
@@ -191,7 +191,7 @@ VOID WpaEAPOLStartAction(
     Return:
     ==========================================================================
 */
-VOID WpaEAPOLKeyAction(
+void WpaEAPOLKeyAction(
     IN PRTMP_ADAPTER    pAd,
     IN MLME_QUEUE_ELEM  *Elem)
 {
@@ -365,7 +365,7 @@ VOID WpaEAPOLKeyAction(
 
 	========================================================================
 */
-VOID RTMPToWirelessSta(
+void RTMPToWirelessSta(
     IN  PRTMP_ADAPTER   	pAd,
     IN  PMAC_TABLE_ENTRY 	pEntry,
     IN  PUCHAR          	pHeader802_3,
@@ -649,7 +649,7 @@ LabelErr:
 
     ==========================================================================
 */
-VOID WPAStart4WayHS(
+void WPAStart4WayHS(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN ULONG			TimeInterval)
@@ -753,7 +753,7 @@ VOID WPAStart4WayHS(
 
 	========================================================================
 */
-VOID PeerPairMsg1Action(
+void PeerPairMsg1Action(
 	IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN MLME_QUEUE_ELEM  *Elem)
@@ -873,7 +873,7 @@ VOID PeerPairMsg1Action(
     Return:
     ==========================================================================
 */
-VOID PeerPairMsg2Action(
+void PeerPairMsg2Action(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN MLME_QUEUE_ELEM  *Elem)
@@ -1015,7 +1015,7 @@ VOID PeerPairMsg2Action(
 
 	========================================================================
 */
-VOID PeerPairMsg3Action(
+void PeerPairMsg3Action(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN MLME_QUEUE_ELEM  *Elem)
@@ -1149,7 +1149,7 @@ VOID PeerPairMsg3Action(
     Return:
     ==========================================================================
 */
-VOID PeerPairMsg4Action(
+void PeerPairMsg4Action(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN MLME_QUEUE_ELEM  *Elem)
@@ -1230,7 +1230,7 @@ VOID PeerPairMsg4Action(
 
     ==========================================================================
 */
-VOID WPAStart2WayGroupHS(
+void WPAStart2WayGroupHS(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry)
 {
@@ -1313,7 +1313,7 @@ VOID WPAStart2WayGroupHS(
 
 	========================================================================
 */
-VOID	PeerGroupMsg1Action(
+void PeerGroupMsg1Action(
 	IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
     IN MLME_QUEUE_ELEM  *Elem)
@@ -1424,7 +1424,7 @@ VOID	PeerGroupMsg1Action(
 }
 
 
-VOID EnqueueStartForPSKExec(
+void EnqueueStartForPSKExec(
     IN void *SystemSpecific1,
     IN void *FunctionContext,
     IN void *SystemSpecific2,
@@ -1453,7 +1453,7 @@ VOID EnqueueStartForPSKExec(
 }
 
 
-VOID MlmeDeAuthAction(
+void MlmeDeAuthAction(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
 	IN USHORT           Reason,
@@ -1508,10 +1508,10 @@ VOID MlmeDeAuthAction(
     Return:
     ==========================================================================
 */
-VOID PeerGroupMsg2Action(
+void PeerGroupMsg2Action(
     IN PRTMP_ADAPTER    pAd,
     IN MAC_TABLE_ENTRY  *pEntry,
-    IN VOID             *Msg,
+    IN void             *Msg,
     IN UINT             MsgLen)
 {
     UINT            	Len;
@@ -1685,7 +1685,7 @@ void inc_iv_byte(UCHAR *iv, UINT len, UINT cnt)
 
 	========================================================================
 */
-VOID	PRF(
+void PRF(
 	IN	UCHAR	*key,
 	IN	INT		key_len,
 	IN	UCHAR	*prefix,
@@ -1820,7 +1820,7 @@ int RtmpPasswordHash(PSTRING password, PUCHAR ssid, INT ssidlength, PUCHAR outpu
 
 	========================================================================
 */
-VOID	KDF(
+void KDF(
 	IN	u8 *	key,
 	IN	INT		key_len,
 	IN	u8 *	label,
@@ -1891,7 +1891,7 @@ VOID	KDF(
 
 	========================================================================
 */
-VOID RTMPDerivePMKID(
+void RTMPDerivePMKID(
 	IN	u8 *			pAaddr,
 	IN	u8 *			pSpaddr,
 	IN	u8 *			pKey,
@@ -1942,7 +1942,7 @@ VOID RTMPDerivePMKID(
 
 	========================================================================
 */
-VOID WpaDerivePTK(
+void WpaDerivePTK(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR	*PMK,
 	IN	UCHAR	*ANonce,
@@ -2006,7 +2006,7 @@ VOID WpaDerivePTK(
 
 }
 
-VOID WpaDeriveGTK(
+void WpaDeriveGTK(
     IN  UCHAR   *GMK,
     IN  UCHAR   *GNonce,
     IN  UCHAR   *AA,
@@ -2065,7 +2065,7 @@ VOID WpaDeriveGTK(
 
 	========================================================================
 */
-VOID	GenRandom(
+void GenRandom(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			*macAddr,
 	OUT	UCHAR			*random)
@@ -2127,7 +2127,7 @@ VOID	GenRandom(
 
 	========================================================================
 */
-static VOID RTMPMakeRsnIeCipher(
+static void RTMPMakeRsnIeCipher(
 	IN  PRTMP_ADAPTER   pAd,
 	IN	UCHAR			ElementID,
 	IN	UINT			WepStatus,
@@ -2320,7 +2320,7 @@ static VOID RTMPMakeRsnIeCipher(
 
 	========================================================================
 */
-static VOID RTMPMakeRsnIeAKM(
+static void RTMPMakeRsnIeAKM(
 	IN  PRTMP_ADAPTER   pAd,
 	IN	UCHAR			ElementID,
 	IN	UINT			AuthMode,
@@ -2405,7 +2405,7 @@ static VOID RTMPMakeRsnIeAKM(
 
 	========================================================================
 */
-static VOID RTMPMakeRsnIeCap(
+static void RTMPMakeRsnIeCap(
 	IN  PRTMP_ADAPTER   pAd,
 	IN	UCHAR			ElementID,
 	IN	UCHAR			apidx,
@@ -2468,7 +2468,7 @@ static VOID RTMPMakeRsnIeCap(
 
 	========================================================================
 */
-VOID RTMPMakeRSNIE(
+void RTMPMakeRSNIE(
     IN  PRTMP_ADAPTER   pAd,
     IN  UINT            AuthMode,
     IN  UINT            WepStatus,
@@ -3040,7 +3040,7 @@ BOOLEAN RTMPParseEapolKeyData(
 
 	========================================================================
 */
-VOID WPA_ConstructKdeHdr(
+void WPA_ConstructKdeHdr(
 	IN 	u8	data_type,
 	IN 	u8 	data_len,
 	OUT PUCHAR 	pBuf)
@@ -3111,7 +3111,7 @@ VOID WPA_ConstructKdeHdr(
 
 	========================================================================
 */
-VOID	ConstructEapolMsg(
+void ConstructEapolMsg(
 	IN 	PMAC_TABLE_ENTRY	pEntry,
     IN 	UCHAR				GroupKeyWepStatus,
     IN 	UCHAR				MsgType,
@@ -3280,7 +3280,7 @@ VOID	ConstructEapolMsg(
 
 	========================================================================
 */
-VOID	ConstructEapolKeyData(
+void ConstructEapolKeyData(
 	IN	PMAC_TABLE_ENTRY	pEntry,
 	IN	UCHAR			GroupKeyWepStatus,
 	IN	UCHAR			keyDescVer,
@@ -3457,7 +3457,7 @@ VOID	ConstructEapolKeyData(
 
 	========================================================================
 */
-VOID	CalculateMIC(
+void CalculateMIC(
 	IN	UCHAR			KeyDescVer,
 	IN	UCHAR			*PTK,
 	OUT PEAPOL_PACKET   pMsg)
@@ -3652,7 +3652,7 @@ NDIS_STATUS	RTMPSoftDecryptionAction(
 
 }
 
-VOID RTMPSoftConstructIVHdr(
+void RTMPSoftConstructIVHdr(
 	IN	UCHAR			CipherAlg,
 	IN	UCHAR			key_id,
 	IN	PUCHAR			pTxIv,
@@ -3678,7 +3678,7 @@ VOID RTMPSoftConstructIVHdr(
 
 }
 
-VOID RTMPSoftEncryptionAction(
+void RTMPSoftEncryptionAction(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			CipherAlg,
 	IN	PUCHAR			pHdr,
@@ -3969,7 +3969,7 @@ out:
 
 }
 
-VOID WpaShowAllsuite(
+void WpaShowAllsuite(
 	IN 	u8 *	rsnie,
 	IN 	UINT	rsnie_len)
 {
@@ -4004,7 +4004,7 @@ VOID WpaShowAllsuite(
 
 }
 
-VOID RTMPInsertRSNIE(
+void RTMPInsertRSNIE(
 	IN PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 * rsnie_ptr,
@@ -4076,7 +4076,7 @@ VOID RTMPInsertRSNIE(
 }
 
 
-VOID WPAInstallPairwiseKey(
+void WPAInstallPairwiseKey(
 	PRTMP_ADAPTER		pAd,
 	u8				BssIdx,
 	PMAC_TABLE_ENTRY	pEntry,
@@ -4139,7 +4139,7 @@ VOID WPAInstallPairwiseKey(
 
 }
 
-VOID WPAInstallSharedKey(
+void WPAInstallSharedKey(
 	PRTMP_ADAPTER		pAd,
 	u8				GroupCipher,
 	u8				BssIdx,
@@ -4240,7 +4240,7 @@ VOID WPAInstallSharedKey(
 	}
 }
 
-VOID RTMPSetWcidSecurityInfo(
+void RTMPSetWcidSecurityInfo(
 	PRTMP_ADAPTER		pAd,
 	u8				BssIdx,
 	u8				KeyIdx,

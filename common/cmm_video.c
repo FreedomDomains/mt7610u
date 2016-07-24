@@ -53,7 +53,7 @@ void VideoTurbineUpdate(
 }
 
 
-VOID TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
+void TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
 {
 	ULONG IrqFlags;
 	INT qIdx;
@@ -84,7 +84,7 @@ VOID TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
 }
 
 
-VOID VideoTurbineDynamicTune(
+void VideoTurbineDynamicTune(
 	IN PRTMP_ADAPTER pAd)
 {
 	if (pAd->VideoTurbine.Enable == TRUE)
@@ -155,7 +155,7 @@ UCHAR GetAsicVideoTxBA(
 	return pAd->VideoTurbine.TxBASize;
 }
 
-VOID VideoConfigInit(
+void VideoConfigInit(
 	IN PRTMP_ADAPTER pAd)
 {
 	pAd->VideoTurbine.Enable = FALSE;

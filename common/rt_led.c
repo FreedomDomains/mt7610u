@@ -70,7 +70,7 @@ INT LED_Array[16][12]={
 
 	========================================================================
 */
-VOID RTMPSetLEDStatus(
+void RTMPSetLEDStatus(
 	IN PRTMP_ADAPTER 	pAd,
 	IN UCHAR			Status)
 {
@@ -200,7 +200,7 @@ VOID RTMPSetLEDStatus(
 		 > -57  Excellent
 	========================================================================
 */
-VOID RTMPSetSignalLED(
+void RTMPSetSignalLED(
 	IN PRTMP_ADAPTER 	pAd,
 	IN NDIS_802_11_RSSI Dbm)
 {

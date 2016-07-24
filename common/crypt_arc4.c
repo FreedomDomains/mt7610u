@@ -40,7 +40,7 @@ Arguments:
 
 ========================================================================
 */
-VOID ARC4_INIT (
+void ARC4_INIT (
     IN ARC4_CTX_STRUC *pARC4_CTX,
     IN PUCHAR pKey,
 	IN UINT KeyLength)
@@ -81,7 +81,7 @@ Return Value:
     OutputBlock       Return output text
  ========================================================================
 */
-VOID ARC4_Compute (
+void ARC4_Compute (
     IN ARC4_CTX_STRUC *pARC4_CTX,
     IN u8 InputBlock[],
     IN UINT InputBlockSize,
@@ -117,7 +117,7 @@ Arguments:
 
 ========================================================================
 */
-VOID ARC4_Discard_KeyLength (
+void ARC4_Discard_KeyLength (
     IN ARC4_CTX_STRUC *pARC4_CTX,
     IN UINT Length)
 {

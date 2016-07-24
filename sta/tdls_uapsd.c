@@ -31,11 +31,11 @@
 #include "rt_config.h"
 
 /* receive a traffic indication frame */
-static VOID TDLS_UAPSD_PeerTrafficIndAction(
+static void TDLS_UAPSD_PeerTrafficIndAction(
     IN	PRTMP_ADAPTER				pAd,
     IN	MLME_QUEUE_ELEM				*pElem);
 /* receive a traffic response frame */
-static VOID TDLS_UAPSD_PeerTrafficRspAction(
+static void TDLS_UAPSD_PeerTrafficRspAction(
 	IN	PRTMP_ADAPTER				pAd,
     IN	MLME_QUEUE_ELEM				*pElem);
 
@@ -46,7 +46,7 @@ static ULONG TDLS_UAPSD_TrafficIndBuild(
 	OUT UCHAR						*pFrameBuf,
 	OUT UCHAR						*pHeader802_3);
 /* build the traffic indication frame payload */
-static VOID TDLS_UAPSD_TrafficIndPayloadBuild(
+static void TDLS_UAPSD_TrafficIndPayloadBuild(
 	IN	PRTMP_ADAPTER				pAd,
 	OUT PUCHAR						pFrameBuf,
 	OUT PULONG						pFrameLen,
@@ -62,7 +62,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 	IN	UCHAR						*pPeerMac,
 	IN	UCHAR						PeerToken);
 /* build the traffic response frame body */
-static VOID TDLS_UAPSD_TrafficRspBuild(
+static void TDLS_UAPSD_TrafficRspBuild(
 	IN	PRTMP_ADAPTER				pAd,
 	OUT PUCHAR						pFrameBuf,
 	OUT PULONG						pFrameLen,
@@ -76,42 +76,42 @@ static UINT32 TDLS_UAPSD_CmdUtilHexGet(
 static UINT32 TDLS_UAPSD_CmdUtilNumGet(
 	IN	CHAR						**ppArgv);
 /* get argument MAC value */
-static VOID TDLS_UAPSD_CmdUtilMacGet(
+static void TDLS_UAPSD_CmdUtilMacGet(
 	IN	CHAR						**ppArgv,
 	IN	UCHAR						*pDevMac);
 
 /* simulate to send a TDLS Setup request to a peer */
-static VOID TDLS_UAPSD_CmdSimSetupReqSend(
+static void TDLS_UAPSD_CmdSimSetupReqSend(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
 
 /* simulate to receive a TDLS Traffic response from a peer */
-static VOID TDLS_UAPSD_CmdSimTrafficRspRcv(
+static void TDLS_UAPSD_CmdSimTrafficRspRcv(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
 
 /* simulate to receive a TDLS Traffic indication from a peer */
-static VOID TDLS_UAPSD_CmdSimTrafficIndRcv(
+static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
 
 /* simulate to change the power save of a peer */
-static VOID TDLS_UAPSD_CmdSimPeerPowerSaveChg(
+static void TDLS_UAPSD_CmdSimPeerPowerSaveChg(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
 
 /* simulate to change our power save */
-static VOID TDLS_UAPSD_CmdSimSelfPowerSaveChg(
+static void TDLS_UAPSD_CmdSimSelfPowerSaveChg(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
 
 /* simulate to send a TDLS Traffic response to a peer */
-static VOID TDLS_UAPSD_CmdSimTrafficRspSnd(
+static void TDLS_UAPSD_CmdSimTrafficRspSnd(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv);
@@ -305,7 +305,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID TDLS_UAPSDP_PsmModeChange(
+void TDLS_UAPSDP_PsmModeChange(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	USHORT						PsmOld,
 	IN	USHORT						PsmNew)
@@ -398,7 +398,7 @@ Note:
 		iwpriv ra0 set tdls=01_[PEER MAC]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdPeerInfoDisplay(
+static void TDLS_UAPSD_CmdPeerInfoDisplay(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -474,7 +474,7 @@ Note:
 		Power Management field set to one.
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSelfInfoDisplay(
+static void TDLS_UAPSD_CmdSelfInfoDisplay(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -543,7 +543,7 @@ Note:
 		[Max SP length]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdConfigure(
+static void TDLS_UAPSD_CmdConfigure(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -844,7 +844,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID TDLS_UAPSD_TrafficIndPayloadBuild(
+static void TDLS_UAPSD_TrafficIndPayloadBuild(
 	IN	PRTMP_ADAPTER				pAd,
 	OUT PUCHAR						pFrameBuf,
 	OUT PULONG						pFrameLen,
@@ -1071,7 +1071,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID TDLS_UAPSD_TrafficRspBuild(
+static void TDLS_UAPSD_TrafficRspBuild(
 	IN	PRTMP_ADAPTER				pAd,
 	OUT PUCHAR						pFrameBuf,
 	OUT PULONG						pFrameLen,
@@ -1115,7 +1115,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID TDLS_UAPSD_PeerTrafficIndAction(
+static void TDLS_UAPSD_PeerTrafficIndAction(
     IN	PRTMP_ADAPTER				pAd,
     IN	MLME_QUEUE_ELEM				*pElem)
 {
@@ -1188,7 +1188,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID TDLS_UAPSD_PeerTrafficRspAction(
+static void TDLS_UAPSD_PeerTrafficRspAction(
 	IN	PRTMP_ADAPTER				pAd,
     IN	MLME_QUEUE_ELEM				*pElem)
 {
@@ -1374,7 +1374,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdUtilMacGet(
+static void TDLS_UAPSD_CmdUtilMacGet(
 	IN	CHAR						**ppArgv,
 	IN	UCHAR						*pDevMac)
 {
@@ -1440,7 +1440,7 @@ Note:
 	transmitted to a group address.
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimSetupReqSend(
+static void TDLS_UAPSD_CmdSimSetupReqSend(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -1556,7 +1556,7 @@ Note:
 		DATA frame, not management action frame.
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimTrafficRspRcv(
+static void TDLS_UAPSD_CmdSimTrafficRspRcv(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -1625,7 +1625,7 @@ Note:
 		iwpriv ra0 set tdls=53_[PEER MAC]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimTrafficIndRcv(
+static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -1734,7 +1734,7 @@ Note:
 		iwpriv ra0 set tdls=54_[PEER MAC]_[0/1]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimPeerPowerSaveChg(
+static void TDLS_UAPSD_CmdSimPeerPowerSaveChg(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -1790,7 +1790,7 @@ Note:
 		iwpriv ra0 set tdls=55_[0/1]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimSelfPowerSaveChg(
+static void TDLS_UAPSD_CmdSimSelfPowerSaveChg(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
@@ -1831,7 +1831,7 @@ Note:
 		iwpriv ra0 set tdls=56_[PEER MAC]
 ========================================================================
 */
-static VOID TDLS_UAPSD_CmdSimTrafficRspSnd(
+static void TDLS_UAPSD_CmdSimTrafficRspSnd(
 	IN	PRTMP_ADAPTER				pAd,
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)

@@ -46,10 +46,10 @@ BOOLEAN blockNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
 	IN PNET_DEV pNetDev);
 
-VOID releaseNetIf(
+void releaseNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry);
 
-VOID StopNetIfQueue(
+void StopNetIfQueue(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket);

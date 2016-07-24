@@ -84,8 +84,8 @@ typedef union _COEXCFG0_STRUC{
 #endif
 
 #ifdef RTMP_USB_SUPPORT
-VOID RT65xxUsbAsicRadioOn(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
-VOID RT65xxUsbAsicRadioOff(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
+void RT65xxUsbAsicRadioOn(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
+void RT65xxUsbAsicRadioOff(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
 #endif
 
 /*
@@ -114,9 +114,9 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC {
 } EEPROM_NIC_CONFIG0_STRUC, *PEEPROM_NIC_CONFIG0_STRUC;
 #endif
 
-VOID RT65xxDisableTxRx(struct _RTMP_ADAPTER *pAd, UCHAR Level);
-VOID RT65xx_WLAN_ChipOnOff(struct _RTMP_ADAPTER *pAd, BOOLEAN bOn,
+void RT65xxDisableTxRx(struct _RTMP_ADAPTER *pAd, UCHAR Level);
+void RT65xx_WLAN_ChipOnOff(struct _RTMP_ADAPTER *pAd, BOOLEAN bOn,
 							BOOLEAN bResetWLAN);
 
-VOID dump_bw_info(struct _RTMP_ADAPTER *pAd);
+void dump_bw_info(struct _RTMP_ADAPTER *pAd);
 #endif

@@ -38,7 +38,7 @@
 
     ==========================================================================
  */
-VOID AuthRspStateMachineInit(
+void AuthRspStateMachineInit(
 	IN PRTMP_ADAPTER pAd,
 	IN PSTATE_MACHINE Sm,
 	IN STATE_MACHINE_FUNC Trans[])
@@ -65,7 +65,7 @@ VOID AuthRspStateMachineInit(
 
     ==========================================================================
 */
-VOID PeerAuthSimpleRspGenAndSend(
+void PeerAuthSimpleRspGenAndSend(
 	IN PRTMP_ADAPTER pAd,
 	IN PHEADER_802_11 pHdr80211,
 	IN USHORT Alg,
@@ -105,7 +105,7 @@ VOID PeerAuthSimpleRspGenAndSend(
 
     ==========================================================================
 */
-VOID PeerDeauthAction(
+void PeerDeauthAction(
 	IN PRTMP_ADAPTER pAd,
 	IN PMLME_QUEUE_ELEM Elem)
 {

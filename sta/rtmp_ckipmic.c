@@ -119,7 +119,7 @@ static const USHORT Sbox[256] =
 #define _S_(i)      (Sbox[Lo8(i)] ^ u16Swap(Sbox[Hi8(i)]))
 
 #define rotLeft_1(x) ((((x) << 1) | ((x) >> 15)) & 0xFFFF)
-VOID CKIP_key_permute
+void CKIP_key_permute
     (
      OUT UCHAR  *PK,           /* output permuted key */
      IN UCHAR *CK,           /* input CKIP key */
@@ -166,7 +166,7 @@ VOID CKIP_key_permute
 }
 
 /* prepare for calculation of a new mic */
-VOID RTMPCkipMicInit(
+void RTMPCkipMicInit(
     IN  PMIC_CONTEXT        pContext,
     IN  PUCHAR              CK)
 {
@@ -177,7 +177,7 @@ VOID RTMPCkipMicInit(
 }
 
 /* add some bytes to the mic calculation */
-VOID RTMPMicUpdate(
+void RTMPMicUpdate(
     IN  PMIC_CONTEXT        pContext,
     IN  PUCHAR              pOctets,
     IN  INT                 len)
@@ -231,7 +231,7 @@ ULONG RTMPMicGetCoefficient(
 /* Performs a 128 bit AES encrypt with  */
 /* 128 bit data.                        */
 /****************************************/
-VOID xor_128(
+void xor_128(
     IN  PUCHAR  a,
     IN  PUCHAR  b,
     OUT PUCHAR  out)
@@ -250,7 +250,7 @@ UCHAR RTMPCkipSbox(
     return SboxTable[(int)a];
 }
 
-VOID xor_32(
+void xor_32(
     IN  PUCHAR  a,
     IN  PUCHAR  b,
     OUT PUCHAR  out)
@@ -263,7 +263,7 @@ VOID xor_32(
     }
 }
 
-VOID next_key(
+void next_key(
     IN  PUCHAR  key,
     IN  INT     round)
 {
@@ -290,7 +290,7 @@ VOID next_key(
     xor_32(&key[12], &key[8], &key[12]);
 }
 
-VOID byte_sub(
+void byte_sub(
     IN  PUCHAR  in,
     OUT PUCHAR  out)
 {
@@ -302,7 +302,7 @@ VOID byte_sub(
     }
 }
 
-VOID shift_row(
+void shift_row(
     IN  PUCHAR  in,
     OUT PUCHAR  out)
 {
@@ -324,7 +324,7 @@ VOID shift_row(
     out[15] = in[11];
 }
 
-VOID mix_column(
+void mix_column(
     IN  PUCHAR  in,
     OUT PUCHAR  out)
 {
@@ -387,7 +387,7 @@ VOID mix_column(
     xor_32(temp, tempb, out);
 }
 
-VOID RTMPAesEncrypt(
+void RTMPAesEncrypt(
     IN  PUCHAR  key,
     IN  PUCHAR  data,
     IN  PUCHAR  ciphertext)
@@ -429,7 +429,7 @@ VOID RTMPAesEncrypt(
 }
 
 /* calculate the mic */
-VOID RTMPMicFinal(
+void RTMPMicFinal(
     IN  PMIC_CONTEXT    pContext,
     OUT UCHAR           digest[4])
 {
@@ -464,7 +464,7 @@ VOID RTMPMicFinal(
     digest[3] = (UCHAR)((val>>0) & 0xFF);
 }
 
-VOID RTMPCkipInsertCMIC(
+void RTMPCkipInsertCMIC(
     IN  PRTMP_ADAPTER   pAd,
     OUT PUCHAR          pMIC,
     IN  PUCHAR          p80211hdr,

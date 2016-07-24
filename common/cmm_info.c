@@ -1175,7 +1175,7 @@ BOOLEAN RTMPCheckStrPrintAble(
 	========================================================================
 */
 #ifdef CONFIG_STA_SUPPORT
-VOID    RTMPSetDesiredRates(
+void    RTMPSetDesiredRates(
     IN  PRTMP_ADAPTER   pAdapter,
     IN  LONG            Rates)
 {
@@ -1441,7 +1441,7 @@ NDIS_STATUS RTMPWPARemoveKeyProc(
 
 	========================================================================
 */
-VOID	RTMPWPARemoveAllKeys(
+void RTMPWPARemoveAllKeys(
 	IN	PRTMP_ADAPTER	pAd)
 {
 
@@ -1497,7 +1497,7 @@ VOID	RTMPWPARemoveAllKeys(
 
 	========================================================================
 */
-VOID RTMPSetPhyMode(
+void RTMPSetPhyMode(
 	IN RTMP_ADAPTER *pAd,
 	IN ULONG phymode)
 {
@@ -1644,7 +1644,7 @@ VOID RTMPSetPhyMode(
     Return:
 	========================================================================
 */
-VOID	RTMPAddWcidAttributeEntry(
+void RTMPAddWcidAttributeEntry(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			BssIdx,
 	IN 	UCHAR		 	KeyIdx,
@@ -1806,7 +1806,7 @@ PSTRING GetAuthMode(CHAR auth)
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
-VOID	RTMPCommSiteSurveyData(
+void RTMPCommSiteSurveyData(
 	IN  PSTRING		msg,
 	IN  PBSS_ENTRY	pBss,
 	IN  UINT32		MsgLen)
@@ -1993,7 +1993,7 @@ VOID	RTMPCommSiteSurveyData(
 }
 
 #if defined (AP_SCAN_SUPPORT) || defined (CONFIG_STA_SUPPORT)
-VOID RTMPIoctlGetSiteSurvey(
+void RTMPIoctlGetSiteSurvey(
 	IN	PRTMP_ADAPTER	pAdapter,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq)
 {
@@ -2074,7 +2074,7 @@ VOID RTMPIoctlGetSiteSurvey(
 
 
 #define	MAC_LINE_LEN	(1+14+4+4+4+4+10+10+10+6+6)	/* "\n"+Addr+aid+psm+datatime+rxbyte+txbyte+current tx rate+last tx rate+"\n" */
-VOID RTMPIoctlGetMacTable(
+void RTMPIoctlGetMacTable(
 	IN PRTMP_ADAPTER pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq)
 {
@@ -5502,7 +5502,7 @@ INT	Set_BurstMode_Proc(
 
 
 #ifdef DOT11_VHT_AC
-VOID assoc_vht_info_debugshow(
+void assoc_vht_info_debugshow(
 	IN RTMP_ADAPTER *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN VHT_CAP_IE *vht_cap,

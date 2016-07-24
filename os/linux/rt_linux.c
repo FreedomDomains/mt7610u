@@ -72,8 +72,8 @@ BOOLEAN FlgIsUtilInit = FALSE;
 OS_NDIS_SPIN_LOCK UtilSemLock;
 
 
-BOOLEAN RTMP_OS_Alloc_RscOnly(VOID *pRscSrc, UINT32 RscLen);
-BOOLEAN RTMP_OS_Remove_Rsc(LIST_HEADER *pRscList, VOID *pRscSrc);
+BOOLEAN RTMP_OS_Alloc_RscOnly(void *pRscSrc, UINT32 RscLen);
+BOOLEAN RTMP_OS_Remove_Rsc(LIST_HEADER *pRscList, void *pRscSrc);
 /*
 ========================================================================
 Routine Description:
@@ -88,7 +88,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpUtilInit(VOID)
+void RtmpUtilInit(void)
 {
 	if (FlgIsUtilInit == FALSE) {
 		OS_NdisAllocateSpinLock(&UtilSemLock);
@@ -97,7 +97,7 @@ VOID RtmpUtilInit(VOID)
 }
 
 /* timeout -- ms */
-static inline VOID __RTMP_SetPeriodicTimer(
+static inline void __RTMP_SetPeriodicTimer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
 	IN unsigned long timeout)
 {
@@ -107,8 +107,8 @@ static inline VOID __RTMP_SetPeriodicTimer(
 }
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
-static inline VOID __RTMP_OS_Init_Timer(
-	IN VOID *pReserved,
+static inline void __RTMP_OS_Init_Timer(
+	IN void *pReserved,
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
 	IN TIMER_FUNCTION function,
 	IN void *data)
@@ -120,7 +120,7 @@ static inline VOID __RTMP_OS_Init_Timer(
 	}
 }
 
-static inline VOID __RTMP_OS_Add_Timer(
+static inline void __RTMP_OS_Add_Timer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
 	IN unsigned long timeout)
 {
@@ -132,7 +132,7 @@ static inline VOID __RTMP_OS_Add_Timer(
 	add_timer(pTimer);
 }
 
-static inline VOID __RTMP_OS_Mod_Timer(
+static inline void __RTMP_OS_Mod_Timer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
 	IN unsigned long timeout)
 {
@@ -140,7 +140,7 @@ static inline VOID __RTMP_OS_Mod_Timer(
 	mod_timer(pTimer, jiffies + timeout);
 }
 
-static inline VOID __RTMP_OS_Del_Timer(
+static inline void __RTMP_OS_Del_Timer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
 	OUT BOOLEAN *pCancelled)
 {
@@ -150,7 +150,7 @@ static inline VOID __RTMP_OS_Del_Timer(
 		*pCancelled = TRUE;
 }
 
-static inline VOID __RTMP_OS_Release_Timer(
+static inline void __RTMP_OS_Release_Timer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer)
 {
 	/* nothing to do */
@@ -158,7 +158,7 @@ static inline VOID __RTMP_OS_Release_Timer(
 
 
 /* Unify all delay routine by using udelay */
-VOID RTMPusecDelay(ULONG usec)
+void RTMPusecDelay(ULONG usec)
 {
 	ULONG i;
 
@@ -171,14 +171,14 @@ VOID RTMPusecDelay(ULONG usec)
 
 
 /* Unify all delay routine by using udelay */
-VOID RtmpOsUsDelay(ULONG value)
+void RtmpOsUsDelay(ULONG value)
 {
 	ULONG i;
 
 	udelay(value);
 }
 
-VOID RtmpOsMsDelay(ULONG msec)
+void RtmpOsMsDelay(ULONG msec)
 {
 	mdelay(msec);
 }
@@ -202,7 +202,7 @@ ULONG RTMPMsecsToJiffies(UINT32 m)
 /* pAd MUST allow to be NULL */
 
 NDIS_STATUS os_alloc_mem(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	OUT UCHAR **mem,
 	IN ULONG size)
 {
@@ -218,7 +218,7 @@ NDIS_STATUS os_alloc_mem(
 }
 
 NDIS_STATUS os_alloc_mem_suspend(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	OUT UCHAR **mem,
 	IN ULONG size)
 {
@@ -235,7 +235,7 @@ NDIS_STATUS os_alloc_mem_suspend(
 
 /* pAd MUST allow to be NULL */
 NDIS_STATUS os_free_mem(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	IN void *mem)
 {
 	ASSERT(mem);
@@ -312,7 +312,7 @@ void RtmpFlashWrite(
 #endif /* defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT) */
 
 
-PNDIS_PACKET RtmpOSNetPktAlloc(VOID *dummy, int size)
+PNDIS_PACKET RtmpOSNetPktAlloc(void *dummy, int size)
 {
 	struct sk_buff *skb;
 	/* Add 2 more bytes for ip header alignment */
@@ -323,7 +323,7 @@ PNDIS_PACKET RtmpOSNetPktAlloc(VOID *dummy, int size)
 	return ((PNDIS_PACKET) skb);
 }
 
-PNDIS_PACKET RTMP_AllocateFragPacketBuffer(VOID *dummy, ULONG len)
+PNDIS_PACKET RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 {
 	struct sk_buff *pkt;
 
@@ -348,7 +348,7 @@ PNDIS_PACKET RTMP_AllocateFragPacketBuffer(VOID *dummy, ULONG len)
 	The allocated NDIS PACKET must be freed via RTMPFreeNdisPacket()
 */
 NDIS_STATUS RTMPAllocateNdisPacket(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	OUT PNDIS_PACKET *ppPacket,
 	IN UCHAR *pHeader,
 	IN UINT HeaderLen,
@@ -393,8 +393,8 @@ NDIS_STATUS RTMPAllocateNdisPacket(
 	corresponding NDIS_BUFFER and allocated memory.
   ========================================================================
 */
-VOID RTMPFreeNdisPacket(
-	IN VOID *pReserved,
+void RTMPFreeNdisPacket(
+	IN void *pReserved,
 	IN PNDIS_PACKET pPacket)
 {
 	dev_kfree_skb_any(RTPKT_TO_OSPKT(pPacket));
@@ -440,7 +440,7 @@ void RTMP_QueryPacketInfo(
 
 		info->BufferCount =  nr_frags + 1;
 		info->PhysicalBufferCount = info->BufferCount;
-		info->sg_list[0].data = (VOID *)GET_OS_PKT_DATAPTR(pPacket);
+		info->sg_list[0].data = (void *)GET_OS_PKT_DATAPTR(pPacket);
 		info->sg_list[0].len = skb_headlen(skb);
 		for (i = 0; i < nr_frags; i++) {
 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
@@ -511,7 +511,7 @@ PNDIS_PACKET duplicate_pkt(
 
 #define TKIP_TX_MIC_SIZE		8
 PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	IN PNDIS_PACKET pPacket)
 {
 	struct sk_buff *skb, *newskb;
@@ -554,7 +554,7 @@ PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
 	========================================================================
 */
 BOOLEAN RTMPL2FrameTxAction(
-	IN VOID * pCtrlBkPtr,
+	IN void * pCtrlBkPtr,
 	IN PNET_DEV pNetDev,
 	IN RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
 	IN UCHAR apidx,
@@ -593,7 +593,7 @@ BOOLEAN RTMPL2FrameTxAction(
 
 
 PNDIS_PACKET ExpandPacket(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	IN PNDIS_PACKET pPacket,
 	IN UINT32 ext_head_len,
 	IN UINT32 ext_tail_len)
@@ -630,7 +630,7 @@ PNDIS_PACKET ExpandPacket(
 }
 
 PNDIS_PACKET ClonePacket(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	IN PNDIS_PACKET pPacket,
 	IN PUCHAR pData,
 	IN ULONG DataSize)
@@ -656,7 +656,7 @@ PNDIS_PACKET ClonePacket(
 	return pClonedPkt;
 }
 
-VOID RtmpOsPktInit(
+void RtmpOsPktInit(
 	IN PNDIS_PACKET pNetPkt,
 	IN PNET_DEV pNetDev,
 	IN UCHAR *pData,
@@ -754,8 +754,8 @@ void hex_dump(char *str, UCHAR *pSrcBufVA, UINT SrcBufLen)
 
 	========================================================================
 */
-VOID RtmpOsSendWirelessEvent(
-	IN VOID *pAd,
+void RtmpOsSendWirelessEvent(
+	IN void *pAd,
 	IN USHORT Event_flag,
 	IN PUCHAR pAddr,
 	IN UCHAR BssIdx,
@@ -1247,7 +1247,7 @@ static inline NDIS_STATUS __RtmpOSTaskAttach(
 static inline NDIS_STATUS __RtmpOSTaskInit(
 	IN OS_TASK *pTask,
 	IN PSTRING pTaskName,
-	IN VOID *pPriv,
+	IN void *pPriv,
 	IN LIST_HEADER *pSemList)
 {
 	int len;
@@ -1277,7 +1277,7 @@ static inline NDIS_STATUS __RtmpOSTaskInit(
 }
 
 BOOLEAN __RtmpOSTaskWait(
-	IN VOID *pReserved,
+	IN void *pReserved,
 	IN OS_TASK *pTask,
 	IN INT32 *pStatus)
 {
@@ -1635,7 +1635,7 @@ void RtmpOSNetDeviceRefPut(PNET_DEV pNetDev)
 }
 
 
-INT RtmpOSNetDevDestory(VOID *pReserved, PNET_DEV pNetDev)
+INT RtmpOSNetDevDestory(void *pReserved, PNET_DEV pNetDev)
 {
 
 	/* TODO: Need to fix this */
@@ -1862,7 +1862,7 @@ Return Value:
 Note:
 ========================================================================
 */
-NDIS_STATUS AdapterBlockAllocateMemory(VOID *handle, VOID **ppAd, UINT32 SizeOfpAd)
+NDIS_STATUS AdapterBlockAllocateMemory(void *handle, void **ppAd, UINT32 SizeOfpAd)
 {
 #ifdef OS_ABL_FUNC_SUPPORT
 	/* get offset for sk_buff */
@@ -1898,14 +1898,14 @@ NDIS_STATUS AdapterBlockAllocateMemory(VOID *handle, VOID **ppAd, UINT32 SizeOfp
 
 /* ========================================================================== */
 
-UINT RtmpOsWirelessExtVerGet(VOID)
+UINT RtmpOsWirelessExtVerGet(void)
 {
 	return WIRELESS_EXT;
 }
 
 
-VOID RtmpDrvAllMacPrint(
-	IN VOID *pReserved,
+void RtmpDrvAllMacPrint(
+	IN void *pReserved,
 	IN UINT32 *pBufMac,
 	IN UINT32 AddrStart,
 	IN UINT32 AddrEnd,
@@ -1955,8 +1955,8 @@ VOID RtmpDrvAllMacPrint(
 }
 
 
-VOID RtmpDrvAllE2PPrint(
-	IN VOID *pReserved,
+void RtmpDrvAllE2PPrint(
+	IN void *pReserved,
 	IN USHORT *pMacContent,
 	IN UINT32 AddrEnd,
 	IN UINT32 AddrStep)
@@ -2007,8 +2007,8 @@ VOID RtmpDrvAllE2PPrint(
 }
 
 
-VOID RtmpDrvAllRFPrint(
-	IN VOID *pReserved,
+void RtmpDrvAllRFPrint(
+	IN void *pReserved,
 	IN UINT32 *pBuf,
 	IN UINT32 BufLen)
 {
@@ -2051,7 +2051,7 @@ Return Value:
 Note:
 ========================================================================
 */
-BOOLEAN RtmpOSNetDevIsUp(VOID *pDev)
+BOOLEAN RtmpOSNetDevIsUp(void *pDev)
 {
 	struct net_device *pNetDev = (struct net_device *)pDev;
 
@@ -2076,7 +2076,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsCmdUp(RTMP_OS_TASK *pCmdQTask)
+void RtmpOsCmdUp(RTMP_OS_TASK *pCmdQTask)
 {
 	OS_TASK *pTask = RTMP_OS_TASK_GET(pCmdQTask);
 #ifdef KTHREAD_SUPPORT
@@ -2104,7 +2104,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsMlmeUp(IN RTMP_OS_TASK *pMlmeQTask)
+void RtmpOsMlmeUp(IN RTMP_OS_TASK *pMlmeQTask)
 {
 #ifdef RTMP_USB_SUPPORT
 	OS_TASK *pTask = RTMP_OS_TASK_GET(pMlmeQTask);
@@ -2140,7 +2140,7 @@ Note:
 	rt_linux.h, not rt_drv.h
 ========================================================================
 */
-INT32 RtmpOsFileIsErr(IN VOID *pFile)
+INT32 RtmpOsFileIsErr(IN void *pFile)
 {
 	return IS_FILE_OPEN_ERR(pFile);
 }
@@ -2174,8 +2174,8 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsWlanEventSet(
-	IN VOID *pReserved,
+void RtmpOsWlanEventSet(
+	IN void *pReserved,
 	IN BOOLEAN *pCfgWEnt,
 	IN BOOLEAN FlgIsWEntSup)
 {
@@ -2201,7 +2201,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID *RtmpOsVmalloc(ULONG Size)
+void *RtmpOsVmalloc(ULONG Size)
 {
 	return vmalloc(Size);
 }
@@ -2220,7 +2220,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsVfree(VOID *pMem)
+void RtmpOsVfree(void *pMem)
 {
 	if (pMem != NULL)
 		vfree(pMem);
@@ -2240,7 +2240,7 @@ Return Value:
 Note:
 ========================================================================
 */
-char *RtmpOsGetNetDevName(VOID *pDev)
+char *RtmpOsGetNetDevName(void *pDev)
 {
 	return ((PNET_DEV) pDev)->name;
 }
@@ -2259,7 +2259,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktProtocolAssign(PNDIS_PACKET pNetPkt)
+void RtmpOsPktProtocolAssign(PNDIS_PACKET pNetPkt)
 {
 	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 	pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
@@ -2267,8 +2267,8 @@ VOID RtmpOsPktProtocolAssign(PNDIS_PACKET pNetPkt)
 
 
 BOOLEAN RtmpOsStatsAlloc(
-	IN VOID **ppStats,
-	IN VOID **ppIwStats)
+	IN void **ppStats,
+	IN void **ppIwStats)
 {
 	os_alloc_mem(NULL, (UCHAR **) ppStats, sizeof (struct net_device_stats));
 	if ((*ppStats) == NULL)
@@ -2301,7 +2301,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktRcvHandle(PNDIS_PACKET pNetPkt)
+void RtmpOsPktRcvHandle(PNDIS_PACKET pNetPkt)
 {
 	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 
@@ -2310,7 +2310,7 @@ VOID RtmpOsPktRcvHandle(PNDIS_PACKET pNetPkt)
 }
 
 
-VOID RtmpOsTaskPidInit(RTMP_OS_PID *pPid)
+void RtmpOsTaskPidInit(RTMP_OS_PID *pPid)
 {
 	*pPid = THREAD_PID_INIT_VALUE;
 }
@@ -2329,7 +2329,7 @@ Return Value:
 Note:
 ========================================================================
 */
-PNET_DEV RtmpOsPktNetDevGet(VOID *pPkt)
+PNET_DEV RtmpOsPktNetDevGet(void *pPkt)
 {
 	return GET_OS_PKT_NETDEV(pPkt);
 }
@@ -2393,7 +2393,7 @@ PNDIS_PACKET RtmpOsPktIappMakeUp(
 #endif /* IAPP_SUPPORT */
 
 
-VOID RtmpOsPktNatMagicTag(PNDIS_PACKET pNetPkt)
+void RtmpOsPktNatMagicTag(PNDIS_PACKET pNetPkt)
 {
 #ifndef CONFIG_RA_NAT_NONE
 #if defined(CONFIG_RA_HW_NAT) || defined(CONFIG_RA_HW_NAT_MODULE)
@@ -2403,7 +2403,7 @@ VOID RtmpOsPktNatMagicTag(PNDIS_PACKET pNetPkt)
 #endif /* CONFIG_RA_NAT_NONE */
 }
 
-VOID RtmpOsPktNatNone(PNDIS_PACKET pNetPkt)
+void RtmpOsPktNatNone(PNDIS_PACKET pNetPkt)
 {
 #ifdef CONFIG_RA_NAT_NONE
 #if defined(CONFIG_RA_HW_NAT) || defined(CONFIG_RA_HW_NAT_MODULE)
@@ -2535,9 +2535,9 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID CFG80211OS_UnRegister(
-	IN VOID *pCB,
-	IN VOID *pNetDevOrg)
+void CFG80211OS_UnRegister(
+	IN void *pCB,
+	IN void *pNetDevOrg)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	struct net_device *pNetDev = (struct net_device *)pNetDevOrg;
@@ -2610,11 +2610,11 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211_SupBandInit(
-	IN VOID *pCB,
+	IN void *pCB,
 	IN CFG80211_BAND *pBandInfo,
-	IN VOID *pWiphyOrg,
-	IN VOID *pChannelsOrg,
-	IN VOID *pRatesOrg)
+	IN void *pWiphyOrg,
+	IN void *pChannelsOrg,
+	IN void *pRatesOrg)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	struct wiphy *pWiphy = (struct wiphy *)pWiphyOrg;
@@ -2841,7 +2841,7 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211OS_SupBandReInit(
-	IN VOID *pCB,
+	IN void *pCB,
 	IN CFG80211_BAND *pBandInfo)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
@@ -2894,8 +2894,8 @@ Note:
 	Must call the function in kernel thread.
 ========================================================================
 */
-VOID CFG80211OS_RegHint(
-	IN VOID *pCB,
+void CFG80211OS_RegHint(
+	IN void *pCB,
 	IN UCHAR *pCountryIe,
 	IN ULONG CountryIeLen)
 {
@@ -2935,8 +2935,8 @@ Note:
 	Must call the function in kernel thread.
 ========================================================================
 */
-VOID CFG80211OS_RegHint11D(
-	IN VOID *pCB,
+void CFG80211OS_RegHint11D(
+	IN void *pCB,
 	IN UCHAR *pCountryIe,
 	IN ULONG CountryIeLen)
 {
@@ -2966,10 +2966,10 @@ VOID CFG80211OS_RegHint11D(
 
 
 BOOLEAN CFG80211OS_BandInfoGet(
-	IN VOID *pCB,
-	IN VOID *pWiphyOrg,
-	OUT VOID **ppBand24,
-	OUT VOID **ppBand5)
+	IN void *pCB,
+	IN void *pWiphyOrg,
+	OUT void **ppBand24,
+	OUT void **ppBand5)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	struct wiphy *pWiphy = (struct wiphy *)pWiphyOrg;
@@ -2991,8 +2991,8 @@ BOOLEAN CFG80211OS_BandInfoGet(
 
 
 UINT32 CFG80211OS_ChanNumGet(
-	IN VOID						*pCB,
-	IN VOID						*pWiphyOrg,
+	IN void 					*pCB,
+	IN void 					*pWiphyOrg,
 	IN UINT32					IdBand)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
@@ -3016,8 +3016,8 @@ UINT32 CFG80211OS_ChanNumGet(
 
 
 BOOLEAN CFG80211OS_ChanInfoGet(
-	IN VOID						*pCB,
-	IN VOID						*pWiphyOrg,
+	IN void 					*pCB,
+	IN void 					*pWiphyOrg,
 	IN UINT32					IdBand,
 	IN UINT32					IdChan,
 	OUT UINT32					*pChanId,
@@ -3078,7 +3078,7 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211OS_ChanInfoInit(
-	IN VOID						*pCB,
+	IN void 					*pCB,
 	IN UINT32					InfoIndex,
 	IN UCHAR					ChanId,
 	IN UCHAR					MaxTxPwr,
@@ -3141,8 +3141,8 @@ Note:
 	Call RT_CFG80211_SCANNING_INFORM, not CFG80211_Scaning
 ========================================================================
 */
-VOID CFG80211OS_Scaning(
-	IN VOID						*pCB,
+void CFG80211OS_Scaning(
+	IN void 					*pCB,
 	IN UINT32					ChanId,
 	IN UCHAR					*pFrame,
 	IN UINT32					FrameLen,
@@ -3206,8 +3206,8 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID CFG80211OS_ScanEnd(
-	IN VOID *pCB,
+void CFG80211OS_ScanEnd(
+	IN void *pCB,
 	IN BOOLEAN FlgIsAborted)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
@@ -3243,7 +3243,7 @@ Note:
 ========================================================================
 */
 void CFG80211OS_ConnectResultInform(
-	IN VOID *pCB,
+	IN void *pCB,
 	IN UCHAR *pBSSID,
 	IN UCHAR *pReqIe,
 	IN UINT32 ReqIeLen,
@@ -3297,7 +3297,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsDCacheFlush(
+void RtmpOsDCacheFlush(
 	IN ULONG AddrStart,
 	IN ULONG Size)
 {
@@ -3320,7 +3320,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSetNetDevPriv(VOID *pDev, VOID *pPriv)
+void RtmpOsSetNetDevPriv(void *pDev, void *pPriv)
 {
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
@@ -3333,7 +3333,7 @@ VOID RtmpOsSetNetDevPriv(VOID *pDev, VOID *pPriv)
 			return;
 	}
 
-	pDevInfo->pPriv = (VOID *)pPriv;
+	pDevInfo->pPriv = (void *)pPriv;
 	pDevInfo->priv_flags = 0;
 
 	_RTMP_OS_NETDEV_SET_PRIV((PNET_DEV) pDev, pDevInfo);
@@ -3355,7 +3355,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID *RtmpOsGetNetDevPriv(VOID *pDev)
+void *RtmpOsGetNetDevPriv(void *pDev)
 {
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
@@ -3381,7 +3381,7 @@ Return Value:
 Note:
 ========================================================================
 */
-USHORT RtmpDevPrivFlagsGet(VOID *pDev)
+USHORT RtmpDevPrivFlagsGet(void *pDev)
 {
 
 	DEV_PRIV_INFO *pDevInfo = NULL;
@@ -3408,7 +3408,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpDevPrivFlagsSet(VOID *pDev, USHORT PrivFlags)
+void RtmpDevPrivFlagsSet(void *pDev, USHORT PrivFlags)
 {
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
@@ -3503,7 +3503,7 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, BOOLEAN bSet)
 	}
 }
 
-VOID RtmpOsInitCompletion(RTMP_OS_COMPLETION *pCompletion)
+void RtmpOsInitCompletion(RTMP_OS_COMPLETION *pCompletion)
 {
 
 	memset(pCompletion, 0x00, sizeof(RTMP_OS_COMPLETION));
@@ -3523,7 +3523,7 @@ void RtmpOsExitCompletion(RTMP_OS_COMPLETION *pCompletion)
 
 }
 
-VOID RtmpOsComplete(RTMP_OS_COMPLETION *pCompletion)
+void RtmpOsComplete(RTMP_OS_COMPLETION *pCompletion)
 {
 	if (pCompletion->pContent == NULL)
 		return;
@@ -3582,7 +3582,7 @@ Note:
 */
 BOOLEAN RtmpOsTaskletInit(
 	RTMP_NET_TASK_STRUCT *pTasklet,
-	VOID (*pFunc) (unsigned long data),
+	void (*pFunc) (unsigned long data),
 	ULONG Data,
 	LIST_HEADER *pTaskletList)
 {
@@ -3634,7 +3634,7 @@ BOOLEAN RtmpOsTaskletKill(RTMP_NET_TASK_STRUCT *pTasklet)
 }
 
 
-VOID RtmpOsTaskletDataAssign(RTMP_NET_TASK_STRUCT *pTasklet, ULONG Data)
+void RtmpOsTaskletDataAssign(RTMP_NET_TASK_STRUCT *pTasklet, ULONG Data)
 {
 #ifndef WORKQUEUE_BH
 	if (pTasklet->pContent != NULL)
@@ -3654,7 +3654,7 @@ INT32 RtmpOsTaskIsKilled(RTMP_OS_TASK *pTaskOrg)
 }
 
 
-VOID RtmpOsTaskWakeUp(RTMP_OS_TASK *pTaskOrg)
+void RtmpOsTaskWakeUp(RTMP_OS_TASK *pTaskOrg)
 {
 	OS_TASK *pTask;
 
@@ -3706,7 +3706,7 @@ BOOLEAN RtmpOsCheckTaskLegality(RTMP_OS_TASK *pTaskOrg)
 
 
 /* timeout -- ms */
-VOID RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
+void RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 {
 	OS_NDIS_MINIPORT_TIMER *pTimer;
 
@@ -3717,8 +3717,8 @@ VOID RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
-VOID RTMP_OS_Init_Timer(
-	VOID *pReserved,
+void RTMP_OS_Init_Timer(
+	void *pReserved,
 	NDIS_MINIPORT_TIMER *pTimerOrg,
 	TIMER_FUNCTION function,
 	void *data,
@@ -3735,7 +3735,7 @@ VOID RTMP_OS_Init_Timer(
 }
 
 
-VOID RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
+void RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 {
 	OS_NDIS_MINIPORT_TIMER *pTimer;
 
@@ -3750,7 +3750,7 @@ VOID RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 }
 
 
-VOID RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
+void RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 {
 	OS_NDIS_MINIPORT_TIMER *pTimer;
 
@@ -3760,7 +3760,7 @@ VOID RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 }
 
 
-VOID RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
+void RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
 {
 	OS_NDIS_MINIPORT_TIMER *pTimer;
 
@@ -3770,7 +3770,7 @@ VOID RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
 }
 
 
-VOID RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
+void RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
 {
 	OS_NDIS_MINIPORT_TIMER *pTimer;
 
@@ -3802,7 +3802,7 @@ Note:
 */
 BOOLEAN RTMP_OS_Alloc_Rsc(
 	LIST_HEADER *pRscList,
-	VOID *pRscSrc,
+	void *pRscSrc,
 	UINT32 RscLen)
 {
 	OS_RSTRUC *pRsc = (OS_RSTRUC *) pRscSrc;
@@ -3829,7 +3829,7 @@ BOOLEAN RTMP_OS_Alloc_Rsc(
 				return FALSE;
 			} else {
 				memset(pRsc->pContent, 0, RscLen);
-				pObj->pRscObj = (VOID *) pRsc;
+				pObj->pRscObj = (void *) pRsc;
 
 				OS_SEM_LOCK(&UtilSemLock);
 				insertTailList(pRscList, (LIST_ENTRY *) pObj);
@@ -3858,7 +3858,7 @@ Return Value:
 Note:
 ========================================================================
 */
-BOOLEAN RTMP_OS_Alloc_RscOnly(VOID *pRscSrc, UINT32 RscLen)
+BOOLEAN RTMP_OS_Alloc_RscOnly(void *pRscSrc, UINT32 RscLen)
 {
 	OS_RSTRUC *pRsc = (OS_RSTRUC *) pRscSrc;
 
@@ -3894,7 +3894,7 @@ Note:
 */
 BOOLEAN RTMP_OS_Remove_Rsc(
 	LIST_HEADER *pRscList,
-	VOID *pRscSrc)
+	void *pRscSrc)
 {
 	LIST_RESOURCE_OBJ_ENTRY *pObj;
 	OS_RSTRUC *pRscHead, *pRsc, *pRscRev = (OS_RSTRUC *) pRscSrc;
@@ -3936,7 +3936,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RTMP_OS_Free_Rscs(LIST_HEADER *pRscList)
+void RTMP_OS_Free_Rscs(LIST_HEADER *pRscList)
 {
 	LIST_RESOURCE_OBJ_ENTRY *pObj;
 	OS_RSTRUC *pRsc;
@@ -4009,7 +4009,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOSTaskFree(RTMP_OS_TASK *pTaskOrg)
+void RtmpOSTaskFree(RTMP_OS_TASK *pTaskOrg)
 {
 	OS_TASK *pTask;
 
@@ -4090,7 +4090,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOSTaskCustomize(RTMP_OS_TASK *pTaskOrg)
+void RtmpOSTaskCustomize(RTMP_OS_TASK *pTaskOrg)
 {
 	OS_TASK *pTask;
 
@@ -4149,7 +4149,7 @@ Note:
 NDIS_STATUS RtmpOSTaskInit(
 	RTMP_OS_TASK *pTaskOrg,
 	PSTRING pTaskName,
-	VOID *pPriv,
+	void *pPriv,
 	LIST_HEADER *pTaskList,
 	LIST_HEADER *pSemList)
 {
@@ -4182,7 +4182,7 @@ Return Value:
 Note:
 ========================================================================
 */
-BOOLEAN RtmpOSTaskWait(VOID *pReserved, RTMP_OS_TASK *pTaskOrg, INT32 *pStatus)
+BOOLEAN RtmpOSTaskWait(void *pReserved, RTMP_OS_TASK *pTaskOrg, INT32 *pStatus)
 {
 	OS_TASK *pTask;
 
@@ -4208,7 +4208,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID *RtmpOsTaskDataGet(RTMP_OS_TASK *pTaskOrg)
+void *RtmpOsTaskDataGet(RTMP_OS_TASK *pTaskOrg)
 {
 	if (pTaskOrg->pContent == NULL)
 		return NULL;
@@ -4260,7 +4260,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsFreeSpinLock(NDIS_SPIN_LOCK *pLockOrg)
+void RtmpOsFreeSpinLock(NDIS_SPIN_LOCK *pLockOrg)
 {
 	/* we will free all locks memory in RTMP_OS_FREE_LOCK() */
 	OS_NDIS_SPIN_LOCK *pLock;
@@ -4289,7 +4289,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSpinLockBh(NDIS_SPIN_LOCK *pLockOrg)
+void RtmpOsSpinLockBh(NDIS_SPIN_LOCK *pLockOrg)
 {
 	OS_NDIS_SPIN_LOCK *pLock;
 
@@ -4315,7 +4315,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSpinUnLockBh(NDIS_SPIN_LOCK *pLockOrg)
+void RtmpOsSpinUnLockBh(NDIS_SPIN_LOCK *pLockOrg)
 {
 	OS_NDIS_SPIN_LOCK *pLock;
 
@@ -4342,7 +4342,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsIntLock(NDIS_SPIN_LOCK *pLockOrg, ULONG *pIrqFlags)
+void RtmpOsIntLock(NDIS_SPIN_LOCK *pLockOrg, ULONG *pIrqFlags)
 {
 	OS_NDIS_SPIN_LOCK *pLock;
 
@@ -4369,7 +4369,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsIntUnLock(NDIS_SPIN_LOCK *pLockOrg, ULONG IrqFlags)
+void RtmpOsIntUnLock(NDIS_SPIN_LOCK *pLockOrg, ULONG IrqFlags)
 {
 	OS_NDIS_SPIN_LOCK *pLock;
 
@@ -4439,7 +4439,7 @@ Return Value:
 Note:
 ========================================================================
 */
-unsigned char *RtmpOsNetDevGetPhyAddr(VOID *pDev)
+unsigned char *RtmpOsNetDevGetPhyAddr(void *pDev)
 {
 	return RTMP_OS_NETDEV_GET_PHYADDR((PNET_DEV) pDev);
 }
@@ -4459,7 +4459,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsNetQueueStart(PNET_DEV pDev)
+void RtmpOsNetQueueStart(PNET_DEV pDev)
 {
 	RTMP_OS_NETDEV_START_QUEUE(pDev);
 }
@@ -4479,7 +4479,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsNetQueueStop(PNET_DEV pDev)
+void RtmpOsNetQueueStop(PNET_DEV pDev)
 {
 	RTMP_OS_NETDEV_STOP_QUEUE(pDev);
 }
@@ -4499,7 +4499,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsNetQueueWake(PNET_DEV pDev)
+void RtmpOsNetQueueWake(PNET_DEV pDev)
 {
 	RTMP_OS_NETDEV_WAKE_QUEUE(pDev);
 }
@@ -4520,7 +4520,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSetPktNetDev(VOID *pPkt, VOID *pDev)
+void RtmpOsSetPktNetDev(void *pPkt, void *pDev)
 {
 	SET_OS_PKT_NETDEV(pPkt, (PNET_DEV) pDev);
 }
@@ -4541,7 +4541,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSetNetDevType(VOID *pDev, USHORT Type)
+void RtmpOsSetNetDevType(void *pDev, USHORT Type)
 {
 	RTMP_OS_NETDEV_SET_TYPE((PNET_DEV) pDev, Type);
 }
@@ -4562,7 +4562,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSetNetDevTypeMonitor(VOID *pDev)
+void RtmpOsSetNetDevTypeMonitor(void *pDev)
 {
 	RTMP_OS_NETDEV_SET_TYPE((PNET_DEV) pDev, ARPHRD_IEEE80211_PRISM);
 }
@@ -4583,7 +4583,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsGetPid(IN ULONG *pDst,
+void RtmpOsGetPid(IN ULONG *pDst,
 		  IN ULONG PID)
 {
 	RT_GET_OS_PID(*pDst, PID);
@@ -4604,7 +4604,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsWait(UINT32 Time)
+void RtmpOsWait(UINT32 Time)
 {
 	OS_WAIT(Time);
 }
@@ -4664,7 +4664,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsGetSystemUpTime(ULONG *pTime)
+void RtmpOsGetSystemUpTime(ULONG *pTime)
 {
 	NdisGetSystemUpTime(pTime);
 }
@@ -4683,7 +4683,7 @@ Return Value:
 Note:
 ========================================================================
 */
-UINT32 RtmpOsTickUnitGet(VOID)
+UINT32 RtmpOsTickUnitGet(void)
 {
 	return HZ;
 }
@@ -4841,7 +4841,7 @@ Note:
 	Used in site servey.
 ========================================================================
 */
-ULONG RtmpOsMaxScanDataGet(VOID)
+ULONG RtmpOsMaxScanDataGet(void)
 {
 	return IW_SCAN_MAX_DATA;
 }
@@ -4863,7 +4863,7 @@ Return Value:
 Note:
 ========================================================================
 */
-ULONG RtmpOsCopyFromUser(VOID *to, const void *from, ULONG n)
+ULONG RtmpOsCopyFromUser(void *to, const void *from, ULONG n)
 {
 	return (copy_from_user(to, from, n));
 }
@@ -4885,7 +4885,7 @@ Return Value:
 Note:
 ========================================================================
 */
-ULONG RtmpOsCopyToUser(VOID *to, const void *from, ULONG n)
+ULONG RtmpOsCopyToUser(void *to, const void *from, ULONG n)
 {
 	return (copy_to_user(to, from, n));
 }
@@ -5019,7 +5019,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsSemaWakeUp(RTMP_OS_SEM *pSemOrg)
+void RtmpOsSemaWakeUp(RTMP_OS_SEM *pSemOrg)
 {
 	OS_SEM *pSem;
 
@@ -5044,7 +5044,7 @@ Return Value:
 Note:
 ========================================================================
 */
-INT32 RtmpOsIsInInterrupt(VOID)
+INT32 RtmpOsIsInInterrupt(void)
 {
 	return (in_interrupt());
 }
@@ -5067,7 +5067,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktBodyCopy(
+void RtmpOsPktBodyCopy(
 	PNET_DEV pNetDev,
 	PNDIS_PACKET pNetPkt,
 	ULONG ThisFrameLen,
@@ -5155,7 +5155,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktDataPtrAssign(PNDIS_PACKET pNetPkt, UCHAR *pData)
+void RtmpOsPktDataPtrAssign(PNDIS_PACKET pNetPkt, UCHAR *pData)
 {
 	SET_OS_PKT_DATAPTR(pNetPkt, pData);
 }
@@ -5176,7 +5176,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktLenAssign(PNDIS_PACKET pNetPkt, LONG Len)
+void RtmpOsPktLenAssign(PNDIS_PACKET pNetPkt, LONG Len)
 {
 	SET_OS_PKT_LEN(pNetPkt, Len);
 }
@@ -5197,7 +5197,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktTailAdjust(PNDIS_PACKET pNetPkt, UINT removedTagLen)
+void RtmpOsPktTailAdjust(PNDIS_PACKET pNetPkt, UINT removedTagLen)
 {
 	OS_PKT_TAIL_ADJUST(pNetPkt, removedTagLen);
 }
@@ -5239,7 +5239,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktReserve(PNDIS_PACKET pNetPkt, UINT Len)
+void RtmpOsPktReserve(PNDIS_PACKET pNetPkt, UINT Len)
 {
 	OS_PKT_RESERVE(pNetPkt, Len);
 }
@@ -5280,7 +5280,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsPktInfPpaSend(PNDIS_PACKET pNetPkt)
+void RtmpOsPktInfPpaSend(PNDIS_PACKET pNetPkt)
 {
 #ifdef INF_PPA_SUPPORT
 	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
@@ -5311,7 +5311,7 @@ long RtmpOsSimpleStrtol(const char *cp, char **endp, unsigned int base)
 }
 
 
-BOOLEAN RtmpOsPktOffsetInit(VOID)
+BOOLEAN RtmpOsPktOffsetInit(void)
 {
 	struct sk_buff *pPkt = NULL;
 
@@ -5377,7 +5377,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsAtomicDestroy(RTMP_OS_ATOMIC *pAtomic)
+void RtmpOsAtomicDestroy(RTMP_OS_ATOMIC *pAtomic)
 {
 	if (pAtomic->pContent) {
 		os_free_mem(NULL, pAtomic->pContent);
@@ -5422,7 +5422,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsAtomicDec(RTMP_OS_ATOMIC *pAtomicSrc)
+void RtmpOsAtomicDec(RTMP_OS_ATOMIC *pAtomicSrc)
 {
 	if (pAtomicSrc->pContent)
 		atomic_dec((atomic_t *) (pAtomicSrc->pContent));
@@ -5444,7 +5444,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsAtomicInterlockedExchange(
+void RtmpOsAtomicInterlockedExchange(
 	RTMP_OS_ATOMIC *pAtomicSrc,
 	LONG Value)
 {
@@ -5467,7 +5467,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpOsOpsInit(RTMP_OS_ABL_OPS *pOps)
+void RtmpOsOpsInit(RTMP_OS_ABL_OPS *pOps)
 {
 	pOps->ra_printk = (RTMP_PRINTK)printk;
 	pOps->ra_snprintf = (RTMP_SNPRINTF)snprintf;
@@ -5483,15 +5483,15 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, BOOLEAN bSet)
 
 
 /* timeout -- ms */
-VOID RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_SetPeriodicTimer(pTimerOrg, timeout);
 }
 
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
-VOID RTMP_OS_Init_Timer(
-	VOID *pReserved,
+void RTMP_OS_Init_Timer(
+	void *pReserved,
 	NDIS_MINIPORT_TIMER *pTimerOrg,
 	TIMER_FUNCTION function,
 	void *data,
@@ -5501,25 +5501,25 @@ VOID RTMP_OS_Init_Timer(
 }
 
 
-VOID RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_OS_Add_Timer(pTimerOrg, timeout);
 }
 
 
-VOID RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_OS_Mod_Timer(pTimerOrg, timeout);
 }
 
 
-VOID RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
+void RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
 {
 	__RTMP_OS_Del_Timer(pTimerOrg, pCancelled);
 }
 
 
-VOID RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
+void RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
 {
 	__RTMP_OS_Release_Timer(pTimerOrg);
 }
@@ -5555,7 +5555,7 @@ NDIS_STATUS RtmpOSTaskAttach(
 NDIS_STATUS RtmpOSTaskInit(
 	RTMP_OS_TASK *pTask,
 	PSTRING pTaskName,
-	VOID *pPriv,
+	void *pPriv,
 	LIST_HEADER *pTaskList,
 	LIST_HEADER *pSemList)
 {
@@ -5563,13 +5563,13 @@ NDIS_STATUS RtmpOSTaskInit(
 }
 
 
-BOOLEAN RtmpOSTaskWait(VOID *pReserved, RTMP_OS_TASK * pTask, INT32 *pStatus)
+BOOLEAN RtmpOSTaskWait(void *pReserved, RTMP_OS_TASK * pTask, INT32 *pStatus)
 {
 	return __RtmpOSTaskWait(pReserved, pTask, pStatus);
 }
 
 
-VOID RtmpOsTaskWakeUp(RTMP_OS_TASK *pTask)
+void RtmpOsTaskWakeUp(RTMP_OS_TASK *pTask)
 {
 #ifdef KTHREAD_SUPPORT
 	WAKE_UP(pTask);

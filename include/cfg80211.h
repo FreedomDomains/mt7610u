@@ -73,7 +73,7 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211_Register(
-	VOID						*pAd,
+	void 					*pAd,
 	struct device				*pDev,
 	struct net_device			*pNetDev);
 

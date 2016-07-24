@@ -46,7 +46,7 @@ UINT16 MaxBulkOutsSizeLimit[5][4] =
 };
 
 
-VOID SoftwareFlowControl(
+void SoftwareFlowControl(
 	IN PRTMP_ADAPTER pAd)
 {
 	BOOLEAN ResetBulkOutSize=FALSE;
@@ -128,7 +128,7 @@ pAd->RunningQueueNoCount=0;
 #endif /* INF_AMAZON_SE */
 
 
-VOID RTUSBInitTxDesc(
+void RTUSBInitTxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PTX_CONTEXT		pTxContext,
 	IN	UCHAR			BulkOutPipeId,
@@ -173,7 +173,7 @@ VOID RTUSBInitTxDesc(
 	}
 }
 
-VOID	RTUSBInitHTTxDesc(
+void RTUSBInitHTTxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PHT_TX_CONTEXT	pTxContext,
 	IN	UCHAR			BulkOutPipeId,
@@ -203,7 +203,7 @@ VOID	RTUSBInitHTTxDesc(
 						(pTxContext->data_dma + pTxContext->NextBulkOutPosition));
 }
 
-VOID	RTUSBInitRxDesc(
+void RTUSBInitRxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PRX_CONTEXT		pRxContext)
 {
@@ -256,7 +256,7 @@ VOID	RTUSBInitRxDesc(
 			RTMP_IRQ_UNLOCK((pLock), IrqFlags);
 
 
-VOID	RTUSBBulkOutDataPacket(
+void RTUSBBulkOutDataPacket(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			BulkOutPipeId,
 	IN	UCHAR			Index)
@@ -744,7 +744,7 @@ USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t p
 
 	========================================================================
 */
-VOID	RTUSBBulkOutNullFrame(
+void RTUSBBulkOutNullFrame(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PTX_CONTEXT		pNullContext = &(pAd->NullContext);
@@ -825,7 +825,7 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pU
 
 	========================================================================
 */
-VOID	RTUSBBulkOutMLMEPacket(
+void RTUSBBulkOutMLMEPacket(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			Index)
 {
@@ -926,7 +926,7 @@ USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t p
 
 	========================================================================
 */
-VOID	RTUSBBulkOutPsPoll(
+void RTUSBBulkOutPsPoll(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
@@ -991,7 +991,7 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB,
 }
 
 
-VOID DoBulkIn(IN RTMP_ADAPTER *pAd)
+void DoBulkIn(IN RTMP_ADAPTER *pAd)
 {
 	PRX_CONTEXT		pRxContext;
 	PURB			pUrb;
@@ -1065,7 +1065,7 @@ VOID DoBulkIn(IN RTMP_ADAPTER *pAd)
 		 fRTMP_ADAPTER_RADIO_OFF | fRTMP_ADAPTER_RESET_IN_PROGRESS | \
 		 fRTMP_ADAPTER_REMOVE_IN_PROGRESS)
 
-VOID	RTUSBBulkReceive(
+void RTUSBBulkReceive(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PRX_CONTEXT		pRxContext;
@@ -1180,7 +1180,7 @@ USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs 
 
 	========================================================================
 */
-VOID	RTUSBKickBulkOut(
+void RTUSBKickBulkOut(
 	IN	PRTMP_ADAPTER pAd)
 {
 	/* BulkIn Reset will reset whole USB PHY. So we need to make sure fRTMP_ADAPTER_BULKIN_RESET not flaged.*/
@@ -1283,7 +1283,7 @@ VOID	RTUSBKickBulkOut(
 
 	========================================================================
 */
-VOID	RTUSBCleanUpDataBulkOutQueue(
+void RTUSBCleanUpDataBulkOutQueue(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	UCHAR			Idx;
@@ -1318,7 +1318,7 @@ VOID	RTUSBCleanUpDataBulkOutQueue(
 
 	========================================================================
 */
-VOID	RTUSBCleanUpMLMEBulkOutQueue(
+void RTUSBCleanUpMLMEBulkOutQueue(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	DBGPRINT(RT_DEBUG_TRACE, ("--->CleanUpMLMEBulkOutQueue\n"));
@@ -1342,7 +1342,7 @@ VOID	RTUSBCleanUpMLMEBulkOutQueue(
 
 	========================================================================
 */
-VOID	RTUSBCancelPendingIRPs(
+void RTUSBCancelPendingIRPs(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	RTUSBCancelPendingBulkInIRP(pAd);
@@ -1362,7 +1362,7 @@ VOID	RTUSBCancelPendingIRPs(
 
 	========================================================================
 */
-VOID	RTUSBCancelPendingBulkInIRP(
+void RTUSBCancelPendingBulkInIRP(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PRX_CONTEXT pRxContext;
@@ -1409,7 +1409,7 @@ VOID	RTUSBCancelPendingBulkInIRP(
 
 	========================================================================
 */
-VOID	RTUSBCancelPendingBulkOutIRP(
+void RTUSBCancelPendingBulkOutIRP(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PHT_TX_CONTEXT		pHTTXContext;

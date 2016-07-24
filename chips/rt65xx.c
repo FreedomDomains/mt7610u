@@ -49,7 +49,7 @@
 		Before Enable RX, make sure you have enabled Interrupt.
 	========================================================================
 */
-VOID ral_wlan_chip_onoff(
+void ral_wlan_chip_onoff(
 	IN RTMP_ADAPTER *pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN)
@@ -110,7 +110,7 @@ VOID ral_wlan_chip_onoff(
 #endif /* RTMP_MAC_USB */
 }
 
-VOID dump_bw_info(RTMP_ADAPTER *pAd)
+void dump_bw_info(RTMP_ADAPTER *pAd)
 {
 		UINT32 core_r1, agc_r0, be_r0, band_cfg;
 		static UCHAR *bw_str[]={"20", "10", "40", "80"};
@@ -151,7 +151,7 @@ VOID dump_bw_info(RTMP_ADAPTER *pAd)
 
 
 #ifdef RTMP_USB_SUPPORT
-VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 {
 	UINT32 ret;
 
@@ -196,7 +196,7 @@ VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 }
 
 
-VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 {
 	UINT32 MACValue = 0;
 	UINT32 rx_filter_flag;
@@ -285,7 +285,7 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 }
 #endif
 
-VOID RT65xxDisableTxRx(
+void RT65xxDisableTxRx(
 	RTMP_ADAPTER *pAd,
 	UCHAR Level)
 {
@@ -499,7 +499,7 @@ VOID RT65xxDisableTxRx(
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
 }
 
-VOID RT65xx_WLAN_ChipOnOff(
+void RT65xx_WLAN_ChipOnOff(
 	IN RTMP_ADAPTER *pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN)

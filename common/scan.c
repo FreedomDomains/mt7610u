@@ -367,7 +367,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 		Scan next channel
 	==========================================================================
  */
-VOID ScanNextChannel(
+void ScanNextChannel(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR OpMode)
 {

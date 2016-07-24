@@ -177,54 +177,54 @@ typedef struct _MT76x0_RATE_PWR_TABLE {
 	MT76x0_RATE_PWR_ITEM MCS32;
 } MT76x0_RATE_PWR_Table, *PMT76x0_RATE_PWR_Table;
 
-VOID MT76x0_Init(struct _RTMP_ADAPTER *pAd);
+void MT76x0_Init(struct _RTMP_ADAPTER *pAd);
 INT MT76x0_ReadChannelPwr(struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
+void MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
 
 #ifdef DBG
-VOID MT76x0_ShowDmaIndexCupIndex(
+void MT76x0_ShowDmaIndexCupIndex(
 	struct _RTMP_ADAPTER *pAd);
 #endif /* DBG */
 
 #ifdef RT8592
 #endif /* RT8592 */
-VOID mt76x0_read_per_rate_tx_pwr(struct _RTMP_ADAPTER *pAd);
+void mt76x0_read_per_rate_tx_pwr(struct _RTMP_ADAPTER *pAd);
 
-VOID dump_bw_info(struct _RTMP_ADAPTER *pAd);
+void dump_bw_info(struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_WLAN_ChipOnOff(
+void MT76x0_WLAN_ChipOnOff(
 	IN struct _RTMP_ADAPTER *pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN);
 
 
-VOID MT76x0_AntennaSelCtrl(
+void MT76x0_AntennaSelCtrl(
 	IN struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_dynamic_vga_tuning(
+void MT76x0_dynamic_vga_tuning(
 	IN struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_VCO_CalibrationMode3(
+void MT76x0_VCO_CalibrationMode3(
 	IN struct _RTMP_ADAPTER *pAd,
 	IN UCHAR Channel);
 
-VOID MT76x0_Calibration(
+void MT76x0_Calibration(
 	IN struct _RTMP_ADAPTER *pAd,
 	IN UCHAR Channel,
 	IN BOOLEAN bPowerOn,
 	IN BOOLEAN bDoTSSI,
 	IN BOOLEAN bFullCal);
 
-VOID MT76x0_TempSensor(
+void MT76x0_TempSensor(
 	IN struct _RTMP_ADAPTER *pAd);
 
 #ifdef DFS_SUPPORT
-VOID MT76x0_DFS_CR_Init(
+void MT76x0_DFS_CR_Init(
 	IN struct _RTMP_ADAPTER *pAd);
 #endif /* DFS_SUPPORT */
 #ifdef RTMP_FLASH_SUPPORT
-VOID MT76x0_ReadFlashAndInitAsic(
+void MT76x0_ReadFlashAndInitAsic(
 	IN struct _RTMP_ADAPTER *pAd);
 #endif /* RTMP_FLASH_SUPPORT */
 
@@ -241,17 +241,17 @@ void mt76x0_adjust_per_rate_pwr(struct _RTMP_ADAPTER *pAd);
 void mt76x0_read_tx_alc_info_from_eeprom(struct _RTMP_ADAPTER *pAd);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-VOID MT76x0_TSSI_DC_Calibration(
+void MT76x0_TSSI_DC_Calibration(
 	IN  struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_MakeUpTssiTable(
+void MT76x0_MakeUpTssiTable(
 	IN  struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_IntTxAlcProcess(
+void MT76x0_IntTxAlcProcess(
 	IN  struct _RTMP_ADAPTER *pAd);
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 
-VOID MT76x0_MakeUpRatePwrTable(
+void MT76x0_MakeUpRatePwrTable(
 	IN struct _RTMP_ADAPTER *pAd);
 
 #ifdef SINGLE_SKU_V2

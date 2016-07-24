@@ -95,14 +95,14 @@ static UCHAR eFuseReadRegisters(
 	IN	USHORT Length,
 	OUT	USHORT* pData);
 
-VOID eFuseReadPhysical(
+void eFuseReadPhysical(
 	IN	PRTMP_ADAPTER	pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
   	OUT	PUSHORT lpOutBuffer,
   	IN	ULONG nOutBufferSize);
 
-static VOID eFusePhysicalWriteRegisters(
+static void eFusePhysicalWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -114,7 +114,7 @@ static NTSTATUS eFuseWriteRegisters(
 	IN	USHORT Length,
 	IN	USHORT* pData);
 
-static VOID eFuseWritePhysical(
+static void eFuseWritePhysical(
 	IN	PRTMP_ADAPTER	pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
@@ -244,7 +244,7 @@ UCHAR eFuseReadRegisters(
 
 ========================================================================
 */
-VOID eFusePhysicalReadRegisters(
+void eFusePhysicalReadRegisters(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -330,7 +330,7 @@ VOID eFusePhysicalReadRegisters(
 
 ========================================================================
 */
-VOID eFuseReadPhysical(
+void eFuseReadPhysical(
 	IN	PRTMP_ADAPTER	pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
@@ -394,7 +394,7 @@ NTSTATUS eFuseRead(
 
 ========================================================================
 */
-static VOID eFusePhysicalWriteRegisters(
+static void eFusePhysicalWriteRegisters(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -803,7 +803,7 @@ static NTSTATUS eFuseWriteRegisters(
 
 ========================================================================
 */
-static VOID eFuseWritePhysical(
+static void eFuseWritePhysical(
 	IN	PRTMP_ADAPTER	pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
@@ -1619,7 +1619,7 @@ INT eFuseWriteEeeppromBuf(
 }
 
 
-VOID eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
+void eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
 	PUINT EfuseFreeBlock)
 {
 

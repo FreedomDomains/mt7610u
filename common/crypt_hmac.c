@@ -48,7 +48,7 @@ Note:
     None
 ========================================================================
 */
-VOID RT_HMAC_SHA1 (
+void RT_HMAC_SHA1 (
     IN  const u8 Key[],
     IN  UINT KeyLen,
     IN  const u8 Message[],
@@ -131,7 +131,7 @@ Note:
     None
 ========================================================================
 */
-VOID RT_HMAC_SHA256 (
+void RT_HMAC_SHA256 (
     IN  const u8 Key[],
     IN  UINT KeyLen,
     IN  const u8 Message[],
@@ -215,7 +215,7 @@ Note:
     None
 ========================================================================
 */
-VOID RT_HMAC_MD5(
+void RT_HMAC_MD5(
     IN  const u8 Key[],
     IN  UINT KeyLen,
     IN  const u8 Message[],

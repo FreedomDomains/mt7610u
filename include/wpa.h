@@ -212,7 +212,7 @@ BOOLEAN WpaMsgTypeSubst(
 	IN UCHAR EAPType,
 	OUT INT *MsgType);
 
-VOID PRF(
+void PRF(
 	IN UCHAR *key,
 	IN INT key_len,
 	IN UCHAR *prefix,
@@ -228,7 +228,7 @@ int RtmpPasswordHash(
 	int ssidlength,
 	unsigned char *output);
 
-	VOID KDF(
+	void KDF(
 	IN u8 * key,
 	IN INT key_len,
 	IN u8 * label,
@@ -244,11 +244,11 @@ u8 * WPA_ExtractSuiteFromRSNIE(
 	IN u8 type,
 	OUT u8 *count);
 
-VOID WpaShowAllsuite(
+void WpaShowAllsuite(
 	IN u8 * rsnie,
 	IN UINT rsnie_len);
 
-VOID RTMPInsertRSNIE(
+void RTMPInsertRSNIE(
 	IN PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 * rsnie_ptr,
@@ -261,7 +261,7 @@ VOID RTMPInsertRSNIE(
  	function prototype in cmm_wpa.c
  =====================================
 */
-VOID RTMPToWirelessSta(
+void RTMPToWirelessSta(
 	IN PRTMP_ADAPTER pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN PUCHAR pHeader802_3,
@@ -270,7 +270,7 @@ VOID RTMPToWirelessSta(
 	IN UINT DataLen,
 	IN BOOLEAN bClearFrame);
 
-VOID WpaDerivePTK(
+void WpaDerivePTK(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR *PMK,
 	IN UCHAR *ANonce,
@@ -280,14 +280,14 @@ VOID WpaDerivePTK(
 	OUT UCHAR *output,
 	IN UINT len);
 
-VOID WpaDeriveGTK(
+void WpaDeriveGTK(
 	IN UCHAR *PMK,
 	IN UCHAR *GNonce,
 	IN UCHAR *AA,
 	OUT UCHAR *output,
 	IN UINT len);
 
-VOID GenRandom(
+void GenRandom(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR *macAddr,
 	OUT UCHAR *random);
@@ -317,12 +317,12 @@ BOOLEAN RTMPParseEapolKeyData(
 	IN BOOLEAN bWPA2,
 	IN MAC_TABLE_ENTRY *pEntry);
 
-VOID WPA_ConstructKdeHdr(
+void WPA_ConstructKdeHdr(
 	IN u8 data_type,
 	IN u8 data_len,
 	OUT PUCHAR pBuf);
 
-VOID ConstructEapolMsg(
+void ConstructEapolMsg(
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN UCHAR GroupKeyWepStatus,
 	IN UCHAR MsgType,
@@ -348,14 +348,14 @@ NDIS_STATUS RTMPSoftDecryptionAction(
 	INOUT PUCHAR pData,
 	INOUT UINT16 *DataByteCnt);
 
-VOID RTMPSoftConstructIVHdr(
+void RTMPSoftConstructIVHdr(
 	IN UCHAR CipherAlg,
 	IN UCHAR key_id,
 	IN PUCHAR pTxIv,
 	OUT PUCHAR pHdrIv,
 	OUT u8 *hdr_iv_len);
 
-VOID RTMPSoftEncryptionAction(
+void RTMPSoftEncryptionAction(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR CipherAlg,
 	IN PUCHAR pHdr,
@@ -365,19 +365,19 @@ VOID RTMPSoftEncryptionAction(
 	IN PCIPHER_KEY pKey,
 	OUT u8 *ext_len);
 
-VOID RTMPMakeRSNIE(
+void RTMPMakeRSNIE(
 	IN PRTMP_ADAPTER pAd,
 	IN UINT AuthMode,
 	IN UINT WepStatus,
 	IN UCHAR apidx);
 
-VOID WPAInstallPairwiseKey(
+void WPAInstallPairwiseKey(
 	PRTMP_ADAPTER pAd,
 	u8 BssIdx,
 	PMAC_TABLE_ENTRY pEntry,
 	BOOLEAN bAE);
 
-VOID WPAInstallSharedKey(
+void WPAInstallSharedKey(
 	PRTMP_ADAPTER pAd,
 	u8 GroupCipher,
 	u8 BssIdx,
@@ -387,7 +387,7 @@ VOID WPAInstallSharedKey(
 	u8 * pGtk,
 	u8 GtkLen);
 
-VOID RTMPSetWcidSecurityInfo(
+void RTMPSetWcidSecurityInfo(
 	PRTMP_ADAPTER pAd,
 	u8 BssIdx,
 	u8 KeyIdx,
@@ -395,7 +395,7 @@ VOID RTMPSetWcidSecurityInfo(
 	u8 Wcid,
 	u8 KeyTabFlag);
 
-VOID CalculateMIC(
+void CalculateMIC(
 	IN UCHAR KeyDescVer,
 	IN UCHAR *PTK,
 	OUT PEAPOL_PACKET pMsg);
@@ -416,7 +416,7 @@ UINT RTMP_CALC_FCS32(
 	IN PUCHAR Cp,
 	IN INT Len);
 
-VOID RTMPConstructWEPIVHdr(
+void RTMPConstructWEPIVHdr(
 	IN u8 key_idx,
 	IN UCHAR *pn,
 	OUT UCHAR *iv_hdr);
@@ -447,14 +447,14 @@ BOOLEAN RTMPSoftDecryptTKIP(
 	INOUT PUCHAR pData,
 	IN UINT16 *DataByteCnt);
 
-VOID TKIP_GTK_KEY_WRAP(
+void TKIP_GTK_KEY_WRAP(
 	IN UCHAR *key,
 	IN UCHAR *iv,
 	IN UCHAR *input_text,
 	IN UINT32 input_len,
 	OUT UCHAR *output_text);
 
-VOID TKIP_GTK_KEY_UNWRAP(
+void TKIP_GTK_KEY_UNWRAP(
 	IN UCHAR *key,
 	IN UCHAR *iv,
 	IN UCHAR *input_text,
@@ -472,7 +472,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	IN ULONG DataByteCnt,
 	IN PCIPHER_KEY pWpaKey);
 
-VOID RTMPConstructCCMPHdr(
+void RTMPConstructCCMPHdr(
 	IN u8 key_idx,
 	IN UCHAR *pn,
 	OUT UCHAR *ccmp_hdr);
@@ -492,7 +492,7 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	INOUT PUCHAR pData,
 	INOUT UINT16 *DataLen);
 
-VOID CCMP_test_vector(
+void CCMP_test_vector(
 	IN PRTMP_ADAPTER pAd,
 	IN INT input);
 

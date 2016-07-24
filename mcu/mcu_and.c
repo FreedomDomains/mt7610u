@@ -29,7 +29,7 @@
 
 
 #ifdef RTMP_MAC_USB
-VOID usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
+void usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
 {
 	RTMP_OS_COMPLETION *load_fw_done = (RTMP_OS_COMPLETION *)RTMP_OS_USB_CONTEXT_GET(urb);
 

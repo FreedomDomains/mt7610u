@@ -41,7 +41,7 @@
 
 	==========================================================================
  */
-VOID SyncStateMachineInit(
+void SyncStateMachineInit(
 	IN PRTMP_ADAPTER pAd,
 	IN STATE_MACHINE *Sm,
 	OUT STATE_MACHINE_FUNC Trans[])
@@ -90,7 +90,7 @@ VOID SyncStateMachineInit(
 
 	==========================================================================
  */
-VOID BeaconTimeout(
+void BeaconTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -133,7 +133,7 @@ VOID BeaconTimeout(
 
 	==========================================================================
  */
-VOID ScanTimeout(
+void ScanTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -163,7 +163,7 @@ VOID ScanTimeout(
 }
 
 
-VOID MlmeForceJoinReqAction(
+void MlmeForceJoinReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -340,7 +340,7 @@ VOID MlmeForceJoinReqAction(
 }
 
 
-VOID MlmeForceScanReqAction(
+void MlmeForceScanReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -464,7 +464,7 @@ VOID MlmeForceScanReqAction(
 		MLME SCAN req state machine procedure
 	==========================================================================
  */
-VOID MlmeScanReqAction(
+void MlmeScanReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -605,7 +605,7 @@ VOID MlmeScanReqAction(
 		MLME JOIN req state machine procedure
 	==========================================================================
  */
-VOID MlmeJoinReqAction(
+void MlmeJoinReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -834,7 +834,7 @@ VOID MlmeJoinReqAction(
 		MLME START Request state machine procedure, starting an IBSS
 	==========================================================================
  */
-VOID MlmeStartReqAction(
+void MlmeStartReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -949,7 +949,7 @@ VOID MlmeStartReqAction(
 
 
 //+++Add by shiang to check correctness of new sanity function
-VOID rtmp_dbg_sanity_diff(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
+void rtmp_dbg_sanity_diff(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 {
 	/* Parameters used for old sanity function */
 	UCHAR Bssid[MAC_ADDR_LEN], Addr2[MAC_ADDR_LEN];
@@ -1283,7 +1283,7 @@ LabelOK:
 		peer sends beacon back when scanning
 	==========================================================================
  */
-VOID PeerBeaconAtScanAction(
+void PeerBeaconAtScanAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1429,7 +1429,7 @@ LabelOK:
 		When waiting joining the (I)BSS, beacon received from external
 	==========================================================================
  */
-VOID PeerBeaconAtJoinAction(
+void PeerBeaconAtJoinAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -1791,7 +1791,7 @@ LabelOK:
 
 	==========================================================================
  */
-VOID PeerBeacon(
+void PeerBeacon(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2497,7 +2497,7 @@ LabelOK:
 		Receive PROBE REQ from remote peer when operating in IBSS mode
 	==========================================================================
  */
-VOID PeerProbeReqAction(
+void PeerProbeReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2628,7 +2628,7 @@ VOID PeerProbeReqAction(
 	}
 }
 
-VOID BeaconTimeoutAtJoinAction(
+void BeaconTimeoutAtJoinAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2645,7 +2645,7 @@ VOID BeaconTimeoutAtJoinAction(
 		Scan timeout procedure. basically add channel index by 1 and rescan
 	==========================================================================
  */
-VOID ScanTimeoutAction(
+void ScanTimeoutAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2695,7 +2695,7 @@ VOID ScanTimeoutAction(
 	Description:
 	==========================================================================
  */
-VOID InvalidStateWhenScan(
+void InvalidStateWhenScan(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2719,7 +2719,7 @@ VOID InvalidStateWhenScan(
 	Description:
 	==========================================================================
  */
-VOID InvalidStateWhenJoin(
+void InvalidStateWhenJoin(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2741,7 +2741,7 @@ VOID InvalidStateWhenJoin(
 	Description:
 	==========================================================================
  */
-VOID InvalidStateWhenStart(
+void InvalidStateWhenStart(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -2760,7 +2760,7 @@ VOID InvalidStateWhenStart(
 
 	==========================================================================
  */
-VOID EnqueuePsPoll(
+void EnqueuePsPoll(
 	IN PRTMP_ADAPTER pAd)
 {
 #ifdef RALINK_ATE
@@ -2788,7 +2788,7 @@ VOID EnqueuePsPoll(
 	Description:
 	==========================================================================
  */
-VOID EnqueueProbeRequest(
+void EnqueueProbeRequest(
 	IN PRTMP_ADAPTER pAd)
 {
 	NDIS_STATUS     NState;
@@ -2823,7 +2823,7 @@ VOID EnqueueProbeRequest(
 
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3
-VOID BuildEffectedChannelList(
+void BuildEffectedChannelList(
 	IN PRTMP_ADAPTER pAd)
 {
 	UCHAR		EChannel[11];
@@ -2926,7 +2926,7 @@ VOID BuildEffectedChannelList(
 }
 
 
-VOID DeleteEffectedChannelList(
+void DeleteEffectedChannelList(
 	IN PRTMP_ADAPTER pAd)
 {
 	UCHAR		i;
@@ -2958,7 +2958,7 @@ VOID DeleteEffectedChannelList(
 
 	========================================================================
 */
-VOID CntlChannelWidth(
+void CntlChannelWidth(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR prim_ch,
 	IN UCHAR cent_ch,
@@ -3027,7 +3027,7 @@ VOID CntlChannelWidth(
         MLME Cancel the SCAN req state machine procedure
     ==========================================================================
  */
-VOID ScanCnclAction(
+void ScanCnclAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {

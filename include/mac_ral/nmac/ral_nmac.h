@@ -955,7 +955,7 @@ typedef union _RF_MISC_STRUC{
 }RF_MISC_STRUC, *PRF_MISC_STRUC;
 #endif
 
-VOID ral_wlan_chip_onoff(
+void ral_wlan_chip_onoff(
 	IN struct _RTMP_ADAPTER *pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN);

@@ -1619,7 +1619,7 @@ static PCH_REGION GetChRegion(
 	return pChRegion;
 }
 
-static VOID ChBandCheck(
+static void ChBandCheck(
 	IN UCHAR PhyMode,
 	OUT PUCHAR pChType)
 {
@@ -1700,7 +1700,7 @@ static UCHAR FillChList(
 }
 
 
-static inline VOID CreateChList(
+static inline void CreateChList(
 	IN PRTMP_ADAPTER pAd,
 	IN PCH_REGION pChRegion,
 	IN UCHAR Geography)
@@ -1756,7 +1756,7 @@ static inline VOID CreateChList(
 }
 
 
-VOID BuildChannelListEx(
+void BuildChannelListEx(
 	IN PRTMP_ADAPTER pAd)
 {
 	PCH_REGION pChReg;
@@ -1765,7 +1765,7 @@ VOID BuildChannelListEx(
 	CreateChList(pAd, pChReg, pAd->CommonCfg.Geography);
 }
 
-VOID BuildBeaconChList(
+void BuildBeaconChList(
 	IN PRTMP_ADAPTER pAd,
 	OUT PUCHAR pBuf,
 	OUT	PULONG pBufLen)
@@ -1900,7 +1900,7 @@ BOOLEAN N_ChannelGroupCheck(
 }
 
 
-VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
+void N_ChannelCheck(RTMP_ADAPTER *pAd)
 {
 	INT idx;
 	UCHAR Channel = pAd->CommonCfg.Channel;
@@ -2035,7 +2035,7 @@ u8 GetCuntryMaxTxPwr(
 
 
 /* for OS_ABL */
-VOID RTMP_MapChannelID2KHZ(
+void RTMP_MapChannelID2KHZ(
 	IN UCHAR Ch,
 	OUT UINT32 *pFreq)
 {
@@ -2053,7 +2053,7 @@ VOID RTMP_MapChannelID2KHZ(
 }
 
 /* for OS_ABL */
-VOID RTMP_MapKHZ2ChannelID(
+void RTMP_MapKHZ2ChannelID(
 	IN ULONG Freq,
 	OUT INT *pCh)
 {

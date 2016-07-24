@@ -30,7 +30,7 @@
 
 
 #ifdef CONFIG_STA_SUPPORT
-VOID AsicUpdateAutoFallBackTable(
+void AsicUpdateAutoFallBackTable(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PUCHAR			pRateTable)
 {
@@ -317,7 +317,7 @@ typedef enum _PROT_REG_IDX_{
 
 }PROT_REG_IDX;
 
-VOID AsicUpdateProtect(
+void AsicUpdateProtect(
 	IN PRTMP_ADAPTER pAd,
 	IN USHORT OperationMode,
 	IN UCHAR SetMask,
@@ -754,7 +754,7 @@ VOID AsicUpdateProtect(
 }
 
 
-VOID AsicBBPAdjust(RTMP_ADAPTER *pAd)
+void AsicBBPAdjust(RTMP_ADAPTER *pAd)
 {
 	// TODO: shiang-6590, now this function only used for AP mode, why we need this differentation?
 	if (pAd->chipOps.ChipBBPAdjust != NULL)
@@ -771,7 +771,7 @@ VOID AsicBBPAdjust(RTMP_ADAPTER *pAd)
 
 	==========================================================================
  */
-VOID AsicSwitchChannel(
+void AsicSwitchChannel(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR Channel,
 	IN BOOLEAN bScan)
@@ -848,7 +848,7 @@ VOID AsicSwitchChannel(
 
 	==========================================================================
  */
-VOID AsicLockChannel(
+void AsicLockChannel(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel)
 {
@@ -866,7 +866,7 @@ VOID AsicLockChannel(
 
 
 #ifdef RTMP_TEMPERATURE_COMPENSATION
-VOID InitLookupTable(
+void InitLookupTable(
 	IN PRTMP_ADAPTER pAd)
 {
 	int Idx, IdxTmp;
@@ -1085,7 +1085,7 @@ VOID InitLookupTable(
 }
 
 
-VOID AsicGetAutoAgcOffsetForTemperatureSensor(
+void AsicGetAutoAgcOffsetForTemperatureSensor(
 	IN PRTMP_ADAPTER 		pAd,
 	IN char *			pDeltaPwr,
 	IN char *			pTotalDeltaPwr,
@@ -1242,7 +1242,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 
-VOID AsicResetBBPAgent(PRTMP_ADAPTER pAd)
+void AsicResetBBPAgent(PRTMP_ADAPTER pAd)
 {
 	/* Still need to find why BBP agent keeps busy, but in fact, hardware still function ok. Now clear busy first.	*/
 	/* IF chipOps.AsicResetBbpAgent == NULL, run "else" part */
@@ -1263,7 +1263,7 @@ VOID AsicResetBBPAgent(PRTMP_ADAPTER pAd)
 
 	==========================================================================
  */
-VOID AsicSleepThenAutoWakeup(
+void AsicSleepThenAutoWakeup(
 	IN PRTMP_ADAPTER pAd,
 	IN USHORT TbttNumToNextWakeUp)
 {
@@ -1278,7 +1278,7 @@ VOID AsicSleepThenAutoWakeup(
 		in INFRA BSS, we should use AsicSleepThenAutoWakeup() instead.
 	==========================================================================
  */
-VOID AsicForceSleep(
+void AsicForceSleep(
 	IN PRTMP_ADAPTER pAd)
 {
 
@@ -1294,7 +1294,7 @@ VOID AsicForceSleep(
 	IRQL = DISPATCH_LEVEL
 	==========================================================================
  */
-VOID AsicForceWakeup(
+void AsicForceWakeup(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN    bFromTx)
 {
@@ -1313,7 +1313,7 @@ VOID AsicForceWakeup(
 
 	==========================================================================
  */
-VOID AsicSetBssid(
+void AsicSetBssid(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pBssid)
 {
@@ -1362,7 +1362,7 @@ VOID AsicSetBssid(
 
 	==========================================================================
  */
-VOID AsicEnableRDG(
+void AsicEnableRDG(
 	IN PRTMP_ADAPTER pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
@@ -1386,7 +1386,7 @@ VOID AsicEnableRDG(
 
 	==========================================================================
  */
-VOID AsicDisableRDG(
+void AsicDisableRDG(
 	IN PRTMP_ADAPTER pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
@@ -1430,7 +1430,7 @@ VOID AsicDisableRDG(
 
 	==========================================================================
  */
-VOID AsicDisableSync(
+void AsicDisableSync(
 	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr;
@@ -1458,7 +1458,7 @@ VOID AsicDisableSync(
 
 	==========================================================================
  */
-VOID AsicEnableBssSync(
+void AsicEnableBssSync(
 	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr;
@@ -1492,7 +1492,7 @@ VOID AsicEnableBssSync(
 
 	==========================================================================
  */
-VOID AsicEnableIbssSync(
+void AsicEnableIbssSync(
 	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr9;
@@ -1576,7 +1576,7 @@ VOID AsicEnableIbssSync(
 
 	==========================================================================
  */
-VOID AsicSetEdcaParm(
+void AsicSetEdcaParm(
 	IN PRTMP_ADAPTER pAd,
 	IN PEDCA_PARM	 pEdcaParm)
 {
@@ -1883,7 +1883,7 @@ VOID AsicSetEdcaParm(
 
 	==========================================================================
  */
-VOID 	AsicSetSlotTime(
+void 	AsicSetSlotTime(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN bUseShortSlotTime)
 {
@@ -1960,7 +1960,7 @@ VOID 	AsicSetSlotTime(
     Return:
 	========================================================================
 */
-VOID AsicAddSharedKeyEntry(
+void AsicAddSharedKeyEntry(
 	IN PRTMP_ADAPTER 	pAd,
 	IN UCHAR		 	BssIndex,
 	IN UCHAR		 	KeyIdx,
@@ -2060,7 +2060,7 @@ VOID AsicAddSharedKeyEntry(
 }
 
 /*	IRQL = DISPATCH_LEVEL*/
-VOID AsicRemoveSharedKeyEntry(
+void AsicRemoveSharedKeyEntry(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR		 BssIndex,
 	IN UCHAR		 KeyIdx)
@@ -2113,7 +2113,7 @@ VOID AsicRemoveSharedKeyEntry(
 
 }
 
-VOID AsicUpdateWCIDIVEIV(
+void AsicUpdateWCIDIVEIV(
 	IN PRTMP_ADAPTER pAd,
 	IN USHORT		WCID,
 	IN ULONG        uIV,
@@ -2131,7 +2131,7 @@ VOID AsicUpdateWCIDIVEIV(
 }
 
 
-VOID AsicUpdateRxWCIDTable(
+void AsicUpdateRxWCIDTable(
 	IN PRTMP_ADAPTER pAd,
 	IN USHORT		WCID,
 	IN PUCHAR        pAddr)
@@ -2164,7 +2164,7 @@ VOID AsicUpdateRxWCIDTable(
 
 	========================================================================
 */
-VOID	AsicUpdateWcidAttributeEntry(
+void AsicUpdateWcidAttributeEntry(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			BssIdx,
 	IN 	UCHAR		 	KeyIdx,
@@ -2217,7 +2217,7 @@ VOID	AsicUpdateWcidAttributeEntry(
 
 	==========================================================================
  */
-VOID AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
+void AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
 {
 	UINT32 offset;
 	UCHAR cnt, cnt_s, cnt_e;
@@ -2264,7 +2264,7 @@ VOID AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
     Return:
 	========================================================================
 */
-VOID AsicAddPairwiseKeyEntry(
+void AsicAddPairwiseKeyEntry(
 	IN PRTMP_ADAPTER 	pAd,
 	IN UCHAR			WCID,
 	IN PCIPHER_KEY		pCipherKey)
@@ -2326,7 +2326,7 @@ VOID AsicAddPairwiseKeyEntry(
     Return:
 	========================================================================
 */
-VOID AsicRemovePairwiseKeyEntry(
+void AsicRemovePairwiseKeyEntry(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR		 Wcid)
 {
@@ -2394,7 +2394,7 @@ BOOLEAN AsicSendCommandToMcuBBP(
     Return:
 	========================================================================
  */
-VOID AsicSetRxAnt(
+void AsicSetRxAnt(
 	IN PRTMP_ADAPTER	pAd,
 	IN UCHAR			Ant)
 {
@@ -2403,7 +2403,7 @@ VOID AsicSetRxAnt(
 }
 
 
-VOID AsicTurnOffRFClk(
+void AsicTurnOffRFClk(
 	IN PRTMP_ADAPTER pAd,
 	IN	UCHAR		Channel)
 {
@@ -2515,7 +2515,7 @@ UINT32 StreamModeRegVal(
     Return:
 	========================================================================
 */
-VOID AsicSetStreamMode(
+void AsicSetStreamMode(
 	IN RTMP_ADAPTER *pAd,
 	IN PUCHAR pMacAddr,
 	IN INT chainIdx,
@@ -2549,7 +2549,7 @@ VOID AsicSetStreamMode(
 }
 
 
-VOID RtmpStreamModeInit(
+void RtmpStreamModeInit(
 	IN RTMP_ADAPTER *pAd)
 {
 	int chainIdx;
@@ -2576,7 +2576,7 @@ VOID RtmpStreamModeInit(
 
 	==========================================================================
  */
-VOID AsicEnableRalinkBurstMode(
+void AsicEnableRalinkBurstMode(
 	IN PRTMP_ADAPTER pAd)
 {
 	UINT32				Data = 0;
@@ -2596,7 +2596,7 @@ VOID AsicEnableRalinkBurstMode(
 
 	==========================================================================
  */
-VOID AsicDisableRalinkBurstMode(
+void AsicDisableRalinkBurstMode(
 	IN PRTMP_ADAPTER pAd)
 {
 	UINT32				Data = 0;
@@ -2629,7 +2629,7 @@ VOID AsicDisableRalinkBurstMode(
    a) before into WOW mode, switch firmware to WOW-enable firmware
    b) exit from WOW mode, switch firmware to normal firmware
 */
-VOID AsicLoadWOWFirmware(
+void AsicLoadWOWFirmware(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN WOW)
 {
@@ -2643,7 +2643,7 @@ VOID AsicLoadWOWFirmware(
 
 /* In WOW mode, 8051 mcu will send null frame, and pick data from 0x7780
  * the null frame includes TxWI and 802.11 header 						*/
-VOID AsicWOWSendNullFrame(
+void AsicWOWSendNullFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR TxRate,
 	IN BOOLEAN bQosNull)
@@ -2826,7 +2826,7 @@ INT AsicSetChannel(RTMP_ADAPTER *pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BOOLEAN 
 
 	==========================================================================
  */
-VOID AsicSetApCliBssid(
+void AsicSetApCliBssid(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pBssid,
 	IN UCHAR index)
@@ -2860,7 +2860,7 @@ VOID AsicSetApCliBssid(
 
 	==========================================================================
  */
-VOID AsicSetExtendedMacAddr(
+void AsicSetExtendedMacAddr(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pMacAddr,
 	IN UINT32 Idx)

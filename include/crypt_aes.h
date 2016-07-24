@@ -49,12 +49,12 @@ typedef struct {
 
 
 /* AES operations */
-VOID RT_AES_KeyExpansion (
+void RT_AES_KeyExpansion (
     IN u8 Key[],
     IN UINT KeyLength,
     INOUT AES_CTX_STRUC *paes_ctx);
 
-VOID RT_AES_Encrypt (
+void RT_AES_Encrypt (
     IN u8 PlainBlock[],
     IN UINT PlainBlockSize,
     IN u8 Key[],
@@ -62,7 +62,7 @@ VOID RT_AES_Encrypt (
     OUT u8 CipherBlock[],
     INOUT UINT *CipherBlockSize);
 
-VOID RT_AES_Decrypt (
+void RT_AES_Decrypt (
     IN u8 CipherBlock[],
     IN UINT CipherBlockSize,
     IN u8 Key[],
@@ -71,7 +71,7 @@ VOID RT_AES_Decrypt (
     INOUT UINT *PlainBlockSize);
 
 /* AES Counter with CBC-MAC operations */
-VOID AES_CCM_MAC (
+void AES_CCM_MAC (
     IN u8 Payload[],
     IN UINT  PayloadLength,
     IN u8 Key[],
@@ -110,13 +110,13 @@ INT AES_CCM_Decrypt (
     INOUT UINT *PlainTextLength);
 
 /* AES-CMAC operations */
-VOID AES_CMAC_GenerateSubKey (
+void AES_CMAC_GenerateSubKey (
     IN u8 Key[],
     IN UINT KeyLength,
     OUT u8 SubKey1[],
     OUT u8 SubKey2[]);
 
-VOID AES_CMAC (
+void AES_CMAC (
     IN u8 PlainText[],
     IN UINT PlainTextLength,
     IN u8 Key[],
@@ -127,7 +127,7 @@ VOID AES_CMAC (
 
 
 /* AES-CBC operations */
-VOID AES_CBC_Encrypt (
+void AES_CBC_Encrypt (
     IN u8 PlainText[],
     IN UINT PlainTextLength,
     IN u8 Key[],
@@ -137,7 +137,7 @@ VOID AES_CBC_Encrypt (
     OUT u8 CipherText[],
     INOUT UINT *CipherTextLength);
 
-VOID AES_CBC_Decrypt (
+void AES_CBC_Decrypt (
     IN u8 CipherText[],
     IN UINT CipherTextLength,
     IN u8 Key[],

@@ -1250,7 +1250,7 @@ typedef struct _MLME_QUEUE {
     MLME_QUEUE_ELEM  Entry[MAX_LEN_OF_MLME_QUEUE];
 } MLME_QUEUE, *PMLME_QUEUE;
 
-typedef VOID (*STATE_MACHINE_FUNC)(VOID *pAd, MLME_QUEUE_ELEM *Elem);
+typedef void (*STATE_MACHINE_FUNC)(void *pAd, MLME_QUEUE_ELEM *Elem);
 
 typedef struct _STATE_MACHINE {
     ULONG				Base;

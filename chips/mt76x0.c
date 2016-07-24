@@ -1110,7 +1110,7 @@ static UINT32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / si
 //
 // Initialize FCE
 //
-VOID InitFce(
+void InitFce(
 	PRTMP_ADAPTER pAd)
 {
 	L2_STUFFING_STRUC L2Stuffing;
@@ -1130,7 +1130,7 @@ VOID InitFce(
 /*
 	Select 2.4/5GHz band
 */
-VOID SelectBandMT76x0(
+void SelectBandMT76x0(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel)
 {
@@ -1188,7 +1188,7 @@ VOID SelectBandMT76x0(
 	Loop Filter Config: R33, R34
 	Pll_idiv: frac comp R35[6:0]
 */
-VOID SetRfChFreqParametersMT76x0(
+void SetRfChFreqParametersMT76x0(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel)
 {
@@ -1522,7 +1522,7 @@ VOID SetRfChFreqParametersMT76x0(
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
 }
 
-static VOID NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
+static void NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
 {
 
 	UINT32 IdReg;
@@ -1614,7 +1614,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID NICInitMT76x0MacRegisters(RTMP_ADAPTER *pAd)
+static void NICInitMT76x0MacRegisters(RTMP_ADAPTER *pAd)
 {
 	UINT32 MacReg = 0;
 	USHORT trsw_mode = 0;
@@ -1696,7 +1696,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static VOID NICInitMT76x0BbpRegisters(
+static void NICInitMT76x0BbpRegisters(
 	IN	PRTMP_ADAPTER pAd)
 {
 
@@ -1720,7 +1720,7 @@ static VOID NICInitMT76x0BbpRegisters(
 }
 
 
-static VOID MT76x0_AsicAntennaDefaultReset(
+static void MT76x0_AsicAntennaDefaultReset(
 	IN struct _RTMP_ADAPTER	*pAd,
 	IN EEPROM_ANTENNA_STRUC *pAntenna)
 {
@@ -1731,7 +1731,7 @@ static VOID MT76x0_AsicAntennaDefaultReset(
 }
 
 
-static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
+static void MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
 {
 	static char *ext_str[]={"extNone", "extAbove", "", "extBelow"};
 	UCHAR rf_bw, ext_ch;
@@ -1778,7 +1778,7 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
 #endif /* DOT11_N_SUPPORT */
 }
 
-static VOID MT76x0_ChipSwitchChannel(
+static void MT76x0_ChipSwitchChannel(
 	struct _RTMP_ADAPTER *pAd,
 	UCHAR Channel,
 	BOOLEAN bScan)
@@ -2038,7 +2038,7 @@ static VOID MT76x0_ChipSwitchChannel(
 }
 
 #ifdef CONFIG_STA_SUPPORT
-static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
+static void MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 {
 
 #ifdef RTMP_MAC_USB
@@ -2052,7 +2052,7 @@ static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 }
 #endif /* CONFIG_STA_SUPPORT */
 
-VOID MT76x0_NICInitAsicFromEEPROM(
+void MT76x0_NICInitAsicFromEEPROM(
 	IN PRTMP_ADAPTER		pAd)
 {
 	// TODO: wait TC6008 EEPROM format
@@ -2197,7 +2197,7 @@ INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
 	return TRUE;
 }
 
-VOID MT76x0_AsicExtraPowerOverMAC(
+void MT76x0_AsicExtraPowerOverMAC(
 	IN PRTMP_ADAPTER pAd)
 {
 	UINT32 ExtraPwrOverMAC = 0;
@@ -2240,7 +2240,7 @@ VOID MT76x0_AsicExtraPowerOverMAC(
 			(UINT)ExtraPwrOverTxPwrCfg7, (UINT)ExtraPwrOverTxPwrCfg8, (UINT)ExtraPwrOverTxPwrCfg9));
 }
 
-static VOID calc_bw_delta_pwr(
+static void calc_bw_delta_pwr(
 	IN BOOLEAN is_dec_delta,
 	IN USHORT input_pwr,
 	IN USHORT bw_delta,
@@ -2311,7 +2311,7 @@ static VOID calc_bw_delta_pwr(
 //
 // Read per-rate Tx power
 //
-VOID mt76x0_read_per_rate_tx_pwr(
+void mt76x0_read_per_rate_tx_pwr(
 	IN PRTMP_ADAPTER pAd)
 {
 	UINT32 data;
@@ -2560,7 +2560,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
 }
 
 
-static VOID MT76x0_AsicGetTxPowerOffset(
+static void MT76x0_AsicGetTxPowerOffset(
 	IN PRTMP_ADAPTER pAd,
 	INOUT PULONG pTxPwr)
 {
@@ -2624,7 +2624,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID MT76x0_Init(RTMP_ADAPTER *pAd)
+void MT76x0_Init(RTMP_ADAPTER *pAd)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -2865,7 +2865,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 }
 
 
-VOID MT76x0_AntennaSelCtrl(
+void MT76x0_AntennaSelCtrl(
 	IN RTMP_ADAPTER *pAd)
 {
 	USHORT e2p_val = 0;
@@ -2946,7 +2946,7 @@ VOID MT76x0_AntennaSelCtrl(
 
 }
 
-VOID MT76x0_dynamic_vga_tuning(
+void MT76x0_dynamic_vga_tuning(
 	IN RTMP_ADAPTER 	*pAd)
 {
 
@@ -2974,7 +2974,7 @@ VOID MT76x0_dynamic_vga_tuning(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): RSSI=%d, BBP 2320=0x%x\n", __FUNCTION__, rssi, reg_val));
 }
 
-VOID MT76x0_VCO_CalibrationMode3(
+void MT76x0_VCO_CalibrationMode3(
 	IN RTMP_ADAPTER 	*pAd,
 	IN UCHAR 			Channel)
 {
@@ -3042,7 +3042,7 @@ VOID MT76x0_VCO_CalibrationMode3(
 	return;
 }
 
-VOID MT76x0_Calibration(
+void MT76x0_Calibration(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR Channel,
 	IN BOOLEAN bPowerOn,
@@ -3316,7 +3316,7 @@ RXDC_Calibration:
 #endif /* RTMP_MAC_USB */
 }
 
-VOID MT76x0_TempSensor(
+void MT76x0_TempSensor(
 	IN RTMP_ADAPTER *pAd)
 {
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
@@ -3434,7 +3434,7 @@ done:
 }
 
 #ifdef RTMP_FLASH_SUPPORT
-VOID MT76x0_ReadFlashAndInitAsic(
+void MT76x0_ReadFlashAndInitAsic(
 	IN RTMP_ADAPTER *pAd)
 {
 	USHORT ee_val = 0;
@@ -3462,7 +3462,7 @@ VOID MT76x0_ReadFlashAndInitAsic(
 #endif /* RTMP_FLASH_SUPPORT */
 
 
-VOID MT76x0_MakeUpRatePwrTable(
+void MT76x0_MakeUpRatePwrTable(
 	IN RTMP_ADAPTER *pAd)
 {
 	UINT32 reg_val;
@@ -3822,7 +3822,7 @@ INT16 lin2dBd(
 	return(dBd);
 }
 
-VOID MT76x0_MakeUpTssiTable(
+void MT76x0_MakeUpTssiTable(
 	IN  RTMP_ADAPTER *pAd)
 {
 	UINT32 reg_val;
@@ -4085,7 +4085,7 @@ VOID MT76x0_MakeUpTssiTable(
 	DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 }
 
-VOID MT76x0_TSSI_DC_Calibration(
+void MT76x0_TSSI_DC_Calibration(
 	IN  RTMP_ADAPTER *pAd)
 {
 	UCHAR RF_Value;
@@ -4415,7 +4415,7 @@ BOOLEAN MT76x0_GetTargetPower(
 	return TRUE;
 }
 
-VOID MT76x0_EstimateDeltaPower(
+void MT76x0_EstimateDeltaPower(
 	IN  RTMP_ADAPTER *pAd,
 	IN  CHAR TSSI_Tx_Mode,
 	IN  SHORT TSSI_Linear,
@@ -4629,7 +4629,7 @@ VOID MT76x0_EstimateDeltaPower(
 	DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 }
 
-VOID MT76x0_IntTxAlcProcess(
+void MT76x0_IntTxAlcProcess(
 	IN  RTMP_ADAPTER *pAd)
 {
 	INT tssi_delta0 = 0;
@@ -4817,7 +4817,7 @@ UCHAR MT76x0_GetSkuChannelBasePwr(
 
 }
 
-VOID MT76x0_WriteNewPerRatePwr(
+void MT76x0_WriteNewPerRatePwr(
 	IN RTMP_ADAPTER 	*pAd)
 {
 	UINT32 data;

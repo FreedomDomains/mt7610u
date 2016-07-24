@@ -52,7 +52,7 @@ static void ToneRadarProgram(PRTMP_ADAPTER pAd);
     Note:
     ==========================================================================
 */
-VOID CarrierDetectionPeriodicStateCtrl(
+void CarrierDetectionPeriodicStateCtrl(
 	IN PRTMP_ADAPTER pAd)
 {
 	CD_STATE *pCD_State = &pAd->CommonCfg.CarrierDetect.CD_State;
@@ -126,7 +126,7 @@ VOID CarrierDetectionPeriodicStateCtrl(
     Note:
     ==========================================================================
 */
-VOID RTMPHandleRadarInterrupt(PRTMP_ADAPTER  pAd)
+void RTMPHandleRadarInterrupt(PRTMP_ADAPTER  pAd)
 {
 	UINT32 value, delta;
 	UCHAR bbp=0;
@@ -507,7 +507,7 @@ INT Set_CarrierMask_Proc(
     Note:
     ==========================================================================
 */
-VOID CSInit(
+void CSInit(
 		IN PRTMP_ADAPTER pAd)
 {
 	PCARRIER_DETECTION_STRUCT pCarrierDetect = &pAd->CommonCfg.CarrierDetect;
@@ -531,7 +531,7 @@ VOID CSInit(
     Note:
     ==========================================================================
 */
-VOID CarrierDetectionStart(PRTMP_ADAPTER pAd)
+void CarrierDetectionStart(PRTMP_ADAPTER pAd)
 {
 	/*ULONG Value;*/
 	/* Enable Bandwidth usage monitor*/
@@ -575,7 +575,7 @@ VOID CarrierDetectionStart(PRTMP_ADAPTER pAd)
     Note:
     ==========================================================================
 */
-VOID CarrierDetectionStop(IN PRTMP_ADAPTER	pAd)
+void CarrierDetectionStop(IN PRTMP_ADAPTER	pAd)
 {
 	CarrierDetectReset(pAd);
 #ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
@@ -599,7 +599,7 @@ VOID CarrierDetectionStop(IN PRTMP_ADAPTER	pAd)
     Note:
     ==========================================================================
 */
-static VOID ToneRadarProgram(PRTMP_ADAPTER pAd)
+static void ToneRadarProgram(PRTMP_ADAPTER pAd)
 {
 	ULONG threshold;
 	/* if wireless mode is 20Mhz mode, then the threshold should div by 2 */
@@ -625,7 +625,7 @@ static VOID ToneRadarProgram(PRTMP_ADAPTER pAd)
     Note:
     ==========================================================================
 */
-VOID ToneRadarProgram_v1(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v1(PRTMP_ADAPTER pAd, ULONG threshold)
 {
 	UCHAR bbp;
 
@@ -667,7 +667,7 @@ VOID ToneRadarProgram_v1(PRTMP_ADAPTER pAd, ULONG threshold)
     Note:
     ==========================================================================
 */
-VOID ToneRadarProgram_v2(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v2(PRTMP_ADAPTER pAd, ULONG threshold)
 {
 	UCHAR bbp;
 
@@ -708,7 +708,7 @@ VOID ToneRadarProgram_v2(PRTMP_ADAPTER pAd, ULONG threshold)
     Note:
     ==========================================================================
 */
-VOID ToneRadarProgram_v3(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v3(PRTMP_ADAPTER pAd, ULONG threshold)
 {
 	UCHAR bbp;
 

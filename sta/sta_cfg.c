@@ -455,7 +455,7 @@ INT Set_SSID_Proc(
                     MLME_CNTL_STATE_MACHINE,
                     OID_802_11_SSID,
                     sizeof(NDIS_802_11_SSID),
-                    (VOID *)pSsid, 0);
+                    (void *)pSsid, 0);
 
         StateMachineTouched = TRUE;
 		if (Ssid.SsidLength == MAX_LEN_OF_SSID)
@@ -1545,7 +1545,7 @@ INT Set_XlinkMode_Proc(
 #endif /* XLINK_SUPPORT */
 
 
-VOID RTMPAddKey(
+void RTMPAddKey(
 	IN	PRTMP_ADAPTER	    pAd,
 	IN	PNDIS_802_11_KEY    pKey)
 {
@@ -1739,7 +1739,7 @@ end:
     NOTE:
     ==========================================================================
 */
-VOID StaSiteSurvey(
+void StaSiteSurvey(
 	IN	PRTMP_ADAPTER  		pAd,
 	IN	PNDIS_802_11_SSID	pSsid,
 	IN	UCHAR				ScanType)
@@ -2111,7 +2111,7 @@ INT RTMPSetInformation(
                             MLME_CNTL_STATE_MACHINE,
                             OID_802_11_BSSID,
                             sizeof(NDIS_802_11_MAC_ADDRESS),
-                            (VOID *)&Bssid, 0);
+                            (void *)&Bssid, 0);
                 Status = NDIS_STATUS_SUCCESS;
                 StateMachineTouched = TRUE;
 
@@ -4671,7 +4671,7 @@ INT RTMPQueryInformation(
                2.) iwpriv ra0 mac 0=12     ==> write MAC where Addr=0x0, value=12
     ==========================================================================
 */
-VOID RTMPIoctlMAC(
+void RTMPIoctlMAC(
 	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq)
 {
@@ -4896,7 +4896,7 @@ LabelOK:
                2.) iwpriv ra0 e2p 0=1234    ==> write E2PROM where Addr=0x0, value=1234
     ==========================================================================
 */
-VOID RTMPIoctlE2PROM(
+void RTMPIoctlE2PROM(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq)
 {
@@ -5103,7 +5103,7 @@ LabelOK:
 
 
 #ifdef RT65xx
-VOID RTMPIoctlBbp32(
+void RTMPIoctlBbp32(
 	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN CHAR *extra,
@@ -5227,7 +5227,7 @@ next:
 #endif /* RT65xx */
 
 
-VOID RTMPIoctlBbp(
+void RTMPIoctlBbp(
 	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN CHAR *extra,
@@ -5414,11 +5414,11 @@ void	getBaInfo(
 #endif /* DOT11_N_SUPPORT */
 
 
-VOID RTMPIoctlShow(
+void RTMPIoctlShow(
 	IN	PRTMP_ADAPTER			pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
 	IN	UINT32					subcmd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SHOW *pIoctlShow = (RT_CMD_STA_IOCTL_SHOW *)pData;
@@ -5692,7 +5692,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwfreq(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_FREQ *pIoctlFreq = (RT_CMD_STA_IOCTL_FREQ *)pData;
@@ -5749,7 +5749,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwfreq(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	UCHAR ch;
@@ -5784,7 +5784,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwmode(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	switch(Data)
@@ -5825,7 +5825,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwmode(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	if (ADHOC_ON(pAd))
@@ -5859,7 +5859,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwap(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	UCHAR *pBssid = (UCHAR *)pData;
@@ -5890,7 +5890,7 @@ RtmpIoctl_rt_ioctl_siwap(
 			MLME_CNTL_STATE_MACHINE,
 			OID_802_11_BSSID,
 			sizeof(NDIS_802_11_MAC_ADDRESS),
-			(VOID *)pBssid, 0);
+			(void *)pBssid, 0);
 	}
 	return NDIS_STATUS_SUCCESS;
 }
@@ -5915,7 +5915,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwap(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	if (INFRA_ON(pAd) || ADHOC_ON(pAd))
@@ -5950,7 +5950,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwscan(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	/*
@@ -6089,7 +6089,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwscan(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SCAN_TABLE *pIoctlScan = (RT_CMD_STA_IOCTL_SCAN_TABLE *)pData;
@@ -6180,7 +6180,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwessid(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SSID *pSsid = (RT_CMD_STA_IOCTL_SSID *)pData;
@@ -6242,7 +6242,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwessid(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SSID *pSsid = (RT_CMD_STA_IOCTL_SSID *)pData;
@@ -6297,7 +6297,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwnickn(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	memset(pAd->nickname, 0, IW_ESSID_MAX_SIZE + 1);
@@ -6325,7 +6325,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwnickn(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_NICK_NAME *IoctlName = (RT_CMD_STA_IOCTL_NICK_NAME *)pData;
@@ -6360,7 +6360,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwrts(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	pAd->CommonCfg.RtsThreshold = Data;
@@ -6387,7 +6387,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwrts(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	*(USHORT *)pData = pAd->CommonCfg.RtsThreshold;
@@ -6414,7 +6414,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwfrag(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	pAd->CommonCfg.FragmentThreshold = Data;
@@ -6441,7 +6441,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwfrag(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	*(USHORT *)pData = pAd->CommonCfg.FragmentThreshold;
@@ -6471,7 +6471,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwencode(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY *pIoctlSec = (RT_CMD_STA_IOCTL_SECURITY *)pData;
@@ -6588,7 +6588,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwencode(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY *pIoctlSec = (RT_CMD_STA_IOCTL_SECURITY *)pData;
@@ -6656,7 +6656,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwmlme(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data,
 	IN	UINT32					Subcmd)
 {
@@ -6736,7 +6736,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwauth(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY_ADV *pIoctlWpa = (RT_CMD_STA_IOCTL_SECURITY_ADV *)pData;
@@ -6905,7 +6905,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwauth(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY_ADV *pIoctlWpa = (RT_CMD_STA_IOCTL_SECURITY_ADV *)pData;
@@ -7020,7 +7020,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwencodeext(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY *pIoctlSec = (RT_CMD_STA_IOCTL_SECURITY *)pData;
@@ -7174,7 +7174,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwencodeext(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_SECURITY *pIoctlSec = (RT_CMD_STA_IOCTL_SECURITY *)pData;
@@ -7272,7 +7272,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwgenie(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 #ifdef WPA_SUPPLICANT_SUPPORT
@@ -7332,7 +7332,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwgenie(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_RSN_IE *IoctlRsnIe = (RT_CMD_STA_IOCTL_RSN_IE *)pData;
@@ -7403,7 +7403,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwpmksa(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_STA_IOCTL_PMA_SA *pIoctlPmaSa = (RT_CMD_STA_IOCTL_PMA_SA *)pData;
@@ -7492,7 +7492,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_siwrate(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	RT_CMD_RATE_SET *pCmdRate = (RT_CMD_RATE_SET *)pData;
@@ -7564,7 +7564,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_giwrate(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
     int rate_index = 0, rate_count = 0;
@@ -7634,7 +7634,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_gifhwaddr(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	memcpy(pData, pAd->CurrentAddress, ETH_ALEN);
@@ -7660,7 +7660,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_rssi(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 
@@ -7688,7 +7688,7 @@ Note:
 INT
 RtmpIoctl_rt_ioctl_setparam(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	POS_COOKIE pObj;
@@ -7723,7 +7723,7 @@ Note:
 INT
 RtmpIoctl_rt_private_set_wsc_u32_item(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 
@@ -7750,7 +7750,7 @@ Note:
 INT
 RtmpIoctl_rt_private_set_wsc_string_item(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 
@@ -7777,7 +7777,7 @@ Note:
 INT
 RtmpIoctl_rt_private_get_statistics(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	char *extra = (char *)pData;
@@ -7932,11 +7932,11 @@ Note:
 ========================================================================
 */
 INT RTMP_STA_IoctlHandle(
-	IN	VOID					*pAdSrc,
+	IN	void 				*pAdSrc,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*pRequest,
 	IN	INT						Command,
 	IN	USHORT					Subcmd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN  ULONG					Data,
 	IN  USHORT                  priv_flags)
 {

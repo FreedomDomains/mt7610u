@@ -104,17 +104,17 @@ extern int CH_HZ_ID_MAP_NUM;
 
 
 #ifdef EXT_BUILD_CHANNEL_LIST
-VOID BuildChannelListEx(
+void BuildChannelListEx(
 	IN PRTMP_ADAPTER pAd);
 
-VOID BuildBeaconChList(
+void BuildBeaconChList(
 	IN PRTMP_ADAPTER pAd,
 	OUT PUCHAR pBuf,
 	OUT	PULONG pBufLen);
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
 #ifdef DOT11_N_SUPPORT
-VOID N_ChannelCheck(RTMP_ADAPTER *pAd);
+void N_ChannelCheck(RTMP_ADAPTER *pAd);
 UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR channel);
 BOOLEAN N_ChannelGroupCheck(RTMP_ADAPTER *pAd, UCHAR channel);
 
@@ -124,11 +124,11 @@ u8 GetCuntryMaxTxPwr(
 	IN PRTMP_ADAPTER pAd,
 	IN u8 channel);
 
-VOID RTMP_MapChannelID2KHZ(
+void RTMP_MapChannelID2KHZ(
 	IN UCHAR Ch,
 	OUT UINT32 *pFreq);
 
-VOID RTMP_MapKHZ2ChannelID(
+void RTMP_MapKHZ2ChannelID(
 	IN ULONG Freq,
 	OUT INT *pCh);
 

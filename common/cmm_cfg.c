@@ -595,7 +595,7 @@ Note:
 */
 INT RtmpIoctl_rt_ioctl_giwname(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	UCHAR CurOpMode = OPMODE_AP;
@@ -610,11 +610,11 @@ INT RtmpIoctl_rt_ioctl_giwname(
 
 
 INT RTMP_COM_IoctlHandle(
-	IN	VOID					*pAdSrc,
+	IN	void 				*pAdSrc,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
 	IN	INT						cmd,
 	IN	USHORT					subcmd,
-	IN	VOID					*pData,
+	IN	void 				*pData,
 	IN	ULONG					Data)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
@@ -631,8 +631,8 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_NETDEV_GET:
 		/* get main net_dev */
 		{
-			VOID **ppNetDev = (VOID **)pData;
-			*ppNetDev = (VOID *)(pAd->net_dev);
+			void **ppNetDev = (void **)pData;
+			*ppNetDev = (void *)(pAd->net_dev);
 		}
 			break;
 
@@ -694,16 +694,16 @@ INT RTMP_COM_IoctlHandle(
                 case CMD_RTPRIV_IOCTL_USB_DEV_GET:
                 /* get USB DEV */
                 {
-                        VOID **ppUsb_Dev = (VOID **)pData;
-                        *ppUsb_Dev = (VOID *)(pObj->pUsb_Dev);
+                        void **ppUsb_Dev = (void **)pData;
+                        *ppUsb_Dev = (void *)(pObj->pUsb_Dev);
                 }
                         break;
 
                 case CMD_RTPRIV_IOCTL_USB_INTF_GET:
                 /* get USB INTF */
                 {
-                        VOID **ppINTF = (VOID **)pData;
-                        //*ppINTF = (VOID *)(pObj->intf);
+                        void **ppINTF = (void **)pData;
+                        //*ppINTF = (void *)(pObj->intf);
                 }
                         break;
 
@@ -1074,7 +1074,7 @@ INT RTMP_COM_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_MAIN_CREATE:
-			*(VOID **)pData = RtmpPhyNetDevMainCreate(pAd);
+			*(void **)pData = RtmpPhyNetDevMainCreate(pAd);
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_MAIN_ID_GET:

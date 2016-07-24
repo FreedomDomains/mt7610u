@@ -285,15 +285,15 @@ NTSTATUS RTUSBWriteEEPROM16(
 NDIS_STATUS rtmp_nv_init(struct _RTMP_ADAPTER *pAd);
 int rtmp_ee_flash_read(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pVal);
 int rtmp_ee_flash_write(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT data);
-VOID rtmp_ee_flash_read_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
-VOID rtmp_ee_flash_write_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
+void rtmp_ee_flash_read_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
+void rtmp_ee_flash_write_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
 #endif /* defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT) */
 
 
 #ifdef RTMP_EFUSE_SUPPORT
 INT eFuseLoadEEPROM(struct _RTMP_ADAPTER *pAd);
 INT eFuseWriteEeeppromBuf(struct _RTMP_ADAPTER *pAd);
-VOID eFuseGetFreeBlockCount(struct _RTMP_ADAPTER *pAd, UINT *EfuseFreeBlock);
+void eFuseGetFreeBlockCount(struct _RTMP_ADAPTER *pAd, UINT *EfuseFreeBlock);
 
 int rtmp_ee_efuse_read16(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pVal);
 int rtmp_ee_efuse_write16(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT data);

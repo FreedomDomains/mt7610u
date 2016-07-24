@@ -36,14 +36,14 @@
 
 typedef struct _ATE_CHIP_STRUCT {
 	/* functions */
-	VOID	(*ChannelSwitch)(PRTMP_ADAPTER pAd);
+	void (*ChannelSwitch)(PRTMP_ADAPTER pAd);
 	INT		(*TxPwrHandler)(PRTMP_ADAPTER pAd, char index);
 	INT		(*TssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
 	INT		(*ExtendedTssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
-	VOID	(*RxVGAInit)(PRTMP_ADAPTER pAd);
-	VOID	(*AsicSetTxRxPath)(PRTMP_ADAPTER pAd);
-	VOID	(*AdjustTxPower)(PRTMP_ADAPTER pAd);
-	VOID	(*AsicExtraPowerOverMAC)(PRTMP_ADAPTER pAd);
+	void (*RxVGAInit)(PRTMP_ADAPTER pAd);
+	void (*AsicSetTxRxPath)(PRTMP_ADAPTER pAd);
+	void (*AdjustTxPower)(PRTMP_ADAPTER pAd);
+	void (*AsicExtraPowerOverMAC)(PRTMP_ADAPTER pAd);
 
 	/* command handlers */
 	INT		(*Set_BW_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
@@ -385,14 +385,14 @@ typedef struct _ATE_INFO {
 		if(1 /*!(in_interrupt() & 0xffff0000)*/)	\
 			RTMP_IRQ_UNLOCK((pLock), IrqFlags);
 
-VOID ATE_RTUSBBulkOutDataPacket(
+void ATE_RTUSBBulkOutDataPacket(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	UCHAR			BulkOutPipeId);
 
-VOID ATE_RTUSBCancelPendingBulkInIRP(
+void ATE_RTUSBCancelPendingBulkInIRP(
 	IN	PRTMP_ADAPTER	pAd);
 
-VOID ATEResetBulkIn(
+void ATEResetBulkIn(
 	IN PRTMP_ADAPTER	pAd);
 
 INT ATEResetBulkOut(
@@ -404,7 +404,7 @@ INT ATEResetBulkOut(
 
 
 #if defined(RT28xx) || defined(RT2880)
-VOID RT28xxATEAsicSwitchChannel(
+void RT28xxATEAsicSwitchChannel(
     IN PRTMP_ADAPTER pAd);
 
 INT RT28xxATETxPwrHandler(
@@ -414,7 +414,7 @@ INT RT28xxATETxPwrHandler(
 
 
 #ifdef RALINK_QA
-VOID ATE_QA_Statistics(
+void ATE_QA_Statistics(
 	IN RTMP_ADAPTER *pAd,
 	IN RXWI_STRUC *pRxWI,
 	IN RXINFO_STRUC *pRxInfo,
@@ -479,15 +479,15 @@ INT Set_RFWrite_Proc(
 	*_pV = _A->Channel
 #endif /* RALINK_QA */
 
-VOID rt_ee_read_all(
+void rt_ee_read_all(
 	IN  PRTMP_ADAPTER   pAd,
 	OUT USHORT *Data);
 
-VOID rt_ee_write_all(
+void rt_ee_write_all(
 	IN  PRTMP_ADAPTER   pAd,
 	IN  USHORT *Data);
 
-VOID rt_ee_write_bulk(
+void rt_ee_write_bulk(
 	IN  PRTMP_ADAPTER	pAd,
 	IN  USHORT *Data,
 	IN  USHORT offset,
@@ -597,10 +597,10 @@ INT	Set_ATE_RX_Antenna_Proc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PSTRING			arg);
 
-VOID DefaultATEAsicExtraPowerOverMAC(
+void DefaultATEAsicExtraPowerOverMAC(
 	IN	PRTMP_ADAPTER 		pAd);
 
-VOID ATEAsicExtraPowerOverMAC(
+void ATEAsicExtraPowerOverMAC(
 	IN	PRTMP_ADAPTER	pAd);
 #ifdef RT3350
 INT	Set_ATE_PA_Bias_Proc(
@@ -765,11 +765,11 @@ INT	Set_ATE_Help_Proc(
 	IN	PSTRING			arg);
 
 
-VOID ATEAsicAdjustTxPower(
+void ATEAsicAdjustTxPower(
 	IN PRTMP_ADAPTER pAd);
 
 
-VOID ATESampleRssi(
+void ATESampleRssi(
 	IN PRTMP_ADAPTER	pAd,
 	IN RXWI_STRUC *pRxWI);
 
@@ -781,7 +781,7 @@ INT TxDmaBusy(
 INT RxDmaBusy(
 	IN PRTMP_ADAPTER pAd);
 
-VOID RtmpDmaEnable(
+void RtmpDmaEnable(
 	IN PRTMP_ADAPTER pAd,
 	IN INT Enable);
 
@@ -789,7 +789,7 @@ INT ATESetUpFrame(
 	IN PRTMP_ADAPTER pAd,
 	IN UINT32 TxIdx);
 
-VOID RTUSBRejectPendingPackets(
+void RTUSBRejectPendingPackets(
 	IN	PRTMP_ADAPTER	pAd);
 #endif /* RTMP_MAC_USB */
 
@@ -801,7 +801,7 @@ NDIS_STATUS ATEInit(
  IN PRTMP_ADAPTER pAd);
 
 #ifdef RALINK_QA
-VOID ReadQATxTypeFromBBP(
+void ReadQATxTypeFromBBP(
  IN	PRTMP_ADAPTER	pAd);
 #endif /* RALINK_QA */
 
@@ -819,27 +819,27 @@ NDIS_STATUS ATEBBPWriteWithRxChain(
 
 
 #if defined(RT28xx) || defined(RT2880)
-VOID RT28xxATERxVGAInit(
+void RT28xxATERxVGAInit(
  IN PRTMP_ADAPTER		pAd);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
-VOID  ATEPeriodicExec(
+void  ATEPeriodicExec(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3);
 
-VOID ATEAsicSetTxRxPath(
+void ATEAsicSetTxRxPath(
     IN PRTMP_ADAPTER pAd);
 
-VOID RtmpRfIoWrite(
+void RtmpRfIoWrite(
 	IN PRTMP_ADAPTER pAd);
 
-VOID ATEAsicSwitchChannel(
+void ATEAsicSwitchChannel(
     IN PRTMP_ADAPTER pAd);
 
-VOID BbpSoftReset(
+void BbpSoftReset(
 	IN PRTMP_ADAPTER pAd);
 
 #ifdef MT76x0

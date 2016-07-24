@@ -69,7 +69,7 @@ BOOLEAN blockNetIf(
 	return TRUE;
 }
 
-VOID releaseNetIf(
+void releaseNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry)
 {
 	PNETIF_ENTRY pNetIfEntry = NULL;
@@ -88,7 +88,7 @@ VOID releaseNetIf(
 }
 
 
-VOID StopNetIfQueue(
+void StopNetIfQueue(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket)

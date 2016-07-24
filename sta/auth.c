@@ -88,7 +88,7 @@ void AuthStateMachineInit(
 
     ==========================================================================
  */
-VOID AuthTimeout(
+void AuthTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -119,7 +119,7 @@ VOID AuthTimeout(
 
     ==========================================================================
  */
-VOID MlmeAuthReqAction(
+void MlmeAuthReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -142,7 +142,7 @@ VOID MlmeAuthReqAction(
 
     ==========================================================================
  */
-VOID PeerAuthRspAtSeq2Action(
+void PeerAuthRspAtSeq2Action(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
@@ -311,7 +311,7 @@ VOID PeerAuthRspAtSeq2Action(
 
     ==========================================================================
  */
-VOID PeerAuthRspAtSeq4Action(
+void PeerAuthRspAtSeq4Action(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -367,7 +367,7 @@ VOID PeerAuthRspAtSeq4Action(
 
     ==========================================================================
  */
-VOID MlmeDeauthReqAction(
+void MlmeDeauthReqAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -420,7 +420,7 @@ VOID MlmeDeauthReqAction(
 
     ==========================================================================
  */
-VOID AuthTimeoutAction(
+void AuthTimeoutAction(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -439,7 +439,7 @@ VOID AuthTimeoutAction(
 
     ==========================================================================
  */
-VOID InvalidStateWhenAuth(
+void InvalidStateWhenAuth(
 	IN PRTMP_ADAPTER pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
@@ -464,7 +464,7 @@ VOID InvalidStateWhenAuth(
 
     ==========================================================================
  */
-VOID Cls2errAction(
+void Cls2errAction(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pAddr)
 {

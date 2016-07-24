@@ -75,8 +75,8 @@ RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
 /*---------------------------------------------------------------------*/
 
 /* public function prototype */
-int rt28xx_close(VOID *net_dev);
-int rt28xx_open(VOID *net_dev);
+int rt28xx_close(void *net_dev);
+int rt28xx_open(void *net_dev);
 
 /* private function prototype */
 static INT rt28xx_send_packets(IN struct sk_buff *skb_p, IN struct net_device *net_dev);
@@ -110,7 +110,7 @@ Note:
 */
 int MainVirtualIF_close(IN struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -157,7 +157,7 @@ Note:
 */
 int MainVirtualIF_open(IN struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -207,10 +207,10 @@ Note:
 		(3) BA Reordering: 				ba_reordering_resource_release()
 ========================================================================
 */
-int rt28xx_close(VOID *dev)
+int rt28xx_close(void *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
-    VOID	*pAd = NULL;
+    void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -249,10 +249,10 @@ Return Value:
 Note:
 ========================================================================
 */
-int rt28xx_open(VOID *dev)
+int rt28xx_open(void *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int retval = 0;
 	ULONG OpMode;
 
@@ -395,7 +395,7 @@ err:
 
 
 PNET_DEV RtmpPhyNetDevInit(
-	IN VOID						*pAd,
+	IN void 					*pAd,
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetDevHook)
 {
 	struct net_device	*net_dev = NULL;
@@ -471,8 +471,8 @@ PNET_DEV RtmpPhyNetDevInit(
 }
 
 
-VOID *RtmpNetEthConvertDevSearch(
-	IN	VOID			*net_dev_,
+void *RtmpNetEthConvertDevSearch(
+	IN	void 		*net_dev_,
 	IN	UCHAR			*pData)
 {
 	struct net_device *pNetDev;
@@ -507,7 +507,7 @@ VOID *RtmpNetEthConvertDevSearch(
 			break;
 	}
 
-	return (VOID *)pNetDev;
+	return (void *)pNetDev;
 }
 
 
@@ -534,7 +534,7 @@ int rt28xx_packet_xmit(void *skbsrc)
 {
 	struct sk_buff *skb = (struct sk_buff *)skbsrc;
 	struct net_device *net_dev = skb->dev;
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	PNDIS_PACKET pPacket = (PNDIS_PACKET) skb;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
@@ -584,7 +584,7 @@ static int rt28xx_send_packets(
 /* This function will be called when query /proc */
 struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	struct iw_statistics *pStats;
 	RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
 
@@ -626,7 +626,7 @@ INT rt28xx_ioctl(
 	INOUT struct ifreq	*rq,
 	IN INT cmd)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	INT ret = 0;
 	ULONG OpMode;
 
@@ -673,7 +673,7 @@ INT rt28xx_ioctl(
 struct net_device_stats *RT28xx_get_ether_stats(
     IN  struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 	struct net_device_stats *pStats;
 
 	if (net_dev)
@@ -730,7 +730,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 
 
 BOOLEAN RtmpPhyNetDevExit(
-	IN VOID			*pAd,
+	IN void 		*pAd,
 	IN PNET_DEV		net_dev)
 {
 
@@ -762,7 +762,7 @@ BOOLEAN RtmpPhyNetDevExit(
 int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 {
 	ULONG infType;
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int retval = 0;
 
 	GET_PAD_FROM_NET_DEV(pAd, pNetDev);
@@ -797,7 +797,7 @@ int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 struct net_device_stats *RT28xx_get_wds_ether_stats(
     IN PNET_DEV net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 /*	INT WDS_apidx = 0,index; */
 	struct net_device_stats *pStats;
 	RT_CMD_STATS WdsStats, *pWdsStats = &WdsStats;

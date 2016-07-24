@@ -254,7 +254,7 @@ typedef enum _RTMP_INF_TYPE_
 
 /* associated with device interface */
 typedef struct _DEV_PRIV_INFO {
-	VOID			*pPriv; /* pAd */
+	void 		*pPriv; /* pAd */
 	UINT32			priv_flags;
 } DEV_PRIV_INFO;
 
@@ -304,7 +304,7 @@ typedef struct __RTMP_IOCTL_INPUT_STRUCT
 typedef struct _LIST_RESOURCE_OBJ_ENTRY
 {
 	struct _LIST_RESOURCE_OBJ_ENTRY *pNext;
-	VOID *pRscObj;
+	void *pRscObj;
 } LIST_RESOURCE_OBJ_ENTRY, *PLIST_RESOURCE_OBJ_ENTRY;
 
 
@@ -358,7 +358,7 @@ typedef struct _LIST_RESOURCE_OBJ_ENTRY
 #define MAX_SKB_FRAGS (65536/(1UL << 12) + 2)
 #endif
 typedef struct _PTK_SG_T{
-	VOID *data;
+	void *data;
 	INT len;
 }PKT_SG_T;
 #endif /* TX_PKT_SG */

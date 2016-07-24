@@ -148,7 +148,7 @@ UINT	RTMP_CALC_FCS32(
 
 	========================================================================
 */
-VOID	RTMPInitWepEngine(
+void RTMPInitWepEngine(
 	IN	PUCHAR			pIv,
 	IN	PUCHAR			pKey,
 	IN	UCHAR			KeyLen,
@@ -194,7 +194,7 @@ VOID	RTMPInitWepEngine(
 
 	========================================================================
 */
-VOID RTMPConstructWEPIVHdr(
+void RTMPConstructWEPIVHdr(
 	IN	u8 			key_idx,
 	IN	UCHAR			*pn,
 	OUT	UCHAR			*iv_hdr)

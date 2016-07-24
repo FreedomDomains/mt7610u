@@ -42,9 +42,9 @@
 
 
 /*#ifdef RTMP_USB_SUPPORT */
-typedef VOID	*PUSB_DEV;
-typedef VOID	*purbb_t;
-typedef VOID	pregs;
+typedef void *PUSB_DEV;
+typedef void *purbb_t;
+typedef void pregs;
 /*typedef struct usb_ctrlrequest devctrlrequest; */
 /*#endif */
 
@@ -156,7 +156,7 @@ typedef char 				* PNDIS_BUFFER;
 /***********************************************************************************
  *	OS file operation related data structure definitions
  ***********************************************************************************/
-typedef VOID * 			RTMP_OS_FD;
+typedef void * 			RTMP_OS_FD;
 
 #define IS_FILE_OPEN_ERR(_fd)	RtmpOsFileIsErr((_fd))
 
@@ -216,7 +216,7 @@ typedef INT (*RTMP_OS_TASK_CALLBACK)(ULONG);
  * IOCTL related definitions and data structures.
  **********************************************************************************/
 #define NET_IOCTL				VOID
-#define PNET_IOCTL				VOID *
+#define PNET_IOCTL				void *
 
 /* undef them to avoid compile errors in rt_symb.c */
 #undef EINVAL
@@ -263,11 +263,11 @@ typedef void (*TIMER_FUNCTION)(ULONG);
 struct os_cookie {
 
 #ifdef RTMP_MAC_USB
-	VOID					*pUsb_Dev;
+	void 				*pUsb_Dev;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	VOID					 *intf;
+	void 				 *intf;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
@@ -903,12 +903,12 @@ void RTMP_GetCurrentSystemTime(LARGE_INTEGER *time);
 		}while(0)
 
 
-extern VOID dump_urb(VOID *purb);
+extern void dump_urb(void *purb);
 
-typedef VOID		USBHST_STATUS;
+typedef void 	USBHST_STATUS;
 typedef INT32		URBCompleteStatus;
-#define RTMP_OS_WAIT_QUEUE_HEAD		VOID
-typedef VOID (*usb_complete_t)(VOID *);
+#define RTMP_OS_WAIT_QUEUE_HEAD		void
+typedef void (*usb_complete_t)(void *);
 
 #define RtmpUsbBulkOutDataPacketComplete		pRtmpDrvNetOps->RtmpNetUsbBulkOutDataPacketComplete
 #define RtmpUsbBulkOutMLMEPacketComplete		pRtmpDrvNetOps->RtmpNetUsbBulkOutMLMEPacketComplete
@@ -949,19 +949,19 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 #undef in_interrupt
 #define in_interrupt		RtmpOsIsInInterrupt
 
-extern VOID *rausb_alloc_urb(INT32 iso_packets);
-extern VOID rausb_free_urb(VOID *urb);
-extern INT32 rausb_submit_urb(VOID *urb);
-extern VOID *rausb_buffer_alloc(VOID *dev,
+extern void *rausb_alloc_urb(INT32 iso_packets);
+extern void rausb_free_urb(void *urb);
+extern INT32 rausb_submit_urb(void *urb);
+extern void *rausb_buffer_alloc(void *dev,
 								size_t size,
 								ra_dma_addr_t *dma);
-extern VOID rausb_buffer_free(VOID *dev,
+extern void rausb_buffer_free(void *dev,
 								size_t size,
-								VOID *addr,
+								void *addr,
 								ra_dma_addr_t dma);
-extern VOID rausb_kill_urb(VOID *urb);
+extern void rausb_kill_urb(void *urb);
 
-extern int rausb_control_msg(VOID *dev,
+extern int rausb_control_msg(void *dev,
 						unsigned int pipe,
 						__u8 request,
 						__u8 requesttype,

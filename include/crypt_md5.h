@@ -42,18 +42,18 @@ typedef struct {
 	UINT BlockLen;
 } MD5_CTX_STRUC, *PMD5_CTX_STRUC;
 
-VOID RT_MD5_Init(
+void RT_MD5_Init(
 	IN MD5_CTX_STRUC * pMD5_CTX);
-VOID RT_MD5_Hash(
+void RT_MD5_Hash(
 	IN MD5_CTX_STRUC * pMD5_CTX);
-VOID RT_MD5_Append(
+void RT_MD5_Append(
 	IN MD5_CTX_STRUC * pMD5_CTX,
 	IN const u8 Message[],
 	IN UINT MessageLen);
-VOID RT_MD5_End(
+void RT_MD5_End(
 	IN MD5_CTX_STRUC * pMD5_CTX,
 	OUT u8 DigestMessage[]);
-VOID RT_MD5(
+void RT_MD5(
 	IN const u8 Message[],
 	IN UINT MessageLen,
 	OUT u8 DigestMessage[]);

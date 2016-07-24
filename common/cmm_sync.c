@@ -48,7 +48,7 @@ extern UINT16 const Country_Region_GroupNum_5GHZ;
 
 	==========================================================================
  */
-VOID BuildChannelList(
+void BuildChannelList(
 	IN PRTMP_ADAPTER pAd)
 {
 	UCHAR i, j, index=0, num=0;
@@ -319,7 +319,7 @@ UCHAR NextChannel(
 		the minimum value or next lower value.
 	==========================================================================
  */
-VOID ChangeToCellPowerLimit(
+void ChangeToCellPowerLimit(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR         AironetCellPowerLimit)
 {

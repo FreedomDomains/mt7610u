@@ -202,8 +202,8 @@ NDIS_STATUS	RTMPReadParametersHook(
 
 	========================================================================
 */
-VOID RtmpDrvSendWirelessEvent(
-	IN	VOID					*pAdSrc,
+void RtmpDrvSendWirelessEvent(
+	IN	void 				*pAdSrc,
 	IN	USHORT					Event_flag,
 	IN	PUCHAR 					pAddr,
 	IN  UCHAR					BssIdx,
@@ -327,7 +327,7 @@ void tbtt_tasklet(unsigned long data)
 
 
 void announce_802_3_packet(
-	IN VOID *pAdSrc,
+	IN void *pAdSrc,
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR OpMode)
 {
@@ -487,8 +487,8 @@ err_free_sk_buff:
 
 extern NDIS_SPIN_LOCK TimerSemLock;
 
-VOID	RTMPFreeAdapter(
-	IN	VOID		*pAdSrc)
+void RTMPFreeAdapter(
+	IN	void 	*pAdSrc)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	POS_COOKIE os_cookie;
@@ -653,7 +653,7 @@ PNET_DEV get_netdev_from_bssid(
 
 
 #ifdef WDS_SUPPORT
-VOID AP_WDS_KeyNameMakeUp(
+void AP_WDS_KeyNameMakeUp(
 	IN	STRING						*pKey,
 	IN	UINT32						KeyMaxSize,
 	IN	INT							KeyId)

@@ -34,11 +34,11 @@
 extern MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[];
 extern UCHAR MT76x0_BPP_SWITCH_Tab_Size;
 
-extern VOID SelectBandMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
-extern VOID SetRfChFreqParametersMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
-extern VOID MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
-extern VOID MT76x0_VCO_CalibrationMode3(struct _RTMP_ADAPTER *pAd, UCHAR Channel);
-extern VOID MT76x0_Calibration(struct _RTMP_ADAPTER *pAd,
+extern void SelectBandMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
+extern void SetRfChFreqParametersMT76x0(PRTMP_ADAPTER pAd, UCHAR Channel);
+extern void MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
+extern void MT76x0_VCO_CalibrationMode3(struct _RTMP_ADAPTER *pAd, UCHAR Channel);
+extern void MT76x0_Calibration(struct _RTMP_ADAPTER *pAd,
 			UCHAR Channel, BOOLEAN bPowerOn, BOOLEAN bDoTSSI, BOOLEAN bFullCal);
 #ifdef RTMP_TEMPERATURE_TX_ALC
 extern BOOLEAN mt76x0_get_tssi_report(PRTMP_ADAPTER pAd,
@@ -86,7 +86,7 @@ static INT ate_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch)
 }
 
 
-static VOID mt76x0_ate_bbp_adjust(
+static void mt76x0_ate_bbp_adjust(
 	IN PRTMP_ADAPTER	pAd)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -110,7 +110,7 @@ static VOID mt76x0_ate_bbp_adjust(
 
 	==========================================================================
 */
-static VOID mt76x0_ate_switch_channel(
+static void mt76x0_ate_switch_channel(
     	IN PRTMP_ADAPTER	pAd)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -223,7 +223,7 @@ static INT mt76x0_ate_tx_pwr_handler(
 }
 
 
-VOID mt76x0_ate_update_per_rate_pwr(
+void mt76x0_ate_update_per_rate_pwr(
 	IN PRTMP_ADAPTER 	pAd,
 	INOUT PULONG 		per_rate_pwr)
 {

@@ -173,7 +173,7 @@ BOOLEAN	RTUSBNeedQueueBackForAgg(RTMP_ADAPTER *pAd, UCHAR BulkOutPipeId)
 
 	========================================================================
 */
-VOID rlt_usb_write_txinfo(
+void rlt_usb_write_txinfo(
 	IN RTMP_ADAPTER *pAd,
 	IN TXINFO_STRUC *pTxInfo,
 	IN USHORT USBDMApktLen,
@@ -211,7 +211,7 @@ VOID rlt_usb_write_txinfo(
 }
 
 
-static VOID rlt_usb_update_txinfo(
+static void rlt_usb_update_txinfo(
 	IN RTMP_ADAPTER *pAd,
 	IN TXINFO_STRUC *pTxInfo,
 	IN TX_BLK *pTxBlk)
@@ -222,7 +222,7 @@ static VOID rlt_usb_update_txinfo(
 
 
 #ifdef CONFIG_STA_SUPPORT
-VOID ComposePsPoll(RTMP_ADAPTER *pAd)
+void ComposePsPoll(RTMP_ADAPTER *pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
@@ -252,7 +252,7 @@ VOID ComposePsPoll(RTMP_ADAPTER *pAd)
 		      BSSID_WCID, data_len, 0, 0,
 		      (UCHAR) pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, FALSE, &pAd->CommonCfg.MlmeTransmit);
-	RTMPMoveMemory((VOID *)&buf[TXWISize + TXINFO_SIZE + TSO_SIZE], (VOID *)&pAd->PsPollFrame, data_len);
+	RTMPMoveMemory((void *)&buf[TXWISize + TXINFO_SIZE + TSO_SIZE], (void *)&pAd->PsPollFrame, data_len);
 	/* Append 4 extra zero bytes. */
 	pAd->PsPollContext.BulkOutSize = TXINFO_SIZE + TXWISize + TSO_SIZE + data_len + 4;
 }
@@ -260,7 +260,7 @@ VOID ComposePsPoll(RTMP_ADAPTER *pAd)
 
 
 /* IRQL = DISPATCH_LEVEL */
-VOID ComposeNullFrame(RTMP_ADAPTER *pAd)
+void ComposeNullFrame(RTMP_ADAPTER *pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
@@ -287,7 +287,7 @@ VOID ComposeNullFrame(RTMP_ADAPTER *pAd)
 		      BSSID_WCID, data_len, 0, 0,
 		      (UCHAR)pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, FALSE, &pAd->CommonCfg.MlmeTransmit);
-	RTMPMoveMemory((VOID *)&buf[TXWISize + TXINFO_SIZE], (VOID *)&pAd->NullFrame, data_len);
+	RTMPMoveMemory((void *)&buf[TXWISize + TXINFO_SIZE], (void *)&pAd->NullFrame, data_len);
 	pAd->NullContext.BulkOutSize = TXINFO_SIZE + TXWISize + TSO_SIZE + data_len + 4;
 }
 
@@ -852,7 +852,7 @@ done:
 }
 
 
-VOID RtmpUSB_FinalWriteTxResource(
+void RtmpUSB_FinalWriteTxResource(
 	IN RTMP_ADAPTER	*pAd,
 	IN TX_BLK *pTxBlk,
 	IN USHORT totalMPDUSize,
@@ -954,7 +954,7 @@ VOID RtmpUSB_FinalWriteTxResource(
 }
 
 
-VOID RtmpUSBDataLastTxIdx(
+void RtmpUSBDataLastTxIdx(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR QueIdx,
 	IN USHORT TxIdx)
@@ -971,7 +971,7 @@ VOID RtmpUSBDataLastTxIdx(
 			Check if the CurWriting flag is FALSE, if it's FALSE, we can do kick out.
 
 */
-VOID RtmpUSBDataKickOut(
+void RtmpUSBDataKickOut(
 	IN RTMP_ADAPTER *pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR QueIdx)
@@ -1078,7 +1078,7 @@ if (0) {
 }
 
 
-VOID RtmpUSBNullFrameKickOut(
+void RtmpUSBNullFrameKickOut(
 	IN RTMP_ADAPTER *pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR *pNullFrame,
@@ -1266,7 +1266,7 @@ PNDIS_PACKET GetPacketFromRxRing(
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RLT_MAC
-	NdisMoveMemory((VOID *)&pRxBlk->hw_rx_info[0], (VOID *)pRxFceInfo, sizeof(RXFCE_INFO));
+	NdisMoveMemory((void *)&pRxBlk->hw_rx_info[0], (void *)pRxFceInfo, sizeof(RXFCE_INFO));
 	pRxBlk->pRxFceInfo = (RXFCE_INFO *)&pRxBlk->hw_rx_info[0];
 #endif /* RLT_MAC */
 
@@ -1405,7 +1405,7 @@ NDIS_STATUS	RTMPCheckRxError(
 }
 
 
-VOID RtmpUsbStaAsicForceWakeupTimeout(
+void RtmpUsbStaAsicForceWakeupTimeout(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
 	IN void *SystemSpecific2,
@@ -1427,7 +1427,7 @@ VOID RtmpUsbStaAsicForceWakeupTimeout(
 }
 
 
-VOID RT28xxUsbStaAsicForceWakeup(
+void RT28xxUsbStaAsicForceWakeup(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN       bFromTx)
 {
@@ -1445,7 +1445,7 @@ VOID RT28xxUsbStaAsicForceWakeup(
 }
 
 
-VOID RT28xxUsbStaAsicSleepThenAutoWakeup(
+void RT28xxUsbStaAsicSleepThenAutoWakeup(
 	IN PRTMP_ADAPTER pAd,
 	IN USHORT TbttNumToNextWakeUp)
 {

@@ -266,7 +266,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipBcnSpecInit(RTMP_ADAPTER *pAd)
+void RtmpChipBcnSpecInit(RTMP_ADAPTER *pAd)
 {
 }
 
@@ -285,7 +285,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipBcnInit(
+void RtmpChipBcnInit(
 	IN RTMP_ADAPTER *pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -337,7 +337,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
+void rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -406,7 +406,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipWriteHighMemory(
+void RtmpChipWriteHighMemory(
 	IN RTMP_ADAPTER *pAd,
 	IN USHORT Offset,
 	IN UINT32 Value,
@@ -449,7 +449,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipWriteMemory(
+void RtmpChipWriteMemory(
 	IN	RTMP_ADAPTER	*pAd,
 	IN	USHORT			Offset,
 	IN	UINT32			Value,
@@ -473,7 +473,7 @@ VOID RtmpChipWriteMemory(
 
 
 
-static VOID RxSensitivityTuning(RTMP_ADAPTER *pAd)
+static void RxSensitivityTuning(RTMP_ADAPTER *pAd)
 {
 	UCHAR R66 = 0x26 + GET_LNA_GAIN(pAd);
 
@@ -526,7 +526,7 @@ static UCHAR ChipAGCAdjust(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
+static void ChipBBPAdjust(RTMP_ADAPTER *pAd)
 {
 	UCHAR rf_bw, ext_ch;
 	UCHAR bbp_val;
@@ -589,7 +589,7 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 }
 
 
-static VOID Default_ChipSwitchChannel(
+static void Default_ChipSwitchChannel(
 	IN PRTMP_ADAPTER pAd,
 	IN UCHAR Channel,
 	IN enum SWITCH_CHANNEL_STAGE Stage)
@@ -598,7 +598,7 @@ static VOID Default_ChipSwitchChannel(
 }
 
 
-static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
+static void Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 {
 	UCHAR R66 = 0x30, lan_gain;
 
@@ -625,7 +625,7 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 }
 
 
-static VOID AsicAntennaDefaultReset(
+static void AsicAntennaDefaultReset(
 	IN PRTMP_ADAPTER		pAd,
 	IN EEPROM_ANTENNA_STRUC	*pAntenna)
 {
@@ -640,7 +640,7 @@ static VOID AsicAntennaDefaultReset(
 }
 
 
-VOID NetDevNickNameInit(
+void NetDevNickNameInit(
 	IN PRTMP_ADAPTER		pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
@@ -812,7 +812,7 @@ Return Value:
 Note:
 ========================================================================
 */
-int RtmpChipOpsHook(VOID *pCB)
+int RtmpChipOpsHook(void *pCB)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pCB;
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;

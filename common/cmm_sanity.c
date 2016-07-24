@@ -59,7 +59,7 @@ typedef struct wsc_ie_probreq_data
  */
 BOOLEAN MlmeAddBAReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2)
 {
@@ -109,7 +109,7 @@ BOOLEAN MlmeAddBAReqSanity(
  */
 BOOLEAN MlmeDelBAReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen)
 {
 	MLME_DELBA_REQ_STRUCT *pInfo;
@@ -144,7 +144,7 @@ BOOLEAN MlmeDelBAReqSanity(
 
 BOOLEAN PeerAddBAReqActionSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *pMsg,
+    IN void *pMsg,
     IN ULONG MsgLen,
 	OUT PUCHAR pAddr2)
 {
@@ -185,7 +185,7 @@ BOOLEAN PeerAddBAReqActionSanity(
 
 BOOLEAN PeerAddBARspActionSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *pMsg,
+    IN void *pMsg,
     IN ULONG MsgLen)
 {
 	/*PFRAME_802_11 pFrame = (PFRAME_802_11)pMsg;*/
@@ -225,7 +225,7 @@ BOOLEAN PeerAddBARspActionSanity(
 BOOLEAN PeerDelBAActionSanity(
     IN PRTMP_ADAPTER pAd,
     IN UCHAR Wcid,
-    IN VOID *pMsg,
+    IN void *pMsg,
     IN ULONG MsgLen )
 {
 	/*PFRAME_802_11 pFrame = (PFRAME_802_11)pMsg;*/
@@ -247,7 +247,7 @@ BOOLEAN PeerDelBAActionSanity(
 
 BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     IN UCHAR  MsgChannel,
     OUT PUCHAR pAddr2,
@@ -867,7 +867,7 @@ SanityCheck:
  */
 BOOLEAN PeerBeaconAndProbeRspSanity(
 	IN PRTMP_ADAPTER pAd,
-	IN VOID *Msg,
+	IN void *Msg,
 	IN ULONG MsgLen,
 	IN UCHAR  MsgChannel,
 	OUT BCN_IE_LIST *ie_list,
@@ -1433,7 +1433,7 @@ SanityCheck:
  */
 BOOLEAN PeerBeaconAndProbeRspSanity2(
 	IN PRTMP_ADAPTER pAd,
-	IN VOID *Msg,
+	IN void *Msg,
 	IN ULONG MsgLen,
 	IN OVERLAP_BSS_SCAN_IE *BssScan,
 	OUT UCHAR 	*RegClass)
@@ -1519,7 +1519,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
  */
 BOOLEAN MlmeScanReqSanity(
 	IN PRTMP_ADAPTER pAd,
-	IN VOID *Msg,
+	IN void *Msg,
 	IN ULONG MsgLen,
 	OUT UCHAR *pBssType,
 	OUT CHAR Ssid[],
@@ -1576,7 +1576,7 @@ UCHAR ChannelSanity(
  */
 BOOLEAN PeerDeauthSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr1,
     OUT PUCHAR pAddr2,
@@ -1606,7 +1606,7 @@ BOOLEAN PeerDeauthSanity(
  */
 BOOLEAN PeerAuthSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr,
     OUT USHORT *pAlg,
@@ -1667,7 +1667,7 @@ BOOLEAN PeerAuthSanity(
  */
 BOOLEAN MlmeAuthReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr,
     OUT ULONG *pTimeout,
@@ -1708,7 +1708,7 @@ BOOLEAN MlmeAuthReqSanity(
  */
 BOOLEAN MlmeAssocReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pApAddr,
     OUT USHORT *pCapabilityInfo,
@@ -1739,7 +1739,7 @@ BOOLEAN MlmeAssocReqSanity(
  */
 BOOLEAN PeerDisassocSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2,
     OUT USHORT *pReason)
@@ -1838,7 +1838,7 @@ NDIS_802_11_NETWORK_TYPE NetworkTypeInUseSanity(
 #ifdef QOS_DLS_SUPPORT
 BOOLEAN MlmeDlsReqSanity(
 	IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PRT_802_11_DLS *pDLS,
     OUT PUSHORT pReason)
@@ -1858,7 +1858,7 @@ BOOLEAN MlmeDlsReqSanity(
 #ifdef QOS_DLS_SUPPORT
 BOOLEAN PeerDlsReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
     OUT PUCHAR pSA,
@@ -1981,7 +1981,7 @@ BOOLEAN PeerDlsReqSanity(
 
 BOOLEAN PeerDlsRspSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
     OUT PUCHAR pSA,
@@ -2109,7 +2109,7 @@ BOOLEAN PeerDlsRspSanity(
 
 BOOLEAN PeerDlsTearDownSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
     OUT PUCHAR pSA,
@@ -2152,7 +2152,7 @@ BOOLEAN PeerDlsTearDownSanity(
  */
 BOOLEAN PeerProbeReqSanity(
     IN PRTMP_ADAPTER pAd,
-    IN VOID *Msg,
+    IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2,
     OUT CHAR Ssid[],

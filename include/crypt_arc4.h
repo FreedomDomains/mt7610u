@@ -40,18 +40,18 @@ typedef struct {
 } ARC4_CTX_STRUC, *PARC4_CTX_STRUC;
 
 /* ARC4 operations */
-VOID ARC4_INIT(
+void ARC4_INIT(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
 	IN PUCHAR pKey,
 	IN UINT KeyLength);
 
-VOID ARC4_Compute(
+void ARC4_Compute(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
 	IN u8 InputBlock[],
 	IN UINT InputBlockSize,
 	OUT u8 OutputBlock[]);
 
-VOID ARC4_Discard_KeyLength(
+void ARC4_Discard_KeyLength(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
 	IN UINT Length);
 
