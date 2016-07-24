@@ -130,7 +130,7 @@ static void RtmpTimerQHandle(RTMP_ADAPTER *pAd)
 			if (pTimer)
 			{
 				if ((pTimer->handle != NULL) && (!pAd->PM_FlgSuspend))
-					pTimer->handle(NULL, (PVOID) pTimer->cookie, NULL, pTimer);
+					pTimer->handle(NULL, (void *) pTimer->cookie, NULL, pTimer);
 				if ((pTimer->Repeat) && (pTimer->State == FALSE))
 					RTMP_OS_Add_Timer(&pTimer->TimerObj, pTimer->TimerValue);
 			}

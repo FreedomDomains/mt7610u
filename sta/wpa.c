@@ -264,10 +264,10 @@ void inc_byte_array(UCHAR *counter, int len)
 }
 
 VOID WpaDisassocApAndBlockAssoc(
-    IN PVOID SystemSpecific1,
-    IN PVOID FunctionContext,
-    IN PVOID SystemSpecific2,
-    IN PVOID SystemSpecific3)
+    IN void *SystemSpecific1,
+    IN void *FunctionContext,
+    IN void *SystemSpecific2,
+    IN void *SystemSpecific3)
 {
     RTMP_ADAPTER                *pAd = (PRTMP_ADAPTER)FunctionContext;
     MLME_DISASSOC_REQ_STRUCT    DisassocReq;

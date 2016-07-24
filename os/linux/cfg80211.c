@@ -1377,7 +1377,7 @@ static int CFG80211_OpsRFKill(
 
 
 VOID CFG80211_RFKillStatusUpdate(
-	IN PVOID							pAd,
+	IN void *						pAd,
 	IN BOOLEAN							active)
 {
 	struct wiphy *pWiphy;

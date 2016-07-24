@@ -157,10 +157,10 @@ VOID AssocStateMachineInit(
 	==========================================================================
  */
 VOID AssocTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
 
@@ -186,10 +186,10 @@ VOID AssocTimeout(
 	==========================================================================
  */
 VOID ReassocTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
 
@@ -215,10 +215,10 @@ VOID ReassocTimeout(
 	==========================================================================
  */
 VOID DisassocTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
 

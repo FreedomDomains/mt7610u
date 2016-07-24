@@ -1401,7 +1401,7 @@ typedef struct _RT_802_11_DLS {
 	USHORT						Sequence;
 	USHORT						MacTabMatchWCID;	/* ASIC */
 	BOOLEAN						bHTCap;
-	PVOID						pAd;
+	void *					pAd;
 } RT_802_11_DLS, *PRT_802_11_DLS;
 
 typedef struct _MLME_DLS_REQ_STRUCT {

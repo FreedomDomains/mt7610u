@@ -560,10 +560,10 @@ VOID MlmeResetRalinkCounters(
  */
 #define ADHOC_BEACON_LOST_TIME		(8*OS_HZ)  /* 8 sec*/
 VOID MlmePeriodicExec(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	ULONG			TxTotalCnt;
 	PRTMP_ADAPTER	pAd = (RTMP_ADAPTER *)FunctionContext;
@@ -1492,10 +1492,10 @@ SKIP_AUTO_SCAN_CONN:
 
 /* Link down report*/
 VOID LinkDownExec(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)FunctionContext;
 
@@ -3871,7 +3871,7 @@ ULONG MakeOutgoingFrame(
 		{
 			break;
 		}
-		p = va_arg(Args, PVOID);
+		p = va_arg(Args, void *);
 		NdisMoveMemory(&Buffer[TotLeng], p, leng);
 		TotLeng = TotLeng + leng;
 	} while(TRUE);
@@ -5124,10 +5124,10 @@ VOID AsicEvaluateRxAnt(
     ========================================================================
 */
 VOID AsicRxAntEvalTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER	*pAd = (RTMP_ADAPTER *)FunctionContext;
 #ifdef CONFIG_STA_SUPPORT
@@ -5202,10 +5202,10 @@ VOID AsicRxAntEvalTimeout(
 
 
 VOID APSDPeriodicExec(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3)
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)FunctionContext;
 

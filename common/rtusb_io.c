@@ -925,7 +925,7 @@ NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	NDIS_OID		Oid,
 	IN	BOOLEAN			SetInformation,
-	IN	PVOID			pInformationBuffer,
+	IN	void *		pInformationBuffer,
 	IN	UINT32			InformationBufferLength)
 {
 	NDIS_STATUS	status;
@@ -1035,7 +1035,7 @@ NTSTATUS    RTUSB_VendorRequest(
 	IN	UCHAR			Request,
 	IN	USHORT			Value,
 	IN	USHORT			Index,
-	IN	PVOID			TransferBuffer,
+	IN	void *		TransferBuffer,
 	IN	UINT32			TransferBufferLength)
 {
 	int				RET = 0;

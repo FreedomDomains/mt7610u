@@ -166,9 +166,9 @@ typedef struct __HTTX_BUFFER{
 /* used to track driver-generated write irps */
 typedef struct _TX_CONTEXT
 {
-	PVOID			pAd;		/*Initialized in MiniportInitialize */
+	void *		pAd;		/*Initialized in MiniportInitialize */
 	PURB			pUrb;			/*Initialized in MiniportInitialize */
-	PIRP			pIrp;			/*used to cancel pending bulk out. */
+	void *		pIrp;			/*used to cancel pending bulk out. */
 									/*Initialized in MiniportInitialize */
 	PTX_BUFFER		TransferBuffer;	/*Initialized in MiniportInitialize */
 	ULONG			BulkOutSize;
@@ -192,9 +192,9 @@ typedef struct _TX_CONTEXT
 /* used to track driver-generated write irps */
 typedef struct _HT_TX_CONTEXT
 {
-	PVOID			pAd;		/*Initialized in MiniportInitialize */
+	void *		pAd;		/*Initialized in MiniportInitialize */
 	PURB			pUrb;			/*Initialized in MiniportInitialize */
-	PIRP			pIrp;			/*used to cancel pending bulk out. */
+	void *			pIrp;			/*used to cancel pending bulk out. */
 									/*Initialized in MiniportInitialize */
 	PHTTX_BUFFER	TransferBuffer;	/*Initialized in MiniportInitialize */
 	ULONG			BulkOutSize;	/* Indicate the total bulk-out size in bytes in one bulk-transmission */
@@ -222,7 +222,7 @@ typedef struct _HT_TX_CONTEXT
 
 typedef struct _CMD_CONTEXT
 {
-	PVOID pAd;
+	void *pAd;
 	PURB pUrb;
 	ra_dma_addr_t data_dma;
 	PUCHAR TransferBuffer;
@@ -236,8 +236,8 @@ typedef struct _CMD_CONTEXT
 typedef struct _RX_CONTEXT
 {
 	PUCHAR				TransferBuffer;
-	PVOID				pAd;
-	PIRP				pIrp;/*used to cancel pending bulk in. */
+	void *			pAd;
+	void *			pIrp;/*used to cancel pending bulk in. */
 	PURB				pUrb;
 	/*These 2 Boolean shouldn't both be 1 at the same time. */
 	ULONG				BulkInOffset;	/* number of packets waiting for reordering . */
@@ -255,7 +255,7 @@ typedef struct _RX_CONTEXT
 typedef struct _CMD_RSP_CONTEXT
 {
 	PUCHAR CmdRspBuffer;
-	PVOID pAd;
+	void *pAd;
 	PURB pUrb;
 	BOOLEAN IRPPending;
 	BOOLEAN InUse;

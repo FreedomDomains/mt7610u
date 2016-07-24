@@ -75,7 +75,6 @@ typedef void VOID;
 #endif /* LINUX */
 
 typedef char *PSTRING;
-typedef VOID *PVOID;
 typedef UCHAR *PUCHAR;
 typedef USHORT *PUSHORT;
 typedef LONG *PLONG;

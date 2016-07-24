@@ -193,10 +193,10 @@ VOID APSyncStateMachineInit(
     OUT STATE_MACHINE_FUNC Trans[]);
 
 VOID APScanTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3);
+	IN void *SystemSpecific1,
+	IN void *FunctionContext,
+	IN void *SystemSpecific2,
+	IN void *SystemSpecific3);
 
 VOID APInvalidStateWhenScan(
 	IN PRTMP_ADAPTER pAd,
@@ -272,17 +272,17 @@ BOOLEAN APMsgTypeSubst(
     OUT INT *MsgType);
 
 VOID APQuickResponeForRateUpExec(
-    IN PVOID SystemSpecific1,
-    IN PVOID FunctionContext,
-    IN PVOID SystemSpecific2,
-    IN PVOID SystemSpecific3);
+    IN void *SystemSpecific1,
+    IN void *FunctionContext,
+    IN void *SystemSpecific2,
+    IN void *SystemSpecific3);
 
 #ifdef RTMP_MAC_USB
 VOID BeaconUpdateExec(
-    IN PVOID SystemSpecific1,
-    IN PVOID FunctionContext,
-    IN PVOID SystemSpecific2,
-    IN PVOID SystemSpecific3);
+    IN void *SystemSpecific1,
+    IN void *FunctionContext,
+    IN void *SystemSpecific2,
+    IN void *SystemSpecific3);
 #endif /* RTMP_MAC_USB */
 
 VOID RTMPSetPiggyBack(

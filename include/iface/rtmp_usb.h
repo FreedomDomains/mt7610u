@@ -84,7 +84,6 @@ extern UCHAR EpToQueue[6];
 
 
 
-#define PIRP		PVOID
 /*#define NDIS_OID	UINT */
 #ifndef USB_ST_NOERROR
 #define USB_ST_NOERROR     0

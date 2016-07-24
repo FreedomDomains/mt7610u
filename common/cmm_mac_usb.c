@@ -36,7 +36,7 @@
 static NDIS_STATUS RTMPAllocUsbBulkBufStruct(
 	IN RTMP_ADAPTER *pAd,
 	IN PURB *ppUrb,
-	IN PVOID *ppXBuffer,
+	IN void **ppXBuffer,
 	IN INT	bufLen,
 	IN ra_dma_addr_t *pDmaAddr,
 	IN PSTRING pBufName)
@@ -390,9 +390,9 @@ NDIS_STATUS	NICInitTransmit(
 	PTX_CONTEXT		pNullContext   = &(pAd->NullContext);
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
 	PTX_CONTEXT		pMLMEContext = NULL;
-	PVOID			RingBaseVa;
+	void *		RingBaseVa;
 	RTMP_MGMT_RING  *pMgmtRing;
-	PVOID pTransferBuffer;
+	void *pTransferBuffer;
 	PURB	pUrb;
 	ra_dma_addr_t data_dma;
 
@@ -584,7 +584,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
 			/*Allocate URB and bulk buffer*/
 			Status = RTMPAllocUsbBulkBufStruct(pAd,
 												&pHTTXContext->pUrb,
-												(PVOID *)&pHTTXContext->TransferBuffer,
+												(void **)&pHTTXContext->TransferBuffer,
 												sizeof(HTTX_BUFFER),
 												&pHTTXContext->data_dma,
 												"HTTxContext");
@@ -614,7 +614,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
 		/*Allocate URB*/
 		Status = RTMPAllocUsbBulkBufStruct(pAd,
 											&pNullContext->pUrb,
-											(PVOID *)&pNullContext->TransferBuffer,
+											(void **)&pNullContext->TransferBuffer,
 											sizeof(TX_BUFFER),
 											&pNullContext->data_dma,
 											"TxNullContext");
@@ -628,7 +628,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
 		/*Allocate URB*/
 		Status = RTMPAllocUsbBulkBufStruct(pAd,
 											&pPsPollContext->pUrb,
-											(PVOID *)&pPsPollContext->TransferBuffer,
+											(void **)&pPsPollContext->TransferBuffer,
 											sizeof(TX_BUFFER),
 											&pPsPollContext->data_dma,
 											"TxPsPollContext");
@@ -645,7 +645,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
 			/*Allocate URB*/
 			Status = RTMPAllocUsbBulkBufStruct(pAd,
 												&pRxContext->pUrb,
-												(PVOID *)&pRxContext->TransferBuffer,
+												(void **)&pRxContext->TransferBuffer,
 												MAX_RXBULK_SIZE,
 												&pRxContext->data_dma,
 												"RxContext");
@@ -657,7 +657,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
 		/* Init command response event related parameters */
 		Status = RTMPAllocUsbBulkBufStruct(pAd,
 										   &pCmdRspEventContext->pUrb,
-										   (PVOID *)&pCmdRspEventContext->CmdRspBuffer,
+										   (void **)&pCmdRspEventContext->CmdRspBuffer,
 										   CMD_RSP_BULK_SIZE,
 										   &pCmdRspEventContext->data_dma,
 										   "CmdRspEventContext");
@@ -853,7 +853,7 @@ NDIS_STATUS	NICInitTransmit(
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
 	PTX_CONTEXT		pMLMEContext = NULL;
 	POS_COOKIE		pObj = (POS_COOKIE) pAd->OS_Cookie;
-	PVOID			RingBaseVa;
+	void *		RingBaseVa;
 	RTMP_MGMT_RING  *pMgmtRing;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitTransmit\n"));
@@ -884,7 +884,7 @@ NDIS_STATUS	NICInitTransmit(
 			/*Allocate URB*/
 			Status = RTMPAllocUsbBulkBufStruct(pAd,
 												&pHTTXContext->pUrb,
-												(PVOID *)&pHTTXContext->TransferBuffer,
+												(void **)&pHTTXContext->TransferBuffer,
 												sizeof(HTTX_BUFFER),
 												&pHTTXContext->data_dma,
 												"HTTxContext");
@@ -967,7 +967,7 @@ NDIS_STATUS	NICInitTransmit(
 		NdisZeroMemory(pNullContext, sizeof(TX_CONTEXT));
 		Status = RTMPAllocUsbBulkBufStruct(pAd,
 											&pNullContext->pUrb,
-											(PVOID *)&pNullContext->TransferBuffer,
+											(void **)&pNullContext->TransferBuffer,
 											sizeof(TX_BUFFER),
 											&pNullContext->data_dma,
 											"TxNullContext");
@@ -984,7 +984,7 @@ NDIS_STATUS	NICInitTransmit(
 
 		Status = RTMPAllocUsbBulkBufStruct(pAd,
 											&pPsPollContext->pUrb,
-											(PVOID *)&pPsPollContext->TransferBuffer,
+											(void **)&pPsPollContext->TransferBuffer,
 											sizeof(TX_BUFFER),
 											&pPsPollContext->data_dma,
 											"TxPsPollContext");
@@ -1662,10 +1662,10 @@ VOID RTUSBBssBeaconExit(
     ========================================================================
 */
 VOID BeaconUpdateExec(
-    IN PVOID SystemSpecific1,
-    IN PVOID FunctionContext,
-    IN PVOID SystemSpecific2,
-    IN PVOID SystemSpecific3)
+    IN void *SystemSpecific1,
+    IN void *FunctionContext,
+    IN void *SystemSpecific2,
+    IN void *SystemSpecific3)
 {
 	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)FunctionContext;
 	LARGE_INTEGER	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
