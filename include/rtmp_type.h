@@ -52,7 +52,6 @@ typedef unsigned int UINT;
 typedef unsigned long ULONG;
 #endif /* LINUX */
 
-typedef unsigned char *PUINT8;
 typedef unsigned short *PUINT16;
 typedef unsigned int *PUINT32;
 typedef unsigned long long *PUINT64;
