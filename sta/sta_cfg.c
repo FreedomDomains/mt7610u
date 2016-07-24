@@ -7223,7 +7223,7 @@ RtmpIoctl_rt_ioctl_giwencodeext(
 			else
 			{
 				pIoctlSec->length = pAd->SharedKey[BSS0][idx].KeyLen;
-				pIoctlSec->pData = (PCHAR)&(pAd->SharedKey[BSS0][idx].Key[0]);
+				pIoctlSec->pData = (char *)&(pAd->SharedKey[BSS0][idx].Key[0]);
 			}
 			break;
 		case Ndis802_11Encryption2Enabled:
@@ -7241,7 +7241,7 @@ RtmpIoctl_rt_ioctl_giwencodeext(
 			else
 			{
 				pIoctlSec->length = 32;
-				pIoctlSec->pData = (PCHAR)&pAd->StaCfg.PMK[0];
+				pIoctlSec->pData = (char *)&pAd->StaCfg.PMK[0];
 			}
 			break;
 		default:

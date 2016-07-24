@@ -203,7 +203,7 @@ VOID MlmeCntlMachinePerformAction(
 
                                 if (pAd->IndicateMediaState != NdisMediaStateConnected && (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_ENABLE_WITH_WEB_UI) )
                                 {
-                                        BssTableSsidSort(pAd, &pAd->MlmeAux.SsidBssTab, (PCHAR)pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
+                                        BssTableSsidSort(pAd, &pAd->MlmeAux.SsidBssTab, (char *)pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
                                         pAd->MlmeAux.BssIdx = 0;
                                         IterateOnBssTab(pAd);
                                 }
@@ -252,7 +252,7 @@ when disassoc from ap1 ,and send even_scan will direct connect to ap2 , not need
 			/* won't be too long to let upper layer time-out the waiting frames */
 			RTMPResumeMsduTransmission(pAd);
 			pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
-			BssTableSsidSort(pAd, &pAd->MlmeAux.SsidBssTab, (PCHAR)pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
+			BssTableSsidSort(pAd, &pAd->MlmeAux.SsidBssTab, (char *)pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
 			pAd->MlmeAux.BssIdx = 0;
 			IterateOnBssTab(pAd);
 		}
@@ -433,7 +433,7 @@ VOID CntlOidSsidProc(
 		and log them into MlmeAux.SsidBssTab for later-on iteration. Sort by RSSI order
 	*/
 	BssTableSsidSort(pAd, &pAd->MlmeAux.SsidBssTab,
-			 (PCHAR) pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
+			 (char *) pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
 
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("CntlOidSsidProc():CNTL - %d BSS of %d BSS match the desire ",
@@ -712,7 +712,7 @@ VOID CntlOidRTBssidProc(
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("CNTL - BSSID not found. start a new ADHOC (Ssid=%s)...\n",
 				  pAd->MlmeAux.Ssid));
-			StartParmFill(pAd, &StartReq, (PCHAR)pAd->MlmeAux.Ssid,
+			StartParmFill(pAd, &StartReq, (char *)pAd->MlmeAux.Ssid,
 				      pAd->MlmeAux.SsidLen);
 			MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_START_REQ,
 				    sizeof (MLME_START_REQ_STRUCT), &StartReq, 0);
@@ -1030,7 +1030,7 @@ VOID CntlWaitDisassocProc(
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("CNTL - No matching BSS, start a new ADHOC (Ssid=%s)...\n",
 				  pAd->MlmeAux.Ssid));
-			StartParmFill(pAd, &StartReq, (PCHAR) pAd->MlmeAux.Ssid,
+			StartParmFill(pAd, &StartReq, (char *) pAd->MlmeAux.Ssid,
 				      pAd->MlmeAux.SsidLen);
 			MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_START_REQ,
 				    sizeof (MLME_START_REQ_STRUCT), &StartReq,
@@ -2529,7 +2529,7 @@ VOID IterateOnBssTab(
 		}
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("CNTL - All BSS fail; start a new ADHOC (Ssid=%s)...\n",pAd->MlmeAux.Ssid));
-			StartParmFill(pAd, &StartReq, (PCHAR) pAd->MlmeAux.Ssid,pAd->MlmeAux.SsidLen);
+			StartParmFill(pAd, &StartReq, (char *) pAd->MlmeAux.Ssid,pAd->MlmeAux.SsidLen);
 			MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_START_REQ, sizeof (MLME_START_REQ_STRUCT), &StartReq, 0);
 
 			pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_START;

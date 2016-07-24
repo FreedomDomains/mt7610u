@@ -4522,26 +4522,26 @@ VOID AsicGetTxPowerOffset(
 
 VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN PRTMP_ADAPTER 		pAd,
-	IN PCHAR 				pDeltaPwr,
-	IN PCHAR 				pTotalDeltaPwr,
-	IN PCHAR 				pAgcCompensate,
-	IN PCHAR 				pDeltaPowerByBbpR1);
+	IN char *				pDeltaPwr,
+	IN char *				pTotalDeltaPwr,
+	IN char *				pAgcCompensate,
+	IN char *				pDeltaPowerByBbpR1);
 
 VOID AsicExtraPowerOverMAC(RTMP_ADAPTER *pAd);
 
 #ifdef RTMP_TEMPERATURE_COMPENSATION
 VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 	IN PRTMP_ADAPTER 		pAd,
-	IN PCHAR				pDeltaPwr,
-	IN PCHAR				pTotalDeltaPwr,
-	IN PCHAR				pAgcCompensate,
-	IN PCHAR 				pDeltaPowerByBbpR1);
+	IN char *			pDeltaPwr,
+	IN char *			pTotalDeltaPwr,
+	IN char *			pAgcCompensate,
+	IN char *				pDeltaPowerByBbpR1);
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 #ifdef SINGLE_SKU
 VOID GetSingleSkuDeltaPower(
 	IN 		PRTMP_ADAPTER 	pAd,
-	IN 		PCHAR 			pTotalDeltaPower,
+	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
 	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset);
 #endif /* SINGLE_SKU*/
@@ -4549,12 +4549,12 @@ VOID GetSingleSkuDeltaPower(
 VOID AsicPercentageDeltaPower(
 	IN 		PRTMP_ADAPTER 		pAd,
 	IN		CHAR				Rssi,
-	INOUT	PCHAR				pDeltaPwr,
-	INOUT	PCHAR				pDeltaPowerByBbpR1);
+	INOUT	char *			pDeltaPwr,
+	INOUT	char *			pDeltaPowerByBbpR1);
 
 VOID AsicCompensatePowerViaBBP(
 	IN 		PRTMP_ADAPTER 		pAd,
-	INOUT	PCHAR				pTotalDeltaPower);
+	INOUT	char *			pTotalDeltaPower);
 
 VOID AsicAdjustTxPower(
 	IN PRTMP_ADAPTER pAd);
@@ -6383,7 +6383,7 @@ VOID	InitNINTENDO_TABLE(
 
 UCHAR	CheckNINTENDO_TABLE(
 	IN PRTMP_ADAPTER pAd,
-	PCHAR pDS_Ssid,
+	char *pDS_Ssid,
 	UCHAR DS_SsidLen,
 	PUCHAR pDS_Addr);
 

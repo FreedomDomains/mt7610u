@@ -128,15 +128,15 @@ VOID AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
 
 VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN PRTMP_ADAPTER 			pAd,
-	IN PCHAR 					pDeltaPwr,
-	IN PCHAR 					pTotalDeltaPwr,
-	IN PCHAR 					pAgcCompensate,
-	IN PCHAR 					pDeltaPowerByBbpR1)
+	IN char *					pDeltaPwr,
+	IN char *					pTotalDeltaPwr,
+	IN char *					pAgcCompensate,
+	IN char *					pDeltaPowerByBbpR1)
 {
 	BBP_R49_STRUC	BbpR49;
 	BOOLEAN			bAutoTxAgc = FALSE;
 	UCHAR			TssiRef, *pTssiMinusBoundary, *pTssiPlusBoundary, TxAgcStep, idx;
-	PCHAR			pTxAgcCompensate = NULL;
+	char *		pTxAgcCompensate = NULL;
 	CHAR    			DeltaPwr = 0;
 
 	DBGPRINT(RT_DEBUG_INFO, ("-->%s\n", __FUNCTION__));
@@ -352,7 +352,7 @@ VOID AsicAdjustTxPower(
 #ifdef SINGLE_SKU
 VOID GetSingleSkuDeltaPower(
 	IN 		PRTMP_ADAPTER 	pAd,
-	IN 		PCHAR 			pTotalDeltaPower,
+	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
 	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset)
 {
@@ -540,8 +540,8 @@ VOID GetSingleSkuDeltaPower(
 VOID AsicPercentageDeltaPower(
 	IN 		PRTMP_ADAPTER 		pAd,
 	IN		CHAR				Rssi,
-	INOUT	PCHAR				pDeltaPwr,
-	INOUT	PCHAR				pDeltaPowerByBbpR1)
+	INOUT	char *			pDeltaPwr,
+	INOUT	char *			pDeltaPowerByBbpR1)
 {
 	/*
 		Calculate delta power based on the percentage specified from UI.
@@ -597,7 +597,7 @@ VOID AsicPercentageDeltaPower(
 
 VOID AsicCompensatePowerViaBBP(
 	IN 		PRTMP_ADAPTER 		pAd,
-	INOUT	PCHAR				pTotalDeltaPower)
+	INOUT	char *			pTotalDeltaPower)
 {
 	UCHAR mdsm_drop_pwr;
 

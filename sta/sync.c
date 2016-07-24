@@ -369,7 +369,7 @@ VOID MlmeForceScanReqAction(
 						  Elem->Msg,
 						  Elem->MsgLen,
 						  &BssType,
-						  (PCHAR)Ssid,
+						  (char *)Ssid,
 						  &SsidLen,
 						  &ScanType))
 	{
@@ -512,7 +512,7 @@ VOID MlmeScanReqAction(
 						  Elem->Msg,
 						  Elem->MsgLen,
 						  &BssType,
-						  (PCHAR)Ssid,
+						  (char *)Ssid,
 						  &SsidLen,
 						  &ScanType))
 	{
@@ -861,7 +861,7 @@ VOID MlmeStartReqAction(
 	TimeStamp.u.LowPart  = 0;
 	TimeStamp.u.HighPart = 0;
 
-	if ((MlmeStartReqSanity(pAd, Elem->Msg, Elem->MsgLen, (PCHAR)Ssid, &SsidLen)) &&
+	if ((MlmeStartReqSanity(pAd, Elem->Msg, Elem->MsgLen, (char *)Ssid, &SsidLen)) &&
 		(CHAN_PropertyCheck(pAd, pAd->MlmeAux.Channel, CHANNEL_NO_IBSS) == FALSE))
 	{
 		/* reset all the timers */
@@ -1018,7 +1018,7 @@ VOID rtmp_dbg_sanity_diff(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
 								Elem->Channel,
 								Addr2,
 								Bssid,
-								(PCHAR)Ssid,
+								(char *)Ssid,
 								&SsidLen,
 								&BssType,
 								&BeaconPeriod,

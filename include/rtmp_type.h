@@ -76,7 +76,6 @@ typedef void VOID;
 
 typedef char *PSTRING;
 typedef VOID *PVOID;
-typedef CHAR *PCHAR;
 typedef UCHAR *PUCHAR;
 typedef USHORT *PUSHORT;
 typedef LONG *PLONG;

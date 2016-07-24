@@ -42,10 +42,10 @@ extern VOID MT76x0_Calibration(struct _RTMP_ADAPTER *pAd,
 			UCHAR Channel, BOOLEAN bPowerOn, BOOLEAN bDoTSSI, BOOLEAN bFullCal);
 #ifdef RTMP_TEMPERATURE_TX_ALC
 extern BOOLEAN mt76x0_get_tssi_report(PRTMP_ADAPTER pAd,
-			BOOLEAN bResetTssiInfo, PCHAR pTssiReport);
+			BOOLEAN bResetTssiInfo, char *pTssiReport);
 extern BOOLEAN get_temp_tx_alc_level(PRTMP_ADAPTER pAd, BOOLEAN enable_tx_alc,
-			CHAR temp_ref, PCHAR temp_minus_bdy, PCHAR temp_plus_bdy,
-			u8 max_bdy_level, u8 tx_alc_step, CHAR current_temp, PCHAR comp_level);
+			CHAR temp_ref, char *temp_minus_bdy, char *temp_plus_bdy,
+			u8 max_bdy_level, u8 tx_alc_step, CHAR current_temp, char *comp_level);
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
 

@@ -109,7 +109,7 @@ BOOLEAN PeerAssocRspSanity(
 	*pHtCapabilityLen = 0;
 	*pAddHtInfoLen = 0;
 	COPY_MAC_ADDR(pAddr2, pFrame->Hdr.Addr2);
-	Ptr = (PCHAR) pFrame->Octet;
+	Ptr = (char *) pFrame->Octet;
 	Length += LENGTH_802_11;
 
 	NdisMoveMemory(pCapabilityInfo, &pFrame->Octet[0], 2);

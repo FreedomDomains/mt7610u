@@ -577,7 +577,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 {
 					if (INFRA_ON(pAd) && NdisEqualMemory(pBssid, pAd->CommonCfg.Bssid, MAC_ADDR_LEN))
                     {
-                        GetTimBit((PCHAR)pEid, pAd->StaActive.Aid, &TimLen, pBcastFlag, pDtimCount, pDtimPeriod, pMessageToMe);
+                        GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, pBcastFlag, pDtimCount, pDtimPeriod, pMessageToMe);
                     }
                 }
                 break;
@@ -1135,7 +1135,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			{
 				if (INFRA_ON(pAd) && NdisEqualMemory(&ie_list->Bssid[0], pAd->CommonCfg.Bssid, MAC_ADDR_LEN))
 				{
-					GetTimBit((PCHAR)pEid, pAd->StaActive.Aid, &TimLen, &ie_list->BcastFlag,
+					GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, &ie_list->BcastFlag,
 					&ie_list->DtimCount, &ie_list->DtimPeriod, &ie_list->MessageToMe);
 				}
 			}
@@ -1878,7 +1878,7 @@ BOOLEAN PeerDlsReqSanity(
     *pDlsTimeout	= 0;
 	*pHtCapabilityLen = 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;
@@ -2002,7 +2002,7 @@ BOOLEAN PeerDlsRspSanity(
     *pCapabilityInfo	= 0;
 	*pHtCapabilityLen = 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;
@@ -2121,7 +2121,7 @@ BOOLEAN PeerDlsTearDownSanity(
     /* to prevent caller from using garbage output value*/
     *pReason	= 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;

@@ -1032,7 +1032,7 @@ static void	WriteConfToDatFile(
 	}
 	else
 	{
-		offset = (PCHAR) rtstrstr((PSTRING) cfgData, "Default\n");
+		offset = (char *) rtstrstr((PSTRING) cfgData, "Default\n");
 		offset += strlen("Default\n");
 		RtmpOSFileWrite(file_w, (PSTRING)cfgData, (int)(offset-cfgData));
 		os_alloc_mem(NULL, (UCHAR **)&pTempStr, 512);

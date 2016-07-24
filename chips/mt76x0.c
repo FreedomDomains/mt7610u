@@ -4673,7 +4673,7 @@ VOID MT76x0_IntTxAlcProcess(
 BOOLEAN mt76x0_get_tssi_report(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN bResetTssiInfo,
-	OUT PCHAR pTssiReport)
+	OUT char *pTssiReport)
 {
 	UINT32 wait = 0, reg_val = 0;
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
@@ -5124,12 +5124,12 @@ BOOLEAN get_temp_tx_alc_level(
 	IN PRTMP_ADAPTER pAd,
 	IN BOOLEAN enable_tx_alc,
 	IN CHAR temp_ref,
-	IN PCHAR temp_minus_bdy,
-	IN PCHAR temp_plus_bdy,
+	IN char *temp_minus_bdy,
+	IN char *temp_plus_bdy,
 	IN u8 max_bdy_level,
 	IN u8 tx_alc_step,
 	IN CHAR current_temp,
-	OUT PCHAR comp_level)
+	OUT char *comp_level)
 {
 	INT idx = 0;
 
@@ -5282,8 +5282,8 @@ void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
 static void adjust_temp_tx_alc_table(
 	IN RTMP_ADAPTER *pAd,
 	IN CHAR band,
-	INOUT PCHAR temp_minus_bdy,
-	INOUT PCHAR temp_plus_bdy,
+	INOUT char *temp_minus_bdy,
+	INOUT char *temp_plus_bdy,
 	IN CHAR temp_reference)
 {
 	INT idx = 0;
@@ -5335,8 +5335,8 @@ static void adjust_temp_tx_alc_table(
 
 static void adjust_mp_temp(
 	IN RTMP_ADAPTER *pAd,
-	IN PCHAR temp_minus_bdy,
-	IN PCHAR temp_plus_bdy)
+	IN char *temp_minus_bdy,
+	IN char *temp_plus_bdy)
 {
 	EEPROM_TX_PWR_STRUC e2p_value;
 	CHAR mp_temp, idx = 0, mp_offset = 0;

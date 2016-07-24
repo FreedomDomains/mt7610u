@@ -183,7 +183,7 @@ VOID PeerAuthRspAtSeq2Action(
 
 	if (PeerAuthSanity
 	    (pAd, Elem->Msg, Elem->MsgLen, Addr2, &Alg, &Seq, &Status,
-	     (PCHAR) ChlgText)) {
+	     (char *) ChlgText)) {
 		if (MAC_ADDR_EQUAL(pAd->MlmeAux.Bssid, Addr2) && Seq == 2) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("AUTH - Receive AUTH_RSP seq#2 to me (Alg=%d, Status=%d)\n",

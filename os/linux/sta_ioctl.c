@@ -1996,7 +1996,7 @@ rt_ioctl_giwencodeext(struct net_device *dev,
 			  union iwreq_data *wrqu, char *extra)
 {
 	VOID *pAd = NULL;
-/*	PCHAR pKey = NULL; */
+/*	char *pKey = NULL; */
 	struct iw_point *encoding = &wrqu->encoding;
 	struct iw_encode_ext *ext = (struct iw_encode_ext *)extra;
 	int /* idx, */ max_key_len;
