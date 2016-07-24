@@ -1422,7 +1422,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
 	HEADER_802_11 *pHeader;
 	UCHAR *pData;
 	RX_BLK RxBlk;
-	UINT8 RXWISize = pAd->chipCap.RXWISize;
+	u8 RXWISize = pAd->chipCap.RXWISize;
 #ifdef RLT_MAC
 	RXFCE_INFO *pFceInfo;
 	BOOLEAN bCmdRspPacket = FALSE;
@@ -2409,7 +2409,7 @@ VOID STABuildWifiInfo(
 	BOOLEAN bDLSFrame = FALSE;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	pTxBlk->MpduHeaderLen = WIFI_INFO_SIZE;
 
@@ -2540,7 +2540,7 @@ VOID STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 	BOOLEAN bDLSFrame = FALSE;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	/* MAKE A COMMON 802.11 HEADER */
 
@@ -2725,7 +2725,7 @@ static inline PUCHAR STA_Build_ARalink_Frame_Header(
 	PNDIS_PACKET pNextPacket;
 	UINT32 nextBufLen;
 	PQUEUE_ENTRY pQEntry;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -2780,7 +2780,7 @@ static inline PUCHAR STA_Build_AMSDU_Frame_Header(
 {
 	PUCHAR pHeaderBufPtr;
 	HEADER_802_11 *pHeader_802_11;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -2830,7 +2830,7 @@ VOID STA_AMPDU_Frame_Tx(
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	BOOLEAN			bHTCPlus;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	ASSERT(pTxBlk);
@@ -3224,7 +3224,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	BOOLEAN			bHTCPlus;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	PWIFI_INFO_STRUC pWI;
 
 	ASSERT(pTxBlk);
@@ -3487,7 +3487,7 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 	USHORT FreeNumber = 0;
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	ASSERT(pTxBlk);
 
@@ -3665,7 +3665,7 @@ VOID STA_Legacy_Frame_Tx_Hdr_Trns(
 	USHORT FreeNumber = 0;
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	PWIFI_INFO_STRUC pWI;
 
 	ASSERT(pTxBlk);
@@ -3893,7 +3893,7 @@ VOID STA_Fragment_Frame_Tx(
 	PUCHAR tmp_ptr = NULL;
 	UINT32 buf_offset = 0;
 #endif /* SOFT_ENCRYPT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	ASSERT(pTxBlk);
 

@@ -1337,7 +1337,7 @@ struct common_config {
 	UCHAR SavedPhyMode;
 	USHORT Dsifs;		/* in units of usec */
 	ULONG PacketFilter;	/* Packet filter for receiving */
-	UINT8 RegulatoryClass[MAX_NUM_OF_REGULATORY_CLASS];
+	u8 RegulatoryClass[MAX_NUM_OF_REGULATORY_CLASS];
 
 	CHAR Ssid[MAX_LEN_OF_SSID];	/* NOT NULL-terminated */
 	UCHAR SsidLen;		/* the actual ssid length in used */
@@ -1397,7 +1397,7 @@ struct common_config {
 	UCHAR TxPower;		/* in unit of mW */
 	ULONG TxPowerPercentage;	/* 0~100 % */
 	ULONG TxPowerDefault;	/* keep for TxPowerPercentage */
-	UINT8 PwrConstraint;
+	u8 PwrConstraint;
 
 #ifdef DOT11_N_SUPPORT
 	BACAP_STRUC BACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
@@ -1684,7 +1684,7 @@ typedef struct _STA_CONNECT_INFO {
 	UCHAR PMK[LEN_PMK]; // WPA PSK mode PMK
 	UCHAR WpaPassPhrase[64]; // WPA PSK pass phrase
 	UINT WpaPassPhraseLen; // the length of WPA PSK pass phrase
-	UINT8 WpaState;
+	u8 WpaState;
 	CIPHER_KEY SharedKey[1][4]; // STA always use SharedKey[BSS0][0..3]
 	NDIS_SPIN_LOCK Lock;
 } STA_CONNECT_INFO, *P_STA_CONNECT_INFO;
@@ -1773,7 +1773,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	ULONG MicErrCnt;	/* Should be 0, 1, 2, then reset to zero (after disassoiciation). */
 	BOOLEAN bBlockAssoc;	/* Block associate attempt for 60 seconds after counter measure occurred. */
 	/* For WPA-PSK supplicant state */
-	UINT8 WpaState;		/* Default is SS_NOTUSE and handled by microsoft 802.1x */
+	u8 WpaState;		/* Default is SS_NOTUSE and handled by microsoft 802.1x */
 	UCHAR ReplayCounter[8];
 	UCHAR ANonce[32];	/* ANonce for WPA-PSK from aurhenticator */
 	UCHAR SNonce[32];	/* SNonce for WPA-PSK */
@@ -2027,8 +2027,8 @@ typedef struct _MAC_TABLE_ENTRY {
 	NDIS_802_11_AUTHENTICATION_MODE AuthMode;	/* This should match to whatever microsoft defined */
 	NDIS_802_11_WEP_STATUS WepStatus;
 	NDIS_802_11_WEP_STATUS GroupKeyWepStatus;
-	UINT8 WpaState;
-	UINT8 GTKState;
+	u8 WpaState;
+	u8 GTKState;
 	USHORT PortSecured;
 	NDIS_802_11_PRIVACY_FILTER PrivacyFilter;	/* PrivacyFilter enum for 802.1X */
 	CIPHER_KEY PairwiseKey;
@@ -2569,9 +2569,9 @@ typedef struct _TX_POWER_CONTROL_EXT_OVER_MAC {
 typedef struct _WOW_CFG_STRUCT {
 	BOOLEAN			bEnable;		/* Enable WOW function*/
 	BOOLEAN			bWOWFirmware;	/* Enable WOW function, trigger to reload WOW-support firmware */
-	UINT8			nSelectedGPIO;	/* Side band signal to wake up system */
-	UINT8			nDelay;			/* Delay number is multiple of 3 secs, and it used to postpone the WOW function */
-	UINT8           nHoldTime;      /* GPIO puls hold time, unit: 10ms */
+	u8			nSelectedGPIO;	/* Side band signal to wake up system */
+	u8			nDelay;			/* Delay number is multiple of 3 secs, and it used to postpone the WOW function */
+	u8           nHoldTime;      /* GPIO puls hold time, unit: 10ms */
 } WOW_CFG_STRUCT, *PWOW_CFG_STRUCT;
 #endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
@@ -2702,8 +2702,8 @@ struct _RTMP_ADAPTER {
 	UINT NumberOfPipes;
 	USHORT BulkOutMaxPacketSize;
 	USHORT BulkInMaxPacketSize;
-	UINT8 BulkOutEpAddr[6];
-	UINT8 BulkInEpAddr[2];
+	u8 BulkOutEpAddr[6];
+	u8 BulkInEpAddr[2];
 
 	/*======Control Flags */
 	ULONG BulkFlags;
@@ -3257,8 +3257,8 @@ struct _RTMP_ADAPTER {
 #endif /* DBG_DIAGNOSE */
 
 
-	UINT8 FlgCtsEnabled;
-	UINT8 PM_FlgSuspend;
+	u8 FlgCtsEnabled;
+	u8 PM_FlgSuspend;
 
 #ifdef RTMP_EFUSE_SUPPORT
 	BOOLEAN bUseEfuse;
@@ -3277,7 +3277,7 @@ struct _RTMP_ADAPTER {
 	UCHAR FifoUpdateDone, FifoUpdateRx;
 #endif /* VENDOR_FEATURE1_SUPPORT */
 
-	UINT8 RFICType;
+	u8 RFICType;
 
 #ifdef LINUX
 #ifdef RT_CFG80211_SUPPORT
@@ -3706,8 +3706,8 @@ static inline VOID	RTMPWIEndianChange(
 {
 	int size;
 	int i;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
-	UINT8 RXWISize = pAd->chipCap.RXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 RXWISize = pAd->chipCap.RXWISize;
 
 	size = ((DescriptorType == TYPE_TXWI) ? TXWISize : RXWISize);
 
@@ -4308,8 +4308,8 @@ VOID InsertActField(
 	IN PRTMP_ADAPTER pAd,
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
-	IN UINT8 Category,
-	IN UINT8 ActCode);
+	IN u8 Category,
+	IN u8 ActCode);
 
 BOOLEAN QosBADataParse(
 	IN PRTMP_ADAPTER	pAd,
@@ -4679,8 +4679,8 @@ VOID	AsicUpdateWcidAttributeEntry(
 	IN	UCHAR			BssIdx,
 	IN 	UCHAR		 	KeyIdx,
 	IN 	UCHAR		 	CipherAlg,
-	IN	UINT8				Wcid,
-	IN	UINT8				KeyTabFlag);
+	IN	u8				Wcid,
+	IN	u8				KeyTabFlag);
 
 VOID AsicAddPairwiseKeyEntry(
 	IN PRTMP_ADAPTER 	pAd,
@@ -7092,12 +7092,12 @@ typedef struct _DefaultKeyIdxValue
 
 /* The radio capture header precedes the 802.11 header. */
 typedef struct GNU_PACKED _ieee80211_radiotap_header {
-    UINT8	it_version;	/* Version 0. Only increases
+    u8	it_version;	/* Version 0. Only increases
 				 * for drastic changes,
 				 * introduction of compatible
 				 * new fields does not count.
 				 */
-    UINT8	it_pad;
+    u8	it_pad;
     UINT16     it_len;         /* length of the whole
 				 * header in bytes, including
 				 * it_version, it_pad,
@@ -7138,8 +7138,8 @@ enum ieee80211_radiotap_type {
 typedef struct _wlan_radiotap_header {
 	ieee80211_radiotap_header wt_ihdr;
 	INT64 wt_tsft;
-	UINT8 wt_flags;
-	UINT8 wt_rate;
+	u8 wt_flags;
+	u8 wt_rate;
 } wlan_radiotap_header;
 /* Definition from madwifi */
 
@@ -7552,13 +7552,13 @@ BOOLEAN QBSS_LoadIsBusyTimeAccepted(
 
 UINT32 QBSS_LoadElementAppend(
  	IN		RTMP_ADAPTER	*pAd,
-	OUT		UINT8			*buf_p);
+	OUT		u8			*buf_p);
 
 UINT32 QBSS_LoadElementParse(
  	IN		RTMP_ADAPTER	*pAd,
-	IN		UINT8			*pElement,
+	IN		u8			*pElement,
 	OUT		UINT16			*pStationCount,
-	OUT		UINT8			*pChanUtil,
+	OUT		u8			*pChanUtil,
 	OUT		UINT16			*pAvalAdmCap);
 
 VOID QBSS_LoadUpdate(
@@ -7766,7 +7766,7 @@ VOID ieee80211_notify_michael_failure(
 	IN	UINT            keyix,
 	IN	INT              report);
 
-const CHAR* ether_sprintf(const UINT8 *mac);
+const CHAR* ether_sprintf(const u8 *mac);
 #endif/*HOSTAPD_SUPPORT*/
 
 #ifdef VENDOR_FEATURE3_SUPPORT
@@ -7778,23 +7778,23 @@ VOID RTMP_IO_WRITE32(
 VOID RTMP_BBP_IO_READ8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
 	UINT32 Offset,
-	UINT8 *pValue);
+	u8 *pValue);
 
 VOID RTMP_BBP_IO_READ8(
 	PRTMP_ADAPTER pAd,
 	UCHAR Offset,
-	UINT8 *pValue,
+	u8 *pValue,
 	BOOLEAN FlgValidMCR);
 
 VOID RTMP_BBP_IO_WRITE8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
 	UINT32 Offset,
-	UINT8 Value);
+	u8 Value);
 
 VOID RTMP_BBP_IO_WRITE8(
 	PRTMP_ADAPTER pAd,
 	UCHAR Offset,
-	UINT8 Value,
+	u8 Value,
 	BOOLEAN FlgValidMCR);
 #endif /* VENDOR_FEATURE3_SUPPORT */
 

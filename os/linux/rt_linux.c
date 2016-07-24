@@ -2355,7 +2355,7 @@ typedef struct GNU_PACKED _RT_IAPP_L2_UPDATE_FRAME {
 
 PNDIS_PACKET RtmpOsPktIappMakeUp(
 	IN PNET_DEV pNetDev,
-	IN UINT8 *pMac)
+	IN u8 *pMac)
 {
 	RT_IAPP_L2_UPDATE_FRAME frame_body;
 	INT size = sizeof (RT_IAPP_L2_UPDATE_FRAME);
@@ -3148,7 +3148,7 @@ VOID CFG80211OS_Scaning(
 	IN UINT32					FrameLen,
 	IN INT32					RSSI,
 	IN BOOLEAN					FlgIsNMode,
-	IN UINT8					BW)
+	IN u8					BW)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
 #ifdef CONFIG_STA_SUPPORT

@@ -345,20 +345,20 @@ typedef	union _ASIC_VER_ID_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef	union _MAC_DW0_STRUC {
 	struct {
-		UINT8 Byte3;		/* MAC address byte 3 */
-		UINT8 Byte2;		/* MAC address byte 2 */
-		UINT8 Byte1;		/* MAC address byte 1 */
-		UINT8 Byte0;		/* MAC address byte 0 */
+		u8 Byte3;		/* MAC address byte 3 */
+		u8 Byte2;		/* MAC address byte 2 */
+		u8 Byte1;		/* MAC address byte 1 */
+		u8 Byte0;		/* MAC address byte 0 */
 	} field;
 	UINT32 word;
 } MAC_DW0_STRUC;
 #else
 typedef	union _MAC_DW0_STRUC {
 	struct {
-		UINT8 Byte0;
-		UINT8 Byte1;
-		UINT8 Byte2;
-		UINT8 Byte3;
+		u8 Byte0;
+		u8 Byte1;
+		u8 Byte2;
+		u8 Byte3;
 	} field;
 	UINT32 word;
 } MAC_DW0_STRUC;
@@ -369,20 +369,20 @@ typedef	union _MAC_DW0_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef	union _MAC_DW1_STRUC {
 	struct {
-		UINT8		Rsvd1;
-		UINT8		U2MeMask;
-		UINT8		Byte5;		/* MAC address byte 5 */
-		UINT8		Byte4;		/* MAC address byte 4 */
+		u8		Rsvd1;
+		u8		U2MeMask;
+		u8		Byte5;		/* MAC address byte 5 */
+		u8		Byte4;		/* MAC address byte 4 */
 	} field;
 	UINT32 word;
 } MAC_DW1_STRUC;
 #else
 typedef	union _MAC_DW1_STRUC {
 	struct {
-		UINT8 Byte4;
-		UINT8 Byte5;
-		UINT8 U2MeMask;
-		UINT8 Rsvd1;
+		u8 Byte4;
+		u8 Byte5;
+		u8 U2MeMask;
+		u8 Rsvd1;
 	} field;
 	UINT32 word;
 }	MAC_DW1_STRUC;
@@ -579,20 +579,20 @@ typedef	union _LED_CFG_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef union _TX_CHAIN_ADDR0_L_STRUC {
 	struct {
-		UINT8 TxChainAddr0L_Byte3; /* Destination MAC address of Tx chain0 (byte 3) */
-		UINT8 TxChainAddr0L_Byte2; /* Destination MAC address of Tx chain0 (byte 2) */
-		UINT8 TxChainAddr0L_Byte1; /* Destination MAC address of Tx chain0 (byte 1) */
-		UINT8 TxChainAddr0L_Byte0; /* Destination MAC address of Tx chain0 (byte 0) */
+		u8 TxChainAddr0L_Byte3; /* Destination MAC address of Tx chain0 (byte 3) */
+		u8 TxChainAddr0L_Byte2; /* Destination MAC address of Tx chain0 (byte 2) */
+		u8 TxChainAddr0L_Byte1; /* Destination MAC address of Tx chain0 (byte 1) */
+		u8 TxChainAddr0L_Byte0; /* Destination MAC address of Tx chain0 (byte 0) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR0_L_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR0_L_STRUC {
 	struct {
-		UINT8 TxChainAddr0L_Byte0;
-		UINT8 TxChainAddr0L_Byte1;
-		UINT8 TxChainAddr0L_Byte2;
-		UINT8 TxChainAddr0L_Byte3;
+		u8 TxChainAddr0L_Byte0;
+		u8 TxChainAddr0L_Byte1;
+		u8 TxChainAddr0L_Byte2;
+		u8 TxChainAddr0L_Byte3;
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR0_L_STRUC;
@@ -604,16 +604,16 @@ typedef union _TX_CHAIN_ADDR0_H_STRUC {
 	struct {
 		UINT16	Reserved:12; /* Reserved */
 		UINT16	TxChainSel0:4; /* Selection value of Tx chain0 */
-		UINT8	TxChainAddr0H_Byte5; /* Destination MAC address of Tx chain0 (byte 5) */
-		UINT8	TxChainAddr0H_Byte4; /* Destination MAC address of Tx chain0 (byte 4) */
+		u8	TxChainAddr0H_Byte5; /* Destination MAC address of Tx chain0 (byte 5) */
+		u8	TxChainAddr0H_Byte4; /* Destination MAC address of Tx chain0 (byte 4) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR0_H_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR0_H_STRUC {
 	struct {
-		UINT8	TxChainAddr0H_Byte4; /* Destination MAC address of Tx chain0 (byte 4) */
-		UINT8	TxChainAddr0H_Byte5; /* Destination MAC address of Tx chain0 (byte 5) */
+		u8	TxChainAddr0H_Byte4; /* Destination MAC address of Tx chain0 (byte 4) */
+		u8	TxChainAddr0H_Byte5; /* Destination MAC address of Tx chain0 (byte 5) */
 		UINT16	TxChainSel0:4; /* Selection value of Tx chain0 */
 		UINT16	Reserved:12; /* Reserved */
 	} field;
@@ -625,20 +625,20 @@ typedef union _TX_CHAIN_ADDR0_H_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef union _TX_CHAIN_ADDR1_L_STRUC {
 	struct {
-		UINT8	TxChainAddr1L_Byte3; /* Destination MAC address of Tx chain1 (byte 3) */
-		UINT8	TxChainAddr1L_Byte2; /* Destination MAC address of Tx chain1 (byte 2) */
-		UINT8	TxChainAddr1L_Byte1; /* Destination MAC address of Tx chain1 (byte 1) */
-		UINT8	TxChainAddr1L_Byte0; /* Destination MAC address of Tx chain1 (byte 0) */
+		u8	TxChainAddr1L_Byte3; /* Destination MAC address of Tx chain1 (byte 3) */
+		u8	TxChainAddr1L_Byte2; /* Destination MAC address of Tx chain1 (byte 2) */
+		u8	TxChainAddr1L_Byte1; /* Destination MAC address of Tx chain1 (byte 1) */
+		u8	TxChainAddr1L_Byte0; /* Destination MAC address of Tx chain1 (byte 0) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR1_L_STRUC, *PTX_CHAIN_ADDR1_L_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR1_L_STRUC {
 	struct {
-		UINT8	TxChainAddr1L_Byte0;
-		UINT8	TxChainAddr1L_Byte1;
-		UINT8	TxChainAddr1L_Byte2;
-		UINT8	TxChainAddr1L_Byte3;
+		u8	TxChainAddr1L_Byte0;
+		u8	TxChainAddr1L_Byte1;
+		u8	TxChainAddr1L_Byte2;
+		u8	TxChainAddr1L_Byte3;
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR1_L_STRUC, *PTX_CHAIN_ADDR1_L_STRUC;
@@ -650,16 +650,16 @@ typedef union _TX_CHAIN_ADDR1_H_STRUC {
 	struct {
 		UINT16	Reserved:12; /* Reserved */
 		UINT16	TxChainSel0:4; /* Selection value of Tx chain0 */
-		UINT8	TxChainAddr1H_Byte5; /* Destination MAC address of Tx chain1 (byte 5) */
-		UINT8	TxChainAddr1H_Byte4; /* Destination MAC address of Tx chain1 (byte 4) */
+		u8	TxChainAddr1H_Byte5; /* Destination MAC address of Tx chain1 (byte 5) */
+		u8	TxChainAddr1H_Byte4; /* Destination MAC address of Tx chain1 (byte 4) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR1_H_STRUC ;
 #else
 typedef union _TX_CHAIN_ADDR1_H_STRUC {
 	struct {
-		UINT8	TxChainAddr1H_Byte4;
-		UINT8	TxChainAddr1H_Byte5;
+		u8	TxChainAddr1H_Byte4;
+		u8	TxChainAddr1H_Byte5;
 		UINT16	TxChainSel0:4;
 		UINT16	Reserved:12;
 	} field;
@@ -671,20 +671,20 @@ typedef union _TX_CHAIN_ADDR1_H_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef union _TX_CHAIN_ADDR2_L_STRUC {
 	struct {
-		UINT8	TxChainAddr2L_Byte3; /* Destination MAC address of Tx chain2 (byte 3) */
-		UINT8	TxChainAddr2L_Byte2; /* Destination MAC address of Tx chain2 (byte 2) */
-		UINT8	TxChainAddr2L_Byte1; /* Destination MAC address of Tx chain2 (byte 1) */
-		UINT8	TxChainAddr2L_Byte0; /* Destination MAC address of Tx chain2 (byte 0) */
+		u8	TxChainAddr2L_Byte3; /* Destination MAC address of Tx chain2 (byte 3) */
+		u8	TxChainAddr2L_Byte2; /* Destination MAC address of Tx chain2 (byte 2) */
+		u8	TxChainAddr2L_Byte1; /* Destination MAC address of Tx chain2 (byte 1) */
+		u8	TxChainAddr2L_Byte0; /* Destination MAC address of Tx chain2 (byte 0) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR2_L_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR2_L_STRUC {
 	struct {
-		UINT8	TxChainAddr2L_Byte0;
-		UINT8	TxChainAddr2L_Byte1;
-		UINT8	TxChainAddr2L_Byte2;
-		UINT8	TxChainAddr2L_Byte3;
+		u8	TxChainAddr2L_Byte0;
+		u8	TxChainAddr2L_Byte1;
+		u8	TxChainAddr2L_Byte2;
+		u8	TxChainAddr2L_Byte3;
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR2_L_STRUC;
@@ -696,16 +696,16 @@ typedef union _TX_CHAIN_ADDR2_H_STRUC {
 	struct {
 		UINT16	Reserved:12; /* Reserved */
 		UINT16	TxChainSel0:4; /* Selection value of Tx chain0 */
-		UINT8	TxChainAddr2H_Byte5; /* Destination MAC address of Tx chain2 (byte 5) */
-		UINT8	TxChainAddr2H_Byte4; /* Destination MAC address of Tx chain2 (byte 4) */
+		u8	TxChainAddr2H_Byte5; /* Destination MAC address of Tx chain2 (byte 5) */
+		u8	TxChainAddr2H_Byte4; /* Destination MAC address of Tx chain2 (byte 4) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR2_H_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR2_H_STRUC {
 	struct {
-		UINT8	TxChainAddr2H_Byte4;
-		UINT8	TxChainAddr2H_Byte5;
+		u8	TxChainAddr2H_Byte4;
+		u8	TxChainAddr2H_Byte5;
 		UINT16	TxChainSel0:4;
 		UINT16	Reserved:12;
 	} field;
@@ -717,20 +717,20 @@ typedef union _TX_CHAIN_ADDR2_H_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef union _TX_CHAIN_ADDR3_L_STRUC {
 	struct {
-		UINT8	TxChainAddr3L_Byte3; /* Destination MAC address of Tx chain3 (byte 3) */
-		UINT8	TxChainAddr3L_Byte2; /* Destination MAC address of Tx chain3 (byte 2) */
-		UINT8	TxChainAddr3L_Byte1; /* Destination MAC address of Tx chain3 (byte 1) */
-		UINT8	TxChainAddr3L_Byte0; /* Destination MAC address of Tx chain3 (byte 0) */
+		u8	TxChainAddr3L_Byte3; /* Destination MAC address of Tx chain3 (byte 3) */
+		u8	TxChainAddr3L_Byte2; /* Destination MAC address of Tx chain3 (byte 2) */
+		u8	TxChainAddr3L_Byte1; /* Destination MAC address of Tx chain3 (byte 1) */
+		u8	TxChainAddr3L_Byte0; /* Destination MAC address of Tx chain3 (byte 0) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR3_L_STRUC, *PTX_CHAIN_ADDR3_L_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR3_L_STRUC {
 	struct {
-		UINT8	TxChainAddr3L_Byte0;
-		UINT8	TxChainAddr3L_Byte1;
-		UINT8	TxChainAddr3L_Byte2;
-		UINT8	TxChainAddr3L_Byte3;
+		u8	TxChainAddr3L_Byte0;
+		u8	TxChainAddr3L_Byte1;
+		u8	TxChainAddr3L_Byte2;
+		u8	TxChainAddr3L_Byte3;
 	} field;
 	UINT32 word;
 }	TX_CHAIN_ADDR3_L_STRUC, *PTX_CHAIN_ADDR3_L_STRUC;
@@ -742,16 +742,16 @@ typedef union _TX_CHAIN_ADDR3_H_STRUC {
 	struct {
 		UINT16	Reserved:12; /* Reserved */
 		UINT16	TxChainSel0:4; /* Selection value of Tx chain0 */
-		UINT8	TxChainAddr3H_Byte5; /* Destination MAC address of Tx chain3 (byte 5) */
-		UINT8	TxChainAddr3H_Byte4; /* Destination MAC address of Tx chain3 (byte 4) */
+		u8	TxChainAddr3H_Byte5; /* Destination MAC address of Tx chain3 (byte 5) */
+		u8	TxChainAddr3H_Byte4; /* Destination MAC address of Tx chain3 (byte 4) */
 	} field;
 	UINT32 word;
 } TX_CHAIN_ADDR3_H_STRUC, *PTX_CHAIN_ADDR3_H_STRUC;
 #else
 typedef union _TX_CHAIN_ADDR3_H_STRUC {
 	struct {
-		UINT8	TxChainAddr3H_Byte4;
-		UINT8	TxChainAddr3H_Byte5;
+		u8	TxChainAddr3H_Byte4;
+		u8	TxChainAddr3H_Byte5;
 		UINT16	TxChainSel0:4;
 		UINT16	Reserved:12;
 	} field;
@@ -2029,8 +2029,8 @@ typedef	union _SHAREDKEY_MODE_STRUC {
 
 /* 64-entry for pairwise key table, 8-byte per entry  */
 typedef struct _HW_WCID_ENTRY {
-    UINT8   Address[6];
-    UINT8   Rsv[2];
+    u8   Address[6];
+    u8   Rsv[2];
 } HW_WCID_ENTRY;
 
 
@@ -2039,18 +2039,18 @@ typedef struct _HW_WCID_ENTRY {
 /* ================================================================================= */
 /*7.1	WCID  ENTRY  format  : 8bytes */
 typedef	struct _WCID_ENTRY_STRUC {
-	UINT8		RXBABitmap7;    /* bit0 for TID8, bit7 for TID 15 */
-	UINT8		RXBABitmap0;    /* bit0 for TID0, bit7 for TID 7 */
-	UINT8		MAC[6];	/* 0 for shared key table.  1 for pairwise key table */
+	u8		RXBABitmap7;    /* bit0 for TID8, bit7 for TID 15 */
+	u8		RXBABitmap0;    /* bit0 for TID0, bit7 for TID 7 */
+	u8		MAC[6];	/* 0 for shared key table.  1 for pairwise key table */
 } WCID_ENTRY_STRUC;
 
 
 /*8.1.1	SECURITY  KEY  format  : 8DW */
 /* 32-byte per entry, total 16-entry for shared key table, 64-entry for pairwise key table */
 typedef struct _HW_KEY_ENTRY {
-    UINT8   Key[16];
-    UINT8   TxMic[8];
-    UINT8   RxMic[8];
+    u8   Key[16];
+    u8   TxMic[8];
+    u8   RxMic[8];
 } HW_KEY_ENTRY;
 
 
@@ -2204,20 +2204,20 @@ typedef	union _E2PROM_CSR_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef	union _QOS_CSR0_STRUC {
 	struct {
-		UINT8		Byte3;		/* MAC address byte 3 */
-		UINT8		Byte2;		/* MAC address byte 2 */
-		UINT8		Byte1;		/* MAC address byte 1 */
-		UINT8		Byte0;		/* MAC address byte 0 */
+		u8		Byte3;		/* MAC address byte 3 */
+		u8		Byte2;		/* MAC address byte 2 */
+		u8		Byte1;		/* MAC address byte 1 */
+		u8		Byte0;		/* MAC address byte 0 */
 	} field;
 	UINT32 word;
 } QOS_CSR0_STRUC;
 #else
 typedef	union _QOS_CSR0_STRUC {
 	struct {
-		UINT8		Byte0;
-		UINT8		Byte1;
-		UINT8		Byte2;
-		UINT8		Byte3;
+		u8		Byte0;
+		u8		Byte1;
+		u8		Byte2;
+		u8		Byte3;
 	} field;
 	UINT32 word;
 } QOS_CSR0_STRUC;
@@ -2228,20 +2228,20 @@ typedef	union _QOS_CSR0_STRUC {
 #ifdef RT_BIG_ENDIAN
 typedef	union _QOS_CSR1_STRUC {
 	struct {
-		UINT8		Rsvd1;
-		UINT8		Rsvd0;
-		UINT8		Byte5;		/* MAC address byte 5 */
-		UINT8		Byte4;		/* MAC address byte 4 */
+		u8		Rsvd1;
+		u8		Rsvd0;
+		u8		Byte5;		/* MAC address byte 5 */
+		u8		Byte4;		/* MAC address byte 4 */
 	} field;
 	UINT32 word;
 } QOS_CSR1_STRUC;
 #else
 typedef	union _QOS_CSR1_STRUC {
 	struct {
-		UINT8		Byte4;		/* MAC address byte 4 */
-		UINT8		Byte5;		/* MAC address byte 5 */
-		UINT8		Rsvd0;
-		UINT8		Rsvd1;
+		u8		Byte4;		/* MAC address byte 4 */
+		u8		Byte5;		/* MAC address byte 5 */
+		u8		Rsvd0;
+		u8		Rsvd1;
 	} field;
 	UINT32 word;
 } QOS_CSR1_STRUC;

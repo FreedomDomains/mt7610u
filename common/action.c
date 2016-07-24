@@ -1095,8 +1095,8 @@ VOID InsertActField(
 	IN PRTMP_ADAPTER pAd,
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
-	IN UINT8 Category,
-	IN UINT8 ActCode)
+	IN u8 Category,
+	IN u8 ActCode)
 {
 	ULONG TempLen;
 

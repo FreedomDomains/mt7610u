@@ -1824,7 +1824,7 @@ INT Set_WOW_Enable(
         IN PSTRING              arg)
 {
 	UINT32 Val;
-	UINT8 Pin = pAd->WOW_Cfg.nSelectedGPIO;
+	u8 Pin = pAd->WOW_Cfg.nSelectedGPIO;
 	ULONG Value = simple_strtol(arg, 0, 10);
 
 	if (Value != 1)
@@ -1861,7 +1861,7 @@ INT Set_WOW_GPIO(
 	if (Value > 13)
 		Value = 1;  /* default GPIO pin */
 
-	pAd->WOW_Cfg.nSelectedGPIO = (UINT8)Value;
+	pAd->WOW_Cfg.nSelectedGPIO = (u8)Value;
 	DBGPRINT(RT_DEBUG_ERROR, ("WOW_GPIO = %d\n", pAd->WOW_Cfg.nSelectedGPIO));
 
 	return TRUE;
@@ -1877,7 +1877,7 @@ INT Set_WOW_Delay(
 	if (Value > 255)
 		Value = 3; /* default delay time */
 
-	pAd->WOW_Cfg.nDelay = (UINT8)Value;
+	pAd->WOW_Cfg.nDelay = (u8)Value;
 	DBGPRINT(RT_DEBUG_ERROR, ("WOW_Delay = %d, equal to %d sec\n", pAd->WOW_Cfg.nDelay, (pAd->WOW_Cfg.nDelay+1)*3));
 
 	return TRUE;
@@ -1893,7 +1893,7 @@ INT Set_WOW_Hold(
 	if (Value > 255)
 		Value = 1; /* pule hold time - unit: 10ms */
 
-	pAd->WOW_Cfg.nHoldTime = (UINT8)Value;
+	pAd->WOW_Cfg.nHoldTime = (u8)Value;
 	DBGPRINT(RT_DEBUG_ERROR, ("WOW_Hold = %d, equal to %d ms\n", pAd->WOW_Cfg.nHoldTime, (pAd->WOW_Cfg.nHoldTime)*10));
 
 	return TRUE;
@@ -4430,7 +4430,7 @@ INT RTMPQueryInformation(
 
 				for (Index = Info->rf_start; Index <= Info->rf_end; Index ++)
 				{
-					UINT8 Value;
+					u8 Value;
 					rlt_rf_read(pAd, Info->rf_bank, Index, &Value);
 					printk("Offset = %x\n", Index);
 					printk("Value = %x\n", Value);
@@ -4569,7 +4569,7 @@ INT RTMPQueryInformation(
 			{
 				struct rf_bank_info *Info;
 				struct RF_BANK_OFFSET *Offset;
-				UINT8 Index;
+				u8 Index;
 
 				os_alloc_mem(pAd, (UCHAR **)&pBuf, sizeof(*Info) * pAd->chipCap.RFBankNum);
 

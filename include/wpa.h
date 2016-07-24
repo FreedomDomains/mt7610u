@@ -241,8 +241,8 @@ int RtmpPasswordHash(
 u8 * WPA_ExtractSuiteFromRSNIE(
 	IN u8 * rsnie,
 	IN UINT rsnie_len,
-	IN UINT8 type,
-	OUT UINT8 *count);
+	IN u8 type,
+	OUT u8 *count);
 
 VOID WpaShowAllsuite(
 	IN u8 * rsnie,
@@ -252,9 +252,9 @@ VOID RTMPInsertRSNIE(
 	IN PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 * rsnie_ptr,
-	IN UINT8 rsnie_len,
+	IN u8 rsnie_len,
 	IN u8 * pmkid_ptr,
-	IN UINT8 pmkid_len);
+	IN u8 pmkid_len);
 
 /*
  =====================================
@@ -318,8 +318,8 @@ BOOLEAN RTMPParseEapolKeyData(
 	IN MAC_TABLE_ENTRY *pEntry);
 
 VOID WPA_ConstructKdeHdr(
-	IN UINT8 data_type,
-	IN UINT8 data_len,
+	IN u8 data_type,
+	IN u8 data_len,
 	OUT PUCHAR pBuf);
 
 VOID ConstructEapolMsg(
@@ -353,7 +353,7 @@ VOID RTMPSoftConstructIVHdr(
 	IN UCHAR key_id,
 	IN PUCHAR pTxIv,
 	OUT PUCHAR pHdrIv,
-	OUT UINT8 *hdr_iv_len);
+	OUT u8 *hdr_iv_len);
 
 VOID RTMPSoftEncryptionAction(
 	IN PRTMP_ADAPTER pAd,
@@ -363,7 +363,7 @@ VOID RTMPSoftEncryptionAction(
 	IN UINT32 SrcBufLen,
 	IN UCHAR KeyIdx,
 	IN PCIPHER_KEY pKey,
-	OUT UINT8 *ext_len);
+	OUT u8 *ext_len);
 
 VOID RTMPMakeRSNIE(
 	IN PRTMP_ADAPTER pAd,
@@ -373,27 +373,27 @@ VOID RTMPMakeRSNIE(
 
 VOID WPAInstallPairwiseKey(
 	PRTMP_ADAPTER pAd,
-	UINT8 BssIdx,
+	u8 BssIdx,
 	PMAC_TABLE_ENTRY pEntry,
 	BOOLEAN bAE);
 
 VOID WPAInstallSharedKey(
 	PRTMP_ADAPTER pAd,
-	UINT8 GroupCipher,
-	UINT8 BssIdx,
-	UINT8 KeyIdx,
-	UINT8 Wcid,
+	u8 GroupCipher,
+	u8 BssIdx,
+	u8 KeyIdx,
+	u8 Wcid,
 	BOOLEAN bAE,
 	u8 * pGtk,
-	UINT8 GtkLen);
+	u8 GtkLen);
 
 VOID RTMPSetWcidSecurityInfo(
 	PRTMP_ADAPTER pAd,
-	UINT8 BssIdx,
-	UINT8 KeyIdx,
-	UINT8 CipherAlg,
-	UINT8 Wcid,
-	UINT8 KeyTabFlag);
+	u8 BssIdx,
+	u8 KeyIdx,
+	u8 CipherAlg,
+	u8 Wcid,
+	u8 KeyTabFlag);
 
 VOID CalculateMIC(
 	IN UCHAR KeyDescVer,
@@ -417,7 +417,7 @@ UINT RTMP_CALC_FCS32(
 	IN INT Len);
 
 VOID RTMPConstructWEPIVHdr(
-	IN UINT8 key_idx,
+	IN u8 key_idx,
 	IN UCHAR *pn,
 	OUT UCHAR *iv_hdr);
 
@@ -473,7 +473,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	IN PCIPHER_KEY pWpaKey);
 
 VOID RTMPConstructCCMPHdr(
-	IN UINT8 key_idx,
+	IN u8 key_idx,
 	IN UCHAR *pn,
 	OUT UCHAR *ccmp_hdr);
 

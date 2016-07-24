@@ -295,7 +295,7 @@ VOID RtmpOsPktInit(
 
 PNDIS_PACKET RtmpOsPktIappMakeUp(
 	IN	PNET_DEV				pNetDev,
-	IN	UINT8					*pMac);
+	IN	u8					*pMac);
 
 BOOLEAN RtmpOsPktOffsetInit(VOID);
 
@@ -693,10 +693,10 @@ VOID RtmpOsOpsInit(RTMP_OS_ABL_OPS *pOps);
 /* ============================ rt_os_util.c ================================ */
 VOID RtmpDrvMaxRateGet(
 	IN VOID *pReserved,
-	IN UINT8 MODE,
-	IN UINT8 ShortGI,
-	IN UINT8 BW,
-	IN UINT8 MCS,
+	IN u8 MODE,
+	IN u8 ShortGI,
+	IN u8 BW,
+	IN u8 MCS,
 	OUT UINT32 *pRate);
 
 char * rtstrchr(const char * s, int c);
@@ -909,10 +909,10 @@ UINT32 RtmpOsGetUsbDevProductID(
 #ifdef RT_CFG80211_SUPPORT
 typedef struct __CFG80211_BAND {
 
-	UINT8 RFICType;
-	UINT8 MpduDensity;
-	UINT8 TxStream;
-	UINT8 RxStream;
+	u8 RFICType;
+	u8 MpduDensity;
+	u8 TxStream;
+	u8 RxStream;
 	UINT32 MaxTxPwr;
 	UINT32 MaxBssTable;
 
@@ -982,7 +982,7 @@ VOID CFG80211OS_Scaning(
 	IN UINT32					FrameLen,
 	IN INT32					RSSI,
 	IN BOOLEAN					FlgIsNMode,
-	IN UINT8					BW);
+	IN u8					BW);
 
 VOID CFG80211OS_ScanEnd(
 	IN VOID						*pCB,

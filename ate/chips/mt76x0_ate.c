@@ -45,7 +45,7 @@ extern BOOLEAN mt76x0_get_tssi_report(PRTMP_ADAPTER pAd,
 			BOOLEAN bResetTssiInfo, PCHAR pTssiReport);
 extern BOOLEAN get_temp_tx_alc_level(PRTMP_ADAPTER pAd, BOOLEAN enable_tx_alc,
 			CHAR temp_ref, PCHAR temp_minus_bdy, PCHAR temp_plus_bdy,
-			UINT8 max_bdy_level, UINT8 tx_alc_step, CHAR current_temp, PCHAR comp_level);
+			u8 max_bdy_level, u8 tx_alc_step, CHAR current_temp, PCHAR comp_level);
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
 

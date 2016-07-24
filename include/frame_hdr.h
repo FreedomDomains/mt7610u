@@ -68,7 +68,7 @@ WIFI_INFO_STRUCT wifi_info[] = {
 };
 
 
-UINT8 Input_Frame_Hdr[][HDR_TRANS_LEN] = {
+u8 Input_Frame_Hdr[][HDR_TRANS_LEN] = {
 /*type, len, vlan, wcid */
 /************************************ AP LLC/SNAP *********************************/
 /************************************ WDS LLC/SNAP ******************************/
@@ -78,9 +78,9 @@ UINT8 Input_Frame_Hdr[][HDR_TRANS_LEN] = {
 
 };
 
-UINT8 Hdr_Bssid[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55};
+u8 Hdr_Bssid[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55};
 
-UINT8 Hdr_Wcid[][6] = {
+u8 Hdr_Wcid[][6] = {
 						{0xff, 0xff, 0xff, 0xff, 0xff, 0xff}, //0
 						{0x00, 0x77, 0x77, 0x77, 0x77, 0x77}, //1
 						{0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x01}, //2
@@ -98,7 +98,7 @@ UINT8 Hdr_Wcid[][6] = {
 						{0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x0d}, //e
 						{0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0x0e}, //f
 					};
-UINT8 MAC_WCID[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+u8 MAC_WCID[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 //UINT32 RX_Black_List[] = {0x0d898e88}; /* EAPOL 888E, TDLS 890D */
 //UINT32 RX_Black_List[] = {0x888e0800}; /* EAPOL 888E, TDLS 890D */

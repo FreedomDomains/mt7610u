@@ -1500,7 +1500,7 @@ VOID AsicEnableIbssSync(
 	UINT i;
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	UINT32 longptr;
 
 #ifdef RT_BIG_ENDIAN
@@ -2169,8 +2169,8 @@ VOID	AsicUpdateWcidAttributeEntry(
 	IN	UCHAR			BssIdx,
 	IN 	UCHAR		 	KeyIdx,
 	IN 	UCHAR		 	CipherAlg,
-	IN	UINT8			Wcid,
-	IN	UINT8			KeyTabFlag)
+	IN	u8			Wcid,
+	IN	u8			KeyTabFlag)
 {
 	WCID_ATTRIBUTE_STRUC WCIDAttri;
 	USHORT		offset;
@@ -2651,12 +2651,12 @@ VOID AsicWOWSendNullFrame(
 
 	TXWI_STRUC *TxWI;
 	PUCHAR NullFrame;
-	UINT8  packet_len;
+	u8  packet_len;
 	PUCHAR ptr;
 	USHORT offset;
 	UINT32 cipher = pAd->StaCfg.GroupCipher;
 	UINT32 Value;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	ComposeNullFrame(pAd);

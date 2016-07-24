@@ -276,12 +276,12 @@ typedef struct _NewDFSDebugResult
 #endif
 
 typedef struct _DFS_EVENT{
-	UINT8  EngineId;
+	u8  EngineId;
 	UINT32 TimeStamp;
 	UINT16 Width;
 #ifdef MT76x0
 	UINT16 phase;
-	UINT8 power_stable_counter;
+	u8 power_stable_counter;
 	UINT16 current_power;
 #endif /* MT76x0 */
 }DFS_EVENT, *PDFS_EVENT;

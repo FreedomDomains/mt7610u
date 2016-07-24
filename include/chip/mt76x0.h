@@ -86,11 +86,11 @@ typedef struct _TSO_INFO_{
  * R: R11[1:0] (eg. R=1 => 0x0, R=3 => 0x2)
  */
 typedef struct _RT8592_FREQ_ITEM {
-	UINT8 Channel;
+	u8 Channel;
 	UINT16 N;
-	UINT8 K;
-	UINT8 mod;
-	UINT8 R;
+	u8 K;
+	u8 mod;
+	u8 R;
 } RT8592_FREQ_ITEM;
 
 /*
@@ -114,26 +114,26 @@ typedef struct _RT8592_FREQ_ITEM {
 	R24<1:0> xo_div
 */
 typedef struct _MT76x0_FREQ_ITEM {
-	UINT8 Channel;
+	u8 Channel;
 	UINT32 Band;
-	UINT8 pllR37;
-	UINT8 pllR36;
-	UINT8 pllR35;
-	UINT8 pllR34;
-	UINT8 pllR33;
-	UINT8 pllR32_b7b5;
-	UINT8 pllR32_b4b0; /* PLL_DEN */
-	UINT8 pllR31_b7b5;
-	UINT8 pllR31_b4b0; /* PLL_K */
-	UINT8 pllR30_b7; /* sdm_reset_n */
-	UINT8 pllR30_b6b2; /* sdmmash_prbs,sin */
-	UINT8 pllR30_b1; /* sdm_bp */
+	u8 pllR37;
+	u8 pllR36;
+	u8 pllR35;
+	u8 pllR34;
+	u8 pllR33;
+	u8 pllR32_b7b5;
+	u8 pllR32_b4b0; /* PLL_DEN */
+	u8 pllR31_b7b5;
+	u8 pllR31_b4b0; /* PLL_K */
+	u8 pllR30_b7; /* sdm_reset_n */
+	u8 pllR30_b6b2; /* sdmmash_prbs,sin */
+	u8 pllR30_b1; /* sdm_bp */
 	UINT16 pll_n; /* R30<0>, R29<7:0> (hex) */
-	UINT8 pllR28_b7b6; /* isi,iso */
-	UINT8 pllR28_b5b4; /* pfd_dly */
-	UINT8 pllR28_b3b2; /* clksel option */
+	u8 pllR28_b7b6; /* isi,iso */
+	u8 pllR28_b5b4; /* pfd_dly */
+	u8 pllR28_b3b2; /* clksel option */
 	UINT32 Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
-	UINT8 pllR24_b1b0; /* xo_div */
+	u8 pllR24_b1b0; /* xo_div */
 } MT76x0_FREQ_ITEM;
 
 #define RF_G_BAND 		0x0100

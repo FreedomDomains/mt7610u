@@ -460,7 +460,7 @@ typedef struct {
         UINT32 msgcode;
         UINT32 msglen;
 #define WLAN_DEVNAMELEN_MAX 16
-        UINT8 devname[WLAN_DEVNAMELEN_MAX];
+        u8 devname[WLAN_DEVNAMELEN_MAX];
         p80211item_uint32_t hosttime;
         p80211item_uint32_t mactime;
         p80211item_uint32_t channel;

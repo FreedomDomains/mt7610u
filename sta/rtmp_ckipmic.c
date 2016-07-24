@@ -215,10 +215,10 @@ ULONG RTMPMicGetCoefficient(
 
         /* new counter value */
         memset(&aes_counter[0], 0, sizeof(aes_counter));
-        aes_counter[15] = (UINT8)(counter >> 0);
-        aes_counter[14] = (UINT8)(counter >> 8);
-        aes_counter[13] = (UINT8)(counter >> 16);
-        aes_counter[12] = (UINT8)(counter >> 24);
+        aes_counter[15] = (u8)(counter >> 0);
+        aes_counter[14] = (u8)(counter >> 8);
+        aes_counter[13] = (u8)(counter >> 16);
+        aes_counter[12] = (u8)(counter >> 24);
 
         RTMPAesEncrypt(&pContext->CK[0], &aes_counter[0], pContext->coefficient);
     }

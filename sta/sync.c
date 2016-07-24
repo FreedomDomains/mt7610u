@@ -1958,7 +1958,7 @@ VOID PeerBeacon(
 		if (is_my_bssid)
 		{
 			RXWI_STRUC	RxWI;
-			UINT8 RXWISize = pAd->chipCap.RXWISize;
+			u8 RXWISize = pAd->chipCap.RXWISize;
 
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3

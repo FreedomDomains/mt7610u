@@ -693,12 +693,12 @@ BOOLEAN RTMPSoftDecryptTKIP(
 	IN 		UINT16			*DataByteCnt)
 {
 	PHEADER_802_11	pFrame;
-	UINT8			frame_type;
-	UINT8			frame_subtype;
-	UINT8			from_ds;
-    UINT8			to_ds;
-	UINT8			a4_exists;
-	UINT8			qc_exists;
+	u8			frame_type;
+	u8			frame_subtype;
+	u8			from_ds;
+    u8			to_ds;
+	u8			a4_exists;
+	u8			qc_exists;
 	UCHAR			TA[MAC_ADDR_LEN];
 	UCHAR			DA[MAC_ADDR_LEN];
 	UCHAR			SA[MAC_ADDR_LEN];

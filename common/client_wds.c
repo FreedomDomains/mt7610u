@@ -120,7 +120,7 @@ PUCHAR CliWds_ProxyLookup(
 	IN PRTMP_ADAPTER pAd,
 	IN PUCHAR pMac)
 {
-	UINT8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
+	u8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
 	PCLIWDS_PROXY_ENTRY pCliWdsEntry;
 
 	pCliWdsEntry =
@@ -149,7 +149,7 @@ VOID CliWds_ProxyTabUpdate(
 	IN SHORT Aid,
 	IN PUCHAR pMac)
 {
-	UINT8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
+	u8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
 	PCLIWDS_PROXY_ENTRY pCliWdsEntry;
 
 	if (CliWds_ProxyLookup(pAd, pMac) != NULL)

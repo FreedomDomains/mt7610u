@@ -2336,9 +2336,9 @@ NDIS_STATUS	RTMPSetProfileParameters(
 
 #ifdef MULTIPLE_CARD_SUPPORT
 /* record whether the card in the card list is used in the card file*/
-UINT8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
+u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 /* record used card mac address in the card list*/
-static UINT8  MC_CardMac[MAX_NUM_OF_MULTIPLE_CARD][6];
+static u8  MC_CardMac[MAX_NUM_OF_MULTIPLE_CARD][6];
 
 /*
 ========================================================================
@@ -2379,7 +2379,7 @@ BOOLEAN RTMP_CardInfoRead(
 	INT32 card_free_id, card_nouse_id, card_same_mac_id, card_match_id;
 	EEPROM_ANTENNA_STRUC antenna;
 	USHORT addr01, addr23, addr45;
-	UINT8 mac[6];
+	u8 mac[6];
 	UINT32 data, card_index;
 	UCHAR *start_ptr;
 	RTMP_OS_FS_INFO osFSInfo;

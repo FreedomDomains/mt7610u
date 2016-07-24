@@ -129,10 +129,10 @@ INT CFG80211DRV_IoctlHandle(
 			if (!active)
 			{
 				RTMPSetLED(pAd, LED_RADIO_OFF);
-				*(UINT8 *)pData = 0;
+				*(u8 *)pData = 0;
 			}
 			else
-				*(UINT8 *)pData = 1;
+				*(u8 *)pData = 1;
 		}
 			break;
 #endif /* RFKILL_HW_SUPPORT */
@@ -200,9 +200,9 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
 	CMD_RTPRIV_IOCTL_80211_CHAN *pChan;
-	UINT8 ChanId;
-	UINT8 IfType;
-	UINT8 ChannelType;
+	u8 ChanId;
+	u8 IfType;
+	u8 ChannelType;
 	STRING ChStr[5] = { 0 };
 #ifdef DOT11_N_SUPPORT
 	UCHAR BW_Old;
@@ -318,7 +318,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 	VOID						*pAdOrg,
 	VOID						*pFlgFilter,
-	UINT8						IfType)
+	u8						IfType)
 {
 #ifdef CONFIG_STA_SUPPORT
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
@@ -742,7 +742,7 @@ BOOLEAN CFG80211DRV_Connect(
 
 		// reset key
 #ifdef RT_CFG80211_DEBUG
-		hex_dump("KeyBuf=", (UINT8 *)pConnInfo->pKey, pConnInfo->KeyLen);
+		hex_dump("KeyBuf=", (u8 *)pConnInfo->pKey, pConnInfo->KeyLen);
 #endif
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; // base 0
@@ -792,7 +792,7 @@ BOOLEAN CFG80211DRV_Connect(
 
 		/* reset key */
 #ifdef RT_CFG80211_DEBUG
-		hex_dump("KeyBuf=", (UINT8 *)pConnInfo->pKey, pConnInfo->KeyLen);
+		hex_dump("KeyBuf=", (u8 *)pConnInfo->pKey, pConnInfo->KeyLen);
 #endif /* RT_CFG80211_DEBUG */
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; /* base 0 */
@@ -1228,7 +1228,7 @@ VOID CFG80211_Scaning(
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
 	VOID *pCfg80211_CB = pAd->pCfg80211_CB;
 	BOOLEAN FlgIsNMode;
-	UINT8 BW;
+	u8 BW;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> CFG80211_Scaning ==>\n"));

@@ -55,22 +55,22 @@ typedef enum _TONE_RADAR_VERSION {
 
 typedef struct CARRIER_DETECTION_s {
 	BOOLEAN Enable;
-	UINT8 CDSessionTime;
-	UINT8 CDPeriod;
+	u8 CDSessionTime;
+	u8 CDPeriod;
 	CD_STATE CD_State;
-	UINT8 delta;
-	UINT8 SymRund;
-	UINT8 div_flag;
+	u8 delta;
+	u8 SymRund;
+	u8 div_flag;
 	UINT32 threshold;
-	UINT8 recheck;
-	UINT8 recheck1;
+	u8 recheck;
+	u8 recheck1;
 	UINT32 TimeStamp; /*unit:16us*/
 	UINT32 criteria;
 	ULONG idle_time;
 	ULONG busy_time;
 	ULONG Debug;
 	ULONG OneSecIntCount;
-	UINT8 CarrierGoneThreshold;
+	u8 CarrierGoneThreshold;
 	UCHAR VGA_Mask;
 	UCHAR Packet_End_Mask;
 	UCHAR Rx_PE_Mask;
@@ -94,24 +94,24 @@ typedef struct CARRIER_DETECTION_s {
 
 /* Parameters needed to decide the Carrier Detect State */
 typedef struct _CARRIER_DETECT_PARAM {
-		UINT8	RadarToneCount; /* Number of radar tones in 100 msec*/
-		UINT8	ReCheck;
+		u8	RadarToneCount; /* Number of radar tones in 100 msec*/
+		u8	ReCheck;
 } CARRIER_DETECT_PARAM, *PCARRIER_DETECT_PARAM;
 
 /* For debug print */
 typedef struct _CARRIER_DETECT_DEBUG {
-	 	UINT8	delta_div;
-		UINT8	internalRadarToneCount;
+	 	u8	delta_div;
+		u8	internalRadarToneCount;
 		UINT16	Criteria;
 		UINT32	Threshold;
-		UINT8	Count;
-		UINT8	CheckCount;
-		UINT8 	Reserved;
-		UINT8	VGA_Mask;
-		UINT8	PckMask;
-		UINT8	RxPeMask;
-		UINT8	RadarToneCount;
-		UINT8	ReCheck;
+		u8	Count;
+		u8	CheckCount;
+		u8 	Reserved;
+		u8	VGA_Mask;
+		u8	PckMask;
+		u8	RxPeMask;
+		u8	RadarToneCount;
+		u8	ReCheck;
 } CARRIER_DETECT_DEBUG, *PCARRIER_DETECT_DEBUG;
 #endif /*CARRIER_DETECTION_FIRMWARE_SUPPORT*/
 

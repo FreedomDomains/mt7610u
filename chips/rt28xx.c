@@ -260,7 +260,7 @@ VOID RT28xx_ChipSwitchChannel(
 	else
 	{
 		ULONG	TxPinCfg = 0x00050F05;/*Gary 2007/8/9 0x050505*/
-		UINT8	bbpValue;
+		u8	bbpValue;
 
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R62, (0x37 - lan_gain));
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R63, (0x37 - lan_gain));

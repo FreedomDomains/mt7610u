@@ -1119,8 +1119,8 @@ static  INT DO_RACFG_CMD_TX_START(
 	PATE_INFO pATEInfo = &(pAd->ate);
 	USHORT *p;
 	USHORT	err = 1;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
-	UINT8 TxInfoSize = 4;
+	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TxInfoSize = 4;
 
 	if ((pATEInfo->TxStatus != 0) && (pATEInfo->Mode & ATE_TXFRAME))
 	{
@@ -2057,7 +2057,7 @@ static  INT DO_RACFG_CMD_TX_START_V2(
 	USHORT	err = 1;
 	USHORT TXWISize = 0;
 #ifdef RTMP_MAC_USB
-	UINT8 TxInfoSize = 4;
+	u8 TxInfoSize = 4;
 #endif /* RTMP_MAC_USB */
 
 	if ((pATEInfo->TxStatus != 0) && (pATEInfo->Mode & ATE_TXFRAME))

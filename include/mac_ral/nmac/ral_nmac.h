@@ -417,10 +417,10 @@ typedef	struct GNU_PACKED _RXWI_NMAC{
 	UINT32 tid:4;
 
 	/* Word 2 */
-	UINT8 rssi[4];
+	u8 rssi[4];
 
 	/* Word 3~6 */
-	UINT8 bbp_rxinfo[16];
+	u8 bbp_rxinfo[16];
 }	RXWI_NMAC;
 #else
 typedef	struct GNU_PACKED _RXWI_NMAC {
@@ -446,10 +446,10 @@ typedef	struct GNU_PACKED _RXWI_NMAC {
 	UINT32 phy_mode:3;
 
 	/* Word 2 */
-	UINT8 rssi[4];
+	u8 rssi[4];
 
 	/* Word 3~6 */
-	UINT8 bbp_rxinfo[16];
+	u8 bbp_rxinfo[16];
 }	RXWI_NMAC;
 #endif /* RT_BIG_ENDIAN */
 

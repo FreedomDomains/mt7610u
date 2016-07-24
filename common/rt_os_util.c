@@ -61,10 +61,10 @@ VOID RtmpDrvMaxRateGet(
 	IN	VOID					*pReserved,
 /*	IN	PHTTRANSMIT_SETTING		pHtPhyMode,
 */
-	IN	UINT8					MODE,
-	IN	UINT8					ShortGI,
-	IN	UINT8					BW,
-	IN	UINT8					MCS,
+	IN	u8					MODE,
+	IN	u8					ShortGI,
+	IN	u8					BW,
+	IN	u8					MCS,
 	OUT	UINT32					*pRate)
 {
 	int rate_index = 0;

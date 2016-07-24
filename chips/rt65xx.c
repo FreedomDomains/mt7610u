@@ -293,7 +293,7 @@ VOID RT65xxDisableTxRx(
 	UINT32 MTxCycle;
 	BOOLEAN bResetWLAN = FALSE;
 	BOOLEAN bFree = TRUE;
-	UINT8 CheckFreeTimes = 0;
+	u8 CheckFreeTimes = 0;
 
 	if (!IS_RT65XX(pAd))
 		return;

@@ -340,8 +340,8 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_BSS_PARM {
 	INT   use_cts_prot;
 	INT   use_short_preamble;
 	INT   use_short_slot_time;
-	UINT8 *basic_rates;
-	UINT8 basic_rates_len;
+	u8 *basic_rates;
+	u8 basic_rates_len;
 	INT   ap_isolate;
 	INT   ht_opmode;
 
@@ -375,18 +375,18 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_BEACON {
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_CHAN {
 
-	UINT8 ChanId;
+	u8 ChanId;
 
 #define RT_CMD_80211_IFTYPE_STATION		0x00
 #define RT_CMD_80211_IFTYPE_ADHOC		0x01
 #define RT_CMD_80211_IFTYPE_MONITOR		0x02
-	UINT8 IfType;
+	u8 IfType;
 
 #define RT_CMD_80211_CHANTYPE_NOHT		0x00
 #define RT_CMD_80211_CHANTYPE_HT20		0x01
 #define RT_CMD_80211_CHANTYPE_HT40MINUS	0X02
 #define RT_CMD_80211_CHANTYPE_HT40PLUS	0X03
-	UINT8 ChanType;
+	u8 ChanType;
 
 	UINT32 MonFilterFlag;
 
@@ -408,7 +408,7 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_IBSS {
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_STA {
 
-	UINT8 MAC[6];
+	u8 MAC[6];
 	ULONG DataRate;
 
 #define RT_CMD_80211_TXRATE_LEGACY		0x01
@@ -426,9 +426,9 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_STA {
 
 #define RT_CMD_80211_KEY_WEP			0x00
 #define RT_CMD_80211_KEY_WPA			0x01
-	UINT8 KeyType;
-	UINT8 KeyBuf[50];
-	UINT8 KeyId;
+	u8 KeyType;
+	u8 KeyBuf[50];
+	u8 KeyId;
 } CMD_RTPRIV_IOCTL_80211_KEY;*/
 
 #define RT_CMD_80211_KEY_WEP40			0x00
@@ -439,13 +439,13 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_STA {
 #endif /* DOT11W_PMF_SUPPORT */
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_KEY {
-	UINT8 KeyType;
-	UINT8 KeyBuf[50];
-	UINT8 KeyId;
+	u8 KeyType;
+	u8 KeyBuf[50];
+	u8 KeyId;
 	BOOLEAN bPairwise;
-	UINT8 KeyLen;
+	u8 KeyLen;
 	UINT32 cipher;
-	UINT8 MAC[ETH_LENGTH_OF_ADDRESS];
+	u8 MAC[ETH_LENGTH_OF_ADDRESS];
 } CMD_RTPRIV_IOCTL_80211_KEY;
 
 
@@ -456,25 +456,25 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_KEY {
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_CONNECT {
 
-	UINT8 WpaVer;
+	u8 WpaVer;
 	BOOLEAN FlgIs8021x;
-	UINT8 AuthType;
+	u8 AuthType;
 	//BOOLEAN FlgIsAuthOpen;
 
-	UINT8 PairwiseEncrypType;
-	UINT8 GroupwiseEncrypType;
+	u8 PairwiseEncrypType;
+	u8 GroupwiseEncrypType;
 
-	UINT8 *pKey;
+	u8 *pKey;
 	UINT32 KeyLen;
-	UINT8 KeyIdx;
+	u8 KeyIdx;
 
-	UINT8 *pSsid;
+	u8 *pSsid;
 	UINT32 SsidLen;
 
 
 
 
-	UINT8 *pBssid;
+	u8 *pBssid;
 
 	BOOLEAN bWpsConnection;
 #ifdef DOT11W_PMF_SUPPORT
@@ -592,9 +592,9 @@ typedef struct __RT_CMD_USB_MORE_FLAG_CONFIG {
 
 typedef struct __RT_CMD_USB_DEV_CONFIG {
 	IN UINT NumberOfPipes;
-	IN UINT8 BulkInEpAddr[2];
+	IN u8 BulkInEpAddr[2];
 	IN USHORT BulkInMaxPacketSize;
-	IN UINT8 BulkOutEpAddr[6];
+	IN u8 BulkOutEpAddr[6];
 	IN USHORT BulkOutMaxPacketSize;
 	IN VOID *pConfig;
 } RT_CMD_USB_DEV_CONFIG;
@@ -647,10 +647,10 @@ typedef struct __RT_CMD_IW_STATS {
 
 	VOID *pStats;		/* point to pAd->iw_stats */
 
-	UINT8 qual;
-	UINT8 level;
-	UINT8 noise;
-	UINT8 updated;
+	u8 qual;
+	u8 level;
+	u8 noise;
+	u8 updated;
 } RT_CMD_IW_STATS;
 
 typedef struct __RT_CMD_PCIE_INIT {

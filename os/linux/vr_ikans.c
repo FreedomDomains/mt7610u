@@ -82,11 +82,11 @@ Note:
 ========================================================================
 */
 void VR_IKANOS_FP_Init(
-	IN UINT8 BssNum,
-	IN UINT8 *pApMac)
+	IN u8 BssNum,
+	IN u8 *pApMac)
 {
 	UINT32 i;
-	UINT8 mac[6];
+	u8 mac[6];
 
 
 	memcpy(mac, pApMac, 6);

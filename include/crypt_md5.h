@@ -38,7 +38,7 @@
 typedef struct {
 	UINT32 HashValue[4];
 	UINT64 MessageLen;
-	UINT8 Block[MD5_BLOCK_SIZE];
+	u8 Block[MD5_BLOCK_SIZE];
 	UINT BlockLen;
 } MD5_CTX_STRUC, *PMD5_CTX_STRUC;
 
@@ -48,15 +48,15 @@ VOID RT_MD5_Hash(
 	IN MD5_CTX_STRUC * pMD5_CTX);
 VOID RT_MD5_Append(
 	IN MD5_CTX_STRUC * pMD5_CTX,
-	IN const UINT8 Message[],
+	IN const u8 Message[],
 	IN UINT MessageLen);
 VOID RT_MD5_End(
 	IN MD5_CTX_STRUC * pMD5_CTX,
-	OUT UINT8 DigestMessage[]);
+	OUT u8 DigestMessage[]);
 VOID RT_MD5(
-	IN const UINT8 Message[],
+	IN const u8 Message[],
 	IN UINT MessageLen,
-	OUT UINT8 DigestMessage[]);
+	OUT u8 DigestMessage[]);
 #endif /* MD5_SUPPORT */
 
 

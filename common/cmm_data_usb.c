@@ -226,7 +226,7 @@ VOID ComposePsPoll(RTMP_ADAPTER *pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	UCHAR *buf;
 	USHORT data_len;
 
@@ -265,7 +265,7 @@ VOID ComposeNullFrame(RTMP_ADAPTER *pAd)
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
 	UCHAR *buf;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	USHORT data_len = sizeof(pAd->NullFrame);;
 
 
@@ -383,7 +383,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 #else
 	BOOLEAN			TxQLastRound = FALSE;
 #endif /* USB_BULK_BUF_ALIGMENT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	/* get Tx Ring Resource & Dma Buffer address*/
@@ -571,7 +571,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 #ifndef USB_BULK_BUF_ALIGMENT
 	BOOLEAN bTxQLastRound = FALSE;
 #endif /* USB_BULK_BUF_ALIGMENT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	/* get Tx Ring Resource & Dma Buffer address*/
@@ -734,7 +734,7 @@ USHORT RtmpUSB_WriteMultiTxResource(
 	UCHAR QueIdx;
 	NDIS_STATUS Status;
 	unsigned long IrqFlags;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	/* get Tx Ring Resource & Dma Buffer address*/
@@ -1090,7 +1090,7 @@ VOID RtmpUSBNullFrameKickOut(
 		TXINFO_STRUC *pTxInfo;
 		TXWI_STRUC *pTxWI;
 		UCHAR *pWirelessPkt;
-		UINT8 TXWISize = pAd->chipCap.TXWISize;
+		u8 TXWISize = pAd->chipCap.TXWISize;
 
 		pNullContext = &(pAd->NullContext);
 
@@ -1158,7 +1158,7 @@ PNDIS_PACKET GetPacketFromRxRing(
 	UCHAR *pData, *RXDMA;
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
 	RXWI_STRUC *pRxWI;
-	UINT8 RXWISize = pAd->chipCap.RXWISize;
+	u8 RXWISize = pAd->chipCap.RXWISize;
 	RXINFO_STRUC *pRxInfo;
 #ifdef RLT_MAC
 	RXFCE_INFO *pRxFceInfo;

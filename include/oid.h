@@ -263,40 +263,40 @@
 #define IWEVEXPIRED	0x8C04
 
 struct ieee80211req_mlme {
-	UINT8 im_op;		/* operation to perform */
-	UINT8 im_ssid_len;	/* length of optional ssid */
+	u8 im_op;		/* operation to perform */
+	u8 im_ssid_len;	/* length of optional ssid */
 	UINT16 im_reason;	/* 802.11 reason code */
-	UINT8 im_macaddr[IEEE80211_ADDR_LEN];
-	UINT8 im_ssid[IEEE80211_NWID_LEN];
+	u8 im_macaddr[IEEE80211_ADDR_LEN];
+	u8 im_ssid[IEEE80211_NWID_LEN];
 };
 
 struct ieee80211req_key {
-	UINT8 ik_type;		/* key/cipher type */
-	UINT8 ik_pad;
+	u8 ik_type;		/* key/cipher type */
+	u8 ik_pad;
 	UINT16 ik_keyix;	/* key index */
-	UINT8 ik_keylen;	/* key length in bytes */
-	UINT8 ik_flags;
-	UINT8 ik_macaddr[IEEE80211_ADDR_LEN];
+	u8 ik_keylen;	/* key length in bytes */
+	u8 ik_flags;
+	u8 ik_macaddr[IEEE80211_ADDR_LEN];
 	UINT64 ik_keyrsc;	/* key receive sequence counter */
 	UINT64 ik_keytsc;	/* key transmit sequence counter */
-	UINT8 ik_keydata[IEEE80211_KEYBUF_SIZE + IEEE80211_MICBUF_SIZE];
+	u8 ik_keydata[IEEE80211_KEYBUF_SIZE + IEEE80211_MICBUF_SIZE];
 	int txkey;
 };
 
 struct ieee80211req_del_key {
-	UINT8 idk_keyix;	/* key index */
-	UINT8 idk_macaddr[IEEE80211_ADDR_LEN];
+	u8 idk_keyix;	/* key index */
+	u8 idk_macaddr[IEEE80211_ADDR_LEN];
 };
 
 struct default_group_key {
 	UINT16 ik_keyix;	/* key index */
-	UINT8 ik_keylen;	/* key length in bytes */
-	UINT8 ik_keydata[IEEE80211_KEYBUF_SIZE + IEEE80211_MICBUF_SIZE];
+	u8 ik_keylen;	/* key length in bytes */
+	u8 ik_keydata[IEEE80211_KEYBUF_SIZE + IEEE80211_MICBUF_SIZE];
 };
 
 struct ieee80211req_wpaie {
-	UINT8 wpa_macaddr[IEEE80211_ADDR_LEN];
-	UINT8 rsn_ie[IEEE80211_MAX_OPT_IE];
+	u8 wpa_macaddr[IEEE80211_ADDR_LEN];
+	u8 rsn_ie[IEEE80211_MAX_OPT_IE];
 };
 
 struct hostapd_wpa_psk {
@@ -1326,7 +1326,7 @@ enum {
 struct bbp_info {
 	UINT32 bbp_start;
 	UINT32 bbp_end;
-	UINT8 bbp_value[0];
+	u8 bbp_value[0];
 };
 
 struct bbp32_info {
@@ -1338,14 +1338,14 @@ struct bbp32_info {
 struct rf_info {
 	UINT16 rf_start;
 	UINT16 rf_end;
-	UINT8 rf_value[0];
+	u8 rf_value[0];
 };
 
 struct rf_bank_info {
-	UINT8 rf_bank;
+	u8 rf_bank;
 	UINT16 rf_start;
 	UINT16 rf_end;
-	UINT8 rf_value[0];
+	u8 rf_value[0];
 };
 
 struct mac_info {

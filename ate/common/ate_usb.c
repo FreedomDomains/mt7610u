@@ -236,7 +236,7 @@ INT ATESetUpFrame(
 	TXINFO_STRUC *pTxInfo;
 	UINT32			TransferBufferLength, OrgBufferLength = 0;
 	UCHAR			padLen = 0;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	UCHAR bw, sgi, stbc, mcs, phymode, frag, ts, ampdu, ack, nseq, basize, pid, txop, cfack;
 	USHORT mpdu_len;
 #ifdef RALINK_QA

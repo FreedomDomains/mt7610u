@@ -116,7 +116,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 	VOID						*pAdOrg,
 	VOID						*pFlgFilter,
-	UINT8						IfType);
+	u8						IfType);
 
 BOOLEAN CFG80211DRV_OpsScan(
 	VOID						*pAdOrg);

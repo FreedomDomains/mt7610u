@@ -247,7 +247,7 @@ Note:
 */
 VOID RT_MD5_Append (
     IN  MD5_CTX_STRUC *pMD5_CTX,
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen)
 {
     UINT appendLen = 0;
@@ -293,7 +293,7 @@ Note:
 */
 VOID RT_MD5_End (
     IN  MD5_CTX_STRUC *pMD5_CTX,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
     UINT index;
     UINT64 message_length_bits;
@@ -337,9 +337,9 @@ Note:
 ========================================================================
 */
 VOID RT_MD5 (
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
     MD5_CTX_STRUC md5_ctx;
 

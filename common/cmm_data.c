@@ -273,7 +273,7 @@ NDIS_STATUS MiniportMMRequest(
 	PNDIS_PACKET pPacket;
 	NDIS_STATUS Status = NDIS_STATUS_SUCCESS;
 	ULONG FreeNum;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 	UCHAR rtmpHwHdr[40];
 	BOOLEAN bUseDataQ = FALSE, FlgDataQForce = FALSE, FlgIsLocked = FALSE;
 	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize + TSO_SIZE;
@@ -432,7 +432,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 	TXWI_STRUC *pFirstTxWI;
 	MAC_TABLE_ENTRY *pMacEntry = NULL;
 	UCHAR PID;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pSrcBufVA, &SrcBufLen);
@@ -2753,7 +2753,7 @@ VOID StopDmaRx(
 	UINT32 RxPending = 0, MacReg = 0, MTxCycle = 0;
 	BOOLEAN bReschedule = FALSE;
 	BOOLEAN bCmdRspPacket = FALSE;
-	UINT8 IdleNums = 0;
+	u8 IdleNums = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
 
@@ -2821,7 +2821,7 @@ VOID StopDmaTx(
 	IN UCHAR Level)
 {
 	UINT32 MacReg = 0, MTxCycle = 0;
-	UINT8 IdleNums = 0;
+	u8 IdleNums = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
 

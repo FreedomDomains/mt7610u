@@ -2483,7 +2483,7 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
 	UINT i;
 /*	EDCA_PARM DefaultEdcaParm;*/
     UINT key_index, bss_index;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> UserCfgInit\n"));
 
@@ -3462,7 +3462,7 @@ static INT RtmpChipOpsRegister(
 }
 
 #ifdef RTMP_USB_SUPPORT
-BOOLEAN PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
+BOOLEAN PairEP(RTMP_ADAPTER *pAd, u8 EP)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 	int i;
@@ -3507,7 +3507,7 @@ BOOLEAN PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
 INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
 {
 	RTMP_ADAPTER *pAd = (PRTMP_ADAPTER)pAdSrc;
-	UINT8 i;
+	u8 i;
 	int ret = 0;
 
 	/* Assign the interface type. We need use it when do register/EEPROM access.*/
@@ -3603,7 +3603,7 @@ BOOLEAN RtmpRaDevCtrlExit(IN VOID *pAdSrc)
 	INT index;
 
 #ifdef MULTIPLE_CARD_SUPPORT
-extern UINT8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
+extern u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 
 	if ((pAd->MC_RowID >= 0) && (pAd->MC_RowID <= MAX_NUM_OF_MULTIPLE_CARD))
 		MC_CardUsed[pAd->MC_RowID] = 0; /* not clear MAC address*/
@@ -3667,7 +3667,7 @@ VOID RTMP_IO_WRITE32(
 VOID RTMP_BBP_IO_READ8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
 	UINT32 Offset,
-	UINT8 *pValue)
+	u8 *pValue)
 {
 #ifdef RT65xx
 	if (IS_RT65XX(pAd))
@@ -3680,7 +3680,7 @@ VOID RTMP_BBP_IO_READ8_BY_REG_ID(
 VOID RTMP_BBP_IO_READ8(
 	PRTMP_ADAPTER pAd,
 	UCHAR Offset,
-	UINT8 *pValue,
+	u8 *pValue,
 	BOOLEAN FlgValidMCR)
 {
 #ifdef RT65xx
@@ -3693,7 +3693,7 @@ VOID RTMP_BBP_IO_READ8(
 VOID RTMP_BBP_IO_WRITE8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
 	UINT32 Offset,
-	UINT8 Value)
+	u8 Value)
 {
 #ifdef RT65xx
 	if (IS_RT65XX(pAd))
@@ -3706,7 +3706,7 @@ VOID RTMP_BBP_IO_WRITE8_BY_REG_ID(
 VOID RTMP_BBP_IO_WRITE8(
 	PRTMP_ADAPTER pAd,
 	UCHAR Offset,
-	UINT8 Value,
+	u8 Value,
 	BOOLEAN FlgValidMCR)
 {
 #ifdef RT65xx

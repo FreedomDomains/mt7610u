@@ -120,9 +120,9 @@ BOOLEAN N_ChannelGroupCheck(RTMP_ADAPTER *pAd, UCHAR channel);
 
 #endif /* DOT11_N_SUPPORT */
 
-UINT8 GetCuntryMaxTxPwr(
+u8 GetCuntryMaxTxPwr(
 	IN PRTMP_ADAPTER pAd,
-	IN UINT8 channel);
+	IN u8 channel);
 
 VOID RTMP_MapChannelID2KHZ(
 	IN UCHAR Ch,

@@ -912,10 +912,10 @@ static const MT76x0_FREQ_ITEM MT76x0_SDM_Frequency_Plan[] =
 };
 UCHAR NUM_OF_MT76x0_SDM_CHNL = (sizeof(MT76x0_SDM_Frequency_Plan) / sizeof(MT76x0_FREQ_ITEM));
 
-static UINT8 MT76x0_SDM_Channel[] = {
+static u8 MT76x0_SDM_Channel[] = {
 	183, 185, 43, 45, 54, 55, 57, 58, 102, 103, 105, 106, 115, 117, 126, 127, 129, 130, 139, 141, 150, 151, 153, 154, 163, 165
 };
-static UCHAR MT76x0_SDM_Channel_Size = (sizeof(MT76x0_SDM_Channel) / sizeof(UINT8));
+static UCHAR MT76x0_SDM_Channel_Size = (sizeof(MT76x0_SDM_Channel) / sizeof(u8));
 
 static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_BW_Switch[] =
 {
@@ -5126,8 +5126,8 @@ BOOLEAN get_temp_tx_alc_level(
 	IN CHAR temp_ref,
 	IN PCHAR temp_minus_bdy,
 	IN PCHAR temp_plus_bdy,
-	IN UINT8 max_bdy_level,
-	IN UINT8 tx_alc_step,
+	IN u8 max_bdy_level,
+	IN u8 tx_alc_step,
 	IN CHAR current_temp,
 	OUT PCHAR comp_level)
 {
@@ -5585,7 +5585,7 @@ INT Set_AntennaSelect_Proc(
 	IN RTMP_ADAPTER		*pAd,
 	IN PSTRING			arg)
 {
-	UINT8 val = (UINT8)simple_strtol(arg, 0, 10);
+	u8 val = (u8)simple_strtol(arg, 0, 10);
 	UINT32 reg_val = 0;
 
 	/*

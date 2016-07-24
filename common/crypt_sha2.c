@@ -223,7 +223,7 @@ Note:
 */
 VOID RT_SHA1_Append (
     IN  SHA1_CTX_STRUC *pSHA_CTX,
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen)
 {
     UINT appendLen = 0;
@@ -269,7 +269,7 @@ Note:
 */
 VOID RT_SHA1_End (
     IN  SHA1_CTX_STRUC *pSHA_CTX,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
     UINT index;
     UINT64 message_length_bits;
@@ -313,9 +313,9 @@ Note:
 ========================================================================
 */
 VOID RT_SHA1 (
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
 
     SHA1_CTX_STRUC sha_ctx;
@@ -446,7 +446,7 @@ Note:
 */
 VOID RT_SHA256_Append (
     IN  SHA256_CTX_STRUC *pSHA_CTX,
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen)
 {
     UINT appendLen = 0;
@@ -492,7 +492,7 @@ Note:
 */
 VOID RT_SHA256_End (
     IN  SHA256_CTX_STRUC *pSHA_CTX,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
     UINT index;
     UINT64 message_length_bits;
@@ -536,9 +536,9 @@ Note:
 ========================================================================
 */
 VOID RT_SHA256 (
-    IN  const UINT8 Message[],
+    IN  const u8 Message[],
     IN  UINT MessageLen,
-    OUT UINT8 DigestMessage[])
+    OUT u8 DigestMessage[])
 {
     SHA256_CTX_STRUC sha_ctx;
 
