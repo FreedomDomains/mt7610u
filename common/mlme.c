@@ -1405,7 +1405,7 @@ void STAMlmePeriodicExec(
 					DBGPRINT(RT_DEBUG_TRACE, ("STAMlmePeriodicExec():CNTL - ScanTab.BssNr==0, start a new ACTIVE scan SSID[%s]\n", pAd->MlmeAux.AutoReconnectSsid));
 					if (pAd->StaCfg.BssType == BSS_ADHOC)
 						pAd->StaCfg.bNotFirstScan = TRUE;
-					ScanParmFill(pAd, &ScanReq, (PSTRING) pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen, BSS_ANY, SCAN_ACTIVE);
+					ScanParmFill(pAd, &ScanReq, (char *) pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen, BSS_ANY, SCAN_ACTIVE);
 					MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_SCAN_REQ, sizeof(MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
 					pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_LIST_SCAN;
 					/* Reset Missed scan number*/
@@ -5262,7 +5262,7 @@ void RTMPSetPiggyBack(
 
     Arguments:
         pAd
-        pEntry 	
+        pEntry
 
     Return Value:
         TURE
@@ -5322,7 +5322,7 @@ BOOLEAN RTMPAutoRateSwitchCheck(
 
     Arguments:
         pAd
-        pEntry 	
+        pEntry
 
     Return Value:
         TURE
@@ -5354,7 +5354,7 @@ UCHAR RTMPStaFixedTxMode(
 
     Arguments:
         pAd
-        pEntry 	
+        pEntry
 
     Return Value:
         TURE
@@ -5370,7 +5370,7 @@ void RTMPUpdateLegacyTxSetting(
 
 	if (fixed_tx_mode == FIXED_TXMODE_HT)
 		return;
-							
+
 	TransmitSetting.word = 0;
 
 	TransmitSetting.field.MODE = pEntry->HTPhyMode.field.MODE;

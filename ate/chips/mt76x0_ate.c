@@ -398,7 +398,7 @@ void mt76x0_ate_asic_adjust_tx_pwr(
 */
 static INT mt76x0_ate_set_tx_bw_proc(
 	IN PRTMP_ADAPTER	pAd,
-	IN PSTRING			arg)
+	IN char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR current_bw = simple_strtol(arg, 0, 10);
@@ -427,7 +427,7 @@ static INT mt76x0_ate_set_tx_bw_proc(
 */
 static INT mt76x0_ate_set_tx_freq_offset_proc(
 	IN PRTMP_ADAPTER	pAd,
-	IN PSTRING			arg)
+	IN char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR rf_val = 0;

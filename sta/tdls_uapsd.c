@@ -596,7 +596,7 @@ Return Value:
 */
 INT TDLS_Ioctl(
 	IN	PRTMP_ADAPTER				pAd,
-	IN	PSTRING						pArgvIn)
+	IN	char *					pArgvIn)
 {
 	CHAR BufCmd[3] = { 0, 0, 0 };
 	CHAR *pArgv, *pParam;
@@ -610,7 +610,7 @@ INT TDLS_Ioctl(
 	/* get command type */
 	/* command format is iwpriv ra0 set tdls=[cmd id]_[arg1]_......_[argn] */
 	NdisCopyMemory(BufCmd, pArgv, 2);
-	Command = simple_strtol((PSTRING)BufCmd, 0, 10);
+	Command = simple_strtol((char *)BufCmd, 0, 10);
 	pArgv += 2; /* skip command field */
 
 	/* get Argc number */
@@ -730,7 +730,7 @@ Return Value:
 */
 INT Set_TdlsUapsdProc(
 	IN	PRTMP_ADAPTER				pAd,
-	IN	PSTRING						pArgvIn)
+	IN	char *					pArgvIn)
 {
 	return TDLS_Ioctl(pAd, pArgvIn);
 }
@@ -1355,7 +1355,7 @@ static UINT32 TDLS_UAPSD_CmdUtilNumGet(
 
 	*ppArgv += ID+1; /* skip _ */
 
-	return simple_strtol((PSTRING)Buf, 0, 10);
+	return simple_strtol((char *)Buf, 0, 10);
 } /* End of TDLS_UAPSD_CmdUtilNumGet */
 
 

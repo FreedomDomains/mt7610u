@@ -46,7 +46,7 @@ UCHAR WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
 
 INT Set_WfdEnable_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	BOOLEAN bEnable;
 
@@ -69,7 +69,7 @@ INT Set_WfdEnable_Proc(
 #ifdef RT_CFG80211_SUPPORT
 INT Set_WfdInsertIe_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	BOOLEAN bEnable;
 	CFG80211_CB *pCfg80211_CB = NULL;
@@ -114,7 +114,7 @@ INT Set_WfdInsertIe_Proc(
 
 INT Set_WfdDeviceType_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	UCHAR DeviceType;
 
@@ -138,7 +138,7 @@ INT Set_WfdDeviceType_Proc(
 
 INT Set_WfdCouple_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	UCHAR coupled;
 
@@ -175,7 +175,7 @@ INT Set_WfdCouple_Proc(
 
 INT Set_WfdSessionAvailable_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0)
 		pAd->StaCfg.WfdCfg.SessionAvail= WFD_SESSION_NOT_AVAILABLE;
@@ -194,7 +194,7 @@ INT Set_WfdSessionAvailable_Proc(
 
 INT Set_WfdCP_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0)
 		pAd->StaCfg.WfdCfg.CP = WFD_CP_NOT_SUPPORT;
@@ -214,7 +214,7 @@ INT Set_WfdCP_Proc(
 
 INT	Set_WfdRtspPort_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	INT32 RtspPort;
 
@@ -236,7 +236,7 @@ INT	Set_WfdRtspPort_Proc(
 
 INT	Set_WfdMaxThroughput_Proc(
     IN  PRTMP_ADAPTER		pAd,
-    IN  PSTRING			arg)
+    IN  char *		arg)
 {
 	INT32 Throughput;
 
@@ -257,7 +257,7 @@ INT	Set_WfdMaxThroughput_Proc(
 
 INT Set_WfdLocalIp_Proc(
 	IN	PRTMP_ADAPTER		pAd,
-	IN	PSTRING 		arg)
+	IN	char *		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
 	UINT32 ip_addr;
@@ -277,7 +277,7 @@ INT Set_WfdLocalIp_Proc(
 
 INT Set_PeerRtspPort_Proc(
 	IN	PRTMP_ADAPTER		pAd,
-	IN	PSTRING 		arg)
+	IN	char *		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
 	UINT32 ip_addr;

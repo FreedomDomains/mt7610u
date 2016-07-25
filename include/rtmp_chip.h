@@ -829,9 +829,9 @@ struct _RTMP_CHIP_OP_ {
 	/* TX ALC */
 	UINT32 (*TSSIRatio)(INT32 delta_power);
 	void (*InitDesiredTSSITable)(IN struct _RTMP_ADAPTER *pAd);
-	int (*ATETssiCalibration)(struct _RTMP_ADAPTER *pAd, PSTRING arg);
-	int (*ATETssiCalibrationExtend)(struct _RTMP_ADAPTER *pAd, PSTRING arg);
-	int (*ATEReadExternalTSSI)(struct _RTMP_ADAPTER *pAd, PSTRING arg);
+	int (*ATETssiCalibration)(struct _RTMP_ADAPTER *pAd, char *arg);
+	int (*ATETssiCalibrationExtend)(struct _RTMP_ADAPTER *pAd, char *arg);
+	int (*ATEReadExternalTSSI)(struct _RTMP_ADAPTER *pAd, char *arg);
 
 	void (*AsicTxAlcGetAutoAgcOffset)(
 				IN struct _RTMP_ADAPTER	*pAd,

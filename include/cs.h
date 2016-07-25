@@ -126,44 +126,44 @@ extern void RtmpOsMsDelay(
 
 INT Set_CarrierCriteria_Proc(
 	IN PRTMP_ADAPTER 	pAd,
-	IN PSTRING 			arg);
+	IN char *			arg);
 
 INT Set_CarrierReCheck_Proc(
 	IN PRTMP_ADAPTER	pAd,
-	IN PSTRING 			arg);
+	IN char *			arg);
 
 INT Set_CarrierGoneThreshold_Proc(
 	IN PRTMP_ADAPTER	pAd,
-	IN PSTRING			arg);
+	IN char *		arg);
 
 INT Set_CarrierStopCheck_Proc(
 	IN PRTMP_ADAPTER 	pAd,
-	IN PSTRING 			arg);
+	IN char *			arg);
 
 INT	Set_CarrierDebug_Proc(
 	IN PRTMP_ADAPTER	pAd,
-	IN	PSTRING 		arg);
+	IN	char *		arg);
 
 INT	Set_CarrierDelta_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+	IN	char *		arg);
 
 INT	Set_CarrierDivFlag_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+	IN	char *		arg);
 
 INT	Set_CarrierThrd_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+	IN	char *		arg);
 
 /* v2 functions */
 INT	Set_CarrierSymRund_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+	IN	char *		arg);
 
 INT Set_CarrierMask_Proc(
     IN PRTMP_ADAPTER   pAd,
-    IN PSTRING         arg);
+    IN char *        arg);
 
 void CSInit(
 	IN PRTMP_ADAPTER pAd);

@@ -230,7 +230,7 @@ void MT76x0_ReadFlashAndInitAsic(
 
 INT Set_AntennaSelect_Proc(
 	IN struct _RTMP_ADAPTER		*pAd,
-	IN PSTRING			arg);
+	IN char *			arg);
 
 #ifdef RTMP_TEMPERATURE_TX_ALC
 void mt76x0_temp_tx_alc(struct _RTMP_ADAPTER *pAd);

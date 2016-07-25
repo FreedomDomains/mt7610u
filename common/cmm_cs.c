@@ -258,7 +258,7 @@ INT CarrierDetectReset(
 */
 INT Set_CarrierCriteria_Proc(
 	IN PRTMP_ADAPTER 	pAd,
-	IN PSTRING			arg)
+	IN char *		arg)
 {
 	UINT32 Value;
 
@@ -294,7 +294,7 @@ INT Set_CarrierCriteria_Proc(
 */
 INT Set_CarrierReCheck_Proc(
 	IN PRTMP_ADAPTER pAd,
-	IN PSTRING arg)
+	IN char *arg)
 {
 	pAd->CommonCfg.CarrierDetect.recheck1 = simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("Set Recheck = %u\n", pAd->CommonCfg.CarrierDetect.recheck1));
@@ -326,7 +326,7 @@ INT Set_CarrierReCheck_Proc(
 */
 INT Set_CarrierGoneThreshold_Proc(
 	IN PRTMP_ADAPTER pAd,
-	IN PSTRING arg)
+	IN char *arg)
 {
 	pAd->CommonCfg.CarrierDetect.CarrierGoneThreshold = simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("Set CarrierGoneThreshold = %u\n", pAd->CommonCfg.CarrierDetect.CarrierGoneThreshold));
@@ -350,7 +350,7 @@ INT Set_CarrierGoneThreshold_Proc(
 */
 INT	Set_CarrierDebug_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.Debug = simple_strtol(arg, 0, 10);
 	printk("pAd->CommonCfg.CarrierDetect.Debug = %ld\n", pAd->CommonCfg.CarrierDetect.Debug);
@@ -375,7 +375,7 @@ INT	Set_CarrierDebug_Proc(
 */
 INT	Set_CarrierDelta_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.delta = simple_strtol(arg, 0, 10);
 	printk("Delta = %d\n", pAd->CommonCfg.CarrierDetect.delta);
@@ -401,7 +401,7 @@ INT	Set_CarrierDelta_Proc(
 */
 INT	Set_CarrierDivFlag_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.div_flag = simple_strtol(arg, 0, 10);
 	printk("DivFlag = %d\n", pAd->CommonCfg.CarrierDetect.div_flag);
@@ -428,7 +428,7 @@ INT	Set_CarrierDivFlag_Proc(
 */
 INT	Set_CarrierThrd_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.threshold = simple_strtol(arg, 0, 10);
 	printk("CarrThrd = %d(0x%x)\n", pAd->CommonCfg.CarrierDetect.threshold, pAd->CommonCfg.CarrierDetect.threshold);
@@ -455,7 +455,7 @@ INT	Set_CarrierThrd_Proc(
 */
 INT	Set_CarrierSymRund_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.SymRund= simple_strtol(arg, 0, 10);
 	printk("SymRund = %d\n", pAd->CommonCfg.CarrierDetect.SymRund);
@@ -482,7 +482,7 @@ INT	Set_CarrierSymRund_Proc(
 */
 INT Set_CarrierMask_Proc(
         IN      PRTMP_ADAPTER   pAd,
-        IN      PSTRING                 arg)
+        IN      char *                arg)
 {
 	pAd->CommonCfg.CarrierDetect.VGA_Mask = simple_strtol(arg, 0, 10);
 	pAd->CommonCfg.CarrierDetect.Packet_End_Mask = simple_strtol(arg, 0, 10);

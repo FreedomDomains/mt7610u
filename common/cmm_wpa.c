@@ -260,7 +260,7 @@ void WpaEAPOLKeyAction(
 
 		/* Check if this STA is in class 3 state and the WPA state is started 						*/
         if ((pEntry->Sst == SST_ASSOC) && (pEntry->WpaState >= AS_INITPSK))
-        {			
+        {
 			/* Check the Key Ack (bit 7) of the Key Information to determine the Authenticator */
 			/* or not.*/
 			/* An EAPOL-Key frame that is sent by the Supplicant in response to an EAPOL-*/
@@ -282,7 +282,7 @@ void WpaEAPOLKeyAction(
 					*/
 					if (peerKeyInfo.KeyMic == 0)
                     	PeerPairMsg1Action(pAd, pEntry, Elem);
-	                else                	
+	                else
     	                PeerPairMsg3Action(pAd, pEntry, Elem);
 				}
 				else if ((peerKeyInfo.Secure == 1) &&
@@ -1093,7 +1093,7 @@ void PeerPairMsg3Action(
 					  pEapolFrame);
 
 	/* Update WpaState*/
-	pEntry->WpaState = AS_PTKINITDONE;	
+	pEntry->WpaState = AS_PTKINITDONE;
 	/* Update pairwise key		*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -1781,7 +1781,7 @@ static void F(char *password, unsigned char *ssid, int ssidlength, int iteration
 * ssidlength - length of ssid in octets
 * output must be 40 octets in length and outputs 256 bits of key
 */
-int RtmpPasswordHash(PSTRING password, PUCHAR ssid, INT ssidlength, PUCHAR output)
+int RtmpPasswordHash(char *password, PUCHAR ssid, INT ssidlength, PUCHAR output)
 {
     if ((strlen(password) > 63) || (ssidlength > 32))
         return 0;
@@ -2776,7 +2776,7 @@ BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
 
     ==========================================================================
 */
-PSTRING GetEapolMsgType(CHAR msg)
+char *GetEapolMsgType(CHAR msg)
 {
     if(msg == EAPOL_PAIR_MSG_1)
         return "Pairwise Message 1";
@@ -3576,7 +3576,7 @@ PCIPHER_KEY RTMPSwCipherKeySelection(
 			pKey = &pEntry->PairwiseKey;
 		else {
 #ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */	
+#endif /* CONFIG_STA_SUPPORT */
 		    	pKey = &pAd->SharedKey[pEntry->apidx][keyIdx];
         }
 	}
@@ -3610,7 +3610,7 @@ NDIS_STATUS	RTMPSoftDecryptionAction(
 	INOUT 	UINT16			*DataByteCnt)
 {
 	switch (pKey->CipherAlg)
-    {    	
+    {
 		case CIPHER_WEP64:
 		case CIPHER_WEP128:
 			/* handle WEP decryption */

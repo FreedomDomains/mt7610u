@@ -2855,7 +2855,7 @@ static NDIS_STATUS RXFRAME(
 */
 static NDIS_STATUS	ATECmdHandler(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	ATE_INFO *pATEInfo = &(pAd->ate);
 	NDIS_STATUS		Status = NDIS_STATUS_SUCCESS;
@@ -3047,7 +3047,7 @@ static NDIS_STATUS	ATECmdHandler(
 
 INT	Set_ATE_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -3095,10 +3095,10 @@ INT	Set_ATE_Proc(
 */
 INT	Set_ATE_DA_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	PSTRING				value;
+	char *			value;
 	INT					octet;
 
 	/* Mac address acceptable format 01:02:03:04:05:06 length 17 */
@@ -3149,10 +3149,10 @@ INT	Set_ATE_DA_Proc(
 */
 INT	Set_ATE_SA_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	PSTRING				value;
+	char *			value;
 	INT					octet;
 
 	/* Mac address acceptable format 01:02:03:04:05:06 length 17 */
@@ -3203,10 +3203,10 @@ INT	Set_ATE_SA_Proc(
 */
 INT	Set_ATE_BSSID_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	PSTRING				value;
+	char *			value;
 	INT					octet;
 
 	/* Mac address acceptable format 01:02:03:04:05:06 length 17 */
@@ -3257,7 +3257,7 @@ INT	Set_ATE_BSSID_Proc(
 */
 INT	Set_ATE_CHANNEL_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR channel;
@@ -3296,7 +3296,7 @@ INT	Set_ATE_CHANNEL_Proc(
 */
 INT	Set_ATE_INIT_CHAN_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	int index;
@@ -3362,7 +3362,7 @@ INT	Set_ATE_INIT_CHAN_Proc(
 */
 static INT ATESetAntennaTxPower(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING 		arg,
+	IN	char *		arg,
 	IN  INT 		Antenna)
 
 {
@@ -3461,7 +3461,7 @@ static INT ATESetAntennaTxPower(
 */
 INT	Set_ATE_TX_POWER0_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	INT ret;
 
@@ -3481,7 +3481,7 @@ INT	Set_ATE_TX_POWER0_Proc(
 */
 INT	Set_ATE_TX_POWER1_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	INT ret;
 
@@ -3502,7 +3502,7 @@ INT	Set_ATE_TX_POWER1_Proc(
 */
 INT	Set_ATE_TX_POWER2_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	INT ret;
 
@@ -3523,7 +3523,7 @@ INT	Set_ATE_TX_POWER2_Proc(
 */
 INT	Set_ATE_TX_Antenna_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	CHAR value;
@@ -3560,7 +3560,7 @@ INT	Set_ATE_TX_Antenna_Proc(
 */
 INT	Set_ATE_RX_Antenna_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	CHAR value;
@@ -3644,7 +3644,7 @@ void ATEAsicExtraPowerOverMAC(
 */
 INT Set_ATE_PA_Bias_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR PABias = 0;
@@ -3680,7 +3680,7 @@ INT Set_ATE_PA_Bias_Proc(
 */
 INT	Default_Set_ATE_TX_FREQ_OFFSET_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR RFFreqOffset = 0;
@@ -3716,7 +3716,7 @@ INT	Default_Set_ATE_TX_FREQ_OFFSET_Proc(
 */
 INT	Set_ATE_TX_FREQ_OFFSET_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	INT ret = FALSE;
@@ -3748,7 +3748,7 @@ INT	Set_ATE_TX_FREQ_OFFSET_Proc(
 */
 INT	Default_Set_ATE_TX_BW_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	INT powerIndex;
@@ -3930,7 +3930,7 @@ INT	Default_Set_ATE_TX_BW_Proc(
 */
 INT	Set_ATE_TX_BW_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	INT status = FALSE;
@@ -3968,7 +3968,7 @@ INT	Set_ATE_TX_BW_Proc(
 */
 INT	Set_ATE_TX_LENGTH_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -4000,7 +4000,7 @@ INT	Set_ATE_TX_LENGTH_Proc(
 */
 INT	Set_ATE_TX_COUNT_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -4026,7 +4026,7 @@ INT	Set_ATE_TX_COUNT_Proc(
 */
 INT	Set_ATE_TX_MCS_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR MCS, phy_mode = 0;
@@ -4078,7 +4078,7 @@ INT	Set_ATE_TX_MCS_Proc(
 */
 INT	Set_ATE_TX_STBC_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR stbc = simple_strtol(arg, 0, 10);
@@ -4120,7 +4120,7 @@ INT	Set_ATE_TX_STBC_Proc(
 */
 INT	Set_ATE_TX_MODE_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR BbpData = 0;
@@ -4297,7 +4297,7 @@ INT	Set_ATE_TX_MODE_Proc(
 */
 INT	Set_ATE_TX_GI_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR sgi;
@@ -4327,7 +4327,7 @@ INT	Set_ATE_TX_GI_Proc(
 
 INT	Set_ATE_RX_FER_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -4349,7 +4349,7 @@ INT	Set_ATE_RX_FER_Proc(
 
 INT Set_ATE_Read_RF_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	{
 		DBGPRINT(RT_DEBUG_OFF, ("R1 = %x\n", pAd->LatchRfRegs.R1));
@@ -4365,7 +4365,7 @@ INT Set_ATE_Read_RF_Proc(
 #if (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF))
 INT Set_ATE_Write_RF1_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT32 value = (UINT32) simple_strtol(arg, 0, 16);
 
@@ -4378,7 +4378,7 @@ INT Set_ATE_Write_RF1_Proc(
 
 INT Set_ATE_Write_RF2_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT32 value = (UINT32) simple_strtol(arg, 0, 16);
 
@@ -4391,7 +4391,7 @@ INT Set_ATE_Write_RF2_Proc(
 
 INT Set_ATE_Write_RF3_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT32 value = (UINT32) simple_strtol(arg, 0, 16);
 
@@ -4404,7 +4404,7 @@ INT Set_ATE_Write_RF3_Proc(
 
 INT Set_ATE_Write_RF4_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT32 value = (UINT32) simple_strtol(arg, 0, 16);
 
@@ -4427,10 +4427,10 @@ INT Set_ATE_Write_RF4_Proc(
 */
 INT Set_ATE_Load_E2P_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	BOOLEAN		    	ret = FALSE;
-	PSTRING			src = EEPROM_BIN_FILE_NAME;
+	char *		src = EEPROM_BIN_FILE_NAME;
 	RTMP_OS_FD		srcf;
 	INT32 			retval;
 	USHORT 			WriteEEPROM[(EEPROM_SIZE >> 1)];
@@ -4459,7 +4459,7 @@ INT Set_ATE_Load_E2P_Proc(
 			}
 
 			/* read the firmware from the file *.bin */
-			FileLength = RtmpOSFileRead(srcf, (PSTRING)WriteEEPROM, EEPROM_SIZE);
+			FileLength = RtmpOSFileRead(srcf, (char *)WriteEEPROM, EEPROM_SIZE);
 
 			if (FileLength != EEPROM_SIZE)
 			{
@@ -4504,7 +4504,7 @@ INT Set_ATE_Load_E2P_Proc(
 
 INT Set_ATE_Read_E2P_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	USHORT buffer[EEPROM_SIZE >> 1];
 	USHORT *p;
@@ -4542,7 +4542,7 @@ INT Set_ATE_Read_E2P_Proc(
 */
 INT	Set_ATE_AUTO_ALC_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UINT32 value = simple_strtol(arg, 0, 10);
@@ -4577,7 +4577,7 @@ INT	Set_ATE_AUTO_ALC_Proc(
 */
 INT	Set_ATE_TXBF_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	CHAR value;
@@ -4631,7 +4631,7 @@ INT	Set_ATE_TXBF_Proc(
 */
 INT	Set_ATE_TXSOUNDING_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	CHAR value;
@@ -4665,7 +4665,7 @@ INT	Set_ATE_TXSOUNDING_Proc(
 */
 INT	Set_ATE_TXBF_DIVCAL_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	int value;
@@ -4734,7 +4734,7 @@ INT	Set_ATE_TXBF_DIVCAL_Proc(
 */
 INT	Set_ATE_TXBF_LNACAL_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	int value;
@@ -4834,7 +4834,7 @@ static BOOLEAN rtmp_ate_txbf_cal_valid_ch(
 */
 INT Set_ATE_TXBF_INIT_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	int val;
@@ -4924,7 +4924,7 @@ INT Set_ATE_TXBF_INIT_Proc(
 */
 INT Set_ATE_TXBF_CAL_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UCHAR ch;
 	UCHAR cmdStr[32];
@@ -4991,7 +4991,7 @@ INT Set_ATE_TXBF_CAL_Proc(
 */
 INT Set_ATE_TXBF_GOLDEN_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UCHAR ch;
 	UCHAR cmdStr[32];
@@ -5077,7 +5077,7 @@ INT Set_ATE_TXBF_GOLDEN_Proc(
 */
 INT Set_ATE_TXBF_VERIFY_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UCHAR ch;
 	UCHAR cmdStr[32];
@@ -5126,7 +5126,7 @@ INT Set_ATE_TXBF_VERIFY_Proc(
 
 INT Set_ATE_ForceBBP_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UCHAR bbpReg;
@@ -5162,7 +5162,7 @@ INT Set_ATE_ForceBBP_Proc(
 */
 INT Set_ATE_TXBF_VERIFY_NoComp_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UCHAR ch;
 	UCHAR cmdStr[32];
@@ -5247,7 +5247,7 @@ INT Set_ATE_TXBF_VERIFY_NoComp_Proc(
 */
 INT	Set_ATE_IPG_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	UINT32           data, value;
@@ -5336,10 +5336,10 @@ INT	Set_ATE_IPG_Proc(
 */
 INT	Set_ATE_Payload_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	PSTRING				value;
+	char *			value;
 
 	value = arg;
 
@@ -5361,11 +5361,11 @@ INT	Set_ATE_Payload_Proc(
 
 INT	Set_ATE_Show_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
-	PSTRING Mode_String = NULL;
-	PSTRING TxMode_String = NULL;
+	char *Mode_String = NULL;
+	char *TxMode_String = NULL;
 	UCHAR bw = 0, phy_mode = 0, sgi =0, mcs =0;
 
 #ifdef RLT_MAC
@@ -5489,7 +5489,7 @@ INT	Set_ATE_Show_Proc(
 
 INT	Set_ATE_Help_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 #ifdef CONFIG_RT2880_ATE_CMD_NEW
 	DBGPRINT(RT_DEBUG_OFF, ("ATE=ATESTART, ATESTOP, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
@@ -5560,7 +5560,7 @@ INT	Set_ATE_Help_Proc(
 
 INT Set_ATE_TSSI_CALIBRATION_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -5579,7 +5579,7 @@ INT Set_ATE_TSSI_CALIBRATION_Proc(
 
 INT Set_ATE_TSSI_CALIBRATION_EX_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -5599,7 +5599,7 @@ INT Set_ATE_TSSI_CALIBRATION_EX_Proc(
 #if defined(RT3350) || defined(RT3352)
 INT RT335x2_Set_ATE_TSSI_CALIBRATION_ENABLE_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 		{
 	BOOLEAN	bTSSICalbrEnableG = FALSE;
 
@@ -5655,7 +5655,7 @@ CHAR InsertTssi(UCHAR InChannel, UCHAR Channel0, UCHAR Channel1,CHAR Tssi0, CHAR
 
 INT RT335xATETssiCalibrationExtend(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	CHAR		TssiRefPerChannel[CFG80211_NUM_OF_CHAN_2GHZ], TssiDeltaPerChannel[CFG80211_NUM_OF_CHAN_2GHZ];
 	UCHAR		CurrentChannel;
@@ -5823,7 +5823,7 @@ INT RT335xATETssiCalibrationExtend(
 
 INT Set_ATE_READ_EXTERNAL_TSSI_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 
 	RTMP_CHIP_ATE_READ_EXTERNAL_TSSI(pAd, arg);
@@ -6287,7 +6287,7 @@ NDIS_STATUS ATEBBPWriteWithRxChain(
 #endif /* RLT_MAC */
 INT Set_ADCDump_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 #ifdef RLT_MAC
 	return FALSE;
@@ -6300,7 +6300,7 @@ INT Set_ADCDump_Proc(
 	UINT32 SMM_Addr;
 	UINT32 PKT_Addr;
 	int i = 0;
-	PSTRING					src = "ADCDump.txt";
+	char *				src = "ADCDump.txt";
 	RTMP_OS_FD				srcf;
 	RTMP_OS_FS_INFO			osFSInfo;
 	UCHAR				msg[128];
@@ -6464,8 +6464,8 @@ INT Set_ADCDump_Proc(
 				              ,PKTValue2d.field.BYTE3,PKTValue2d.field.BYTE2
 				              ,PKTValue2d.field.BYTE1,PKTValue2d.field.BYTE0);
 
-				retval=RtmpOSFileWrite(srcf, (PSTRING)msg, strlen(msg));
-				retval=RtmpOSFileWrite(srcf, (PSTRING)msg1, strlen(msg1));
+				retval=RtmpOSFileWrite(srcf, (char *)msg, strlen(msg));
+				retval=RtmpOSFileWrite(srcf, (char *)msg1, strlen(msg1));
 			}
 		}
 	}

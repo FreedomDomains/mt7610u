@@ -354,7 +354,7 @@ INT RtmpOSNetDevOpsAlloc(
 
 PNET_DEV RtmpOSNetDevGetByName(
 	IN	PNET_DEV				pNetDev,
-	IN	PSTRING					pDevName);
+	IN	char *				pDevName);
 
 void RtmpOSNetDeviceRefPut(
 	IN	PNET_DEV				pNetDev);
@@ -380,7 +380,7 @@ PNET_DEV RtmpOSNetDevCreate(
 	IN	INT 					devType,
 	IN	INT						devNum,
 	IN	INT						privMemSize,
-	IN	PSTRING					pNamePrefix);
+	IN	char *				pNamePrefix);
 
 BOOLEAN RtmpOSNetDevIsUp(
 	IN	void 				*pDev);
@@ -484,7 +484,7 @@ NDIS_STATUS RtmpOSTaskAttach(
 
 NDIS_STATUS RtmpOSTaskInit(
 	IN	RTMP_OS_TASK			*pTaskOrg,
-	IN	PSTRING					pTaskName,
+	IN	char *				pTaskName,
 	IN	void 				*pPriv,
 	IN	LIST_HEADER				*pTaskList,
 	IN	LIST_HEADER				*pSemList);
@@ -701,13 +701,13 @@ void RtmpDrvMaxRateGet(
 
 char * rtstrchr(const char * s, int c);
 
-PSTRING   WscGetAuthTypeStr(USHORT authFlag);
+char *  WscGetAuthTypeStr(USHORT authFlag);
 
-PSTRING   WscGetEncryTypeStr(USHORT encryFlag);
+char *  WscGetEncryTypeStr(USHORT encryFlag);
 
-USHORT WscGetAuthTypeFromStr(PSTRING arg);
+USHORT WscGetAuthTypeFromStr(char *arg);
 
-USHORT WscGetEncrypTypeFromStr(PSTRING arg);
+USHORT WscGetEncrypTypeFromStr(char *arg);
 
 void RtmpMeshDown(
 	IN void *pDrvCtrlBK,

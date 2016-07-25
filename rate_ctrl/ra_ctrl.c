@@ -2207,7 +2207,7 @@ void RTMPSetSupportMCS(
 
 INT	Set_RateAlg_Proc(
 	IN	PRTMP_ADAPTER			pAd,
-	IN	PSTRING					arg)
+	IN	char *				arg)
 {
 	UINT32 ra_alg;
 

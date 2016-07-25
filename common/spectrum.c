@@ -112,7 +112,7 @@ u8 GetRegulatoryMaxTxPwr(
 	u8 RegulatoryClass;
 	u8 MaxRegulatoryClassNum;
 	PDOT11_REGULATORY_INFORMATION pRegulatoryClass;
-	PSTRING pCountry = (PSTRING)(pAd->CommonCfg.CountryCode);
+	char *pCountry = (char *)(pAd->CommonCfg.CountryCode);
 
 
 	if (strncmp(pCountry, "US", 2) == 0)
@@ -826,7 +826,7 @@ void InsertChannelRepIE(
 	IN PRTMP_ADAPTER pAd,
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
-	IN PSTRING pCountry,
+	IN char *pCountry,
 	IN u8 RegulatoryClass)
 {
 	ULONG TempLen;
@@ -2173,11 +2173,11 @@ void PeerSpectrumAction(
  */
 INT Set_MeasureReq_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT Aid = 1;
 	UINT ArgIdx;
-	PSTRING thisChar;
+	char *thisChar;
 
 	MEASURE_REQ_MODE MeasureReqMode;
 	u8 MeasureReqToken = RandomByte(pAd);
@@ -2272,7 +2272,7 @@ END_OF_MEASURE_REQ:
 
 INT Set_TpcReq_Proc(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg)
+	IN	char *		arg)
 {
 	UINT Aid;
 

@@ -55,8 +55,8 @@ MODULE_LICENSE("GPL");
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
 
-PSTRING mac = "";		   /* default 00:00:00:00:00:00 */
-PSTRING hostname = "";		   /* default CMPC */
+char *mac = "";		   /* default 00:00:00:00:00:00 */
+char *hostname = "";		   /* default CMPC */
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,12)
 MODULE_PARM (mac, "s");
 #else

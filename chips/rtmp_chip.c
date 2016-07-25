@@ -645,7 +645,7 @@ void NetDevNickNameInit(
 {
 #ifdef CONFIG_STA_SUPPORT
 #ifdef RTMP_MAC_USB
-		snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
+		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
 #endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 }

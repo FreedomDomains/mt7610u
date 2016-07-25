@@ -400,7 +400,7 @@ void CalculateMIC(
 	IN UCHAR *PTK,
 	OUT PEAPOL_PACKET pMsg);
 
-PSTRING GetEapolMsgType(
+char *GetEapolMsgType(
 	CHAR msg);
 
 #ifdef CONFIG_STA_SUPPORT

@@ -111,7 +111,7 @@ RTMP_BUILD_DRV_OPS_FUNCTION_BODY
 #endif /* LINUX */
 
 
-int rt28xx_init(void *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
+int rt28xx_init(void *pAdSrc, char *pDefaultMac, char *pHostName)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 	UINT index;
@@ -358,7 +358,7 @@ int rt28xx_init(void *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	DBGPRINT(RT_DEBUG_OFF, ("2. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
 	/* We should read EEPROM for all cases.  rt2860b*/
-	NICReadEEPROMParameters(pAd, (PSTRING)pDefaultMac);
+	NICReadEEPROMParameters(pAd, (char *)pDefaultMac);
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -980,12 +980,12 @@ static void	WriteConfToDatFile(
     IN  PRTMP_ADAPTER pAd)
 {
 	char	*cfgData = 0;
-	PSTRING			fileName = NULL;
+	char *		fileName = NULL;
 	RTMP_OS_FD		file_r, file_w;
 	RTMP_OS_FS_INFO		osFSInfo;
 	LONG			rv, fileLen = 0;
 	char			*offset = 0;
-	PSTRING			pTempStr = 0;
+	char *		pTempStr = 0;
 //	INT				tempStrLen = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("-----> WriteConfToDatFile\n"));
@@ -1016,7 +1016,7 @@ static void	WriteConfToDatFile(
 		}
 		NdisZeroMemory(cfgData, fileLen);
 		RtmpOSFileSeek(file_r, 0);
-		rv = RtmpOSFileRead(file_r, (PSTRING)cfgData, fileLen);
+		rv = RtmpOSFileRead(file_r, (char *)cfgData, fileLen);
 		RtmpOSFileClose(file_r);
 		if (rv != fileLen)
 		{
@@ -1032,9 +1032,9 @@ static void	WriteConfToDatFile(
 	}
 	else
 	{
-		offset = (char *) rtstrstr((PSTRING) cfgData, "Default\n");
+		offset = (char *) rtstrstr((char *) cfgData, "Default\n");
 		offset += strlen("Default\n");
-		RtmpOSFileWrite(file_w, (PSTRING)cfgData, (int)(offset-cfgData));
+		RtmpOSFileWrite(file_w, (char *)cfgData, (int)(offset-cfgData));
 		os_alloc_mem(NULL, (UCHAR **)&pTempStr, 512);
 		if (!pTempStr)
 		{
@@ -1046,10 +1046,10 @@ static void	WriteConfToDatFile(
 		for (;;)
 		{
 			int i = 0;
-			PSTRING ptr;
+			char *ptr;
 
 			NdisZeroMemory(pTempStr, 512);
-			ptr = (PSTRING) offset;
+			ptr = (char *) offset;
 			while(*ptr && *ptr != '\n')
 			{
 				pTempStr[i++] = *ptr++;

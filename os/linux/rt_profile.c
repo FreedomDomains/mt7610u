@@ -101,11 +101,11 @@ char const *pWirelessFloodEventText[IW_FLOOD_EVENT_TYPE_NUM] = {
 NDIS_STATUS	RTMPReadParametersHook(
 	IN	PRTMP_ADAPTER pAd)
 {
-	PSTRING					src = NULL;
+	char *				src = NULL;
 	RTMP_OS_FD				srcf;
 	RTMP_OS_FS_INFO			osFSInfo;
 	INT 						retval = NDIS_STATUS_FAILURE;
-	PSTRING					buffer;
+	char *				buffer;
 
 #ifdef HOSTAPD_SUPPORT
 	int i;
@@ -126,7 +126,7 @@ NDIS_STATUS	RTMPReadParametersHook(
 		}
 #endif /* CONFIG_STA_SUPPORT */
 #ifdef MULTIPLE_CARD_SUPPORT
-		src = (PSTRING)pAd->MC_FileName;
+		src = (char *)pAd->MC_FileName;
 #endif /* MULTIPLE_CARD_SUPPORT */
 	}
 
@@ -210,7 +210,7 @@ void RtmpDrvSendWirelessEvent(
 	IN	CHAR					Rssi)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
-	PSTRING	pBuf = NULL, pBufPtr = NULL;
+	char *pBuf = NULL, *pBufPtr = NULL;
 	USHORT	event, type, BufLen;
 	UCHAR	event_table_len = 0;
 
@@ -240,13 +240,13 @@ void RtmpDrvSendWirelessEvent(
 
 	if (event_table_len == 0)
 	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s : The type(%0x02x) is not valid.\n", __FUNCTION__, type));			       		
+		DBGPRINT(RT_DEBUG_ERROR, ("%s : The type(%0x02x) is not valid.\n", __FUNCTION__, type));
 		return;
 	}
 
 	if (event >= event_table_len)
 	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s : The event(%0x02x) is not valid.\n", __FUNCTION__, event));			       		
+		DBGPRINT(RT_DEBUG_ERROR, ("%s : The event(%0x02x) is not valid.\n", __FUNCTION__, event));
 		return;
 	}
 
@@ -297,7 +297,7 @@ void RtmpDrvSendWirelessEvent(
 		os_free_mem(NULL, pBuf);
 	}
 	else
-		DBGPRINT(RT_DEBUG_ERROR, ("%s : Can't allocate memory for wireless event.\n", __FUNCTION__));			       		
+		DBGPRINT(RT_DEBUG_ERROR, ("%s : Can't allocate memory for wireless event.\n", __FUNCTION__));
 }
 #endif /* SYSTEM_LOG_SUPPORT */
 
@@ -357,7 +357,7 @@ void announce_802_3_packet(
 		RtmpOsPktInfPpaSend(pRxPkt);
 		pRxPkt=NULL;
 		return;
-	}	
+	}
 #endif /* INF_PPA_SUPPORT */
 
 	{

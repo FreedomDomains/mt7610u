@@ -2043,11 +2043,11 @@ static void MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 
 #ifdef RTMP_MAC_USB
 	if (IS_MT7650U(pAd))
-		snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7650U_STA");
+		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7650U_STA");
 	else if (IS_MT7630U(pAd))
-		snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7630U_STA");
+		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7630U_STA");
 	else if (IS_MT7610U(pAd))
-		snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7610U_STA");
+		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7610U_STA");
 #endif
 }
 #endif /* CONFIG_STA_SUPPORT */
@@ -5583,7 +5583,7 @@ void mt76x0_adjust_per_rate_pwr(PRTMP_ADAPTER pAd)
 /******************************* Command API *******************************/
 INT Set_AntennaSelect_Proc(
 	IN RTMP_ADAPTER		*pAd,
-	IN PSTRING			arg)
+	IN char *		arg)
 {
 	u8 val = (u8)simple_strtol(arg, 0, 10);
 	UINT32 reg_val = 0;

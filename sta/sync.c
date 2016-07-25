@@ -1557,7 +1557,7 @@ void PeerBeaconAtJoinAction(
 							DBGPRINT(RT_DEBUG_TRACE, ("%s:AP privacy %d is differenct from STA privacy%d\n",
 										__FUNCTION__, (ie_list->CapabilityInfo & 0x0010) >> 4 ,
 										pAd->StaCfg.WepStatus != Ndis802_11WEPDisabled));
-							ScanParmFill(pAd, &ScanReq, (PSTRING) pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
+							ScanParmFill(pAd, &ScanReq, (char *) pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
 							MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_SCAN_REQ, sizeof(MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
 							pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_LIST_SCAN;
 							NdisGetSystemUpTime(&pAd->StaCfg.LastScanTime);

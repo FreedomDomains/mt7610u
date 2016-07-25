@@ -2010,11 +2010,11 @@ INT Set_DlsEntryInfo_Display_Proc(
 
 INT Set_DlsAddEntry_Proc(
 	IN PRTMP_ADAPTER pAd,
-	IN PSTRING arg)
+	IN char *arg)
 {
 	UCHAR mac[MAC_ADDR_LEN];
 	USHORT Timeout;
-	PSTRING token;
+	char *token;
 	STRING sepValue[] = ":", DASH = '-';
 	INT i;
 	RT_802_11_DLS Dls;
@@ -2060,10 +2060,10 @@ INT Set_DlsAddEntry_Proc(
 
 INT Set_DlsTearDownEntry_Proc(
 	IN PRTMP_ADAPTER pAd,
-	IN PSTRING arg)
+	IN char *arg)
 {
 	UCHAR macAddr[MAC_ADDR_LEN];
-	PSTRING value;
+	char *value;
 	INT i;
 	RT_802_11_DLS Dls;
 

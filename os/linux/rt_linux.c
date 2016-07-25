@@ -898,7 +898,7 @@ void send_monitor_packets(IN PNET_DEV pNetDev,
 
 		ph->msgcode = DIDmsg_lnxind_wlansniffrm;
 		ph->msglen = sizeof (wlan_ng_prism2_header);
-		strcpy((PSTRING) ph->devname, (PSTRING) pDevName);
+		strcpy((char *) ph->devname, (char *) pDevName);
 
 		ph->hosttime.did = DIDmsg_lnxind_wlansniffrm_hosttime;
 		ph->hosttime.status = 0;
@@ -1179,7 +1179,7 @@ static inline void __RtmpOSTaskCustomize(OS_TASK *pTask)
 #ifndef KTHREAD_SUPPORT
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
-	daemonize((PSTRING) & pTask->taskName[0] /*"%s",pAd->net_dev->name */ );
+	daemonize((char *) & pTask->taskName[0] /*"%s",pAd->net_dev->name */ );
 
 	allow_signal(SIGTERM);
 	allow_signal(SIGKILL);
@@ -1246,7 +1246,7 @@ static inline NDIS_STATUS __RtmpOSTaskAttach(
 
 static inline NDIS_STATUS __RtmpOSTaskInit(
 	IN OS_TASK *pTask,
-	IN PSTRING pTaskName,
+	IN char *pTaskName,
 	IN void *pPriv,
 	IN LIST_HEADER *pSemList)
 {
@@ -1465,7 +1465,7 @@ static int RtmpOSNetDevRequestName(
 	IN INT32 MC_RowID,
 	IN UINT32 *pIoctlIF,
 	IN PNET_DEV dev,
-	IN PSTRING pPrefixStr,
+	IN char *pPrefixStr,
 	IN INT devIdx)
 {
 	PNET_DEV existNetDev;
@@ -1587,7 +1587,7 @@ INT RtmpOSNetDevOpsAlloc(void **pNetDevOps)
 #endif
 
 
-PNET_DEV RtmpOSNetDevGetByName(PNET_DEV pNetDev, PSTRING pDevName)
+PNET_DEV RtmpOSNetDevGetByName(PNET_DEV pNetDev, char *pDevName)
 {
 	PNET_DEV pTargetNetDev = NULL;
 
@@ -1797,7 +1797,7 @@ PNET_DEV RtmpOSNetDevCreate(
 	IN INT devType,
 	IN INT devNum,
 	IN INT privMemSize,
-	IN PSTRING pNamePrefix)
+	IN char *pNamePrefix)
 {
 	struct net_device *pNetDev = NULL;
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
@@ -1912,7 +1912,7 @@ void RtmpDrvAllMacPrint(
 	IN UINT32 AddrStep)
 {
 	struct file *file_w;
-	PSTRING fileName = "MacDump.txt";
+	char *fileName = "MacDump.txt";
 	mm_segment_t orig_fs;
 	STRING *msg;
 	UINT32 macAddr = 0, macValue = 0;
@@ -1962,7 +1962,7 @@ void RtmpDrvAllE2PPrint(
 	IN UINT32 AddrStep)
 {
 	struct file *file_w;
-	PSTRING fileName = "EEPROMDump.txt";
+	char *fileName = "EEPROMDump.txt";
 	mm_segment_t orig_fs;
 	STRING *msg;
 	USHORT eepAddr = 0;
@@ -2013,7 +2013,7 @@ void RtmpDrvAllRFPrint(
 	IN UINT32 BufLen)
 {
 	struct file *file_w;
-	PSTRING fileName = "RFDump.txt";
+	char *fileName = "RFDump.txt";
 	mm_segment_t orig_fs;
 	UINT32 macAddr = 0, macValue = 0;
 
@@ -4148,7 +4148,7 @@ Note:
 */
 NDIS_STATUS RtmpOSTaskInit(
 	RTMP_OS_TASK *pTaskOrg,
-	PSTRING pTaskName,
+	char *pTaskName,
 	void *pPriv,
 	LIST_HEADER *pTaskList,
 	LIST_HEADER *pSemList)
@@ -5554,7 +5554,7 @@ NDIS_STATUS RtmpOSTaskAttach(
 
 NDIS_STATUS RtmpOSTaskInit(
 	RTMP_OS_TASK *pTask,
-	PSTRING pTaskName,
+	char *pTaskName,
 	void *pPriv,
 	LIST_HEADER *pTaskList,
 	LIST_HEADER *pSemList)
