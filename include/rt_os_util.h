@@ -76,10 +76,6 @@ NDIS_STATUS os_alloc_mem_suspend(
 	OUT	UCHAR					**mem,
 	IN	ULONG					size);
 
-NDIS_STATUS os_free_mem(
-	IN	void 				*pReserved,
-	IN	void *				mem);
-
 NDIS_STATUS AdapterBlockAllocateMemory(
 	IN	void *				handle,
 	OUT	void *				*ppAd,

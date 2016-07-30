@@ -4208,7 +4208,7 @@ void STA_Fragment_Frame_Tx(
 
 #ifdef SOFT_ENCRYPT
 	if (tmp_ptr != NULL)
-		os_free_mem(pAd, tmp_ptr);
+		kfree(tmp_ptr);
 #endif /* SOFT_ENCRYPT */
 
 	/*

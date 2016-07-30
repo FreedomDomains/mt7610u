@@ -176,7 +176,7 @@ void RTMPInitWepEngine(
 	ARC4_INIT(pARC4_CTX, &seed[0], seed_len);
 
 	if (seed != NULL)
-		os_free_mem(NULL, seed);
+		kfree(seed);
 }
 
 /*
@@ -265,7 +265,7 @@ BOOLEAN	RTMPSoftEncryptWEP(
 	ARC4_Compute(ARC4_CTX, pData, DataByteCnt + LEN_ICV, pData);
 
 	if (ARC4_CTX != NULL)
-		os_free_mem(NULL, ARC4_CTX);
+		kfree(ARC4_CTX);
 
 	return TRUE;
 }
@@ -357,7 +357,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
 	*DataByteCnt = plaintext_len;
 
 	if (ARC4_CTX != NULL)
-		os_free_mem(NULL, ARC4_CTX);
+		kfree(ARC4_CTX);
 
 	return TRUE;
 }

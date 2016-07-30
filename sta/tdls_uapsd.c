@@ -950,7 +950,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
 	/* free resources */
 LabelExit:
 	if (pOutBuffer != NULL)
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 	return NStatus;
 }
 
@@ -1049,7 +1049,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 	/* free resources */
 LabelExit:
 	if (pOutBuffer != NULL)
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 	return NStatus;
 }
 
@@ -1469,7 +1469,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	os_alloc_mem(NULL, (UCHAR **)&pElem, sizeof(MLME_QUEUE_ELEM));
 	if (pElem == NULL)
 	{
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 		return;
 	}
 
@@ -1491,8 +1491,8 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	}
 	if (IdTdls == MAX_NUM_OF_TDLS_ENTRY)
 	{
-		os_free_mem(pAd, pOutBuffer);
-		os_free_mem(NULL, pElem);
+		kfree(pOutBuffer);
+		kfree(pElem);
 		return;
 	}
 
@@ -1529,8 +1529,8 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	TDLS_PeerSetupRspAction(pAd, pElem);
 
 	/* free memory */
-	os_free_mem(pAd, pOutBuffer);
-	os_free_mem(NULL, pElem);
+	kfree(pOutBuffer);
+	kfree(pElem);
 } /* End of TDLS_UAPSD_CmdSimSetupReqSend */
 
 
@@ -1710,9 +1710,9 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	/* free resources */
 LabelExit:
 	if (pElem != NULL)
-		os_free_mem(NULL, pElem);
+		kfree(pElem);
 	if (pOutBuffer != NULL)
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 }
 
 

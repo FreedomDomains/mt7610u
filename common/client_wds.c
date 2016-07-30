@@ -80,7 +80,7 @@ void CliWds_ProxyTabDestory(
 
 	if (pAd->ApCfg.pCliWdsEntryPool)
 /*		kfree(pAd->ApCfg.pCliWdsEntryPool);*/
-		os_free_mem(NULL, pAd->ApCfg.pCliWdsEntryPool);
+		kfree(pAd->ApCfg.pCliWdsEntryPool);
 	pAd->ApCfg.pCliWdsEntryPool = NULL;
 
 	return;

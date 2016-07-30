@@ -272,17 +272,17 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 
 	if ((Status != NDIS_STATUS_SUCCESS) && (pBeaconBuf))
 	{
-		os_free_mem(NULL, pBeaconBuf);
+		kfree(pBeaconBuf);
 		pAd->BeaconBuf = NULL;
 	}
 
 	if ((Status != NDIS_STATUS_SUCCESS) && (pAd != NULL))
 	{
 		if (pAd->stats != NULL)
-			os_free_mem(NULL, pAd->stats);
+			kfree(pAd->stats);
 
 		if (pAd->iw_stats != NULL)
-			os_free_mem(NULL, pAd->iw_stats);
+			kfree(pAd->iw_stats);
 	}
 
 	if (pAd != NULL) /* compile warning: avoid use NULL pointer when pAd == NULL */
@@ -3102,7 +3102,7 @@ void RTMP_TimerListRelease(
 		RTMPReleaseTimer(pObj->pRscObj, &Cancel);
 		pObjOld = pObj;
 		pObj = pObj->pNext;
-		os_free_mem(NULL, pObjOld);
+		kfree(pObjOld);
 	}
 
 	/* reset TimerList */
@@ -3631,7 +3631,7 @@ extern u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 	RTMP_SEM_EVENT_DESTROY(&(pAd->mcu_atomic));
 
 	if (pAd->UsbVendorReqBuf)
-		os_free_mem(pAd, pAd->UsbVendorReqBuf);
+		kfree(pAd->UsbVendorReqBuf);
 #endif /* RTMP_MAC_USB */
 
 	/*
@@ -3640,7 +3640,7 @@ extern u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++)
 	{
 		if (pAd->ProbeRespIE[index].pIe)
-			os_free_mem(pAd, pAd->ProbeRespIE[index].pIe);
+			kfree(pAd->ProbeRespIE[index].pIe);
 	}
 
 #ifdef RESOURCE_PRE_ALLOC

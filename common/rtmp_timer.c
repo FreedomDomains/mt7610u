@@ -281,7 +281,7 @@ void RtmpTimerQExit(RTMP_ADAPTER *pAd)
 		/* remove the timeQ*/
 	}
 	pAd->TimerQ.pQPollFreeList = NULL;
-	os_free_mem(pAd, pAd->TimerQ.pTimerQPoll);
+	kfree(pAd->TimerQ.pTimerQPoll);
 	pAd->TimerQ.pQTail = NULL;
 	pAd->TimerQ.pQHead = NULL;
 /*#ifndef KTHREAD_SUPPORT*/

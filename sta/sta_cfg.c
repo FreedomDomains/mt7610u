@@ -2040,7 +2040,7 @@ INT RTMPSetInformation(
 							NdisMoveMemory(pSsidString, Ssid.Ssid, Ssid.SsidLength);
 							pSsidString[MAX_LEN_OF_SSID] = 0x00;
 							Set_SSID_Proc(pAd, pSsidString);
-							os_free_mem(NULL, pSsidString);
+							kfree(pSsidString);
 						}
 						else
 							Status = -ENOMEM;
@@ -2085,7 +2085,7 @@ INT RTMPSetInformation(
 					}
                 }
             }
-         	os_free_mem(NULL, ppassphrase);
+         	kfree(ppassphrase);
 	   		break;
 
         case OID_802_11_BSSID:
@@ -2522,7 +2522,7 @@ INT RTMPSetInformation(
                     DBGPRINT(RT_DEBUG_TRACE, ("Set::RT_OID_802_11_ADD_WPA (id=0x%x, Len=%d-byte)\n", pKey->KeyIndex, pKey->KeyLength));
                 }
             }
-			os_free_mem(NULL, pKey);
+			kfree(pKey);
 /*            kfree(pKey); */
             break;
         case OID_802_11_REMOVE_KEY:
@@ -2575,7 +2575,7 @@ INT RTMPSetInformation(
                     }
                 }
             }
-			os_free_mem(NULL, pRemoveKey);
+			kfree(pRemoveKey);
 /*            kfree(pRemoveKey); */
             break;
         /* New for WPA */
@@ -2599,7 +2599,7 @@ INT RTMPSetInformation(
                 RTMPAddKey(pAd, pKey);
                 DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_ADD_KEY (id=0x%x, Len=%d-byte)\n", pKey->KeyIndex, pKey->KeyLength));
             }
-			os_free_mem(NULL, pKey);
+			kfree(pKey);
 /*            kfree(pKey); */
             break;
         case OID_802_11_CONFIGURATION:
@@ -2627,7 +2627,7 @@ INT RTMPSetInformation(
 	                    pConfig->BeaconPeriod, pConfig->ATIMWindow, pAd->CommonCfg.Channel));
 	                /* Config has changed */
 	                pAd->bConfigChanged = TRUE;
-					os_free_mem(NULL, pConfig);
+					kfree(pConfig);
 				}
             }
             break;
@@ -2919,7 +2919,7 @@ INT RTMPSetInformation(
 					if (!pBA->bAllTid && (pBA->TID > (NUM_OF_TID-1)))
 					{
 						Status = NDIS_STATUS_INVALID_DATA;
-						os_free_mem(NULL, pBA);
+						kfree(pBA);
 /*						kfree(pBA); */
 						break;
 					}
@@ -2946,7 +2946,7 @@ INT RTMPSetInformation(
 						else
 							DBGPRINT(RT_DEBUG_TRACE, ("Set :: Not found pEntry \n"));
 					}
-					os_free_mem(NULL, pBA);
+					kfree(pBA);
 /*					kfree(pBA); */
 				}
             }
@@ -3054,7 +3054,7 @@ INT RTMPSetInformation(
 					DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_ADD_WEP (id=0x%x, Len=%d-byte), %s\n", pWepKey->KeyIndex, pWepKey->KeyLength, (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED) ? "Port Secured":"Port NOT Secured"));
 				}
             }
-			os_free_mem(NULL, pWepKey);
+			kfree(pWepKey);
 /*            kfree(pWepKey); */
             break;
 #ifdef WPA_SUPPLICANT_SUPPORT
@@ -3107,7 +3107,7 @@ INT RTMPSetInformation(
                 Status = copy_from_user(pInfo, wrq->u.data.pointer, wrq->u.data.length);
                 MlmeDeauthReqAction(pAd, MsgElem);
 /*				kfree(MsgElem); */
-				os_free_mem(NULL, MsgElem);
+				kfree(MsgElem);
 
                 if (INFRA_ON(pAd))
                 {
@@ -3204,14 +3204,14 @@ INT RTMPSetInformation(
 			}
 			if(pPmkId)
 /*				kfree(pPmkId); */
-				os_free_mem(NULL, pPmkId);
+				kfree(pPmkId);
 	        break;
 
 		case RT_OID_WPS_PROBE_REQ_IE:
 			if (pAd->StaCfg.pWpsProbeReqIe)
 			{
 /*				kfree(pAd->StaCfg.pWpsProbeReqIe); */
-				os_free_mem(NULL, pAd->StaCfg.pWpsProbeReqIe);
+				kfree(pAd->StaCfg.pWpsProbeReqIe);
 				pAd->StaCfg.pWpsProbeReqIe = NULL;
 			}
 			pAd->StaCfg.WpsProbeReqIeLen = 0;
@@ -3227,7 +3227,7 @@ INT RTMPSetInformation(
 					if (pAd->StaCfg.pWpsProbeReqIe)
 					{
 /*						kfree(pAd->StaCfg.pWpsProbeReqIe); */
-						os_free_mem(NULL, pAd->StaCfg.pWpsProbeReqIe);
+						kfree(pAd->StaCfg.pWpsProbeReqIe);
 						pAd->StaCfg.pWpsProbeReqIe = NULL;
 					}
 					pAd->StaCfg.WpsProbeReqIeLen = 0;
@@ -3313,7 +3313,7 @@ INT RTMPSetInformation(
 				/*RestartAPIsRequired = TRUE; */
 			}
 /*			kfree(pKey); */
-			os_free_mem(NULL, pKey);
+			kfree(pKey);
 			break;
 
 
@@ -3555,7 +3555,7 @@ INT RTMPQueryInformation(
 	            if (BssLen > wrq->u.data.length)
 	            {
 /*                kfree(pBssidList); */
-					os_free_mem(NULL, pBssidList);
+					kfree(pBssidList);
 	                return -E2BIG;
 	            }
 	            else
@@ -3564,7 +3564,7 @@ INT RTMPQueryInformation(
 
             Status = copy_to_user(wrq->u.data.pointer, pBssidList, BssLen);
 /*            kfree(pBssidList); */
-			os_free_mem(NULL, pBssidList);
+			kfree(pBssidList);
             break;
         case OID_802_3_CURRENT_ADDRESS:
             wrq->u.data.length = MAC_ADDR_LEN;
@@ -3613,7 +3613,7 @@ INT RTMPQueryInformation(
                 wrq->u.data.length = sizeof(RT_802_11_LINK_STATUS);
                 Status = copy_to_user(wrq->u.data.pointer, pLinkStatus, wrq->u.data.length);
 /*                kfree(pLinkStatus); */
-				os_free_mem(NULL, pLinkStatus);
+				kfree(pLinkStatus);
                 DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_LINK_STATUS\n"));
             }
             else
@@ -3636,7 +3636,7 @@ INT RTMPQueryInformation(
                 DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_CONFIGURATION(BeaconPeriod=%ld,AtimW=%ld,Channel=%d) \n",
                                         pConfiguration->BeaconPeriod, pConfiguration->ATIMWindow, pAd->CommonCfg.Channel));
 /*				kfree(pConfiguration); */
-				os_free_mem(NULL, pConfiguration);
+				kfree(pConfiguration);
             }
             else
             {
@@ -3743,7 +3743,7 @@ INT RTMPQueryInformation(
                 wrq->u.data.length = sizeof(NDIS_802_11_STATISTICS);
                 Status = copy_to_user(wrq->u.data.pointer, pStatistics, wrq->u.data.length);
 /*                kfree(pStatistics); */
-				os_free_mem(NULL, pStatistics);
+				kfree(pStatistics);
             }
             else
             {
@@ -3820,7 +3820,7 @@ INT RTMPQueryInformation(
                 wrq->u.data.length = sizeof(RT_802_11_STA_CONFIG);
                 Status = copy_to_user(wrq->u.data.pointer, pStaConfig, wrq->u.data.length);
 /*                kfree(pStaConfig); */
-				os_free_mem(NULL, pStaConfig);
+				kfree(pStaConfig);
             }
             else
             {
@@ -4066,7 +4066,7 @@ INT RTMPQueryInformation(
 				pHTPhyMode->HtMode, pHTPhyMode->MCS, pHTPhyMode->BW, pHTPhyMode->STBC, pHTPhyMode->ExtOffset));
 			DBGPRINT(RT_DEBUG_TRACE, (" %s(): (.word = %x )\n",
 					__FUNCTION__, pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word));
-			os_free_mem(NULL, pHTPhyMode);
+			kfree(pHTPhyMode);
 		}
 		else
 		{
@@ -4102,7 +4102,7 @@ INT RTMPQueryInformation(
     				pHTPhyMode->HtMode, pHTPhyMode->MCS, pHTPhyMode->BW, pHTPhyMode->STBC, pHTPhyMode->ExtOffset));
     			DBGPRINT(RT_DEBUG_TRACE, ("%s(): (.word = %x )\n",
 						__FUNCTION__, pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word));
-			os_free_mem(NULL, pHTPhyMode);
+			kfree(pHTPhyMode);
             }
             else
             {
@@ -4294,7 +4294,7 @@ INT RTMPQueryInformation(
 
 				if (pChListBuf)
 /*					kfree(pChListBuf); */
-					os_free_mem(NULL, pChListBuf);
+					kfree(pChListBuf);
 			}
 			break;
 
@@ -4342,7 +4342,7 @@ INT RTMPQueryInformation(
 
 				if (pDlsInfo)
 /*					kfree(pDlsInfo); */
-					os_free_mem(NULL, pDlsInfo);
+					kfree(pDlsInfo);
 			}
 			break;
 #endif /* QOS_DLS_SUPPORT */
@@ -4397,7 +4397,7 @@ INT RTMPQueryInformation(
 
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 
 
@@ -4440,7 +4440,7 @@ INT RTMPQueryInformation(
 
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 			break;
 		case OID_WIFI_TEST_MEM_MAP_INFO:
@@ -4477,7 +4477,7 @@ INT RTMPQueryInformation(
 
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 			break;
 		case OID_WIFI_TEST_E2P:
@@ -4512,7 +4512,7 @@ INT RTMPQueryInformation(
 
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 			break;
 		case OID_WIFI_TEST_MAC:
@@ -4549,7 +4549,7 @@ INT RTMPQueryInformation(
 
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 			break;
 		case OID_WIFI_TEST_BBP_NUM:
@@ -4600,7 +4600,7 @@ INT RTMPQueryInformation(
 				wrq->u.data.length = sizeof(*Info) * pAd->chipCap.RFBankNum;
 				Status = copy_to_user(wrq->u.data.pointer, pBuf, wrq->u.data.length);
 
-				os_free_mem(NULL, pBuf);
+				kfree(pBuf);
 			}
 			break;
 		case OID_WIFI_TEST_MAC_NUM:
@@ -4859,7 +4859,7 @@ next:
 				RtmpDrvAllMacPrint(pAd, pBufMac, AddrStart, AddrEnd, 4);
 			}
 #endif /* RT65xx */
-			os_free_mem(NULL, pBufMac);
+			kfree(pBufMac);
 		}
 	}
 	if(strlen(msg) == 1)
@@ -4871,9 +4871,9 @@ next:
 
 LabelOK:
 	if (msg != NULL)
-		os_free_mem(NULL, msg);
+		kfree(msg);
 	if (arg != NULL)
-		os_free_mem(NULL, arg);
+		kfree(arg);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==RTMPIoctlMAC\n\n"));
 	return;
@@ -5076,7 +5076,7 @@ next:
 
 			/* print content to a file */
 			RtmpDrvAllE2PPrint(pAd, pMacContent, AddrEnd, 2);
-			os_free_mem(NULL, pMacContent);
+			kfree(pMacContent);
 		}
 
 	}
@@ -5090,9 +5090,9 @@ next:
 
 LabelOK:
 	if (msg != NULL)
-		os_free_mem(NULL, msg);
+		kfree(msg);
 	if (arg != NULL)
-		os_free_mem(NULL, arg);
+		kfree(arg);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==RTMPIoctlE2PROM\n"));
 	return;
@@ -5513,7 +5513,7 @@ void RTMPIoctlShow(
 						NdisMoveMemory(pMsgElem->Msg, &DisReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
 
 						MlmeDisassocReqAction(pAd, pMsgElem);
-						os_free_mem(NULL, pMsgElem);
+						kfree(pMsgElem);
 
 						RTMPusecDelay(1000);
 					}
@@ -6198,11 +6198,11 @@ RtmpIoctl_rt_ioctl_siwessid(
 			NdisMoveMemory(pSsidString, pSsid->pSsid, pSsid->SsidLen);
 			if (Set_SSID_Proc(pAd, pSsidString) == FALSE)
 			{
-				os_free_mem(NULL, pSsidString);
+				kfree(pSsidString);
 				pSsid->Status = RTMP_IO_EINVAL;
 				return NDIS_STATUS_SUCCESS;
 			}
-			os_free_mem(NULL, pSsidString);
+			kfree(pSsidString);
 		}
 		else
 		{
@@ -6711,7 +6711,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 	}
 
 	if (pMsgElem != NULL)
-		os_free_mem(NULL, pMsgElem);
+		kfree(pMsgElem);
 
 	return NDIS_STATUS_SUCCESS;
 }
@@ -7292,7 +7292,7 @@ RtmpIoctl_rt_ioctl_siwgenie(
 		{
 			if (pAd->StaCfg.pWpaAssocIe)
 			{
-				os_free_mem(NULL, pAd->StaCfg.pWpaAssocIe);
+				kfree(pAd->StaCfg.pWpaAssocIe);
 				pAd->StaCfg.pWpaAssocIe = NULL;
 			}
 /*			pAd->StaCfg.pWpaAssocIe = kmalloc(wrqu->data.length, MEM_ALLOC_FLAG); */

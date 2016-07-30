@@ -268,7 +268,7 @@ void ba_reordering_resource_release(PRTMP_ADAPTER pAd)
 	ASSERT(pBAEntry->list.qlen == 0);
 	/* II. free memory of reordering mpdu table */
 	NdisAcquireSpinLock(&pAd->mpdu_blk_pool.lock);
-	os_free_mem(pAd, pAd->mpdu_blk_pool.mem);
+	kfree(pAd->mpdu_blk_pool.mem);
 	NdisReleaseSpinLock(&pAd->mpdu_blk_pool.lock);
 }
 
@@ -649,7 +649,7 @@ void BAOriSessionAdd(
 							sizeof(FRAME_BAR),      &FrameBar,
 							END_OF_ARGS);
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer2, FrameLen);
-		os_free_mem(pAd, pOutBuffer2);
+		kfree(pOutBuffer2);
 
 		if (pBAEntry->ORIBATimer.TimerValue)
 			RTMPSetTimer(&pBAEntry->ORIBATimer, pBAEntry->ORIBATimer.TimerValue); /* in mSec */
@@ -932,7 +932,7 @@ void BAOriSessionTearDown(
 				NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 				MlmeDELBAAction(pAd, Elem);
 /*				kfree(Elem);*/
-				os_free_mem(NULL, Elem);
+				kfree(Elem);
 			}
 			else
 			{
@@ -967,7 +967,7 @@ void BAOriSessionTearDown(
 			NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 			MlmeDELBAAction(pAd, Elem);
 /*			kfree(Elem);*/
-			os_free_mem(NULL, Elem);
+			kfree(Elem);
 		}
 		else
 		{
@@ -1039,7 +1039,7 @@ void BARecSessionTearDown(
 				NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 				MlmeDELBAAction(pAd, Elem);
 /*				kfree(Elem);*/
-				os_free_mem(NULL, Elem);
+				kfree(Elem);
 			}
 			else
 			{
@@ -1323,7 +1323,7 @@ void PeerAddBAReqAction(
 					  sizeof(FRAME_ADDBA_RSP),  &ADDframe,
 			  END_OF_ARGS);
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(%d): TID(%d), BufSize(%d) <== \n", __FUNCTION__, Elem->Wcid, ADDframe.BaParm.TID,
 							  ADDframe.BaParm.BufSize));
@@ -1512,7 +1512,7 @@ void SendPSMPAction(
 					  sizeof(FRAME_PSMP_ACTION),      &Frame,
 					  END_OF_ARGS);
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 	DBGPRINT(RT_DEBUG_ERROR,("HT - SendPSMPAction( %d )  \n", Frame.Psmp));
 }
 

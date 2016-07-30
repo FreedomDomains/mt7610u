@@ -594,7 +594,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(RTMP_ADAPTER *ad, unsigned int length
 	return msg;
 
 error2:
-	os_free_mem(NULL, msg);
+	kfree(msg);
 error1:
 	RTMPFreeNdisPacket(ad, net_pkt);
 error0:
@@ -644,7 +644,7 @@ void andes_free_cmd_msg(struct cmd_msg *msg)
 	RTUSB_FREE_URB(msg->urb);
 #endif
 
-	os_free_mem(NULL, msg);
+	kfree(msg);
 
 	RTMPFreeNdisPacket(ad, net_pkt);
 	ctl->free_cmd_msg++;

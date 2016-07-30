@@ -2698,7 +2698,7 @@ INT RtmpDoAte(
 	}
 
  ERROR1:
-	os_free_mem(NULL, pRaCfg);
+	kfree(pRaCfg);
  ERROR0:
 	return Status;
 }

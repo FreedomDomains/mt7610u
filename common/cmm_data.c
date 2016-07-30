@@ -1421,7 +1421,7 @@ UINT deaggregate_AMSDU_announce(
 				/*WpaEAPOLKeyAction(pAd, Elem);*/
 				REPORT_MGMT_FRAME_TO_MLME(pAd, BSSID_WCID, Elem->Msg, Elem->MsgLen, 0, 0, 0, 0, OPMODE_STA);
 /*				kfree(Elem);*/
-				os_free_mem(NULL, Elem);
+				kfree(Elem);
 			}
 		}
 #endif /* CONFIG_STA_SUPPORT */
@@ -2484,7 +2484,7 @@ void RtmpEnqueueNullFrame(
 
 		DBGPRINT(RT_DEBUG_INFO, ("send NULL Frame @%d Mbps to AID#%d...\n", RateIdToMbps[TxRate], PID & 0x3f));
 		MiniportMMRequest(pAd, MapUserPriorityToAccessCategory[7], (PUCHAR)pNullFr, Length);
-		os_free_mem(pAd, pFrame);
+		kfree(pFrame);
 	}
 }
 

@@ -1002,7 +1002,7 @@ INT Set_ChannelListDel_Proc(
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("Default table used.\n" ));
 		if (pAd->CommonCfg.pChDesp != NULL)
-			os_free_mem(NULL, pAd->CommonCfg.pChDesp);
+			kfree(pAd->CommonCfg.pChDesp);
 		pAd->CommonCfg.pChDesp = NULL;
 		pAd->CommonCfg.DfsType = MAX_RD_REGION;
 	}
@@ -2066,7 +2066,7 @@ void RTMPIoctlGetSiteSurvey(
 	Status = copy_to_user(wrq->u.data.pointer, msg, wrq->u.data.length);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPIoctlGetSiteSurvey - wrq->u.data.length = %d\n", wrq->u.data.length));
-	os_free_mem(NULL, (PUCHAR)msg);
+	kfree((PUCHAR)msg);
 }
 #endif
 
@@ -2172,11 +2172,11 @@ void RTMPIoctlGetMacTable(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s", msg));
 /*	kfree(msg);*/
-	os_free_mem(NULL, msg);
+	kfree(msg);
 
 LabelOK:
 	if (pMacTab != NULL)
-		os_free_mem(NULL, pMacTab);
+		kfree(pMacTab);
 }
 
 #ifdef INF_AR9
@@ -4350,7 +4350,7 @@ INT show_devinfo_proc(RTMP_ADAPTER *pAd, char *arg)
 	pstr = wmode_2_str(pAd->CommonCfg.PhyMode);
 	if (pstr) {
 		DBGPRINT(RT_DEBUG_OFF, ("WirelessMode: %s(%d)\n", pstr, pAd->CommonCfg.PhyMode));
-		os_free_mem(pAd, pstr);
+		kfree(pstr);
 	}
 
 	DBGPRINT(RT_DEBUG_OFF, ("Channel: %d\n", pAd->CommonCfg.Channel));

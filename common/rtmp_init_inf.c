@@ -596,7 +596,7 @@ err1:
 
 #ifdef DOT11_N_SUPPORT
 	if(pAd->mpdu_blk_pool.mem)
-		os_free_mem(pAd, pAd->mpdu_blk_pool.mem); /* free BA pool*/
+		kfree(pAd->mpdu_blk_pool.mem); /* free BA pool*/
 #endif /* DOT11_N_SUPPORT */
 
 	/* shall not set priv to NULL here because the priv didn't been free yet.*/
@@ -723,7 +723,7 @@ void RTMPDrvSTAClose(
 
 #ifdef EXT_BUILD_CHANNEL_LIST
 	if (pAd->CommonCfg.pChDesp != NULL)
-		os_free_mem(NULL, pAd->CommonCfg.pChDesp);
+		kfree(pAd->CommonCfg.pChDesp);
 	pAd->CommonCfg.pChDesp = NULL;
 	pAd->CommonCfg.DfsType = MAX_RD_REGION;
 #endif /* EXT_BUILD_CHANNEL_LIST */
@@ -784,7 +784,7 @@ void RTMPDrvSTAClose(
 		DlListForEachSafe(ch, ch_temp, &pAd->SingleSkuPwrList, CH_POWER, List)
 		{
 			DlListDel(&ch->List);
-			os_free_mem(NULL, ch);
+			kfree(ch);
 		}
 	}
 #endif /* SINGLE_SKU_V2 */
@@ -910,7 +910,7 @@ void RTMPInfClose(
 			pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_DISASSOC;
 			MlmeDisassocReqAction(pAd, MsgElem);
 /*			kfree(MsgElem);*/
-			os_free_mem(NULL, MsgElem);
+			kfree(MsgElem);
 			}
 
 			RTMPusecDelay(1000);
@@ -925,7 +925,7 @@ void RTMPInfClose(
 		if (pAd->StaCfg.pWpsProbeReqIe)
 		{
 /*			kfree(pAd->StaCfg.pWpsProbeReqIe);*/
-			os_free_mem(NULL, pAd->StaCfg.pWpsProbeReqIe);
+			kfree(pAd->StaCfg.pWpsProbeReqIe);
 			pAd->StaCfg.pWpsProbeReqIe = NULL;
 			pAd->StaCfg.WpsProbeReqIeLen = 0;
 		}
@@ -933,7 +933,7 @@ void RTMPInfClose(
 		if (pAd->StaCfg.pWpaAssocIe)
 		{
 /*			kfree(pAd->StaCfg.pWpaAssocIe);*/
-			os_free_mem(NULL, pAd->StaCfg.pWpaAssocIe);
+			kfree(pAd->StaCfg.pWpaAssocIe);
 			pAd->StaCfg.pWpaAssocIe = NULL;
 			pAd->StaCfg.WpaAssocIeLen = 0;
 		}
@@ -1110,12 +1110,12 @@ static void	WriteConfToDatFile(
 WriteErr:
 	if (pTempStr)
 /*		kfree(pTempStr); */
-		os_free_mem(NULL, pTempStr);
+		kfree(pTempStr);
 ReadErr:
 WriteFileOpenErr:
 	if (cfgData)
 /*		kfree(cfgData); */
-		os_free_mem(NULL, cfgData);
+		kfree(cfgData);
 out:
 	RtmpOSFSInfoChange(&osFSInfo, FALSE);
 

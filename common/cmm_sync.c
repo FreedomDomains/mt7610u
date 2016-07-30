@@ -95,7 +95,7 @@ void BuildChannelList(
 			if (!pChannelListFlag)
 			{
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelListFlag failed\n", __FUNCTION__));
-				os_free_mem(NULL, pChannelList);
+				kfree(pChannelList);
 				return;
 			}
 
@@ -124,8 +124,8 @@ void BuildChannelList(
 
 			index += num;
 
-			os_free_mem(NULL, pChannelList);
-			os_free_mem(NULL, pChannelListFlag);
+			kfree(pChannelList);
+			kfree(pChannelListFlag);
 		}
 		bRegionFound = FALSE;
 		num = 0;
@@ -167,7 +167,7 @@ void BuildChannelList(
 			if (!pChannelListFlag)
 			{
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelListFlag failed\n", __FUNCTION__));
-				os_free_mem(NULL, pChannelList);
+				kfree(pChannelList);
 				return;
 			}
 
@@ -201,8 +201,8 @@ void BuildChannelList(
 			}
 			index += num;
 
-			os_free_mem(NULL, pChannelList);
-			os_free_mem(NULL, pChannelListFlag);
+			kfree(pChannelList);
+			kfree(pChannelListFlag);
 		}
 	}
 

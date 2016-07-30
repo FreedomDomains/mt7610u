@@ -178,7 +178,7 @@ INT CFG80211DRV_IoctlHandle(
                 		pAd->ApCfg.MBSSID[MAIN_MBSSID].TimBitmaps[i] = 0;
 			if (pAd->cfg80211_ctrl.beacon_tail_buf != NULL)
 			{
-				os_free_mem(NULL, pAd->cfg80211_ctrl.beacon_tail_buf);
+				kfree(pAd->cfg80211_ctrl.beacon_tail_buf);
 				pAd->cfg80211_ctrl.beacon_tail_buf = NULL;
 			}
 			pAd->cfg80211_ctrl.beacon_tail_len = 0;

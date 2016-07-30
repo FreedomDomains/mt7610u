@@ -3424,7 +3424,7 @@ void BssTableSortByRssi(
 	}
 
 	if (pTmpBss != NULL)
-		os_free_mem(NULL, pTmpBss);
+		kfree(pTmpBss);
 }
 #endif /* CONFIG_STA_SUPPORT */
 

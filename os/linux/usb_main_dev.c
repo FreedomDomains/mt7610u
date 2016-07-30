@@ -683,7 +683,7 @@ static int rt2870_probe(
 	if (rv != NDIS_STATUS_SUCCESS)
 	{
 /*		kfree(handle); */
-		os_free_mem(NULL, handle);
+		kfree(handle);
 		goto err_out;
 	}
 

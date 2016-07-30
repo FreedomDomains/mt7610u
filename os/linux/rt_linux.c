@@ -233,21 +233,6 @@ NDIS_STATUS os_alloc_mem_suspend(
 		return NDIS_STATUS_FAILURE;
 }
 
-/* pAd MUST allow to be NULL */
-NDIS_STATUS os_free_mem(
-	IN void *pReserved,
-	IN void *mem)
-{
-	ASSERT(mem);
-	kfree(mem);
-
-#ifdef VENDOR_FEATURE4_SUPPORT
-	OS_NumOfMemFree++;
-#endif /* VENDOR_FEATURE4_SUPPORT */
-
-	return NDIS_STATUS_SUCCESS;
-}
-
 #if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)
 /* The flag "CONFIG_RALINK_FLASH_API" is used for APSoC Linux SDK */
 #ifdef CONFIG_RALINK_FLASH_API
@@ -1533,7 +1518,7 @@ void RtmpOSNetDevFree(PNET_DEV pNetDev)
 	/* free assocaited private information */
 	pDevInfo = _RTMP_OS_NETDEV_GET_PRIV(pNetDev);
 	if (pDevInfo != NULL)
-		os_free_mem(NULL, pDevInfo);
+		kfree(pDevInfo);
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 	free_netdev(pNetDev);
@@ -1951,7 +1936,7 @@ void RtmpDrvAllMacPrint(
 		filp_close(file_w, NULL);
 	}
 	set_fs(orig_fs);
-	os_free_mem(NULL, msg);
+	kfree(msg);
 }
 
 
@@ -2003,7 +1988,7 @@ void RtmpDrvAllE2PPrint(
 		filp_close(file_w, NULL);
 	}
 	set_fs(orig_fs);
-	os_free_mem(NULL, msg);
+	kfree(msg);
 }
 
 
@@ -2278,7 +2263,7 @@ BOOLEAN RtmpOsStatsAlloc(
 #if WIRELESS_EXT >= 12
 	os_alloc_mem(NULL, (UCHAR **) ppIwStats, sizeof (struct iw_statistics));
 	if ((*ppIwStats) == NULL) {
-		os_free_mem(NULL, *ppStats);
+		kfree(*ppStats);
 		return FALSE;
 	}
 	NdisZeroMemory((UCHAR *)* ppIwStats, sizeof (struct iw_statistics));
@@ -2575,7 +2560,7 @@ void CFG80211OS_UnRegister(
 		SET_NETDEV_DEV(pNetDev, NULL);
 	}
 
-	os_free_mem(NULL, pCfg80211_CB);
+	kfree(pCfg80211_CB);
 }
 
 
@@ -2662,7 +2647,7 @@ BOOLEAN CFG80211_SupBandInit(
 		pRates = kzalloc(sizeof(*pRates) * NumOfRate, GFP_KERNEL);
 		if (!pRates)
 		{
-			os_free_mem(NULL, pChannels);
+			kfree(pChannels);
 			DBGPRINT(RT_DEBUG_ERROR, ("80211> ieee80211_rate allocation fail!\n"));
 			return FALSE;
 		}
@@ -3497,7 +3482,7 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, BOOLEAN bSet)
 
 	if (bSet == FALSE) {
 		if (pOSFSInfoOrg->pContent != NULL) {
-			os_free_mem(NULL, pOSFSInfoOrg->pContent);
+			kfree(pOSFSInfoOrg->pContent);
 			pOSFSInfoOrg->pContent = NULL;
 		}
 	}
@@ -3518,7 +3503,7 @@ void RtmpOsExitCompletion(RTMP_OS_COMPLETION *pCompletion)
 	if (pCompletion->pContent == NULL)
 		return;
 
-	os_free_mem(NULL, pCompletion->pContent);
+	kfree(pCompletion->pContent);
 	pCompletion->pContent = NULL;
 
 }
@@ -3626,7 +3611,7 @@ BOOLEAN RtmpOsTaskletKill(RTMP_NET_TASK_STRUCT *pTasklet)
 		tasklet_kill((OS_NET_TASK_STRUCT *) (pTasklet->pContent));
 #endif /* WORKQUEUE_BH */
 
-		os_free_mem(NULL, pTasklet->pContent);
+		kfree(pTasklet->pContent);
 		pTasklet->pContent = NULL;
 	}
 
@@ -3778,7 +3763,7 @@ void RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
 	if (pTimer) {
 		__RTMP_OS_Release_Timer(pTimer);
 
-		os_free_mem(NULL, pTimer);
+		kfree(pTimer);
 		pTimerOrg->pContent = NULL;
 	}
 }
@@ -3824,7 +3809,7 @@ BOOLEAN RTMP_OS_Alloc_Rsc(
 				DBGPRINT(RT_DEBUG_ERROR,
 					 ("%s: alloc timer obj fail!\n",
 					  __FUNCTION__));
-				os_free_mem(NULL, pRsc->pContent);
+				kfree(pRsc->pContent);
 				pRsc->pContent = NULL;
 				return FALSE;
 			} else {
@@ -3950,7 +3935,7 @@ void RTMP_OS_Free_Rscs(LIST_HEADER *pRscList)
 
 		if (pRsc->pContent != NULL) {
 			/* free the timer memory */
-			os_free_mem(NULL, pRsc->pContent);
+			kfree(pRsc->pContent);
 			pRsc->pContent = NULL;
 		} else {
 			/*
@@ -3963,7 +3948,7 @@ void RTMP_OS_Free_Rscs(LIST_HEADER *pRscList)
 			 */
 		}
 
-		os_free_mem(NULL, pObj);	/* free the timer record entry */
+		kfree(pObj);	/* free the timer record entry */
 	}
 	OS_SEM_UNLOCK(&UtilSemLock);
 }
@@ -4015,7 +4000,7 @@ void RtmpOSTaskFree(RTMP_OS_TASK *pTaskOrg)
 
 	pTask = (OS_TASK *) (pTaskOrg->pContent);
 	if (pTask != NULL) {
-		os_free_mem(NULL, pTask);
+		kfree(pTask);
 		pTaskOrg->pContent = NULL;
 	}
 }
@@ -4269,7 +4254,7 @@ void RtmpOsFreeSpinLock(NDIS_SPIN_LOCK *pLockOrg)
 	if (pLock != NULL) {
 		OS_NdisFreeSpinLock(pLock);
 
-		os_free_mem(NULL, pLock);
+		kfree(pLock);
 		pLockOrg->pContent = NULL;
 	}
 }
@@ -4970,7 +4955,7 @@ BOOLEAN RtmpOsSemaDestroy(RTMP_OS_SEM *pSemOrg)
 	if (pSem != NULL) {
 		OS_SEM_EVENT_DESTROY(pSem);
 
-		os_free_mem(NULL, pSem);
+		kfree(pSem);
 		pSemOrg->pContent = NULL;
 	} else
 		printk("sem> warning! double-free sem!\n");
@@ -5380,7 +5365,7 @@ Note:
 void RtmpOsAtomicDestroy(RTMP_OS_ATOMIC *pAtomic)
 {
 	if (pAtomic->pContent) {
-		os_free_mem(NULL, pAtomic->pContent);
+		kfree(pAtomic->pContent);
 		pAtomic->pContent = NULL;
 	}
 }

@@ -173,7 +173,7 @@ void MlmeDlsReqAction(
 	RTMPSetTimer(&pDLS->Timer, Timeout);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 }
 
 /*
@@ -471,7 +471,7 @@ void PeerDlsReqAction(
 	}
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 }
 
 /*
@@ -867,7 +867,7 @@ void MlmeDlsTearDownAction(
 			  6, pAd->CurrentAddress, 2, &ReasonCode, END_OF_ARGS);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 	RTMPCancelTimer(&pDLS->Timer, &TimerCancelled);
 
 	/* Remove key in local dls table entry */
@@ -1449,7 +1449,7 @@ void RTMPSendDLSTearDownFrame(
 			  pAd->CurrentAddress, 2, &Reason, END_OF_ARGS);
 
 	MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	/* Remove key in local dls table entry */
 	for (i = 0; i < MAX_NUM_OF_INIT_DLS_ENTRY; i++) {
@@ -1562,7 +1562,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 	/* Allocate buffer for transmitting message */
 	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
 	if (NStatus != NDIS_STATUS_SUCCESS) {
-		os_free_mem(NULL, mpool);
+		kfree(mpool);
 		return NStatus;
 	}
 	/* Prepare EAPOL frame for MIC calculation */
@@ -1604,8 +1604,8 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
-	os_free_mem(pAd, pOutBuffer);
-	os_free_mem(NULL, mpool);
+	kfree(pOutBuffer);
+	kfree(mpool);
 
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("RTMPSendSTAKeyRequest- Send STAKey request (NStatus=%x, FrameLen=%ld)\n",
@@ -1698,7 +1698,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	/* Allocate buffer for transmitting message */
 	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
 	if (NStatus != NDIS_STATUS_SUCCESS) {
-		os_free_mem(NULL, mpool);
+		kfree(mpool);
 		return NStatus;
 	}
 	/* Prepare EAPOL frame for MIC calculation */
@@ -1740,8 +1740,8 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
-	os_free_mem(pAd, pOutBuffer);
-	os_free_mem(NULL, mpool);
+	kfree(pOutBuffer);
+	kfree(mpool);
 
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("RTMPSendSTAKeyHandShake- Send STAKey Message-2 (NStatus=%x, FrameLen=%ld)\n",

@@ -204,7 +204,7 @@ void WpaMicFailureReportFrame(
 	MlmeAllocateMemory(pAd, (PUCHAR *)&pOutBuffer);  /* allocate memory */
 	if(pOutBuffer == NULL)
 	{
-		os_free_mem(NULL, mpool);
+		kfree(mpool);
 		return;
 	}
 
@@ -236,9 +236,9 @@ void WpaMicFailureReportFrame(
 					  (PUCHAR)pPacket,
 					  CONV_ARRARY_TO_UINT16(pPacket->Body_Len) + 4, FALSE);
 
-	os_free_mem(pAd, (PUCHAR)pOutBuffer);
+	kfree((PUCHAR)pOutBuffer);
 
-	os_free_mem(NULL, mpool);
+	kfree(mpool);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WpaMicFailureReportFrame <-----\n"));
 }

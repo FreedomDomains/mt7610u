@@ -120,7 +120,7 @@ void MlmeADDBAAction(
 		Idx = pAd->MacTab.Content[pInfo->Wcid].BAOriWcidArray[pInfo->TID];
 		if (Idx == 0)
 		{
-			os_free_mem(pAd, pOutBuffer);
+			kfree(pOutBuffer);
 			DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() can't find BAOriEntry \n"));
 			return;
 		}
@@ -175,7 +175,7 @@ void MlmeADDBAAction(
 
 		MiniportMMRequest(pAd, (MGMT_USE_QUEUE_FLAG | MapUserPriorityToAccessCategory[pInfo->TID]), pOutBuffer, FrameLen);
 
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("BA - Send ADDBA request. StartSeq = %x,  FrameLen = %ld. BufSize = %d\n", Frame.BaStartSeq.field.StartSeq, FrameLen, Frame.BaParm.BufSize));
     }
@@ -223,7 +223,7 @@ void MlmeDELBAAction(
 		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer2);  /*Get an unused nonpaged memory*/
 		if(NStatus != NDIS_STATUS_SUCCESS)
 		{
-			os_free_mem(pAd, pOutBuffer);
+			kfree(pOutBuffer);
 			DBGPRINT(RT_DEBUG_ERROR, ("BA - MlmeDELBAAction() allocate memory failed 2. \n"));
 			return;
 		}
@@ -247,7 +247,7 @@ void MlmeDELBAAction(
 					  sizeof(FRAME_BAR),	  &FrameBar,
 					  END_OF_ARGS);
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer2, FrameLen);
-		os_free_mem(pAd, pOutBuffer2);
+		kfree(pOutBuffer2);
 		DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeDELBAAction() . Send BAR to refresh peer reordering buffer \n"));
 
 		/* SEND DELBA FRAME*/
@@ -278,7 +278,7 @@ void MlmeDELBAAction(
 		              sizeof(FRAME_DELBA_REQ),    &Frame,
 		              END_OF_ARGS);
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-		os_free_mem(pAd, pOutBuffer);
+		kfree(pOutBuffer);
 		DBGPRINT(RT_DEBUG_TRACE, ("BA - MlmeDELBAAction() . 3 DELBA sent. Initiator(%d)\n", pInfo->Initiator));
     	}
 }
@@ -543,7 +543,7 @@ void Send2040CoexistAction(
 	if (!((IntolerantChaRepLen == 0) && (pAd->CommonCfg.BSSCoexist2040.word == 0)))
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen + IntolerantChaRepLen);
 
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	DBGPRINT(RT_DEBUG_TRACE,("ACT - Send2040CoexistAction( BSSCoexist2040 = 0x%x )  \n", pAd->CommonCfg.BSSCoexist2040.word));
 }
@@ -847,7 +847,7 @@ static void respond_ht_information_exchange_action(
 					  END_OF_ARGS);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 }
 
 
@@ -1032,7 +1032,7 @@ void SendRefreshBAR(
 				MiniportMMRequest(pAd, (MGMT_USE_QUEUE_FLAG | MapUserPriorityToAccessCategory[TID]), pOutBuffer, FrameLen);
 
 			}
-			os_free_mem(pAd, pOutBuffer);
+			kfree(pOutBuffer);
 		}
 	}
 }

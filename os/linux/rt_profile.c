@@ -174,7 +174,7 @@ NDIS_STATUS	RTMPReadParametersHook(
 #endif /* SINGLE_SKU_V2 */
 
 /*	kfree(buffer); */
-	os_free_mem(NULL, buffer);
+	kfree(buffer);
 
 	return (retval);
 
@@ -294,7 +294,7 @@ void RtmpDrvSendWirelessEvent(
 		/*DBGPRINT(RT_DEBUG_TRACE, ("%s : %s\n", __FUNCTION__, pBuf)); */
 
 /*		kfree(pBuf); */
-		os_free_mem(NULL, pBuf);
+		kfree(pBuf);
 	}
 	else
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : Can't allocate memory for wireless event.\n", __FUNCTION__));
@@ -497,7 +497,7 @@ void RTMPFreeAdapter(
 	os_cookie=(POS_COOKIE)pAd->OS_Cookie;
 
 	if (pAd->BeaconBuf)
-		os_free_mem(NULL, pAd->BeaconBuf);
+		kfree(pAd->BeaconBuf);
 
 
 	NdisFreeSpinLock(&pAd->MgmtRingLock);
@@ -527,12 +527,12 @@ void RTMPFreeAdapter(
 
 	if (pAd->iw_stats)
 	{
-		os_free_mem(NULL, pAd->iw_stats);
+		kfree(pAd->iw_stats);
 		pAd->iw_stats = NULL;
 	}
 	if (pAd->stats)
 	{
-		os_free_mem(NULL, pAd->stats);
+		kfree(pAd->stats);
 		pAd->stats = NULL;
 	}
 
@@ -554,7 +554,7 @@ void RTMPFreeAdapter(
 
 	RtmpOsVfree(pAd); /* pci_free_consistent(os_cookie->pci_dev,sizeof(RTMP_ADAPTER),pAd,os_cookie->pAd_pa); */
 	if (os_cookie)
-		os_free_mem(NULL, os_cookie);
+		kfree(os_cookie);
 }
 
 

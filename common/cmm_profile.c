@@ -394,7 +394,7 @@ INT RTMPGetKeyParameter(
 	/*find section*/
 	if((offset = RTMPFindSection(buffer)) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		kfree((PUCHAR)pMemBuf);
 		return (FALSE);
 	}
 
@@ -405,7 +405,7 @@ INT RTMPGetKeyParameter(
 	/*search key*/
 	if((start_ptr=rtstrstr(offset, temp_buf1)) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		kfree((PUCHAR)pMemBuf);
 		return (FALSE);
 	}
 
@@ -415,7 +415,7 @@ INT RTMPGetKeyParameter(
 
 	if (end_ptr<start_ptr)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		kfree((PUCHAR)pMemBuf);
 		return (FALSE);
 	}
 
@@ -424,7 +424,7 @@ INT RTMPGetKeyParameter(
 
 	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		kfree((PUCHAR)pMemBuf);
 		return (FALSE);
 	}
 	ptr = (start_ptr +1);
@@ -441,7 +441,7 @@ INT RTMPGetKeyParameter(
 	memset(dest, 0x00, destsize);
 	strncpy(dest, ptr, ((len >= destsize) ? destsize: len));
 
-	os_free_mem(NULL, (PUCHAR)pMemBuf);
+	kfree((PUCHAR)pMemBuf);
 
 	return TRUE;
 }
@@ -494,7 +494,7 @@ INT RTMPGetKeyParameterWithOffset(
 	os_alloc_mem(NULL, (PUCHAR *)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
 	if(temp_buf2 == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
+		kfree((PUCHAR)temp_buf1);
         return (FALSE);
 	}
 
@@ -503,8 +503,8 @@ INT RTMPGetKeyParameterWithOffset(
     {
 		if ((offset = RTMPFindSection(buffer)) == NULL)
 		{
-			os_free_mem(NULL, (PUCHAR)temp_buf1);
-	    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+			kfree((PUCHAR)temp_buf1);
+	    	kfree((PUCHAR)temp_buf2);
     	    return (FALSE);
 		}
     }
@@ -518,8 +518,8 @@ INT RTMPGetKeyParameterWithOffset(
     /*search key*/
     if((start_ptr=rtstrstr(offset, temp_buf1))==NULL)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		kfree((PUCHAR)temp_buf1);
+    	kfree((PUCHAR)temp_buf2);
         return (FALSE);
     }
 
@@ -529,8 +529,8 @@ INT RTMPGetKeyParameterWithOffset(
 
     if (end_ptr<start_ptr)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		kfree((PUCHAR)temp_buf1);
+    	kfree((PUCHAR)temp_buf2);
         return (FALSE);
     }
 
@@ -542,8 +542,8 @@ INT RTMPGetKeyParameterWithOffset(
     strcpy(temp_buf1, temp_buf2);
     if((start_ptr=rtstrstr(temp_buf1, "=")) == NULL)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		kfree((PUCHAR)temp_buf1);
+    	kfree((PUCHAR)temp_buf2);
         return (FALSE);
     }
 
@@ -562,8 +562,8 @@ INT RTMPGetKeyParameterWithOffset(
     memset(dest, 0x00, destsize);
     strncpy(dest, ptr, len >= destsize ?  destsize: len);
 
-	os_free_mem(NULL, (PUCHAR)temp_buf1);
-    os_free_mem(NULL, (PUCHAR)temp_buf2);
+	kfree((PUCHAR)temp_buf1);
+    kfree((PUCHAR)temp_buf2);
     return TRUE;
 }
 
@@ -2328,7 +2328,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 	demo_mode_cfg(pAd);
 #endif /* CUSTOMER_DEMO */
 
-	os_free_mem(NULL, tmpbuf);
+	kfree(tmpbuf);
 
 	return NDIS_STATUS_SUCCESS;
 }
@@ -2392,7 +2392,7 @@ BOOLEAN RTMP_CardInfoRead(
 	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
 	if(tmpbuf == NULL)
 	{
-		os_free_mem(NULL, buffer);
+		kfree(buffer);
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -2688,8 +2688,8 @@ free_resource:
 RtmpOSFSInfoChange(&osFSInfo, FALSE);
 /*	kfree(buffer);*/
 /*	kfree(tmpbuf);*/
-os_free_mem(NULL, buffer);
-os_free_mem(NULL, tmpbuf);
+kfree(buffer);
+kfree(tmpbuf);
 
 return flg_match_ok;
 }
@@ -2857,7 +2857,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 free_resource:
 	RtmpOSFSInfoChange(&osFSInfo, FALSE);
 
-	os_free_mem(NULL, buffer);
+	kfree(buffer);
 	return TRUE;
 }
 #endif /* SINGLE_SKU_V2 */

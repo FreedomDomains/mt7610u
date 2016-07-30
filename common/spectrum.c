@@ -354,7 +354,7 @@ void MeasureReqTabExit(
 
 	if (pAd->CommonCfg.pMeasureReqTab)
 /*		kfree(pAd->CommonCfg.pMeasureReqTab);*/
-		os_free_mem(NULL, pAd->CommonCfg.pMeasureReqTab);
+		kfree(pAd->CommonCfg.pMeasureReqTab);
 	pAd->CommonCfg.pMeasureReqTab = NULL;
 
 	return;
@@ -579,7 +579,7 @@ void TpcReqTabExit(
 
 	if (pAd->CommonCfg.pTpcReqTab)
 /*		kfree(pAd->CommonCfg.pTpcReqTab);*/
-		os_free_mem(NULL, pAd->CommonCfg.pTpcReqTab);
+		kfree(pAd->CommonCfg.pTpcReqTab);
 	pAd->CommonCfg.pTpcReqTab = NULL;
 
 	return;
@@ -1187,7 +1187,7 @@ void EnqueueMeasurementRep(
 	InsertMeasureReportIE(pAd, (pOutBuffer + FrameLen), &FrameLen, &MeasureRepIE, ReportInfoLen, pReportInfo);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	return;
 }
@@ -1237,7 +1237,7 @@ void EnqueueTPCReq(
 	InsertTpcReqIE(pAd, (pOutBuffer + FrameLen), &FrameLen);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	return;
 }
@@ -1289,7 +1289,7 @@ void EnqueueTPCRep(
 	InsertTpcReportIE(pAd, (pOutBuffer + FrameLen), &FrameLen, TxPwr, LinkMargin);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	return;
 }
@@ -1383,7 +1383,7 @@ void EnqueueChSwAnn(
 	InsertChSwAnnIE(pAd, (pOutBuffer + FrameLen), &FrameLen, ChSwMode, NewCh, 0);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	return;
 }
@@ -2005,7 +2005,7 @@ static void PeerMeasureReportAction(
 		DBGPRINT(RT_DEBUG_TRACE, ("Invalid Measurement Report Frame.\n"));
 
 /*	kfree(pMeasureReportInfo);*/
-	os_free_mem(NULL, pMeasureReportInfo);
+	kfree(pMeasureReportInfo);
 
 	return;
 }
@@ -2265,7 +2265,7 @@ INT Set_MeasureReq_Proc(
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, (UINT)FrameLen);
 
 END_OF_MEASURE_REQ:
-	os_free_mem(pAd, pOutBuffer);
+	kfree(pOutBuffer);
 
 	return TRUE;
 }

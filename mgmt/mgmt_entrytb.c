@@ -591,7 +591,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 		hex_dump("sn - InsertMacRepeaterEntry pEntry->Addr", pEntry->Addr, 6);
 		/* Add this entry into ASIC RX WCID search table */
 		RTMP_STA_ENTRY_ADD(pAd, pEntry);
-		os_free_mem(NULL, pEntry);
+		kfree(pEntry);
 	}
 
 	return pEntry;
