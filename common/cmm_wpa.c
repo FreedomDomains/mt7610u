@@ -1493,7 +1493,7 @@ void MlmeDeAuthAction(
             MiniportMMRequest(pAd, MGMT_USE_QUEUE_FLAG, pOutBuffer, FrameLen);
         else
             MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-        MlmeFreeMemory(pAd, pOutBuffer);
+        os_free_mem(pAd, pOutBuffer);
 
         /* ApLogEvent(pAd, pEntry->Addr, EVENT_DISASSOCIATED);*/
         MacTableDeleteEntry(pAd, pEntry->Aid, pEntry->Addr);

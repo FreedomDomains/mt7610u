@@ -950,7 +950,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
 	/* free resources */
 LabelExit:
 	if (pOutBuffer != NULL)
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 	return NStatus;
 }
 
@@ -1049,7 +1049,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 	/* free resources */
 LabelExit:
 	if (pOutBuffer != NULL)
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 	return NStatus;
 }
 
@@ -1469,7 +1469,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	os_alloc_mem(NULL, (UCHAR **)&pElem, sizeof(MLME_QUEUE_ELEM));
 	if (pElem == NULL)
 	{
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 		return;
 	}
 
@@ -1491,7 +1491,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	}
 	if (IdTdls == MAX_NUM_OF_TDLS_ENTRY)
 	{
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 		os_free_mem(NULL, pElem);
 		return;
 	}
@@ -1529,7 +1529,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	TDLS_PeerSetupRspAction(pAd, pElem);
 
 	/* free memory */
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 	os_free_mem(NULL, pElem);
 } /* End of TDLS_UAPSD_CmdSimSetupReqSend */
 
@@ -1712,7 +1712,7 @@ LabelExit:
 	if (pElem != NULL)
 		os_free_mem(NULL, pElem);
 	if (pOutBuffer != NULL)
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 }
 
 

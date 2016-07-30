@@ -652,7 +652,7 @@ void MlmeAssocReqAction(
 #endif /* WFD_SUPPORT */
 
 		MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 
 		RTMPSetTimer(&pAd->MlmeAux.AssocTimer, Timeout);
 		pAd->Mlme.AssocMachine.CurrState = ASSOC_WAIT_RSP;
@@ -902,7 +902,7 @@ void MlmeReassocReqAction(
 #endif /* WFD_SUPPORT */
 
 		MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 
 		RTMPSetTimer(&pAd->MlmeAux.ReassocTimer, Timeout * 2);	/* in mSec */
 		pAd->Mlme.AssocMachine.CurrState = REASSOC_WAIT_RSP;
@@ -1003,7 +1003,7 @@ void MlmeDisassocReqAction(
 	pDisassocHdr->FC.SubType = SUBTYPE_DEAUTH;
 	MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
 
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 
 	pAd->StaCfg.DisassocReason = REASON_DISASSOC_STA_LEAVING;
 	COPY_MAC_ADDR(pAd->StaCfg.DisassocSta, pDisassocReq->Addr);
@@ -1734,7 +1734,7 @@ void Cls3errAction(
 	pDisassocHdr->FC.SubType = SUBTYPE_DEAUTH;
 	MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
 
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 
 	pAd->StaCfg.DisassocReason = REASON_CLS3ERR;
 	COPY_MAC_ADDR(pAd->StaCfg.DisassocSta, pAddr);

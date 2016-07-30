@@ -649,7 +649,7 @@ void BAOriSessionAdd(
 							sizeof(FRAME_BAR),      &FrameBar,
 							END_OF_ARGS);
 		MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer2, FrameLen);
-		MlmeFreeMemory(pAd, pOutBuffer2);
+		os_free_mem(pAd, pOutBuffer2);
 
 		if (pBAEntry->ORIBATimer.TimerValue)
 			RTMPSetTimer(&pBAEntry->ORIBATimer, pBAEntry->ORIBATimer.TimerValue); /* in mSec */
@@ -1323,7 +1323,7 @@ void PeerAddBAReqAction(
 					  sizeof(FRAME_ADDBA_RSP),  &ADDframe,
 			  END_OF_ARGS);
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(%d): TID(%d), BufSize(%d) <== \n", __FUNCTION__, Elem->Wcid, ADDframe.BaParm.TID,
 							  ADDframe.BaParm.BufSize));
@@ -1512,7 +1512,7 @@ void SendPSMPAction(
 					  sizeof(FRAME_PSMP_ACTION),      &Frame,
 					  END_OF_ARGS);
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 	DBGPRINT(RT_DEBUG_ERROR,("HT - SendPSMPAction( %d )  \n", Frame.Psmp));
 }
 

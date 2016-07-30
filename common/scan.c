@@ -355,7 +355,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	MlmeFreeMemory(pAd, frm_buf);
+	os_free_mem(pAd, frm_buf);
 
 	return TRUE;
 }

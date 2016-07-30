@@ -329,7 +329,7 @@ void MlmeForceJoinReqAction(
 #endif /* WFD_SUPPORT */
 
 		MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 	}
     } while (FALSE);
 
@@ -818,7 +818,7 @@ void MlmeJoinReqAction(
 #endif /* WFD_SUPPORT */
 
 			MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-			MlmeFreeMemory(pAd, pOutBuffer);
+			os_free_mem(pAd, pOutBuffer);
 		}
 	} while (FALSE);
 
@@ -2623,7 +2623,7 @@ void PeerProbeReqAction(
 
 
 			MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-			MlmeFreeMemory(pAd, pOutBuffer);
+			os_free_mem(pAd, pOutBuffer);
 		}
 	}
 }
@@ -2815,7 +2815,7 @@ void EnqueueProbeRequest(
 						  pAd->StaActive.SupRateLen,      pAd->StaActive.SupRate,
 						  END_OF_ARGS);
 		MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-		MlmeFreeMemory(pAd, pOutBuffer);
+		os_free_mem(pAd, pOutBuffer);
 	}
 
 }

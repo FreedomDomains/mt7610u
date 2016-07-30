@@ -173,7 +173,7 @@ void MlmeDlsReqAction(
 	RTMPSetTimer(&pDLS->Timer, Timeout);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 }
 
 /*
@@ -471,7 +471,7 @@ void PeerDlsReqAction(
 	}
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 }
 
 /*
@@ -867,7 +867,7 @@ void MlmeDlsTearDownAction(
 			  6, pAd->CurrentAddress, 2, &ReasonCode, END_OF_ARGS);
 
 	MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 	RTMPCancelTimer(&pDLS->Timer, &TimerCancelled);
 
 	/* Remove key in local dls table entry */
@@ -1449,7 +1449,7 @@ void RTMPSendDLSTearDownFrame(
 			  pAd->CurrentAddress, 2, &Reason, END_OF_ARGS);
 
 	MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 
 	/* Remove key in local dls table entry */
 	for (i = 0; i < MAX_NUM_OF_INIT_DLS_ENTRY; i++) {
@@ -1604,7 +1604,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 	os_free_mem(NULL, mpool);
 
 	DBGPRINT(RT_DEBUG_TRACE,
@@ -1740,7 +1740,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
-	MlmeFreeMemory(pAd, pOutBuffer);
+	os_free_mem(pAd, pOutBuffer);
 	os_free_mem(NULL, mpool);
 
 	DBGPRINT(RT_DEBUG_TRACE,

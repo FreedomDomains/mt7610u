@@ -2484,7 +2484,7 @@ void RtmpEnqueueNullFrame(
 
 		DBGPRINT(RT_DEBUG_INFO, ("send NULL Frame @%d Mbps to AID#%d...\n", RateIdToMbps[TxRate], PID & 0x3f));
 		MiniportMMRequest(pAd, MapUserPriorityToAccessCategory[7], (PUCHAR)pNullFr, Length);
-		MlmeFreeMemory(pAd, pFrame);
+		os_free_mem(pAd, pFrame);
 	}
 }
 
