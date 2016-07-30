@@ -989,12 +989,6 @@ extern int rausb_control_msg(void *dev,
 
 #endif /* RALINK_ATE */
 
-
-/* OS definition re-declaration */
-#ifndef NULL
-#define NULL			0
-#endif
-
 #ifndef ETH_P_IPV6
 #define ETH_P_IPV6		0x86DD
 #endif
