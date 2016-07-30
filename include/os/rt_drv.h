@@ -194,8 +194,6 @@ typedef void * 			RTMP_OS_FD;
 #define NdisEqualMemory(Source1, Source2, Length)   (!memcmp(Source1, Source2, Length))
 #define RTMPEqualMemory(Source1, Source2, Length)	(!memcmp(Source1, Source2, Length))
 
-#define MlmeAllocateMemory(_pAd, _ppVA)				os_alloc_mem(_pAd, _ppVA, MGMT_DMA_BUFFER_SIZE)
-
 #define COPY_MAC_ADDR(Addr1, Addr2)             	memcpy((Addr1), (Addr2), MAC_ADDR_LEN)
 
 

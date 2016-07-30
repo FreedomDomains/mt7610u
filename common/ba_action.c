@@ -629,7 +629,7 @@ void BAOriSessionAdd(
 					pBAEntry->BAWinSize, pBAEntry->ORIBATimer.TimerValue));
 
 		/* SEND BAR */
-		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer2);  /*Get an unused nonpaged memory*/
+		NStatus = os_alloc_mem(pAd, &pOutBuffer2, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
 		if (NStatus != NDIS_STATUS_SUCCESS)
 		{
 			DBGPRINT(RT_DEBUG_TRACE,("BA - BAOriSessionAdd() allocate memory failed \n"));
@@ -1267,7 +1267,7 @@ void PeerAddBAReqAction(
 
 	pAddreqFrame = (PFRAME_ADDBA_REQ)(&Elem->Msg[0]);
 	/* 2. Always send back ADDBA Response */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	 /*Get an unused nonpaged memory*/
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
 	if (NStatus != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_TRACE,("ACTION - PeerBAAction() allocate memory failed \n"));
@@ -1482,7 +1482,7 @@ void SendPSMPAction(
 	FRAME_PSMP_ACTION Frame;
 	ULONG FrameLen;
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	 /*Get an unused nonpaged memory*/
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
 	if (NStatus != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));

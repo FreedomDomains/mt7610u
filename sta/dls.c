@@ -106,7 +106,7 @@ void MlmeDlsReqAction(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("DLS - MlmeDlsReqAction() \n"));
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("DLS - MlmeDlsReqAction() allocate memory failed \n"));
@@ -222,7 +222,7 @@ void PeerDlsReqAction(
 		 ("DLS - PeerDlsReqAction() from %02x:%02x:%02x:%02x:%02x:%02x\n",
 		  SA[0], SA[1], SA[2], SA[3], SA[4], SA[5]));
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("DLS - PeerDlsReqAction() allocate memory failed \n"));
@@ -848,7 +848,7 @@ void MlmeDlsTearDownAction(
 		 ("DLS - MlmeDlsTearDownAction() with ReasonCode=%d \n",
 		  ReasonCode));
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("DLS - MlmeDlsTearDownAction() allocate memory failed \n"));
@@ -1435,7 +1435,7 @@ void RTMPSendDLSTearDownFrame(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("Send DLS TearDown Frame \n"));
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("ASSOC - RTMPSendDLSTearDownFrame() allocate memory failed \n"));
@@ -1560,7 +1560,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate buffer for transmitting message */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		kfree(mpool);
 		return NStatus;
@@ -1696,7 +1696,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate buffer for transmitting message */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		kfree(mpool);
 		return NStatus;

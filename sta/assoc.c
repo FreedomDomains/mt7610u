@@ -299,7 +299,7 @@ void MlmeAssocReqAction(
 		COPY_MAC_ADDR(pAd->MlmeAux.Bssid, ApAddr);
 
 		/* Get an unused nonpaged memory */
-		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 		if (NStatus != NDIS_STATUS_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("ASSOC - MlmeAssocReqAction() allocate memory failed \n"));
@@ -724,7 +724,7 @@ void MlmeReassocReqAction(
 
 		RTMPCancelTimer(&pAd->MlmeAux.ReassocTimer, &TimerCancelled);
 
-		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 		if (NStatus != NDIS_STATUS_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("ASSOC - MlmeReassocReqAction() allocate memory failed \n"));
@@ -972,7 +972,7 @@ void MlmeDisassocReqAction(
 	/* skip sanity check */
 	pDisassocReq = (PMLME_DISASSOC_REQ_STRUCT) (Elem->Msg);
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("ASSOC - MlmeDisassocReqAction() allocate memory failed\n"));
@@ -1714,7 +1714,7 @@ void Cls3errAction(
 	NDIS_STATUS NStatus;
 	USHORT Reason = REASON_CLS3ERR;
 
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS)
 		return;
 

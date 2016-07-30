@@ -245,7 +245,7 @@ void MlmeForceJoinReqAction(
 		/*
 	    send probe request
 	*/
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus == NDIS_STATUS_SUCCESS)
 	{
 		if (pAd->MlmeAux.Channel <= 14)
@@ -739,7 +739,7 @@ void MlmeJoinReqAction(
 		/*
 		    send probe request
 		*/
-		NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 		if (NStatus == NDIS_STATUS_SUCCESS)
 		{
 			if (pAd->MlmeAux.Channel <= 14)
@@ -2526,7 +2526,7 @@ void PeerProbeReqAction(
 		if ((SsidLen == 0) || SSID_EQUAL(Ssid, SsidLen, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen))
 		{
 			/* allocate and send out ProbeRsp frame */
-			NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);  /* Get an unused nonpaged memory */
+			NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
 			if (NStatus != NDIS_STATUS_SUCCESS)
 				return;
 
@@ -2798,7 +2798,7 @@ void EnqueueProbeRequest(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("force out a ProbeRequest ...\n"));
 
-	NState = MlmeAllocateMemory(pAd, &pOutBuffer);  /* Get an unused nonpaged memory */
+	NState = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
 	if (NState == NDIS_STATUS_SUCCESS)
 	{
 		MgtMacHeaderInit(pAd, &Hdr80211, SUBTYPE_PROBE_REQ, 0, BROADCAST_ADDR,

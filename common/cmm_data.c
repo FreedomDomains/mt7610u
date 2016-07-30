@@ -2456,7 +2456,7 @@ void RtmpEnqueueNullFrame(
 	ULONG		   Length;
 
 	/* since TxRate may change, we have to change Duration each time */
-	NState = MlmeAllocateMemory(pAd, (PUCHAR *)&pFrame);
+	NState = os_alloc_mem(pAd, (PUCHAR *)&pFrame, MGMT_DMA_BUFFER_SIZE);
 	pNullFr = (PHEADER_802_11) pFrame;
     Length = sizeof(HEADER_802_11);
 

@@ -925,7 +925,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
 
 	/* allocate resources */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus	!= NDIS_STATUS_SUCCESS)
 		goto LabelExit;
 
@@ -1017,7 +1017,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 						pAd->CurrentAddress, TDLS_ETHERTYPE);
 
 	/* allocate buffer for transmitting message */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus	!= NDIS_STATUS_SUCCESS)
 		goto LabelExit;
 
@@ -1462,7 +1462,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	TDLS_UAPSD_CmdUtilMacGet(&pArgv, PeerMac);
 
 	/* allocate buffer for transmitting message */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus	!= NDIS_STATUS_SUCCESS)
 		return;
 
@@ -1646,7 +1646,7 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	TDLS_UAPSD_CmdUtilMacGet(&pArgv, PeerMac);
 
 	/* allocate resources */
-	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);
+	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus	!= NDIS_STATUS_SUCCESS)
 		goto LabelExit;
 
