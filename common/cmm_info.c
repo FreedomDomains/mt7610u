@@ -42,11 +42,6 @@ INT Set_DriverVersion_Proc(
 	IN	char *		arg)
 {
 
-#ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		DBGPRINT(RT_DEBUG_TRACE, ("Driver version-%s %s\n", STA_DRIVER_VERSION, STA_DRIVER_BUILD));
-#endif /* CONFIG_STA_SUPPORT */
-
     return TRUE;
 }
 

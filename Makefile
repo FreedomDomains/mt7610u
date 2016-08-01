@@ -672,11 +672,7 @@ endif
 #endif // DOT11_VHT_SUPPORT //
 
 #ifdef CONFIG_STA_SUPPORT
-ifeq ($(RT28xx_MODE), STA)
-MOD_NAME = $(MODULE)_sta
-DAT_PATH = /etc/Wireless/RT$(CHIPSET_DAT)STA
-DAT_FILE_NAME = conf/RT$(CHIPSET_DAT)STA.dat
-endif
+MOD_NAME = $(MODULE)
 #endif // CONFIG_STA_SUPPORT //
 
 obj-m := $(MOD_NAME).o

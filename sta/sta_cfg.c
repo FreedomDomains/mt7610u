@@ -3423,7 +3423,6 @@ INT RTMPQueryInformation(
         case RT_OID_VERSION_INFO:
 			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_VERSION_INFO \n"));
 			wrq->u.data.length = 8*sizeof(CHAR);
-			snprintf(&driverVersion[0], sizeof(driverVersion), "%s", STA_DRIVER_VERSION);
 			driverVersion[7] = '\0';
 			if (copy_to_user(wrq->u.data.pointer, &driverVersion[0], wrq->u.data.length))
             {
@@ -5477,7 +5476,7 @@ void RTMPIoctlShow(
             wrq->u.data.length = strlen(extra) + 1; /* 1: size of '\0' */
             break;
         case SHOW_DRVIER_VERION:
-            snprintf(extra, size, "Driver version-%s, %s\n", STA_DRIVER_VERSION, STA_DRIVER_BUILD );
+            snprintf(extra, size, "\n");
             wrq->u.data.length = strlen(extra) + 1; /* 1: size of '\0' */
             break;
 #ifdef DOT11_N_SUPPORT

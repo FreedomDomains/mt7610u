@@ -8,4 +8,4 @@ rtl8821au.mod.c
 .tmp_versions
 tools/bin2h
 include/mcu/mt7610_firmware.h
-mt7610u_sta.mod.c
+mt7610u.mod.c

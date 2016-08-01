@@ -60,22 +60,12 @@ void Rtmp_Drv_Ops_##_func(void *__pDrvOps, void *__pNetOps, 	\
 
 
 #ifdef RTMP_MAC_USB
-#define RTMP_DRV_NAME	"rtusb" xdef_to_str(RT28xx_MODE)
 RTMP_DECLARE_DRV_OPS_FUNCTION(usb);
 #define RTMP_DRV_OPS_FUNCTION				RTMP_DRV_OPS_FUNCTION_BODY(usb)
 #define RTMP_BUILD_DRV_OPS_FUNCTION_BODY	RTMP_BUILD_DRV_OPS_FUNCTION(usb)
 #endif /* RTMP_MAC_USB */
 
 #else
-
-#ifdef RTMP_MAC_USB
-#define RTMP_DRV_NAME	"rt2870"
-#ifdef HE_SUPPORT
-#define RTMP_DRV_NAME   "rtsta"
-#endif
-#else
-#define RTMP_DRV_NAME	"rt2860"
-#endif /* RTMP_MAC_USB */
 
 #endif /* OS_ABL_FUNC_SUPPORT */
 

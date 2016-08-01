@@ -32,18 +32,15 @@
 #include "rt_os_util.h"
 #include "rt_os_net.h"
 
+#define RTMP_DRV_NAME  "mt7610u"
 
 /* Following information will be show when you run 'modinfo' */
 /* *** If you have a solution for the bug in current version of driver, please mail to me. */
 /* Otherwise post to forum in ralinktech's web site(www.ralinktech.com) and let all users help you. *** */
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Paul Lin <paul_lin@ralinktech.com>");
-MODULE_DESCRIPTION("RT2870 Wireless Lan Linux Driver");
-MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Hans Ulli Kroll <ulli.kroll@googlemail.com>");
+MODULE_DESCRIPTION("MT7610U 80211.ac usb driver");
 #ifdef CONFIG_STA_SUPPORT
-#ifdef MODULE_VERSION
-MODULE_VERSION(STA_DRIVER_VERSION);
-#endif
 #endif /* CONFIG_STA_SUPPORT */
 
 
@@ -234,10 +231,10 @@ static void rtusb_disconnect(struct usb_interface *intf)
 
 
 struct usb_driver rtusb_driver = {
-	.name=RTMP_DRV_NAME,
-	.probe=rtusb_probe,
-	.disconnect=rtusb_disconnect,
-	.id_table=rtusb_dev_id,
+	.name = RTMP_DRV_NAME,
+	.probe = rtusb_probe,
+	.disconnect = rtusb_disconnect,
+	.id_table = rtusb_dev_id,
 
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND

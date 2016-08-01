@@ -3515,7 +3515,6 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 
 #ifdef CONFIG_STA_SUPPORT
 	pAd->OpMode = OPMODE_STA;
-	DBGPRINT(RT_DEBUG_TRACE, ("STA Driver version-%s\n", STA_DRIVER_VERSION));
 #endif /* CONFIG_STA_SUPPORT */
 
 

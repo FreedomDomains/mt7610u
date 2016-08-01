@@ -41,7 +41,6 @@
 
 #ifdef RTMP_MAC_USB
 #ifdef OS_ABL_SUPPORT
-MODULE_LICENSE("GPL");
 #endif /* OS_ABL_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
@@ -56,7 +55,7 @@ MODULE_LICENSE("GPL");
 char *mac = "";		   /* default 00:00:00:00:00:00 */
 char *hostname = "";		   /* default CMPC */
 module_param (mac, charp, 0);
-MODULE_PARM_DESC (mac, "rt28xx: wireless mac addr");
+MODULE_PARM_DESC (mac, "MT7610U: wireless mac addr");
 
 #ifdef OS_ABL_SUPPORT
 RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
