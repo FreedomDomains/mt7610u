@@ -301,7 +301,7 @@ static BOOLEAN USBDevConfigInit(
 static int rtusb_probe (struct usb_interface *intf,
 						const USB_DEVICE_ID *id)
 {
-	void *pAd;
+	struct rtmp_adapter  *pAd;
 	struct usb_device *dev;
 	int rv;
 
@@ -318,7 +318,7 @@ static int rtusb_probe (struct usb_interface *intf,
 	{
 		if (VIRTUAL_IF_UP(pAd) != 0)
 		{
-			pAd = usb_get_intfdata(intf);
+			struct rtmp_adapter  = usb_get_intfdata(intf);
 			usb_set_intfdata(intf, NULL);
 			rt2870_disconnect(dev, pAd);
 			rv = -ENOMEM;
