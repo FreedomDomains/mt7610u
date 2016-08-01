@@ -85,114 +85,6 @@ void RT28XXVendorSpecificCheck(
 	RTMP_DRIVER_USB_MORE_FLAG_SET(pAd, &Config);
 }
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)
-
-/**************************************************************************/
-/**************************************************************************/
-/*tested for kernel 2.4 series */
-/**************************************************************************/
-/**************************************************************************/
-static void *rtusb_probe(struct usb_device *dev, UINT interface,
-						const USB_DEVICE_ID *id_table);
-static void rtusb_disconnect(struct usb_device *dev, void *ptr);
-
-struct usb_driver rtusb_driver = {
-		name:RTMP_DRV_NAME,
-		probe:rtusb_probe,
-		disconnect:rtusb_disconnect,
-		id_table:rtusb_dev_id,
-	};
-
-
-static BOOLEAN USBDevConfigInit(
-	IN struct usb_device *dev,
-	IN struct usb_interface *intf,
-	IN void *pAd)
-{
-	struct usb_interface_descriptor *iface_desc;
-	struct usb_endpoint_descriptor *endpoint;
-	ULONG BulkOutIdx;
-	UINT32 i;
-	RT_CMD_USB_DEV_CONFIG Config, *pConfig = &Config;
-
-
-	iface_desc = &intf->altsetting[0];
-
-	/* get # of enpoints */
-	pConfig->NumberOfPipes = iface_desc->bNumEndpoints;
-	DBGPRINT(RT_DEBUG_TRACE, ("NumEndpoints=%d\n", iface_desc->bNumEndpoints));
-
-	/* Configure Pipes */
-	endpoint = &iface_desc->endpoint[0];
-	BulkOutIdx = 0;
-
-	for(i=0; i<pConfig->NumberOfPipes; i++)
-	{
-		if ((endpoint[i].bmAttributes == USB_ENDPOINT_XFER_BULK) &&
-			((endpoint[i].bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN))
-		{
-			pConfig->BulkInEpAddr = endpoint[i].bEndpointAddress;
-			pConfig->BulkInMaxPacketSize = endpoint[i].wMaxPacketSize;
-
-			DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK IN MaximumPacketSize = %d\n", pConfig->BulkInMaxPacketSize));
-			DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", endpoint[i].bEndpointAddress));
-		}
-		else if ((endpoint[i].bmAttributes == USB_ENDPOINT_XFER_BULK) &&
-				((endpoint[i].bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT))
-		{
-			/* There are 6 bulk out EP. EP6 highest priority. */
-			/* EP1-4 is EDCA.  EP5 is HCCA. */
-			pConfig->BulkOutEpAddr[BulkOutIdx++] = endpoint[i].bEndpointAddress;
-			pConfig->BulkOutMaxPacketSize = endpoint[i].wMaxPacketSize;
-
-			DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK OUT MaximumPacketSize = %d\n", pConfig->BulkOutMaxPacketSize));
-			DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", endpoint[i].bEndpointAddress));
-		}
-	}
-
-	if (!(pConfig->BulkInEpAddr && pConfig->BulkOutEpAddr[0]))
-	{
-		printk("Could not find both bulk-in and bulk-out endpoints\n");
-		return FALSE;
-	}
-
-	pConfig->pConfig = dev->config;
-	RTMP_DRIVER_USB_CONFIG_INIT(pAd, pConfig);
-	RT28XXVendorSpecificCheck(dev, pAd);
-
-	return TRUE;
-
-}
-
-static void *rtusb_probe(struct usb_device *dev, UINT interface,
-						const USB_DEVICE_ID *id)
-{
-	struct usb_interface *intf;
-	void *pAd;
-	int rv;
-
-
-	/* get the active interface descriptor */
-	intf = &dev->actconfig->interface[interface];
-
-	/* call generic probe procedure. */
-	rv = rt2870_probe(intf, dev, id, &pAd);
-	if (rv != 0)
-		pAd = NULL;
-
-	return (void *)pAd;
-}
-
-/*Disconnect function is called within exit routine */
-static void rtusb_disconnect(struct usb_device *dev, void *ptr)
-{
-	rt2870_disconnect(dev, ptr);
-}
-
-
-#else	/* else if we are kernel 2.6 series */
-
-
 /**************************************************************************/
 /**************************************************************************/
 /*tested for kernel 2.6series */
@@ -200,10 +92,6 @@ static void rtusb_disconnect(struct usb_device *dev, void *ptr)
 /**************************************************************************/
 
 #ifdef CONFIG_PM
-
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,10)
-#define pm_message_t u32
-#endif
 
 static int rt2870_suspend(struct usb_interface *intf, pm_message_t state);
 static int rt2870_resume(struct usb_interface *intf);
@@ -243,12 +131,7 @@ static BOOLEAN USBDevConfigInit(
 			if (BulkInIdx < 2)
 			{
 				pConfig->BulkInEpAddr[BulkInIdx++] = iface_desc->endpoint[i].desc.bEndpointAddress;
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,11)
 				pConfig->BulkInMaxPacketSize = le2cpu16(iface_desc->endpoint[i].desc.wMaxPacketSize);
-#else
-				pConfig->BulkInMaxPacketSize = iface_desc->endpoint[i].desc.wMaxPacketSize;
-#endif /* LINUX_VERSION_CODE */
-
 				DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK IN MaxPacketSize = %d\n", pConfig->BulkInMaxPacketSize));
 				DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x\n", iface_desc->endpoint[i].desc.bEndpointAddress));
 			}
@@ -265,11 +148,7 @@ static BOOLEAN USBDevConfigInit(
 				/* there are 6 bulk out EP. EP6 highest priority. */
 				/* EP1-4 is EDCA.  EP5 is HCCA. */
 				pConfig->BulkOutEpAddr[BulkOutIdx++] = iface_desc->endpoint[i].desc.bEndpointAddress;
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,11)
 				pConfig->BulkOutMaxPacketSize = le2cpu16(iface_desc->endpoint[i].desc.wMaxPacketSize);
-#else
-				pConfig->BulkOutMaxPacketSize = iface_desc->endpoint[i].desc.wMaxPacketSize;
-#endif
 
 				DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK OUT MaxPacketSize = %d\n", pConfig->BulkOutMaxPacketSize));
 				DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", iface_desc->endpoint[i].desc.bEndpointAddress));
@@ -347,11 +226,7 @@ static void rtusb_disconnect(struct usb_interface *intf)
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 	printk("rtusb_disconnect usb_autopm_put_interface \n");
 	usb_autopm_put_interface(intf);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	printk(" ^^rt2870_disconnect ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
-#else
-	printk(" rt2870_disconnect ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
-#endif
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 
@@ -359,9 +234,6 @@ static void rtusb_disconnect(struct usb_interface *intf)
 
 
 struct usb_driver rtusb_driver = {
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,15)
-	.owner = THIS_MODULE,
-#endif
 	.name=RTMP_DRV_NAME,
 	.probe=rtusb_probe,
 	.disconnect=rtusb_disconnect,
@@ -445,11 +317,7 @@ static int rt2870_resume(
 	INT 		pm_usage_cnt;
 	UCHAR Flag;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
-#else
-	pm_usage_cnt = intf->pm_usage_cnt;
-#endif
 
 	if(pm_usage_cnt  <= 0)
 		usb_autopm_get_interface(intf);
@@ -491,7 +359,6 @@ static int rt2870_resume(
 	return 0;
 }
 #endif /* CONFIG_PM */
-#endif /* LINUX_VERSION_CODE */
 
 
 /* Init driver module */
@@ -544,14 +411,7 @@ static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 				dev->bus->bus_name, dev->devpath));
 	if (!pAd)
 	{
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)	/* kernel 2.4 series */
-		while(MOD_IN_USE > 0)
-		{
-			MOD_DEC_USE_COUNT;
-		}
-#else
 		usb_put_dev(dev);
-#endif /* LINUX_VERSION_CODE */
 
 		printk("rtusb_disconnect: pAd == NULL!\n");
 		return;
@@ -569,11 +429,7 @@ static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 
 	/* FIXME: Shall we need following delay and flush the schedule?? */
 	udelay(1);
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)	/* kernel 2.4 series */
-	;
-#else
 	flush_scheduled_work();
-#endif /* LINUX_VERSION_CODE */
 	udelay(1);
 
 #ifdef RT_CFG80211_SUPPORT
@@ -589,14 +445,7 @@ static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 	RtmpOSNetDevFree(net_dev);
 
 	/* release a use of the usb device structure */
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)	/* kernel 2.4 series */
-	while(MOD_IN_USE > 0)
-	{
-		MOD_DEC_USE_COUNT;
-	}
-#else
 	usb_put_dev(dev);
-#endif /* LINUX_VERSION_CODE */
 	udelay(1);
 
 	DBGPRINT(RT_DEBUG_ERROR, (" RTUSB disconnect successfully\n"));
@@ -636,13 +485,8 @@ static int rt2870_probe(
 		     return -EIO;
 	}
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	atomic_set(&intf->pm_usage_cnt, 1);
 	 printk(" rt2870_probe ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
-#else
-         intf->pm_usage_cnt = 1;
-	 printk(" rt2870_probe ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
-#endif
 
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
@@ -704,9 +548,7 @@ static int rt2870_probe(
 	  * Set the sysfs physical device reference for the network logical device if set prior to registration will
 	  * cause a symlink during initialization.
 	 */
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0))
 	SET_NETDEV_DEV(net_dev, &(usb_dev->dev));
-#endif
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT

@@ -76,7 +76,6 @@ INT Set_WfdInsertIe_Proc(
 
 	pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = FALSE;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	if (pAd->pCfg80211_CB != NULL)
 	{
 		pCfg80211_CB = (CFG80211_CB *)pAd->pCfg80211_CB;
@@ -105,7 +104,6 @@ INT Set_WfdInsertIe_Proc(
 
 	}
 	else
-#endif
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: pAd->pCfg80211_CB is NULL. Not Support Insert WFD IE for wpa_supplicant!\n", __FUNCTION__));
 
 	return TRUE;

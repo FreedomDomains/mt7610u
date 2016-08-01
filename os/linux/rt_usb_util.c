@@ -37,7 +37,6 @@
 MODULE_LICENSE("GPL");
 #endif /* OS_ABL_SUPPORT */
 
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,5,0)
 /*
 ========================================================================
 Routine Description:
@@ -73,12 +72,6 @@ void dump_urb(void *purb_org)
 	printk("\tcontext               :0x%08lx\n", (unsigned long)purb->context);
 	printk("\tcomplete              :0x%08lx\n\n", (unsigned long)purb->complete);
 }
-#else
-void dump_urb(void *purb_org)
-{
-	return;
-}
-#endif /* LINUX_VERSION_CODE */
 
 
 
@@ -122,11 +115,7 @@ int RTMP_Usb_AutoPM_Put_Interface (
 	INT	 pm_usage_cnt;
 	struct usb_interface	*intf =(struct usb_interface *)intfsrc;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 		pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
-#else
-		pm_usage_cnt = intf->pm_usage_cnt;
-#endif
 
 		if (pm_usage_cnt == 1)
 		{
@@ -162,11 +151,7 @@ int RTMP_Usb_AutoPM_Get_Interface (
 	INT	 pm_usage_cnt;
 	struct usb_interface	*intf =(struct usb_interface *)intfsrc;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	pm_usage_cnt = (INT)atomic_read(&intf->pm_usage_cnt);
-#else
-	pm_usage_cnt = intf->pm_usage_cnt;
-#endif
 
 	if (pm_usage_cnt == 0)
 	{
@@ -253,11 +238,7 @@ Note:
 */
 struct urb *rausb_alloc_urb(int iso_packets)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 	return usb_alloc_urb(iso_packets, GFP_ATOMIC);
-#else
-	return usb_alloc_urb(iso_packets);
-#endif /* LINUX_VERSION_CODE */
 }
 EXPORT_SYMBOL(rausb_alloc_urb);
 
@@ -283,7 +264,6 @@ void rausb_free_urb(void *urb)
 EXPORT_SYMBOL(rausb_free_urb);
 
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 /*
 ========================================================================
 Routine Description:
@@ -324,7 +304,6 @@ struct usb_device *rausb_get_dev(void *dev)
 	return usb_get_dev((struct usb_device *)dev);
 }
 EXPORT_SYMBOL(rausb_get_dev);
-#endif /* LINUX_VERSION_CODE */
 
 
 /*
@@ -344,11 +323,7 @@ Note:
 */
 int rausb_submit_urb(void *urb)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 	return usb_submit_urb((struct urb *)urb, GFP_ATOMIC);
-#else
-	return usb_submit_urb((struct urb *)urb);
-#endif /* LINUX_VERSION_CODE */
 }
 EXPORT_SYMBOL(rausb_submit_urb);
 
@@ -372,21 +347,12 @@ void *rausb_buffer_alloc(void *dev,
 							size_t size,
 							ra_dma_addr_t *dma)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 	dma_addr_t DmaAddr = (dma_addr_t)(*dma);
 	void *buf;
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35)
 	buf = usb_alloc_coherent(dev, size, GFP_ATOMIC, &DmaAddr);
-#else
-	buf = usb_buffer_alloc(dev, size, GFP_ATOMIC, &DmaAddr);
-#endif
 	*dma = (ra_dma_addr_t)DmaAddr;
 	return buf;
-
-#else
-	return kmalloc(size, GFP_ATOMIC);
-#endif
 }
 EXPORT_SYMBOL(rausb_buffer_alloc);
 
@@ -413,17 +379,9 @@ void rausb_buffer_free(void *dev,
 							void *addr,
 							ra_dma_addr_t dma)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 	dma_addr_t DmaAddr = (dma_addr_t)(dma);
 
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35)
 	usb_free_coherent(dev, size, addr, DmaAddr);
-#else
-	usb_buffer_free(dev, size, addr, DmaAddr);
-#endif
-#else
-	kfree(addr);
-#endif
 }
 EXPORT_SYMBOL(rausb_buffer_free);
 
@@ -519,11 +477,7 @@ Note:
 */
 void rausb_kill_urb(void *urb)
 {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,7)
 	usb_kill_urb((struct urb *)urb);
-#else
-	usb_unlink_urb((struct urb *)urb);
-#endif /* LINUX_VERSION_CODE */
 }
 EXPORT_SYMBOL(rausb_kill_urb);
 
@@ -559,11 +513,7 @@ void RtmpOsUsbEmptyUrbCheck(
 		}
 		RTMP_SEM_UNLOCK(pBulkInLock);
 
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,9)
 		msleep(UNLINK_TIMEOUT_MS);	/*Time in millisecond */
-#else
-		RTMPusecDelay(UNLINK_TIMEOUT_MS*1000);	/*Time in microsecond */
-#endif
 		i++;
 	}
 	*ppWait = NULL;
