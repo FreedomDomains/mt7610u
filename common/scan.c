@@ -29,7 +29,7 @@
 
 
 #ifdef SCAN_SUPPORT
-static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
+static INT scan_ch_restore(struct rtmp_adapter*pAd, UCHAR OpMode)
 {
 #ifdef CONFIG_STA_SUPPORT
 	USHORT Status;
@@ -144,7 +144,7 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
 
 
 
-static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
+static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 {
 	UCHAR *frm_buf = NULL;
 	HEADER_802_11 Hdr80211;
@@ -368,7 +368,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 	==========================================================================
  */
 void ScanNextChannel(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR OpMode)
 {
 	UCHAR ScanType = pAd->MlmeAux.ScanType;
@@ -514,7 +514,7 @@ void ScanNextChannel(
 
 
 BOOLEAN ScanRunning(
-		IN PRTMP_ADAPTER pAd)
+		IN struct rtmp_adapter *pAd)
 {
 	BOOLEAN	rv = FALSE;
 

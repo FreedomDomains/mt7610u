@@ -32,7 +32,7 @@
 /* Periodic Radar detection, switch channel will occur in RTMPHandleTBTTInterrupt()*/
 /* Before switch channel, driver needs doing channel switch announcement.*/
 void RadarDetectPeriodic(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	/* need to check channel availability, after switch channel*/
 	if (pAd->Dot11_H.RDMode != RD_SILENCE_MODE)
@@ -64,7 +64,7 @@ void RadarDetectPeriodic(
 	========================================================================
 */
 BOOLEAN RadarChannelCheck(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR			Ch)
 {
 	INT 	i;
@@ -83,7 +83,7 @@ BOOLEAN RadarChannelCheck(
 }
 
 ULONG JapRadarType(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	ULONG		i;
 	const UCHAR	Channel[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
@@ -120,7 +120,7 @@ ULONG JapRadarType(
     ==========================================================================
 */
 INT	Set_CSPeriod_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->Dot11_H.CSPeriod = (USHORT) simple_strtol(arg, 0, 10);
@@ -148,7 +148,7 @@ INT	Set_CSPeriod_Proc(
     ==========================================================================
 */
 INT Set_ChMovingTime_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	u8 Value;
@@ -181,7 +181,7 @@ INT Set_ChMovingTime_Proc(
     ==========================================================================
 */
 INT Set_BlockChReset_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	INT i;
@@ -198,7 +198,7 @@ INT Set_BlockChReset_Proc(
 #if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
 
 INT	Set_RadarShow_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 #ifdef DFS_SUPPORT
@@ -276,7 +276,7 @@ INT	Set_RadarShow_Proc(
 
        ========================================================================
 */
-void CckMrcStatusCtrl(IN PRTMP_ADAPTER pAd)
+void CckMrcStatusCtrl(IN struct rtmp_adapter *pAd)
 {
 }
 
@@ -291,7 +291,7 @@ void CckMrcStatusCtrl(IN PRTMP_ADAPTER pAd)
 
        ========================================================================
 */
-void RadarGLRTCompensate(IN PRTMP_ADAPTER pAd)
+void RadarGLRTCompensate(IN struct rtmp_adapter *pAd)
 {
 }
 #endif /*defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT) */

@@ -31,33 +31,33 @@
 #include "client_wds_cmm.h"
 
 void CliWds_ProxyTabInit(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 void CliWds_ProxyTabDestory(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 PCLIWDS_PROXY_ENTRY CliWdsEntyAlloc(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 
 void CliWdsEntyFree(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PCLIWDS_PROXY_ENTRY pCliWdsEntry);
 
 
 PUCHAR CliWds_ProxyLookup(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pMac);
 
 
 void CliWds_ProxyTabUpdate(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN SHORT Aid,
 	IN PUCHAR pMac);
 
 
 void CliWds_ProxyTabMaintain(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 #endif /* __CLIENT_WDS_H__ */
 

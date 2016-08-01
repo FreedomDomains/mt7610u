@@ -34,7 +34,7 @@ static NETIF_ENTRY freeNetIfEntryPool[FREE_NETIF_POOL_SIZE];
 static LIST_HEADER freeNetIfEntryList;
 
 void initblockQueueTab(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	int i;
 
@@ -89,7 +89,7 @@ void releaseNetIf(
 
 
 void StopNetIfQueue(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket)
 {

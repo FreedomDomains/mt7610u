@@ -30,7 +30,7 @@
 
 #include "../mcu/mcu_and.h"
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
 #define MAX_RF_ID	127
 #define MAC_RF_BANK 7
@@ -177,90 +177,90 @@ typedef struct _MT76x0_RATE_PWR_TABLE {
 	MT76x0_RATE_PWR_ITEM MCS32;
 } MT76x0_RATE_PWR_Table, *PMT76x0_RATE_PWR_Table;
 
-void MT76x0_Init(struct _RTMP_ADAPTER *pAd);
-INT MT76x0_ReadChannelPwr(struct _RTMP_ADAPTER *pAd);
+void MT76x0_Init(struct rtmp_adapter *pAd);
+INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd);
 
-void MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
+void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd);
 
 #ifdef DBG
 void MT76x0_ShowDmaIndexCupIndex(
-	struct _RTMP_ADAPTER *pAd);
+	struct rtmp_adapter *pAd);
 #endif /* DBG */
 
 #ifdef RT8592
 #endif /* RT8592 */
-void mt76x0_read_per_rate_tx_pwr(struct _RTMP_ADAPTER *pAd);
+void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd);
 
-void dump_bw_info(struct _RTMP_ADAPTER *pAd);
+void dump_bw_info(struct rtmp_adapter *pAd);
 
 void MT76x0_WLAN_ChipOnOff(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN);
 
 
 void MT76x0_AntennaSelCtrl(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 
 void MT76x0_dynamic_vga_tuning(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 
 void MT76x0_VCO_CalibrationMode3(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel);
 
 void MT76x0_Calibration(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel,
 	IN BOOLEAN bPowerOn,
 	IN BOOLEAN bDoTSSI,
 	IN BOOLEAN bFullCal);
 
 void MT76x0_TempSensor(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 
 #ifdef DFS_SUPPORT
 void MT76x0_DFS_CR_Init(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 #endif /* DFS_SUPPORT */
 #ifdef RTMP_FLASH_SUPPORT
 void MT76x0_ReadFlashAndInitAsic(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 #endif /* RTMP_FLASH_SUPPORT */
 
 INT Set_AntennaSelect_Proc(
-	IN struct _RTMP_ADAPTER		*pAd,
+	IN struct rtmp_adapter		*pAd,
 	IN char *			arg);
 
 #ifdef RTMP_TEMPERATURE_TX_ALC
-void mt76x0_temp_tx_alc(struct _RTMP_ADAPTER *pAd);
+void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
-void mt76x0_adjust_per_rate_pwr(struct _RTMP_ADAPTER *pAd);
+void mt76x0_adjust_per_rate_pwr(struct rtmp_adapter *pAd);
 
-void mt76x0_read_tx_alc_info_from_eeprom(struct _RTMP_ADAPTER *pAd);
+void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
 void MT76x0_TSSI_DC_Calibration(
-	IN  struct _RTMP_ADAPTER *pAd);
+	IN  struct rtmp_adapter *pAd);
 
 void MT76x0_MakeUpTssiTable(
-	IN  struct _RTMP_ADAPTER *pAd);
+	IN  struct rtmp_adapter *pAd);
 
 void MT76x0_IntTxAlcProcess(
-	IN  struct _RTMP_ADAPTER *pAd);
+	IN  struct rtmp_adapter *pAd);
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 
 void MT76x0_MakeUpRatePwrTable(
-	IN struct _RTMP_ADAPTER *pAd);
+	IN struct rtmp_adapter *pAd);
 
 #ifdef SINGLE_SKU_V2
 UCHAR MT76x0_GetSkuChannelBasePwr(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR channel);
 
 UCHAR MT76x0_UpdateSkuPwr(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR channel);
 #endif /* SINGLE_SKU_V2 */
 

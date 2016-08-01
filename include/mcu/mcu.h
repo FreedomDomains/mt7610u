@@ -45,10 +45,10 @@ enum PWR_OP {
 	RADIO_ON_ADVANCE,
 };
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
-void ChipOpsMCUHook(struct _RTMP_ADAPTER *pAd, enum MCU_TYPE MCUType);
-void MCUCtrlInit(struct _RTMP_ADAPTER *pAd);
-void MCUCtrlExit(struct _RTMP_ADAPTER *pAd);
+void ChipOpsMCUHook(struct rtmp_adapter *pAd, enum MCU_TYPE MCUType);
+void MCUCtrlInit(struct rtmp_adapter *pAd);
+void MCUCtrlExit(struct rtmp_adapter *pAd);
 
 #endif

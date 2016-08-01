@@ -49,7 +49,7 @@ extern UINT16 const Country_Region_GroupNum_5GHZ;
 	==========================================================================
  */
 void BuildChannelList(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UCHAR i, j, index=0, num=0;
 	PCH_DESC pChDesc = NULL;
@@ -249,7 +249,7 @@ void BuildChannelList(
 	==========================================================================
  */
 UCHAR FirstChannel(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	return pAd->ChannelList[0].Channel;
 }
@@ -266,7 +266,7 @@ UCHAR FirstChannel(
 	==========================================================================
  */
 UCHAR NextChannel(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR channel)
 {
 	int i;
@@ -320,7 +320,7 @@ UCHAR NextChannel(
 	==========================================================================
  */
 void ChangeToCellPowerLimit(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR         AironetCellPowerLimit)
 {
 	/*
@@ -349,7 +349,7 @@ void ChangeToCellPowerLimit(
 }
 
 
-CHAR ConvertToRssi(RTMP_ADAPTER *pAd, CHAR Rssi, UCHAR rssi_idx)
+CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, UCHAR rssi_idx)
 {
 	UCHAR	RssiOffset, LNAGain;
 
@@ -377,7 +377,7 @@ CHAR ConvertToRssi(RTMP_ADAPTER *pAd, CHAR Rssi, UCHAR rssi_idx)
 }
 
 
-CHAR ConvertToSnr(RTMP_ADAPTER *pAd, UCHAR Snr)
+CHAR ConvertToSnr(struct rtmp_adapter*pAd, UCHAR Snr)
 {
 	if (pAd->chipCap.SnrFormula == SNR_FORMULA2)
 		return (Snr * 3 + 8) >> 4;

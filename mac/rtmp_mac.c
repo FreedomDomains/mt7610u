@@ -55,7 +55,7 @@
 	========================================================================
 */
 void RTMPWriteTxWI(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TXWI_STRUC *pOutTxWI,
 	IN BOOLEAN FRAG,
 	IN BOOLEAN CFACK,
@@ -186,7 +186,7 @@ if (0){
 }
 
 
-void RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
+void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
@@ -385,7 +385,7 @@ void RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 
 
 void RTMPWriteTxWI_Cache(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	INOUT TXWI_STRUC *pTxWI,
 	IN TX_BLK *pTxBlk)
 {
@@ -565,7 +565,7 @@ void RTMPWriteTxWI_Cache(
 }
 
 
-INT rtmp_mac_set_band(RTMP_ADAPTER *pAd, int  band)
+INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
 {
 	UINT32 val, band_cfg;
 
@@ -590,7 +590,7 @@ INT rtmp_mac_set_band(RTMP_ADAPTER *pAd, int  band)
 }
 
 
-INT rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, INT extch)
+INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
 {
 	UINT32 val, band_cfg;
 
@@ -617,7 +617,7 @@ INT rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, INT extch)
 }
 
 
-INT rtmp_mac_set_mmps(RTMP_ADAPTER *pAd, INT ReduceCorePower)
+INT rtmp_mac_set_mmps(struct rtmp_adapter*pAd, INT ReduceCorePower)
 {
 	UINT32 mac_val, org_val;
 

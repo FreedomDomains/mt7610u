@@ -33,7 +33,7 @@ static ULONG idle[20];
 static ULONG busy[20];
 static ULONG cd_idx=0;
 
-static void ToneRadarProgram(PRTMP_ADAPTER pAd);
+static void ToneRadarProgram(struct rtmp_adapter *pAd);
 
 
 #ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
@@ -53,7 +53,7 @@ static void ToneRadarProgram(PRTMP_ADAPTER pAd);
     ==========================================================================
 */
 void CarrierDetectionPeriodicStateCtrl(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	CD_STATE *pCD_State = &pAd->CommonCfg.CarrierDetect.CD_State;
 	ULONG *pOneSecIntCount = &pAd->CommonCfg.CarrierDetect.OneSecIntCount;
@@ -126,7 +126,7 @@ void CarrierDetectionPeriodicStateCtrl(
     Note:
     ==========================================================================
 */
-void RTMPHandleRadarInterrupt(PRTMP_ADAPTER  pAd)
+void RTMPHandleRadarInterrupt(struct rtmp_adapter * pAd)
 {
 	UINT32 value, delta;
 	UCHAR bbp=0;
@@ -234,7 +234,7 @@ void RTMPHandleRadarInterrupt(PRTMP_ADAPTER  pAd)
     ==========================================================================
 */
 INT CarrierDetectReset(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	pAd->CommonCfg.CarrierDetect.CD_State = CD_NORMAL;
 	return 0;
@@ -257,7 +257,7 @@ INT CarrierDetectReset(
     ==========================================================================
 */
 INT Set_CarrierCriteria_Proc(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN char *		arg)
 {
 	UINT32 Value;
@@ -293,7 +293,7 @@ INT Set_CarrierCriteria_Proc(
     ==========================================================================
 */
 INT Set_CarrierReCheck_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	pAd->CommonCfg.CarrierDetect.recheck1 = simple_strtol(arg, 0, 10);
@@ -325,7 +325,7 @@ INT Set_CarrierReCheck_Proc(
     ==========================================================================
 */
 INT Set_CarrierGoneThreshold_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	pAd->CommonCfg.CarrierDetect.CarrierGoneThreshold = simple_strtol(arg, 0, 10);
@@ -349,7 +349,7 @@ INT Set_CarrierGoneThreshold_Proc(
     ==========================================================================
 */
 INT	Set_CarrierDebug_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.Debug = simple_strtol(arg, 0, 10);
@@ -374,7 +374,7 @@ INT	Set_CarrierDebug_Proc(
     ==========================================================================
 */
 INT	Set_CarrierDelta_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.delta = simple_strtol(arg, 0, 10);
@@ -400,7 +400,7 @@ INT	Set_CarrierDelta_Proc(
 	==========================================================================
 */
 INT	Set_CarrierDivFlag_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.div_flag = simple_strtol(arg, 0, 10);
@@ -427,7 +427,7 @@ INT	Set_CarrierDivFlag_Proc(
     ==========================================================================
 */
 INT	Set_CarrierThrd_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.threshold = simple_strtol(arg, 0, 10);
@@ -454,7 +454,7 @@ INT	Set_CarrierThrd_Proc(
 	==========================================================================
 */
 INT	Set_CarrierSymRund_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	pAd->CommonCfg.CarrierDetect.SymRund= simple_strtol(arg, 0, 10);
@@ -481,7 +481,7 @@ INT	Set_CarrierSymRund_Proc(
 	==========================================================================
 */
 INT Set_CarrierMask_Proc(
-        IN      PRTMP_ADAPTER   pAd,
+        IN      struct rtmp_adapter *  pAd,
         IN      char *                arg)
 {
 	pAd->CommonCfg.CarrierDetect.VGA_Mask = simple_strtol(arg, 0, 10);
@@ -508,7 +508,7 @@ INT Set_CarrierMask_Proc(
     ==========================================================================
 */
 void CSInit(
-		IN PRTMP_ADAPTER pAd)
+		IN struct rtmp_adapter *pAd)
 {
 	PCARRIER_DETECTION_STRUCT pCarrierDetect = &pAd->CommonCfg.CarrierDetect;
 
@@ -531,7 +531,7 @@ void CSInit(
     Note:
     ==========================================================================
 */
-void CarrierDetectionStart(PRTMP_ADAPTER pAd)
+void CarrierDetectionStart(struct rtmp_adapter *pAd)
 {
 	/*ULONG Value;*/
 	/* Enable Bandwidth usage monitor*/
@@ -575,7 +575,7 @@ void CarrierDetectionStart(PRTMP_ADAPTER pAd)
     Note:
     ==========================================================================
 */
-void CarrierDetectionStop(IN PRTMP_ADAPTER	pAd)
+void CarrierDetectionStop(IN struct rtmp_adapter *pAd)
 {
 	CarrierDetectReset(pAd);
 #ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
@@ -599,7 +599,7 @@ void CarrierDetectionStop(IN PRTMP_ADAPTER	pAd)
     Note:
     ==========================================================================
 */
-static void ToneRadarProgram(PRTMP_ADAPTER pAd)
+static void ToneRadarProgram(struct rtmp_adapter *pAd)
 {
 	ULONG threshold;
 	/* if wireless mode is 20Mhz mode, then the threshold should div by 2 */
@@ -625,7 +625,7 @@ static void ToneRadarProgram(PRTMP_ADAPTER pAd)
     Note:
     ==========================================================================
 */
-void ToneRadarProgram_v1(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v1(struct rtmp_adapter *pAd, ULONG threshold)
 {
 	UCHAR bbp;
 
@@ -667,7 +667,7 @@ void ToneRadarProgram_v1(PRTMP_ADAPTER pAd, ULONG threshold)
     Note:
     ==========================================================================
 */
-void ToneRadarProgram_v2(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v2(struct rtmp_adapter *pAd, ULONG threshold)
 {
 	UCHAR bbp;
 
@@ -708,7 +708,7 @@ void ToneRadarProgram_v2(PRTMP_ADAPTER pAd, ULONG threshold)
     Note:
     ==========================================================================
 */
-void ToneRadarProgram_v3(PRTMP_ADAPTER pAd, ULONG threshold)
+void ToneRadarProgram_v3(struct rtmp_adapter *pAd, ULONG threshold)
 {
 	UCHAR bbp;
 

@@ -54,7 +54,7 @@ REG_PAIR   BBPRegTable[] = {
 #define	NUM_BBP_REG_PARMS	(sizeof(BBPRegTable) / sizeof(REG_PAIR))
 
 
-NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
+NDIS_STATUS NICInitBBP(struct rtmp_adapter*pAd)
 {
 	INT Index = 0;
 	UCHAR R0 = 0xff;
@@ -114,7 +114,7 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 }
 
 
-INT rtmp_bbp_get_temp(struct _RTMP_ADAPTER *pAd, CHAR *temp_val)
+INT rtmp_bbp_get_temp(struct rtmp_adapter *pAd, CHAR *temp_val)
 {
 	BBP_R49_STRUC bbp_val;
 
@@ -128,7 +128,7 @@ INT rtmp_bbp_get_temp(struct _RTMP_ADAPTER *pAd, CHAR *temp_val)
 }
 
 
-INT rtmp_bbp_tx_comp_init(RTMP_ADAPTER *pAd, INT adc_insel, INT tssi_mode)
+INT rtmp_bbp_tx_comp_init(struct rtmp_adapter*pAd, INT adc_insel, INT tssi_mode)
 {
 	UCHAR bbp_val, rf_val;
 
@@ -149,7 +149,7 @@ INT rtmp_bbp_tx_comp_init(RTMP_ADAPTER *pAd, INT adc_insel, INT tssi_mode)
 }
 
 
-INT rtmp_bbp_set_txdac(struct _RTMP_ADAPTER *pAd, INT tx_dac)
+INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 {
 	UCHAR val, old_val = 0;
 
@@ -177,7 +177,7 @@ INT rtmp_bbp_set_txdac(struct _RTMP_ADAPTER *pAd, INT tx_dac)
 }
 
 
-INT rtmp_bbp_set_rxpath(struct _RTMP_ADAPTER *pAd, INT rxpath)
+INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 {
 	UCHAR val = 0;
 
@@ -198,7 +198,7 @@ INT rtmp_bbp_set_rxpath(struct _RTMP_ADAPTER *pAd, INT rxpath)
 }
 
 
-INT rtmp_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch)
+INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
 {
 	UCHAR val, old_val = 0;
 
@@ -225,7 +225,7 @@ INT rtmp_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch)
 }
 
 
-INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw)
+INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw)
 {
 	UCHAR val, old_val = 0;
 	BOOLEAN bstop = FALSE;
@@ -286,7 +286,7 @@ INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw)
 }
 
 
-INT rtmp_bbp_set_mmps(struct _RTMP_ADAPTER *pAd, BOOLEAN ReduceCorePower)
+INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower)
 {
 	UCHAR bbp_val, org_val;
 
@@ -305,7 +305,7 @@ INT rtmp_bbp_set_mmps(struct _RTMP_ADAPTER *pAd, BOOLEAN ReduceCorePower)
 
 
 NDIS_STATUS AsicBBPWriteWithRxChain(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR bbpId,
 	IN CHAR bbpVal,
 	IN RX_CHAIN_IDX rx_ch_idx)
@@ -350,7 +350,7 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
 
 
 NDIS_STATUS AsicBBPReadWithRxChain(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR bbpId,
 	IN CHAR *pBbpVal,
 	IN RX_CHAIN_IDX rx_ch_idx)
@@ -393,19 +393,19 @@ NDIS_STATUS AsicBBPReadWithRxChain(
 }
 
 
-INT rtmp_bbp_get_agc(struct _RTMP_ADAPTER *pAd, CHAR *agc, RX_CHAIN_IDX idx)
+INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx)
 {
 	return AsicBBPReadWithRxChain(pAd, agc, idx);
 }
 
 
-INT rtmp_bbp_set_agc(struct _RTMP_ADAPTER *pAd, UCHAR agc, RX_CHAIN_IDX idx)
+INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, UCHAR agc, RX_CHAIN_IDX idx)
 {
 	return AsicBBPWriteWithRxChain(pAd, BBP_R66, agc, idx);
 }
 
 
-INT rtmp_bbp_set_filter_coefficient_ctrl(RTMP_ADAPTER *pAd, UCHAR Channel)
+INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, UCHAR Channel)
 {
 	UCHAR bbp_val = 0, org_val = 0;
 
@@ -427,7 +427,7 @@ INT rtmp_bbp_set_filter_coefficient_ctrl(RTMP_ADAPTER *pAd, UCHAR Channel)
 }
 
 
-UCHAR rtmp_bbp_get_random_seed(RTMP_ADAPTER *pAd)
+UCHAR rtmp_bbp_get_random_seed(struct rtmp_adapter*pAd)
 {
 	UCHAR value1, value2, value3, value4, value5;
 
@@ -441,7 +441,7 @@ UCHAR rtmp_bbp_get_random_seed(RTMP_ADAPTER *pAd)
 }
 
 
-INT rtmp_bbp_is_ready(struct _RTMP_ADAPTER *pAd)
+INT rtmp_bbp_is_ready(struct rtmp_adapter *pAd)
 {
 	INT idx = 0;
 	UCHAR val;

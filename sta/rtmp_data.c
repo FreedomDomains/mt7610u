@@ -28,7 +28,7 @@
 #include "rt_config.h"
 
 void STARxEAPOLFrameIndicate(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
 	IN UCHAR FromWhichBSSID)
@@ -128,7 +128,7 @@ void STARxEAPOLFrameIndicate(
 
 
 void STARxDataFrameAnnounce(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
 	IN UCHAR FromWhichBSSID)
@@ -208,7 +208,7 @@ void STARxDataFrameAnnounce(
 
 #ifdef HDR_TRANS_SUPPORT
 void STARxDataFrameAnnounce_Hdr_Trns(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK *pRxBlk,
 	IN UCHAR FromWhichBSSID)
@@ -289,7 +289,7 @@ void STARxDataFrameAnnounce_Hdr_Trns(
 
 /* For TKIP frame, calculate the MIC value	*/
 BOOLEAN STACheckTkipMICValue(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK * pRxBlk)
 {
@@ -348,7 +348,7 @@ BOOLEAN STACheckTkipMICValue(
   4. set some flags with RX_BLK_SET_FLAG()
 */
 void STAHandleRxDataFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
@@ -814,7 +814,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 #ifdef HDR_TRANS_SUPPORT
 void STAHandleRxDataFrame_Hdr_Trns(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
@@ -1270,7 +1270,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 
 
 void STAHandleRxMgmtFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
@@ -1361,7 +1361,7 @@ void STAHandleRxMgmtFrame(
 
 
 void STAHandleRxControlFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
 #ifdef DOT11_N_SUPPORT
@@ -1410,7 +1410,7 @@ void STAHandleRxControlFrame(
 		Need to consider QOS DATA format when converting to 802.3
 	========================================================================
 */
-BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
+BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 {
 	NDIS_STATUS Status;
 	UINT32 RxProcessed, RxPending;
@@ -1679,7 +1679,7 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 
 
 BOOLEAN STAHandleRxDonePacket(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN PNDIS_PACKET pRxPacket,
 	IN RX_BLK *pRxBlk)
 {
@@ -1816,7 +1816,7 @@ BOOLEAN STAHandleRxDonePacket(
 	========================================================================
 */
 void RTMPHandleTwakeupInterrupt(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	AsicForceWakeup(pAd, FALSE);
 }
@@ -1846,7 +1846,7 @@ void STASendPackets(
 	IN UINT NumberOfPackets)
 {
 	UINT Index;
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER) MiniportAdapterContext;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *) MiniportAdapterContext;
 	PNDIS_PACKET pPacket;
 	BOOLEAN allowToSend = FALSE;
 
@@ -1930,7 +1930,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS STASendPacket(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PNDIS_PACKET pPacket)
 {
 	PACKET_INFO PacketInfo;
@@ -2195,7 +2195,7 @@ NDIS_STATUS STASendPacket(
 	If no frame need to send, go to sleep, else, still wake up.
 */
 NDIS_STATUS RTMPFreeTXDRequest(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR NumberRequired,
 	IN PUCHAR FreeNumberIs)
@@ -2247,7 +2247,7 @@ NDIS_STATUS RTMPFreeTXDRequest(
 
 
 void RTMPSendNullFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR TxRate,
 	IN BOOLEAN bQosNull,
 	IN USHORT PwrMgmt)
@@ -2331,7 +2331,7 @@ Decide WEP bit and cipher suite to be used. Same cipher suite should be used for
 	Instead of the SharedKey, SharedKey Length may be Zero.
 */
 void STAFindCipherAlgorithm(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	NDIS_802_11_ENCRYPTION_STATUS Cipher;	/* To indicate cipher used for this packet */
@@ -2401,7 +2401,7 @@ void STAFindCipherAlgorithm(
 
 #ifdef HDR_TRANS_SUPPORT
 void STABuildWifiInfo(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	PWIFI_INFO_STRUC pWI;
@@ -2473,7 +2473,7 @@ void STABuildWifiInfo(
 
 
 void STABuildCacheWifiInfo(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR *pWiInfo)
 {
@@ -2533,7 +2533,7 @@ void STABuildCacheWifiInfo(
 #endif /* HDR_TRANS_SUPPORT */
 
 
-void STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
+void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *wifi_hdr;
 #ifdef QOS_DLS_SUPPORT
@@ -2640,7 +2640,7 @@ void STABuildCommon802_11Header(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 #ifdef DOT11_N_SUPPORT
 void STABuildCache802_11Header(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR *pHeader)
 {
@@ -2717,7 +2717,7 @@ void STABuildCache802_11Header(
 
 
 static inline PUCHAR STA_Build_ARalink_Frame_Header(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk)
 {
 	PUCHAR pHeaderBufPtr;
@@ -2775,7 +2775,7 @@ static inline PUCHAR STA_Build_ARalink_Frame_Header(
 
 #ifdef DOT11_N_SUPPORT
 static inline PUCHAR STA_Build_AMSDU_Frame_Header(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk)
 {
 	PUCHAR pHeaderBufPtr;
@@ -2820,7 +2820,7 @@ static inline PUCHAR STA_Build_AMSDU_Frame_Header(
 
 
 void STA_AMPDU_Frame_Tx(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *pHeader_802_11;
@@ -3214,7 +3214,7 @@ void STA_AMPDU_Frame_Tx(
 
 #ifdef HDR_TRANS_SUPPORT
 void STA_AMPDU_Frame_Tx_Hdr_Trns(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *pHeader_802_11;
@@ -3346,7 +3346,7 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 
 
 void STA_AMSDU_Frame_Tx(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	PUCHAR pHeaderBufPtr;
@@ -3480,7 +3480,7 @@ void STA_AMSDU_Frame_Tx(
 #endif /* DOT11_N_SUPPORT */
 
 
-void STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
+void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *wifi_hdr;
 	UCHAR *pHeaderBufPtr;
@@ -3658,7 +3658,7 @@ void STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
 
 #ifdef HDR_TRANS_SUPPORT
 void STA_Legacy_Frame_Tx_Hdr_Trns(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK *pTxBlk)
 {
 	PUCHAR pHeaderBufPtr;
@@ -3747,7 +3747,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 #endif /* HDR_TRANS_SUPPORT */
 
 void STA_ARalink_Frame_Tx(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN TX_BLK * pTxBlk)
 {
 	PUCHAR pHeaderBufPtr;
@@ -3874,7 +3874,7 @@ void STA_ARalink_Frame_Tx(
 
 
 void STA_Fragment_Frame_Tx(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *pHeader_802_11;
@@ -4250,7 +4250,7 @@ void STA_Fragment_Frame_Tx(
 
 	========================================================================
 */
-NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
+NDIS_STATUS STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 {
 	NDIS_PACKET *pPacket;
 	PQUEUE_ENTRY pQEntry;
@@ -4391,7 +4391,7 @@ NDIS_STATUS STAHardTransmit(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 
 
 void Sta_Announce_or_Forward_802_3_Packet(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR FromWhichBSSID)
 {

@@ -45,7 +45,7 @@ extern UCHAR BROADCOM_OUI[];
     ==========================================================================
  */
 BOOLEAN MlmeStartReqSanity(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	OUT CHAR Ssid[],
@@ -79,7 +79,7 @@ BOOLEAN MlmeStartReqSanity(
     ==========================================================================
  */
 BOOLEAN PeerAssocRspSanity(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
 	OUT PUCHAR pAddr2,

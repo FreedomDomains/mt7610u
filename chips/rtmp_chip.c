@@ -266,7 +266,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpChipBcnSpecInit(RTMP_ADAPTER *pAd)
+void RtmpChipBcnSpecInit(struct rtmp_adapter*pAd)
 {
 }
 
@@ -286,7 +286,7 @@ Note:
 ========================================================================
 */
 void RtmpChipBcnInit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -337,7 +337,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
+void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -407,7 +407,7 @@ Note:
 ========================================================================
 */
 void RtmpChipWriteHighMemory(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	IN UINT32 Value,
 	IN u8 Unit)
@@ -450,7 +450,7 @@ Note:
 ========================================================================
 */
 void RtmpChipWriteMemory(
-	IN	RTMP_ADAPTER	*pAd,
+	IN	struct rtmp_adapter*pAd,
 	IN	USHORT			Offset,
 	IN	UINT32			Value,
 	IN	u8			Unit)
@@ -473,7 +473,7 @@ void RtmpChipWriteMemory(
 
 
 
-static void RxSensitivityTuning(RTMP_ADAPTER *pAd)
+static void RxSensitivityTuning(struct rtmp_adapter*pAd)
 {
 	UCHAR R66 = 0x26 + GET_LNA_GAIN(pAd);
 
@@ -493,7 +493,7 @@ static void RxSensitivityTuning(RTMP_ADAPTER *pAd)
 
 #ifdef CONFIG_STA_SUPPORT
 static UCHAR ChipAGCAdjust(
-	IN PRTMP_ADAPTER		pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN CHAR					Rssi,
 	IN UCHAR				OrigR66Value)
 {
@@ -526,7 +526,7 @@ static UCHAR ChipAGCAdjust(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static void ChipBBPAdjust(RTMP_ADAPTER *pAd)
+static void ChipBBPAdjust(struct rtmp_adapter*pAd)
 {
 	UCHAR rf_bw, ext_ch;
 	UCHAR bbp_val;
@@ -590,7 +590,7 @@ static void ChipBBPAdjust(RTMP_ADAPTER *pAd)
 
 
 static void Default_ChipSwitchChannel(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel,
 	IN enum SWITCH_CHANNEL_STAGE Stage)
 {
@@ -598,7 +598,7 @@ static void Default_ChipSwitchChannel(
 }
 
 
-static void Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
+static void Default_ChipAGCInit(struct rtmp_adapter*pAd, UCHAR BandWidth)
 {
 	UCHAR R66 = 0x30, lan_gain;
 
@@ -626,7 +626,7 @@ static void Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 
 
 static void AsicAntennaDefaultReset(
-	IN PRTMP_ADAPTER		pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN EEPROM_ANTENNA_STRUC	*pAntenna)
 {
 	{
@@ -641,7 +641,7 @@ static void AsicAntennaDefaultReset(
 
 
 void NetDevNickNameInit(
-	IN PRTMP_ADAPTER		pAd)
+	IN struct rtmp_adapter *	pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
 #ifdef RTMP_MAC_USB
@@ -655,7 +655,7 @@ void NetDevNickNameInit(
 
 #ifdef HW_ANTENNA_DIVERSITY_SUPPORT
 UINT32 SetHWAntennaDivsersity(
-	IN PRTMP_ADAPTER		pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN BOOLEAN				Enable)
 {
 	if (Enable == TRUE)
@@ -739,7 +739,7 @@ UINT32 SetHWAntennaDivsersity(
 
 
 INT WaitForAsicReady(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	UINT32 mac_val = 0, reg = MAC_CSR0;
 	int idx = 0;
@@ -770,7 +770,7 @@ INT WaitForAsicReady(
 
 
 INT AsicGetMacVersion(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	UINT32 reg = MAC_CSR0;
 
@@ -814,7 +814,7 @@ Note:
 */
 int RtmpChipOpsHook(void *pCB)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pCB;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pCB;
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 	UINT32 MacValue;

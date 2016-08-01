@@ -49,7 +49,7 @@
 	==========================================================================
  */
 void MlmeDynamicTxRateSwitching(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	PUCHAR					pTable;
 	UCHAR					TableSize = 0;
@@ -553,7 +553,7 @@ void StaQuickResponeForRateUpExec(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	PRTMP_ADAPTER			pAd = (PRTMP_ADAPTER)FunctionContext;
+	struct rtmp_adapter *		pAd = (struct rtmp_adapter *)FunctionContext;
 	ULONG					i;
 	PUCHAR					pTable;
 	UCHAR					TableSize = 0;
@@ -892,7 +892,7 @@ void StaQuickResponeForRateUpExec(
 			pEntry->TxQuality is updated
 */
 void MlmeOldRateAdapt(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN UCHAR			CurrRateIdx,
 	IN UCHAR			UpRateIdx,

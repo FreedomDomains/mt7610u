@@ -88,12 +88,12 @@ typedef union  _MCU_LEDCS_STRUC {
 	UCHAR				word;
 } MCU_LEDCS_STRUC, *PMCU_LEDCS_STRUC;
 
-void RTMPGetLEDSetting(IN RTMP_ADAPTER *pAd);
-void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd);
-void RTMPExitLEDMode(IN RTMP_ADAPTER *pAd);
+void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd);
+void RTMPInitLEDMode(IN struct rtmp_adapter*pAd);
+void RTMPExitLEDMode(IN struct rtmp_adapter*pAd);
 
 void RTMPSetLEDStatus(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UCHAR			Status);
 
 #ifdef RTMP_MAC_USB
@@ -111,7 +111,7 @@ do{								\
 
 
 void RTMPSetSignalLED(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN NDIS_802_11_RSSI Dbm);
 
 
@@ -128,7 +128,7 @@ typedef struct _LED_CONTROL
 	UCHAR				LedStatus;
 }LED_CONTROL, *PLED_CONTROL;
 
-void RTMPStartLEDMode(IN RTMP_ADAPTER *pAd);
+void RTMPStartLEDMode(IN struct rtmp_adapter*pAd);
 
 #endif /* __RT_LED_H__ */
 

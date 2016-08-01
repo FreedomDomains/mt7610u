@@ -90,32 +90,32 @@ typedef	union	_EFUSE_CTRL_STRUC {
 #endif /* RT_BIG_ENDIAN */
 
 static UCHAR eFuseReadRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData);
 
 void eFuseReadPhysical(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
   	OUT	PUSHORT lpOutBuffer,
   	IN	ULONG nOutBufferSize);
 
 static void eFusePhysicalWriteRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData);
 
 static NTSTATUS eFuseWriteRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	IN	USHORT* pData);
 
 static void eFuseWritePhysical(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
   	PUCHAR lpOutBuffer,
@@ -123,7 +123,7 @@ static void eFuseWritePhysical(
 
 
 static NTSTATUS eFuseWriteRegistersFromBin(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	IN	USHORT* pData);
@@ -143,7 +143,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 ========================================================================
 */
 UCHAR eFuseReadRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData)
@@ -245,7 +245,7 @@ UCHAR eFuseReadRegisters(
 ========================================================================
 */
 void eFusePhysicalReadRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData)
@@ -331,7 +331,7 @@ void eFusePhysicalReadRegisters(
 ========================================================================
 */
 void eFuseReadPhysical(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
   	IN	PUSHORT lpInBuffer,
   	IN	ULONG nInBufferSize,
   	OUT	PUSHORT lpOutBuffer,
@@ -365,7 +365,7 @@ void eFuseReadPhysical(
 ========================================================================
 */
 NTSTATUS eFuseRead(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUSHORT			pData,
 	IN	USHORT			Length)
@@ -395,7 +395,7 @@ NTSTATUS eFuseRead(
 ========================================================================
 */
 static void eFusePhysicalWriteRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData)
@@ -531,7 +531,7 @@ static void eFusePhysicalWriteRegisters(
 ========================================================================
 */
 static NTSTATUS eFuseWriteRegisters(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	IN	USHORT* pData)
@@ -804,7 +804,7 @@ static NTSTATUS eFuseWriteRegisters(
 ========================================================================
 */
 static void eFuseWritePhysical(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
   	PUCHAR lpOutBuffer,
@@ -850,7 +850,7 @@ static void eFuseWritePhysical(
 ========================================================================
 */
 NTSTATUS eFuseWrite(
-   	IN	PRTMP_ADAPTER	pAd,
+   	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUSHORT			pData,
 	IN	USHORT			length)
@@ -910,7 +910,7 @@ NTSTATUS eFuseWrite(
 ========================================================================
 */
 INT set_eFuseGetFreeBlockCount_Proc(
-   	IN	PRTMP_ADAPTER	pAd,
+   	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	UINT efusefreenum=0;
@@ -923,7 +923,7 @@ INT set_eFuseGetFreeBlockCount_Proc(
 
 
 INT set_eFusedump_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	USHORT InBuf[3];
@@ -948,7 +948,7 @@ INT set_eFusedump_Proc(
 
 
 INT	set_eFuseLoadFromBin_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	char *				src;
@@ -1062,7 +1062,7 @@ recoverFS:
 
 
 static NTSTATUS eFuseWriteRegistersFromBin(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	IN	USHORT* pData)
@@ -1413,7 +1413,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 
 
 int rtmp_ee_efuse_read16(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	OUT USHORT *pValue)
 {
@@ -1430,7 +1430,7 @@ int rtmp_ee_efuse_read16(
 
 
 int rtmp_ee_efuse_write16(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	IN USHORT data)
 {
@@ -1447,7 +1447,7 @@ int rtmp_ee_efuse_write16(
 
 
 int RtmpEfuseSupportCheck(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	USHORT value;
 
@@ -1462,7 +1462,7 @@ int RtmpEfuseSupportCheck(
 
 #ifdef RALINK_ATE
 INT set_eFuseBufferModeWriteBack_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	UINT Enable;
@@ -1504,7 +1504,7 @@ INT set_eFuseBufferModeWriteBack_Proc(
 	========================================================================
 */
 INT eFuseLoadEEPROM(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	char *				src = NULL;
 	INT 						retval;
@@ -1566,7 +1566,7 @@ INT eFuseLoadEEPROM(
 }
 
 INT eFuseWriteEeeppromBuf(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 
 	char *				src = NULL;
@@ -1619,7 +1619,7 @@ INT eFuseWriteEeeppromBuf(
 }
 
 
-void eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
+void eFuseGetFreeBlockCount(IN struct rtmp_adapter *pAd,
 	PUINT EfuseFreeBlock)
 {
 
@@ -1729,7 +1729,7 @@ void eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
 }
 
 
-INT eFuse_init(RTMP_ADAPTER *pAd)
+INT eFuse_init(struct rtmp_adapter*pAd)
 {
 	UINT EfuseFreeBlock=0;
 	EFUSE_CTRL_STRUC eFuseCtrlStruc;
@@ -1762,7 +1762,7 @@ INT eFuse_init(RTMP_ADAPTER *pAd)
 }
 
 
-INT efuse_probe(RTMP_ADAPTER *pAd)
+INT efuse_probe(struct rtmp_adapter*pAd)
 {
 	UINT32 eFuseCtrl, ctrl_reg;
 

@@ -651,7 +651,7 @@ static int rt2870_probe(
 
 
 /*RtmpDevInit============================================= */
-	/* Allocate RTMP_ADAPTER adapter structure */
+	/* Allocate struct rtmp_adapteradapter structure */
 /*	handle = kmalloc(sizeof(struct os_cookie), GFP_KERNEL); */
 	os_alloc_mem(NULL, (UCHAR **)&handle, sizeof(struct os_cookie));
 	if (handle == NULL)

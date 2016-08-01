@@ -49,7 +49,7 @@ void inc_byte_array(UCHAR *counter, int len);
 	========================================================================
 */
 void RTMPReportMicError(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	PCIPHER_KEY 	pWpaKey)
 {
 	ULONG	Now;
@@ -110,7 +110,7 @@ void RTMPReportMicError(
 #define	LENGTH_EAP_H    4
 /* If the received frame is EAP-Packet ,find out its EAP-Code (Request(0x01), Response(0x02), Success(0x03), Failure(0x04)). */
 INT	    WpaCheckEapCode(
-	IN  PRTMP_ADAPTER   		pAd,
+	IN  struct rtmp_adapter *  		pAd,
 	IN  PUCHAR				pFrame,
 	IN  USHORT				FrameLen,
 	IN  USHORT				OffSet)
@@ -135,7 +135,7 @@ INT	    WpaCheckEapCode(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 void WpaMicFailureReportFrame(
-	IN  PRTMP_ADAPTER   pAd,
+	IN  struct rtmp_adapter *  pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PUCHAR              pOutBuffer = NULL;
@@ -269,7 +269,7 @@ void WpaDisassocApAndBlockAssoc(
     IN void *SystemSpecific2,
     IN void *SystemSpecific3)
 {
-    RTMP_ADAPTER                *pAd = (PRTMP_ADAPTER)FunctionContext;
+    struct rtmp_adapter               *pAd = (struct rtmp_adapter *)FunctionContext;
     MLME_DISASSOC_REQ_STRUCT    DisassocReq;
 
 	/* disassoc from current AP first */
@@ -282,7 +282,7 @@ void WpaDisassocApAndBlockAssoc(
 }
 
 void WpaStaPairwiseKeySetting(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	PCIPHER_KEY pSharedKey;
 	PMAC_TABLE_ENTRY pEntry;
@@ -337,7 +337,7 @@ void WpaStaPairwiseKeySetting(
 }
 
 void WpaStaGroupKeySetting(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	PCIPHER_KEY 		pSharedKey;
 
@@ -393,7 +393,7 @@ void WpaStaGroupKeySetting(
 	========================================================================
 */
 void    WpaSendEapolStart(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN  PUCHAR          pBssid)
 {
 	IEEE8021X_FRAME		Packet;
@@ -412,7 +412,7 @@ void    WpaSendEapolStart(
 	Packet.Length  = cpu2be16(0);
 
 	/* Copy frame to Tx ring */
-	RTMPToWirelessSta((PRTMP_ADAPTER)pAd, &pAd->MacTab.Content[BSSID_WCID],
+	RTMPToWirelessSta((struct rtmp_adapter *)pAd, &pAd->MacTab.Content[BSSID_WCID],
 					 Header802_3, LENGTH_802_3, (PUCHAR)&Packet, 4, TRUE);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<----- WpaSendEapolStart\n"));

@@ -35,7 +35,7 @@
 #define MAX_AGG_CNT	8
 #endif
 /* DisplayTxAgg - display Aggregation statistics from MAC */
-void DisplayTxAgg (RTMP_ADAPTER *pAd)
+void DisplayTxAgg (struct rtmp_adapter*pAd)
 {
 	ULONG totalCount;
 	ULONG aggCnt[MAX_AGG_CNT + 2];
@@ -76,7 +76,7 @@ INT ComputeChecksum(
 } /* ComputeChecksum*/
 
 UINT GenerateWpsPinCode(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
     IN  BOOLEAN         bFromApcli,
 	IN	UCHAR			apidx)
 {
@@ -134,7 +134,7 @@ char* get_bw_str(int bandwidth)
     ==========================================================================
 */
 INT RT_CfgSetCountryRegion(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *		arg,
 	IN INT				band)
 {
@@ -246,7 +246,7 @@ UCHAR cfgmode_2_wmode(UCHAR cfg_mode)
 }
 
 
-static BOOLEAN wmode_valid(RTMP_ADAPTER *pAd, enum WIFI_MODE wmode)
+static BOOLEAN wmode_valid(struct rtmp_adapter*pAd, enum WIFI_MODE wmode)
 {
 	if ((WMODE_CAP_5G(wmode) && (!PHY_CAP_5G(pAd->chipCap.phy_caps))) ||
 		(WMODE_CAP_2G(wmode) && (!PHY_CAP_2G(pAd->chipCap.phy_caps))) ||
@@ -293,7 +293,7 @@ BOOLEAN wmode_band_equal(UCHAR smode, UCHAR tmode)
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, char *arg)
+INT RT_CfgSetWirelessMode(struct rtmp_adapter*pAd, char *arg)
 {
 	LONG cfg_mode;
 	UCHAR wmode, *mode_str;
@@ -358,7 +358,7 @@ static BOOLEAN RT_isLegalCmdBeforeInfUp(
 
 
 INT RT_CfgSetShortSlot(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	LONG ShortSlot;
@@ -385,7 +385,7 @@ INT RT_CfgSetShortSlot(
     ==========================================================================
 */
 INT	RT_CfgSetWepKey(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		keyString,
 	IN	CIPHER_KEY		*pSharedKey,
 	IN	INT				keyIdx)
@@ -449,7 +449,7 @@ INT	RT_CfgSetWepKey(
     ==========================================================================
 */
 INT RT_CfgSetWPAPSKKey(
-	IN RTMP_ADAPTER	*pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *	keyString,
 	IN INT			keyStringLen,
 	IN UCHAR		*pHashStr,
@@ -513,7 +513,7 @@ INT	RT_CfgSetFixedTxPhyMode(char *arg)
 }
 
 INT	RT_CfgSetMacAddress(
-	IN 	PRTMP_ADAPTER 	pAd,
+	IN 	struct rtmp_adapter *	pAd,
 	IN	char *		arg)
 {
 	INT	i, mac_len;
@@ -563,7 +563,7 @@ INT	RT_CfgSetTxMCSProc(char *arg, BOOLEAN *pAutoRate)
 }
 
 INT	RT_CfgSetAutoFallBack(
-	IN 	PRTMP_ADAPTER 	pAd,
+	IN 	struct rtmp_adapter *	pAd,
 	IN	char *		arg)
 {
 	TX_RTY_CFG_STRUC tx_rty_cfg;
@@ -594,7 +594,7 @@ Note:
 ========================================================================
 */
 INT RtmpIoctl_rt_ioctl_giwname(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -617,7 +617,7 @@ INT RTMP_COM_IoctlHandle(
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	POS_COOKIE pObj = (POS_COOKIE)pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
 	UCHAR PermanentAddress[MAC_ADDR_LEN];
@@ -1173,7 +1173,7 @@ INT RTMP_COM_IoctlHandle(
     ==========================================================================
 */
 INT Set_SiteSurvey_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	NDIS_802_11_SSID Ssid;
@@ -1224,7 +1224,7 @@ INT Set_SiteSurvey_Proc(
 }
 
 INT	Set_Antenna_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	ANT_DIVERSITY_TYPE UsedAnt;
@@ -1264,7 +1264,7 @@ INT	Set_Antenna_Proc(
 
 #ifdef MT76x0
 INT set_temp_sensor_proc(
-	IN RTMP_ADAPTER		*pAd,
+	IN struct rtmp_adapter	*pAd,
 	IN char *		arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0) {

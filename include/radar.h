@@ -47,38 +47,38 @@ typedef struct _DOT11_H {
 } DOT11_H, *PDOT11_H;
 
 BOOLEAN RadarChannelCheck(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR			Ch);
 
 ULONG JapRadarType(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 
 void RadarDetectPeriodic(
-	IN PRTMP_ADAPTER	pAd);
+	IN struct rtmp_adapter *pAd);
 
 INT	Set_CSPeriod_Proc(
-	IN	PRTMP_ADAPTER	pAdapter,
+	IN	struct rtmp_adapter *pAdapter,
 	IN	char *		arg);
 
 INT Set_ChMovingTime_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg);
 
 INT Set_BlockChReset_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg);
 
 #if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
 INT	Set_RadarShow_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
 
 void CckMrcStatusCtrl(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 void RadarGLRTCompensate(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 #endif /*defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)*/
 

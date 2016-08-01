@@ -30,7 +30,7 @@
 
 #include "rtmp_type.h"
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 struct _RSSI_SAMPLE;
 
 #include "mac_ral/pbf.h"
@@ -484,10 +484,10 @@ typedef union _EEPROM_ANTENNA_STRUC {
   *   EEPROM operation related marcos
   */
 #define RT28xx_EEPROM_READ16(_pAd, _offset, _value)			\
-	(_pAd)->chipOps.eeread((RTMP_ADAPTER *)(_pAd), (USHORT)(_offset), (PUSHORT)&(_value))
+	(_pAd)->chipOps.eeread((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (PUSHORT)&(_value))
 
 #define RT28xx_EEPROM_WRITE16(_pAd, _offset, _value)		\
-	(_pAd)->chipOps.eewrite((RTMP_ADAPTER *)(_pAd), (USHORT)(_offset), (USHORT)(_value))
+	(_pAd)->chipOps.eewrite((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (USHORT)(_value))
 
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
@@ -779,62 +779,62 @@ typedef enum _CHIP_SPEC_ID
 
 struct _RTMP_CHIP_OP_ {
 	/*  Calibration access related callback functions */
-	int (*eeinit)(struct _RTMP_ADAPTER *pAd);
-	int (*eeread)(struct _RTMP_ADAPTER *pAd, USHORT offset, PUSHORT pValue);
-	int (*eewrite)(struct _RTMP_ADAPTER *pAd, USHORT offset, USHORT value);
+	int (*eeinit)(struct rtmp_adapter *pAd);
+	int (*eeread)(struct rtmp_adapter *pAd, USHORT offset, PUSHORT pValue);
+	int (*eewrite)(struct rtmp_adapter *pAd, USHORT offset, USHORT value);
 
 	/* MCU related callback functions */
-	int (*loadFirmware)(struct _RTMP_ADAPTER *pAd);
-	int (*eraseFirmware)(struct _RTMP_ADAPTER *pAd);
-	int (*sendCommandToMcu)(struct _RTMP_ADAPTER *pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(RTMP_ADAPTER *pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1); */
+	int (*loadFirmware)(struct rtmp_adapter *pAd);
+	int (*eraseFirmware)(struct rtmp_adapter *pAd);
+	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1); */
 #ifdef CONFIG_ANDES_SUPPORT
-	int (*sendCommandToAndesMcu)(struct _RTMP_ADAPTER *pAd, UCHAR QueIdx, UCHAR cmd, UCHAR *pData, USHORT DataLen, BOOLEAN FlgIsNeedLocked);
+	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, UCHAR QueIdx, UCHAR cmd, UCHAR *pData, USHORT DataLen, BOOLEAN FlgIsNeedLocked);
 #endif
 
-	void (*AsicRfInit)(struct _RTMP_ADAPTER *pAd);
-	void (*AsicBbpInit)(struct _RTMP_ADAPTER *pAd);
-	void (*AsicMacInit)(struct _RTMP_ADAPTER *pAd);
+	void (*AsicRfInit)(struct rtmp_adapter *pAd);
+	void (*AsicBbpInit)(struct rtmp_adapter *pAd);
+	void (*AsicMacInit)(struct rtmp_adapter *pAd);
 
-	void (*AsicRfTurnOn)(struct _RTMP_ADAPTER *pAd);
-	void (*AsicRfTurnOff)(struct _RTMP_ADAPTER *pAd);
-	void (*AsicReverseRfFromSleepMode)(struct _RTMP_ADAPTER *pAd, BOOLEAN FlgIsInitState);
-	void (*AsicHaltAction)(struct _RTMP_ADAPTER *pAd);
+	void (*AsicRfTurnOn)(struct rtmp_adapter *pAd);
+	void (*AsicRfTurnOff)(struct rtmp_adapter *pAd);
+	void (*AsicReverseRfFromSleepMode)(struct rtmp_adapter *pAd, BOOLEAN FlgIsInitState);
+	void (*AsicHaltAction)(struct rtmp_adapter *pAd);
 
 	/* Power save */
-	void (*EnableAPMIMOPS)(struct _RTMP_ADAPTER *pAd, IN BOOLEAN ReduceCorePower);
-	void (*DisableAPMIMOPS)(struct _RTMP_ADAPTER *pAd);
-	INT (*PwrSavingOP)(struct _RTMP_ADAPTER *pAd, UINT32 PwrOP, UINT32 PwrLevel,
+	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN BOOLEAN ReduceCorePower);
+	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
+	INT (*PwrSavingOP)(struct rtmp_adapter *pAd, UINT32 PwrOP, UINT32 PwrLevel,
 							UINT32 ListenInterval, UINT32 PreTBTTLeadTime,
 							u8 TIMByteOffset, u8 TIMBytePattern);
 
 	/* Chip tuning */
-	void (*RxSensitivityTuning)(IN struct _RTMP_ADAPTER *pAd);
+	void (*RxSensitivityTuning)(IN struct rtmp_adapter *pAd);
 
 	/* MAC */
-	void (*BeaconUpdate)(struct _RTMP_ADAPTER *pAd, USHORT Offset, UINT32 Value, u8 Unit);
+	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, UINT32 Value, u8 Unit);
 
 	/* BBP adjust */
-	void (*ChipBBPAdjust)(IN struct _RTMP_ADAPTER *pAd);
+	void (*ChipBBPAdjust)(IN struct rtmp_adapter *pAd);
 
 	/* AGC */
-	void (*ChipAGCInit)(struct _RTMP_ADAPTER *pAd, UCHAR bw);
-	UCHAR (*ChipAGCAdjust)(struct _RTMP_ADAPTER *pAd, CHAR Rssi, UCHAR OrigR66Value);
+	void (*ChipAGCInit)(struct rtmp_adapter *pAd, UCHAR bw);
+	UCHAR (*ChipAGCAdjust)(struct rtmp_adapter *pAd, CHAR Rssi, UCHAR OrigR66Value);
 
 	/* Channel */
-	void (*ChipSwitchChannel)(struct _RTMP_ADAPTER *pAd, UCHAR ch, enum SWITCH_CHANNEL_STAGE Stage);
+	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, UCHAR ch, enum SWITCH_CHANNEL_STAGE Stage);
 
 	/* IQ Calibration */
-	void (*ChipIQCalibration)(struct _RTMP_ADAPTER *pAd, UCHAR Channel);
+	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, UCHAR Channel);
 
 	/* TX ALC */
 	UINT32 (*TSSIRatio)(INT32 delta_power);
-	void (*InitDesiredTSSITable)(IN struct _RTMP_ADAPTER *pAd);
-	int (*ATETssiCalibration)(struct _RTMP_ADAPTER *pAd, char *arg);
-	int (*ATETssiCalibrationExtend)(struct _RTMP_ADAPTER *pAd, char *arg);
-	int (*ATEReadExternalTSSI)(struct _RTMP_ADAPTER *pAd, char *arg);
+	void (*InitDesiredTSSITable)(IN struct rtmp_adapter *pAd);
+	int (*ATETssiCalibration)(struct rtmp_adapter *pAd, char *arg);
+	int (*ATETssiCalibrationExtend)(struct rtmp_adapter *pAd, char *arg);
+	int (*ATEReadExternalTSSI)(struct rtmp_adapter *pAd, char *arg);
 
 	void (*AsicTxAlcGetAutoAgcOffset)(
-				IN struct _RTMP_ADAPTER	*pAd,
+				IN struct rtmp_adapter	*pAd,
 				IN char *			pDeltaPwr,
 				IN char *			pTotalDeltaPwr,
 				IN char *			pAgcCompensate,
@@ -842,65 +842,65 @@ struct _RTMP_CHIP_OP_ {
 
 
 
-	void (*AsicGetTxPowerOffset)(struct _RTMP_ADAPTER *pAd, ULONG *TxPwr);
-	void (*AsicExtraPowerOverMAC)(struct _RTMP_ADAPTER *pAd);
+	void (*AsicGetTxPowerOffset)(struct rtmp_adapter *pAd, ULONG *TxPwr);
+	void (*AsicExtraPowerOverMAC)(struct rtmp_adapter *pAd);
 
 	/* Antenna */
-	void (*AsicAntennaDefaultReset)(struct _RTMP_ADAPTER *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
-	void (*SetRxAnt)(struct _RTMP_ADAPTER *pAd, UCHAR Ant);
+	void (*AsicAntennaDefaultReset)(struct rtmp_adapter *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
+	void (*SetRxAnt)(struct rtmp_adapter *pAd, UCHAR Ant);
 
 	/* EEPROM */
-	void (*NICInitAsicFromEEPROM)(IN struct _RTMP_ADAPTER *pAd);
+	void (*NICInitAsicFromEEPROM)(IN struct rtmp_adapter *pAd);
 
 	/* high power tuning */
-	void (*HighPowerTuning)(struct _RTMP_ADAPTER *pAd, struct _RSSI_SAMPLE *pRssi);
+	void (*HighPowerTuning)(struct rtmp_adapter *pAd, struct _RSSI_SAMPLE *pRssi);
 
 	/* Others */
-	void (*NetDevNickNameInit)(IN struct _RTMP_ADAPTER *pAd);
+	void (*NetDevNickNameInit)(IN struct rtmp_adapter *pAd);
 
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
 
-	void (*AsicResetBbpAgent)(IN struct _RTMP_ADAPTER *pAd);
+	void (*AsicResetBbpAgent)(IN struct rtmp_adapter *pAd);
 
 #ifdef CARRIER_DETECTION_SUPPORT
-	void (*ToneRadarProgram)(struct _RTMP_ADAPTER *pAd, ULONG  threshold);
+	void (*ToneRadarProgram)(struct rtmp_adapter *pAd, ULONG  threshold);
 #endif /* CARRIER_DETECTION_SUPPORT */
-	void (*CckMrcStatusCtrl)(struct _RTMP_ADAPTER *pAd);
-	void (*RadarGLRTCompensate)(struct _RTMP_ADAPTER *pAd);
+	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
+	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
-	void (*Calibration)(struct _RTMP_ADAPTER *pAd, UINT32 CalibrationID, UINT32 Parameter);
-	void (*SecondCCADetection)(struct _RTMP_ADAPTER *pAd);
+	void (*Calibration)(struct rtmp_adapter *pAd, UINT32 CalibrationID, UINT32 Parameter);
+	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
 
-	int (*BurstWrite)(struct _RTMP_ADAPTER *ad, UINT32 Offset, UINT32 *Data, UINT32 Cnt);
+	int (*BurstWrite)(struct rtmp_adapter *ad, UINT32 Offset, UINT32 *Data, UINT32 Cnt);
 
-	int (*BurstRead)(struct _RTMP_ADAPTER *ad, UINT32 Offset, UINT32 Cnt, UINT32 *Data);
+	int (*BurstRead)(struct rtmp_adapter *ad, UINT32 Offset, UINT32 Cnt, UINT32 *Data);
 
-	int (*RandomRead)(struct _RTMP_ADAPTER *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
+	int (*RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
 
-	int (*RFRandomRead)(struct _RTMP_ADAPTER *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
+	int (*RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
 
-	int (*ReadModifyWrite)(struct _RTMP_ADAPTER *ad, R_M_W_REG *RegPair, UINT32 Num);
+	int (*ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, UINT32 Num);
 
-	int (*RFReadModifyWrite)(struct _RTMP_ADAPTER *ad, RF_R_M_W_REG *RegPair, UINT32 Num);
+	int (*RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, UINT32 Num);
 
-	int (*RandomWrite)(struct _RTMP_ADAPTER *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
+	int (*RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
 
-	int (*RFRandomWrite)(struct _RTMP_ADAPTER *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
+	int (*RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
 
-	void (*DisableTxRx)(struct _RTMP_ADAPTER *ad, UCHAR Level);
+	void (*DisableTxRx)(struct rtmp_adapter *ad, UCHAR Level);
 
-	void (*AsicRadioOn)(struct _RTMP_ADAPTER *ad, UCHAR Stage);
+	void (*AsicRadioOn)(struct rtmp_adapter *ad, UCHAR Stage);
 
-	void (*AsicRadioOff)(struct _RTMP_ADAPTER *ad, u8 Stage);
+	void (*AsicRadioOff)(struct rtmp_adapter *ad, u8 Stage);
 
-	void (*MCUCtrlInit)(struct _RTMP_ADAPTER *ad);
+	void (*MCUCtrlInit)(struct rtmp_adapter *ad);
 
-	void (*MCUCtrlExit)(struct _RTMP_ADAPTER *ad);
+	void (*MCUCtrlExit)(struct rtmp_adapter *ad);
 
-	void (*usb_cfg_read)(struct _RTMP_ADAPTER *ad, u32 *value);
+	void (*usb_cfg_read)(struct rtmp_adapter *ad, u32 *value);
 
-	void (*usb_cfg_write)(struct _RTMP_ADAPTER *ad, u32 value);
+	void (*usb_cfg_write)(struct rtmp_adapter *ad, u32 value);
 };
 
 #define RTMP_CHIP_ENABLE_AP_MIMOPS(__pAd, __ReduceCorePower)	\
@@ -1183,29 +1183,29 @@ do {	\
 } while (0)
 
 int RtmpChipOpsHook(void *pCB);
-void RtmpChipBcnInit(struct _RTMP_ADAPTER *pAd);
-void RtmpChipBcnSpecInit(struct _RTMP_ADAPTER *pAd);
+void RtmpChipBcnInit(struct rtmp_adapter *pAd);
+void RtmpChipBcnSpecInit(struct rtmp_adapter *pAd);
 #ifdef RLT_MAC
-void rlt_bcn_buf_init(struct _RTMP_ADAPTER *pAd);
+void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 #endif /* RLT_MAC */
 
 void RtmpChipWriteHighMemory(
-	IN	struct _RTMP_ADAPTER *pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	UINT32			Value,
 	IN	u8			Unit);
 
 void RtmpChipWriteMemory(
-	IN	struct _RTMP_ADAPTER *pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	UINT32			Value,
 	IN	u8			Unit);
 
-void RTMPReadChannelPwr(struct _RTMP_ADAPTER *pAd);
-void RTMPReadTxPwrPerRate(struct _RTMP_ADAPTER *pAd);
+void RTMPReadChannelPwr(struct rtmp_adapter *pAd);
+void RTMPReadTxPwrPerRate(struct rtmp_adapter *pAd);
 
 
-void NetDevNickNameInit(IN struct _RTMP_ADAPTER *pAd);
+void NetDevNickNameInit(IN struct rtmp_adapter *pAd);
 
 
 
@@ -1219,11 +1219,11 @@ extern FREQUENCY_ITEM *FreqItems3020;
 extern RTMP_RF_REGS RF2850RegTable[];
 extern UCHAR NUM_OF_2850_CHNL;
 
-BOOLEAN AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us);
-INT AsicSetPreTbttInt(struct _RTMP_ADAPTER *pAd, BOOLEAN enable);
-INT AsicReadAggCnt(struct _RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len);
+BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
+INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, BOOLEAN enable);
+INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
 
-void StopDmaTx(struct _RTMP_ADAPTER *pAd, UCHAR Level);
-void StopDmaRx(struct _RTMP_ADAPTER *pAd, UCHAR Level);
+void StopDmaTx(struct rtmp_adapter *pAd, UCHAR Level);
+void StopDmaRx(struct rtmp_adapter *pAd, UCHAR Level);
 
 #endif /* __RTMP_CHIP_H__ */

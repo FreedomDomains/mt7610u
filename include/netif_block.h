@@ -40,7 +40,7 @@ typedef struct _NETIF_ENTRY
 } NETIF_ENTRY, *PNETIF_ENTRY;
 
 void initblockQueueTab(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 BOOLEAN blockNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
@@ -50,7 +50,7 @@ void releaseNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry);
 
 void StopNetIfQueue(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket);
 #endif /* __NET_IF_BLOCK_H__ */

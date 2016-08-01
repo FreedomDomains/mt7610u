@@ -32,7 +32,7 @@ extern UCHAR  ZeroSsid[32];
 
 
 static void ReservedAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem);
 
 
@@ -54,7 +54,7 @@ static void ReservedAction(
     ==========================================================================
  */
 void ActionStateMachineInit(
-    IN	PRTMP_ADAPTER	pAd,
+    IN	struct rtmp_adapter *pAd,
     IN  STATE_MACHINE *S,
     OUT STATE_MACHINE_FUNC Trans[])
 {
@@ -91,7 +91,7 @@ void ActionStateMachineInit(
 
 #ifdef DOT11_N_SUPPORT
 void MlmeADDBAAction(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 
 {
@@ -193,7 +193,7 @@ void MlmeADDBAAction(
     ==========================================================================
  */
 void MlmeDELBAAction(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 	MLME_DELBA_REQ_STRUCT *pInfo;
@@ -285,19 +285,19 @@ void MlmeDELBAAction(
 #endif /* DOT11_N_SUPPORT */
 
 void MlmeQOSAction(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 }
 
 void MlmeDLSAction(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 }
 
 void MlmeInvalidAction(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
 	/*PUCHAR		   pOutBuffer = NULL;*/
@@ -305,14 +305,14 @@ void MlmeInvalidAction(
 }
 
 void PeerQOSAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 }
 
 #ifdef QOS_DLS_SUPPORT
 void PeerDLSAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
@@ -347,7 +347,7 @@ void PeerDLSAction(
 
 #ifdef DOT11_N_SUPPORT
 void PeerBAAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
@@ -371,7 +371,7 @@ void PeerBAAction(
 
 #ifdef CONFIG_STA_SUPPORT
 void StaPublicAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN BSS_2040_COEXIST_IE *pBssCoexIE)
 {
 	MLME_SCAN_REQ_STRUCT ScanReq;
@@ -401,7 +401,7 @@ Description : Build Intolerant Channel Rerpot from Trigger event table.
 return : how many bytes copied.
 */
 ULONG BuildIntolerantChannelRep(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN    PUCHAR  pDest)
 {
 	ULONG			FrameLen = 0;
@@ -475,7 +475,7 @@ ULONG BuildIntolerantChannelRep(
 	==========================================================================
  */
 void Update2040CoexistFrameAndNotify(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN    UCHAR  Wcid,
 	IN	BOOLEAN	bAddIntolerantCha)
 {
@@ -502,7 +502,7 @@ void Update2040CoexistFrameAndNotify(
 Description : Send 20/40 BSS Coexistence Action frame If one trigger event is triggered.
 */
 void Send2040CoexistAction(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN    UCHAR  Wcid,
 	IN	BOOLEAN	bAddIntolerantCha)
 {
@@ -549,7 +549,7 @@ void Send2040CoexistAction(
 }
 
 void UpdateBssScanParm(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	OVERLAP_BSS_SCAN_IE	APBssScan)
 {
 	pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor = le2cpu16(APBssScan.DelayFactor); /*APBssScan.DelayFactor[1] * 256 + APBssScan.DelayFactor[0];*/
@@ -616,7 +616,7 @@ void UpdateBssScanParm(
 
 
 BOOLEAN ChannelSwitchSanityCheck(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN    UCHAR  Wcid,
 	IN    UCHAR  NewChannel,
 	IN    UCHAR  Secondary)
@@ -649,7 +649,7 @@ BOOLEAN ChannelSwitchSanityCheck(
 
 
 void ChannelSwitchAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Wcid,
 	IN UCHAR NewChannel,
 	IN UCHAR Secondary)
@@ -702,7 +702,7 @@ void ChannelSwitchAction(
 #endif /* DOT11_N_SUPPORT */
 
 void PeerPublicAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
@@ -776,7 +776,7 @@ void PeerPublicAction(
 
 
 static void ReservedAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR Category;
@@ -792,7 +792,7 @@ static void ReservedAction(
 }
 
 void PeerRMAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
@@ -801,7 +801,7 @@ void PeerRMAction(
 
 #ifdef DOT11_N_SUPPORT
 static void respond_ht_information_exchange_action(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PUCHAR			pOutBuffer = NULL;
@@ -854,7 +854,7 @@ static void respond_ht_information_exchange_action(
 
 
 void PeerHTAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR Action = Elem->Msg[LENGTH_802_11+1];
@@ -943,7 +943,7 @@ void PeerHTAction(
 	==========================================================================
  */
 void ORIBATimerTimeout(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	MAC_TABLE_ENTRY	*pEntry;
 	INT			i, total;
@@ -976,7 +976,7 @@ void ORIBATimerTimeout(
 
 
 void SendRefreshBAR(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	MAC_TABLE_ENTRY	*pEntry)
 {
 	FRAME_BAR		FrameBar;
@@ -1039,7 +1039,7 @@ void SendRefreshBAR(
 #endif /* DOT11_N_SUPPORT */
 
 void ActHeaderInit(
-    IN	PRTMP_ADAPTER	pAd,
+    IN	struct rtmp_adapter *pAd,
     IN OUT PHEADER_802_11 pHdr80211,
     IN PUCHAR Addr1,
     IN PUCHAR Addr2,
@@ -1055,7 +1055,7 @@ void ActHeaderInit(
 }
 
 void BarHeaderInit(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN OUT PFRAME_BAR pCntlBar,
 	IN PUCHAR pDA,
 	IN PUCHAR pSA)
@@ -1092,7 +1092,7 @@ void BarHeaderInit(
 	==========================================================================
  */
 void InsertActField(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	OUT PUCHAR pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 Category,

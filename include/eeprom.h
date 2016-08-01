@@ -264,52 +264,52 @@ typedef union _EEPROM_TX_PWR_OFFSET_STRUC
 #endif /* RT_BIG_ENDIAN */
 
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
 
 
 #ifdef RTMP_USB_SUPPORT
 NTSTATUS RTUSBReadEEPROM16(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT offset,
 	OUT	USHORT *pData);
 
 NTSTATUS RTUSBWriteEEPROM16(
-	IN struct _RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT offset,
 	IN USHORT value);
 #endif /* RTMP_USB_SUPPORT */
 
 
 #if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)
-NDIS_STATUS rtmp_nv_init(struct _RTMP_ADAPTER *pAd);
-int rtmp_ee_flash_read(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pVal);
-int rtmp_ee_flash_write(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT data);
-void rtmp_ee_flash_read_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
-void rtmp_ee_flash_write_all(struct _RTMP_ADAPTER *pAd, USHORT *Data);
+NDIS_STATUS rtmp_nv_init(struct rtmp_adapter *pAd);
+int rtmp_ee_flash_read(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pVal);
+int rtmp_ee_flash_write(struct rtmp_adapter *pAd, USHORT Offset, USHORT data);
+void rtmp_ee_flash_read_all(struct rtmp_adapter *pAd, USHORT *Data);
+void rtmp_ee_flash_write_all(struct rtmp_adapter *pAd, USHORT *Data);
 #endif /* defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT) */
 
 
 #ifdef RTMP_EFUSE_SUPPORT
-INT eFuseLoadEEPROM(struct _RTMP_ADAPTER *pAd);
-INT eFuseWriteEeeppromBuf(struct _RTMP_ADAPTER *pAd);
-void eFuseGetFreeBlockCount(struct _RTMP_ADAPTER *pAd, UINT *EfuseFreeBlock);
+INT eFuseLoadEEPROM(struct rtmp_adapter *pAd);
+INT eFuseWriteEeeppromBuf(struct rtmp_adapter *pAd);
+void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);
 
-int rtmp_ee_efuse_read16(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pVal);
-int rtmp_ee_efuse_write16(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT data);
+int rtmp_ee_efuse_read16(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pVal);
+int rtmp_ee_efuse_write16(struct rtmp_adapter *pAd, USHORT Offset, USHORT data);
 
 
-NTSTATUS eFuseRead(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pData, USHORT len);
-NTSTATUS eFuseWrite(struct _RTMP_ADAPTER *pAd, USHORT Offset, USHORT *pData, USHORT len);
+NTSTATUS eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
+NTSTATUS eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 
-INT eFuse_init(struct _RTMP_ADAPTER *pAd);
-INT efuse_probe(struct _RTMP_ADAPTER *pAd);
+INT eFuse_init(struct rtmp_adapter *pAd);
+INT efuse_probe(struct rtmp_adapter *pAd);
 #endif /* RTMP_EFUSE_SUPPORT */
 
 
 /*************************************************************************
   *	Public function declarations for prom operation callback functions setting
   ************************************************************************/
-INT RtmpChipOpsEepromHook(struct _RTMP_ADAPTER *pAd, INT infType);
+INT RtmpChipOpsEepromHook(struct rtmp_adapter *pAd, INT infType);
 
 #endif /* __EEPROM_H__ */

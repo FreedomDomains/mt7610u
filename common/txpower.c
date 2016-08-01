@@ -35,7 +35,7 @@
 #define MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK		0x03
 
 
-void AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
+void AsicGetTxPowerOffset(struct rtmp_adapter*pAd, ULONG *TxPwr)
 {
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC;
 	DBGPRINT(RT_DEBUG_INFO, ("-->AsicGetTxPowerOffset\n"));
@@ -127,7 +127,7 @@ void AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
 
 
 void AsicGetAutoAgcOffsetForExternalTxAlc(
-	IN PRTMP_ADAPTER 			pAd,
+	IN struct rtmp_adapter *			pAd,
 	IN char *					pDeltaPwr,
 	IN char *					pTotalDeltaPwr,
 	IN char *					pAgcCompensate,
@@ -274,7 +274,7 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
  */
 
 void AsicAdjustTxPower(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	CHAR		Rssi = -127;
 	CHAR		DeltaPwr = 0;
@@ -351,7 +351,7 @@ void AsicAdjustTxPower(
 
 #ifdef SINGLE_SKU
 void GetSingleSkuDeltaPower(
-	IN 		PRTMP_ADAPTER 	pAd,
+	IN 		struct rtmp_adapter *	pAd,
 	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
 	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset)
@@ -538,7 +538,7 @@ void GetSingleSkuDeltaPower(
 
 
 void AsicPercentageDeltaPower(
-	IN 		PRTMP_ADAPTER 		pAd,
+	IN 		struct rtmp_adapter *		pAd,
 	IN		CHAR				Rssi,
 	INOUT	char *			pDeltaPwr,
 	INOUT	char *			pDeltaPowerByBbpR1)
@@ -596,7 +596,7 @@ void AsicPercentageDeltaPower(
 
 
 void AsicCompensatePowerViaBBP(
-	IN 		PRTMP_ADAPTER 		pAd,
+	IN 		struct rtmp_adapter *		pAd,
 	INOUT	char *			pTotalDeltaPower)
 {
 	UCHAR mdsm_drop_pwr;
@@ -662,7 +662,7 @@ void AsicCompensatePowerViaBBP(
 
 	========================================================================
 */
-void RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
+void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 {
 	ULONG		data, Adata, Gdata;
 	USHORT		i, value, value2;
@@ -918,7 +918,7 @@ void RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 
 	========================================================================
 */
-void RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
+void RTMPReadChannelPwr(struct rtmp_adapter*pAd)
 {
 	UINT32					i, choffset;
 	EEPROM_TX_PWR_STRUC	    Power;

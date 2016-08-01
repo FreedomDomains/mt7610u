@@ -48,17 +48,17 @@
 	========================================================================
 */
 
-void usb_cfg_read_v1(PRTMP_ADAPTER ad, u32 *value)
+void usb_cfg_read_v1(struct rtmp_adapter *ad, u32 *value)
 {
 	RTUSBReadMACRegister(ad, USB_DMA_CFG, value);
 }
 
-void usb_cfg_write_v1(PRTMP_ADAPTER ad, u32 value)
+void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value)
 {
 	RTUSBWriteMACRegister(ad, USB_DMA_CFG, value, FALSE);
 }
 
-void usb_cfg_read_v2(PRTMP_ADAPTER ad, u32 *value)
+void usb_cfg_read_v2(struct rtmp_adapter *ad, u32 *value)
 {
 	int ret;
 	u32 io_value;
@@ -78,7 +78,7 @@ void usb_cfg_read_v2(PRTMP_ADAPTER ad, u32 *value)
 		*value = 0xffffffff;
 }
 
-void usb_cfg_write_v2(PRTMP_ADAPTER ad, u32 value)
+void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value)
 {
 	int ret;
 	u32 io_value;
@@ -103,7 +103,7 @@ void usb_cfg_write_v2(PRTMP_ADAPTER ad, u32 value)
 }
 
 static NTSTATUS	RTUSBFirmwareRun(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	NTSTATUS	Status;
 
@@ -140,7 +140,7 @@ static NTSTATUS	RTUSBFirmwareRun(
 	========================================================================
 */
 NTSTATUS	RTUSBFirmwareOpmode(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	OUT	PULONG			pValue)
 {
 	NTSTATUS	Status;
@@ -174,7 +174,7 @@ NTSTATUS	RTUSBFirmwareOpmode(
 	========================================================================
 */
 NTSTATUS RTUSBFirmwareWrite(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR		pFwImage,
 	IN ULONG		FwLen)
 {
@@ -209,7 +209,7 @@ NTSTATUS RTUSBFirmwareWrite(
 
 
 NTSTATUS	RTUSBVenderReset(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	NTSTATUS	Status;
 	DBGPRINT_RAW(RT_DEBUG_ERROR, ("-->RTUSBVenderReset\n"));
@@ -242,7 +242,7 @@ NTSTATUS	RTUSBVenderReset(
 	========================================================================
 */
 NTSTATUS	RTUSBMultiRead(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUCHAR			pData,
 	IN	USHORT			length)
@@ -280,7 +280,7 @@ NTSTATUS	RTUSBMultiRead(
 	========================================================================
 */
 NTSTATUS RTUSBMultiWrite_nBytes(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUCHAR			pData,
 	IN	USHORT			length,
@@ -335,7 +335,7 @@ NTSTATUS RTUSBMultiWrite_nBytes(
 	========================================================================
 */
 NTSTATUS	RTUSBMultiWrite_OneByte(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUCHAR			pData)
 {
@@ -356,7 +356,7 @@ NTSTATUS	RTUSBMultiWrite_OneByte(
 }
 
 NTSTATUS	RTUSBMultiWrite(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUCHAR			pData,
 	IN	USHORT			length,
@@ -385,7 +385,7 @@ NTSTATUS	RTUSBMultiWrite(
 
 
 NTSTATUS RTUSBSingleWrite(
-	IN 	RTMP_ADAPTER 	*pAd,
+	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
 	IN	USHORT			Value,
 	IN	BOOLEAN			WriteHigh)
@@ -423,7 +423,7 @@ NTSTATUS RTUSBSingleWrite(
 	========================================================================
 */
 NTSTATUS	RTUSBReadMACRegister(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUINT32			pValue)
 {
@@ -466,7 +466,7 @@ NTSTATUS	RTUSBReadMACRegister(
 	========================================================================
 */
 NTSTATUS RTUSBWriteMACRegister(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	IN UINT32 Value,
 	IN BOOLEAN bWriteHigh)
@@ -493,7 +493,7 @@ NTSTATUS RTUSBWriteMACRegister(
 }
 
 int write_reg(
-	RTMP_ADAPTER *ad,
+	struct rtmp_adapter*ad,
 	u32 base,
 	u16 offset,
 	u32 value)
@@ -524,7 +524,7 @@ int write_reg(
 }
 
 int read_reg(
-	RTMP_ADAPTER *ad,
+	struct rtmp_adapter*ad,
 	u32 base,
 	u16 offset,
 	u32 *value)
@@ -569,7 +569,7 @@ int read_reg(
 	========================================================================
 */
 NTSTATUS	RTUSBReadBBPRegister(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
 	IN	PUCHAR			pValue)
 {
@@ -639,7 +639,7 @@ NTSTATUS	RTUSBReadBBPRegister(
 	========================================================================
 */
 NTSTATUS RTUSBWriteBBPRegister(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Id,
 	IN UCHAR Value)
 {
@@ -698,7 +698,7 @@ NTSTATUS RTUSBWriteBBPRegister(
 	========================================================================
 */
 NTSTATUS	RTUSBWriteRFRegister(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			Value)
 {
 	RF_CSR_CFG0_STRUC PhyCsr4;
@@ -759,7 +759,7 @@ done:
 	========================================================================
 */
 NTSTATUS RTUSBReadEEPROM(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUCHAR			pData,
 	IN	USHORT			length)
@@ -795,7 +795,7 @@ NTSTATUS RTUSBReadEEPROM(
 	========================================================================
 */
 NTSTATUS RTUSBWriteEEPROM(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUCHAR			pData,
 	IN	USHORT			length)
@@ -818,7 +818,7 @@ NTSTATUS RTUSBWriteEEPROM(
 
 
 NTSTATUS RTUSBReadEEPROM16(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			offset,
 	OUT	PUSHORT			pData)
 {
@@ -834,7 +834,7 @@ NTSTATUS RTUSBReadEEPROM16(
 }
 
 NTSTATUS RTUSBWriteEEPROM16(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT offset,
 	IN USHORT value)
 {
@@ -860,7 +860,7 @@ NTSTATUS RTUSBWriteEEPROM16(
 	========================================================================
 */
 void RTUSBPutToSleep(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UINT32		value;
 
@@ -889,7 +889,7 @@ void RTUSBPutToSleep(
 	========================================================================
 */
 NTSTATUS RTUSBWakeUp(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	NTSTATUS	Status;
 
@@ -922,7 +922,7 @@ NTSTATUS RTUSBWakeUp(
 	========================================================================
 */
 NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	NDIS_OID		Oid,
 	IN	BOOLEAN			SetInformation,
 	IN	void *		pInformationBuffer,
@@ -1029,7 +1029,7 @@ NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
 	========================================================================
 */
 NTSTATUS    RTUSB_VendorRequest(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			TransferFlags,
 	IN	UCHAR			RequestType,
 	IN	UCHAR			Request,
@@ -1134,7 +1134,7 @@ NTSTATUS    RTUSB_VendorRequest(
 	========================================================================
 */
 NTSTATUS RTUSB_ResetDevice(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	NTSTATUS		Status = TRUE;
 
@@ -1144,7 +1144,7 @@ NTSTATUS RTUSB_ResetDevice(
 }
 
 
-NTSTATUS CheckGPIOHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+NTSTATUS CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 
 #ifdef RALINK_ATE
@@ -1201,7 +1201,7 @@ NTSTATUS CheckGPIOHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS ResetBulkOutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 
 	INT32 MACValue = 0;
@@ -1369,7 +1369,7 @@ static NTSTATUS ResetBulkOutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 
 /* All transfers must be aborted or cancelled before attempting to reset the pipe.*/
-static NTSTATUS ResetBulkInHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UINT32 MACValue;
 	NTSTATUS ntStatus;
@@ -1491,7 +1491,7 @@ static NTSTATUS ResetBulkInHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS SetAsicWcidHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID	SetAsicWcid;
 	USHORT		offset;
@@ -1527,7 +1527,7 @@ static NTSTATUS SetAsicWcidHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS DelAsicWcidHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS DelAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID SetAsicWcid;
 	SetAsicWcid = *((PRT_SET_ASIC_WCID)(CMDQelmt->buffer));
@@ -1540,7 +1540,7 @@ static NTSTATUS DelAsicWcidHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
         return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SetWcidSecInfoHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetWcidSecInfoHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_SEC_INFO pInfo;
 
@@ -1556,7 +1556,7 @@ static NTSTATUS SetWcidSecInfoHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS SetAsicWcidIVEIVHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetAsicWcidIVEIVHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_IVEIV_ENTRY pInfo;
 
@@ -1570,7 +1570,7 @@ static NTSTATUS SetAsicWcidIVEIVHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt
 }
 
 
-static NTSTATUS SetAsicWcidAttrHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetAsicWcidAttrHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_ATTR_ENTRY pInfo;
 
@@ -1585,7 +1585,7 @@ static NTSTATUS SetAsicWcidAttrHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SETAsicSharedKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SETAsicSharedKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_SHARED_KEY pInfo;
 
@@ -1598,7 +1598,7 @@ static NTSTATUS SETAsicSharedKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SetAsicPairwiseKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetAsicPairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_PAIRWISE_KEY pInfo;
 
@@ -1611,7 +1611,7 @@ static NTSTATUS SetAsicPairwiseKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQel
 }
 
 #ifdef CONFIG_STA_SUPPORT
-static NTSTATUS SetPortSecuredHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetPortSecuredHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	STA_PORT_SECURED(pAd);
 	return NDIS_STATUS_SUCCESS;
@@ -1619,7 +1619,7 @@ static NTSTATUS SetPortSecuredHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static NTSTATUS RemovePairwiseKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS RemovePairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UCHAR Wcid = *((PUCHAR)(CMDQelmt->buffer));
 
@@ -1628,7 +1628,7 @@ static NTSTATUS RemovePairwiseKeyHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelm
 }
 
 
-static NTSTATUS SetClientMACEntryHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetClientMACEntryHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_SET_ASIC_WCID pInfo;
 
@@ -1638,7 +1638,7 @@ static NTSTATUS SetClientMACEntryHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelm
 }
 
 
-static NTSTATUS UpdateProtectHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS UpdateProtectHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_PROTECT_INFO pAsicProtectInfo;
 
@@ -1655,7 +1655,7 @@ static NTSTATUS UpdateProtectHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 
 #ifdef CONFIG_STA_SUPPORT
-static NTSTATUS SetPSMBitHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetPSMBitHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
@@ -1667,7 +1667,7 @@ static NTSTATUS SetPSMBitHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS ForceWakeUpHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS ForceWakeUpHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		AsicForceWakeup(pAd, TRUE);
@@ -1676,7 +1676,7 @@ static NTSTATUS ForceWakeUpHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS ForceSleepAutoWakeupHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS ForceSleepAutoWakeupHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	USHORT  TbttNumToNextWakeUp;
 	USHORT  NextDtim = pAd->StaCfg.DtimPeriod;
@@ -1698,7 +1698,7 @@ static NTSTATUS ForceSleepAutoWakeupHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQ
 }
 
 
-NTSTATUS QkeriodicExecutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+NTSTATUS QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	StaQuickResponeForRateUpExec(NULL, pAd, NULL, NULL);
 	return NDIS_STATUS_SUCCESS;
@@ -1709,7 +1709,7 @@ NTSTATUS QkeriodicExecutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 
 #ifdef LED_CONTROL_SUPPORT
-static NTSTATUS SetLEDStatusHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS SetLEDStatusHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UCHAR LEDStatus = *((PUCHAR)(CMDQelmt->buffer));
 
@@ -1728,25 +1728,25 @@ static NTSTATUS SetLEDStatusHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 #ifdef LINUX
 #ifdef RT_CFG80211_SUPPORT
-static NTSTATUS RegHintHdlr (IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS RegHintHdlr (IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CRDA_REG_HINT(pAd, CMDQelmt->buffer, CMDQelmt->bufferlength);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RegHint11DHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS RegHint11DHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CRDA_REG_HINT11D(pAd, CMDQelmt->buffer, CMDQelmt->bufferlength);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RT_Mac80211_ScanEnd(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS RT_Mac80211_ScanEnd(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_SCAN_END(pAd, FALSE);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RT_Mac80211_ConnResultInfom(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CONN_RESULT_INFORM(pAd,
 								pAd->MlmeAux.Bssid,
@@ -1761,7 +1761,7 @@ static NTSTATUS RT_Mac80211_ConnResultInfom(IN PRTMP_ADAPTER pAd, IN PCmdQElmt C
 
 
 #ifdef STREAM_MODE_SUPPORT
-static NTSTATUS UpdateTXChainAddress(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS UpdateTXChainAddress(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	AsicUpdateTxChainAddress(pAd, CMDQelmt->buffer);
 	return NDIS_STATUS_SUCCESS;
@@ -1770,7 +1770,7 @@ static NTSTATUS UpdateTXChainAddress(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt
 
 extern MSG_EVENT_HANDLER msg_event_handler_tb[];
 
-static NTSTATUS CmdRspEventCallback(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
+static NTSTATUS CmdRspEventCallback(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RXFCE_INFO_CMD *pFceInfo = CMDQelmt->buffer;
 
@@ -1781,7 +1781,7 @@ static NTSTATUS CmdRspEventCallback(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-typedef NTSTATUS (*CMDHdlr)(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt);
+typedef NTSTATUS (*CMDHdlr)(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt);
 
 static CMDHdlr CMDHdlrTable[] = {
 	ResetBulkOutHdlr,				/* CMDTHREAD_RESET_BULK_OUT*/
@@ -1894,7 +1894,7 @@ static inline BOOLEAN ValidCMD(IN PCmdQElmt CMDQelmt)
 
 
 void CMDHandler(
-    IN PRTMP_ADAPTER pAd)
+    IN struct rtmp_adapter *pAd)
 {
 	PCmdQElmt		cmdqelmt;
 	NDIS_STATUS		NdisStatus = NDIS_STATUS_SUCCESS;
@@ -1935,7 +1935,7 @@ void CMDHandler(
 }
 
 
-void RTUSBWatchDog(IN RTMP_ADAPTER *pAd)
+void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 {
 	PHT_TX_CONTEXT		pHTTXContext;
 	int 					idx;

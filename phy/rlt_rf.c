@@ -30,7 +30,7 @@
 #include "rt_config.h"
 
 NDIS_STATUS rlt_rf_write(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
 	IN UCHAR value)
@@ -116,7 +116,7 @@ done:
 	========================================================================
 */
 NDIS_STATUS rlt_rf_read(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
 	IN UCHAR *pValue)

@@ -30,7 +30,7 @@
 
 #include "mcu.h"
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
 #define MCU_WAIT_ACK_CMD_THRESHOLD 0x0f
 #define MCU_RX_CMD_THRESHOLD 0x0f
@@ -107,7 +107,7 @@ struct MCU_CTRL {
 
 struct cmd_msg;
 typedef void (*MSG_RSP_HANDLER)(struct cmd_msg *msg, char *payload, u16 payload_len);
-typedef void (*MSG_EVENT_HANDLER)(struct _RTMP_ADAPTER *ad, char *payload, u16 payload_len);
+typedef void (*MSG_EVENT_HANDLER)(struct rtmp_adapter *ad, char *payload, u16 payload_len);
 
 struct cmd_msg_cb {
 	struct cmd_msg *msg;
@@ -244,30 +244,30 @@ struct mcu_skb_data {
 };
 
 #ifdef RTMP_MAC_USB
-NDIS_STATUS andes_usb_loadfw(struct _RTMP_ADAPTER *ad);
+NDIS_STATUS andes_usb_loadfw(struct rtmp_adapter *ad);
 #endif /* RTMP_MAC_USB */
-void andes_ctrl_init(struct _RTMP_ADAPTER *ad);
-void andes_ctrl_enable(struct _RTMP_ADAPTER *ad);
-void andes_ctrl_disable(struct _RTMP_ADAPTER *ad);
-void andes_ctrl_exit(struct _RTMP_ADAPTER *ad);
-int andes_send_cmd_msg(struct _RTMP_ADAPTER *ad, struct cmd_msg *msg);
-int andes_burst_write(struct _RTMP_ADAPTER *ad, u32 offset, u32 *data, u32 cnt);
-int andes_burst_read(struct _RTMP_ADAPTER *ad, u32 offset, u32 cnt, u32 *data);
-int andes_random_read(struct _RTMP_ADAPTER *ad, RTMP_REG_PAIR *reg_pair, u32 num);
-int andes_rf_random_read(struct _RTMP_ADAPTER *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
-int andes_read_modify_write(struct _RTMP_ADAPTER *ad, R_M_W_REG *reg_pair, u32 num);
-int andes_rf_read_modify_write(struct _RTMP_ADAPTER *ad, RF_R_M_W_REG *reg_pair, u32 num);
-int andes_random_write(struct _RTMP_ADAPTER *ad, RTMP_REG_PAIR *reg_pair, u32 num);
-int andes_rf_random_write(struct _RTMP_ADAPTER *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
-int andes_fun_set(struct _RTMP_ADAPTER *ad, u32 fun_id, u32 param);
-int andes_pwr_saving(struct _RTMP_ADAPTER *ad, u32 op, u32 level,
+void andes_ctrl_init(struct rtmp_adapter *ad);
+void andes_ctrl_enable(struct rtmp_adapter *ad);
+void andes_ctrl_disable(struct rtmp_adapter *ad);
+void andes_ctrl_exit(struct rtmp_adapter *ad);
+int andes_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg);
+int andes_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 cnt);
+int andes_burst_read(struct rtmp_adapter *ad, u32 offset, u32 cnt, u32 *data);
+int andes_random_read(struct rtmp_adapter *ad, RTMP_REG_PAIR *reg_pair, u32 num);
+int andes_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
+int andes_read_modify_write(struct rtmp_adapter *ad, R_M_W_REG *reg_pair, u32 num);
+int andes_rf_read_modify_write(struct rtmp_adapter *ad, RF_R_M_W_REG *reg_pair, u32 num);
+int andes_random_write(struct rtmp_adapter *ad, RTMP_REG_PAIR *reg_pair, u32 num);
+int andes_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
+int andes_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param);
+int andes_pwr_saving(struct rtmp_adapter *ad, u32 op, u32 level,
 					 u32 listen_interval, u32 pre_tbtt_lead_time,
 					 u8 tim_byte_offset, u8 tim_byte_pattern);
-int andes_calibration(struct _RTMP_ADAPTER *ad, u32 cal_id, u32 param);
-int andes_led_op(struct _RTMP_ADAPTER *ad, u32 led_idx, u32 link_status);
-BOOLEAN is_inband_cmd_processing(struct _RTMP_ADAPTER *ad);
+int andes_calibration(struct rtmp_adapter *ad, u32 cal_id, u32 param);
+int andes_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status);
+BOOLEAN is_inband_cmd_processing(struct rtmp_adapter *ad);
 void andes_cmd_msg_bh(unsigned long param);
-int usb_rx_cmd_msg_submit(struct _RTMP_ADAPTER *ad);
-int usb_rx_cmd_msgs_receive(struct _RTMP_ADAPTER *ad);
-void andes_bh_schedule(struct _RTMP_ADAPTER *ad);
+int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad);
+int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad);
+void andes_bh_schedule(struct rtmp_adapter *ad);
 #endif

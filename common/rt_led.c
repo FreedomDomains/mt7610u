@@ -71,7 +71,7 @@ INT LED_Array[16][12]={
 	========================================================================
 */
 void RTMPSetLEDStatus(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UCHAR			Status)
 {
 	/*ULONG			data; */
@@ -201,7 +201,7 @@ void RTMPSetLEDStatus(
 	========================================================================
 */
 void RTMPSetSignalLED(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN NDIS_802_11_RSSI Dbm)
 {
 	UCHAR		nLed = 0;
@@ -244,7 +244,7 @@ void RTMPSetSignalLED(
 
 
 
-void RTMPGetLEDSetting(IN RTMP_ADAPTER *pAd)
+void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 {
 	USHORT Value;
 	PLED_CONTROL pLedCntl = &pAd->LedCntl;
@@ -276,12 +276,12 @@ void RTMPGetLEDSetting(IN RTMP_ADAPTER *pAd)
 }
 
 
-void RTMPStartLEDMode(IN RTMP_ADAPTER *pAd)
+void RTMPStartLEDMode(IN struct rtmp_adapter*pAd)
 {
 }
 
 
-void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd)
+void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 {
 	PLED_CONTROL pLedCntl = &pAd->LedCntl;
 
@@ -308,7 +308,7 @@ void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd)
 }
 
 
-inline void RTMPExitLEDMode(IN RTMP_ADAPTER *pAd)
+inline void RTMPExitLEDMode(IN struct rtmp_adapter*pAd)
 {
 
 	RTMPSetLED(pAd, LED_RADIO_OFF);

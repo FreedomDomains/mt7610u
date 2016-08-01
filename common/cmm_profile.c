@@ -569,7 +569,7 @@ INT RTMPGetKeyParameterWithOffset(
 
 
 #ifdef CONFIG_STA_SUPPORT
-inline void RTMPSetSTADefKeyId(RTMP_ADAPTER *pAd, ULONG KeyIdx)
+inline void RTMPSetSTADefKeyId(struct rtmp_adapter*pAd, ULONG KeyIdx)
 {
 	if((KeyIdx >= 1 ) && (KeyIdx <= 4))
 		pAd->StaCfg.DefaultKeyId = (UCHAR) (KeyIdx - 1);
@@ -579,7 +579,7 @@ inline void RTMPSetSTADefKeyId(RTMP_ADAPTER *pAd, ULONG KeyIdx)
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  char *buffer,IN  ULONG KeyType,IN  INT BSSIdx,IN  INT KeyIdx)
+static int rtmp_parse_key_buffer_from_file(IN  struct rtmp_adapter *pAd,IN  char *buffer,IN  ULONG KeyType,IN  INT BSSIdx,IN  INT KeyIdx)
 {
 	char *	keybuff;
 	/*INT			i = BSSIdx, idx = KeyIdx, retVal;*/
@@ -607,7 +607,7 @@ static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  char *buffe
 }
 
 
-static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
+static void rtmp_read_key_parms_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
 {
 	STRING		tok_str[16];
 	char *	macptr;
@@ -668,7 +668,7 @@ static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, c
 
 
 #ifdef CONFIG_STA_SUPPORT
-static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
+static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
 {
 	char *				macptr;
 	INT						i=0;
@@ -767,7 +767,7 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 }
 
 #ifdef XLINK_SUPPORT
-static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
+static void rtmp_get_psp_xlink_mode_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
 {
 	UINT32 Value = 0;
 
@@ -799,7 +799,7 @@ static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 
 #ifdef DOT11_VHT_AC
 static void VHTParametersHook(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *pValueStr,
 	IN char *pInput)
 {
@@ -859,7 +859,7 @@ static void VHTParametersHook(
 #endif /* DOT11_VHT_AC */
 
 #ifdef CUSTOMER_DEMO
-void demo_mode_cfg(RTMP_ADAPTER *pAd)
+void demo_mode_cfg(struct rtmp_adapter*pAd)
 {
 	int IdBss, i;
 	UCHAR cfg_mode;
@@ -893,7 +893,7 @@ void demo_mode_cfg(RTMP_ADAPTER *pAd)
 
 #ifdef DOT11_N_SUPPORT
 static void HTParametersHook(
-	IN	PRTMP_ADAPTER pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *	  pValueStr,
 	IN	char *	  pInput)
 {
@@ -1356,7 +1356,7 @@ static void HTParametersHook(
 
 
 #ifdef CONFIG_STA_SUPPORT
-void RTMPSetSTASSID(RTMP_ADAPTER *pAd, char *SSID)
+void RTMPSetSTASSID(struct rtmp_adapter*pAd, char *SSID)
 {
 	pAd->CommonCfg.SsidLen = (UCHAR) strlen(SSID);
 	NdisZeroMemory(pAd->CommonCfg.Ssid, NDIS_802_11_LENGTH_SSID);
@@ -1373,7 +1373,7 @@ void RTMPSetSTASSID(RTMP_ADAPTER *pAd, char *SSID)
 }
 
 
-void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, char *PassPh)
+void RTMPSetSTAPassPhrase(struct rtmp_adapter*pAd, char *PassPh)
 {
 	int     ret = TRUE;
 
@@ -1412,7 +1412,7 @@ void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, char *PassPh)
 }
 
 
-inline void RTMPSetSTACipherSuites(RTMP_ADAPTER *pAd, NDIS_802_11_ENCRYPTION_STATUS WepStatus)
+inline void RTMPSetSTACipherSuites(struct rtmp_adapter*pAd, NDIS_802_11_ENCRYPTION_STATUS WepStatus)
 {
 	/* Update all wepstatus related*/
 	pAd->StaCfg.PairCipher		= WepStatus;
@@ -1424,7 +1424,7 @@ inline void RTMPSetSTACipherSuites(RTMP_ADAPTER *pAd, NDIS_802_11_ENCRYPTION_STA
 
 /*RECOVER THE OLD CONNECT INFO */
 NDIS_STATUS RecoverConnectInfo(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	INT idx;
 	char ssidStr[NDIS_802_11_LENGTH_SSID + 1];
@@ -1482,7 +1482,7 @@ NDIS_STATUS RecoverConnectInfo(
 
 /*STORE THE CONNECT INFO*/
 NDIS_STATUS StoreConnectInfo(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	INT idx;
 	DBGPRINT(RT_DEBUG_TRACE, ("-->StoreConnectInfo()\n"));
@@ -1520,7 +1520,7 @@ NDIS_STATUS StoreConnectInfo(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-void RTMPSetCountryCode(RTMP_ADAPTER *pAd, char *CountryCode)
+void RTMPSetCountryCode(struct rtmp_adapter*pAd, char *CountryCode)
 {
 	NdisMoveMemory(pAd->CommonCfg.CountryCode, CountryCode , 2);
 	pAd->CommonCfg.CountryCode[2] = ' ';
@@ -1538,7 +1538,7 @@ void RTMPSetCountryCode(RTMP_ADAPTER *pAd, char *CountryCode)
 
 
 NDIS_STATUS	RTMPSetProfileParameters(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *pBuffer)
 {
 	char *				tmpbuf;
@@ -2356,7 +2356,7 @@ Note:
 ========================================================================
 */
 BOOLEAN RTMP_CardInfoRead(
-	IN	PRTMP_ADAPTER pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 #define MC_SELECT_CARDID		0	/* use CARD ID (0 ~ 31) to identify different cards */
 #define MC_SELECT_MAC			1	/* use CARD MAC to identify different cards */
@@ -2699,7 +2699,7 @@ return flg_match_ok;
 
 #ifdef SINGLE_SKU_V2
 NDIS_STATUS	RTMPSetSingleSKUParameters(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	char *buffer;
 	char *	readline, token;

@@ -82,7 +82,7 @@ BUILD_TIMER_FUNCTION(ATEPeriodicExec);
 #endif /* RALINK_ATE */
 
 #ifdef RTMP_TIMER_TASK_SUPPORT
-static void RtmpTimerQHandle(RTMP_ADAPTER *pAd)
+static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 {
 /*#ifndef KTHREAD_SUPPORT*/
 	int status;
@@ -152,11 +152,11 @@ INT RtmpTimerQThread(
 	IN ULONG Context)
 {
 	RTMP_OS_TASK	*pTask;
-	PRTMP_ADAPTER	pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 
 
 	pTask = (RTMP_OS_TASK *)Context;
-	pAd = (PRTMP_ADAPTER)RTMP_OS_TASK_DATA_GET(pTask);
+	pAd = (struct rtmp_adapter *)RTMP_OS_TASK_DATA_GET(pTask);
 
 	if (pAd == NULL)
 	{
@@ -191,7 +191,7 @@ INT RtmpTimerQThread(
 
 
 RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RALINK_TIMER_STRUCT *pTimer)
 {
 	RTMP_TIMER_TASK_ENTRY *pQNode = NULL, *pQTail;
@@ -229,7 +229,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 
 
 BOOLEAN RtmpTimerQRemove(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RALINK_TIMER_STRUCT *pTimer)
 {
 	RTMP_TIMER_TASK_ENTRY *pNode, *pPrev = NULL;
@@ -268,7 +268,7 @@ BOOLEAN RtmpTimerQRemove(
 }
 
 
-void RtmpTimerQExit(RTMP_ADAPTER *pAd)
+void RtmpTimerQExit(struct rtmp_adapter*pAd)
 {
 	RTMP_TIMER_TASK_ENTRY *pTimerQ;
 	unsigned long irqFlags;
@@ -292,7 +292,7 @@ void RtmpTimerQExit(RTMP_ADAPTER *pAd)
 }
 
 
-void RtmpTimerQInit(RTMP_ADAPTER *pAd)
+void RtmpTimerQInit(struct rtmp_adapter*pAd)
 {
 	int 	i;
 	RTMP_TIMER_TASK_ENTRY *pQNode, *pEntry;

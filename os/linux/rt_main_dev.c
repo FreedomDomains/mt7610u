@@ -403,7 +403,7 @@ PNET_DEV RtmpPhyNetDevInit(
 
 	RTMP_DRIVER_MAIN_INF_GET(pAd, &InfId);
 
-/*	net_dev = RtmpOSNetDevCreate(pAd, INT_MAIN, 0, sizeof(PRTMP_ADAPTER), INF_MAIN_DEV_NAME); */
+/*	net_dev = RtmpOSNetDevCreate(pAd, INT_MAIN, 0, sizeof(struct rtmp_adapter *), INF_MAIN_DEV_NAME); */
 	RTMP_DRIVER_MAIN_INF_CREATE(pAd, &net_dev);
 	if (net_dev == NULL)
 	{

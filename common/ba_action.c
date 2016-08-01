@@ -43,15 +43,15 @@
 
 #define RESET_RCV_SEQ		(0xFFFF)
 
-static void ba_mpdu_blk_free(PRTMP_ADAPTER pAd, struct reordering_mpdu *mpdu_blk);
+static void ba_mpdu_blk_free(struct rtmp_adapter *pAd, struct reordering_mpdu *mpdu_blk);
 
 
 BA_ORI_ENTRY *BATableAllocOriEntry(
-								  IN  PRTMP_ADAPTER   pAd,
+								  IN  struct rtmp_adapter *  pAd,
 								  OUT USHORT          *Idx);
 
 BA_REC_ENTRY *BATableAllocRecEntry(
-								  IN  PRTMP_ADAPTER   pAd,
+								  IN  struct rtmp_adapter *  pAd,
 								  OUT USHORT          *Idx);
 
 void BAOriSessionSetupTimeout(
@@ -74,7 +74,7 @@ BUILD_TIMER_FUNCTION(BARecSessionIdleTimeout);
 			Announce_Reordering_Packet(_pAd, _mpdu_blk);
 
 void BA_MaxWinSizeReasign(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY  *pEntryPeer,
 	OUT UCHAR			*pWinSize)
 {
@@ -132,7 +132,7 @@ void BA_MaxWinSizeReasign(
 	}
 }
 
-void Announce_Reordering_Packet(IN PRTMP_ADAPTER			pAd,
+void Announce_Reordering_Packet(IN struct rtmp_adapter *		pAd,
 								IN struct reordering_mpdu	*mpdu)
 {
 	PNDIS_PACKET    pPacket;
@@ -239,7 +239,7 @@ static inline struct reordering_mpdu  *ba_reordering_mpdu_probe(struct reorderin
 /*
  * free all resource for reordering mechanism
  */
-void ba_reordering_resource_release(PRTMP_ADAPTER pAd)
+void ba_reordering_resource_release(struct rtmp_adapter *pAd)
 {
 	BA_TABLE        *Tab;
 	PBA_REC_ENTRY   pBAEntry;
@@ -277,7 +277,7 @@ void ba_reordering_resource_release(PRTMP_ADAPTER pAd)
 /*
  * Allocate all resource for reordering mechanism
  */
-BOOLEAN ba_reordering_resource_init(PRTMP_ADAPTER pAd, int num)
+BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num)
 {
 	int     i;
 	PUCHAR  mem;
@@ -323,7 +323,7 @@ BOOLEAN ba_reordering_resource_init(PRTMP_ADAPTER pAd, int num)
 
 /* static int blk_count=0;  sample take off, no use */
 
-static struct reordering_mpdu *ba_mpdu_blk_alloc(PRTMP_ADAPTER pAd)
+static struct reordering_mpdu *ba_mpdu_blk_alloc(struct rtmp_adapter *pAd)
 {
 	struct reordering_mpdu *mpdu_blk;
 
@@ -339,7 +339,7 @@ static struct reordering_mpdu *ba_mpdu_blk_alloc(PRTMP_ADAPTER pAd)
 	return mpdu_blk;
 }
 
-static void ba_mpdu_blk_free(PRTMP_ADAPTER pAd, struct reordering_mpdu *mpdu_blk)
+static void ba_mpdu_blk_free(struct rtmp_adapter *pAd, struct reordering_mpdu *mpdu_blk)
 {
 	ASSERT(mpdu_blk);
 
@@ -351,7 +351,7 @@ static void ba_mpdu_blk_free(PRTMP_ADAPTER pAd, struct reordering_mpdu *mpdu_blk
 
 
 static USHORT ba_indicate_reordering_mpdus_in_order(
-												   IN PRTMP_ADAPTER    pAd,
+												   IN struct rtmp_adapter *   pAd,
 												   IN PBA_REC_ENTRY    pBAEntry,
 												   IN USHORT           StartSeq)
 {
@@ -385,7 +385,7 @@ static USHORT ba_indicate_reordering_mpdus_in_order(
 }
 
 static void ba_indicate_reordering_mpdus_le_seq(
-											   IN PRTMP_ADAPTER    pAd,
+											   IN struct rtmp_adapter *   pAd,
 											   IN PBA_REC_ENTRY    pBAEntry,
 											   IN USHORT           Sequence)
 {
@@ -414,7 +414,7 @@ static void ba_indicate_reordering_mpdus_le_seq(
 
 
 static void ba_refresh_reordering_mpdus(
-									   IN PRTMP_ADAPTER    pAd,
+									   IN struct rtmp_adapter *   pAd,
 									   PBA_REC_ENTRY       pBAEntry)
 {
 	struct reordering_mpdu *mpdu_blk;
@@ -440,7 +440,7 @@ static void ba_refresh_reordering_mpdus(
 
 /* static */
 void ba_flush_reordering_timeout_mpdus(
-									IN PRTMP_ADAPTER    pAd,
+									IN struct rtmp_adapter *   pAd,
 									IN PBA_REC_ENTRY    pBAEntry,
 									IN ULONG            Now32)
 
@@ -499,7 +499,7 @@ void ba_flush_reordering_timeout_mpdus(
  * set up BA agreement
  */
 void BAOriSessionSetUp(
-					  IN PRTMP_ADAPTER    pAd,
+					  IN struct rtmp_adapter *   pAd,
 					  IN MAC_TABLE_ENTRY  *pEntry,
 					  IN UCHAR            TID,
 					  IN USHORT           TimeOut,
@@ -580,7 +580,7 @@ void BAOriSessionSetUp(
 }
 
 void BAOriSessionAdd(
-			IN PRTMP_ADAPTER    pAd,
+			IN struct rtmp_adapter *   pAd,
 					IN MAC_TABLE_ENTRY  *pEntry,
 			IN PFRAME_ADDBA_RSP pFrame)
 {
@@ -657,7 +657,7 @@ void BAOriSessionAdd(
 }
 
 BOOLEAN BARecSessionAdd(
-					   IN PRTMP_ADAPTER    pAd,
+					   IN struct rtmp_adapter *   pAd,
 					   IN MAC_TABLE_ENTRY  *pEntry,
 					   IN PFRAME_ADDBA_REQ pFrame)
 {
@@ -752,7 +752,7 @@ BOOLEAN BARecSessionAdd(
 
 
 BA_REC_ENTRY *BATableAllocRecEntry(
-								  IN  PRTMP_ADAPTER   pAd,
+								  IN  struct rtmp_adapter *  pAd,
 								  OUT USHORT          *Idx)
 {
 	int             i;
@@ -788,7 +788,7 @@ done:
 }
 
 BA_ORI_ENTRY *BATableAllocOriEntry(
-								  IN  PRTMP_ADAPTER   pAd,
+								  IN  struct rtmp_adapter *  pAd,
 								  OUT USHORT          *Idx)
 {
 	int             i;
@@ -823,7 +823,7 @@ done:
 
 
 void BATableFreeOriEntry(
-						IN  PRTMP_ADAPTER   pAd,
+						IN  struct rtmp_adapter *  pAd,
 						IN  ULONG           Idx)
 {
 	BA_ORI_ENTRY    *pBAEntry = NULL;
@@ -863,7 +863,7 @@ void BATableFreeOriEntry(
 
 
 void BATableFreeRecEntry(
-						IN  PRTMP_ADAPTER   pAd,
+						IN  struct rtmp_adapter *  pAd,
 						IN  ULONG           Idx)
 {
 	BA_REC_ENTRY    *pBAEntry = NULL;
@@ -893,7 +893,7 @@ void BATableFreeRecEntry(
 
 
 void BAOriSessionTearDown(
-						 IN OUT  PRTMP_ADAPTER   pAd,
+						 IN OUT  struct rtmp_adapter *  pAd,
 						 IN      UCHAR           Wcid,
 						 IN      UCHAR           TID,
 						 IN      BOOLEAN         bPassive,
@@ -985,7 +985,7 @@ void BAOriSessionTearDown(
 }
 
 void BARecSessionTearDown(
-						 IN OUT  PRTMP_ADAPTER   pAd,
+						 IN OUT  struct rtmp_adapter *  pAd,
 						 IN      UCHAR           Wcid,
 						 IN      UCHAR           TID,
 						 IN      BOOLEAN         bPassive)
@@ -1073,7 +1073,7 @@ void BARecSessionTearDown(
 }
 
 void BASessionTearDownALL(
-						 IN OUT  PRTMP_ADAPTER pAd,
+						 IN OUT  struct rtmp_adapter *pAd,
 						 IN      UCHAR Wcid)
 {
 	int i;
@@ -1108,7 +1108,7 @@ void BAOriSessionSetupTimeout(
 {
 	BA_ORI_ENTRY    *pBAEntry = (BA_ORI_ENTRY *)FunctionContext;
 	MAC_TABLE_ENTRY *pEntry;
-	PRTMP_ADAPTER   pAd;
+	struct rtmp_adapter *  pAd;
 
 	if (pBAEntry == NULL)
 		return;
@@ -1192,7 +1192,7 @@ void BARecSessionIdleTimeout(
 {
 
 	BA_REC_ENTRY    *pBAEntry = (BA_REC_ENTRY *)FunctionContext;
-	PRTMP_ADAPTER   pAd;
+	struct rtmp_adapter *  pAd;
 	ULONG           Now32;
 
 	if (pBAEntry == NULL)
@@ -1214,7 +1214,7 @@ void BARecSessionIdleTimeout(
 
 
 void PeerAddBAReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
@@ -1331,7 +1331,7 @@ void PeerAddBAReqAction(
 
 
 void PeerAddBARspAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
@@ -1377,7 +1377,7 @@ void PeerAddBARspAction(
 }
 
 void PeerDelBAAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
@@ -1406,7 +1406,7 @@ void PeerDelBAAction(
 
 
 BOOLEAN CntlEnqueueForRecv(
-						  IN PRTMP_ADAPTER		pAd,
+						  IN struct rtmp_adapter *	pAd,
 						  IN ULONG				Wcid,
 						  IN ULONG				MsgLen,
 						  IN PFRAME_BA_REQ		pMsg)
@@ -1473,7 +1473,7 @@ BOOLEAN CntlEnqueueForRecv(
 Description : Send PSMP Action frame If PSMP mode switches.
 */
 void SendPSMPAction(
-				   IN PRTMP_ADAPTER		pAd,
+				   IN struct rtmp_adapter *	pAd,
 				   IN UCHAR				Wcid,
 				   IN UCHAR				Psmp)
 {
@@ -1543,7 +1543,7 @@ typedef struct GNU_PACKED _MEASUREMENT_REQ
 
 
 void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
 	IN  UCHAR			FromWhichBSSID)
 {
@@ -1627,7 +1627,7 @@ void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 
 
 static void ba_enqueue_reordering_packet(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	PBA_REC_ENTRY	pBAEntry,
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID)
@@ -1689,7 +1689,7 @@ static void ba_enqueue_reordering_packet(
 
 #ifdef HDR_TRANS_SUPPORT
 static void ba_enqueue_reordering_packet_hdr_trns(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	PBA_REC_ENTRY	pBAEntry,
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID)
@@ -1778,7 +1778,7 @@ static void ba_enqueue_reordering_packet_hdr_trns(
  */
 
 void Indicate_AMPDU_Packet(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID)
 {
@@ -1924,7 +1924,7 @@ void Indicate_AMPDU_Packet(
 
 #ifdef HDR_TRANS_SUPPORT
 void Indicate_AMPDU_Packet_Hdr_Trns(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID)
 {
@@ -2070,7 +2070,7 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 
 
 void BaReOrderingBufferMaintain(
-    IN PRTMP_ADAPTER pAd)
+    IN struct rtmp_adapter *pAd)
 {
     ULONG Now32;
     UCHAR Wcid;

@@ -47,7 +47,7 @@
  */
 
 void AuthStateMachineInit(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN STATE_MACHINE *Sm,
 	OUT STATE_MACHINE_FUNC Trans[])
 {
@@ -94,7 +94,7 @@ void AuthTimeout(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AUTH - AuthTimeout\n"));
 
@@ -120,7 +120,7 @@ void AuthTimeout(
     ==========================================================================
  */
 void MlmeAuthReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	if (AUTH_ReqSend(pAd, Elem, &pAd->MlmeAux.AuthTimer, "AUTH", 1, NULL, 0))
@@ -143,7 +143,7 @@ void MlmeAuthReqAction(
     ==========================================================================
  */
 void PeerAuthRspAtSeq2Action(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
 	UCHAR Addr2[MAC_ADDR_LEN];
@@ -312,7 +312,7 @@ void PeerAuthRspAtSeq2Action(
     ==========================================================================
  */
 void PeerAuthRspAtSeq4Action(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR Addr2[MAC_ADDR_LEN];
@@ -368,7 +368,7 @@ void PeerAuthRspAtSeq4Action(
     ==========================================================================
  */
 void MlmeDeauthReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	MLME_DEAUTH_REQ_STRUCT *pInfo;
@@ -421,7 +421,7 @@ void MlmeDeauthReqAction(
     ==========================================================================
  */
 void AuthTimeoutAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -440,7 +440,7 @@ void AuthTimeoutAction(
     ==========================================================================
  */
 void InvalidStateWhenAuth(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -465,7 +465,7 @@ void InvalidStateWhenAuth(
     ==========================================================================
  */
 void Cls2errAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr)
 {
 	HEADER_802_11 DeauthHdr;
@@ -492,7 +492,7 @@ void Cls2errAction(
 }
 
 BOOLEAN AUTH_ReqSend(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PMLME_QUEUE_ELEM pElem,
 	IN PRALINK_TIMER_STRUCT pAuthTimer,
 	IN char *pSMName,

@@ -31,7 +31,7 @@
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef PROFILE_STORE
-NDIS_STATUS WriteDatThread(RTMP_ADAPTER *pAd);
+NDIS_STATUS WriteDatThread(struct rtmp_adapter*pAd);
 #endif /* PROFILE_STORE */
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -113,7 +113,7 @@ RTMP_BUILD_DRV_OPS_FUNCTION_BODY
 
 int rt28xx_init(void *pAdSrc, char *pDefaultMac, char *pHostName)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
 	UINT index;
 	NDIS_STATUS Status;
 
@@ -617,7 +617,7 @@ err0:
 void RTMPDrvSTAOpen(
 	IN void *pAdSrc)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	UINT32 reg = 0;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
@@ -680,7 +680,7 @@ void RTMPDrvSTAClose(
 	IN void *pAdSrc,
 	IN void *net_dev)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	BOOLEAN Cancelled;
 	UINT32 i = 0;
 	Cancelled = FALSE;
@@ -839,7 +839,7 @@ void RTMPDrvSTAClose(
 void RTMPInfClose(
 	IN void 			*pAdSrc)
 {
-	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 
 
 
@@ -950,7 +950,7 @@ void RTMPInfClose(
 PNET_DEV RtmpPhyNetDevMainCreate(
 	IN void 			*pAdSrc)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	PNET_DEV pDevNew;
 	UINT32 MC_RowID = 0, IoctlIF = 0;
 
@@ -965,7 +965,7 @@ PNET_DEV RtmpPhyNetDevMainCreate(
 #endif /* HOSTAPD_SUPPORT */
 
 	pDevNew = RtmpOSNetDevCreate((INT32)MC_RowID, (UINT32 *)&IoctlIF,
-					INT_MAIN, 0, sizeof(PRTMP_ADAPTER), INF_MAIN_DEV_NAME);
+					INT_MAIN, 0, sizeof(struct rtmp_adapter *), INF_MAIN_DEV_NAME);
 
 #ifdef HOSTAPD_SUPPORT
 	pAd->IoctlIF = IoctlIF;
@@ -977,7 +977,7 @@ PNET_DEV RtmpPhyNetDevMainCreate(
 #ifdef CONFIG_STA_SUPPORT
 #ifdef PROFILE_STORE
 static void	WriteConfToDatFile(
-    IN  PRTMP_ADAPTER pAd)
+    IN  struct rtmp_adapter *pAd)
 {
 	char	*cfgData = 0;
 	char *		fileName = NULL;
@@ -1129,7 +1129,7 @@ INT write_dat_file_thread (
     IN ULONG Context)
 {
 	RTMP_OS_TASK *pTask;
-	RTMP_ADAPTER *pAd;
+	struct rtmp_adapter*pAd;
 	//int 	Status = 0;
 
 	pTask = (RTMP_OS_TASK *)Context;
@@ -1140,7 +1140,7 @@ INT write_dat_file_thread (
 		return 0;
 	}
 
-	pAd = (PRTMP_ADAPTER)RTMP_OS_TASK_DATA_GET(pTask);
+	pAd = (struct rtmp_adapter *)RTMP_OS_TASK_DATA_GET(pTask);
 
 	if (pAd == NULL)
 	{
@@ -1159,7 +1159,7 @@ INT write_dat_file_thread (
 }
 
 NDIS_STATUS WriteDatThread(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	NDIS_STATUS status = NDIS_STATUS_FAILURE;
 	RTMP_OS_TASK *pTask;

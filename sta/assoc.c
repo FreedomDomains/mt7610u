@@ -63,7 +63,7 @@ UCHAR CipherWpa2Template[] = {
 	==========================================================================
  */
 void AssocStateMachineInit(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN STATE_MACHINE *S,
 	OUT STATE_MACHINE_FUNC Trans[])
 {
@@ -162,7 +162,7 @@ void AssocTimeout(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
 	/* Do nothing if the driver is starting halt state. */
 	/* This might happen when timer already been fired before cancel timer with mlmehalt */
@@ -191,7 +191,7 @@ void ReassocTimeout(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
 	/* Do nothing if the driver is starting halt state. */
 	/* This might happen when timer already been fired before cancel timer with mlmehalt */
@@ -220,7 +220,7 @@ void DisassocTimeout(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
 	/* Do nothing if the driver is starting halt state. */
 	/* This might happen when timer already been fired before cancel timer with mlmehalt */
@@ -254,7 +254,7 @@ void DisassocTimeout(
 	==========================================================================
  */
 void MlmeAssocReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR ApAddr[6];
@@ -685,7 +685,7 @@ void MlmeAssocReqAction(
 	==========================================================================
  */
 void MlmeReassocReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
 	UCHAR ApAddr[6];
@@ -928,7 +928,7 @@ void MlmeReassocReqAction(
 	==========================================================================
  */
 void MlmeDisassocReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PMLME_DISASSOC_REQ_STRUCT pDisassocReq;
@@ -1048,7 +1048,7 @@ void MlmeDisassocReqAction(
 	==========================================================================
  */
 void PeerAssocRspAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT CapabilityInfo, Status, Aid;
@@ -1194,7 +1194,7 @@ void PeerAssocRspAction(
 	==========================================================================
  */
 void PeerReassocRspAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT CapabilityInfo;
@@ -1346,7 +1346,7 @@ void PeerReassocRspAction(
 	==========================================================================
  */
 void AssocPostProc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr2,
 	IN USHORT CapabilityInfo,
 	IN USHORT Aid,
@@ -1517,7 +1517,7 @@ void AssocPostProc(
 	==========================================================================
  */
 void PeerDisassocAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR Addr2[MAC_ADDR_LEN];
@@ -1595,7 +1595,7 @@ void PeerDisassocAction(
 	==========================================================================
  */
 void AssocTimeoutAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1616,7 +1616,7 @@ void AssocTimeoutAction(
 	==========================================================================
  */
 void ReassocTimeoutAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1637,7 +1637,7 @@ void ReassocTimeoutAction(
 	==========================================================================
  */
 void DisassocTimeoutAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1649,7 +1649,7 @@ void DisassocTimeoutAction(
 }
 
 void InvalidStateWhenAssoc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1663,7 +1663,7 @@ void InvalidStateWhenAssoc(
 }
 
 void InvalidStateWhenReassoc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1677,7 +1677,7 @@ void InvalidStateWhenReassoc(
 }
 
 void InvalidStateWhenDisassociate(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT Status;
@@ -1704,7 +1704,7 @@ void InvalidStateWhenDisassociate(
 	==========================================================================
  */
 void Cls3errAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr)
 {
 	HEADER_802_11 DisassocHdr;
@@ -1742,7 +1742,7 @@ void Cls3errAction(
 
 
 BOOLEAN StaAddMacTableEntry(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN UCHAR MaxSupportedRateIn500Kbps,
 	IN HT_CAPABILITY_IE *pHtCapability,

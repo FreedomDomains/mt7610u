@@ -34,7 +34,7 @@ extern UCHAR EpToQueue[];
 extern UCHAR TemplateFrame[32];
 
 extern void rlt_usb_write_txinfo(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TXINFO_STRUC *pTxInfo,
 	IN USHORT USBDMApktLen,
 	IN BOOLEAN bWiv,
@@ -43,7 +43,7 @@ extern void rlt_usb_write_txinfo(
 	IN UCHAR TxBurst);
 
 
-INT TxDmaBusy(RTMP_ADAPTER *pAd)
+INT TxDmaBusy(struct rtmp_adapter*pAd)
 {
 	INT result;
 	USB_DMA_CFG_STRUC UsbCfg;
@@ -63,7 +63,7 @@ INT TxDmaBusy(RTMP_ADAPTER *pAd)
 }
 
 
-INT RxDmaBusy(RTMP_ADAPTER *pAd)
+INT RxDmaBusy(struct rtmp_adapter*pAd)
 {
 	INT result;
 	USB_DMA_CFG_STRUC UsbCfg;
@@ -83,7 +83,7 @@ INT RxDmaBusy(RTMP_ADAPTER *pAd)
 }
 
 
-void RtmpDmaEnable(RTMP_ADAPTER *pAd, INT Enable)
+void RtmpDmaEnable(struct rtmp_adapter*pAd, INT Enable)
 {
 	BOOLEAN value;
 	ULONG WaitCnt;
@@ -122,7 +122,7 @@ void RtmpDmaEnable(RTMP_ADAPTER *pAd, INT Enable)
 
 
 static void ATEWriteTxWI(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	TXWI_STRUC *pTxWI,
 	IN	BOOLEAN			FRAG,
 	IN	BOOLEAN			InsTimestamp,
@@ -211,7 +211,7 @@ static void ATEWriteTxWI(
 ========================================================================
 */
 static void ATEWriteTxInfo(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	TXINFO_STRUC *pTxInfo,
 	IN	USHORT		USBDMApktLen,
 	IN	BOOLEAN		bWiv,
@@ -224,7 +224,7 @@ static void ATEWriteTxInfo(
 
 
 INT ATESetUpFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UINT32 TxIdx)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
@@ -486,7 +486,7 @@ INT ATESetUpFrame(
 ========================================================================
 */
 void ATE_RTUSBBulkOutDataPacket(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			BulkOutPipeId)
 {
 	PTX_CONTEXT		pNullContext = &(pAd->NullContext);
@@ -549,7 +549,7 @@ void ATE_RTUSBBulkOutDataPacket(
 ========================================================================
 */
 void ATE_RTUSBCancelPendingBulkInIRP(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	PRX_CONTEXT		pRxContext = NULL;
 	UINT			rx_ring_index;
@@ -589,7 +589,7 @@ void ATE_RTUSBCancelPendingBulkInIRP(
 ========================================================================
 */
 void ATEResetBulkIn(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	if ((pAd->PendingRx > 0) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
 	{
@@ -617,7 +617,7 @@ void ATEResetBulkIn(
 ========================================================================
 */
 INT ATEResetBulkOut(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	PATE_INFO pATEInfo = &(pAd->ate);
 	PTX_CONTEXT	pNullContext = &(pAd->NullContext);
@@ -667,7 +667,7 @@ INT ATEResetBulkOut(
 ========================================================================
 */
 void RTUSBRejectPendingPackets(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UCHAR			Index;
 	PQUEUE_ENTRY	pEntry;

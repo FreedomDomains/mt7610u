@@ -34,7 +34,7 @@
 
 
 static NDIS_STATUS RTMPAllocUsbBulkBufStruct(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN PURB *ppUrb,
 	IN void **ppXBuffer,
 	IN INT	bufLen,
@@ -62,7 +62,7 @@ static NDIS_STATUS RTMPAllocUsbBulkBufStruct(
 
 
 static NDIS_STATUS RTMPFreeUsbBulkBufStruct(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN PURB *ppUrb,
 	IN PUCHAR *ppXBuffer,
 	IN INT bufLen,
@@ -87,7 +87,7 @@ static NDIS_STATUS RTMPFreeUsbBulkBufStruct(
 
 #ifdef RESOURCE_PRE_ALLOC
 void RTMPResetTxRxRingMemory(
-	IN RTMP_ADAPTER * pAd)
+	IN struct rtmp_adapter* pAd)
 {
 	UINT index, i, acidx;
 	PTX_CONTEXT pNullContext   = &pAd->NullContext;
@@ -214,7 +214,7 @@ Note:
 ========================================================================
 */
 void RTMPFreeTxRxRingMemory(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UINT                i, acidx;
 	PTX_CONTEXT			pNullContext   = &pAd->NullContext;
@@ -319,13 +319,13 @@ Return Value:
 
 Note:
 	Initialize all receive releated private buffer, include those define
-	in RTMP_ADAPTER structure and all private data structures. The major
+	in struct rtmp_adapterstructure and all private data structures. The major
 	work is to allocate buffer for each packet and chain buffer to
 	NDIS packet descriptor.
 ========================================================================
 */
 NDIS_STATUS	NICInitRecv(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UCHAR				i;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
@@ -383,7 +383,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	NICInitTransmit(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UCHAR			i, acidx;
 	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
@@ -558,7 +558,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	RTMPAllocTxRxRingMemory(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	NDIS_STATUS Status = NDIS_STATUS_FAILURE;
 	PTX_CONTEXT pNullContext   = &(pAd->NullContext);
@@ -687,7 +687,7 @@ err:
 
 
 NDIS_STATUS RTMPInitTxRxRingMemory
-	(IN RTMP_ADAPTER *pAd)
+	(IN struct rtmp_adapter*pAd)
 {
 	INT				num;
 	NDIS_STATUS		Status;
@@ -743,13 +743,13 @@ Return Value:
 
 Note:
 	Initialize all receive releated private buffer, include those define
-	in RTMP_ADAPTER structure and all private data structures. The mahor
+	in struct rtmp_adapterstructure and all private data structures. The mahor
 	work is to allocate buffer for each packet and chain buffer to
 	NDIS packet descriptor.
 ========================================================================
 */
 NDIS_STATUS	NICInitRecv(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UCHAR				i;
 	NDIS_STATUS			Status = NDIS_STATUS_SUCCESS;
@@ -845,7 +845,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	NICInitTransmit(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UCHAR			i, acidx;
 	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
@@ -1080,7 +1080,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	RTMPAllocTxRxRingMemory(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 /*	COUNTER_802_11	pCounter = &pAd->WlanCounters;*/
 	NDIS_STATUS		Status = NDIS_STATUS_SUCCESS;
@@ -1162,7 +1162,7 @@ Note:
 ========================================================================
 */
 void RTMPFreeTxRxRingMemory(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	UINT                i, acidx;
 	PTX_CONTEXT			pNullContext   = &pAd->NullContext;
@@ -1296,7 +1296,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	RTUSBWriteHWMACAddress(
-	IN	PRTMP_ADAPTER		pAd)
+	IN	struct rtmp_adapter *	pAd)
 {
 	MAC_DW0_STRUC	StaMacReg0;
 	MAC_DW1_STRUC	StaMacReg1;
@@ -1325,7 +1325,7 @@ NDIS_STATUS	RTUSBWriteHWMACAddress(
 }
 
 void RT28XXDMADisable(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 }
 
@@ -1344,7 +1344,7 @@ Note:
 ========================================================================
 */
 void RT28XXDMAEnable(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	WPDMA_GLO_CFG_STRUC GloCfg;
 	USB_DMA_CFG_STRUC	UsbCfg;
@@ -1396,7 +1396,7 @@ Note:
 ========================================================================
 */
 void RT28xx_UpdateBeaconToAsic(
-	IN RTMP_ADAPTER		*pAd,
+	IN struct rtmp_adapter	*pAd,
 	IN INT				apidx,
 	IN ULONG			FrameLen,
 	IN ULONG			UpdatePos)
@@ -1483,7 +1483,7 @@ void RT28xx_UpdateBeaconToAsic(
 
 
 void RTUSBBssBeaconStop(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, offset;
@@ -1523,7 +1523,7 @@ void RTUSBBssBeaconStop(
 
 
 void RTUSBBssBeaconStart(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	int apidx;
 	BEACON_SYNC_STRUCT	*pBeaconSync;
@@ -1572,7 +1572,7 @@ void RTUSBBssBeaconStart(
 
 
 void RTUSBBssBeaconInit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, j;
@@ -1616,7 +1616,7 @@ error1:
 
 
 void RTUSBBssBeaconExit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	BOOLEAN	Cancelled = TRUE;
@@ -1667,7 +1667,7 @@ void BeaconUpdateExec(
     IN void *SystemSpecific2,
     IN void *SystemSpecific3)
 {
-	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)FunctionContext;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)FunctionContext;
 	LARGE_INTEGER	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
 	UINT32			delta, delta2MS, period2US, remain, remain_low, remain_high;
 /*	BOOLEAN			positive;*/
@@ -1748,7 +1748,7 @@ void BeaconUpdateExec(
   *
   ********************************************************************/
 void RT28xxUsbMlmeRadioOn(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
     DBGPRINT(RT_DEBUG_TRACE,("RT28xxUsbMlmeRadioOn()\n"));
 
@@ -1772,7 +1772,7 @@ void RT28xxUsbMlmeRadioOn(
 
 
 void RT28xxUsbMlmeRadioOFF(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 
 	DBGPRINT(RT_DEBUG_TRACE,("RT28xxUsbMlmeRadioOFF()\n"));
@@ -1847,7 +1847,7 @@ void RT28xxUsbMlmeRadioOFF(
 
 
 BOOLEAN AsicCheckCommandOk(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR		 Command)
 {
 	UINT32	CmdStatus, CID, i;
@@ -1921,7 +1921,7 @@ BOOLEAN AsicCheckCommandOk(
 
 #ifdef WOW_SUPPORT
 void RT28xxUsbAsicWOWEnable(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 Value;
 
@@ -1942,7 +1942,7 @@ void RT28xxUsbAsicWOWEnable(
 }
 
 void RT28xxUsbAsicWOWDisable(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 Value;
 	/* load normal firmware */

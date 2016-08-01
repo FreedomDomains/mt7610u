@@ -543,7 +543,7 @@ UCHAR RateTableVht2S[] =
 		mcs - table of MCS index into the Rate Table. -1 => not supported
 */
 void MlmeGetSupportedMcs(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR	*pTable,
 	OUT CHAR 	mcs[])
 {
@@ -679,7 +679,7 @@ USHORT MlmeGetTxQuality(
 
 
 #ifdef MCS_LUT_SUPPORT
-void asic_mcs_lut_update(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void asic_mcs_lut_update(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 	if(RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) && (pEntry->Aid < 128))
 	{
@@ -717,7 +717,7 @@ void asic_mcs_lut_update(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 
 #ifdef CONFIG_STA_SUPPORT
 void MlmeSetTxRate(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RTMP_RA_LEGACY_TB *pTxRate)
 {
@@ -909,7 +909,7 @@ void MlmeSetTxRate(
 
 
 void MlmeSelectTxRateTable(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
 	IN UCHAR **ppTable,
 	IN UCHAR *pTableSize,
@@ -1409,7 +1409,7 @@ void MlmeSelectTxRateTable(
 		RssiOffset - offset to apply to the Rssi
 */
 UCHAR MlmeSelectTxRate(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN CHAR		mcs[],
 	IN CHAR		Rssi,
@@ -1609,7 +1609,7 @@ UCHAR MlmeSelectTxRate(
 
 
 /*  MlmeRAInit - Initialize Rate Adaptation for this entry */
-void MlmeRAInit(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void MlmeRAInit(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	MlmeSetMcsGroup(pAd, pEntry);
@@ -1642,7 +1642,7 @@ void MlmeRAInit(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 		The BF percentage counters are also updated
 */
 void MlmeRALog(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN RA_LOG_TYPE		raLogType,
 	IN ULONG			TxErrorRatio,
@@ -1791,7 +1791,7 @@ void MlmeRestoreLastRate(
 #ifdef DOT11N_SS3_SUPPORT
 /*  MlmeCheckRDG - check if RDG should be enabled or disabled */
 void MlmeCheckRDG(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry)
 {
 	PUCHAR pTable = pEntry->pTable;
@@ -1851,7 +1851,7 @@ void MlmeCheckRDG(
 
 
 #ifdef TXBF_SUPPORT
-void txbf_rate_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void txbf_rate_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 	RTMP_RA_LEGACY_TB *pNextTxRate;
 	UCHAR *pTable = pEntry->pTable;
@@ -1944,7 +1944,7 @@ INT rtmp_get_rate_from_rate_tb(UCHAR *table, INT idx, RTMP_TX_RATE *tx_rate)
 	MlmeNewTxRate - called when a new TX rate was selected. Sets TX PHY to
 		rate selected by pEntry->CurrTxRateIndex in pTable;
 */
-void MlmeNewTxRate(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void MlmeNewTxRate(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 	RTMP_RA_LEGACY_TB *pNextTxRate;
 	UCHAR *pTable = pEntry->pTable;
@@ -2009,7 +2009,7 @@ void MlmeNewTxRate(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 
 
 void RTMPSetSupportMCS(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR OpMode,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN UCHAR SupRate[],
@@ -2206,7 +2206,7 @@ void RTMPSetSupportMCS(
 }
 
 INT	Set_RateAlg_Proc(
-	IN	PRTMP_ADAPTER			pAd,
+	IN	struct rtmp_adapter *		pAd,
 	IN	char *				arg)
 {
 	UINT32 ra_alg;

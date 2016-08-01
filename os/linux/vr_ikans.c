@@ -58,7 +58,7 @@ static void IKANOS_WlanPktFromAp(
 	IN apPreHeader_t 		*pFrame);
 
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN INT32 FromWhichBSSID);
 
 
@@ -119,7 +119,7 @@ INT32 IKANOS_DataFramesTx(
 	IN struct sk_buff		*pSkb,
 	IN struct net_device	*pNetDev)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pNetDev->priv;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pNetDev->priv;
 	IkanosWlanTxCbFuncP *fp = &IKANOS_WlanDataFramesTx;
 
 	pSkb->apFlowData.txDev = pNetDev;
@@ -157,10 +157,10 @@ Note:
 /* Note: because no unsigned long private parameters in apPreHeader_t can be used,
 	we use a global variable to record pAd.
 	So we can not use multiple card function in Ikanos platform. */
-PRTMP_ADAPTER	pIkanosAd;
+struct rtmp_adapter *pIkanosAd;
 
 void IKANOS_DataFrameRx(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff	*pSkb)
 {
     apPreHeader_t *apBuf;
@@ -227,7 +227,7 @@ static INT32 IKANOS_WlanDataFramesTx(
 
 
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN INT32 FromWhichBSSID)
 {
 	INT32 IfIdx = MAIN_MBSSID;
@@ -259,7 +259,7 @@ Note:
 ========================================================================
 */
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN INT32			FromWhichBSSID)
 {
 	INT32 IfIdx = MAIN_MBSSID;
@@ -294,7 +294,7 @@ Note:
 static void IKANOS_WlanPktFromAp(
 	IN apPreHeader_t		*pFrame)
 {
-	PRTMP_ADAPTER pAd;
+	struct rtmp_adapter *pAd;
     struct net_device *dev = NULL;
     struct sk_buff *skb;
     INT32 index;

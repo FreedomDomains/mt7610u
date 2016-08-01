@@ -143,7 +143,7 @@ NDIS_SPIN_LOCK TimerSemLock;
 	========================================================================
 
 	Routine Description:
-		Allocate RTMP_ADAPTER data block and do some initialization
+		Allocate struct rtmp_adapterdata block and do some initialization
 
 	Arguments:
 		Adapter		Pointer to our adapter
@@ -162,7 +162,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 	IN  void *handle,
 	OUT	void **ppAdapter)
 {
-	PRTMP_ADAPTER	pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	NDIS_STATUS		Status;
 	INT 			index;
 	UCHAR			*pBeaconBuf = NULL;
@@ -183,7 +183,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 
 	do
 	{
-		/* Allocate RTMP_ADAPTER memory block*/
+		/* Allocate struct rtmp_adaptermemory block*/
 /*		pBeaconBuf = kmalloc(MAX_BEACON_SIZE, MEM_ALLOC_FLAG);*/
 		os_alloc_mem(NULL, (UCHAR **)&pBeaconBuf, MAX_BEACON_SIZE);
 		if (pBeaconBuf == NULL)
@@ -194,7 +194,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 		}
 		NdisZeroMemory(pBeaconBuf, MAX_BEACON_SIZE);
 
-		Status = AdapterBlockAllocateMemory(handle, (void **)&pAd, sizeof(RTMP_ADAPTER));
+		Status = AdapterBlockAllocateMemory(handle, (void **)&pAd, sizeof(struct rtmp_adapter));
 		if (Status != NDIS_STATUS_SUCCESS)
 		{
 			DBGPRINT_ERR(("Failed to allocate memory - ADAPTER\n"));
@@ -218,7 +218,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 #endif /* WORKQUEUE_BH */
 		}
 		pAd->BeaconBuf = pBeaconBuf;
-		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(RTMP_ADAPTER)));
+		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(struct rtmp_adapter)));
 
 		if (RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE)
 		{
@@ -323,7 +323,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 
 	========================================================================
 */
-void NICReadEEPROMParameters(RTMP_ADAPTER *pAd, char *mac_addr)
+void NICReadEEPROMParameters(struct rtmp_adapter*pAd, char *mac_addr)
 {
 	USHORT i, value, value2;
 	EEPROM_TX_PWR_STRUC Power;
@@ -1053,7 +1053,7 @@ void NICReadEEPROMParameters(RTMP_ADAPTER *pAd, char *mac_addr)
 	========================================================================
 */
 void NICInitAsicFromEEPROM(
-	IN	PRTMP_ADAPTER	pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
 	UINT32 data = 0;
@@ -1281,7 +1281,7 @@ void NICInitAsicFromEEPROM(
 
 
 #ifdef DBG
-void dump_pdma_reg(RTMP_ADAPTER *pAd)
+void dump_pdma_reg(struct rtmp_adapter*pAd)
 {
 
 
@@ -1291,7 +1291,7 @@ void dump_pdma_reg(RTMP_ADAPTER *pAd)
 
 
 
-void AsicInitBcnBuf(IN RTMP_ADAPTER *pAd)
+void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 {
 	int idx;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -1350,7 +1350,7 @@ void AsicInitBcnBuf(IN RTMP_ADAPTER *pAd)
 	========================================================================
 */
 NDIS_STATUS	NICInitializeAdapter(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN   BOOLEAN    bHardReset)
 {
 	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
@@ -1411,7 +1411,7 @@ retry:
 	========================================================================
 */
 NDIS_STATUS	NICInitializeAsic(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN  BOOLEAN		bHardReset)
 {
 	ULONG			Index = 0;
@@ -1688,7 +1688,7 @@ NDIS_STATUS	NICInitializeAsic(
 
 
 void NICUpdateFifoStaCounters(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	TX_STA_FIFO_STRUC	StaFifo;
 	MAC_TABLE_ENTRY		*pEntry = NULL;
@@ -1928,7 +1928,7 @@ void NICUpdateFifoStaCounters(
 
 #ifdef FIFO_EXT_SUPPORT
 BOOLEAN NicGetMacFifoTxCnt(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN MAC_TABLE_ENTRY *pEntry)
 {
 	if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
@@ -1947,7 +1947,7 @@ BOOLEAN NicGetMacFifoTxCnt(
 }
 
 
-void AsicFifoExtSet(IN RTMP_ADAPTER *pAd)
+void AsicFifoExtSet(IN struct rtmp_adapter*pAd)
 {
 	if (pAd->chipCap.FlgHwFifoExtCap)
 	{
@@ -1958,7 +1958,7 @@ void AsicFifoExtSet(IN RTMP_ADAPTER *pAd)
 
 
 void AsicFifoExtEntryClean(
-	IN RTMP_ADAPTER * pAd,
+	IN struct rtmp_adapter* pAd,
 	IN MAC_TABLE_ENTRY *pEntry)
 {
 	WCID_TX_CNT_STRUC wcidTxCnt;
@@ -1995,7 +1995,7 @@ void AsicFifoExtEntryClean(
 	========================================================================
 */
 void NicGetTxRawCounters(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_STA_CNT0_STRUC *pStaTxCnt0,
 	IN TX_STA_CNT1_STRUC *pStaTxCnt1)
 {
@@ -2033,7 +2033,7 @@ void NicGetTxRawCounters(
 
 	========================================================================
 */
-void NicResetRawCounters(RTMP_ADAPTER *pAd)
+void NicResetRawCounters(struct rtmp_adapter*pAd)
 {
 	UINT32 Counter;
 
@@ -2064,7 +2064,7 @@ void NicResetRawCounters(RTMP_ADAPTER *pAd)
 	========================================================================
 */
 void NICUpdateRawCounters(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32	OldValue;/*, Value2;*/
 	/*ULONG	PageSum, OneSecTransmitCount;*/
@@ -2297,7 +2297,7 @@ void NICUpdateRawCounters(
 }
 
 NDIS_STATUS NICLoadFirmware(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	NDIS_STATUS	 status = NDIS_STATUS_SUCCESS;
 	ULONG Old, New, Diff;
@@ -2318,7 +2318,7 @@ NDIS_STATUS NICLoadFirmware(
 
 
 void NICEraseFirmware(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	if (pAd->chipOps.eraseFirmware)
 		pAd->chipOps.eraseFirmware(pAd);
@@ -2450,7 +2450,7 @@ void RTMPMoveMemory(
 }
 
 void UserCfgExit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 #ifdef DOT11_N_SUPPORT
 	BATableExit(pAd);
@@ -2478,7 +2478,7 @@ void UserCfgExit(
 
 	========================================================================
 */
-void UserCfgInit(RTMP_ADAPTER *pAd)
+void UserCfgInit(struct rtmp_adapter*pAd)
 {
 	UINT i;
 /*	EDCA_PARM DefaultEdcaParm;*/
@@ -3036,7 +3036,7 @@ Note:
 ========================================================================
 */
 void RTMP_TimerListAdd(
-	IN	PRTMP_ADAPTER			pAd,
+	IN	struct rtmp_adapter *		pAd,
 	IN	void 				*pRsc)
 {
 	LIST_HEADER *pRscList = &pAd->RscTimerCreateList;
@@ -3085,7 +3085,7 @@ Note:
 ========================================================================
 */
 void RTMP_TimerListRelease(
-	IN	PRTMP_ADAPTER			pAd)
+	IN	struct rtmp_adapter *		pAd)
 {
 	LIST_HEADER *pRscList = &pAd->RscTimerCreateList;
 	LIST_RESOURCE_OBJ_ENTRY *pObj, *pObjOld;
@@ -3130,7 +3130,7 @@ void RTMP_TimerListRelease(
 	========================================================================
 */
 void RTMPInitTimer(
-	IN	PRTMP_ADAPTER			pAd,
+	IN	struct rtmp_adapter *		pAd,
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	IN	void *				pTimerFunc,
 	IN	void *				pData,
@@ -3185,9 +3185,9 @@ void RTMPSetTimer(
 
 	if (pTimer->Valid)
 	{
-		RTMP_ADAPTER *pAd;
+		struct rtmp_adapter*pAd;
 
-		pAd = (RTMP_ADAPTER *)pTimer->pAd;
+		pAd = (struct rtmp_adapter*)pTimer->pAd;
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
 		{
 			DBGPRINT_ERR(("RTMPSetTimer failed, Halt in Progress!\n"));
@@ -3381,7 +3381,7 @@ void RTMPReleaseTimer(
 	========================================================================
 */
 void RTMPEnableRxTx(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 rx_filter_flag;
 
@@ -3428,14 +3428,14 @@ void RTMPEnableRxTx(
 }
 
 
-void CfgInitHook(PRTMP_ADAPTER pAd)
+void CfgInitHook(struct rtmp_adapter *pAd)
 {
 	/*pAd->bBroadComHT = TRUE;*/
 }
 
 
 static INT RtmpChipOpsRegister(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN INT			infType)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
@@ -3462,7 +3462,7 @@ static INT RtmpChipOpsRegister(
 }
 
 #ifdef RTMP_USB_SUPPORT
-BOOLEAN PairEP(RTMP_ADAPTER *pAd, u8 EP)
+BOOLEAN PairEP(struct rtmp_adapter*pAd, u8 EP)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 	int i;
@@ -3506,7 +3506,7 @@ BOOLEAN PairEP(RTMP_ADAPTER *pAd, u8 EP)
 
 INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 {
-	RTMP_ADAPTER *pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter *)pAdSrc;
 	u8 i;
 	int ret = 0;
 
@@ -3566,7 +3566,7 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 
 #ifdef MULTIPLE_CARD_SUPPORT
 {
-	extern BOOLEAN RTMP_CardInfoRead(PRTMP_ADAPTER pAd);
+	extern BOOLEAN RTMP_CardInfoRead(struct rtmp_adapter *pAd);
 
 	/* find its profile path*/
 	pAd->MC_RowID = -1; /* use default profile path*/
@@ -3599,7 +3599,7 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 
 BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
 {
-	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	INT index;
 
 #ifdef MULTIPLE_CARD_SUPPORT
@@ -3657,7 +3657,7 @@ extern u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 
 #ifdef VENDOR_FEATURE3_SUPPORT
 void RTMP_IO_WRITE32(
-	PRTMP_ADAPTER pAd,
+	struct rtmp_adapter *pAd,
 	UINT32 Offset,
 	UINT32 Value)
 {
@@ -3665,7 +3665,7 @@ void RTMP_IO_WRITE32(
 }
 
 void RTMP_BBP_IO_READ8_BY_REG_ID(
-	PRTMP_ADAPTER pAd,
+	struct rtmp_adapter *pAd,
 	UINT32 Offset,
 	u8 *pValue)
 {
@@ -3678,7 +3678,7 @@ void RTMP_BBP_IO_READ8_BY_REG_ID(
 }
 
 void RTMP_BBP_IO_READ8(
-	PRTMP_ADAPTER pAd,
+	struct rtmp_adapter *pAd,
 	UCHAR Offset,
 	u8 *pValue,
 	BOOLEAN FlgValidMCR)
@@ -3691,7 +3691,7 @@ void RTMP_BBP_IO_READ8(
 }
 
 void RTMP_BBP_IO_WRITE8_BY_REG_ID(
-	PRTMP_ADAPTER pAd,
+	struct rtmp_adapter *pAd,
 	UINT32 Offset,
 	u8 Value)
 {
@@ -3704,7 +3704,7 @@ void RTMP_BBP_IO_WRITE8_BY_REG_ID(
 }
 
 void RTMP_BBP_IO_WRITE8(
-	PRTMP_ADAPTER pAd,
+	struct rtmp_adapter *pAd,
 	UCHAR Offset,
 	u8 Value,
 	BOOLEAN FlgValidMCR)
@@ -3721,7 +3721,7 @@ void RTMP_BBP_IO_WRITE8(
 
 
 void AntCfgInit(
-IN  PRTMP_ADAPTER   pAd)
+IN  struct rtmp_adapter *  pAd)
 {
 
 

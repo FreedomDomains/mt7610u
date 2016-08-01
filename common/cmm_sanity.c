@@ -58,7 +58,7 @@ typedef struct wsc_ie_probreq_data
     ==========================================================================
  */
 BOOLEAN MlmeAddBAReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2)
@@ -108,7 +108,7 @@ BOOLEAN MlmeAddBAReqSanity(
     ==========================================================================
  */
 BOOLEAN MlmeDelBAReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen)
 {
@@ -143,7 +143,7 @@ BOOLEAN MlmeDelBAReqSanity(
 }
 
 BOOLEAN PeerAddBAReqActionSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *pMsg,
     IN ULONG MsgLen,
 	OUT PUCHAR pAddr2)
@@ -184,7 +184,7 @@ BOOLEAN PeerAddBAReqActionSanity(
 }
 
 BOOLEAN PeerAddBARspActionSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *pMsg,
     IN ULONG MsgLen)
 {
@@ -223,7 +223,7 @@ BOOLEAN PeerAddBARspActionSanity(
 }
 
 BOOLEAN PeerDelBAActionSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN UCHAR Wcid,
     IN void *pMsg,
     IN ULONG MsgLen )
@@ -246,7 +246,7 @@ BOOLEAN PeerDelBAActionSanity(
 
 
 BOOLEAN PeerBeaconAndProbeRspSanity_Old(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     IN UCHAR  MsgChannel,
@@ -866,7 +866,7 @@ SanityCheck:
     ==========================================================================
  */
 BOOLEAN PeerBeaconAndProbeRspSanity(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	IN UCHAR  MsgChannel,
@@ -1432,7 +1432,7 @@ SanityCheck:
 	==========================================================================
  */
 BOOLEAN PeerBeaconAndProbeRspSanity2(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	IN OVERLAP_BSS_SCAN_IE *BssScan,
@@ -1518,7 +1518,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
     ==========================================================================
  */
 BOOLEAN MlmeScanReqSanity(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	OUT UCHAR *pBssType,
@@ -1550,7 +1550,7 @@ BOOLEAN MlmeScanReqSanity(
 
 /* IRQL = DISPATCH_LEVEL*/
 UCHAR ChannelSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN UCHAR channel)
 {
     int i;
@@ -1575,7 +1575,7 @@ UCHAR ChannelSanity(
     ==========================================================================
  */
 BOOLEAN PeerDeauthSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr1,
@@ -1605,7 +1605,7 @@ BOOLEAN PeerDeauthSanity(
     ==========================================================================
  */
 BOOLEAN PeerAuthSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr,
@@ -1666,7 +1666,7 @@ BOOLEAN PeerAuthSanity(
     ==========================================================================
  */
 BOOLEAN MlmeAuthReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr,
@@ -1707,7 +1707,7 @@ BOOLEAN MlmeAuthReqSanity(
     ==========================================================================
  */
 BOOLEAN MlmeAssocReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pApAddr,
@@ -1738,7 +1738,7 @@ BOOLEAN MlmeAssocReqSanity(
     ==========================================================================
  */
 BOOLEAN PeerDisassocSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2,
@@ -1837,7 +1837,7 @@ NDIS_802_11_NETWORK_TYPE NetworkTypeInUseSanity(
 #ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
 BOOLEAN MlmeDlsReqSanity(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PRT_802_11_DLS *pDLS,
@@ -1857,7 +1857,7 @@ BOOLEAN MlmeDlsReqSanity(
 
 #ifdef QOS_DLS_SUPPORT
 BOOLEAN PeerDlsReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
@@ -1980,7 +1980,7 @@ BOOLEAN PeerDlsReqSanity(
 }
 
 BOOLEAN PeerDlsRspSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
@@ -2108,7 +2108,7 @@ BOOLEAN PeerDlsRspSanity(
 }
 
 BOOLEAN PeerDlsTearDownSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pDA,
@@ -2151,7 +2151,7 @@ BOOLEAN PeerDlsTearDownSanity(
     ==========================================================================
  */
 BOOLEAN PeerProbeReqSanity(
-    IN PRTMP_ADAPTER pAd,
+    IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT PUCHAR pAddr2,

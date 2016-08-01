@@ -31,7 +31,7 @@
 
 /* IRQL = PASSIVE_LEVEL*/
 static inline void RaiseClock(
-    IN	PRTMP_ADAPTER	pAd,
+    IN	struct rtmp_adapter *pAd,
     IN  UINT32 *x)
 {
 	*x = *x | EESK;
@@ -41,7 +41,7 @@ static inline void RaiseClock(
 
 /* IRQL = PASSIVE_LEVEL*/
 static inline void LowerClock(
-    IN	PRTMP_ADAPTER	pAd,
+    IN	struct rtmp_adapter *pAd,
     IN  UINT32 *x)
 {
 	*x = *x & ~EESK;
@@ -51,7 +51,7 @@ static inline void LowerClock(
 
 /* IRQL = PASSIVE_LEVEL*/
 static inline USHORT ShiftInBits(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32		x,i;
 	USHORT      data=0;
@@ -79,7 +79,7 @@ static inline USHORT ShiftInBits(
 
 /* IRQL = PASSIVE_LEVEL*/
 static inline void ShiftOutBits(
-	IN PRTMP_ADAPTER	pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT			data,
 	IN USHORT			count)
 {
@@ -110,7 +110,7 @@ static inline void ShiftOutBits(
 
 /* IRQL = PASSIVE_LEVEL*/
 static inline void EEpromCleanup(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 x;
 
@@ -125,7 +125,7 @@ static inline void EEpromCleanup(
 
 
 static inline void EWEN(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32	x;
 
@@ -148,7 +148,7 @@ static inline void EWEN(
 
 
 static inline void EWDS(
-	IN PRTMP_ADAPTER	pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32	x;
 
@@ -172,7 +172,7 @@ static inline void EWDS(
 
 /* IRQL = PASSIVE_LEVEL*/
 int rtmp_ee_prom_read16(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	OUT USHORT *pValue)
 {
@@ -213,7 +213,7 @@ int rtmp_ee_prom_read16(
 
 
 int rtmp_ee_prom_write16(
-    IN RTMP_ADAPTER *pAd,
+    IN struct rtmp_adapter*pAd,
     IN USHORT Offset,
     IN USHORT Data)
 {

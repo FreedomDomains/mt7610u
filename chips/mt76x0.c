@@ -1111,7 +1111,7 @@ static UINT32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / si
 // Initialize FCE
 //
 void InitFce(
-	PRTMP_ADAPTER pAd)
+	struct rtmp_adapter *pAd)
 {
 	L2_STUFFING_STRUC L2Stuffing;
 
@@ -1131,7 +1131,7 @@ void InitFce(
 	Select 2.4/5GHz band
 */
 void SelectBandMT76x0(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel)
 {
 	if (!IS_MT76x0(pAd))
@@ -1189,7 +1189,7 @@ void SelectBandMT76x0(
 	Pll_idiv: frac comp R35[6:0]
 */
 void SetRfChFreqParametersMT76x0(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel)
 {
 	UINT32 i = 0, RfBand = 0, MacReg = 0;
@@ -1522,7 +1522,7 @@ void SetRfChFreqParametersMT76x0(
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
 }
 
-static void NICInitMT76x0RFRegisters(RTMP_ADAPTER *pAd)
+static void NICInitMT76x0RFRegisters(struct rtmp_adapter*pAd)
 {
 
 	UINT32 IdReg;
@@ -1614,7 +1614,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static void NICInitMT76x0MacRegisters(RTMP_ADAPTER *pAd)
+static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 {
 	UINT32 MacReg = 0;
 	USHORT trsw_mode = 0;
@@ -1697,7 +1697,7 @@ Note:
 ========================================================================
 */
 static void NICInitMT76x0BbpRegisters(
-	IN	PRTMP_ADAPTER pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 
 	INT IdReg;
@@ -1721,7 +1721,7 @@ static void NICInitMT76x0BbpRegisters(
 
 
 static void MT76x0_AsicAntennaDefaultReset(
-	IN struct _RTMP_ADAPTER	*pAd,
+	IN struct rtmp_adapter	*pAd,
 	IN EEPROM_ANTENNA_STRUC *pAntenna)
 {
 	pAntenna->word = 0;
@@ -1731,7 +1731,7 @@ static void MT76x0_AsicAntennaDefaultReset(
 }
 
 
-static void MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
+static void MT76x0_ChipBBPAdjust(struct rtmp_adapter*pAd)
 {
 	static char *ext_str[]={"extNone", "extAbove", "", "extBelow"};
 	UCHAR rf_bw, ext_ch;
@@ -1779,7 +1779,7 @@ static void MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
 }
 
 static void MT76x0_ChipSwitchChannel(
-	struct _RTMP_ADAPTER *pAd,
+	struct rtmp_adapter *pAd,
 	UCHAR Channel,
 	BOOLEAN bScan)
 {
@@ -2038,7 +2038,7 @@ static void MT76x0_ChipSwitchChannel(
 }
 
 #ifdef CONFIG_STA_SUPPORT
-static void MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
+static void MT76x0_NetDevNickNameInit(struct rtmp_adapter*pAd)
 {
 
 #ifdef RTMP_MAC_USB
@@ -2053,7 +2053,7 @@ static void MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 #endif /* CONFIG_STA_SUPPORT */
 
 void MT76x0_NICInitAsicFromEEPROM(
-	IN PRTMP_ADAPTER		pAd)
+	IN struct rtmp_adapter *	pAd)
 {
 	// TODO: wait TC6008 EEPROM format
 }
@@ -2069,7 +2069,7 @@ static UCHAR mt76x0_txpwr_chlist[] = {
 	42, 58, 106, 122, 155,
 };
 
-INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
+INT MT76x0_ReadChannelPwr(struct rtmp_adapter*pAd)
 {
 	UINT32 i, choffset, idx, ss_offset_g, ss_num;
 	EEPROM_TX_PWR_STRUC Power;
@@ -2198,7 +2198,7 @@ INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
 }
 
 void MT76x0_AsicExtraPowerOverMAC(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 ExtraPwrOverMAC = 0;
 	UINT32 ExtraPwrOverTxPwrCfg7 = 0, ExtraPwrOverTxPwrCfg8 = 0, ExtraPwrOverTxPwrCfg9 = 0;
@@ -2312,7 +2312,7 @@ static void calc_bw_delta_pwr(
 // Read per-rate Tx power
 //
 void mt76x0_read_per_rate_tx_pwr(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	UINT32 data;
 	USHORT e2p_val = 0, e2p_val2 = 0;;
@@ -2561,7 +2561,7 @@ void mt76x0_read_per_rate_tx_pwr(
 
 
 static void MT76x0_AsicGetTxPowerOffset(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	INOUT PULONG pTxPwr)
 {
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC;
@@ -2624,7 +2624,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void MT76x0_Init(RTMP_ADAPTER *pAd)
+void MT76x0_Init(struct rtmp_adapter*pAd)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -2866,7 +2866,7 @@ void MT76x0_Init(RTMP_ADAPTER *pAd)
 
 
 void MT76x0_AntennaSelCtrl(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	USHORT e2p_val = 0;
 	UINT32 WlanFunCtrl = 0, CmbCtrl = 0, CoexCfg0 = 0, CoexCfg3 = 0;
@@ -2947,7 +2947,7 @@ void MT76x0_AntennaSelCtrl(
 }
 
 void MT76x0_dynamic_vga_tuning(
-	IN RTMP_ADAPTER 	*pAd)
+	IN struct rtmp_adapter	*pAd)
 {
 
 
@@ -2975,7 +2975,7 @@ void MT76x0_dynamic_vga_tuning(
 }
 
 void MT76x0_VCO_CalibrationMode3(
-	IN RTMP_ADAPTER 	*pAd,
+	IN struct rtmp_adapter	*pAd,
 	IN UCHAR 			Channel)
 {
 	/*
@@ -3043,7 +3043,7 @@ void MT76x0_VCO_CalibrationMode3(
 }
 
 void MT76x0_Calibration(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR Channel,
 	IN BOOLEAN bPowerOn,
 	IN BOOLEAN bDoTSSI,
@@ -3317,7 +3317,7 @@ RXDC_Calibration:
 }
 
 void MT76x0_TempSensor(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
 	UINT32 reg_val = 0;
@@ -3435,7 +3435,7 @@ done:
 
 #ifdef RTMP_FLASH_SUPPORT
 void MT76x0_ReadFlashAndInitAsic(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	USHORT ee_val = 0;
 	UINT32 reg_val = 0;
@@ -3463,7 +3463,7 @@ void MT76x0_ReadFlashAndInitAsic(
 
 
 void MT76x0_MakeUpRatePwrTable(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	UINT32 reg_val;
 
@@ -3823,7 +3823,7 @@ INT16 lin2dBd(
 }
 
 void MT76x0_MakeUpTssiTable(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	UINT32 reg_val;
 
@@ -4086,7 +4086,7 @@ void MT76x0_MakeUpTssiTable(
 }
 
 void MT76x0_TSSI_DC_Calibration(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	UCHAR RF_Value;
 	UINT32 MAC_Value, BBP_Value;
@@ -4201,7 +4201,7 @@ void MT76x0_TSSI_DC_Calibration(
 }
 
 BOOLEAN MT76x0_Enable9BitIchannelADC(
-	IN  RTMP_ADAPTER *pAd,
+	IN  struct rtmp_adapter*pAd,
 	IN  UCHAR Channel,
 	IN  SHORT *pTSSI_Linear)
 {
@@ -4306,7 +4306,7 @@ BOOLEAN MT76x0_Enable9BitIchannelADC(
 }
 
 BOOLEAN MT76x0_GetTargetPower(
-	IN  RTMP_ADAPTER *pAd,
+	IN  struct rtmp_adapter*pAd,
 	IN  CHAR *pTSSI_Tx_Mode,
 	IN  CHAR *pTargetPower,
 	IN  CHAR *pTargetPA_mode)
@@ -4416,7 +4416,7 @@ BOOLEAN MT76x0_GetTargetPower(
 }
 
 void MT76x0_EstimateDeltaPower(
-	IN  RTMP_ADAPTER *pAd,
+	IN  struct rtmp_adapter*pAd,
 	IN  CHAR TSSI_Tx_Mode,
 	IN  SHORT TSSI_Linear,
 	IN  CHAR TargetPower,
@@ -4630,7 +4630,7 @@ void MT76x0_EstimateDeltaPower(
 }
 
 void MT76x0_IntTxAlcProcess(
-	IN  RTMP_ADAPTER *pAd)
+	IN  struct rtmp_adapter*pAd)
 {
 	INT tssi_delta0 = 0;
 	UINT32 reg_val = 0;
@@ -4671,7 +4671,7 @@ void MT76x0_IntTxAlcProcess(
 
 
 BOOLEAN mt76x0_get_tssi_report(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN bResetTssiInfo,
 	OUT char *pTssiReport)
 {
@@ -4754,7 +4754,7 @@ done:
 
 #ifdef SINGLE_SKU_V2
 UCHAR MT76x0_GetSkuChannelBasePwr(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UCHAR 			channel)
 {
 	CH_POWER *ch, *ch_temp;
@@ -4818,7 +4818,7 @@ UCHAR MT76x0_GetSkuChannelBasePwr(
 }
 
 void MT76x0_WriteNewPerRatePwr(
-	IN RTMP_ADAPTER 	*pAd)
+	IN struct rtmp_adapter	*pAd)
 {
 	UINT32 data;
 	UCHAR t1, t2, t3, t4;
@@ -4969,7 +4969,7 @@ void MT76x0_WriteNewPerRatePwr(
 }
 
 UCHAR MT76x0_UpdateSkuPwr(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UCHAR 			channel)
 {
 	CH_POWER *ch, *ch_temp;
@@ -5121,7 +5121,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 
 #ifdef RTMP_TEMPERATURE_TX_ALC
 BOOLEAN get_temp_tx_alc_level(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN enable_tx_alc,
 	IN CHAR temp_ref,
 	IN char *temp_minus_bdy,
@@ -5187,7 +5187,7 @@ BOOLEAN get_temp_tx_alc_level(
 }
 
 
-void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
+void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 {
 	BOOLEAN bResetTssiInfo = TRUE, enable_tx_alc;
 	PUCHAR temp_minus_bdy, temp_plus_bdy, tx_alc_comp;
@@ -5280,7 +5280,7 @@ void mt76x0_temp_tx_alc(PRTMP_ADAPTER pAd)
 
 
 static void adjust_temp_tx_alc_table(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN CHAR band,
 	INOUT char *temp_minus_bdy,
 	INOUT char *temp_plus_bdy,
@@ -5334,7 +5334,7 @@ static void adjust_temp_tx_alc_table(
 
 
 static void adjust_mp_temp(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *temp_minus_bdy,
 	IN char *temp_plus_bdy)
 {
@@ -5388,7 +5388,7 @@ static void adjust_mp_temp(
 
 
 BOOLEAN load_temp_tx_alc_table(
-	IN RTMP_ADAPTER	*pAd,
+	IN struct rtmp_adapter*pAd,
 	IN CHAR band,
 	IN USHORT e2p_start_addr,
 	IN USHORT e2p_end_addr,
@@ -5459,7 +5459,7 @@ BOOLEAN load_temp_tx_alc_table(
 }
 
 
-void mt76x0_temp_tx_alc_init(PRTMP_ADAPTER pAd)
+void mt76x0_temp_tx_alc_init(struct rtmp_adapter *pAd)
 {
 	/* Initialize group settings of A band */
 	pAd->TxAgcCompensateA = 0;
@@ -5493,7 +5493,7 @@ void mt76x0_temp_tx_alc_init(PRTMP_ADAPTER pAd)
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
 
-void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
+void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 {
 	BOOLEAN status = TRUE;
 	USHORT e2p_value = 0;
@@ -5553,7 +5553,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
 }
 
 
-void mt76x0_adjust_per_rate_pwr(PRTMP_ADAPTER pAd)
+void mt76x0_adjust_per_rate_pwr(struct rtmp_adapter *pAd)
 {
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
 	INT32 mac_idx = 0;
@@ -5582,7 +5582,7 @@ void mt76x0_adjust_per_rate_pwr(PRTMP_ADAPTER pAd)
 
 /******************************* Command API *******************************/
 INT Set_AntennaSelect_Proc(
-	IN RTMP_ADAPTER		*pAd,
+	IN struct rtmp_adapter	*pAd,
 	IN char *		arg)
 {
 	u8 val = (u8)simple_strtol(arg, 0, 10);

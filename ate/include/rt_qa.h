@@ -183,10 +183,10 @@ typedef struct __ATE_EX_PARAM
 }ATE_EX_PARAM, *pATE_EX_PARAM;
 
 NDIS_STATUS TXSTOP(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 NDIS_STATUS RXSTOP(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 #endif /* RALINK_QA */
 

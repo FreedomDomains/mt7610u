@@ -180,18 +180,18 @@ typedef struct _RT_ASIC_PROTECT_INFO {
 			RTEnqueueInternalCmd((_pAd), CMDTHREAD_UPDATE_PROTECT, &AsicProtectInfo, sizeof(RT_ASIC_PROTECT_INFO));\
 		} while(0)
 
-void usb_cfg_read_v1(struct _RTMP_ADAPTER *ad, u32 *value);
-void usb_cfg_write_v1(struct _RTMP_ADAPTER *ad, u32 value);
-void usb_cfg_read_v2(struct _RTMP_ADAPTER *ad, u32 *value);
-void usb_cfg_write_v2(struct _RTMP_ADAPTER *ad, u32 value);
+void usb_cfg_read_v1(struct rtmp_adapter *ad, u32 *value);
+void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value);
+void usb_cfg_read_v2(struct rtmp_adapter *ad, u32 *value);
+void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value);
 int write_reg(
-	struct _RTMP_ADAPTER *ad,
+	struct rtmp_adapter *ad,
 	u32 base,
 	u16 offset,
 	u32 value);
 
 int read_reg(
-	struct _RTMP_ADAPTER *ad,
+	struct rtmp_adapter *ad,
 	u32 base,
 	u16 offset,
 	u32 *value);

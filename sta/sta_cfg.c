@@ -30,11 +30,11 @@
 
 
 INT Set_AutoReconnect_Proc(
-    IN  PRTMP_ADAPTER	pAd,
+    IN  struct rtmp_adapter *pAd,
     IN  char *		arg);
 
 INT Set_AdhocN_Proc(
-    IN  PRTMP_ADAPTER	pAd,
+    IN  struct rtmp_adapter *pAd,
     IN  char *		arg);
 
 
@@ -42,7 +42,7 @@ INT Set_AdhocN_Proc(
 
 #ifdef CARRIER_DETECTION_SUPPORT
 INT Set_StaCarrierDetect_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg);
 #endif /* CARRIER_DETECTION_SUPPORT */
 
@@ -50,7 +50,7 @@ INT Set_StaCarrierDetect_Proc(
 
 static struct {
 	char *name;
-	INT (*set_proc)(PRTMP_ADAPTER pAdapter, char *arg);
+	INT (*set_proc)(struct rtmp_adapter *pAdapter, char *arg);
 } *PRTMP_PRIVATE_SET_PROC, RTMP_PRIVATE_SUPPORT_PROC[] = {
 	{"DriverVersion",				Set_DriverVersion_Proc},
 	{"CountryRegion",				Set_CountryRegion_Proc},
@@ -345,7 +345,7 @@ static struct {
 
 
 INT RTMPSTAPrivIoctlSet(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *SetProcName,
 	IN char *ProcArg)
 {
@@ -383,7 +383,7 @@ INT RTMPSTAPrivIoctlSet(
     ==========================================================================
 */
 INT Set_SSID_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     NDIS_802_11_SSID                    Ssid, *pSsid=NULL;
@@ -482,7 +482,7 @@ INT Set_SSID_Proc(
     ==========================================================================
 */
 INT	Set_WmmCapable_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 	BOOLEAN	bWmmCapable;
@@ -516,7 +516,7 @@ INT	Set_WmmCapable_Proc(
     ==========================================================================
 */
 INT Set_NetworkType_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     UINT32	Value = 0;
@@ -707,7 +707,7 @@ INT Set_NetworkType_Proc(
     ==========================================================================
 */
 INT Set_AuthMode_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     if ((strcmp(arg, "WEPAUTO") == 0) || (strcmp(arg, "wepauto") == 0))
@@ -747,7 +747,7 @@ INT Set_AuthMode_Proc(
     ==========================================================================
 */
 INT Set_EncrypType_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     if ((strcmp(arg, "NONE") == 0) || (strcmp(arg, "none") == 0))
@@ -809,7 +809,7 @@ INT Set_EncrypType_Proc(
     ==========================================================================
 */
 INT Set_DefaultKeyID_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     ULONG                               KeyIdx;
@@ -827,7 +827,7 @@ INT Set_DefaultKeyID_Proc(
 
 
 INT Set_Wep_Key_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *        Key,
     IN  INT             KeyLen,
     IN  INT             KeyId)
@@ -913,7 +913,7 @@ INT Set_Wep_Key_Proc(
     ==========================================================================
 */
 INT Set_Key1_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     int                                 KeyLen;
@@ -991,7 +991,7 @@ INT Set_Key1_Proc(
     ==========================================================================
 */
 INT Set_Key2_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     int                                 KeyLen;
@@ -1067,7 +1067,7 @@ INT Set_Key2_Proc(
     ==========================================================================
 */
 INT Set_Key3_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     int                                 KeyLen;
@@ -1143,7 +1143,7 @@ INT Set_Key3_Proc(
     ==========================================================================
 */
 INT Set_Key4_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     int                                 KeyLen;
@@ -1220,7 +1220,7 @@ INT Set_Key4_Proc(
     ==========================================================================
 */
 INT Set_WPAPSK_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     int status;
@@ -1268,7 +1268,7 @@ INT Set_WPAPSK_Proc(
     ==========================================================================
 */
 INT Set_PSMode_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     if (pAdapter->StaCfg.BssType == BSS_INFRA)
@@ -1345,7 +1345,7 @@ INT Set_PSMode_Proc(
     ==========================================================================
 */
 INT Set_Wpa_Support(
-    IN	PRTMP_ADAPTER	pAd,
+    IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
 
@@ -1367,7 +1367,7 @@ INT Set_Wpa_Support(
 
 
 INT Set_TGnWifiTest_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
     if (simple_strtol(arg, 0, 10) == 0)
@@ -1381,7 +1381,7 @@ INT Set_TGnWifiTest_Proc(
 
 #ifdef EXT_BUILD_CHANNEL_LIST
 INT Set_Ieee80211dClientMode_Proc(
-    IN  PRTMP_ADAPTER   pAdapter,
+    IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg)
 {
     if (simple_strtol(arg, 0, 10) == 0)
@@ -1400,7 +1400,7 @@ INT Set_Ieee80211dClientMode_Proc(
 
 #ifdef CARRIER_DETECTION_SUPPORT
 INT Set_StaCarrierDetect_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
     if (simple_strtol(arg, 0, 10) == 0)
@@ -1414,7 +1414,7 @@ INT Set_StaCarrierDetect_Proc(
 #endif /* CARRIER_DETECTION_SUPPORT */
 
 INT	Show_Adhoc_MacTable_Proc(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		extra,
 	IN	UINT32			size)
 {
@@ -1461,7 +1461,7 @@ INT	Show_Adhoc_MacTable_Proc(
 
 
 INT Set_BeaconLostTime_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
 	ULONG ltmp = (ULONG)simple_strtol(arg, 0, 10);
@@ -1474,7 +1474,7 @@ INT Set_BeaconLostTime_Proc(
 }
 
 INT Set_AutoRoaming_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
     if (simple_strtol(arg, 0, 10) == 0)
@@ -1505,7 +1505,7 @@ INT Set_AutoRoaming_Proc(
 */
 
 INT Set_ForceTxBurst_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
     if (simple_strtol(arg, 0, 10) == 0)
@@ -1519,7 +1519,7 @@ INT Set_ForceTxBurst_Proc(
 
 #ifdef XLINK_SUPPORT
 INT Set_XlinkMode_Proc(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
 	UINT32 Value = 0;
@@ -1546,7 +1546,7 @@ INT Set_XlinkMode_Proc(
 
 
 void RTMPAddKey(
-	IN	PRTMP_ADAPTER	    pAd,
+	IN	struct rtmp_adapter *    pAd,
 	IN	PNDIS_802_11_KEY    pKey)
 {
 	ULONG				KeyIdx;
@@ -1740,7 +1740,7 @@ end:
     ==========================================================================
 */
 void StaSiteSurvey(
-	IN	PRTMP_ADAPTER  		pAd,
+	IN	struct rtmp_adapter * 		pAd,
 	IN	PNDIS_802_11_SSID	pSsid,
 	IN	UCHAR				ScanType)
 {
@@ -1787,7 +1787,7 @@ void StaSiteSurvey(
 }
 
 INT Set_AutoReconnect_Proc(
-    IN  PRTMP_ADAPTER	pAd,
+    IN  struct rtmp_adapter *pAd,
     IN  char *		arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0)
@@ -1800,7 +1800,7 @@ INT Set_AutoReconnect_Proc(
 }
 
 INT Set_AdhocN_Proc(
-    IN  PRTMP_ADAPTER	pAd,
+    IN  struct rtmp_adapter *pAd,
     IN  char *		arg)
 {
 #ifdef DOT11_N_SUPPORT
@@ -1820,7 +1820,7 @@ INT Set_AdhocN_Proc(
 #ifdef RTMP_MAC_USB
 /* set WOW enable */
 INT Set_WOW_Enable(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg)
 {
 	UINT32 Val;
@@ -1853,7 +1853,7 @@ INT Set_WOW_Enable(
 
 /* set GPIO pin for wake-up signal */
 INT Set_WOW_GPIO(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg)
 {
 	ULONG Value = simple_strtol(arg, 0, 10);
@@ -1869,7 +1869,7 @@ INT Set_WOW_GPIO(
 
 /* set delay time for WOW really enable */
 INT Set_WOW_Delay(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg)
 {
 	ULONG Value = simple_strtol(arg, 0, 10);
@@ -1885,7 +1885,7 @@ INT Set_WOW_Delay(
 
 /* set wake up hold time */
 INT Set_WOW_Hold(
-		IN PRTMP_ADAPTER		pAd,
+		IN struct rtmp_adapter *	pAd,
 		IN char *			arg)
 {
 	ULONG Value = simple_strtol(arg, 0, 10);
@@ -1903,7 +1903,7 @@ INT Set_WOW_Hold(
 
 
 INT RTMPSetInformation(
-    IN RTMP_ADAPTER *pAd,
+    IN struct rtmp_adapter*pAd,
     INOUT RTMP_IOCTL_INPUT_STRUCT *rq,
     IN  INT cmd)
 {
@@ -3371,7 +3371,7 @@ INT RTMPSetInformation(
 }
 
 INT RTMPQueryInformation(
-    IN  PRTMP_ADAPTER pAd,
+    IN  struct rtmp_adapter *pAd,
     IN  OUT RTMP_IOCTL_INPUT_STRUCT    *rq,
     IN  INT                 cmd)
 {
@@ -4672,7 +4672,7 @@ INT RTMPQueryInformation(
     ==========================================================================
 */
 void RTMPIoctlMAC(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq)
 {
 	char *this_char, *value;
@@ -4897,7 +4897,7 @@ LabelOK:
     ==========================================================================
 */
 void RTMPIoctlE2PROM(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq)
 {
 	char *			this_char;
@@ -5104,7 +5104,7 @@ LabelOK:
 
 #ifdef RT65xx
 void RTMPIoctlBbp32(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN CHAR *extra,
 	IN UINT32 size)
@@ -5228,7 +5228,7 @@ next:
 
 
 void RTMPIoctlBbp(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN CHAR *extra,
 	IN UINT32 size)
@@ -5364,7 +5364,7 @@ next:
 
 #ifdef DOT11_N_SUPPORT
 void	getBaInfo(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	char *		pOutBuf,
 	IN	UINT32			size)
 {
@@ -5415,7 +5415,7 @@ void	getBaInfo(
 
 
 void RTMPIoctlShow(
-	IN	PRTMP_ADAPTER			pAd,
+	IN	struct rtmp_adapter *		pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
 	IN	UINT32					subcmd,
 	IN	void 				*pData,
@@ -5691,7 +5691,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwfreq(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5748,7 +5748,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwfreq(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5783,7 +5783,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwmode(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5824,7 +5824,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwmode(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5858,7 +5858,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwap(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5914,7 +5914,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwap(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -5949,7 +5949,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwscan(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6088,7 +6088,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwscan(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6179,7 +6179,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwessid(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6241,7 +6241,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwessid(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6296,7 +6296,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwnickn(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6324,7 +6324,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwnickn(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6359,7 +6359,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwrts(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6386,7 +6386,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwrts(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6413,7 +6413,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwfrag(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6440,7 +6440,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwfrag(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6470,7 +6470,7 @@ Note:
 #define MIN_WEP_KEY_SIZE			5
 INT
 RtmpIoctl_rt_ioctl_siwencode(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6587,7 +6587,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwencode(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6655,7 +6655,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwmlme(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data,
 	IN	UINT32					Subcmd)
@@ -6735,7 +6735,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwauth(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6904,7 +6904,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwauth(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -6948,7 +6948,7 @@ Note:
 ========================================================================
 */
 void fnSetCipherKey(
-    IN  PRTMP_ADAPTER   pAd,
+    IN  struct rtmp_adapter *  pAd,
     IN  INT             keyIdx,
     IN  UCHAR           CipherAlg,
     IN  BOOLEAN         bGTK,
@@ -7019,7 +7019,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwencodeext(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7173,7 +7173,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwencodeext(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7271,7 +7271,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwgenie(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7331,7 +7331,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwgenie(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7402,7 +7402,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwpmksa(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7491,7 +7491,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_siwrate(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7563,7 +7563,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_giwrate(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7633,7 +7633,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_gifhwaddr(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7659,7 +7659,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_rssi(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7687,7 +7687,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_ioctl_setparam(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7722,7 +7722,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_private_set_wsc_u32_item(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7749,7 +7749,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_private_set_wsc_string_item(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7776,7 +7776,7 @@ Note:
 */
 INT
 RtmpIoctl_rt_private_get_statistics(
-	IN	RTMP_ADAPTER			*pAd,
+	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
@@ -7940,7 +7940,7 @@ INT RTMP_STA_IoctlHandle(
 	IN  ULONG					Data,
 	IN  USHORT                  priv_flags)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	POS_COOKIE pObj = (POS_COOKIE)pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS;
 

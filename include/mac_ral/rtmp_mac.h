@@ -2372,15 +2372,15 @@ typedef	union _QOS_CSR1_STRUC {
 #endif /* RTMP_MAC_USB */
 
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
 INT get_pkt_phymode_by_rxwi(RXWI_STRUC *rxwi);
 INT get_pkt_rssi_by_rxwi(RXWI_STRUC *rxwi, INT size, CHAR *rssi);
 INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, UCHAR *snr);
 
-INT rtmp_mac_set_band(struct _RTMP_ADAPTER *pAd, int  band);
-INT rtmp_mac_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT extch);
-INT rtmp_mac_set_mmps(struct  _RTMP_ADAPTER *pAd, INT ReduceCorePower);
+INT rtmp_mac_set_band(struct rtmp_adapter *pAd, int  band);
+INT rtmp_mac_set_ctrlch(struct rtmp_adapter *pAd, INT extch);
+INT rtmp_mac_set_mmps(struct  rtmp_adapter *pAd, INT ReduceCorePower);
 
 #endif /* __RTMP_MAC_H__ */
 

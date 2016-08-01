@@ -28,7 +28,7 @@
 #include <rt_config.h>
 
 
-void mgmt_tb_set_mcast_entry(RTMP_ADAPTER *pAd)
+void mgmt_tb_set_mcast_entry(struct rtmp_adapter*pAd)
 {
 	MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[MCAST_WCID];
 
@@ -39,7 +39,7 @@ void mgmt_tb_set_mcast_entry(RTMP_ADAPTER *pAd)
 }
 
 
-void set_entry_phy_cfg(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void set_entry_phy_cfg(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 
 	if (pEntry->MaxSupportedRate < RATE_FIRST_OFDM_RATE)
@@ -73,7 +73,7 @@ void set_entry_phy_cfg(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 	==========================================================================
 */
 MAC_TABLE_ENTRY *MacTableLookup(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	PUCHAR pAddr)
 {
 	ULONG HashIdx;
@@ -97,7 +97,7 @@ MAC_TABLE_ENTRY *MacTableLookup(
 
 
 MAC_TABLE_ENTRY *MacTableInsertEntry(
-	IN  PRTMP_ADAPTER   pAd,
+	IN  struct rtmp_adapter *  pAd,
 	IN  PUCHAR			pAddr,
 	IN	UCHAR			apidx,
 	IN	UCHAR			OpMode,
@@ -368,7 +368,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 	==========================================================================
  */
 BOOLEAN MacTableDeleteEntry(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
 	IN PUCHAR pAddr)
 {
@@ -536,7 +536,7 @@ BOOLEAN MacTableDeleteEntry(
 	==========================================================================
  */
 void MacTableReset(
-	IN  PRTMP_ADAPTER  pAd)
+	IN  struct rtmp_adapter * pAd)
 {
 	int         i;
 	BOOLEAN     Cancelled;
@@ -573,7 +573,7 @@ void MacTableReset(
 
 #ifdef MAC_REPEATER_SUPPORT
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
-	IN  PRTMP_ADAPTER   pAd,
+	IN  struct rtmp_adapter *  pAd,
 	IN  PUCHAR			pAddr,
 	IN  UCHAR			IfIdx)
 {

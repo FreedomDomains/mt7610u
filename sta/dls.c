@@ -48,7 +48,7 @@
     ==========================================================================
  */
 void DlsStateMachineInit(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN STATE_MACHINE *Sm,
 	OUT STATE_MACHINE_FUNC Trans[])
 {
@@ -86,7 +86,7 @@ void DlsStateMachineInit(
     ==========================================================================
  */
 void MlmeDlsReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PUCHAR pOutBuffer = NULL;
@@ -185,7 +185,7 @@ void MlmeDlsReqAction(
     ==========================================================================
  */
 void PeerDlsReqAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PUCHAR pOutBuffer = NULL;
@@ -483,7 +483,7 @@ void PeerDlsReqAction(
     ==========================================================================
  */
 void PeerDlsRspAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT CapabilityInfo;
@@ -827,7 +827,7 @@ void PeerDlsRspAction(
     ==========================================================================
  */
 void MlmeDlsTearDownAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	PUCHAR pOutBuffer = NULL;
@@ -904,7 +904,7 @@ void MlmeDlsTearDownAction(
     ==========================================================================
  */
 void PeerDlsTearDownAction(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	UCHAR DA[MAC_ADDR_LEN], SA[MAC_ADDR_LEN];
@@ -968,7 +968,7 @@ void PeerDlsTearDownAction(
     ==========================================================================
  */
 void RTMPCheckDLSTimeOut(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	ULONG i;
 	MLME_DLS_REQ_STRUCT MlmeDlsReq;
@@ -1034,7 +1034,7 @@ void RTMPCheckDLSTimeOut(
     ==========================================================================
  */
 BOOLEAN RTMPRcvFrameDLSCheck(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN ULONG Len,
 	IN RXD_STRUC *pRxD)
@@ -1370,7 +1370,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 	========================================================================
 */
 INT RTMPCheckDLSFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pDA)
 {
 	INT rval = -1;
@@ -1417,7 +1417,7 @@ INT RTMPCheckDLSFrame(
     ==========================================================================
  */
 void RTMPSendDLSTearDownFrame(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pDA)
 {
 	PUCHAR pOutBuffer = NULL;
@@ -1486,7 +1486,7 @@ void RTMPSendDLSTearDownFrame(
     ==========================================================================
  */
 NDIS_STATUS RTMPSendSTAKeyRequest(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pDA)
 {
 	UCHAR Header802_3[14];
@@ -1623,7 +1623,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
     ==========================================================================
  */
 NDIS_STATUS RTMPSendSTAKeyHandShake(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pDA)
 {
 	UCHAR Header802_3[14];
@@ -1759,12 +1759,12 @@ void DlsTimeoutAction(
 	MLME_DLS_REQ_STRUCT MlmeDlsReq;
 	USHORT reason;
 	PRT_802_11_DLS pDLS = (PRT_802_11_DLS) FunctionContext;
-	PRTMP_ADAPTER pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 
 	if (pDLS == NULL)
 		return;
 
-	pAd = (PRTMP_ADAPTER)pDLS->pAd;
+	pAd = (struct rtmp_adapter *)pDLS->pAd;
 
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("DlsTimeout - Tear down DLS links (%02x:%02x:%02x:%02x:%02x:%02x)\n",
@@ -1791,7 +1791,7 @@ from index MAX_AID_BA.
 ================================================================
 */
 MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr,
 	IN UINT DlsEntryIdx)
 {
@@ -1854,7 +1854,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 	==========================================================================
  */
 BOOLEAN MacTableDeleteDlsEntry(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
 	IN PUCHAR pAddr)
 {
@@ -1871,7 +1871,7 @@ BOOLEAN MacTableDeleteDlsEntry(
 }
 
 MAC_TABLE_ENTRY *DlsEntryTableLookup(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr,
 	IN BOOLEAN bResetIdelCount)
 {
@@ -1897,7 +1897,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookup(
 }
 
 MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR wcid,
 	IN PUCHAR pAddr,
 	IN BOOLEAN bResetIdelCount)
@@ -1936,7 +1936,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 }
 
 INT Set_DlsEntryInfo_Display_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR arg)
 {
 	INT i;
@@ -2009,7 +2009,7 @@ INT Set_DlsEntryInfo_Display_Proc(
 }
 
 INT Set_DlsAddEntry_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	UCHAR mac[MAC_ADDR_LEN];
@@ -2059,7 +2059,7 @@ INT Set_DlsAddEntry_Proc(
 }
 
 INT Set_DlsTearDownEntry_Proc(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
 	UCHAR macAddr[MAC_ADDR_LEN];

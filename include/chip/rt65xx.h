@@ -28,7 +28,7 @@
 #ifndef __MT65XX_H__
 #define __MT65XX_H__
 
-struct _RTMP_ADAPTER;
+struct rtmp_adapter;
 
 #define MAX_CHECK_COUNT 200
 
@@ -84,8 +84,8 @@ typedef union _COEXCFG0_STRUC{
 #endif
 
 #ifdef RTMP_USB_SUPPORT
-void RT65xxUsbAsicRadioOn(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
-void RT65xxUsbAsicRadioOff(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
+void RT65xxUsbAsicRadioOn(struct rtmp_adapter *pAd, UCHAR Stage);
+void RT65xxUsbAsicRadioOff(struct rtmp_adapter *pAd, UCHAR Stage);
 #endif
 
 /*
@@ -114,9 +114,9 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC {
 } EEPROM_NIC_CONFIG0_STRUC, *PEEPROM_NIC_CONFIG0_STRUC;
 #endif
 
-void RT65xxDisableTxRx(struct _RTMP_ADAPTER *pAd, UCHAR Level);
-void RT65xx_WLAN_ChipOnOff(struct _RTMP_ADAPTER *pAd, BOOLEAN bOn,
+void RT65xxDisableTxRx(struct rtmp_adapter *pAd, UCHAR Level);
+void RT65xx_WLAN_ChipOnOff(struct rtmp_adapter *pAd, BOOLEAN bOn,
 							BOOLEAN bResetWLAN);
 
-void dump_bw_info(struct _RTMP_ADAPTER *pAd);
+void dump_bw_info(struct rtmp_adapter *pAd);
 #endif

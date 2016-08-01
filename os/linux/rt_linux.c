@@ -1687,7 +1687,7 @@ int RtmpOSNetDevAttach(
 
 	/* If we need hook some callback function to the net device structrue, now do it. */
 	if (pDevOpHook) {
-/*		PRTMP_ADAPTER pAd = NULL; */
+/*		struct rtmp_adapter *pAd = NULL; */
 
 /*		GET_PAD_FROM_NET_DEV(pAd, pNetDev); */
 
@@ -1871,8 +1871,8 @@ NDIS_STATUS AdapterBlockAllocateMemory(void *handle, void **ppAd, UINT32 SizeOfp
 	}
 #endif /* OS_ABL_FUNC_SUPPORT */
 
-/*	*ppAd = (void *)vmalloc(sizeof(RTMP_ADAPTER)); //pci_alloc_consistent(pci_dev, sizeof(RTMP_ADAPTER), phy_addr); */
-	*ppAd = (void *) vmalloc(SizeOfpAd);	/*pci_alloc_consistent(pci_dev, sizeof(RTMP_ADAPTER), phy_addr); */
+/*	*ppAd = (void *)vmalloc(sizeof(struct rtmp_adapter)); //pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
+	*ppAd = (void *) vmalloc(SizeOfpAd);	/*pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
 	if (*ppAd) {
 		NdisZeroMemory(*ppAd, SizeOfpAd);
 		return NDIS_STATUS_SUCCESS;

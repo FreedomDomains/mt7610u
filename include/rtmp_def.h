@@ -163,7 +163,7 @@
 
 
 /*
-	RTMP_ADAPTER flags
+	struct rtmp_adapterflags
 */
 #define fRTMP_ADAPTER_MAP_REGISTER           0x00000001
 #define fRTMP_ADAPTER_INTERRUPT_IN_USE       0x00000002
@@ -278,7 +278,7 @@ enum WIFI_MODE{
 
 
 /*
-	RTMP_ADAPTER PSFlags : related to advanced power save
+	struct rtmp_adapterPSFlags : related to advanced power save
 */
 /* Indicate whether driver can go to sleep mode from now. This flag is useful AFTER link up */
 #define fRTMP_PS_CAN_GO_SLEEP          0x00000001

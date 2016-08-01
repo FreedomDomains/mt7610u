@@ -30,7 +30,7 @@
 #include	"rt_config.h"
 
 
-NDIS_STATUS RTUSBFreeDescriptorRelease(RTMP_ADAPTER *pAd, UCHAR BulkOutPipeId)
+NDIS_STATUS RTUSBFreeDescriptorRelease(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
 {
 	HT_TX_CONTEXT *pHTTXContext;
 	unsigned long IrqFlags;
@@ -65,7 +65,7 @@ NDIS_STATUS RTUSBFreeDescriptorRelease(RTMP_ADAPTER *pAd, UCHAR BulkOutPipeId)
 	========================================================================
 */
 NDIS_STATUS	RTUSBFreeDescRequest(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR BulkOutPipeId,
 	IN UINT32 req_cnt)
 {
@@ -116,7 +116,7 @@ NDIS_STATUS	RTUSBFreeDescRequest(
 }
 
 
-BOOLEAN	RTUSBNeedQueueBackForAgg(RTMP_ADAPTER *pAd, UCHAR BulkOutPipeId)
+BOOLEAN	RTUSBNeedQueueBackForAgg(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
 {
 	HT_TX_CONTEXT *pHTTXContext;
 	BOOLEAN needQueBack = FALSE;
@@ -174,7 +174,7 @@ BOOLEAN	RTUSBNeedQueueBackForAgg(RTMP_ADAPTER *pAd, UCHAR BulkOutPipeId)
 	========================================================================
 */
 void rlt_usb_write_txinfo(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TXINFO_STRUC *pTxInfo,
 	IN USHORT USBDMApktLen,
 	IN BOOLEAN bWiv,
@@ -212,7 +212,7 @@ void rlt_usb_write_txinfo(
 
 
 static void rlt_usb_update_txinfo(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TXINFO_STRUC *pTxInfo,
 	IN TX_BLK *pTxBlk)
 {
@@ -222,7 +222,7 @@ static void rlt_usb_update_txinfo(
 
 
 #ifdef CONFIG_STA_SUPPORT
-void ComposePsPoll(RTMP_ADAPTER *pAd)
+void ComposePsPoll(struct rtmp_adapter*pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
@@ -260,7 +260,7 @@ void ComposePsPoll(RTMP_ADAPTER *pAd)
 
 
 /* IRQL = DISPATCH_LEVEL */
-void ComposeNullFrame(RTMP_ADAPTER *pAd)
+void ComposeNullFrame(struct rtmp_adapter*pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
@@ -299,7 +299,7 @@ void ComposeNullFrame(RTMP_ADAPTER *pAd)
 		=>
 */
 static inline NDIS_STATUS RtmpUSBCanDoWrite(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN HT_TX_CONTEXT *pHTTXContext)
 {
@@ -351,7 +351,7 @@ static inline NDIS_STATUS RtmpUSBCanDoWrite(
 
 
 USHORT RtmpUSB_WriteSubTxResource(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN BOOLEAN bIsLast,
 	OUT	USHORT *freeCnt)
@@ -363,7 +363,7 @@ USHORT RtmpUSB_WriteSubTxResource(
 }
 
 USHORT	RtmpUSB_WriteFragTxResource(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR fragNum,
 	OUT	USHORT *freeCnt)
@@ -554,7 +554,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 
 USHORT RtmpUSB_WriteSingleTxResource(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN BOOLEAN bIsLast,
 	OUT	USHORT *freeCnt)
@@ -720,7 +720,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 
 
 USHORT RtmpUSB_WriteMultiTxResource(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR frmNum,
 	OUT USHORT *freeCnt)
@@ -853,7 +853,7 @@ done:
 
 
 void RtmpUSB_FinalWriteTxResource(
-	IN RTMP_ADAPTER	*pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN USHORT totalMPDUSize,
 	IN USHORT TxIdx)
@@ -955,7 +955,7 @@ void RtmpUSB_FinalWriteTxResource(
 
 
 void RtmpUSBDataLastTxIdx(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN USHORT TxIdx)
 {
@@ -972,7 +972,7 @@ void RtmpUSBDataLastTxIdx(
 
 */
 void RtmpUSBDataKickOut(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
 	IN UCHAR QueIdx)
 {
@@ -987,7 +987,7 @@ void RtmpUSBDataKickOut(
 	This function handle RT2870 specific TxDesc and cpu index update and kick the packet out.
  */
 int RtmpUSBMgmtKickOut(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR *pSrcBufVA,
@@ -1079,7 +1079,7 @@ if (0) {
 
 
 void RtmpUSBNullFrameKickOut(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR *pNullFrame,
 	IN UINT32 frameLen)
@@ -1147,7 +1147,7 @@ Note:
 ========================================================================
 */
 PNDIS_PACKET GetPacketFromRxRing(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	OUT RX_BLK *pRxBlk,
 	OUT BOOLEAN *pbReschedule,
 	INOUT UINT32 *pRxPending,
@@ -1304,7 +1304,7 @@ label_null:
 	========================================================================
 */
 NDIS_STATUS	RTMPCheckRxError(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN RXWI_STRUC *pRxWI,
 	IN RXINFO_STRUC *pRxInfo)
@@ -1411,7 +1411,7 @@ void RtmpUsbStaAsicForceWakeupTimeout(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)FunctionContext;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*)FunctionContext;
 
 
 
@@ -1428,7 +1428,7 @@ void RtmpUsbStaAsicForceWakeupTimeout(
 
 
 void RT28xxUsbStaAsicForceWakeup(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN       bFromTx)
 {
 	BOOLEAN	Canceled;
@@ -1446,7 +1446,7 @@ void RT28xxUsbStaAsicForceWakeup(
 
 
 void RT28xxUsbStaAsicSleepThenAutoWakeup(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN USHORT TbttNumToNextWakeUp)
 {
 

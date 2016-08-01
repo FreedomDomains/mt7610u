@@ -45,7 +45,7 @@
 ========================================================================
 */
 NDIS_STATUS RtmpInsertPsQueue(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PNDIS_PACKET pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
 	IN UCHAR QueIdx)
@@ -91,7 +91,7 @@ NDIS_STATUS RtmpInsertPsQueue(
 	==========================================================================
  */
 void RtmpCleanupPsQueue(
-	IN  PRTMP_ADAPTER   pAd,
+	IN  struct rtmp_adapter *  pAd,
 	IN  PQUEUE_HEADER   pQueue)
 {
 	PQUEUE_ENTRY pEntry;
@@ -123,7 +123,7 @@ void RtmpCleanupPsQueue(
   ========================================================================
 */
 void RtmpHandleRxPsPoll(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	PUCHAR			pAddr,
 	IN	USHORT			Aid,
     IN	BOOLEAN			isActive)
@@ -293,7 +293,7 @@ void RtmpHandleRxPsPoll(
 	==========================================================================
  */
 BOOLEAN RtmpPsIndicate(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PUCHAR pAddr,
 	IN ULONG Wcid,
 	IN UCHAR Psm)
@@ -369,7 +369,7 @@ Note:
 ========================================================================
 */
 BOOLEAN RtmpPktPmBitCheck(
-    IN  PRTMP_ADAPTER       pAd)
+    IN  struct rtmp_adapter *      pAd)
 {
 	BOOLEAN FlgCanPmBitSet = TRUE;
 
@@ -383,14 +383,14 @@ BOOLEAN RtmpPktPmBitCheck(
 
 
 void RtmpPsActiveExtendCheck(
-	IN PRTMP_ADAPTER		pAd)
+	IN struct rtmp_adapter *	pAd)
 {
 	/* count down the TDLS active counter */
 }
 
 
 void RtmpPsModeChange(
-	IN PRTMP_ADAPTER		pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UINT32				PsMode)
 {
 	if (pAd->StaCfg.BssType == BSS_INFRA)

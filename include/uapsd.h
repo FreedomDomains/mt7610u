@@ -316,7 +316,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_Init(
-	IN	PRTMP_ADAPTER		pAd);
+	IN	struct rtmp_adapter *	pAd);
 
 
 /*
@@ -334,7 +334,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_Release(
-	IN	PRTMP_ADAPTER		pAd);
+	IN	struct rtmp_adapter *	pAd);
 
 
 /*
@@ -352,7 +352,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void RtmpAsicSleepHandle(
-    IN  PRTMP_ADAPTER       pAd);
+    IN  struct rtmp_adapter *      pAd);
 
 /*
 ========================================================================
@@ -370,7 +370,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_SP_Close(
-    IN  PRTMP_ADAPTER       pAd,
+    IN  struct rtmp_adapter *      pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry);
 
 /*
@@ -389,7 +389,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN BOOLEAN UAPSD_SP_IsClosed(
-    IN  PRTMP_ADAPTER       pAd,
+    IN  struct rtmp_adapter *      pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry);
 
 /*
@@ -409,7 +409,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_AllPacketDeliver(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry);
 
 
@@ -444,7 +444,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_AssocParse(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	IN	UCHAR				*pElm,
 	IN	BOOLEAN				FlgApsdCapable);
@@ -468,7 +468,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_PacketEnqueue(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	IN	PNDIS_PACKET		pPacket,
 	IN	UINT32				IdAc);
@@ -491,7 +491,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_QoSNullTxMgmtTxDoneHandle(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	PNDIS_PACKET		pPacket,
 	IN	UCHAR				*pDstMac);
 
@@ -513,7 +513,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_QueueMaintenance(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry);
 
 
@@ -541,7 +541,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_SP_AUE_Handle(
-	IN RTMP_ADAPTER		*pAd,
+	IN struct rtmp_adapter	*pAd,
     IN MAC_TABLE_ENTRY	*pEntry,
 	IN UCHAR			FlgSuccess);
 
@@ -567,7 +567,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_SP_CloseInRVDone(
-	IN	PRTMP_ADAPTER		pAd);
+	IN	struct rtmp_adapter *	pAd);
 
 
 /*
@@ -589,7 +589,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_SP_PacketCheck(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	PNDIS_PACKET		pPacket,
 	IN	UCHAR				*pDstMac);
 
@@ -634,7 +634,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_TimingRecord(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	UINT32				Type);
 
 /*
@@ -677,7 +677,7 @@ Note:
 ========================================================================
 */
 void UAPSD_QueueStatusGet(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	OUT	BOOLEAN				*pFlgIsAnyPktForBK,
 	OUT BOOLEAN				*pFlgIsAnyPktForBE,
@@ -702,7 +702,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_TriggerFrameHandle(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	IN	UCHAR				UpOfFrame);
 
@@ -727,7 +727,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_TagFrame(
-	IN	RTMP_ADAPTER		*pAd,
+	IN	struct rtmp_adapter	*pAd,
 	IN	NDIS_PACKET			*pPkt,
 	IN	UCHAR				Wcid,
 	IN	UINT32				PktOffset);
@@ -752,7 +752,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_UnTagFrame(
-	IN	RTMP_ADAPTER	*pAd,
+	IN	struct rtmp_adapter*pAd,
 	IN	UCHAR			AcQueId,
 	IN	UINT32			bulkStartPos,
 	IN	UINT32			bulkEnPos);

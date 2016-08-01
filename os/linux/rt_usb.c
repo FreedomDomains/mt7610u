@@ -44,7 +44,7 @@ Note:
 ========================================================================
 */
 NDIS_STATUS	 RtmpMgmtTaskInit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	RTMP_OS_TASK *pTask;
 	NDIS_STATUS status;
@@ -104,7 +104,7 @@ Note:
 ========================================================================
 */
 void RtmpMgmtTaskExit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	INT			ret;
 	RTMP_OS_TASK	*pTask;
@@ -165,7 +165,7 @@ void RtmpMgmtTaskExit(
 
 static void rtusb_dataout_complete(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	purbb_t				pUrb;
 	POS_COOKIE			pObj;
 	PHT_TX_CONTEXT		pHTTXContext;
@@ -261,7 +261,7 @@ static void rtusb_dataout_complete(unsigned long data)
 
 static void rtusb_null_frame_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER	pAd;
+	struct rtmp_adapter *pAd;
 	PTX_CONTEXT		pNullContext;
 	purbb_t			pUrb;
 	NTSTATUS		Status;
@@ -315,7 +315,7 @@ static void rtusb_null_frame_done_tasklet(unsigned long data)
 
 static void rtusb_pspoll_frame_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER	pAd;
+	struct rtmp_adapter *pAd;
 	PTX_CONTEXT		pPsPollContext;
 	purbb_t			pUrb;
 	NTSTATUS		Status;
@@ -381,7 +381,7 @@ static void rx_done_tasklet(unsigned long data)
 {
 	purbb_t 			pUrb;
 	PRX_CONTEXT			pRxContext;
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	NTSTATUS			Status;
 	unsigned int		IrqFlags;
 
@@ -461,7 +461,7 @@ static void rx_done_tasklet(unsigned long data)
 
 static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER 	pAd;
+	struct rtmp_adapter *	pAd;
 	PTX_CONTEXT		pMLMEContext;
 	int				index;
 	PNDIS_PACKET	pPacket;
@@ -561,7 +561,7 @@ static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
 
 static void rtusb_hcca_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	PHT_TX_CONTEXT		pHTTXContext;
 	UCHAR				BulkOutPipeId = 4;
 	purbb_t				pUrb;
@@ -612,7 +612,7 @@ static void rtusb_hcca_dma_done_tasklet(unsigned long data)
 
 static void rtusb_ac3_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	PHT_TX_CONTEXT		pHTTXContext;
 	UCHAR				BulkOutPipeId = 3;
 	purbb_t				pUrb;
@@ -659,7 +659,7 @@ static void rtusb_ac3_dma_done_tasklet(unsigned long data)
 
 static void rtusb_ac2_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	PHT_TX_CONTEXT		pHTTXContext;
 	UCHAR				BulkOutPipeId = 2;
 	purbb_t				pUrb;
@@ -706,7 +706,7 @@ static void rtusb_ac2_dma_done_tasklet(unsigned long data)
 
 static void rtusb_ac1_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	PHT_TX_CONTEXT		pHTTXContext;
 	UCHAR				BulkOutPipeId = 1;
 	purbb_t				pUrb;
@@ -752,7 +752,7 @@ static void rtusb_ac1_dma_done_tasklet(unsigned long data)
 
 static void rtusb_ac0_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER		pAd;
+	struct rtmp_adapter *	pAd;
 	PHT_TX_CONTEXT		pHTTXContext;
 	UCHAR				BulkOutPipeId = 0;
 	purbb_t				pUrb;
@@ -800,7 +800,7 @@ static void rtusb_ac0_dma_done_tasklet(unsigned long data)
 #ifdef RALINK_ATE
 static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 {
-	PRTMP_ADAPTER pAd;
+	struct rtmp_adapter *pAd;
 	PTX_CONTEXT pNullContext;
 	UCHAR BulkOutPipeId;
 	NTSTATUS Status;
@@ -945,7 +945,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 
 
 NDIS_STATUS RtmpNetTaskInit(
-	IN RTMP_ADAPTER *pAd)
+	IN struct rtmp_adapter*pAd)
 {
 	POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
 
@@ -969,7 +969,7 @@ NDIS_STATUS RtmpNetTaskInit(
 }
 
 
-void RtmpNetTaskExit(IN RTMP_ADAPTER *pAd)
+void RtmpNetTaskExit(IN struct rtmp_adapter*pAd)
 {
 	POS_COOKIE pObj;
 
@@ -1009,13 +1009,13 @@ Note:
 INT MlmeThread(
 	IN ULONG Context)
 {
-	RTMP_ADAPTER *pAd;
+	struct rtmp_adapter*pAd;
 	RTMP_OS_TASK *pTask;
 	int status;
 	status = 0;
 
 	pTask = (RTMP_OS_TASK *)Context;
-	pAd = (PRTMP_ADAPTER)RTMP_OS_TASK_DATA_GET(pTask);
+	pAd = (struct rtmp_adapter *)RTMP_OS_TASK_DATA_GET(pTask);
 	if (pAd == NULL)
 		goto LabelExit; /* avoid compile warning */
 
@@ -1075,13 +1075,13 @@ Note:
 INT RTUSBCmdThread(
 	IN ULONG Context)
 {
-	RTMP_ADAPTER *pAd;
+	struct rtmp_adapter*pAd;
 	RTMP_OS_TASK *pTask;
 	int status;
 	status = 0;
 
 	pTask = (RTMP_OS_TASK *)Context;
-	pAd = (PRTMP_ADAPTER)RTMP_OS_TASK_DATA_GET(pTask);
+	pAd = (struct rtmp_adapter *)RTMP_OS_TASK_DATA_GET(pTask);
 
 	if (pAd == NULL)
 		return 0;

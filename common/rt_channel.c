@@ -1634,7 +1634,7 @@ static void ChBandCheck(
 }
 
 static UCHAR FillChList(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PCH_DESP pChDesp,
 	IN UCHAR Offset,
 	IN UCHAR increment,
@@ -1701,7 +1701,7 @@ static UCHAR FillChList(
 
 
 static inline void CreateChList(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN PCH_REGION pChRegion,
 	IN UCHAR Geography)
 {
@@ -1757,7 +1757,7 @@ static inline void CreateChList(
 
 
 void BuildChannelListEx(
-	IN PRTMP_ADAPTER pAd)
+	IN struct rtmp_adapter *pAd)
 {
 	PCH_REGION pChReg;
 
@@ -1766,7 +1766,7 @@ void BuildChannelListEx(
 }
 
 void BuildBeaconChList(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	OUT PUCHAR pBuf,
 	OUT	PULONG pBufLen)
 {
@@ -1821,7 +1821,7 @@ void BuildBeaconChList(
 
 #ifdef DOT11_N_SUPPORT
 static BOOLEAN IsValidChannel(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR channel)
 
 {
@@ -1854,7 +1854,7 @@ static UCHAR GetExtCh(
 }
 
 BOOLEAN N_ChannelGroupCheck(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel)
 {
 	BOOLEAN	RetVal = FALSE;
@@ -1900,7 +1900,7 @@ BOOLEAN N_ChannelGroupCheck(
 }
 
 
-void N_ChannelCheck(RTMP_ADAPTER *pAd)
+void N_ChannelCheck(struct rtmp_adapter*pAd)
 {
 	INT idx;
 	UCHAR Channel = pAd->CommonCfg.Channel;
@@ -1964,7 +1964,7 @@ void N_ChannelCheck(RTMP_ADAPTER *pAd)
 }
 
 
-UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
+UCHAR N_SetCenCh(struct rtmp_adapter*pAd, UCHAR prim_ch)
 {
 	if (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
 	{
@@ -1987,7 +1987,7 @@ UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
 
 
 u8 GetCuntryMaxTxPwr(
-	IN PRTMP_ADAPTER pAd,
+	IN struct rtmp_adapter *pAd,
 	IN u8 channel)
 {
 	int i;

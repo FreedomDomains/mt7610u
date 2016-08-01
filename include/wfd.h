@@ -33,69 +33,69 @@
 #include "rtmp_type.h"
 
 INT Set_WfdEnable_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 #ifdef RT_CFG80211_SUPPORT
 INT Set_WfdInsertIe_Proc
 (
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN	char *		arg);
 #endif /* RT_CFG80211_SUPPORT */
 
 INT Set_WfdDeviceType_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT Set_WfdCouple_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT Set_WfdSessionAvailable_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT Set_WfdCP_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT	Set_WfdRtspPort_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT	Set_WfdMaxThroughput_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT Set_WfdLocalIp_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 INT Set_PeerRtspPort_Proc(
-    IN  PRTMP_ADAPTER		pAd,
+    IN  struct rtmp_adapter *	pAd,
     IN  char *		arg);
 
 void WfdMakeWfdIE(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN 	ULONG			WfdIeBitmap,
 	OUT	PUCHAR			pOutBuf,
 	OUT	PULONG			pIeLen);
 
 ULONG InsertWfdSubelmtTlv(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN UCHAR			SubId,
 	IN PUCHAR			pInBuffer,
 	IN PUCHAR			pOutBuffer,
 	IN UINT				Action);
 
 void WfdParseSubElmt(
-	IN PRTMP_ADAPTER 	pAd,
+	IN struct rtmp_adapter *	pAd,
 	IN PWFD_ENTRY_INFO	pWfdEntryInfo,
 	IN void 				*Msg,
 	IN ULONG 			MsgLen);
 
 void WfdCfgInit(
-	IN PRTMP_ADAPTER pAd);
+	IN struct rtmp_adapter *pAd);
 
 #endif /* WFD_SUPPORT */
 #endif /* __WFD_H__ */

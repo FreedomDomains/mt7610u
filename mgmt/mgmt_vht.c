@@ -30,7 +30,7 @@
 
 #ifdef DOT11_VHT_AC
 
-void rtmp_set_vht(RTMP_ADAPTER *pAd, RT_PHY_INFO *phy_info)
+void rtmp_set_vht(struct rtmp_adapter*pAd, RT_PHY_INFO *phy_info)
 {
 	if (!phy_info)
 		return;
@@ -41,7 +41,7 @@ void rtmp_set_vht(RTMP_ADAPTER *pAd, RT_PHY_INFO *phy_info)
 }
 
 
-INT SetCommonVHT(RTMP_ADAPTER *pAd)
+INT SetCommonVHT(struct rtmp_adapter*pAd)
 {
 	UCHAR cent_ch = 0;
 

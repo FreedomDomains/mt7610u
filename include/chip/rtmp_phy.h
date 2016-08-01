@@ -628,20 +628,20 @@ typedef union _BBP_R182_STRUC {
 
 struct _RMTP_ADAPTER;
 
-INT rtmp_bbp_set_bw(struct _RTMP_ADAPTER *pAd, INT bw);
-INT rtmp_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch);
-INT rtmp_bbp_set_rxpath(struct _RTMP_ADAPTER *pAd, INT rxpath);
-INT rtmp_bbp_get_temp(struct _RTMP_ADAPTER *pAd, CHAR *temp_val);
-INT rtmp_bbp_tx_comp_init(struct _RTMP_ADAPTER *pAd, INT adc_insel, INT tssi_mode);
-INT rtmp_bbp_set_txdac(struct _RTMP_ADAPTER *pAd, INT tx_dac);
-INT rtmp_bbp_set_mmps(struct _RTMP_ADAPTER *pAd, BOOLEAN ReduceCorePower);
-INT rtmp_bbp_is_ready(struct _RTMP_ADAPTER *pAd);
-INT rtmp_bbp_set_agc(struct _RTMP_ADAPTER *pAd, UCHAR agc, RX_CHAIN_IDX idx);
-INT rtmp_bbp_get_agc(struct _RTMP_ADAPTER *pAd, CHAR *agc, RX_CHAIN_IDX idx);
-INT rtmp_bbp_set_filter_coefficient_ctrl(struct _RTMP_ADAPTER *pAd, UCHAR Channel);
-UCHAR rtmp_bbp_get_random_seed(struct _RTMP_ADAPTER *pAd);
+INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw);
+INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch);
+INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath);
+INT rtmp_bbp_get_temp(struct rtmp_adapter *pAd, CHAR *temp_val);
+INT rtmp_bbp_tx_comp_init(struct rtmp_adapter *pAd, INT adc_insel, INT tssi_mode);
+INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);
+INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower);
+INT rtmp_bbp_is_ready(struct rtmp_adapter *pAd);
+INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, UCHAR agc, RX_CHAIN_IDX idx);
+INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx);
+INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter *pAd, UCHAR Channel);
+UCHAR rtmp_bbp_get_random_seed(struct rtmp_adapter *pAd);
 
-NDIS_STATUS NICInitBBP(struct _RTMP_ADAPTER *pAd);
+NDIS_STATUS NICInitBBP(struct rtmp_adapter *pAd);
 
 #endif /* __RTMP_PHY_H__ */
 

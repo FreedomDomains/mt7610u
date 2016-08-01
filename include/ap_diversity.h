@@ -128,13 +128,13 @@ static INT x##Write(struct file *file, const char *buffer, \
  * function prototype
  */
 void RT3XXX_AntDiversity_Init(
-    IN RTMP_ADAPTER *pAd);
+    IN struct rtmp_adapter*pAd);
 
 void RT3XXX_AntDiversity_Fini(
-    IN RTMP_ADAPTER *pAd);
+    IN struct rtmp_adapter*pAd);
 
 void AntDiversity_Update_Rssi_Sample(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RSSI_SAMPLE *pRssi,
 	IN RXWI_STRUC *pRxWI);
 

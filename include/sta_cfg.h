@@ -29,7 +29,7 @@
 #define __STA_CFG_H__
 
 INT RTMPSTAPrivIoctlSet(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN char *SetProcName,
 	IN char *ProcArg);
 
@@ -37,19 +37,19 @@ INT RTMPSTAPrivIoctlSet(
 #ifdef RTMP_MAC_USB
 /* set WOW enable */
 INT Set_WOW_Enable(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg);
 /* set GPIO pin for wake-up signal */
 INT Set_WOW_GPIO(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg);
 /* set delay time for WOW really enable */
 INT Set_WOW_Delay(
-        IN PRTMP_ADAPTER        pAd,
+        IN struct rtmp_adapter *       pAd,
         IN char *             arg);
 /* set wake up hold time */
 INT Set_WOW_Hold(
-		IN PRTMP_ADAPTER		pAd,
+		IN struct rtmp_adapter *	pAd,
 		IN char *			arg);
 #endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */

@@ -99,7 +99,7 @@ char const *pWirelessFloodEventText[IW_FLOOD_EVENT_TYPE_NUM] = {
 
 
 NDIS_STATUS	RTMPReadParametersHook(
-	IN	PRTMP_ADAPTER pAd)
+	IN	struct rtmp_adapter *pAd)
 {
 	char *				src = NULL;
 	RTMP_OS_FD				srcf;
@@ -209,7 +209,7 @@ void RtmpDrvSendWirelessEvent(
 	IN  UCHAR					BssIdx,
 	IN	CHAR					Rssi)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	char *pBuf = NULL, *pBufPtr = NULL;
 	USHORT	event, type, BufLen;
 	UCHAR	event_table_len = 0;
@@ -303,7 +303,7 @@ void RtmpDrvSendWirelessEvent(
 
 
 void RTMP_IndicateMediaState(
-	IN	PRTMP_ADAPTER		pAd,
+	IN	struct rtmp_adapter *	pAd,
 	IN  NDIS_MEDIA_STATE	media_state)
 {
 	pAd->IndicateMediaState = media_state;
@@ -331,7 +331,7 @@ void announce_802_3_packet(
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR OpMode)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
 	PNDIS_PACKET pRxPkt = pPacket;
 
 	ASSERT(pPacket);
@@ -417,7 +417,7 @@ void announce_802_3_packet(
 
 #ifdef CONFIG_STA_SUPPORT
 void STA_MonPktSend(
-	IN RTMP_ADAPTER *pAd,
+	IN struct rtmp_adapter*pAd,
 	IN RX_BLK *pRxBlk)
 {
 	PNET_DEV pNetDev;
@@ -490,7 +490,7 @@ extern NDIS_SPIN_LOCK TimerSemLock;
 void RTMPFreeAdapter(
 	IN	void 	*pAdSrc)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
+	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	POS_COOKIE os_cookie;
 	int index;
 
@@ -552,7 +552,7 @@ void RTMPFreeAdapter(
 	RTMP_OS_FREE_SEM(pAd);
 	RTMP_OS_FREE_ATOMIC(pAd);
 
-	RtmpOsVfree(pAd); /* pci_free_consistent(os_cookie->pci_dev,sizeof(RTMP_ADAPTER),pAd,os_cookie->pAd_pa); */
+	RtmpOsVfree(pAd); /* pci_free_consistent(os_cookie->pci_dev,sizeof(struct rtmp_adapter),pAd,os_cookie->pAd_pa); */
 	if (os_cookie)
 		kfree(os_cookie);
 }
@@ -565,7 +565,7 @@ int	RTMPSendPackets(
 	IN UINT32 PktTotalLen,
 	IN RTMP_NET_ETH_CONVERT_DEV_SEARCH Func)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)dev_hnd;
+	struct rtmp_adapter*pAd = (struct rtmp_adapter*)dev_hnd;
 	PNDIS_PACKET pPacket = ppPacketArray[0];
 
 
@@ -630,7 +630,7 @@ done:
 
 
 PNET_DEV get_netdev_from_bssid(
-	IN	PRTMP_ADAPTER	pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			FromWhichBSSID)
 {
 	PNET_DEV dev_p = NULL;
