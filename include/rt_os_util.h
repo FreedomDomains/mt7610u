@@ -651,11 +651,6 @@ void RtmpDrvAllE2PPrint(
 	IN	UINT32					AddrEnd,
 	IN	UINT32					AddrStep);
 
-void RtmpDrvAllRFPrint(
-	IN void *pReserved,
-	IN UINT32 *pBuf,
-	IN UINT32 BufLen);
-
 int RtmpOSIRQRelease(
 	IN	PNET_DEV				pNetDev,
 	IN	UINT32					infType,

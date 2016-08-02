@@ -1856,37 +1856,6 @@ void RtmpDrvAllE2PPrint(
 	kfree(msg);
 }
 
-
-void RtmpDrvAllRFPrint(
-	IN void *pReserved,
-	IN UINT32 *pBuf,
-	IN UINT32 BufLen)
-{
-	struct file *file_w;
-	char *fileName = "RFDump.txt";
-	mm_segment_t orig_fs;
-	UINT32 macAddr = 0, macValue = 0;
-
-	orig_fs = get_fs();
-	set_fs(KERNEL_DS);
-
-	/* open file */
-	file_w = filp_open(fileName, O_WRONLY | O_CREAT, 0);
-	if (IS_ERR(file_w)) {
-		DBGPRINT(RT_DEBUG_TRACE,
-			 ("-->2) %s: Error %ld opening %s\n", __FUNCTION__,
-			  -PTR_ERR(file_w), fileName));
-	} else {
-		if (file_w->f_op && file_w->f_op->write) {
-			file_w->f_pos = 0;
-			/* write data to file */
-			file_w->f_op->write(file_w, pBuf, BufLen, &file_w->f_pos);
-		}
-		filp_close(file_w, NULL);
-	}
-	set_fs(orig_fs);
-}
-
 /*
 ========================================================================
 Routine Description:
