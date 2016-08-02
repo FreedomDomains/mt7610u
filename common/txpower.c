@@ -158,11 +158,15 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
 		}
 		else
 		{
+			/*
+			 * ULLI : in reference with :
+			 * mt76x0_temp_tx_alc() we are using group 0
+			 */
 			/* a channel */
 			bAutoTxAgc = pAd->bAutoTxAgcA;
 			TssiRef = pAd->TssiRefA;
-			pTssiMinusBoundary = &pAd->TssiMinusBoundaryA[0];
-			pTssiPlusBoundary = &pAd->TssiPlusBoundaryA[0];
+			pTssiMinusBoundary = pAd->TssiMinusBoundaryA[0];
+			pTssiPlusBoundary = pAd->TssiPlusBoundaryA[0];
 			TxAgcStep = pAd->TxAgcStepA;
 			pTxAgcCompensate = &pAd->TxAgcCompensateA;
 		}
