@@ -277,12 +277,6 @@ void RtmpOsPktInfPpaSend(
 void RtmpOsPktRcvHandle(
 	IN	PNDIS_PACKET			pNetPkt);
 
-void RtmpOsPktNatMagicTag(
-	IN	PNDIS_PACKET			pNetPkt);
-
-void RtmpOsPktNatNone(
-	IN	PNDIS_PACKET			pNetPkt);
-
 void RtmpOsPktInit(
 	IN	PNDIS_PACKET			pNetPkt,
 	IN	PNET_DEV				pNetDev,

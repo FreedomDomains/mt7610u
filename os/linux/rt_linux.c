@@ -32,11 +32,6 @@
 #include "rtmp_osabl.h"
 #include "rt_os_util.h"
 
-#if defined(CONFIG_RA_HW_NAT) || defined(CONFIG_RA_HW_NAT_MODULE)
-#include "../../../../../../net/nat/hw_nat/ra_nat.h"
-#include "../../../../../../net/nat/hw_nat/frame_engine.h"
-#endif
-
 /* TODO */
 #undef RT_CONFIG_IF_OPMODE_ON_AP
 #undef RT_CONFIG_IF_OPMODE_ON_STA
@@ -2246,26 +2241,6 @@ PNDIS_PACKET RtmpOsPktIappMakeUp(
 	return pNetBuf;
 }
 #endif /* IAPP_SUPPORT */
-
-
-void RtmpOsPktNatMagicTag(PNDIS_PACKET pNetPkt)
-{
-#ifndef CONFIG_RA_NAT_NONE
-#if defined(CONFIG_RA_HW_NAT) || defined(CONFIG_RA_HW_NAT_MODULE)
-	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
-	FOE_MAGIC_TAG(pRxPkt) = FOE_MAGIC_WLAN;
-#endif /* CONFIG_RA_HW_NAT || CONFIG_RA_HW_NAT_MODULE */
-#endif /* CONFIG_RA_NAT_NONE */
-}
-
-void RtmpOsPktNatNone(PNDIS_PACKET pNetPkt)
-{
-#ifdef CONFIG_RA_NAT_NONE
-#if defined(CONFIG_RA_HW_NAT) || defined(CONFIG_RA_HW_NAT_MODULE)
-	FOE_AI(((struct sk_buff *)pNetPkt)) = UN_HIT;
-#endif /* CONFIG_RA_HW_NAT || CONFIG_RA_HW_NAT_MODULE */
-#endif /* CONFIG_RA_NAT_NONE */
-}
 
 
 #ifdef RT_CFG80211_SUPPORT

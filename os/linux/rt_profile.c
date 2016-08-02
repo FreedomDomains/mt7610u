@@ -27,11 +27,6 @@
 
 #include "rt_config.h"
 
-#if defined (CONFIG_RA_HW_NAT)  || defined (CONFIG_RA_HW_NAT_MODULE)
-#include "../../../../../../net/nat/hw_nat/ra_nat.h"
-#include "../../../../../../net/nat/hw_nat/frame_engine.h"
-#endif
-
 #ifdef SYSTEM_LOG_SUPPORT
 /* for wireless system event message */
 char const *pWirelessSysEventText[IW_SYS_EVENT_TYPE_NUM] = {
@@ -432,37 +427,6 @@ void announce_802_3_packet(
 		}
 #endif /* CONFIG_RA_CLASSIFIER */
 
-#if !defined(CONFIG_RA_NAT_NONE)
-#if defined (CONFIG_RA_HW_NAT)  || defined (CONFIG_RA_HW_NAT_MODULE)
-		RtmpOsPktNatMagicTag(pRxPkt);
-#endif
-
-#ifdef RA_NAT_SUPPORT
-		/* bruce+
-		  * ra_sw_nat_hook_rx return 1 --> continue
-		  * ra_sw_nat_hook_rx return 0 --> FWD & without netif_rx
-		 */
-		if (ra_sw_nat_hook_rx!= NULL)
-		{
-			unsigned int flags;
-
-			RtmpOsPktProtocolAssign(pRxPkt);
-
-			RTMP_IRQ_LOCK(&pAd->page_lock, flags);
-			if(ra_sw_nat_hook_rx(pRxPkt))
-			{
-				RtmpOsPktRcvHandle(pRxPkt);
-			}
-			RTMP_IRQ_UNLOCK(&pAd->page_lock, flags);
-		}
-#endif /* RA_NAT_SUPPORT */
-#else
-		{
-#if defined (CONFIG_RA_HW_NAT)  || defined (CONFIG_RA_HW_NAT_MODULE)
-			RtmpOsPktNatNone(pRxPkt);
-#endif /* CONFIG_RA_HW_NAT */
-		}
-#endif /* CONFIG_RA_NAT_NONE */
 	}
 
 
