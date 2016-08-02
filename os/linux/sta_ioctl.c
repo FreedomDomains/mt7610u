@@ -59,61 +59,6 @@ typedef struct GNU_PACKED _RT_VERSION_INFO{
     UINT        DriverBuildDay;
 } RT_VERSION_INFO, *PRT_VERSION_INFO;
 
-struct iw_priv_args privtab[] = {
-{ RTPRIV_IOCTL_SET,
-  IW_PRIV_TYPE_CHAR | 1024, 0,
-  "set"},
-
-{ RTPRIV_IOCTL_SHOW, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK,
-  ""},
-/* --- sub-ioctls definitions --- */
-    { SHOW_CONN_STATUS,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "connStatus" },
-	{ SHOW_DRVIER_VERION,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "driverVer" },
-    { SHOW_BA_INFO,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "bainfo" },
-	{ SHOW_DESC_INFO,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "descinfo" },
-    { RAIO_OFF,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "radio_off" },
-	{ RAIO_ON,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "radio_on" },
-#ifdef QOS_DLS_SUPPORT
-	{ SHOW_DLS_ENTRY_INFO,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "dlsentryinfo" },
-#endif /* QOS_DLS_SUPPORT */
-	{ SHOW_CFG_VALUE,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "show" },
-	{ SHOW_ADHOC_ENTRY_INFO,
-	  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "adhocEntry" },
-	{SHOW_DEV_INFO,
-	IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "devinfo"},
-	{SHOW_STA_INFO,
-	IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "stainfo"},
-/* --- sub-ioctls relations --- */
-
-#ifdef DBG
-{ RTPRIV_IOCTL_BBP,
-  IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK,
-  "bbp"},
-{ RTPRIV_IOCTL_MAC,
-  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024,
-  "mac"},
-{ RTPRIV_IOCTL_E2P,
-  IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024,
-  "e2p"},
-#endif  /* DBG */
-
-{ RTPRIV_IOCTL_STATISTICS,
-  0, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK,
-  "stat"},
-{ RTPRIV_IOCTL_GSITESURVEY,
-  0, IW_PRIV_TYPE_CHAR | 1024,
-  "get_site_survey"},
-
-};
-
 extern INT32 ralinkrate[];
 extern UINT32 RT_RateSize;
 
@@ -2350,10 +2295,6 @@ const struct iw_handler_def rt28xx_iw_handler_def =
 #define	N(a)	(sizeof (a) / sizeof (a[0]))
 	.standard	= (iw_handler *) rt_handler,
 	.num_standard	= sizeof(rt_handler) / sizeof(iw_handler),
-	.private	= (iw_handler *) rt_priv_handlers,
-	.num_private		= N(rt_priv_handlers),
-	.private_args	= (struct iw_priv_args *) privtab,
-	.num_private_args	= N(privtab),
 #if IW_HANDLER_VERSION >= 7
     .get_wireless_stats = rt28xx_get_wireless_stats,
 #endif
@@ -2566,21 +2507,6 @@ INT rt28xx_sta_ioctl(
 
 			Status = RTMP_STA_IoctlHandle(pAd, wrq, CMD_RT_PRIV_IOCTL, subcmd,
 										NULL, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-			break;
-		case SIOCGIWPRIV:
-			if (wrqin->u.data.pointer)
-			{
-				if ( access_ok(VERIFY_WRITE, wrqin->u.data.pointer, sizeof(privtab)) != TRUE)
-					break;
-				if ((sizeof(privtab) / sizeof(privtab[0])) <= wrq->u.data.length)
-				{
-					wrqin->u.data.length = sizeof(privtab) / sizeof(privtab[0]);
-					if (copy_to_user(wrqin->u.data.pointer, privtab, sizeof(privtab)))
-						Status = -EFAULT;
-				}
-				else
-					Status = -E2BIG;
-			}
 			break;
 		case RTPRIV_IOCTL_SET:
 			if(access_ok(VERIFY_READ, wrqin->u.data.pointer, wrqin->u.data.length) != TRUE)
