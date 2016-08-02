@@ -713,11 +713,13 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd, char *mac_addr)
 		{
 		}
 
+#if 0 	/* ULLI : disabled */
 		DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
 			pAd->TssiMinusBoundaryA[4], pAd->TssiMinusBoundaryA[3], pAd->TssiMinusBoundaryA[2], pAd->TssiMinusBoundaryA[1],
 			pAd->TssiRefA,
 			pAd->TssiPlusBoundaryA[1], pAd->TssiPlusBoundaryA[2], pAd->TssiPlusBoundaryA[3], pAd->TssiPlusBoundaryA[4],
 			pAd->TxAgcStepA, pAd->bAutoTxAgcA));
+#endif
 	}
 	pAd->BbpRssiToDbmDelta = 0x0;
 
