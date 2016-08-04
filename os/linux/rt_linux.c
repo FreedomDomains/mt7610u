@@ -1586,7 +1586,7 @@ int RtmpOSNetDevAttach(
 #ifdef CONFIG_STA_SUPPORT
 		if (OpMode == OPMODE_STA) {
 /*			pNetDev->wireless_handlers = &rt28xx_iw_handler_def; */
-			pNetDev->wireless_handlers = pDevOpHook->iw_handler;
+			pNetDev->wireless_handlers = &rt28xx_iw_handler_def;
 		}
 #endif /* CONFIG_STA_SUPPORT */
 

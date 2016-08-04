@@ -73,7 +73,6 @@ typedef struct _RTMP_OS_NETDEV_OP_HOOK_ {
 	void *ioctl;
 	void *get_stats;
 	void *priv;
-	void *iw_handler;
 	int priv_flags;
 	unsigned char devAddr[6];
 	unsigned char devName[16];

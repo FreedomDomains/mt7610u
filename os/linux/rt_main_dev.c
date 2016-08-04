@@ -388,13 +388,6 @@ PNET_DEV RtmpPhyNetDevInit(
 
 	RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
 
-#ifdef CONFIG_STA_SUPPORT
-	if (OpMode == OPMODE_STA)
-	{
-		pNetDevHook->iw_handler = (void *)&rt28xx_iw_handler_def;
-	}
-#endif /* CONFIG_STA_SUPPORT */
-
 	/* put private data structure */
 	RTMP_OS_NETDEV_SET_PRIV(net_dev, pAd);
 
