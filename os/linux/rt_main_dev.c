@@ -404,9 +404,6 @@ PNET_DEV RtmpPhyNetDevInit(
 	pNetDevHook->open = MainVirtualIF_open;
 	pNetDevHook->stop = MainVirtualIF_close;
 	pNetDevHook->xmit = rt28xx_send_packets;
-#ifdef IKANOS_VX_1X0
-	pNetDevHook->xmit = IKANOS_DataFramesTx;
-#endif /* IKANOS_VX_1X0 */
 	pNetDevHook->ioctl = rt28xx_ioctl;
 	pNetDevHook->priv_flags = InfId; /*INT_MAIN; */
 	pNetDevHook->get_stats = RT28xx_get_ether_stats;

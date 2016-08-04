@@ -3243,14 +3243,6 @@ struct rtmp_adapter {
 	NINDO_CTRL_BLOCK nindo_ctrl_block;
 #endif /* NINTENDO_AP */
 
-
-#ifdef IKANOS_VX_1X0
-	struct IKANOS_TX_INFO IkanosTxInfo;
-	struct IKANOS_TX_INFO IkanosRxInfo[HW_BEACON_MAX_NUM + MAX_WDS_ENTRY +
-					   MAX_APCLI_NUM + MAX_MESH_NUM];
-#endif /* IKANOS_VX_1X0 */
-
-
 #ifdef DBG_DIAGNOSE
 	RtmpDiagStruct DiagStruct;
 #endif /* DBG_DIAGNOSE */
