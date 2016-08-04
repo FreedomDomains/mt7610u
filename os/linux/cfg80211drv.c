@@ -162,30 +162,6 @@ INT CFG80211DRV_IoctlHandle(
 			break;
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
-#ifdef CONFIG_AP_SUPPORT
-		case CMD_RTPRIV_IOCTL_80211_BEACON_SET:
-			CFG80211DRV_OpsBeaconSet(pAd, pData);
-			break;
-
-		case CMD_RTPRIV_IOCTL_80211_BEACON_ADD:
-			CFG80211DRV_OpsBeaconAdd(pAd, pData);
-			break;
-
-		case CMD_RTPRIV_IOCTL_80211_BEACON_DEL:
-		{
-			INT i;
-			for(i = 0; i < WLAN_MAX_NUM_OF_TIM; i++)
-                		pAd->ApCfg.MBSSID[MAIN_MBSSID].TimBitmaps[i] = 0;
-			if (pAd->cfg80211_ctrl.beacon_tail_buf != NULL)
-			{
-				kfree(pAd->cfg80211_ctrl.beacon_tail_buf);
-				pAd->cfg80211_ctrl.beacon_tail_buf = NULL;
-			}
-			pAd->cfg80211_ctrl.beacon_tail_len = 0;
-		}
-			break;
-#endif /* CONFIG_AP_SUPPORT */
-
 		default:
 			return NDIS_STATUS_FAILURE;
 	}

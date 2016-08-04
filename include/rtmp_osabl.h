@@ -64,13 +64,8 @@
 #undef RT_CONFIG_IF_OPMODE_ON_AP
 #undef RT_CONFIG_IF_OPMODE_ON_STA
 
-#if defined(CONFIG_AP_SUPPORT) && defined(CONFIG_STA_SUPPORT)
 #define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)		if (__OpMode == OPMODE_AP)
 #define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)	if (__OpMode == OPMODE_STA)
-#else
-#define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)
-#define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)
-#endif
 
 #endif /* OS_ABL_FUNC_SUPPORT */
 

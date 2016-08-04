@@ -690,18 +690,6 @@ static int CFG80211_OpsStaGet(
 	pSinfo->signal = StaInfo.Signal;
 	pSinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
 
-#ifdef CONFIG_AP_SUPPORT
-	/* fill tx count */
-	pSinfo->tx_packets = StaInfo.TxPacketCnt;
-
-	/* fill inactive time */
-	pSinfo->inactive_time = StaInfo.InactiveTime;
-	pSinfo->filled |= BIT(NL80211_STA_INFO_TX_PACKETS);
-	pSinfo->filled |= BIT(NL80211_STA_INFO_INACTIVE_TIME);
-
-#endif /* CONFIG_AP_SUPPORT */
-
-
 	return 0;
 } /* End of CFG80211_OpsStaGet */
 

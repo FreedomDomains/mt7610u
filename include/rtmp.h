@@ -2996,38 +2996,6 @@ struct rtmp_adapter {
 	BOOLEAN bAPSDFlagSPSuspend;	/* 1: SP is suspended; 0: SP is not */
 #endif /* UAPSD_SUPPORT */
 
-/*=========AP=========== */
-
-
-#ifdef CONFIG_AP_SUPPORT
-	/* ----------------------------------------------- */
-	/* AP specific configuration & operation status */
-	/* used only when pAd->OpMode == OPMODE_AP */
-	/* ----------------------------------------------- */
-	AP_ADMIN_CONFIG ApCfg;	/* user configuration when in AP mode */
-	AP_MLME_AUX ApMlmeAux;
-
-
-
-#ifdef MBSS_SUPPORT
-	BOOLEAN FlgMbssInit;
-#endif /* MBSS_SUPPORT */
-
-
-#ifdef APCLI_SUPPORT
-	BOOLEAN flg_apcli_init;
-#endif /* APCLI_SUPPORT */
-
-/*#ifdef AUTO_CH_SELECT_ENHANCE */
-	PBSSINFO pBssInfoTab;
-	PCHANNELINFO pChannelInfo;
-/*#endif // AUTO_CH_SELECT_ENHANCE */
-
-
-#endif /* CONFIG_AP_SUPPORT */
-
-
-
 /*=======STA=========== */
 #ifdef CONFIG_STA_SUPPORT
 	/* ----------------------------------------------- */
