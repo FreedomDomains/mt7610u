@@ -1590,13 +1590,6 @@ int RtmpOSNetDevAttach(
 		}
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-		if (OpMode == OPMODE_AP) {
-/*			pNetDev->wireless_handlers = &rt28xx_ap_iw_handler_def; */
-			pNetDev->wireless_handlers = pDevOpHook->iw_handler;
-		}
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
-
 		/* copy the net device mac address to the net_device structure. */
 		NdisMoveMemory(pNetDev->dev_addr, &pDevOpHook->devAddr[0],
 			       MAC_ADDR_LEN);

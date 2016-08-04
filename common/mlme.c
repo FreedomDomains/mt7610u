@@ -56,14 +56,6 @@ UCHAR RxwiMCSToOfdmRate[12] = {
 	4,  5,	6,  7,	/* OFDM rate 24,36,48,54 = rxwi mcs 4,5,6,7 */
 };
 
-
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-UINT32 CW_MAX_IN_BITS;
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
-
-
-
-
 extern UCHAR	 OfdmRateToRxwiMCS[];
 /* since RT61 has better RX sensibility, we have to limit TX ACK rate not to exceed our normal data TX rate.*/
 /* otherwise the WLAN peer may not be able to receive the ACK thus downgrade its data TX rate*/

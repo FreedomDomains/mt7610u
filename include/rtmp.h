@@ -7122,12 +7122,6 @@ INT	Set_FixedTxMode_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-INT	Set_OpMode_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
-
 INT Set_LongRetryLimit_Proc(
 	IN	struct rtmp_adapter *pAdapter,
 	IN	char *		arg);

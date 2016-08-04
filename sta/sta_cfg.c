@@ -245,9 +245,6 @@ static struct {
 
 
 	{"FixedTxMode",                 Set_FixedTxMode_Proc},
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-	{"OpMode",						Set_OpMode_Proc},
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 #ifdef DOT11_N_SUPPORT
     {"TGnWifiTest",                 Set_TGnWifiTest_Proc},
 #endif /* DOT11_N_SUPPORT */
