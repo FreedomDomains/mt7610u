@@ -742,13 +742,7 @@ void RtmpOsSendWirelessEvent(
 	IN CHAR Rssi,
 	IN RTMP_OS_SEND_WLAN_EVENT pFunc)
 {
-#if WIRELESS_EXT >= 15
 	pFunc(pAd, Event_flag, pAddr, BssIdx, Rssi);
-#else
-	DBGPRINT(RT_DEBUG_ERROR,
-		 ("%s : The Wireless Extension MUST be v15 or newer.\n",
-		  __FUNCTION__));
-#endif /* WIRELESS_EXT >= 15 */
 }
 #endif /* SYSTEM_LOG_SUPPORT */
 
@@ -1262,17 +1256,13 @@ static UINT32 RtmpOSWirelessEventTranslate(IN UINT32 eventType)
 		eventType = SIOCGIWAP;
 		break;
 
-#if WIRELESS_EXT > 17
 	case RT_WLAN_EVENT_ASSOC_REQ_IE:
 		eventType = IWEVASSOCREQIE;
 		break;
-#endif /* WIRELESS_EXT */
 
-#if WIRELESS_EXT >= 14
 	case RT_WLAN_EVENT_SCAN:
 		eventType = SIOCGIWSCAN;
 		break;
-#endif /* WIRELESS_EXT */
 
 	case RT_WLAN_EVENT_EXPIRED:
 		eventType = IWEVEXPIRED;
@@ -1598,27 +1588,18 @@ int RtmpOSNetDevAttach(
 /*		pNetDev->priv_flags = pDevOpHook->priv_flags; */
 		RT_DEV_PRIV_FLAGS_SET(pNetDev, pDevOpHook->priv_flags);
 
-#if (WIRELESS_EXT < 21) && (WIRELESS_EXT >= 12)
-/*		pNetDev->get_wireless_stats = rt28xx_get_wireless_stats; */
-		pNetDev->get_wireless_stats = pDevOpHook->get_wstats;
-#endif
-
 #ifdef CONFIG_STA_SUPPORT
-#if WIRELESS_EXT >= 12
 		if (OpMode == OPMODE_STA) {
 /*			pNetDev->wireless_handlers = &rt28xx_iw_handler_def; */
 			pNetDev->wireless_handlers = pDevOpHook->iw_handler;
 		}
-#endif /*WIRELESS_EXT >= 12 */
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
-#if WIRELESS_EXT >= 12
 		if (OpMode == OPMODE_AP) {
 /*			pNetDev->wireless_handlers = &rt28xx_ap_iw_handler_def; */
 			pNetDev->wireless_handlers = pDevOpHook->iw_handler;
 		}
-#endif /*WIRELESS_EXT >= 12 */
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 		/* copy the net device mac address to the net_device structure. */
@@ -1998,12 +1979,8 @@ void RtmpOsWlanEventSet(
 	IN BOOLEAN *pCfgWEnt,
 	IN BOOLEAN FlgIsWEntSup)
 {
-#if WIRELESS_EXT >= 15
 /*	pAd->CommonCfg.bWirelessEvent = FlgIsWEntSup; */
 	*pCfgWEnt = FlgIsWEntSup;
-#else
-	*pCfgWEnt = 0;		/* disable */
-#endif
 }
 
 /*
@@ -2094,14 +2071,12 @@ BOOLEAN RtmpOsStatsAlloc(
 		return FALSE;
 	NdisZeroMemory((UCHAR *) *ppStats, sizeof (struct net_device_stats));
 
-#if WIRELESS_EXT >= 12
 	os_alloc_mem(NULL, (UCHAR **) ppIwStats, sizeof (struct iw_statistics));
 	if ((*ppIwStats) == NULL) {
 		kfree(*ppStats);
 		return FALSE;
 	}
 	NdisZeroMemory((UCHAR *)* ppIwStats, sizeof (struct iw_statistics));
-#endif
 
 	return TRUE;
 }

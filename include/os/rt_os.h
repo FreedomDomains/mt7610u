@@ -28,17 +28,6 @@
 #ifndef _RT_OS_H_
 #define _RT_OS_H_
 
-
-#ifdef LINUX
-#if WIRELESS_EXT <= 11
-#ifndef SIOCDEVPRIVATE
-#define SIOCDEVPRIVATE                              0x8BE0
-#endif
-#define SIOCIWFIRSTPRIV								SIOCDEVPRIVATE
-#endif
-#endif /* LINUX */
-
-
 #ifdef CONFIG_STA_SUPPORT
 #define RT_PRIV_IOCTL							(SIOCIWFIRSTPRIV + 0x01) /* Sync. with AP for wsc upnp daemon */
 #define RTPRIV_IOCTL_SET							(SIOCIWFIRSTPRIV + 0x02)

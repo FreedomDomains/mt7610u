@@ -178,11 +178,9 @@ typedef int (*HARD_START_XMIT_FUNC)(struct sk_buff *skb, struct net_device *net_
 #define RTMP_GET_REF(_A)		0
 
 
-#if WIRELESS_EXT >= 12
 /* This function will be called when query /proc */
 struct iw_statistics *rt28xx_get_wireless_stats(
     IN struct net_device *net_dev);
-#endif
 
 
 /***********************************************************************************

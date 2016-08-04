@@ -158,7 +158,6 @@ int wext_notify_event_assoc(
 {
 	char custom[IW_CUSTOM_MAX] = {0};
 
-#if WIRELESS_EXT > 17
 	if (ReqVarIELen <= IW_CUSTOM_MAX)
 	{
 		NdisMoveMemory(custom, ReqVarIEs, ReqVarIELen);
@@ -167,21 +166,6 @@ int wext_notify_event_assoc(
 	}
 	else
 	    DBGPRINT(RT_DEBUG_TRACE, ("pAd->StaCfg.ReqVarIELen > MAX_CUSTOM_LEN\n"));
-#else
-	int len;
-
-	len = (ReqVarIELen*2) + 17;
-	if (len <= IW_CUSTOM_MAX)
-	{
-		UCHAR   idx;
-		snprintf(custom, sizeof(custom), "ASSOCINFO(ReqIEs=");
-		for (idx=0; idx<ReqVarIELen; idx++)
-		        sprintf(custom, "%s%02x", custom, ReqVarIEs[idx]);
-		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, custom, len);
-	}
-	else
-		DBGPRINT(RT_DEBUG_TRACE, ("len(%d) > MAX_CUSTOM_LEN\n", len));
-#endif
 
 	return 0;
 

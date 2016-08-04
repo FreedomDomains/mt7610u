@@ -373,11 +373,9 @@ int rt_ioctl_giwrange(struct net_device *dev,
 	range->min_frag = 256;
 	range->max_frag = 2346;
 
-#if WIRELESS_EXT > 17
 	/* IW_ENC_CAPA_* bit field */
 	range->enc_capa = IW_ENC_CAPA_WPA | IW_ENC_CAPA_WPA2 |
 					IW_ENC_CAPA_CIPHER_TKIP | IW_ENC_CAPA_CIPHER_CCMP;
-#endif
 
 	return 0;
 }
@@ -564,13 +562,8 @@ static void set_quality(void *pAd,
 /*	iq->updated = ((struct iw_statistics *)(pAd->iw_stats))->qual.updated; */
 	iq->updated = 1;     /* Flags to know if updated */
 
-#if WIRELESS_EXT >= 17
 	iq->updated = IW_QUAL_QUAL_UPDATED | IW_QUAL_LEVEL_UPDATED | IW_QUAL_NOISE_UPDATED;
-#endif
-
-#if WIRELESS_EXT >= 19
 	iq->updated |= IW_QUAL_DBM;	/* Level + Noise are dBm */
-#endif
 }
 
 int rt_ioctl_iwaplist(struct net_device *dev,
@@ -665,12 +658,10 @@ int rt_ioctl_siwscan(struct net_device *dev,
 
 	memset(pIoctlScan, 0, sizeof(RT_CMD_STA_IOCTL_SCAN));
 #ifdef WPA_SUPPLICANT_SUPPORT
-#if WIRELESS_EXT > 17
 	pIoctlScan->FlgScanThisSsid = (wreq->data.length == sizeof(struct iw_scan_req) &&
 									wreq->data.flags & IW_SCAN_THIS_ESSID);
 	pIoctlScan->SsidLen = req->essid_len;
 	pIoctlScan->pSsid = (CHAR *)(req->essid);
-#endif
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWSCAN, 0,
 							pIoctlScan, 0, RT_DEV_PRIV_FLAGS_GET(dev));
@@ -729,25 +720,17 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		goto go_out;
 	}
 
-#if WIRELESS_EXT >= 17
     if (data->length > 0)
         end_buf = extra + data->length;
     else
         end_buf = extra + IW_SCAN_MAX_DATA;
-#else
-    end_buf = extra + IW_SCAN_MAX_DATA;
-#endif
 
 	for (i = 0; i < pIoctlScan->BssNr; i++)
 	{
 		if (current_ev >= end_buf)
         {
-#if WIRELESS_EXT >= 17
 			status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
         }
 
 		/*MAC address */
@@ -761,12 +744,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_ADDR_LEN);
         if (current_ev == previous_ev)
         {
-#if WIRELESS_EXT >= 17
             status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
         }
 
 		/*
@@ -843,12 +822,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_ADDR_LEN);
 		if (current_ev == previous_ev)
 		{
-#if WIRELESS_EXT >= 17
 	   		status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
 		}
 
 		/*ESSID */
@@ -862,12 +837,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		current_ev = IWE_STREAM_ADD_POINT(info, current_ev,end_buf, &iwe, (char *) pIoctlScan->pBssTable[i].Ssid);
         if (current_ev == previous_ev)
         {
-#if WIRELESS_EXT >= 17
             status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
         }
 
 		/*Network Type */
@@ -892,12 +863,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev, end_buf, &iwe,  IW_EV_UINT_LEN);
         if (current_ev == previous_ev)
         {
-#if WIRELESS_EXT >= 17
             status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
         }
 
 		/*Channel and Frequency */
@@ -917,12 +884,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_FREQ_LEN);
         if (current_ev == previous_ev)
 	        {
-#if WIRELESS_EXT >= 17
 	            status = -E2BIG;
 				goto go_out;
-#else
-			break;
-#endif
 		}
 		}
 
@@ -936,12 +899,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
     	current_ev = IWE_STREAM_ADD_EVENT(info, current_ev, end_buf, &iwe, IW_EV_QUAL_LEN);
 	if (current_ev == previous_ev)
 		{
-#if WIRELESS_EXT >= 17
 	            status = -E2BIG;
 				goto go_out;
-#else
-			break;
-#endif
 		}
 
 		/*Encyption key */
@@ -957,12 +916,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
         current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf,&iwe, (char *)pIoctlScan->MainSharedKey[(iwe.u.data.flags & IW_ENCODE_INDEX)-1]);
         if (current_ev == previous_ev)
         {
-#if WIRELESS_EXT >= 17
             status = -E2BIG;
 			goto go_out;
-#else
-			break;
-#endif
         }
 
 		/*Bit Rate */
@@ -1015,12 +970,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
             	current_ev = current_val;
         	else
         	{
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
         }
         }
 
@@ -1037,12 +988,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
 			if (current_ev == previous_ev)
 			{
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
 		}
 		}
 
@@ -1058,12 +1005,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
 			if (current_ev == previous_ev)
 			{
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
         }
         }
 
@@ -1079,12 +1022,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
 			if (current_ev == previous_ev)
 			{
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
         }
         }
 #else
@@ -1103,12 +1042,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
     		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe,  custom);
             if (current_ev == previous_ev)
             {
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
         }
         }
 
@@ -1126,12 +1061,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
     		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe,  custom);
             if (current_ev == previous_ev)
             {
-#if WIRELESS_EXT >= 17
                 status = -E2BIG;
 				goto go_out;
-#else
-			    break;
-#endif
         }
         }
 
@@ -1704,9 +1635,6 @@ int rt_ioctl_siwmlme(struct net_device *dev,
 }
 #endif /* SIOCSIWMLME */
 
-#if WIRELESS_EXT > 17
-
-
 int rt_ioctl_siwauth(struct net_device *dev,
 			  struct iw_request_info *info,
 			  union iwreq_data *wrqu, char *extra)
@@ -2093,7 +2021,6 @@ int rt_ioctl_siwpmksa(struct net_device *dev,
 
 	return 0;
 }
-#endif /* #if WIRELESS_EXT > 17 */
 
 #ifdef DBG
 static int
@@ -2247,7 +2174,6 @@ static const iw_handler rt_handler[] =
 	(iw_handler) NULL,		                /* SIOCGIWPOWER  */
 	(iw_handler) NULL,						/* -- hole -- */
 	(iw_handler) NULL,						/* -- hole -- */
-#if WIRELESS_EXT > 17
     (iw_handler) rt_ioctl_siwgenie,         /* SIOCSIWGENIE  */
 	(iw_handler) rt_ioctl_giwgenie,         /* SIOCGIWGENIE  */
 	(iw_handler) rt_ioctl_siwauth,		    /* SIOCSIWAUTH   */
@@ -2255,7 +2181,6 @@ static const iw_handler rt_handler[] =
 	(iw_handler) rt_ioctl_siwencodeext,	    /* SIOCSIWENCODEEXT */
 	(iw_handler) rt_ioctl_giwencodeext,		/* SIOCGIWENCODEEXT */
 	(iw_handler) rt_ioctl_siwpmksa,         /* SIOCSIWPMKSA  */
-#endif
 };
 
 static const iw_handler rt_priv_handlers[] = {
@@ -2295,9 +2220,7 @@ const struct iw_handler_def rt28xx_iw_handler_def =
 #define	N(a)	(sizeof (a) / sizeof (a[0]))
 	.standard	= (iw_handler *) rt_handler,
 	.num_standard	= sizeof(rt_handler) / sizeof(iw_handler),
-#if IW_HANDLER_VERSION >= 7
-    .get_wireless_stats = rt28xx_get_wireless_stats,
-#endif
+	.get_wireless_stats = rt28xx_get_wireless_stats,
 };
 
 

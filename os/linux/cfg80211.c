@@ -438,10 +438,8 @@ static int CFG80211_OpsScan(
 		IwReq.essid_len = pRequest->ssids->ssid_len;
 		memcpy(IwReq.essid, pRequest->ssids->ssid, sizeof(IwReq.essid));
 
-#if WIRELESS_EXT > 17
 		Wreq.data.flags |= IW_SCAN_THIS_ESSID;
 		Wreq.data.length = sizeof(struct iw_scan_req);
-#endif /* WIRELESS_EXT */
 	}
 
 	rt_ioctl_siwscan(pNdev, NULL, &Wreq, (char *)&IwReq);

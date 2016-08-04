@@ -316,7 +316,6 @@ int rt28xx_open(void *dev)
 	}
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
-#if WIRELESS_EXT >= 12
 /*	if (RT_DEV_PRIV_FLAGS_GET(net_dev) == INT_MAIN) */
 	if (RTMP_DRIVER_MAIN_INF_CHECK(pAd, RT_DEV_PRIV_FLAGS_GET(net_dev)) == NDIS_STATUS_SUCCESS)
 	{
@@ -329,7 +328,6 @@ int rt28xx_open(void *dev)
 			net_dev->wireless_handlers = (struct iw_handler_def *) &rt28xx_iw_handler_def;
 #endif /* CONFIG_STA_SUPPORT */
 	}
-#endif /* WIRELESS_EXT >= 12 */
 
 	/* Request interrupt service routine for PCI device */
 	/* register the interrupt routine with the os */
@@ -410,28 +408,20 @@ PNET_DEV RtmpPhyNetDevInit(
 
 	pNetDevHook->needProtcted = FALSE;
 
-#if (WIRELESS_EXT < 21) && (WIRELESS_EXT >= 12)
-	pNetDevHook->get_wstats = rt28xx_get_wireless_stats;
-#endif
-
 	RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
 
 #ifdef CONFIG_STA_SUPPORT
-#if WIRELESS_EXT >= 12
 	if (OpMode == OPMODE_STA)
 	{
 		pNetDevHook->iw_handler = (void *)&rt28xx_iw_handler_def;
 	}
-#endif /*WIRELESS_EXT >= 12 */
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
-#if WIRELESS_EXT >= 12
 	if (OpMode == OPMODE_AP)
 	{
 		pNetDevHook->iw_handler = &rt28xx_ap_iw_handler_def;
 	}
-#endif /*WIRELESS_EXT >= 12 */
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 	/* put private data structure */
@@ -543,7 +533,6 @@ static int rt28xx_send_packets(
 }
 
 
-#if WIRELESS_EXT >= 12
 /* This function will be called when query /proc */
 struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 {
@@ -581,7 +570,6 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 	DBGPRINT(RT_DEBUG_TRACE, ("<--- rt28xx_get_wireless_stats\n"));
 	return pStats;
 }
-#endif /* WIRELESS_EXT */
 
 
 INT rt28xx_ioctl(
