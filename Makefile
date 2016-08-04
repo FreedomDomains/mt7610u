@@ -853,6 +853,17 @@ clean:
 	rm -f Module.markers
 	rm -f modules.order
 
+installfw:
+	@echo "installfw currently defunct"
+
+help:
+	@echo "options :"
+	@echo "modules		build this module"
+	@echo "installfw	install firmware file (currently defunct)"
+	@echo "clean		clean"
+	@echo "help		this help text"
+
+
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
 
