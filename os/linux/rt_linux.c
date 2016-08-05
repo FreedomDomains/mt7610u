@@ -4989,24 +4989,6 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsPktInfPpaSend(PNDIS_PACKET pNetPkt)
-{
-#ifdef INF_PPA_SUPPORT
-	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
-	int ret = 0;
-	unsigned int ppa_flags = 0;	/* reserved for now */
-
-	pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
-
-	memset(pRxPkt->head, 0, pRxPkt->data - pRxPkt->head - 14);
-	DBGPRINT(RT_DEBUG_TRACE,
-		 ("ppa_hook_directpath_send_fn rx :ret:%d headroom:%d dev:%s pktlen:%d<===\n",
-		  ret, skb_headroom(pRxPkt) , pRxPkt->dev->name, pRxPkt->len));
-	hex_dump("rx packet", pRxPkt->data, 32);
-	ret = ppa_hook_directpath_send_fn(pAd->g_if_id, pRxPkt, pRxPkt->len, ppa_flags);
-#endif /* INF_PPA_SUPPORT */
-}
-
 
 INT32 RtmpThreadPidKill(RTMP_OS_PID PID)
 {

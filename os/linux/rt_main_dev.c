@@ -648,15 +648,6 @@ BOOLEAN RtmpPhyNetDevExit(
 	IN void 		*pAd,
 	IN PNET_DEV		net_dev)
 {
-
-
-
-
-#ifdef INF_PPA_SUPPORT
-
-	RTMP_DRIVER_INF_PPA_EXIT(pAd);
-#endif /* INF_PPA_SUPPORT */
-
 	/* Unregister network device */
 	if (net_dev != NULL)
 	{

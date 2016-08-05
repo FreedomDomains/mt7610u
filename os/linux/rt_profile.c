@@ -395,15 +395,6 @@ void announce_802_3_packet(
 
     /* Push up the protocol stack */
 
-#ifdef INF_PPA_SUPPORT
-	if (ppa_hook_directpath_send_fn && pAd->PPAEnable==TRUE )
-	{
-		RtmpOsPktInfPpaSend(pRxPkt);
-		pRxPkt=NULL;
-		return;
-	}
-#endif /* INF_PPA_SUPPORT */
-
 	{
 #ifdef CONFIG_RT2880_BRIDGING_ONLY
 		PACKET_CB_ASSIGN(pRxPkt, 22) = 0xa8;
