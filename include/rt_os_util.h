@@ -603,22 +603,6 @@ void RtmpOsAtomicInterlockedExchange(RTMP_OS_ATOMIC *pAtomicSrc, LONG Value);
 /* OS Utility */
 void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
 
-typedef void (*RTMP_OS_SEND_WLAN_EVENT)(
-	IN	void 				*pAdSrc,
-	IN	USHORT					Event_flag,
-	IN	PUCHAR 					pAddr,
-	IN  UCHAR					BssIdx,
-	IN	CHAR					Rssi);
-
-void RtmpOsSendWirelessEvent(
-	IN	void 		*pAd,
-	IN	USHORT			Event_flag,
-	IN	PUCHAR 			pAddr,
-	IN	UCHAR			BssIdx,
-	IN	CHAR			Rssi,
-	IN	RTMP_OS_SEND_WLAN_EVENT pFunc);
-
-
 int RtmpOSWrielessEventSend(
 	IN	PNET_DEV				pNetDev,
 	IN	UINT32					eventType,
