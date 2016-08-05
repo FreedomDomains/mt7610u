@@ -49,9 +49,6 @@ HAS_WEPAUTO_OPEN_FIRST_SUPPORT=n
 # Support user specific transmit rate of Multicast packet.
 HAS_MCAST_RATE_SPECIFIC_SUPPORT=n
 
-# Support for Multiple Cards
-HAS_MC_SUPPORT=n
-
 #Support for PCI-MSI
 HAS_MSI_SUPPORT=n
 
@@ -524,10 +521,6 @@ endif
 
 ifeq ($(HAS_DFS_SUPPORT),y)
 WFLAGS += -DDFS_SUPPORT
-endif
-
-ifeq ($(HAS_MC_SUPPORT),y)
-WFLAGS += -DMULTIPLE_CARD_SUPPORT
 endif
 
 ifeq ($(HAS_LLTD),y)

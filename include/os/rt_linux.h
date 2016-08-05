@@ -111,9 +111,6 @@ typedef struct usb_ctrlrequest devctrlrequest;
 #ifdef SINGLE_SKU_V2
 #define SINGLE_SKU_TABLE_FILE_NAME	"/etc/Wireless/RT2870STA/SingleSKU.dat"
 #endif /* SINGLE_SKU_V2 */
-#ifdef MULTIPLE_CARD_SUPPORT
-#define CARD_INFO_PATH			"/etc/Wireless/RT2870STA/RT2870STACard.dat"
-#endif /* MULTIPLE_CARD_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
 

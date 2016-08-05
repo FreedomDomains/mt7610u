@@ -953,9 +953,6 @@ PNET_DEV RtmpPhyNetDevMainCreate(
 
 	pAd = pAd;
 
-#ifdef MULTIPLE_CARD_SUPPORT
-	MC_RowID = pAd->MC_RowID;
-#endif /* MULTIPLE_CARD_SUPPORT */
 #ifdef HOSTAPD_SUPPORT
 	IoctlIF = pAd->IoctlIF;
 #endif /* HOSTAPD_SUPPORT */

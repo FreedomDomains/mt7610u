@@ -3166,13 +3166,6 @@ struct rtmp_adapter {
 	BLOCK_QUEUE_ENTRY blockQueueTab[NUM_OF_TX_RING];
 #endif /* BLOCK_NET_IF */
 
-
-
-#ifdef MULTIPLE_CARD_SUPPORT
-	INT32 MC_RowID;
-	STRING MC_FileName[256];
-#endif /* MULTIPLE_CARD_SUPPORT */
-
 	ULONG TbttTickCount;	/* beacon timestamp work-around */
 #ifdef PCI_MSI_SUPPORT
 	BOOLEAN HaveMsi;

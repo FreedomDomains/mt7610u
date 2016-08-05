@@ -56,9 +56,6 @@ typedef void pregs;
 #ifdef CONFIG_STA_SUPPORT
 
 #ifdef RTMP_MAC_USB
-#ifdef MULTIPLE_CARD_SUPPORT
-#define CARD_INFO_PATH			"/etc/Wireless/RT2870STA/RT2870STACard.dat"
-#endif /* MULTIPLE_CARD_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
 #endif /* CONFIG_STA_SUPPORT */

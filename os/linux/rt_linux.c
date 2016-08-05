@@ -1351,11 +1351,6 @@ static int RtmpOSNetDevRequestName(
 		memset(desiredName, 0, IFNAMSIZ);
 		strncpy(&desiredName[0], pPrefixStr, prefixLen);
 
-#ifdef MULTIPLE_CARD_SUPPORT
-		if (MC_RowID >= 0)
-			sprintf(suffixName, "%02d_%d", MC_RowID, ifNameIdx);
-		else
-#endif /* MULTIPLE_CARD_SUPPORT */
 			sprintf(suffixName, "%d", ifNameIdx);
 
 		slotNameLen = strlen(suffixName);

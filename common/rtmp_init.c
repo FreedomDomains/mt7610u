@@ -3549,24 +3549,6 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 
 #endif
 
-#ifdef MULTIPLE_CARD_SUPPORT
-{
-	extern BOOLEAN RTMP_CardInfoRead(struct rtmp_adapter *pAd);
-
-	/* find its profile path*/
-	pAd->MC_RowID = -1; /* use default profile path*/
-	RTMP_CardInfoRead(pAd);
-
-	if (pAd->MC_RowID == -1)
-#ifdef CONFIG_STA_SUPPORT
-		strcpy(pAd->MC_FileName, STA_PROFILE_PATH);
-#endif /* CONFIG_STA_SUPPORT */
-
-	DBGPRINT(RT_DEBUG_TRACE, ("MC> ROW = %d, PATH = %s\n", pAd->MC_RowID, pAd->MC_FileName));
-}
-#endif /* MULTIPLE_CARD_SUPPORT */
-
-
 #ifdef MCS_LUT_SUPPORT
 	if (pAd->chipCap.asic_caps & fASIC_CAP_MCS_LUT) {
 		if (MAX_LEN_OF_MAC_TABLE < 128) {
@@ -3586,13 +3568,6 @@ BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	INT index;
-
-#ifdef MULTIPLE_CARD_SUPPORT
-extern u8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
-
-	if ((pAd->MC_RowID >= 0) && (pAd->MC_RowID <= MAX_NUM_OF_MULTIPLE_CARD))
-		MC_CardUsed[pAd->MC_RowID] = 0; /* not clear MAC address*/
-#endif /* MULTIPLE_CARD_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
