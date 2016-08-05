@@ -1520,11 +1520,6 @@ struct common_config {
 	VHT_CAP_INFO vht_info;
 #endif /* DOT11_VHT_AC */
 
-#ifdef SYSTEM_LOG_SUPPORT
-	/* Enable wireless event */
-	BOOLEAN bWirelessEvent;
-#endif /* SYSTEM_LOG_SUPPORT */
-
 	BOOLEAN bWiFiTest;	/* Enable this parameter for WiFi test */
 
 	/* Tx & Rx Stream number selection */
@@ -3095,13 +3090,6 @@ struct rtmp_adapter {
 
 	ULONG ExtraInfo;	/* Extra information for displaying status */
 	ULONG SystemErrorBitmap;	/* b0: E2PROM version error */
-
-#ifdef SYSTEM_LOG_SUPPORT
-	/* --------------------------- */
-	/* System event log */
-	/* --------------------------- */
-	RT_802_11_EVENT_TABLE EventTab;
-#endif /* SYSTEM_LOG_SUPPORT */
 
 	BOOLEAN HTCEnable;
 
@@ -6059,17 +6047,6 @@ INT get_ht_max_mcs(struct rtmp_adapter*pAd, UCHAR *desire_mcs, UCHAR *cap_mcs);
 
 void RTMPDisableDesiredHtInfo(
 	IN	struct rtmp_adapter *pAd);
-
-#ifdef SYSTEM_LOG_SUPPORT
-void RtmpDrvSendWirelessEvent(
-	IN	void 		*pAdSrc,
-	IN	USHORT			Event_flag,
-	IN	PUCHAR 			pAddr,
-	IN  UCHAR			BssIdx,
-	IN	CHAR			Rssi);
-#else
-#define RtmpDrvSendWirelessEvent(_pAd, _Event_flag, _pAddr, _BssIdx, _Rssi)
-#endif /* SYSTEM_LOG_SUPPORT */
 
 CHAR    ConvertToRssi(
 	IN struct rtmp_adapter * pAd,

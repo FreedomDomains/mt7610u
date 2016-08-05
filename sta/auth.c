@@ -342,8 +342,6 @@ void PeerAuthRspAtSeq4Action(
 			if (Status != MLME_SUCCESS) {
 				pAd->StaCfg.AuthFailReason = Status;
 				COPY_MAC_ADDR(pAd->StaCfg.AuthFailSta, Addr2);
-				RTMPSendWirelessEvent(pAd, IW_SHARED_WEP_FAIL,
-						      NULL, BSS0, 0);
 			}
 
 			pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
@@ -409,7 +407,6 @@ void MlmeDeauthReqAction(
 		    0);
 
 	/* send wireless event - for deauthentication */
-	RTMPSendWirelessEvent(pAd, IW_DEAUTH_EVENT_FLAG, NULL, BSS0, 0);
 }
 
 /*

@@ -509,9 +509,6 @@ BOOLEAN PeerWpaMessageSanity(
 	/* Replay Counter different condition*/
 	if (bReplayDiff)
 	{
-		/* send wireless event - for replay counter different*/
-			RTMPSendWirelessEvent(pAd, IW_REPLAY_COUNTER_DIFF_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
 		if (MsgType < EAPOL_GROUP_MSG_1)
 		{
            	DBGPRINT(RT_DEBUG_ERROR, ("Replay Counter Different in pairwise msg %d of 4-way handshake!\n", MsgType));
@@ -554,9 +551,6 @@ BOOLEAN PeerWpaMessageSanity(
 
         if (!NdisEqualMemory(rcvd_mic, mic, LEN_KEY_DESC_MIC))
         {
-			/* send wireless event - for MIC different*/
-				RTMPSendWirelessEvent(pAd, IW_MIC_DIFF_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
 			if (MsgType < EAPOL_GROUP_MSG_1)
 			{
             	DBGPRINT(RT_DEBUG_ERROR, ("MIC Different in pairwise msg %d of 4-way handshake!\n", MsgType));
@@ -1200,10 +1194,6 @@ void PeerPairMsg4Action(
 			pEntry->GTKState = REKEY_ESTABLISHED;
 			RTMPCancelTimer(&pEntry->RetryTimer, &Cancelled);
 
-
-			/* send wireless event - for set key done WPA2*/
-				RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA2_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
 	        DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n\n",
 									pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
 									pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),
@@ -1471,9 +1461,6 @@ void MlmeDeAuthAction(
         if (NStatus != NDIS_STATUS_SUCCESS)
             return;
 
-		/* send wireless event - for send disassication */
-			RTMPSendWirelessEvent(pAd, IW_DEAUTH_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
         DBGPRINT(RT_DEBUG_TRACE, ("Send DEAUTH frame with ReasonCode(%d) to %02x:%02x:%02x:%02x:%02x:%02x \n",Reason, PRINT_MAC(pEntry->Addr)));
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1551,9 +1538,6 @@ void PeerGroupMsg2Action(
 
 		if ((pEntry->AuthMode == Ndis802_11AuthModeWPA2) || (pEntry->AuthMode == Ndis802_11AuthModeWPA2PSK))
 		{
-			/* send wireless event - for set key done WPA2*/
-				RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA2_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
 			DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n\n",
 										pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
 										pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),
@@ -1561,9 +1545,6 @@ void PeerGroupMsg2Action(
 		}
 		else
 		{
-			/* send wireless event - for set key done WPA*/
-				RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA1_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
-
         	DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA1, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n\n",
 										pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
 										pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),

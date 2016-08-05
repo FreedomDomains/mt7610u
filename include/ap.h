@@ -333,15 +333,6 @@ BOOLEAN APPsIndicate(
 	IN ULONG Wcid,
     IN  UCHAR           Psm);
 
-#ifdef SYSTEM_LOG_SUPPORT
-void ApLogEvent(
-    IN struct rtmp_adapter *   pAd,
-    IN PUCHAR           pAddr,
-    IN USHORT           Event);
-#else
-#define ApLogEvent(_pAd, _pAddr, _Event)
-#endif /* SYSTEM_LOG_SUPPORT */
-
 #ifdef DOT11_N_SUPPORT
 void APUpdateOperationMode(
     IN struct rtmp_adapter *pAd);

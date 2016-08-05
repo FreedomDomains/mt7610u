@@ -2027,21 +2027,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
 			/*pRadarDetect->DfsSessionTime = 13;*/
 		}
 
-#ifdef SYSTEM_LOG_SUPPORT
-		/*WirelessEvent*/
-		if(RTMPGetKeyParameter("WirelessEvent", tmpbuf, 10, pBuffer, TRUE))
-		{
-			BOOLEAN FlgIsWEntSup = FALSE;
-
-			if(simple_strtol(tmpbuf, 0, 10) != 0)
-				FlgIsWEntSup = TRUE;
-
-			RtmpOsWlanEventSet(pAd, &pAd->CommonCfg.bWirelessEvent, FlgIsWEntSup);
-			DBGPRINT(RT_DEBUG_TRACE, ("WirelessEvent=%d\n", pAd->CommonCfg.bWirelessEvent));
-		}
-#endif /* SYSTEM_LOG_SUPPORT */
-
-
 		/*AuthMode*/
 		if(RTMPGetKeyParameter("AuthMode", tmpbuf, 128, pBuffer, TRUE))
 		{

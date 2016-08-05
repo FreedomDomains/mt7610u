@@ -1031,9 +1031,6 @@ void MlmeDisassocReqAction(
 
 
 /* mark here because linkdown also call this function */
-
-	RTMPSendWirelessEvent(pAd, IW_DISASSOC_EVENT_FLAG, NULL, BSS0, 0);
-
 }
 
 /*
@@ -1530,10 +1527,6 @@ void PeerDisassocAction(
 			  Reason));
 		if (INFRA_ON(pAd)
 		    && MAC_ADDR_EQUAL(pAd->CommonCfg.Bssid, Addr2)) {
-
-			RTMPSendWirelessEvent(pAd, IW_DISASSOC_EVENT_FLAG, NULL,
-					      BSS0, 0);
-
 
 			/*
 			   It is possible that AP sends dis-assoc frame(PeerDisassocAction) to STA

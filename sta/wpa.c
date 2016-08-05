@@ -73,8 +73,6 @@ void RTMPReportMicError(
 		else
 		{
 
-				RTMPSendWirelessEvent(pAd, IW_COUNTER_MEASURES_EVENT_FLAG, pAd->MacTab.Content[BSSID_WCID].Addr, BSS0, 0);
-
 			pAd->StaCfg.LastMicErrorTime = Now;
 			/* Violate MIC error counts, MIC countermeasures kicks in */
 			pAd->StaCfg.MicErrCnt++;

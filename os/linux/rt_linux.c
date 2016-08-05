@@ -706,42 +706,6 @@ void hex_dump(char *str, UCHAR *pSrcBufVA, UINT SrcBufLen)
 #endif /* DBG */
 }
 
-#ifdef SYSTEM_LOG_SUPPORT
-/*
-	========================================================================
-
-	Routine Description:
-		Send log message through wireless event
-
-		Support standard iw_event with IWEVCUSTOM. It is used below.
-
-		iwreq_data.data.flags is used to store event_flag that is
-		defined by user. iwreq_data.data.length is the length of the
-		event log.
-
-		The format of the event log is composed of the entry's MAC
-		address and the desired log message (refer to
-		pWirelessEventText).
-
-			ex: 11:22:33:44:55:66 has associated successfully
-
-		p.s. The requirement of Wireless Extension is v15 or newer.
-
-	========================================================================
-*/
-void RtmpOsSendWirelessEvent(
-	IN void *pAd,
-	IN USHORT Event_flag,
-	IN PUCHAR pAddr,
-	IN UCHAR BssIdx,
-	IN CHAR Rssi,
-	IN RTMP_OS_SEND_WLAN_EVENT pFunc)
-{
-	pFunc(pAd, Event_flag, pAddr, BssIdx, Rssi);
-}
-#endif /* SYSTEM_LOG_SUPPORT */
-
-
 #ifdef CONFIG_STA_SUPPORT
 INT32 ralinkrate[] = {
 	2,  4, 11, 22,

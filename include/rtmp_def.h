@@ -1656,41 +1656,6 @@ enum WIFI_MODE{
 /* Max number of char in custom event, refer to wireless_tools.28/wireless.20.h */
 #define IW_CUSTOM_MAX_LEN				  			255	/* In bytes */
 
-/* For system event - start */
-#define	IW_SYS_EVENT_FLAG_START                     0x0200
-#define	IW_ASSOC_EVENT_FLAG                         0x0200
-#define	IW_DISASSOC_EVENT_FLAG                      0x0201
-#define	IW_DEAUTH_EVENT_FLAG                      	0x0202
-#define	IW_AGEOUT_EVENT_FLAG                      	0x0203
-#define	IW_COUNTER_MEASURES_EVENT_FLAG              0x0204
-#define	IW_REPLAY_COUNTER_DIFF_EVENT_FLAG           0x0205
-#define	IW_RSNIE_DIFF_EVENT_FLAG           			0x0206
-#define	IW_MIC_DIFF_EVENT_FLAG           			0x0207
-#define IW_ICV_ERROR_EVENT_FLAG						0x0208
-#define IW_MIC_ERROR_EVENT_FLAG						0x0209
-#define IW_GROUP_HS_TIMEOUT_EVENT_FLAG				0x020A
-#define	IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG			0x020B
-#define IW_RSNIE_SANITY_FAIL_EVENT_FLAG				0x020C
-#define IW_SET_KEY_DONE_WPA1_EVENT_FLAG				0x020D
-#define IW_SET_KEY_DONE_WPA2_EVENT_FLAG				0x020E
-#define IW_STA_LINKUP_EVENT_FLAG					0x020F
-#define IW_STA_LINKDOWN_EVENT_FLAG					0x0210
-#define IW_SCAN_COMPLETED_EVENT_FLAG				0x0211
-#define IW_SCAN_ENQUEUE_FAIL_EVENT_FLAG				0x0212
-#define IW_CHANNEL_CHANGE_EVENT_FLAG				0x0213
-#define IW_STA_MODE_EVENT_FLAG						0x0214
-#define IW_MAC_FILTER_LIST_EVENT_FLAG				0x0215
-#define IW_AUTH_REJECT_CHALLENGE_FAILURE			0x0216
-#define IW_SCANNING_EVENT_FLAG						0x0217
-#define IW_START_IBSS_FLAG							0x0218
-#define IW_JOIN_IBSS_FLAG							0x0219
-#define IW_SHARED_WEP_FAIL							0x021A
-#define IW_WPS_END_EVENT_FLAG						0x021B
-/* if add new system event flag, please upadte the IW_SYS_EVENT_FLAG_END */
-#define	IW_SYS_EVENT_FLAG_END                       0x021B
-#define	IW_SYS_EVENT_TYPE_NUM						(IW_SYS_EVENT_FLAG_END - IW_SYS_EVENT_FLAG_START + 1)
-/* For system event - end */
-
 #ifdef IDS_SUPPORT
 /* For spoof attack event - start */
 #define	IW_SPOOF_EVENT_FLAG_START                   0x0300
@@ -1887,17 +1852,6 @@ do{									\
 	RtmpOsPktInit(__pRxBlk->pRxPacket,										\
 					get_netdev_from_bssid(__pAd, __FromWhichBSSID),			\
 					__pRxBlk->pData, __pRxBlk->DataSize);
-
-#ifdef SYSTEM_LOG_SUPPORT
-/*
-	RTMPSendWirelessEvent --> RtmpOsSendWirelessEvent --> RtmpDrvSendWirelessEvent
-*/
-#define RTMPSendWirelessEvent(__pAd, __Event_flag, __pAddr, __BssIdx, __Rssi)	\
-	RtmpOsSendWirelessEvent(__pAd, __Event_flag, __pAddr, __BssIdx, __Rssi,		\
-							RtmpDrvSendWirelessEvent);
-#else
-#define RTMPSendWirelessEvent(__pAd, __Event_flag, __pAddr, __BssIdx, __Rssi)
-#endif /* SYSTEM_LOG_SUPPORT */
 
 #define RTMP_OS_TASK_INIT(__pTask, __pTaskName, __pAd)		\
 	RtmpOSTaskInit(__pTask, __pTaskName, __pAd, &(__pAd)->RscTaskMemList, &(__pAd)->RscSemMemList);

@@ -222,8 +222,6 @@ void MlmeCntlMachinePerformAction(
 					}
 
 				{
-					RTMPSendWirelessEvent(pAd, IW_SCAN_COMPLETED_EVENT_FLAG, NULL, BSS0, 0);
-
 #ifdef WPA_SUPPLICANT_SUPPORT
 					RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
 #endif /* WPA_SUPPLICANT_SUPPORT */
@@ -1019,9 +1017,6 @@ void CntlWaitDisassocProc(
 	if (Elem->MsgType == MT2_DISASSOC_CONF) {
 		DBGPRINT(RT_DEBUG_TRACE, ("CNTL - Dis-associate successful\n"));
 
-		RTMPSendWirelessEvent(pAd, IW_DISASSOC_EVENT_FLAG, NULL, BSS0,
-				      0);
-
 		LinkDown(pAd, FALSE);
 
 		/* case 1. no matching BSS, and user wants ADHOC, so we just start a new one */
@@ -1095,7 +1090,6 @@ void CntlWaitJoinProc(
 				RTMP_IndicateMediaState(pAd, NdisMediaStateConnected);
 				pAd->ExtraInfo = GENERAL_LINK_UP;
 
-				RTMPSendWirelessEvent(pAd, IW_JOIN_IBSS_FLAG, NULL, BSS0, 0);
 			}
 			/* 2. joined a new INFRA network, start from authentication */
 			else
@@ -1223,7 +1217,6 @@ void CntlWaitStartProc(
 				 ("CNTL - start a new IBSS = %02x:%02x:%02x:%02x:%02x:%02x ...\n",
 				  PRINT_MAC(pAd->CommonCfg.Bssid)));
 
-			RTMPSendWirelessEvent(pAd, IW_START_IBSS_FLAG, NULL, BSS0, 0);
 		} else {
 			DBGPRINT(RT_DEBUG_TRACE, ("CNTL - Start IBSS fail. BUG!!!!!\n"));
 			pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
@@ -1371,8 +1364,6 @@ void CntlWaitAssocProc(
 	if (Elem->MsgType == MT2_ASSOC_CONF) {
 		NdisMoveMemory(&Reason, Elem->Msg, sizeof (USHORT));
 		if (Reason == MLME_SUCCESS) {
-			RTMPSendWirelessEvent(pAd, IW_ASSOC_EVENT_FLAG, NULL, BSS0, 0);
-
 			LinkUp(pAd, BSS_INFRA);
 			pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
 			DBGPRINT(RT_DEBUG_TRACE,
@@ -1405,11 +1396,6 @@ void CntlWaitReassocProc(
 	if (Elem->MsgType == MT2_REASSOC_CONF) {
 		NdisMoveMemory(&Result, Elem->Msg, sizeof (USHORT));
 		if (Result == MLME_SUCCESS) {
-			/* send wireless event - for association */
-			RTMPSendWirelessEvent(pAd, IW_ASSOC_EVENT_FLAG, NULL,
-					      BSS0, 0);
-
-
 			/* */
 			/* NDIS requires a new Link UP indication but no Link Down for RE-ASSOC */
 			/* */
@@ -2164,9 +2150,6 @@ void LinkDown(
 	/* Not allow go to sleep within linkdown function. */
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_CAN_GO_SLEEP);
 #endif /* PCIE_PS_SUPPORT */
-
-
-	RTMPSendWirelessEvent(pAd, IW_STA_LINKDOWN_EVENT_FLAG, NULL, BSS0, 0);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK DOWN !!!\n"));
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_AGGREGATION_INUSED);

@@ -127,29 +127,6 @@ void PeerDeauthAction(
 				 ("AUTH_RSP - receive DE-AUTH from our AP (Reason=%d)\n",
 				  Reason));
 
-			if (Reason == REASON_4_WAY_TIMEOUT)
-				RTMPSendWirelessEvent(pAd,
-						      IW_PAIRWISE_HS_TIMEOUT_EVENT_FLAG,
-						      NULL, 0, 0);
-
-			if (Reason == REASON_GROUP_KEY_HS_TIMEOUT)
-				RTMPSendWirelessEvent(pAd,
-						      IW_GROUP_HS_TIMEOUT_EVENT_FLAG,
-						      NULL, 0, 0);
-
-
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-			RtmpOSWrielessEventSend(pAd->net_dev,
-						RT_WLAN_EVENT_CGIWAP, -1, NULL,
-						NULL, 0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-
-			/* send wireless event - for deauthentication */
-			RTMPSendWirelessEvent(pAd, IW_DEAUTH_EVENT_FLAG, NULL,
-					      BSS0, 0);
-
-
-
 #ifdef WPA_SUPPLICANT_SUPPORT
 			if ((pAd->StaCfg.WpaSupplicantUP !=
 			     WPA_SUPPLICANT_DISABLE)

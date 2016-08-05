@@ -158,7 +158,6 @@ void ScanTimeout(
 		/* To prevent SyncMachine.CurrState is SCAN_LISTEN forever. */
 		pAd->MlmeAux.Channel = 0;
 		ScanNextChannel(pAd, OPMODE_STA);
-		RTMPSendWirelessEvent(pAd, IW_SCAN_ENQUEUE_FAIL_EVENT_FLAG, NULL, BSS0, 0);
 	}
 }
 
@@ -399,8 +398,6 @@ void MlmeForceScanReqAction(
 				OS_WAIT(20);
 		}
 
-			RTMPSendWirelessEvent(pAd, IW_SCANNING_EVENT_FLAG, NULL, BSS0, 0);
-
 		NdisGetSystemUpTime(&Now);
 		pAd->StaCfg.LastScanTime = Now;
 		/* reset all the timers */
@@ -538,8 +535,6 @@ void MlmeScanReqAction(
 											RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)));
 			OS_WAIT(20);
 		}
-
-			RTMPSendWirelessEvent(pAd, IW_SCANNING_EVENT_FLAG, NULL, BSS0, 0);
 
 		NdisGetSystemUpTime(&Now);
 		pAd->StaCfg.LastScanTime = Now;

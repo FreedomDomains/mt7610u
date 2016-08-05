@@ -1367,14 +1367,6 @@ NDIS_STATUS	RTMPCheckRxError(
 	/* drop decyption fail frame*/
 	if (pRxInfo->Decrypted && pRxInfo->CipherErr)
 	{
-
-		if (((pRxInfo->CipherErr & 1) == 1) && INFRA_ON(pAd))
-            RTMPSendWirelessEvent(pAd, IW_ICV_ERROR_EVENT_FLAG, pAd->MacTab.Content[BSSID_WCID].Addr, BSS0, 0);
-
-		if (((pRxInfo->CipherErr & 2) == 2) && INFRA_ON(pAd))
-                RTMPSendWirelessEvent(pAd, IW_MIC_ERROR_EVENT_FLAG, pAd->MacTab.Content[BSSID_WCID].Addr, BSS0, 0);
-
-
 		/* MIC Error*/
 		if ((pRxInfo->CipherErr == 2) && pRxInfo->MyBss)
 		{
