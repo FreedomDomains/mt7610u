@@ -111,7 +111,7 @@ RTMP_BUILD_DRV_OPS_FUNCTION_BODY
 #endif /* LINUX */
 
 
-int rt28xx_init(void *pAdSrc, char *pDefaultMac, char *pHostName)
+int rt28xx_init(void *pAdSrc)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
 	UINT index;
@@ -358,7 +358,7 @@ int rt28xx_init(void *pAdSrc, char *pDefaultMac, char *pHostName)
 	DBGPRINT(RT_DEBUG_OFF, ("2. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
 	/* We should read EEPROM for all cases.  rt2860b*/
-	NICReadEEPROMParameters(pAd, (char *)pDefaultMac);
+	NICReadEEPROMParameters(pAd);
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 

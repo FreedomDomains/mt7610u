@@ -3964,8 +3964,7 @@ NDIS_STATUS rlt_rf_read(
 #endif /* RLT_RF */
 
 void NICReadEEPROMParameters(
-	IN  struct rtmp_adapter *      pAd,
-	IN	char *			mac_addr);
+	IN  struct rtmp_adapter *pAd);
 
 void NICInitAsicFromEEPROM(
 	IN  struct rtmp_adapter *      pAd);
@@ -5836,11 +5835,6 @@ void eFusePhysicalReadRegisters(
 int RtmpEfuseSupportCheck(
 	IN struct rtmp_adapter*pAd);
 
-#ifdef RALINK_ATE
-INT set_eFuseBufferModeWriteBack_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-#endif /* RALINK_ATE */
 #endif /* RTMP_EFUSE_SUPPORT */
 
 

@@ -48,11 +48,6 @@
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
 
-char *mac = "";		   /* default 00:00:00:00:00:00 */
-char *hostname = "";		   /* default CMPC */
-module_param (mac, charp, 0);
-MODULE_PARM_DESC (mac, "MT7610U: wireless mac addr");
-
 #ifdef OS_ABL_SUPPORT
 RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
 RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
@@ -320,7 +315,7 @@ int rt28xx_open(void *dev)
 	RTMP_DRIVER_IRQ_INIT(pAd);
 
 	/* Chip & other init */
-	if (rt28xx_init(pAd, mac, hostname) == FALSE)
+	if (rt28xx_init(pAd) == FALSE)
 		goto err;
 
 #ifdef MBSS_SUPPORT

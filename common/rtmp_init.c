@@ -323,7 +323,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 
 	========================================================================
 */
-void NICReadEEPROMParameters(struct rtmp_adapter*pAd, char *mac_addr)
+void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 {
 	USHORT i, value, value2;
 	EEPROM_TX_PWR_STRUC Power;
@@ -379,22 +379,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd, char *mac_addr)
 	if (pAd->bLocalAdminMAC)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Configuration file(.dat). \n"));
-	}
-	else if (mac_addr &&
-			 strlen((char *)mac_addr) == 17 &&
-			 (strcmp(mac_addr, "00:00:00:00:00:00") != 0))
-	{
-		INT j;
-		char *macptr;
-
-		macptr = (char *) mac_addr;
-		for (j=0; j<MAC_ADDR_LEN; j++)
-		{
-			AtoH(macptr, &pAd->CurrentAddress[j], 1);
-			macptr=macptr+3;
-		}
-
-		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Moudle Parameter. \n"));
 	}
 	else
 	{

@@ -253,10 +253,7 @@ void RTMPDrvSTAClose(void *pAd, void *net_dev);
 void RTMPDrvAPClose(void *pAd, void *net_dev);
 void RTMPInfClose(void *pAd);
 
-int rt28xx_init(
-	IN void 					*pAd,
-	IN char *				pDefaultMac,
-	IN char *				pHostName);
+int rt28xx_init(void *pAd);
 
 PNET_DEV RtmpPhyNetDevMainCreate(void *pAd);
 #endif /* RTMP_MODULE_OS */

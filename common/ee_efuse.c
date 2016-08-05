@@ -1460,31 +1460,6 @@ int RtmpEfuseSupportCheck(
 }
 
 
-#ifdef RALINK_ATE
-INT set_eFuseBufferModeWriteBack_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg)
-{
-	UINT Enable;
-
-
- 	if(strlen(arg)>0)
-	{
-		Enable= simple_strtol(arg, 0, 16);
- 	}
-	else
-		return FALSE;
-	if(Enable==1)
-	{
-		DBGPRINT(RT_DEBUG_TRACE, ("set_eFuseBufferMode_Proc:: Call WRITEEEPROMBUF"));
-		eFuseWriteEeeppromBuf(pAd);
-	}
-	else
-		return FALSE;
-	return TRUE;
-}
-#endif /* RALINK_ATE */
-
 
 /*
 	========================================================================
