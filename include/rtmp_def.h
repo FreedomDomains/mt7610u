@@ -1616,10 +1616,6 @@ enum WIFI_MODE{
 #define CONFIG_RT_FIRST_CARD 7610
 #define CONFIG_RT_SECOND_CARD 7610
 
-#ifdef ANDROID_SUPPORT
-#define INF_MAIN_DEV_NAME		"wlan"
-#define INF_MBSSID_DEV_NAME		"wlan"
-#else
 #if CONFIG_RT_FIRST_CARD == 7610
 #define INF_MAIN_DEV_NAME		"ra"
 #define INF_MBSSID_DEV_NAME		"ra"
@@ -1630,7 +1626,6 @@ enum WIFI_MODE{
 #define INF_MAIN_DEV_NAME		"ra"
 #define INF_MBSSID_DEV_NAME		"ra"
 #endif
-#endif /* ANDROID_SUPPORT */
 #if CONFIG_RT_FIRST_CARD == 7610
 #define INF_WDS_DEV_NAME		"wds"
 #define INF_APCLI_DEV_NAME		"apcli"

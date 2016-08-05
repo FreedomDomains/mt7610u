@@ -1828,10 +1828,8 @@ void RT28xxUsbMlmeRadioOFF(
 
 		/*==========================================*/
 		/* Clean up old bss table*/
-#ifndef ANDROID_SUPPORT
 /* because abdroid will get scan table when interface down, so we not clean scan table */
 		BssTableInit(&pAd->ScanTab);
-#endif /* ANDROID_SUPPORT */
 
 	}
 #endif /* CONFIG_STA_SUPPORT */

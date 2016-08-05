@@ -385,85 +385,7 @@ int rt_ioctl_giwpriv(
 	struct iw_request_info *info,
 	struct iw_point *dwrq,	char *extra)
 {
-#ifdef ANDROID_SUPPORT
-	void *pAd = NULL;
-	int len = 0;
-	char *ext;
-	int ret = 0;
-
-	len = dwrq->length;
-	ext = kmalloc(len, /*GFP_KERNEL*/GFP_ATOMIC);
-	if(!ext)
-		return -ENOMEM;
-
-	if (copy_from_user(ext, dwrq->pointer, len))
-	{
-		kfree(ext);
-		printk("andriod_handle_private   copy_from_user\n");
-		return -EFAULT;
-	}
-	ext[len-1] = 0x00;
-	GET_PAD_FROM_NET_DEV(pAd, dev);
-
-	if(strcasecmp(ext,"START") == 0)
-	{
-		//Turn on Wi-Fi hardware
-		//OK if successful
-		printk("sSTART Turn on Wi-Fi hardware \n");
-		kfree(ext);
-		return -1;
-	}
-	else if(strcasecmp(ext,"STOP") == 0)
-	{
-		printk("STOP Turn off  Wi-Fi hardware \n");
-		kfree(ext);
-		return -1;
-	}
-	else if(strcasecmp(ext,"RSSI") == 0)
-	{
-		CHAR AvgRssi0;
-		RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWPRIVRSSI,
-								0, &AvgRssi0, 0, dev->priv_flags);
-		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),"rssi %d", AvgRssi0);
-	}
-	else if(strcasecmp(ext,"LINKSPEED") == 0)
-	{
-		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),"LINKSPEED %d", 150);
-	}
-	else if(strcasecmp(ext,"MACADDR") == 0)
-	{
-		UCHAR mac[6];
-		RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIFHWADDR,
-								0, mac, 0, dev->priv_flags);
-		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),
-			"MACADDR = %02x.%02x.%02x.%02x.%02x.%02x",
-			mac[0], mac[1], mac[2],
-			mac[3], mac[4], mac[5]);
-	}
-	else if(strcasecmp(ext,"SCAN-ACTIVE") == 0)
-	{
-		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),"OK");
-	}
-	else if(strcasecmp(ext,"SCAN-PASSIVE") == 0)
-	{
-		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),"OK");
-	}
-	else
-	{
-		goto FREE_EXT;
-	}
-
-	if (copy_to_user(dwrq->pointer, ext, min(dwrq->length, (UINT16)(strlen(ext)+1)) ) )
-		ret = -EFAULT;
-
-FREE_EXT:
-
-	kfree(ext);
-
-	return ret;
-#else
 	return 0;
-#endif
 }
 
 
@@ -647,14 +569,11 @@ int rt_ioctl_siwscan(struct net_device *dev,
 	/*check if the interface is down */
 /*	if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
 /* because android will set scan and get scan when interface down */
-#ifndef ANDROID_SUPPORT
 	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
 		return -ENETDOWN;
 	}
-#endif /* ANDROID_SUPPORT */
-
 
 	memset(pIoctlScan, 0, sizeof(RT_CMD_STA_IOCTL_SCAN));
 #ifdef WPA_SUPPLICANT_SUPPORT
@@ -692,15 +611,11 @@ int rt_ioctl_giwscan(struct net_device *dev,
 	/*check if the interface is down */
 /*    if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
 /* because android will set scan and get scan when interface down */
-#ifndef ANDROID_SUPPORT
 	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
     {
        	DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
         return -ENETDOWN;
 	}
-#endif /* ANDROID_SUPPORT */
-
-
 
 	pIoctlScan->priv_flags = RT_DEV_PRIV_FLAGS_GET(dev);
 	pIoctlScan->pBssTable = NULL;
@@ -2055,7 +1970,7 @@ int rt_ioctl_siwrate(struct net_device *dev,
 			struct iw_request_info *info,
 			union iwreq_data *wrqu, char *extra)
 {
-    void   *pAd = NULL;
+    struct rtmp_adapter *pAd = NULL;
     UINT32          rate = wrqu->bitrate.value, fixed = wrqu->bitrate.fixed;
 	RT_CMD_RATE_SET CmdRate;
 
@@ -2090,7 +2005,7 @@ int rt_ioctl_giwrate(struct net_device *dev,
 			       struct iw_request_info *info,
 			       union iwreq_data *wrqu, char *extra)
 {
-    void   *pAd = NULL;
+    struct rtmp_adapter *pAd = NULL;
 /*    int rate_index = 0, rate_count = 0; */
 /*    HTTRANSMIT_SETTING ht_setting; */
 	ULONG Rate;

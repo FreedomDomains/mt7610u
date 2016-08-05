@@ -5958,21 +5958,6 @@ RtmpIoctl_rt_ioctl_siwscan(
 	RT_CMD_STA_IOCTL_SCAN *pConfig = (RT_CMD_STA_IOCTL_SCAN *)pData;
 	int Status = NDIS_STATUS_SUCCESS;
 
-
-#ifdef ANDROID_SUPPORT
-	if ((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
-#ifdef IFUP_IN_PROBE
-		|| (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS))
-		|| (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS))
-		|| (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-#endif /* IFUP_IN_PROBE */
-	)
-	{
-		RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
-		return NDIS_STATUS_SUCCESS;
-	}
-#endif /* ANDROID_SUPPORT */
-
 	pConfig->Status = 0;
 
 	if (MONITOR_ON(pAd))
