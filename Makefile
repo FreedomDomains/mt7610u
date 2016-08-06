@@ -827,6 +827,7 @@ modules:
 clean:
 	rm -f */*.o
 	rm -f */.*.{cmd,flags,d}
+	rm -f *.{o,ko,mod.{o,c}}
 	rm -f */*/*.{o,ko,mod.{o,c}}
 	rm -f */*/.*.{cmd,flags,d}
 	rm -fr .tmp_versions
