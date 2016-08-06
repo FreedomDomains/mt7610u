@@ -457,13 +457,3 @@ struct net_device *get_netdev_from_bssid(
 
 
 
-#ifdef WDS_SUPPORT
-void AP_WDS_KeyNameMakeUp(
-	IN	STRING						*pKey,
-	IN	UINT32						KeyMaxSize,
-	IN	INT							KeyId)
-{
-	snprintf(pKey, KeyMaxSize, "Wds%dKey", KeyId);
-}
-#endif /* WDS_SUPPORT */
-

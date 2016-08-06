@@ -1564,7 +1564,6 @@ enum WIFI_MODE{
  */
 #define INT_MAIN			0x0100
 #define INT_MBSSID			0x0200
-#define INT_WDS				0x0300
 #define INT_APCLI			0x0400
 #define INT_MESH			0x0500
 #define INT_P2P				0x0600

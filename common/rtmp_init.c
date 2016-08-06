@@ -1823,19 +1823,6 @@ void NICUpdateFifoStaCounters(
 						for (tid=0; tid<NUM_OF_TID; tid++)
 							BAOriSessionTearDown(pAd, pEntry->Aid,  tid, FALSE, FALSE);
 #endif /* DOT11_N_SUPPORT */
-
-#ifdef WDS_SUPPORT
-						/* fix WDS Jam issue*/
-						if(IS_ENTRY_WDS(pEntry)
-							&& (pEntry->LockEntryTx == FALSE)
-							&& (pEntry->ContinueTxFailCnt >= pAd->ApCfg.EntryLifeCheck))
-						{
-							DBGPRINT(RT_DEBUG_TRACE, ("Entry %02x:%02x:%02x:%02x:%02x:%02x Blocked!! (Fail Cnt = %d)\n",
-								PRINT_MAC(pEntry->Addr), pEntry->ContinueTxFailCnt ));
-
-							pEntry->LockEntryTx = TRUE;
-						}
-#endif /* WDS_SUPPORT */
 					}
 				}
 			}
@@ -1858,10 +1845,6 @@ void NICUpdateFifoStaCounters(
 				/* update NoDataIdleCount when sucessful send packet to STA.*/
 				pEntry->NoDataIdleCount = 0;
 				pEntry->ContinueTxFailCnt = 0;
-#ifdef WDS_SUPPORT
-				pEntry->LockEntryTx = FALSE;
-#endif /* WDS_SUPPORT */
-
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 			}

@@ -1066,26 +1066,6 @@ INT RTMP_COM_IoctlHandle(
 				return NDIS_STATUS_FAILURE;
 			break;
 
-#ifdef WDS_SUPPORT
-		case CMD_RTPRIV_IOCTL_WDS_INIT:
-			WDS_Init(pAd, pData);
-			break;
-
-		case CMD_RTPRIV_IOCTL_WDS_REMOVE:
-			WDS_Remove(pAd);
-			break;
-
-		case CMD_RTPRIV_IOCTL_WDS_STATS_GET:
-			if (Data == INT_WDS)
-			{
-				if (WDS_StatsGet(pAd, pData) != TRUE)
-					return NDIS_STATUS_FAILURE;
-			}
-			else
-				return NDIS_STATUS_FAILURE;
-			break;
-#endif /* WDS_SUPPORT */
-
 		case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
 
 			RT28xx_EEPROM_READ16(pAd, 0x04, Addr01);

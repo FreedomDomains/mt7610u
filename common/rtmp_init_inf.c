@@ -72,9 +72,6 @@ void RtmpDrvOpsInit(
 #ifdef MBSS_SUPPORT
 	pDrvOps->MBSS_PacketSend = MBSS_PacketSend;
 #endif /* MBSS_SUPPORT */
-#ifdef WDS_SUPPORT
-	pDrvOps->WDS_PacketSend = WDS_PacketSend;
-#endif /* WDS_SUPPORT */
 #ifdef APCLI_SUPPORT
 	pDrvOps->APC_PacketSend = APC_PacketSend;
 #endif /* APCLI_SUPPORT */

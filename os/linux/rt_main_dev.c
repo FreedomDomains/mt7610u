@@ -325,10 +325,6 @@ int rt28xx_open(void *dev)
 	RT28xx_MBSS_Init(pAd, net_dev);
 #endif /* MBSS_SUPPORT */
 
-#ifdef WDS_SUPPORT
-	RT28xx_WDS_Init(pAd, net_dev);
-#endif /* WDS_SUPPORT */
-
 #ifdef APCLI_SUPPORT
 	RT28xx_ApCli_Init(pAd, net_dev);
 #endif /* APCLI_SUPPORT */
@@ -677,90 +673,6 @@ int RtmpOSIRQRequest(IN struct net_device *pNetDev)
 	return retval;
 
 }
-
-#ifdef WDS_SUPPORT
-/*
-    ========================================================================
-
-    Routine Description:
-        return ethernet statistics counter
-
-    Arguments:
-        net_dev                     Pointer to net_device
-
-    Return Value:
-        net_device_stats*
-
-    Note:
-
-    ========================================================================
-*/
-struct net_device_stats *RT28xx_get_wds_ether_stats(
-    IN struct net_device *net_dev)
-{
-    void *pAd = NULL;
-/*	INT WDS_apidx = 0,index; */
-	struct net_device_stats *pStats;
-	RT_CMD_STATS WdsStats, *pWdsStats = &WdsStats;
-
-	if (net_dev) {
-		GET_PAD_FROM_NET_DEV(pAd, net_dev);
-	}
-
-/*	if (RT_DEV_PRIV_FLAGS_GET(net_dev) == INT_WDS) */
-	{
-		if (pAd)
-		{
-
-			pWdsStats->pNetDev = net_dev;
-			if (RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_WDS_STATS_GET,
-					0, pWdsStats, RT_DEV_PRIV_FLAGS_GET(net_dev)) != NDIS_STATUS_SUCCESS)
-				return NULL;
-
-			pStats = (struct net_device_stats *)pWdsStats->pStats; /*pAd->stats; */
-
-			pStats->rx_packets = pWdsStats->rx_packets; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.ReceivedFragmentCount.QuadPart; */
-			pStats->tx_packets = pWdsStats->tx_packets; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.TransmittedFragmentCount.QuadPart; */
-
-			pStats->rx_bytes = pWdsStats->rx_bytes; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.ReceivedByteCount; */
-			pStats->tx_bytes = pWdsStats->tx_bytes; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.TransmittedByteCount; */
-
-			pStats->rx_errors = pWdsStats->rx_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxErrors; */
-			pStats->tx_errors = pWdsStats->tx_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.TxErrors; */
-
-			pStats->rx_dropped = 0;
-			pStats->tx_dropped = 0;
-
-	  		pStats->multicast = pWdsStats->multicast; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.MulticastReceivedFrameCount.QuadPart;   // multicast packets received */
-	  		pStats->collisions = pWdsStats->collisions; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.OneCollision + pAd->WdsTab.WdsEntry[index].WdsCounter.MoreCollisions;  // Collision packets */
-
-	  		pStats->rx_length_errors = 0;
-	  		pStats->rx_over_errors = pWdsStats->rx_over_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // receiver ring buff overflow */
-	  		pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
-	  		pStats->rx_frame_errors = pWdsStats->rx_frame_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RcvAlignmentErrors;          // recv'd frame alignment error */
-	  		pStats->rx_fifo_errors = pWdsStats->rx_fifo_errors; /*pAd->WdsTab.WdsEntry[WDS_apidx].WdsCounter.RxNoBuffer;                   // recv'r fifo overrun */
-	  		pStats->rx_missed_errors = 0;                                            /* receiver missed packet */
-
-	  		    /* detailed tx_errors */
-	  		pStats->tx_aborted_errors = 0;
-	  		pStats->tx_carrier_errors = 0;
-	  		pStats->tx_fifo_errors = 0;
-	  		pStats->tx_heartbeat_errors = 0;
-	  		pStats->tx_window_errors = 0;
-
-	  		    /* for cslip etc */
-	  		pStats->rx_compressed = 0;
-	  		pStats->tx_compressed = 0;
-
-			return pStats;
-		}
-		else
-			return NULL;
-	}
-/*	else */
-/*    		return NULL; */
-}
-#endif /* WDS_SUPPORT */
 
 
 

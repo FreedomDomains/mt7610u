@@ -277,14 +277,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 					break;
 				}
 #endif // APCLI_SUPPORT //
-#ifdef WDS_SUPPORT
-				if (IS_ENTRY_WDS(pEntry))
-				{
-					COPY_MAC_ADDR(pEntry->HdrAddr2, pAd->ApCfg.MBSSID[MAIN_MBSSID].Bssid);
-					COPY_MAC_ADDR(pEntry->HdrAddr3, pAd->ApCfg.MBSSID[MAIN_MBSSID].Bssid);
-					break;
-				}
-#endif // WDS_SUPPORT //
 #ifdef CONFIG_STA_SUPPORT
 				if (OpMode == OPMODE_STA)
 				{
@@ -304,9 +296,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			pEntry->NoDataIdleCount = 0;
 			pEntry->AssocDeadLine = MAC_TABLE_ASSOC_TIMEOUT;
 			pEntry->ContinueTxFailCnt = 0;
-#ifdef WDS_SUPPORT
-			pEntry->LockEntryTx = FALSE;
-#endif /* WDS_SUPPORT */
 			pEntry->TimeStamp_toTxRing = 0;
 			InitializeQueueHeader(&pEntry->PsQueue);
 

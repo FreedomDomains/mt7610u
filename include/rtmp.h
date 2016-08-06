@@ -2199,9 +2199,6 @@ typedef struct _MAC_TABLE_ENTRY {
 	UINT32 ContinueTxFailCnt;
 	UINT32 CurrTxRateStableTime;	/* # of second in current TX rate */
 	UCHAR TxRateUpPenalty;	/* extra # of second penalty due to last unstable condition */
-#ifdef WDS_SUPPORT
-	BOOLEAN LockEntryTx;	/* TRUE = block to WDS Entry traffic, FALSE = not. */
-#endif /* WDS_SUPPORT */
 	ULONG TimeStamp_toTxRing;
 
 /*==================================================== */

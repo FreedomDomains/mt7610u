@@ -116,9 +116,6 @@ HAS_IFUP_IN_PROBE_SUPPORT=n
 #Support TXRX SW Antenna Diversity
 HAS_TXRX_SW_ANTDIV_SUPPORT=n
 
-#Client support WDS function
-HAS_CLIENT_WDS_SUPPORT=n
-
 #Support for Bridge Fast Path & Bridge Fast Path function open to other module
 HAS_BGFP_SUPPORT=n
 HAS_BGFP_OPEN_SUPPORT=n
@@ -387,10 +384,6 @@ endif
 
 ifeq ($(HAS_IDS_SUPPORT),y)
 WFLAGS += -DIDS_SUPPORT
-endif
-
-ifeq ($(HAS_CLIENT_WDS_SUPPORT),y)
-WFLAGS += -DCLIENT_WDS
 endif
 
 ifeq ($(HAS_BGFP_SUPPORT),y)
