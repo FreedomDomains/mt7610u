@@ -492,9 +492,6 @@ void RTMP_P2P_Remove(
 #define RTMP_DRIVER_MAIN_INF_CREATE(__pAd, __ppNetDev)						\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_MAIN_CREATE, 0, __ppNetDev, 0)
 
-#define RTMP_DRIVER_MAIN_INF_GET(__pAd, __pInfId)							\
-	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_MAIN_ID_GET, 0, __pInfId, 0)
-
 #define RTMP_DRIVER_MAIN_INF_CHECK(__pAd, __InfId)							\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_MAIN_CHECK, 0, NULL, __InfId)
 

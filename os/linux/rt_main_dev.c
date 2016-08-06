@@ -31,6 +31,7 @@
 #include "rtmp_comm.h"
 #include "rt_os_util.h"
 #include "rt_os_net.h"
+#include "rtmp_def.h"
 
 #ifndef SA_SHIRQ
 #define SA_SHIRQ IRQF_SHARED
@@ -355,9 +356,8 @@ struct net_device *RtmpPhyNetDevInit(
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetDevHook)
 {
 	struct net_device	*net_dev = NULL;
-	ULONG InfId, OpMode;
+	ULONG OpMode;
 
-	RTMP_DRIVER_MAIN_INF_GET(pAd, &InfId);
 
 /*	net_dev = RtmpOSNetDevCreate(pAd, INT_MAIN, 0, sizeof(struct rtmp_adapter *), INF_MAIN_DEV_NAME); */
 	RTMP_DRIVER_MAIN_INF_CREATE(pAd, &net_dev);
@@ -372,7 +372,7 @@ struct net_device *RtmpPhyNetDevInit(
 	pNetDevHook->stop = MainVirtualIF_close;
 	pNetDevHook->xmit = rt28xx_send_packets;
 	pNetDevHook->ioctl = rt28xx_ioctl;
-	pNetDevHook->priv_flags = InfId; /*INT_MAIN; */
+	pNetDevHook->priv_flags = INT_MAIN; /*INT_MAIN; */
 	pNetDevHook->get_stats = RT28xx_get_ether_stats;
 
 	pNetDevHook->needProtcted = FALSE;

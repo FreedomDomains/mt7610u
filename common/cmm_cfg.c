@@ -1052,10 +1052,6 @@ INT RTMP_COM_IoctlHandle(
 			*(void **)pData = RtmpPhyNetDevMainCreate(pAd);
 			break;
 
-		case CMD_RTPRIV_IOCTL_INF_MAIN_ID_GET:
-			*(ULONG *)pData = INT_MAIN;
-			break;
-
 		case CMD_RTPRIV_IOCTL_INF_MAIN_CHECK:
 			if (Data != INT_MAIN)
 				return NDIS_STATUS_FAILURE;
