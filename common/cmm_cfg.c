@@ -1086,14 +1086,6 @@ INT RTMP_COM_IoctlHandle(
 			break;
 #endif /* WDS_SUPPORT */
 
-#ifdef RALINK_ATE
-#ifdef RALINK_QA
-		case CMD_RTPRIV_IOCTL_ATE:
-			RtmpDoAte(pAd, wrq, pData);
-			break;
-#endif /* RALINK_QA */
-#endif /* RALINK_ATE */
-
 		case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
 
 			RT28xx_EEPROM_READ16(pAd, 0x04, Addr01);
