@@ -243,10 +243,10 @@ typedef enum _RTMP_INF_TYPE_
 #define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)
 
 /* associated with device interface */
-typedef struct _DEV_PRIV_INFO {
-	void 		*pPriv; /* pAd */
-	UINT32			priv_flags;
-} DEV_PRIV_INFO;
+struct dev_priv_info {
+	struct rtmp_adapter *pPriv; /* pAd */
+	u32 priv_flags;
+};
 
 
 

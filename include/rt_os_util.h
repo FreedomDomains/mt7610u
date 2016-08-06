@@ -397,19 +397,10 @@ struct net_device *RtmpOsPktNetDevGet(
 char *RtmpOsGetNetDevName(
 	IN	void 				*pDev);
 
-void RtmpOsSetNetDevPriv(
-	IN	void 				*pDev,
-	IN	void 				*pPriv);
-
-void *RtmpOsGetNetDevPriv(
-	IN	void 				*pDev);
-
-USHORT RtmpDevPrivFlagsGet(
-	IN	void 				*pDev);
-
-void RtmpDevPrivFlagsSet(
-	IN	void 				*pDev,
-	IN	USHORT					PrivFlags);
+void RtmpOsSetNetDevPriv(struct net_device *pDev, struct rtmp_adapter *pPriv);
+struct rtmp_adapter *RtmpOsGetNetDevPriv(struct net_device *pDev);
+u32 RtmpDevPrivFlagsGet(struct net_device *pDev);
+void RtmpDevPrivFlagsSet(struct net_device *pDev, u32 PrivFlags);
 
 void RtmpOsSetNetDevType(void *pDev, USHORT Type);
 

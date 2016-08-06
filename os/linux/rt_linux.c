@@ -1387,13 +1387,13 @@ void RtmpOSNetDevClose(struct net_device *pNetDev)
 
 void RtmpOSNetDevFree(struct net_device *pNetDev)
 {
-	DEV_PRIV_INFO *pDevInfo = NULL;
+	struct dev_priv_info *pDevInfo = NULL;
 
 
 	ASSERT(pNetDev);
 
 	/* free assocaited private information */
-	pDevInfo = _RTMP_OS_NETDEV_GET_PRIV(pNetDev);
+	pDevInfo = (struct dev_priv_info *) netdev_priv(pNetDev);
 	if (pDevInfo != NULL)
 		kfree(pDevInfo);
 
@@ -1586,7 +1586,7 @@ struct net_device *RtmpOSNetDevCreate(
 	int status;
 
 	/* allocate a new network device */
-	status = RtmpOSNetDevAlloc(&pNetDev, 0 /*privMemSize */ );
+	status = RtmpOSNetDevAlloc(&pNetDev, sizeof(struct dev_priv_info *) /*privMemSize */ );
 	if (status != NDIS_STATUS_SUCCESS) {
 		/* allocation fail, exit */
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate network device fail (%s)...\n", pNamePrefix));
@@ -2988,23 +2988,22 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsSetNetDevPriv(void *pDev, void *pPriv)
+void RtmpOsSetNetDevPriv(struct net_device *pDev, struct rtmp_adapter *pPriv)
 {
-	DEV_PRIV_INFO *pDevInfo = NULL;
+	struct dev_priv_info *pDevInfo = NULL;
 
-
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
+	pDevInfo = (struct dev_priv_info *) netdev_priv(pDev);
 	if (pDevInfo == NULL)
 	{
-		os_alloc_mem(NULL, (UCHAR **)&pDevInfo, sizeof(DEV_PRIV_INFO));
+		os_alloc_mem(NULL, (UCHAR **)&pDevInfo, sizeof(*pDevInfo));
 		if (pDevInfo == NULL)
 			return;
 	}
 
-	pDevInfo->pPriv = (void *)pPriv;
+	pDevInfo->pPriv = pPriv;
 	pDevInfo->priv_flags = 0;
 
-	_RTMP_OS_NETDEV_SET_PRIV((struct net_device *) pDev, pDevInfo);
+	pDev->ml_priv = pDevInfo;
 }
 
 
@@ -3023,12 +3022,11 @@ Return Value:
 Note:
 ========================================================================
 */
-void *RtmpOsGetNetDevPriv(void *pDev)
+struct rtmp_adapter *RtmpOsGetNetDevPriv(struct net_device *pDev)
 {
-	DEV_PRIV_INFO *pDevInfo = NULL;
+	struct dev_priv_info *pDevInfo = NULL;
 
-
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
+	pDevInfo = (struct dev_priv_info *) netdev_priv(pDev);
 	if (pDevInfo != NULL)
 		return pDevInfo->pPriv;
 	return NULL;
@@ -3049,13 +3047,11 @@ Return Value:
 Note:
 ========================================================================
 */
-USHORT RtmpDevPrivFlagsGet(void *pDev)
+u32 RtmpDevPrivFlagsGet(struct net_device *pDev)
 {
+	struct dev_priv_info *pDevInfo = NULL;
 
-	DEV_PRIV_INFO *pDevInfo = NULL;
-
-
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
+	pDevInfo = (struct dev_priv_info *) netdev_priv(pDev);
 	if (pDevInfo != NULL)
 		return pDevInfo->priv_flags;
 	return 0;
@@ -3076,18 +3072,15 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpDevPrivFlagsSet(void *pDev, USHORT PrivFlags)
+void RtmpDevPrivFlagsSet(struct net_device *pDev, u32 PrivFlags)
 {
-	DEV_PRIV_INFO *pDevInfo = NULL;
+	struct dev_priv_info *pDevInfo = NULL;
 
 
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
+	pDevInfo = (struct dev_priv_info *) netdev_priv(pDev);
 	if (pDevInfo != NULL)
 		pDevInfo->priv_flags = PrivFlags;
 }
-
-
-
 
 void OS_SPIN_LOCK_IRQSAVE(NDIS_SPIN_LOCK *lock, unsigned long *flags)
 {
