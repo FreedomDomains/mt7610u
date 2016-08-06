@@ -493,7 +493,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 {
 	void *pAd = NULL;
 	struct iw_statistics *pStats;
-	RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
+	struct RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
 
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
@@ -508,7 +508,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 	if (RTMP_DRIVER_IW_STATS_GET(pAd, pDrvIwStats) != NDIS_STATUS_SUCCESS)
 		return NULL;
 
-	pStats = (struct iw_statistics *)(pDrvIwStats->pStats);
+	pStats = pDrvIwStats->pStats;
 	pStats->status = 0; /* Status - device dependent for now */
 
 

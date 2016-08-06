@@ -1001,7 +1001,7 @@ INT RTMP_COM_IoctlHandle(
 		/* get wireless statistics */
 		{
 			UCHAR CurOpMode = OPMODE_AP;
-			RT_CMD_IW_STATS *pStats = (RT_CMD_IW_STATS *)pData;
+			struct RT_CMD_IW_STATS *pStats = (struct RT_CMD_IW_STATS *)pData;
 
 			pStats->qual = 0;
 			pStats->level = 0;

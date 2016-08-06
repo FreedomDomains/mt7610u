@@ -622,18 +622,18 @@ typedef struct __RT_CMD_STATS {
 	OUT unsigned long rx_fifo_errors;	/* recv'r fifo overrun                  */
 } RT_CMD_STATS;
 
-typedef struct __RT_CMD_IW_STATS {
+struct RT_CMD_IW_STATS {
 
-	ULONG priv_flags;
+	u32 priv_flags;
 	UCHAR *dev_addr;
 
-	void *pStats;		/* point to pAd->iw_stats */
+	struct iw_statistics *pStats;		/* point to pAd->iw_stats */
 
 	u8 qual;
 	u8 level;
 	u8 noise;
 	u8 updated;
-} RT_CMD_IW_STATS;
+};
 
 typedef struct __RT_CMD_PCIE_INIT {
 
