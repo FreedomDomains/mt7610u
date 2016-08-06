@@ -2140,26 +2140,14 @@ INT rt28xx_sta_ioctl(
 		    return Status;
 	    }
 
-		if (cmd != RTPRIV_IOCTL_SET)
-		{
             DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
 		    return -ENETDOWN;
-        }
     }
 
 
 
 	switch(cmd)
 	{
-		case RTPRIV_IOCTL_ATE:
-			{
-				/*
-					ATE is always controlled by ra0
-				*/
-				RTMP_COM_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_ATE, 0, wrqin->ifr_name, 0);
-			}
-			break;
-
         case SIOCGIFHWADDR:
 			DBGPRINT(RT_DEBUG_TRACE, ("IOCTL::SIOCGIFHWADDR\n"));
 /*			memcpy(wrqin->u.name, pAd->CurrentAddress, ETH_ALEN); */
@@ -2301,36 +2289,6 @@ INT rt28xx_sta_ioctl(
 		case SIOCSIWRETRY:	/*set retry limits and lifetime */
 			Status = -EOPNOTSUPP;
 			break;
-
-		case RT_PRIV_IOCTL:
-        case RT_PRIV_IOCTL_EXT:
-			subcmd = wrqin->u.data.flags;
-
-			Status = RTMP_STA_IoctlHandle(pAd, wrq, CMD_RT_PRIV_IOCTL, subcmd,
-										NULL, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-			break;
-		case RTPRIV_IOCTL_SET:
-			if(access_ok(VERIFY_READ, wrqin->u.data.pointer, wrqin->u.data.length) != TRUE)
-					break;
-			return rt_ioctl_setparam(net_dev, NULL, NULL, wrqin->u.data.pointer);
-			break;
-		case RTPRIV_IOCTL_GSITESURVEY:
-			RTMP_STA_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_SITESURVEY_GET, 0,
-								NULL, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-/*			RTMPIoctlGetSiteSurvey(pAd, wrq); */
-		    break;
-#ifdef DBG
-		case RTPRIV_IOCTL_MAC:
-			RTMP_STA_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_MAC, 0,
-								NULL, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-/*			RTMPIoctlMAC(pAd, wrq); */
-			break;
-		case RTPRIV_IOCTL_E2P:
-			RTMP_STA_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_E2P, 0,
-								NULL, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-/*			RTMPIoctlE2PROM(pAd, wrq); */
-			break;
-#endif /* DBG */
 
         case SIOCETHTOOL:
                 break;
