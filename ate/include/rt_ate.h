@@ -420,11 +420,6 @@ void ATE_QA_Statistics(
 	IN RXINFO_STRUC *pRxInfo,
 	IN PHEADER_802_11 pHeader);
 
-INT RtmpDoAte(
-	IN struct rtmp_adapter*pAd,
-	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
-	IN char *wrq_name);
-
 INT Set_TxStop_Proc(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg);

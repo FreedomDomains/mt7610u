@@ -2656,54 +2656,6 @@ static INT32 RACfgCMDHandler(
 	return Status;
 }
 
-
-INT RtmpDoAte(
-	IN	struct rtmp_adapter *pAd,
-	IN	RTMP_IOCTL_INPUT_STRUCT		*wrq,
-	IN	char *		wrq_name)
-{
-	INT32 Status = NDIS_STATUS_SUCCESS;
-	struct ate_racfghdr *pRaCfg;
-	UINT32 ATEMagicNum;
-
-	os_alloc_mem_suspend(pAd, (UCHAR **)&pRaCfg, sizeof(struct ate_racfghdr));
-
-	if (!pRaCfg)
-	{
-		Status = -ENOMEM;
-		goto ERROR0;
-	}
-
-	NdisZeroMemory(pRaCfg, sizeof(struct ate_racfghdr));
-	Status = copy_from_user((PUCHAR)pRaCfg, wrq->u.data.pointer, wrq->u.data.length);
-
-	if (Status)
-	{
-		Status = -EFAULT;
-		goto ERROR1;
-	}
-
-	ATEMagicNum = OS_NTOHL(pRaCfg->magic_no);
-
-	switch(ATEMagicNum)
-	{
-		case RACFG_MAGIC_NO:
-			Status = RACfgCMDHandler(pAd, wrq, pRaCfg);
-			break;
-
-		default:
-			Status = NDIS_STATUS_FAILURE;
-			DBGPRINT_ERR(("Unknown magic number of RACFG command = %x\n", ATEMagicNum));
-			break;
-	}
-
- ERROR1:
-	kfree(pRaCfg);
- ERROR0:
-	return Status;
-}
-
-
 void ATE_QA_Statistics(
 	IN struct rtmp_adapter*pAd,
 	IN RXWI_STRUC *pRxWI,
