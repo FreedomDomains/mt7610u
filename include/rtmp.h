@@ -6973,16 +6973,6 @@ PNDIS_PACKET RTMPDeFragmentDataFrame(
 
 /*////////////////////////////////////*/
 
-#if defined (AP_SCAN_SUPPORT) || defined (CONFIG_STA_SUPPORT)
-void RTMPIoctlGetSiteSurvey(
-	IN	struct rtmp_adapter *pAdapter,
-	IN	RTMP_IOCTL_INPUT_STRUCT *wrq);
-#endif
-
-
-
-
-
 #ifdef SNMP_SUPPORT
 /*for snmp */
 typedef struct _DefaultKeyIdxValue

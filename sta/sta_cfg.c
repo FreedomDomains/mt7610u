@@ -4748,10 +4748,6 @@ INT RTMP_STA_IoctlHandle(
 		}
 			break;
 
-		case CMD_RTPRIV_IOCTL_SITESURVEY_GET:
-			RTMPIoctlGetSiteSurvey(pAd, pRequest);
-			break;
-
 		case CMD_RTPRIV_IOCTL_RF:
 			break;
 
