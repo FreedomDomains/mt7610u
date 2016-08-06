@@ -131,7 +131,6 @@ extern	const struct iw_handler_def rt28xx_iw_handler_def;
 /***********************************************************************************
  *	OS Specific definitions and data structures
  ***********************************************************************************/
-typedef struct net_device_stats	NET_DEV_STATS;
 typedef struct pci_dev 		* PPCI_DEV;
 typedef struct net_device	* PNET_DEV;
 typedef void				* PNDIS_PACKET;
