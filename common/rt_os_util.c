@@ -199,10 +199,4 @@ void SendAssocIEsToWpaSupplicant(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 
-INT32  RtPrivIoctlSetVal(void)
-{
-    return (INT32)RTPRIV_IOCTL_SET;
-}
-
-
 

@@ -992,8 +992,6 @@ extern UINT32 RT_RateSize;
 #include "vrut_ubm.h"
 #endif /* PLATFORM_UBM_IPX8 */
 
-INT32  RtPrivIoctlSetVal(void);
-
 void OS_SPIN_LOCK_IRQSAVE(NDIS_SPIN_LOCK *lock, unsigned long *flags);
 void OS_SPIN_UNLOCK_IRQRESTORE(NDIS_SPIN_LOCK *lock, unsigned long *flags);
 void OS_SPIN_LOCK_IRQ(NDIS_SPIN_LOCK *lock);
