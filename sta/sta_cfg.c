@@ -340,37 +340,6 @@ static struct {
 	{NULL,}
 };
 
-
-INT RTMPSTAPrivIoctlSet(
-	IN struct rtmp_adapter*pAd,
-	IN char *SetProcName,
-	IN char *ProcArg)
-{
-	int ret = 0;
-
-	for (PRTMP_PRIVATE_SET_PROC = RTMP_PRIVATE_SUPPORT_PROC; PRTMP_PRIVATE_SET_PROC->name; PRTMP_PRIVATE_SET_PROC++)
-	{
-	    if (strcmp(SetProcName, PRTMP_PRIVATE_SET_PROC->name) == 0)
-	    {
-	        if(!PRTMP_PRIVATE_SET_PROC->set_proc(pAd, ProcArg))
-	        {	/*FALSE:Set private failed then return Invalid argument */
-			    return NDIS_STATUS_FAILURE;
-	        }
-		    break;	/*Exit for loop. */
-	    }
-	}
-
-	if(PRTMP_PRIVATE_SET_PROC->name == NULL)
-	{  /*Not found argument */
-	 	DBGPRINT(RT_DEBUG_TRACE, ("===>rt_ioctl_setparam:: (iwpriv) Not Support Set Command [%s=%s]\n", SetProcName, ProcArg));
-	    return -EINVAL;
-
-	}
-
-	return ret;
-}
-
-
 /*
     ==========================================================================
     Description:
@@ -4288,16 +4257,6 @@ INT RTMP_STA_IoctlHandle(
 	/* handle by command */
 	switch(Command)
 	{
-		case CMD_RTPRIV_IOCTL_PARAM_SET:
-		{
-			RT_CMD_PARAM_SET *pCmdParam = (RT_CMD_PARAM_SET *)pData;
-			char *this_char = pCmdParam->pThisChar;
-			char *value = pCmdParam->pValue;
-
-			Status = RTMPSTAPrivIoctlSet(pAd, this_char, value);
-		}
-			break;
-
 		case CMD_RTPRIV_IOCTL_RF:
 			break;
 

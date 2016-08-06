@@ -28,11 +28,6 @@
 #ifndef __STA_CFG_H__
 #define __STA_CFG_H__
 
-INT RTMPSTAPrivIoctlSet(
-	IN struct rtmp_adapter*pAd,
-	IN char *SetProcName,
-	IN char *ProcArg);
-
 #ifdef WOW_SUPPORT
 #ifdef RTMP_MAC_USB
 /* set WOW enable */
