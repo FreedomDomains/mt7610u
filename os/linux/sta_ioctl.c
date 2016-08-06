@@ -1417,49 +1417,6 @@ SET_PROC:
 }
 
 
-static int
-rt_private_show(struct net_device *dev, struct iw_request_info *info,
-		struct iw_point *wrq, char *extra)
-{
-	RTMP_IOCTL_INPUT_STRUCT wrqin;
-	INT				Status = 0;
-	void   			*pAd;
-/*	POS_COOKIE		pObj; */
-	u32             subcmd = wrq->flags;
-	RT_CMD_STA_IOCTL_SHOW IoctlShow, *pIoctlShow = &IoctlShow;
-
-	GET_PAD_FROM_NET_DEV(pAd, dev);
-
-	if (pAd == NULL)
-	{
-		/* if 1st open fail, pAd will be free;
-		   So the net_dev->priv will be NULL in 2rd open */
-		return -ENETDOWN;
-	}
-
-
-/*	pObj = (POS_COOKIE) pAd->OS_Cookie; */
-	if (extra == NULL)
-	{
-		wrq->length = 0;
-		return -EIO;
-	}
-	memset(extra, 0x00, IW_PRIV_SIZE_MASK);
-
-
-	wrqin.u.data.pointer = wrq->pointer;
-	wrqin.u.data.length = wrq->length;
-
-	pIoctlShow->pData = (CHAR *)extra;
-	pIoctlShow->MaxSize = IW_PRIV_SIZE_MASK;
-	pIoctlShow->InfType = RT_DEV_PRIV_FLAGS_GET(dev);
-	RTMP_STA_IoctlHandle(pAd, &wrqin, CMD_RTPRIV_IOCTL_SHOW, subcmd,
-						pIoctlShow, 0, RT_DEV_PRIV_FLAGS_GET(dev));
-
-	wrq->length = wrqin.u.data.length;
-    return Status;
-}
-
 #ifdef SIOCSIWMLME
 int rt_ioctl_siwmlme(struct net_device *dev,
 			   struct iw_request_info *info,
@@ -2083,7 +2040,7 @@ static const iw_handler rt_priv_handlers[] = {
 	(iw_handler) NULL, /* + 0x0E */
 	(iw_handler) NULL, /* + 0x0F */
 	(iw_handler) NULL, /* + 0x10 */
-	(iw_handler) rt_private_show, /* + 0x11 */
+	(iw_handler) NULL, /* + 0x11 */
     (iw_handler) NULL, /* + 0x12 */
 	(iw_handler) NULL, /* + 0x13 */
     (iw_handler) NULL, /* + 0x14 */
