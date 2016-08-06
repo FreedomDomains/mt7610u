@@ -5595,77 +5595,6 @@ void RTMPIoctlShow(
 }
 
 
-/* ------------------- Functions for Standard IOCTL ------------------------- */
-#define RTMP_STA_STANDARD_IOCTL_HANDLE(__pAd, __pData, __Data, __SubCmd)	\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWFREQ:									\
-		return RtmpIoctl_rt_ioctl_siwfreq(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWFREQ:									\
-		return RtmpIoctl_rt_ioctl_giwfreq(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWMODE:									\
-		return RtmpIoctl_rt_ioctl_siwmode(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWMODE:									\
-		return RtmpIoctl_rt_ioctl_giwmode(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWAP:									\
-		return RtmpIoctl_rt_ioctl_siwap(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWAP:									\
-		return RtmpIoctl_rt_ioctl_giwap(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWSCAN:									\
-		return RtmpIoctl_rt_ioctl_siwscan(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWSCAN:									\
-		return RtmpIoctl_rt_ioctl_giwscan(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWESSID:									\
-		return RtmpIoctl_rt_ioctl_siwessid(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWESSID:									\
-		return RtmpIoctl_rt_ioctl_giwessid(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWNICKN:									\
-		return RtmpIoctl_rt_ioctl_siwnickn(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWNICKN:									\
-		return RtmpIoctl_rt_ioctl_giwnickn(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWRTS:									\
-		return RtmpIoctl_rt_ioctl_siwrts(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWRTS:									\
-		return RtmpIoctl_rt_ioctl_giwrts(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWFRAG:									\
-		return RtmpIoctl_rt_ioctl_siwfrag(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWFRAG:									\
-		return RtmpIoctl_rt_ioctl_giwfrag(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWENCODE:								\
-		return RtmpIoctl_rt_ioctl_siwencode(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWENCODE:								\
-		return RtmpIoctl_rt_ioctl_giwencode(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWMLME:									\
-		return RtmpIoctl_rt_ioctl_siwmlme(__pAd, __pData, __Data, __SubCmd);\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWAUTH:									\
-		return RtmpIoctl_rt_ioctl_siwauth(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWAUTH:									\
-		return RtmpIoctl_rt_ioctl_giwauth(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWENCODEEXT:								\
-		return RtmpIoctl_rt_ioctl_siwencodeext(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWENCODEEXT:								\
-		return RtmpIoctl_rt_ioctl_giwencodeext(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE:									\
-		return RtmpIoctl_rt_ioctl_siwgenie(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWGENIE:									\
-		return RtmpIoctl_rt_ioctl_giwgenie(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWPMKSA:									\
-		return RtmpIoctl_rt_ioctl_siwpmksa(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWRATE:									\
-		return RtmpIoctl_rt_ioctl_siwrate(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIWRATE:									\
-		return RtmpIoctl_rt_ioctl_giwrate(__pAd, __pData, __Data);			\
-	case CMD_RTPRIV_IOCTL_STA_SIOCGIFHWADDR:								\
-		return RtmpIoctl_rt_ioctl_gifhwaddr(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_SIOCSIWPRIVRSSI:								\
-		return RtmpIoctl_rt_ioctl_rssi(__pAd, __pData, __Data);		\
-	case CMD_RTPRIV_IOCTL_STA_IW_SET_WSC_U32_ITEM:							\
-		return RtmpIoctl_rt_private_set_wsc_u32_item(__pAd, __pData, __Data);\
-	case CMD_RTPRIV_IOCTL_STA_IW_SET_WSC_STR_ITEM:							\
-		return RtmpIoctl_rt_private_set_wsc_string_item(__pAd, __pData, __Data);\
-	case CMD_RTPRIV_IOCTL_STA_IW_GET_STATISTICS:							\
-		return RtmpIoctl_rt_private_get_statistics(__pAd, __pData, __Data);	\
-	;
-
-
 /*
 ========================================================================
 Routine Description:
@@ -8037,7 +7966,138 @@ INT RTMP_STA_IoctlHandle(
 		/* ------------------------------------------------------------------ */
 		/* for standard IOCTL in LINUX OS */
 
-		RTMP_STA_STANDARD_IOCTL_HANDLE(pAd, pData, Data, Subcmd);
+		/* ------------------- Functions for Standard IOCTL ------------------------- */
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWFREQ:
+			return RtmpIoctl_rt_ioctl_siwfreq(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWFREQ:
+			return RtmpIoctl_rt_ioctl_giwfreq(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWMODE:
+			return RtmpIoctl_rt_ioctl_siwmode(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWMODE:
+			return RtmpIoctl_rt_ioctl_giwmode(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWAP:
+			return RtmpIoctl_rt_ioctl_siwap(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWAP:
+			return RtmpIoctl_rt_ioctl_giwap(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWSCAN:
+			return RtmpIoctl_rt_ioctl_siwscan(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWSCAN:
+			return RtmpIoctl_rt_ioctl_giwscan(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWESSID:
+			return RtmpIoctl_rt_ioctl_siwessid(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWESSID:
+			return RtmpIoctl_rt_ioctl_giwessid(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWNICKN:
+			return RtmpIoctl_rt_ioctl_siwnickn(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWNICKN:
+			return RtmpIoctl_rt_ioctl_giwnickn(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWRTS:
+			return RtmpIoctl_rt_ioctl_siwrts(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWRTS:
+			return RtmpIoctl_rt_ioctl_giwrts(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWFRAG:
+			return RtmpIoctl_rt_ioctl_siwfrag(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWFRAG:
+			return RtmpIoctl_rt_ioctl_giwfrag(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWENCODE:
+			return RtmpIoctl_rt_ioctl_siwencode(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWENCODE:
+			return RtmpIoctl_rt_ioctl_giwencode(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWMLME:
+			return RtmpIoctl_rt_ioctl_siwmlme(pAd, pData, Data, Subcmd);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWAUTH:
+			return RtmpIoctl_rt_ioctl_siwauth(pAd, pData, Data);			\
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWAUTH:
+			return RtmpIoctl_rt_ioctl_giwauth(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWENCODEEXT:
+			return RtmpIoctl_rt_ioctl_siwencodeext(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWENCODEEXT:
+			return RtmpIoctl_rt_ioctl_giwencodeext(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE:
+			return RtmpIoctl_rt_ioctl_siwgenie(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWGENIE:
+			return RtmpIoctl_rt_ioctl_giwgenie(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWPMKSA:
+			return RtmpIoctl_rt_ioctl_siwpmksa(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWRATE:
+			return RtmpIoctl_rt_ioctl_siwrate(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIWRATE:
+			return RtmpIoctl_rt_ioctl_giwrate(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCGIFHWADDR:
+			return RtmpIoctl_rt_ioctl_gifhwaddr(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_SIOCSIWPRIVRSSI:
+			return RtmpIoctl_rt_ioctl_rssi(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_IW_SET_WSC_U32_ITEM:
+			return RtmpIoctl_rt_private_set_wsc_u32_item(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_IW_SET_WSC_STR_ITEM:
+			return RtmpIoctl_rt_private_set_wsc_string_item(pAd, pData, Data);
+			break;
+
+		case CMD_RTPRIV_IOCTL_STA_IW_GET_STATISTICS:
+			return RtmpIoctl_rt_private_get_statistics(pAd, pData, Data);
+			break;
 
 		/* ------------------------------------------------------------------ */
 
