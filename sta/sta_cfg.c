@@ -7706,13 +7706,6 @@ INT RTMP_STA_IoctlHandle(
 	/* handle by command */
 	switch(Command)
 	{
-		case CMD_RT_PRIV_IOCTL:
-			if (Subcmd & OID_GET_SET_TOGGLE)
-				Status = RTMPSetInformation(pAd, pRequest,  Subcmd);
-			else
-				Status = RTMPQueryInformation(pAd, pRequest, Subcmd);
-			break;
-
 		case CMD_RTPRIV_IOCTL_PARAM_SET:
 		{
 			RT_CMD_PARAM_SET *pCmdParam = (RT_CMD_PARAM_SET *)pData;
