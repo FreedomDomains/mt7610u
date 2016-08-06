@@ -943,11 +943,11 @@ void RTMPInfClose(
 
 
 
-PNET_DEV RtmpPhyNetDevMainCreate(
+struct net_device *RtmpPhyNetDevMainCreate(
 	IN void 			*pAdSrc)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
-	PNET_DEV pDevNew;
+	struct net_device *pDevNew;
 	UINT32 MC_RowID = 0, IoctlIF = 0;
 
 

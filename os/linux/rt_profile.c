@@ -225,7 +225,7 @@ void STA_MonPktSend(
 	IN struct rtmp_adapter*pAd,
 	IN RX_BLK *pRxBlk)
 {
-	PNET_DEV pNetDev;
+	struct net_device *pNetDev;
 	PNDIS_PACKET pRxPacket;
 	PHEADER_802_11 pHeader;
 	USHORT DataSize;
@@ -434,11 +434,11 @@ done:
 }
 
 
-PNET_DEV get_netdev_from_bssid(
+struct net_device *get_netdev_from_bssid(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			FromWhichBSSID)
 {
-	PNET_DEV dev_p = NULL;
+	struct net_device *dev_p = NULL;
 
 	do
 	{

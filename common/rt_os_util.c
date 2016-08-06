@@ -134,7 +134,7 @@ BOOLEAN RtmpOsCmdDisplayLenCheck(
 
 #if defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
 void WpaSendMicFailureToWpaSupplicant(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN BOOLEAN bUnicast)
 {
 	char custom[IW_CUSTOM_MAX] = {0};
@@ -152,7 +152,7 @@ void WpaSendMicFailureToWpaSupplicant(
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 int wext_notify_event_assoc(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UCHAR *ReqVarIEs,
 	IN UINT32 ReqVarIELen)
 {
@@ -176,7 +176,7 @@ int wext_notify_event_assoc(
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 void SendAssocIEsToWpaSupplicant(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UCHAR *ReqVarIEs,
 	IN UINT32 ReqVarIELen)
 {

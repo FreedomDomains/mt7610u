@@ -135,12 +135,12 @@ void RTMP_QueryPacketInfo(
 	OUT	UINT		 			*pSrcBufLen);
 
 PNDIS_PACKET DuplicatePacket(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	PNDIS_PACKET			pPacket,
 	IN	UCHAR					FromWhichBSSID);
 
 PNDIS_PACKET duplicate_pkt(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	PUCHAR					pHeader802_3,
     IN  UINT            		HdrLen,
 	IN	PUCHAR					pData,
@@ -152,7 +152,7 @@ PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
 	IN	PNDIS_PACKET			pOldPkt);
 
 PNDIS_PACKET duplicate_pkt_with_VLAN(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	USHORT					VLAN_VID,
 	IN	USHORT					VLAN_Priority,
 	IN	PUCHAR					pHeader802_3,
@@ -169,7 +169,7 @@ typedef void (*RTMP_CB_8023_PACKET_ANNOUNCE)(
 
 BOOLEAN RTMPL2FrameTxAction(
 	IN  void 				*pCtrlBkPtr,
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
 	IN	UCHAR					apidx,
 	IN	PUCHAR					pData,
@@ -189,7 +189,7 @@ PNDIS_PACKET ClonePacket(
 	IN	ULONG					DataSize);
 
 void wlan_802_11_to_802_3_packet(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UCHAR					OpMode,
 	IN	USHORT					VLAN_VID,
 	IN	USHORT					VLAN_Priority,
@@ -201,7 +201,7 @@ void wlan_802_11_to_802_3_packet(
 	IN	UCHAR					*TPID);
 
 void send_monitor_packets(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	PNDIS_PACKET			pRxPacket,
 	IN	PHEADER_802_11			pHeader,
 	IN	UCHAR					*pData,
@@ -230,7 +230,7 @@ UCHAR VLAN_8023_Header_Copy(
 	IN	UCHAR					*TPID);
 
 void RtmpOsPktBodyCopy(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	PNDIS_PACKET			pNetPkt,
 	IN	ULONG					ThisFrameLen,
 	IN	PUCHAR					pData);
@@ -279,12 +279,12 @@ void RtmpOsPktRcvHandle(
 
 void RtmpOsPktInit(
 	IN	PNDIS_PACKET			pNetPkt,
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UCHAR					*pData,
 	IN	USHORT					DataSize);
 
 PNDIS_PACKET RtmpOsPktIappMakeUp(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	u8					*pMac);
 
 BOOLEAN RtmpOsPktOffsetInit(void);
@@ -324,47 +324,47 @@ void RtmpOSFSInfoChange(
 /* OS Network Interface */
 int RtmpOSNetDevAddrSet(
 	IN UCHAR					OpMode,
-	IN PNET_DEV 				pNetDev,
+	IN struct net_device *				pNetDev,
 	IN PUCHAR					pMacAddr,
 	IN PUCHAR					dev_name);
 
 void RtmpOSNetDevClose(
-	IN PNET_DEV					pNetDev);
+	IN struct net_device *				pNetDev);
 
 void RtmpOSNetDevFree(
-	IN	PNET_DEV				pNetDev);
+	IN	struct net_device *			pNetDev);
 
 INT RtmpOSNetDevAlloc(
-	IN	PNET_DEV				*new_dev_p,
+	IN	struct net_device *			*new_dev_p,
 	IN	UINT32					privDataSize);
 
 INT RtmpOSNetDevOpsAlloc(
 	IN	void *				*pNetDevOps);
 
 
-PNET_DEV RtmpOSNetDevGetByName(
-	IN	PNET_DEV				pNetDev,
+struct net_device *RtmpOSNetDevGetByName(
+	IN	struct net_device *			pNetDev,
 	IN	char *				pDevName);
 
 void RtmpOSNetDeviceRefPut(
-	IN	PNET_DEV				pNetDev);
+	IN	struct net_device *			pNetDev);
 
 INT RtmpOSNetDevDestory(
 	IN	void 				*pReserved,
-	IN	PNET_DEV				pNetDev);
+	IN	struct net_device *			pNetDev);
 
 void RtmpOSNetDevDetach(
-	IN	PNET_DEV				pNetDev);
+	IN	struct net_device *			pNetDev);
 
 int RtmpOSNetDevAttach(
 	IN	UCHAR					OpMode,
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	RTMP_OS_NETDEV_OP_HOOK	*pDevOpHook);
 
 void RtmpOSNetDevProtect(
 	IN BOOLEAN lock_it);
 
-PNET_DEV RtmpOSNetDevCreate(
+struct net_device *RtmpOSNetDevCreate(
 	IN	INT32					MC_RowID,
 	IN	UINT32					*pIoctlIF,
 	IN	INT 					devType,
@@ -379,19 +379,19 @@ unsigned char *RtmpOsNetDevGetPhyAddr(
 	IN	void 				*pDev);
 
 void RtmpOsNetQueueStart(
-	IN	PNET_DEV				pDev);
+	IN	struct net_device *			pDev);
 
 void RtmpOsNetQueueStop(
-	IN	PNET_DEV				pDev);
+	IN	struct net_device *			pDev);
 
 void RtmpOsNetQueueWake(
-	IN	PNET_DEV				pDev);
+	IN	struct net_device *			pDev);
 
 void RtmpOsSetPktNetDev(
 	IN	void 				*pPkt,
 	IN	void 				*pDev);
 
-PNET_DEV RtmpOsPktNetDevGet(
+struct net_device *RtmpOsPktNetDevGet(
 	IN	void 				*pPkt);
 
 char *RtmpOsGetNetDevName(
@@ -604,7 +604,7 @@ void RtmpOsAtomicInterlockedExchange(RTMP_OS_ATOMIC *pAtomicSrc, LONG Value);
 void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
 
 int RtmpOSWrielessEventSend(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UINT32					eventType,
 	IN	INT						flags,
 	IN	PUCHAR					pSrcMac,
@@ -612,7 +612,7 @@ int RtmpOSWrielessEventSend(
 	IN	UINT32					dataLen);
 
 int RtmpOSWrielessEventSendExt(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UINT32					eventType,
 	IN	INT						flags,
 	IN	PUCHAR					pSrcMac,
@@ -636,7 +636,7 @@ void RtmpDrvAllE2PPrint(
 	IN	UINT32					AddrStep);
 
 int RtmpOSIRQRelease(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UINT32					infType,
 	IN	PPCI_DEV				pci_dev,
 	IN	BOOLEAN					*pHaveMsi);
@@ -683,23 +683,23 @@ void RtmpMeshDown(
 	IN BOOLEAN WaitFlag,
 	IN BOOLEAN (*RtmpMeshLinkCheck)(IN void *pAd));
 
-USHORT RtmpOsNetPrivGet(PNET_DEV pDev);
+USHORT RtmpOsNetPrivGet(struct net_device *pDev);
 
 BOOLEAN RtmpOsCmdDisplayLenCheck(
 	IN	UINT32					LenSrc,
 	IN	UINT32					Offset);
 
 void    WpaSendMicFailureToWpaSupplicant(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
     IN  BOOLEAN					bUnicast);
 
 int wext_notify_event_assoc(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UCHAR					*ReqVarIEs,
 	IN	UINT32					ReqVarIELen);
 
 void    SendAssocIEsToWpaSupplicant(
-	IN	PNET_DEV				pNetDev,
+	IN	struct net_device *			pNetDev,
 	IN	UCHAR					*ReqVarIEs,
 	IN	UINT32					ReqVarIELen);
 

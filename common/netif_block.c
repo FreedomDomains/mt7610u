@@ -50,7 +50,7 @@ void initblockQueueTab(
 
 BOOLEAN blockNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
-	IN PNET_DEV pNetDev)
+	IN struct net_device *pNetDev)
 {
 	PNETIF_ENTRY pNetIfEntry = NULL;
 
@@ -77,7 +77,7 @@ void releaseNetIf(
 
 	while((pNetIfEntry = (PNETIF_ENTRY)removeHeadList(pNetIfList)) !=  NULL)
 	{
-		PNET_DEV pNetDev = pNetIfEntry->pNetDev;
+		struct net_device * pNetDev = pNetIfEntry->pNetDev;
 		RTMP_OS_NETDEV_WAKE_QUEUE(pNetDev);
 		insertTailList(&freeNetIfEntryList, (PLIST_ENTRY)pNetIfEntry);
 
@@ -93,7 +93,7 @@ void StopNetIfQueue(
 	IN UCHAR QueIdx,
 	IN PNDIS_PACKET pPacket)
 {
-	PNET_DEV NetDev = NULL;
+	struct net_device * = NULL;
 	UCHAR IfIdx = 0;
 	BOOLEAN valid = FALSE;
 

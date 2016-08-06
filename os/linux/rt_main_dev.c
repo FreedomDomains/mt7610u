@@ -354,7 +354,7 @@ err:
 }
 
 
-PNET_DEV RtmpPhyNetDevInit(
+struct net_device *RtmpPhyNetDevInit(
 	IN void 					*pAd,
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetDevHook)
 {
@@ -532,7 +532,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 
 
 INT rt28xx_ioctl(
-	IN PNET_DEV net_dev,
+	IN struct net_device *net_dev,
 	INOUT struct ifreq	*rq,
 	IN INT cmd)
 {
@@ -641,7 +641,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 
 BOOLEAN RtmpPhyNetDevExit(
 	IN void 		*pAd,
-	IN PNET_DEV		net_dev)
+	IN struct net_device *	net_dev)
 {
 	/* Unregister network device */
 	if (net_dev != NULL)
@@ -660,7 +660,7 @@ BOOLEAN RtmpPhyNetDevExit(
 	Device IRQ related functions.
 
  *******************************************************************************/
-int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
+int RtmpOSIRQRequest(IN struct net_device *pNetDev)
 {
 	ULONG infType;
 	void *pAd = NULL;
@@ -696,7 +696,7 @@ int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
     ========================================================================
 */
 struct net_device_stats *RT28xx_get_wds_ether_stats(
-    IN PNET_DEV net_dev)
+    IN struct net_device *net_dev)
 {
     void *pAd = NULL;
 /*	INT WDS_apidx = 0,index; */

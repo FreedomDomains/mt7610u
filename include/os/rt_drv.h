@@ -76,7 +76,6 @@ typedef void pregs;
  *	OS Specific definitions and data structures
  ***********************************************************************************/
 typedef void				* PPCI_DEV;
-typedef void				* PNET_DEV;
 typedef void				* PNDIS_PACKET;
 typedef char				NDIS_PACKET;
 typedef PNDIS_PACKET		* PPNDIS_PACKET;

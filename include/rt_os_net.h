@@ -63,27 +63,27 @@ int (*RTMPSendPackets)(
 
 int (*MBSS_PacketSend)(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int (*WDS_PacketSend)(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int (*APC_PacketSend)(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int (*MESH_PacketSend)(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int (*P2P_PacketSend)(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 INT (*RTMP_AP_IoctlHandle)(
@@ -212,27 +212,27 @@ int	RTMPSendPackets(
 
 int MBSS_PacketSend(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int WDS_PacketSend(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int APC_PacketSend(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int MESH_PacketSend(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int P2P_PacketSend(
 	IN	PNDIS_PACKET				pPktSrc,
-	IN	PNET_DEV					pDev,
+	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 
@@ -255,7 +255,7 @@ void RTMPInfClose(void *pAd);
 
 int rt28xx_init(void *pAd);
 
-PNET_DEV RtmpPhyNetDevMainCreate(void *pAd);
+struct net_device *RtmpPhyNetDevMainCreate(void *pAd);
 #endif /* RTMP_MODULE_OS */
 
 
@@ -287,51 +287,51 @@ __inline void VIRTUAL_IF_DOWN(void *pAd)
 
 #ifdef CONFIG_STA_SUPPORT
 INT rt28xx_sta_ioctl(
-	IN	PNET_DEV		net_dev,
+	IN	struct net_device *	net_dev,
 	IN	OUT	struct ifreq	*rq,
 	IN	INT			cmd);
 #endif /* CONFIG_STA_SUPPORT */
 
-PNET_DEV RtmpPhyNetDevInit(
+struct net_device *RtmpPhyNetDevInit(
 	IN void 					*pAd,
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetHook);
 
 BOOLEAN RtmpPhyNetDevExit(
 	IN void 					*pAd,
-	IN PNET_DEV					net_dev);
+	IN struct net_device *				net_dev);
 
 #endif /* RTMP_MODULE_OS && OS_ABL_FUNC_SUPPORT */
 
 
 void RT28xx_MBSS_Init(
 	IN void *pAd,
-	IN PNET_DEV main_dev_p);
+	IN struct net_device *main_dev_p);
 void RT28xx_MBSS_Remove(
 	IN void *pAd);
 INT MBSS_VirtualIF_Open(
-	IN	PNET_DEV			dev_p);
+	IN	struct net_device *		dev_p);
 INT MBSS_VirtualIF_Close(
-	IN	PNET_DEV			dev_p);
+	IN	struct net_device *		dev_p);
 INT MBSS_VirtualIF_PacketSend(
 	IN PNDIS_PACKET			skb_p,
-	IN PNET_DEV				dev_p);
+	IN struct net_device *			dev_p);
 INT MBSS_VirtualIF_Ioctl(
-	IN PNET_DEV				dev_p,
+	IN struct net_device *			dev_p,
 	IN OUT void 			*rq_p,
 	IN INT cmd);
 
 void RT28xx_WDS_Init(
 	IN void 				*pAd,
-	IN PNET_DEV				net_dev);
+	IN struct net_device *			net_dev);
 INT WdsVirtualIFSendPackets(
 	IN PNDIS_PACKET			pSkb,
-	IN PNET_DEV				dev);
+	IN struct net_device *			dev);
 INT WdsVirtualIF_open(
-	IN	PNET_DEV			dev);
+	IN	struct net_device *		dev);
 INT WdsVirtualIF_close(
-	IN PNET_DEV				dev);
+	IN struct net_device *			dev);
 INT WdsVirtualIF_ioctl(
-	IN PNET_DEV				net_dev,
+	IN struct net_device *			net_dev,
 	IN OUT void 			*rq,
 	IN INT					cmd);
 void RT28xx_WDS_Remove(
@@ -339,16 +339,16 @@ void RT28xx_WDS_Remove(
 
 void RT28xx_ApCli_Init(
 	IN void 				*pAd,
-	IN PNET_DEV				main_dev_p);
+	IN struct net_device *			main_dev_p);
 INT ApCli_VirtualIF_Open(
-	IN PNET_DEV				dev_p);
+	IN struct net_device *			dev_p);
 INT ApCli_VirtualIF_Close(
-	IN	PNET_DEV			dev_p);
+	IN	struct net_device *		dev_p);
 INT ApCli_VirtualIF_PacketSend(
 	IN PNDIS_PACKET 		pPktSrc,
-	IN PNET_DEV				pDev);
+	IN struct net_device *			pDev);
 INT ApCli_VirtualIF_Ioctl(
-	IN PNET_DEV				dev_p,
+	IN struct net_device *			dev_p,
 	IN OUT void 			*rq_p,
 	IN INT 					cmd);
 void RT28xx_ApCli_Remove(
@@ -356,38 +356,38 @@ void RT28xx_ApCli_Remove(
 
 void RTMP_Mesh_Init(
 	IN void 				*pAd,
-	IN PNET_DEV				main_dev_p,
+	IN struct net_device *			main_dev_p,
 	IN char *			pHostName);
 void RTMP_Mesh_Remove(
 	IN void 				*pAd);
 INT Mesh_VirtualIF_Open(
-	IN PNET_DEV				pDev);
+	IN struct net_device *			pDev);
 INT Mesh_VirtualIF_Close(
-	IN	PNET_DEV			pDev);
+	IN	struct net_device *		pDev);
 INT Mesh_VirtualIF_PacketSend(
 	IN PNDIS_PACKET 		pPktSrc,
-	IN PNET_DEV				pDev);
+	IN struct net_device *			pDev);
 INT Mesh_VirtualIF_Ioctl(
-	IN PNET_DEV				dev_p,
+	IN struct net_device *			dev_p,
 	IN OUT void 			*rq_p,
 	IN INT 					cmd);
 
 void RTMP_P2P_Init(
 		 IN void 		 *pAd,
-		 IN PNET_DEV main_dev_p);
+		 IN struct net_device *main_dev_p);
 
  INT P2P_VirtualIF_Open(
-	 IN  PNET_DEV	 dev_p);
+	 IN  struct net_device * dev_p);
 
  INT P2P_VirtualIF_Close(
-	 IN  PNET_DEV	 dev_p);
+	 IN  struct net_device * dev_p);
 
  INT P2P_VirtualIF_PacketSend(
 	 IN PNDIS_PACKET	 skb_p,
-	 IN PNET_DEV		 dev_p);
+	 IN struct net_device *	 dev_p);
 
  INT P2P_VirtualIF_Ioctl(
-	 IN PNET_DEV			 dev_p,
+	 IN struct net_device *		 dev_p,
 	 IN OUT void  *rq_p,
 	 IN INT cmd);
 

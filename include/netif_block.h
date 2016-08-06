@@ -36,7 +36,7 @@
 typedef struct _NETIF_ENTRY
 {
 	struct _NETIF_ENTRY *pNext;
-	PNET_DEV pNetDev;
+	struct net_device * pNetDev;
 } NETIF_ENTRY, *PNETIF_ENTRY;
 
 void initblockQueueTab(
@@ -44,7 +44,7 @@ void initblockQueueTab(
 
 BOOLEAN blockNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
-	IN PNET_DEV pNetDev);
+	IN struct net_device * pNetDev);
 
 void releaseNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry);

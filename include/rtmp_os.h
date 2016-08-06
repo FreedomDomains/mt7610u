@@ -112,8 +112,8 @@ typedef struct _RTMP_OS_TASK_ {
 #endif /* RTMP_MODULE_OS || ! OS_ABL_FUNC_SUPPORT */
 
 int RtmpOSIRQRequest(
-	IN PNET_DEV pNetDev);
-/*int RtmpOSIRQRelease(IN PNET_DEV pNetDev); */
+	IN struct net_device *pNetDev);
+/*int RtmpOSIRQRelease(IN struct net_device *pNetDev); */
 
 #ifndef OS_ABL_SUPPORT
 #define RTMP_MATOpsInit(__pAd)

@@ -132,7 +132,6 @@ extern	const struct iw_handler_def rt28xx_iw_handler_def;
  *	OS Specific definitions and data structures
  ***********************************************************************************/
 typedef struct pci_dev 		* PPCI_DEV;
-typedef struct net_device	* PNET_DEV;
 typedef void				* PNDIS_PACKET;
 typedef char				NDIS_PACKET;
 typedef PNDIS_PACKET		* PPNDIS_PACKET;
@@ -1117,7 +1116,7 @@ int rt28xx_packet_xmit(void *skb);
 
 
 INT rt28xx_ioctl(
-	IN	PNET_DEV		net_dev,
+	IN	struct net_device *	net_dev,
 	IN	OUT	struct ifreq	*rq,
 	IN	INT			cmd);
 

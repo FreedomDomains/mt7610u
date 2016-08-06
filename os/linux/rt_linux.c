@@ -432,7 +432,7 @@ void RTMP_QueryPacketInfo(
 
 
 PNDIS_PACKET DuplicatePacket(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR FromWhichBSSID)
 {
@@ -457,7 +457,7 @@ PNDIS_PACKET DuplicatePacket(
 
 
 PNDIS_PACKET duplicate_pkt(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN PUCHAR pHeader802_3,
 	IN UINT HdrLen,
 	IN PUCHAR pData,
@@ -530,7 +530,7 @@ PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
 */
 BOOLEAN RTMPL2FrameTxAction(
 	IN void * pCtrlBkPtr,
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
 	IN UCHAR apidx,
 	IN PUCHAR pData,
@@ -633,7 +633,7 @@ PNDIS_PACKET ClonePacket(
 
 void RtmpOsPktInit(
 	IN PNDIS_PACKET pNetPkt,
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UCHAR *pData,
 	IN USHORT DataSize)
 {
@@ -649,7 +649,7 @@ void RtmpOsPktInit(
 
 
 void wlan_802_11_to_802_3_packet(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UCHAR OpMode,
 	IN USHORT VLAN_VID,
 	IN USHORT VLAN_Priority,
@@ -731,7 +731,7 @@ INT32 ralinkrate[] = {
 
 UINT32 RT_RateSize = sizeof (ralinkrate);
 
-void send_monitor_packets(IN PNET_DEV pNetDev,
+void send_monitor_packets(IN struct net_device *pNetDev,
 			  IN PNDIS_PACKET pRxPacket,
 			  IN PHEADER_802_11 pHeader,
 			  IN UCHAR * pData,
@@ -1236,7 +1236,7 @@ static UINT32 RtmpOSWirelessEventTranslate(IN UINT32 eventType)
 }
 
 int RtmpOSWrielessEventSend(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UINT32 eventType,
 	IN INT flags,
 	IN PUCHAR pSrcMac,
@@ -1266,7 +1266,7 @@ int RtmpOSWrielessEventSend(
 }
 
 int RtmpOSWrielessEventSendExt(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UINT32 eventType,
 	IN INT flags,
 	IN PUCHAR pSrcMac,
@@ -1299,7 +1299,7 @@ int RtmpOSWrielessEventSendExt(
 
 int RtmpOSNetDevAddrSet(
 	IN UCHAR OpMode,
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN PUCHAR pMacAddr,
 	IN PUCHAR dev_name)
 {
@@ -1331,11 +1331,11 @@ int RtmpOSNetDevAddrSet(
 static int RtmpOSNetDevRequestName(
 	IN INT32 MC_RowID,
 	IN UINT32 *pIoctlIF,
-	IN PNET_DEV dev,
+	IN struct net_device *dev,
 	IN char *pPrefixStr,
 	IN INT devIdx)
 {
-	PNET_DEV existNetDev;
+	struct net_device *existNetDev;
 	STRING suffixName[IFNAMSIZ];
 	STRING desiredName[IFNAMSIZ];
 	int ifNameIdx,
@@ -1380,12 +1380,12 @@ static int RtmpOSNetDevRequestName(
 	return Status;
 }
 
-void RtmpOSNetDevClose(PNET_DEV pNetDev)
+void RtmpOSNetDevClose(struct net_device *pNetDev)
 {
 	dev_close(pNetDev);
 }
 
-void RtmpOSNetDevFree(PNET_DEV pNetDev)
+void RtmpOSNetDevFree(struct net_device *pNetDev)
 {
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
@@ -1410,7 +1410,7 @@ void RtmpOSNetDevFree(PNET_DEV pNetDev)
 }
 
 INT RtmpOSNetDevAlloc(
-	IN PNET_DEV *new_dev_p,
+	IN struct net_device **new_dev_p,
 	IN UINT32 privDataSize)
 {
 	*new_dev_p = NULL;
@@ -1439,9 +1439,9 @@ INT RtmpOSNetDevOpsAlloc(void **pNetDevOps)
 }
 
 
-PNET_DEV RtmpOSNetDevGetByName(PNET_DEV pNetDev, char *pDevName)
+struct net_device *RtmpOSNetDevGetByName(struct net_device *pNetDev, char *pDevName)
 {
-	PNET_DEV pTargetNetDev = NULL;
+	struct net_device *pTargetNetDev = NULL;
 
 	pTargetNetDev = dev_get_by_name(dev_net(pNetDev), pDevName);
 
@@ -1449,7 +1449,7 @@ PNET_DEV RtmpOSNetDevGetByName(PNET_DEV pNetDev, char *pDevName)
 }
 
 
-void RtmpOSNetDeviceRefPut(PNET_DEV pNetDev)
+void RtmpOSNetDeviceRefPut(struct net_device *pNetDev)
 {
 	/*
 	   every time dev_get_by_name is called, and it has returned a valid struct
@@ -1461,7 +1461,7 @@ void RtmpOSNetDeviceRefPut(PNET_DEV pNetDev)
 }
 
 
-INT RtmpOSNetDevDestory(void *pReserved, PNET_DEV pNetDev)
+INT RtmpOSNetDevDestory(void *pReserved, struct net_device *pNetDev)
 {
 
 	/* TODO: Need to fix this */
@@ -1471,7 +1471,7 @@ INT RtmpOSNetDevDestory(void *pReserved, PNET_DEV pNetDev)
 }
 
 
-void RtmpOSNetDevDetach(PNET_DEV pNetDev)
+void RtmpOSNetDevDetach(struct net_device *pNetDev)
 {
 	struct net_device_ops *pNetDevOps = (struct net_device_ops *)pNetDev->netdev_ops;
 
@@ -1508,7 +1508,7 @@ static struct ethtool_ops RALINK_Ethtool_Ops = {
 
 int RtmpOSNetDevAttach(
 	IN UCHAR OpMode,
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN RTMP_OS_NETDEV_OP_HOOK *pDevOpHook)
 {
 	int ret,
@@ -1573,7 +1573,7 @@ int RtmpOSNetDevAttach(
 		return NDIS_STATUS_FAILURE;
 }
 
-PNET_DEV RtmpOSNetDevCreate(
+struct net_device *RtmpOSNetDevCreate(
 	IN INT32 MC_RowID,
 	IN UINT32 *pIoctlIF,
 	IN INT devType,
@@ -1893,7 +1893,7 @@ INT32 RtmpOsFileIsErr(IN void *pFile)
 }
 
 int RtmpOSIRQRelease(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN UINT32 infType,
 	IN PPCI_DEV pci_dev,
 	IN BOOLEAN *pHaveMsi)
@@ -1985,7 +1985,7 @@ Note:
 */
 char *RtmpOsGetNetDevName(void *pDev)
 {
-	return ((PNET_DEV) pDev)->name;
+	return ((struct net_device *) pDev)->name;
 }
 
 /*
@@ -2070,7 +2070,7 @@ Return Value:
 Note:
 ========================================================================
 */
-PNET_DEV RtmpOsPktNetDevGet(void *pPkt)
+struct net_device *RtmpOsPktNetDevGet(void *pPkt)
 {
 	return GET_OS_PKT_NETDEV(pPkt);
 }
@@ -2095,7 +2095,7 @@ typedef struct GNU_PACKED _RT_IAPP_L2_UPDATE_FRAME {
 
 
 PNDIS_PACKET RtmpOsPktIappMakeUp(
-	IN PNET_DEV pNetDev,
+	IN struct net_device *pNetDev,
 	IN u8 *pMac)
 {
 	RT_IAPP_L2_UPDATE_FRAME frame_body;
@@ -2993,7 +2993,7 @@ void RtmpOsSetNetDevPriv(void *pDev, void *pPriv)
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
 
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((PNET_DEV) pDev);
+	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
 	if (pDevInfo == NULL)
 	{
 		os_alloc_mem(NULL, (UCHAR **)&pDevInfo, sizeof(DEV_PRIV_INFO));
@@ -3004,7 +3004,7 @@ void RtmpOsSetNetDevPriv(void *pDev, void *pPriv)
 	pDevInfo->pPriv = (void *)pPriv;
 	pDevInfo->priv_flags = 0;
 
-	_RTMP_OS_NETDEV_SET_PRIV((PNET_DEV) pDev, pDevInfo);
+	_RTMP_OS_NETDEV_SET_PRIV((struct net_device *) pDev, pDevInfo);
 }
 
 
@@ -3028,7 +3028,7 @@ void *RtmpOsGetNetDevPriv(void *pDev)
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
 
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((PNET_DEV) pDev);
+	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
 	if (pDevInfo != NULL)
 		return pDevInfo->pPriv;
 	return NULL;
@@ -3055,7 +3055,7 @@ USHORT RtmpDevPrivFlagsGet(void *pDev)
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
 
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((PNET_DEV) pDev);
+	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
 	if (pDevInfo != NULL)
 		return pDevInfo->priv_flags;
 	return 0;
@@ -3081,7 +3081,7 @@ void RtmpDevPrivFlagsSet(void *pDev, USHORT PrivFlags)
 	DEV_PRIV_INFO *pDevInfo = NULL;
 
 
-	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((PNET_DEV) pDev);
+	pDevInfo = (DEV_PRIV_INFO *) _RTMP_OS_NETDEV_GET_PRIV((struct net_device *) pDev);
 	if (pDevInfo != NULL)
 		pDevInfo->priv_flags = PrivFlags;
 }
@@ -4109,7 +4109,7 @@ Note:
 */
 unsigned char *RtmpOsNetDevGetPhyAddr(void *pDev)
 {
-	return RTMP_OS_NETDEV_GET_PHYADDR((PNET_DEV) pDev);
+	return RTMP_OS_NETDEV_GET_PHYADDR((struct net_device *) pDev);
 }
 
 
@@ -4127,7 +4127,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsNetQueueStart(PNET_DEV pDev)
+void RtmpOsNetQueueStart(struct net_device *pDev)
 {
 	RTMP_OS_NETDEV_START_QUEUE(pDev);
 }
@@ -4147,7 +4147,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsNetQueueStop(PNET_DEV pDev)
+void RtmpOsNetQueueStop(struct net_device *pDev)
 {
 	RTMP_OS_NETDEV_STOP_QUEUE(pDev);
 }
@@ -4167,7 +4167,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsNetQueueWake(PNET_DEV pDev)
+void RtmpOsNetQueueWake(struct net_device *pDev)
 {
 	RTMP_OS_NETDEV_WAKE_QUEUE(pDev);
 }
@@ -4190,7 +4190,7 @@ Note:
 */
 void RtmpOsSetPktNetDev(void *pPkt, void *pDev)
 {
-	SET_OS_PKT_NETDEV(pPkt, (PNET_DEV) pDev);
+	SET_OS_PKT_NETDEV(pPkt, (struct net_device *) pDev);
 }
 
 
@@ -4211,7 +4211,7 @@ Note:
 */
 void RtmpOsSetNetDevType(void *pDev, USHORT Type)
 {
-	RTMP_OS_NETDEV_SET_TYPE((PNET_DEV) pDev, Type);
+	RTMP_OS_NETDEV_SET_TYPE((struct net_device *) pDev, Type);
 }
 
 
@@ -4232,7 +4232,7 @@ Note:
 */
 void RtmpOsSetNetDevTypeMonitor(void *pDev)
 {
-	RTMP_OS_NETDEV_SET_TYPE((PNET_DEV) pDev, ARPHRD_IEEE80211_PRISM);
+	RTMP_OS_NETDEV_SET_TYPE((struct net_device *) pDev, ARPHRD_IEEE80211_PRISM);
 }
 
 
@@ -4736,7 +4736,7 @@ Note:
 ========================================================================
 */
 void RtmpOsPktBodyCopy(
-	PNET_DEV pNetDev,
+	struct net_device *pNetDev,
 	PNDIS_PACKET pNetPkt,
 	ULONG ThisFrameLen,
 	PUCHAR pData)

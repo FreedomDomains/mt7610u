@@ -2657,7 +2657,7 @@ typedef struct tx_agc_ctrl{
 */
 struct rtmp_adapter {
 	void *OS_Cookie;	/* save specific structure relative to OS */
-	PNET_DEV net_dev;
+	struct net_device *net_dev;
 	ULONG VirtualIfCnt;
 
 	//BOOLEAN PollIdle;
@@ -6242,7 +6242,7 @@ UINT BA_Reorder_AMSDU_Annnounce(
 	IN	UCHAR			OpMode);
 #endif /* DOT11_N_SUPPORT */
 
-PNET_DEV get_netdev_from_bssid(
+struct net_device *get_netdev_from_bssid(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			FromWhichBSSID);
 
