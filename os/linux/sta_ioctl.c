@@ -1360,63 +1360,6 @@ rt_ioctl_giwencode(struct net_device *dev,
 
 }
 
-int rt_ioctl_setparam(struct net_device *dev, struct iw_request_info *info,
-			 void *w, char *extra)
-{
-	void *pAd;
-/*	POS_COOKIE pObj; */
-	char *this_char = extra;
-	char *value = NULL;
-	int  Status=0;
-	RT_CMD_PARAM_SET CmdParam;
-
-	GET_PAD_FROM_NET_DEV(pAd, dev);
-
-	if (pAd == NULL)
-	{
-		/* if 1st open fail, pAd will be free;
-		   So the net_dev->priv will be NULL in 2rd open */
-		return -ENETDOWN;
-	}
-
-
-
-	if (!*this_char)
-		return -EINVAL;
-
-	if ((value = rtstrchr(this_char, '=')) != NULL)
-		*value++ = 0;
-
-	/*check if the interface is down */
-/*    	if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
-		if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, this_char) != NDIS_STATUS_SUCCESS)
-    	{
-    		DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
-			return -ENETDOWN;
-    	}
-	else
-	{
-		if (!value && (strcmp(this_char, "SiteSurvey") != 0))
-		    return -EINVAL;
-		else if (!value && (strcmp(this_char, "SiteSurvey") == 0))
-			goto SET_PROC;
-
-		/* reject setting nothing besides ANY ssid(ssidLen=0) */
-		if (!*value && (strcmp(this_char, "SSID") != 0))
-			return -EINVAL;
-	}
-
-SET_PROC:
-	CmdParam.pThisChar = this_char;
-	CmdParam.pValue = value;
-	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_PARAM_SET, 0,
-						&CmdParam, 0, RT_DEV_PRIV_FLAGS_GET(dev));
-/*	Status = RTMPSTAPrivIoctlSet(pAd, this_char, value); */
-
-    return Status;
-}
-
-
 #ifdef SIOCSIWMLME
 int rt_ioctl_siwmlme(struct net_device *dev,
 			   struct iw_request_info *info,
@@ -1992,7 +1935,7 @@ static const iw_handler rt_handler[] =
 static const iw_handler rt_priv_handlers[] = {
 	(iw_handler) NULL, /* + 0x00 */
 	(iw_handler) NULL, /* + 0x01 */
-	(iw_handler) rt_ioctl_setparam, /* + 0x02 */
+	(iw_handler) NULL, /* + 0x02 */
 #ifdef DBG
 	(iw_handler) NULL, /* + 0x03 */
 #else
