@@ -1417,43 +1417,6 @@ SET_PROC:
 }
 
 
-
-static int
-rt_private_get_statistics(struct net_device *dev, struct iw_request_info *info,
-		struct iw_point *wrq, char *extra)
-{
-	INT				Status = 0;
-    void   *pAd = NULL;
-
-	GET_PAD_FROM_NET_DEV(pAd, dev);
-
-	/*check if the interface is down */
-/*    if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
-	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
-    {
-       	DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
-        return -ENETDOWN;
-	}
-
-    if (extra == NULL)
-    {
-        wrq->length = 0;
-        return -EIO;
-    }
-
-    memset(extra, 0x00, IW_PRIV_SIZE_MASK);
-
-
-	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_IW_GET_STATISTICS, 0,
-						extra, IW_PRIV_SIZE_MASK, RT_DEV_PRIV_FLAGS_GET(dev));
-
-    wrq->length = strlen(extra) + 1; /* 1: size of '\0' */
-    DBGPRINT(RT_DEBUG_TRACE, ("<== rt_private_get_statistics, wrq->length = %d\n", wrq->length));
-
-    return Status;
-}
-
-
 static int
 rt_private_show(struct net_device *dev, struct iw_request_info *info,
 		struct iw_point *wrq, char *extra)
@@ -2112,7 +2075,7 @@ static const iw_handler rt_priv_handlers[] = {
 	(iw_handler) NULL, /* + 0x06 */
 	(iw_handler) NULL, /* + 0x07 */
 	(iw_handler) NULL, /* + 0x08 */
-	(iw_handler) rt_private_get_statistics, /* + 0x09 */
+	(iw_handler) NULL, /* + 0x09 */
 	(iw_handler) NULL, /* + 0x0A */
 	(iw_handler) NULL, /* + 0x0B */
 	(iw_handler) NULL, /* + 0x0C */
