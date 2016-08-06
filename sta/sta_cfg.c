@@ -4752,10 +4752,6 @@ INT RTMP_STA_IoctlHandle(
 			RTMPIoctlGetSiteSurvey(pAd, pRequest);
 			break;
 
-		case CMD_RTPRIV_IOCTL_MAC:
-			RTMPIoctlMAC(pAd, pRequest);
-			break;
-
 		case CMD_RTPRIV_IOCTL_RF:
 			break;
 
