@@ -7777,9 +7777,6 @@ void RTMPIoctlMAC(
 	IN	struct rtmp_adapter *pAdapter,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq);
 
-void RTMPIoctlE2PROM(
-    IN  struct rtmp_adapter *  pAdapter,
-    IN  RTMP_IOCTL_INPUT_STRUCT *wrq);
 #endif /* DBG */
 
 
