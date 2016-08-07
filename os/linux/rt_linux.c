@@ -2411,7 +2411,7 @@ BOOLEAN CFG80211_SupBandInit(
 		// https://github.com/coolshou/mt7610u/pull/1/files?diff=split
 		pChannels[IdLoop].center_freq = \
 					ieee80211_channel_to_frequency(Cfg80211_Chan[IdLoop],
-						(IdLoop<CFG80211_NUM_OF_CHAN_2GHZ)?IEEE80211_BAND_2GHZ:IEEE80211_BAND_5GHZ);
+						(IdLoop<CFG80211_NUM_OF_CHAN_2GHZ)?NL80211_BAND_2GHZ:NL80211_BAND_5GHZ);
 		pChannels[IdLoop].hw_value = IdLoop;
 
 		if (IdLoop < CFG80211_NUM_OF_CHAN_2GHZ)
@@ -2426,7 +2426,7 @@ BOOLEAN CFG80211_SupBandInit(
 	for(IdLoop=0; IdLoop<NumOfRate; IdLoop++)
 		memcpy(&pRates[IdLoop], &Cfg80211_SupRate[IdLoop], sizeof(*pRates));
 
-	pBand = &pCfg80211_CB->Cfg80211_bands[IEEE80211_BAND_2GHZ];
+	pBand = &pCfg80211_CB->Cfg80211_bands[NL80211_BAND_2GHZ];
 	if (pBandInfo->RFICType & RFIC_24GHZ)
 	{
 		pBand->n_channels = CFG80211_NUM_OF_CHAN_2GHZ;
@@ -2470,16 +2470,16 @@ BOOLEAN CFG80211_SupBandInit(
 		pBand->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
 #endif /* DOT11_N_SUPPORT */
 
-		pWiphy->bands[IEEE80211_BAND_2GHZ] = pBand;
+		pWiphy->bands[NL80211_BAND_2GHZ] = pBand;
 	}
 	else
 	{
-		pWiphy->bands[IEEE80211_BAND_2GHZ] = NULL;
+		pWiphy->bands[NL80211_BAND_2GHZ] = NULL;
 		pBand->channels = NULL;
 		pBand->bitrates = NULL;
 	}
 
-	pBand = &pCfg80211_CB->Cfg80211_bands[IEEE80211_BAND_5GHZ];
+	pBand = &pCfg80211_CB->Cfg80211_bands[NL80211_BAND_5GHZ];
 	if (pBandInfo->RFICType & RFIC_5GHZ)
 	{
 		pBand->n_channels = CFG80211_NUM_OF_CHAN_5GHZ;
@@ -2521,11 +2521,11 @@ BOOLEAN CFG80211_SupBandInit(
 		pBand->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
 #endif /* DOT11_N_SUPPORT */
 
-		pWiphy->bands[IEEE80211_BAND_5GHZ] = pBand;
+		pWiphy->bands[NL80211_BAND_5GHZ] = pBand;
 	}
 	else
 	{
-		pWiphy->bands[IEEE80211_BAND_5GHZ] = NULL;
+		pWiphy->bands[NL80211_BAND_5GHZ] = NULL;
 		pBand->channels = NULL;
 		pBand->bitrates = NULL;
 	}
@@ -2677,8 +2677,8 @@ BOOLEAN CFG80211OS_BandInfoGet(
 	if (pWiphy == NULL)
 		return FALSE;
 
-	*ppBand24 = pWiphy->bands[IEEE80211_BAND_2GHZ];
-	*ppBand5 = pWiphy->bands[IEEE80211_BAND_5GHZ];
+	*ppBand24 = pWiphy->bands[NL80211_BAND_2GHZ];
+	*ppBand5 = pWiphy->bands[NL80211_BAND_5GHZ];
 	return TRUE;
 }
 
@@ -2789,9 +2789,9 @@ BOOLEAN CFG80211OS_ChanInfoInit(
 	memset(pChan, 0, sizeof(*pChan));
 
 	if (ChanId > 14)
-		pChan->band = IEEE80211_BAND_5GHZ;
+		pChan->band = NL80211_BAND_5GHZ;
 	else
-		pChan->band = IEEE80211_BAND_2GHZ;
+		pChan->band = NL80211_BAND_2GHZ;
 
 	pChan->center_freq = ieee80211_channel_to_frequency(ChanId, pChan->band);
 
@@ -2835,7 +2835,7 @@ void CFG80211OS_Scaning(
 
 	/* get channel information */
 	CenFreq = ieee80211_channel_to_frequency(ChanId,
-		(ChanId<CFG80211_NUM_OF_CHAN_2GHZ)?IEEE80211_BAND_2GHZ:IEEE80211_BAND_5GHZ);
+		(ChanId<CFG80211_NUM_OF_CHAN_2GHZ)?NL80211_BAND_2GHZ:NL80211_BAND_5GHZ);
 
 	for(IdChan=0; IdChan<MAX_NUM_OF_CHANNELS; IdChan++)
 	{

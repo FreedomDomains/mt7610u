@@ -25,12 +25,10 @@ They are <u>plenty</u> information around the web.
 
 **BUGS**  
 - can't unload driver, must disconnect device(s) first  
-- can't compile on v4.7 or greater kernels  
   
 
 **TODO**, in order of no appearance ;-)  
 - fix unloading driver  
-- update for v4.7 kernels cfg80211/nl80211 changes  
 - do more function typesafe  
 - cross compile check with real hw on $target  
 - strip fw files and use kernel firmware load  

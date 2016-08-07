@@ -29,10 +29,16 @@
 
 #include <linux/ieee80211.h>
 
+
+/* ULLI : hack NUM_NL80211_BANDS is defined only in >= v4.7 */
+#ifndef NUM_NL80211_BANDS
+#define NUM_NL80211_BANDS		IEEE80211_NUM_BANDS
+#endif
+
 typedef struct __CFG80211_CB {
 
 	/* we can change channel/rate information on the fly so we backup them */
-	struct ieee80211_supported_band Cfg80211_bands[IEEE80211_NUM_BANDS];
+	struct ieee80211_supported_band Cfg80211_bands[NUM_NL80211_BANDS];
 	struct ieee80211_channel *pCfg80211_Channels;
 	struct ieee80211_rate *pCfg80211_Rates;
 
