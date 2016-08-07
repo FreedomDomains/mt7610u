@@ -1,6 +1,3 @@
-# Support ATE function
-HAS_ATE=n
-
 # Support QA ATE function
 HAS_QA_SUPPORT=n
 
@@ -265,19 +262,6 @@ ifeq ($(HAS_NATIVE_WPA_SUPPLICANT_SUPPORT),y)
 WFLAGS += -DNATIVE_WPA_SUPPLICANT_SUPPORT
 endif
 endif
-
-
-
-
-ifeq ($(HAS_ATE),y)
-WFLAGS += -DRALINK_ATE
-WFLAGS += -DCONFIG_RT2880_ATE_CMD_NEW
-WFLAGS += -I$(PWD)/ate/include
-ifeq ($(HAS_QA_SUPPORT),y)
-WFLAGS += -DRALINK_QA
-endif
-endif
-
 
 ifeq ($(HAS_SNMP_SUPPORT),y)
 WFLAGS += -DSNMP_SUPPORT
@@ -708,15 +692,6 @@ $(MOD_NAME)-objs += \
 endif
 #endif // LED_CONTROL_SUPPORT //
 
-
-ifeq ($(HAS_ATE),y)
-$(MOD_NAME)-objs += ate/common/rt_ate.o
-endif
-
-ifeq ($(HAS_QA_SUPPORT),y)
-$(MOD_NAME)-objs += ate/common/rt_qa.o
-endif
-
 #ifdef CRDA_SUPPORT
 ifeq ($(HAS_CFG80211_SUPPORT),y)
 $(MOD_NAME)-objs += \
@@ -765,12 +740,6 @@ ifeq ($(HAS_CSO_SUPPORT), y)
 $(MOD_NAME)-objs += \
 		naf/net_acc.o\
 		naf/cso.o
-endif
-
-ifeq ($(HAS_ATE),y)
-$(MOD_NAME)-objs += \
-		ate/chips/mt76x0_ate.o\
-		ate/common/ate_usb.o
 endif
 
 $(MOD_NAME)-objs += \
