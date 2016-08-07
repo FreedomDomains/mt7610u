@@ -292,7 +292,6 @@ void rtmp_ee_flash_write_all(struct rtmp_adapter *pAd, USHORT *Data);
 
 #ifdef RTMP_EFUSE_SUPPORT
 INT eFuseLoadEEPROM(struct rtmp_adapter *pAd);
-INT eFuseWriteEeeppromBuf(struct rtmp_adapter *pAd);
 void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);
 
 int rtmp_ee_efuse_read16(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pVal);

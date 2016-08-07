@@ -1540,60 +1540,6 @@ INT eFuseLoadEEPROM(
 	return TRUE;
 }
 
-INT eFuseWriteEeeppromBuf(
-	IN struct rtmp_adapter *pAd)
-{
-
-	char *				src = NULL;
-	INT 						retval;
-	RTMP_OS_FD				srcf;
-	RTMP_OS_FS_INFO			osFSInfo;
-
-
-	src=EFUSE_BUFFER_PATH;
-	DBGPRINT(RT_DEBUG_TRACE, ("FileName=%s\n",src));
-
-	RtmpOSFSInfoChange(&osFSInfo, TRUE);
-
-
-
-	if (src && *src)
-	{
-		srcf = RtmpOSFileOpen(src, O_WRONLY|O_CREAT, 0);
-
-		if (IS_FILE_OPEN_ERR(srcf))
-		{
-			DBGPRINT(RT_DEBUG_ERROR, ("--> Error opening %s\n", src));
-			return FALSE;
-		}
-		else
-		{
-
-			RtmpOSFileWrite(srcf, (char *)pAd->EEPROMImage,MAX_EEPROM_BIN_FILE_SIZE);
-
-      		}
-
-
-	}
-	else
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("--> Error src  or srcf is null\n"));
-		return FALSE;
-
-	}
-
-	retval=RtmpOSFileClose(srcf);
-
-	if (retval)
-	{
-		DBGPRINT(RT_DEBUG_TRACE, ("--> Error %d closing %s\n", -retval, src));
-	}
-
-	RtmpOSFSInfoChange(&osFSInfo, FALSE);
-	return TRUE;
-}
-
-
 void eFuseGetFreeBlockCount(IN struct rtmp_adapter *pAd,
 	PUINT EfuseFreeBlock)
 {
