@@ -196,20 +196,6 @@ void announce_802_3_packet(
 
     /* Push up the protocol stack */
 
-	{
-#if defined(CONFIG_RA_CLASSIFIER)||defined(CONFIG_RA_CLASSIFIER_MODULE)
-		if(ra_classifier_hook_rx!= NULL)
-		{
-			unsigned int flags;
-
-			RTMP_IRQ_LOCK(&pAd->page_lock, flags);
-			ra_classifier_hook_rx(pRxPkt, classifier_cur_cycle);
-			RTMP_IRQ_UNLOCK(&pAd->page_lock, flags);
-		}
-#endif /* CONFIG_RA_CLASSIFIER */
-
-	}
-
 
 		RtmpOsPktProtocolAssign(pRxPkt);
 		RtmpOsPktRcvHandle(pRxPkt);
