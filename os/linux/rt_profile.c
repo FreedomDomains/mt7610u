@@ -197,10 +197,6 @@ void announce_802_3_packet(
     /* Push up the protocol stack */
 
 	{
-#ifdef CONFIG_RT2880_BRIDGING_ONLY
-		PACKET_CB_ASSIGN(pRxPkt, 22) = 0xa8;
-#endif
-
 #if defined(CONFIG_RA_CLASSIFIER)||defined(CONFIG_RA_CLASSIFIER_MODULE)
 		if(ra_classifier_hook_rx!= NULL)
 		{
