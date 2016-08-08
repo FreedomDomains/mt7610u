@@ -31,7 +31,7 @@
 
 
 /* ULLI : hack NUM_NL80211_BANDS is defined only in >= v4.7 */
-#ifndef NUM_NL80211_BANDS
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4,7,0))
 #define NUM_NL80211_BANDS		IEEE80211_NUM_BANDS
 #endif
 
