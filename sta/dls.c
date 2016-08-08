@@ -1114,7 +1114,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 		    && !pEap->KeyDesc.KeyInfo.Request) {
 			/* First validate replay counter, only accept message with larger replay counter */
 			/* Let equal pass, some AP start with all zero replay counter */
-			NdisZeroMemory(ZeroReplay, LEN_KEY_DESC_REPLAY);
+			memset(ZeroReplay, 0, LEN_KEY_DESC_REPLAY);
 			if ((RTMPCompareMemory
 			     (pEap->KeyDesc.ReplayCounter,
 			      pAd->StaCfg.ReplayCounter,
@@ -1149,14 +1149,14 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 			/* Check MIC value */
 			/* Save the MIC and replace with zero */
 			/* use proprietary PTK */
-			NdisZeroMemory(temp, 64);
+			memset(temp, 0, 64);
 			NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 			WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid,
 				     temp, pAd->CurrentAddress, DlsPTK, LEN_PTK);
 
 			NdisMoveMemory(OldMic, pEap->KeyDesc.KeyMic,
 				       LEN_KEY_DESC_MIC);
-			NdisZeroMemory(pEap->KeyDesc.KeyMic, LEN_KEY_DESC_MIC);
+			memset(pEap->KeyDesc.KeyMic, 0, LEN_KEY_DESC_MIC);
 			if (pAd->StaCfg.WepStatus == Ndis802_11Encryption3Enabled) {
 				/* AES */
 				RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, (PUCHAR) pEap,
@@ -1519,7 +1519,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 
 	/* Zero message body */
 	pPacket = (PEAPOL_PACKET) mpool;
-	NdisZeroMemory(pPacket, TX_EAPOL_BUFFER);
+	memset(pPacket, 0, TX_EAPOL_BUFFER);
 
 	pPacket->ProVer = EAPOL_VER;
 	pPacket->ProType = EAPOLKey;
@@ -1571,7 +1571,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 			  pPacket->Body_Len[1] + 4, pPacket, END_OF_ARGS);
 
 	/* use proprietary PTK */
-	NdisZeroMemory(temp, 64);
+	memset(temp, 0, 64);
 	NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 	WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid, temp,
 		     pAd->CurrentAddress, DlsPTK, LEN_PTK);
@@ -1579,13 +1579,13 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 	/* calculate MIC */
 	if (pAd->StaCfg.WepStatus == Ndis802_11Encryption3Enabled) {
 		/* AES */
-		NdisZeroMemory(digest, sizeof (digest));
+		memset(digest, 0, sizeof (digest));
 		RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, digest,
 			     SHA1_DIGEST_SIZE);
 		NdisMoveMemory(pPacket->KeyDesc.KeyMic, digest,
 			       LEN_KEY_DESC_MIC);
 	} else {
-		NdisZeroMemory(Mic, sizeof (Mic));
+		memset(Mic, 0, sizeof (Mic));
 		RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, Mic,
 			    MD5_DIGEST_SIZE);
 		NdisMoveMemory(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
@@ -1656,7 +1656,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 
 	/* Zero message body */
 	pPacket = (PEAPOL_PACKET) mpool;
-	NdisZeroMemory(pPacket, TX_EAPOL_BUFFER);
+	memset(pPacket, 0, TX_EAPOL_BUFFER);
 
 	pPacket->ProVer = EAPOL_VER;
 	pPacket->ProType = EAPOLKey;
@@ -1707,7 +1707,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 			  pPacket->Body_Len[1] + 4, pPacket, END_OF_ARGS);
 
 	/* use proprietary PTK */
-	NdisZeroMemory(temp, 64);
+	memset(temp, 0, 64);
 	NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 	WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid, temp,
 		     pAd->CurrentAddress, DlsPTK, LEN_PTK);
@@ -1715,13 +1715,13 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	/* calculate MIC */
 	if (pAd->StaCfg.WepStatus == Ndis802_11Encryption3Enabled) {
 		/* AES */
-		NdisZeroMemory(digest, sizeof (digest));
+		memset(digest, 0, sizeof (digest));
 		RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, digest,
 			     SHA1_DIGEST_SIZE);
 		NdisMoveMemory(pPacket->KeyDesc.KeyMic, digest,
 			       LEN_KEY_DESC_MIC);
 	} else {
-		NdisZeroMemory(Mic, sizeof (Mic));
+		memset(Mic, 0, sizeof (Mic));
 		RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, Mic,
 			    MD5_DIGEST_SIZE);
 		NdisMoveMemory(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
@@ -2041,7 +2041,7 @@ INT Set_DlsAddEntry_Proc(
 			 ("\n%02x:%02x:%02x:%02x:%02x:%02x-%d", mac[0], mac[1],
 			  mac[2], mac[3], mac[4], mac[5], (int)Timeout));
 
-		NdisZeroMemory(&Dls, sizeof (RT_802_11_DLS));
+		memset(&Dls, 0, sizeof (RT_802_11_DLS));
 		Dls.TimeOut = Timeout;
 		COPY_MAC_ADDR(Dls.MacAddr, mac);
 		Dls.Valid = 1;
@@ -2081,7 +2081,7 @@ INT Set_DlsTearDownEntry_Proc(
 
 	DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x", PRINT_MAC(macAddr)));
 
-	NdisZeroMemory(&Dls, sizeof (RT_802_11_DLS));
+	memset(&Dls, 0, sizeof (RT_802_11_DLS));
 	COPY_MAC_ADDR(Dls.MacAddr, macAddr);
 	Dls.Valid = 0;
 

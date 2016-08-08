@@ -322,7 +322,7 @@ void MlmeAssocReqAction(
 		/*COPY_MAC_ADDR(pAd->StaCfg.AssocInfo.RequestFixedIEs.CurrentAPAddress, ApAddr); */
 		pAd->StaCfg.AssocInfo.OffsetRequestIEs = sizeof (NDIS_802_11_ASSOCIATION_INFORMATION);
 
-		NdisZeroMemory(pAd->StaCfg.ReqVarIEs, MAX_VIE_LEN);
+		memset(pAd->StaCfg.ReqVarIEs, 0, MAX_VIE_LEN);
 		/* First add SSID */
 		VarIesOffset = 0;
 		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &SsidIe, 1);
@@ -376,7 +376,7 @@ void MlmeAssocReqAction(
 			PHT_CAPABILITY_IE pHtCapability;
 #ifdef RT_BIG_ENDIAN
 			HT_CAPABILITY_IE HtCapabilityTmp;
-			NdisZeroMemory(&HtCapabilityTmp, sizeof (HT_CAPABILITY_IE));
+			memset(&HtCapabilityTmp, 0, sizeof (HT_CAPABILITY_IE));
 			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
 			*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 			*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
@@ -420,7 +420,7 @@ void MlmeAssocReqAction(
 			UCHAR extInfoLen;
 
 			extInfoLen = sizeof (EXT_CAP_INFO_ELEMENT);
-			NdisZeroMemory(&extCapInfo, extInfoLen);
+			memset(&extCapInfo, 0, extInfoLen);
 
 #ifdef DOT11N_DRAFT3
 			if ((pAd->CommonCfg.bBssCoexEnable == TRUE) &&
@@ -479,7 +479,7 @@ void MlmeAssocReqAction(
 			    && pAd->MlmeAux.APEdcaParm.bAPSDCapable) {
 				QBSS_STA_INFO_PARM QosInfo;
 
-				NdisZeroMemory(&QosInfo, sizeof(QBSS_STA_INFO_PARM));
+				memset(&QosInfo, 0, sizeof(QBSS_STA_INFO_PARM));
 				QosInfo.UAPSD_AC_BE = pAd->CommonCfg.bAPSDAC_BE;
 				QosInfo.UAPSD_AC_BK = pAd->CommonCfg.bAPSDAC_BK;
 				QosInfo.UAPSD_AC_VI = pAd->CommonCfg.bAPSDAC_VI;
@@ -765,7 +765,7 @@ void MlmeReassocReqAction(
 			    && pAd->MlmeAux.APEdcaParm.bAPSDCapable) {
 				QBSS_STA_INFO_PARM QosInfo;
 
-				NdisZeroMemory(&QosInfo,
+				memset(&QosInfo,0,
 					       sizeof (QBSS_STA_INFO_PARM));
 				QosInfo.UAPSD_AC_BE = pAd->CommonCfg.bAPSDAC_BE;
 				QosInfo.UAPSD_AC_BK = pAd->CommonCfg.bAPSDAC_BK;
@@ -795,7 +795,7 @@ void MlmeReassocReqAction(
 
 #ifdef RT_BIG_ENDIAN
 			HT_CAPABILITY_IE HtCapabilityTmp;
-			NdisZeroMemory(&HtCapabilityTmp, sizeof (HT_CAPABILITY_IE));
+			memset(&HtCapabilityTmp, 0, sizeof (HT_CAPABILITY_IE));
 			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
 			*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 			*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
@@ -839,7 +839,7 @@ void MlmeReassocReqAction(
 			EXT_CAP_INFO_ELEMENT extCapInfo;
 			UCHAR extInfoLen;
 
-			NdisZeroMemory(&extCapInfo, sizeof (EXT_CAP_INFO_ELEMENT));
+			memset(&extCapInfo, 0, sizeof (EXT_CAP_INFO_ELEMENT));
 			extInfoLen = sizeof(EXT_CAP_INFO_ELEMENT);
 
 
@@ -1070,7 +1070,7 @@ void PeerAssocRspAction(
 		DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
 		return;
 	}
-	NdisZeroMemory((UCHAR *)ie_list, sizeof(IE_LISTS));
+	memset((UCHAR *)ie_list, 0, sizeof(IE_LISTS));
 
 	if (PeerAssocRspSanity(pAd, Elem->Msg, Elem->MsgLen,
 			       Addr2, &CapabilityInfo, &Status, &Aid, SupRate,
@@ -1216,7 +1216,7 @@ void PeerReassocRspAction(
 		DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
 		return;
 	}
-	NdisZeroMemory((UCHAR *)ie_list, sizeof(IE_LISTS));
+	memset((UCHAR *)ie_list, 0, sizeof(IE_LISTS));
 
 	if (PeerAssocRspSanity(pAd, Elem->Msg, Elem->MsgLen, Addr2,
 			       &CapabilityInfo, &Status, &Aid, SupRate,
@@ -1433,7 +1433,7 @@ void AssocPostProc(
 	} else {
 		/* Init variable */
 		pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = 0;
-		NdisZeroMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, MAX_LEN_OF_RSNIE);
+		memset(pAd->MacTab.Content[BSSID_WCID].RSN_IE, 0, MAX_LEN_OF_RSNIE);
 
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("ASSOC - AuthMode = %d\n", pAd->StaCfg.AuthMode));
@@ -1772,7 +1772,7 @@ BOOLEAN StaAddMacTableEntry(
 
 	NdisAcquireSpinLock(&pAd->MacTabLock);
 	if (pEntry) {
-		NdisZeroMemory(pEntry->R_Counter, sizeof(pEntry->R_Counter));
+		memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
 		pEntry->PortSecured = WPA_802_1X_PORT_SECURED;
 		if ((MaxSupportedRate < RATE_FIRST_OFDM_RATE) ||
 		    WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B)) {
@@ -1796,7 +1796,7 @@ BOOLEAN StaAddMacTableEntry(
 	}
 
 #ifdef DOT11_N_SUPPORT
-	NdisZeroMemory(&pEntry->HTCapability, sizeof (pEntry->HTCapability));
+	memset(&pEntry->HTCapability, 0, sizeof (pEntry->HTCapability));
 	/* If this Entry supports 802.11n, upgrade to HT rate. */
 	if (((pAd->StaCfg.WepStatus != Ndis802_11WEPEnabled)
 	     && (pAd->StaCfg.WepStatus != Ndis802_11Encryption2Enabled))

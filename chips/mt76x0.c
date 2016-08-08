@@ -2567,7 +2567,7 @@ static void MT76x0_AsicGetTxPowerOffset(
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC;
 	DBGPRINT(RT_DEBUG_INFO, ("-->MT76x0_AsicGetTxPowerOffset\n"));
 
-	NdisZeroMemory(&CfgOfTxPwrCtrlOverMAC, sizeof(CfgOfTxPwrCtrlOverMAC));
+	memset(&CfgOfTxPwrCtrlOverMAC, 0, sizeof(CfgOfTxPwrCtrlOverMAC));
 
 	CfgOfTxPwrCtrlOverMAC.NumOfEntries = 5; /* MAC 0x1314, 0x1318, 0x131C, 0x1320 and 1324 */
 	CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[0].MACRegisterOffset = TX_PWR_CFG_0;

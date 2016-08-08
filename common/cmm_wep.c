@@ -166,7 +166,7 @@ void RTMPInitWepEngine(
 	}
 
 	/* WEP seed construction */
-	NdisZeroMemory(seed, 16);
+	memset(seed, 0, 16);
 	NdisMoveMemory(seed, pIv, 3);
 	NdisMoveMemory(&seed[3], pKey, KeyLen);
 	seed_len = 3 + KeyLen;
@@ -199,7 +199,7 @@ void RTMPConstructWEPIVHdr(
 	IN	UCHAR			*pn,
 	OUT	UCHAR			*iv_hdr)
 {
-	NdisZeroMemory(iv_hdr, LEN_WEP_IV_HDR);
+	memset(iv_hdr, 0, LEN_WEP_IV_HDR);
 
 	NdisMoveMemory(iv_hdr, pn, LEN_WEP_TSC);
 

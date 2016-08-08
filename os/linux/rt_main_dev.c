@@ -367,7 +367,7 @@ struct net_device *RtmpPhyNetDevInit(
 		return NULL;
 	}
 
-	NdisZeroMemory((unsigned char *)pNetDevHook, sizeof(RTMP_OS_NETDEV_OP_HOOK));
+	memset((unsigned char *)pNetDevHook, 0, sizeof(RTMP_OS_NETDEV_OP_HOOK));
 	pNetDevHook->open = MainVirtualIF_open;
 	pNetDevHook->stop = MainVirtualIF_close;
 	pNetDevHook->xmit = rt28xx_send_packets;
@@ -480,7 +480,7 @@ static int rt28xx_send_packets(
 		return 0;
 	}
 
-	NdisZeroMemory((PUCHAR)&skb_p->cb[CB_OFF], 15);
+	memset((PUCHAR)&skb_p->cb[CB_OFF], 0, 15);
 	RTMP_SET_PACKET_NET_DEVICE_MBSSID(skb_p, MAIN_MBSSID);
 	MEM_DBG_PKT_ALLOC_INC(skb_p);
 

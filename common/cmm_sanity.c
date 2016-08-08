@@ -334,7 +334,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 		*pPreNHtCapabilityLen = 0;					/* Set the length of VIE to init value 0*/
 #endif /* CONFIG_STA_SUPPORT */
     *AddHtInfoLen = 0;					/* Set the length of VIE to init value 0*/
-    NdisZeroMemory(pExtCapInfo, sizeof(EXT_CAP_INFO_ELEMENT));
+    memset(pExtCapInfo, 0, sizeof(EXT_CAP_INFO_ELEMENT));
     *pRalinkIe = 0;
     *pNewChannel = 0;
     *NewExtChannelOffset = 0xff;	/*Default 0xff means no such IE*/

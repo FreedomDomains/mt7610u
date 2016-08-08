@@ -170,7 +170,7 @@ void WpaEAPOLStartAction(
             pEntry->PrivacyFilter = Ndis802_11PrivFilter8021xWEP;
             pEntry->WpaState = AS_INITPSK;
             pEntry->PortSecured = WPA_802_1X_PORT_NOT_SECURED;
-            NdisZeroMemory(pEntry->R_Counter, sizeof(pEntry->R_Counter));
+            memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
             pEntry->ReTryCounter = PEER_MSG1_RETRY_TIMER_CTR;
 
             WPAStart4WayHS(pAd, pEntry, PEER_MSG1_RETRY_EXEC_INTV);
@@ -210,7 +210,7 @@ void WpaEAPOLKeyAction(
     pEapol_packet = (PEAPOL_PACKET)&Elem->Msg[LENGTH_802_11 + LENGTH_802_1_H];
 	eapol_len = CONV_ARRARY_TO_UINT16(pEapol_packet->Body_Len) + LENGTH_EAPOL_H;
 
-	NdisZeroMemory((PUCHAR)&peerKeyInfo, sizeof(peerKeyInfo));
+	memset((PUCHAR)&peerKeyInfo, 0, sizeof(peerKeyInfo));
 	NdisMoveMemory((PUCHAR)&peerKeyInfo, (PUCHAR)&pEapol_packet->KeyDesc.KeyInfo, sizeof(KEY_INFO));
 
 
@@ -463,10 +463,10 @@ BOOLEAN PeerWpaMessageSanity(
 		return FALSE;
 	}
 
-	NdisZeroMemory(mic, sizeof(mic));
-	NdisZeroMemory(digest, sizeof(digest));
-	NdisZeroMemory(KEYDATA, MAX_LEN_OF_RSNIE);
-	NdisZeroMemory((PUCHAR)&EapolKeyInfo, sizeof(EapolKeyInfo));
+	memset(mic, 0, sizeof(mic));
+	memset(digest, 0, sizeof(digest));
+	memset(KEYDATA, 0, MAX_LEN_OF_RSNIE);
+	memset((PUCHAR)&EapolKeyInfo, 0, sizeof(EapolKeyInfo));
 
 	NdisMoveMemory((PUCHAR)&EapolKeyInfo, (PUCHAR)&pMsg->KeyDesc.KeyInfo, sizeof(KEY_INFO));
 
@@ -490,7 +490,7 @@ BOOLEAN PeerWpaMessageSanity(
 		/* Let equal pass, some AP start with all zero replay counter*/
 		UCHAR	ZeroReplay[LEN_KEY_DESC_REPLAY];
 
-        NdisZeroMemory(ZeroReplay, LEN_KEY_DESC_REPLAY);
+        memset(ZeroReplay, 0, LEN_KEY_DESC_REPLAY);
 		if ((RTMPCompareMemory(pMsg->KeyDesc.ReplayCounter, pEntry->R_Counter, LEN_KEY_DESC_REPLAY) != 1) &&
 			(RTMPCompareMemory(pMsg->KeyDesc.ReplayCounter, ZeroReplay, LEN_KEY_DESC_REPLAY) != 0))
     	{
@@ -531,7 +531,7 @@ BOOLEAN PeerWpaMessageSanity(
 
 		/* Record the received MIC for check later*/
 		NdisMoveMemory(rcvd_mic, pMsg->KeyDesc.KeyMic, LEN_KEY_DESC_MIC);
-		NdisZeroMemory(pMsg->KeyDesc.KeyMic, LEN_KEY_DESC_MIC);
+		memset(pMsg->KeyDesc.KeyMic, 0, LEN_KEY_DESC_MIC);
 
         if (EapolKeyInfo.KeyDescVer == KEY_DESC_TKIP)	/* TKIP*/
         {
@@ -695,7 +695,7 @@ void WPAStart4WayHS(
     }
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
-	NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
 	/* Construct EAPoL message - Pairwise Msg 1*/
 	/* EAPOL-Key(0,0,1,0,P,0,0,ANonce,0,DataKD_M1)		*/
@@ -832,7 +832,7 @@ void PeerPairMsg1Action(
     }
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
-	NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
 	/* Construct EAPoL message - Pairwise Msg 2*/
 	/*  EAPOL-Key(0,1,0,0,P,0,0,SNonce,MIC,DataKD_M2)*/
@@ -949,7 +949,7 @@ void PeerPairMsg2Action(
 	    }
 
 		pEapolFrame = (PEAPOL_PACKET)mpool;
-		NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+		memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
         /* delete retry timer*/
 		RTMPCancelTimer(&pEntry->RetryTimer, &Cancelled);
@@ -1072,7 +1072,7 @@ void PeerPairMsg3Action(
     }
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
-	NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
 	/* Construct EAPoL message - Pairwise Msg 4*/
 	ConstructEapolMsg(pEntry,
@@ -1249,7 +1249,7 @@ void WPAStart2WayGroupHS(
     }
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
-	NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
     /* Increment replay counter by 1*/
 	ADD_ONE_To_64BIT_VAR(pEntry->R_Counter);
@@ -1359,7 +1359,7 @@ void PeerGroupMsg1Action(
     }
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
-	NdisZeroMemory(pEapolFrame, TX_EAPOL_BUFFER);
+	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
 
 
 	/* Construct EAPoL message - Group Msg 2*/
@@ -1825,7 +1825,7 @@ void KDF(
 		return;
 	}
 
-	NdisZeroMemory(input, 1024);
+	memset(input, 0, 1024);
 
 	/* Initial concatenated value (i || label || Context || Length)*/
 	/* concatenate 16-bit unsigned integer, its initial value is 1.	*/
@@ -1940,8 +1940,8 @@ void WpaDerivePTK(
 						'e', 'x', 'p', 'a', 'n', 's', 'i', 'o', 'n'};
 
 	/* initiate the concatenation input*/
-	NdisZeroMemory(temp, sizeof(temp));
-	NdisZeroMemory(concatenation, 76);
+	memset(temp, 0, sizeof(temp));
+	memset(concatenation, 0, 76);
 
 	/* Get smaller address*/
 	if (RTMPCompareMemory(SA, AA, 6) == 1)
@@ -2058,9 +2058,9 @@ void GenRandom(
 	UCHAR	prefix[] = {'I', 'n', 'i', 't', ' ', 'C', 'o', 'u', 'n', 't', 'e', 'r'};
 
 	/* Zero the related information*/
-	NdisZeroMemory(result, 80);
-	NdisZeroMemory(local, 80);
-	NdisZeroMemory(KeyCounter, 32);
+	memset(result, 0, 80);
+	memset(local, 0, 80);
+	memset(KeyCounter, 0, 32);
 
 	for	(i = 0;	i <	32;	i++)
 	{
@@ -2499,7 +2499,7 @@ void RTMPMakeRSNIE(
 				if (apcliIfidx < MAX_APCLI_NUM)
 				{
 			pAd->ApCfg.ApCliTab[apcliIfidx].RSNIE_Len = 0;
-			NdisZeroMemory(pAd->ApCfg.ApCliTab[apcliIfidx].RSN_IE, MAX_LEN_OF_RSNIE);
+			memset(pAd->ApCfg.ApCliTab[apcliIfidx].RSN_IE, 0, MAX_LEN_OF_RSNIE);
 			rsnielen_cur_p = &pAd->ApCfg.ApCliTab[apcliIfidx].RSNIE_Len;
 			pRsnIe = pAd->ApCfg.ApCliTab[apcliIfidx].RSN_IE;
 
@@ -2540,7 +2540,7 @@ void RTMPMakeRSNIE(
 
 			/* Zero RSNIE context */
 			pAd->StaCfg.RSNIE_Len = 0;
-			NdisZeroMemory(pAd->StaCfg.RSN_IE, MAX_LEN_OF_RSNIE);
+			memset(pAd->StaCfg.RSN_IE, 0, MAX_LEN_OF_RSNIE);
 
 			/* Pointer to RSNIE */
 			rsnielen_cur_p = &pAd->StaCfg.RSNIE_Len;
@@ -2882,7 +2882,7 @@ BOOLEAN RTMPParseEapolKeyData(
 	UCHAR				skip_offset = 0;
 
 
-	NdisZeroMemory(GTK, MAX_LEN_GTK);
+	memset(GTK, 0, MAX_LEN_GTK);
 
 	/* Verify The RSN IE contained in pairewise_msg_2 && pairewise_msg_3 and skip it*/
 	if (MsgType == EAPOL_PAIR_MSG_2 || MsgType == EAPOL_PAIR_MSG_3)
@@ -3030,7 +3030,7 @@ void WPA_ConstructKdeHdr(
 
 	pHdr = (PKDE_HDR)pBuf;
 
-	NdisZeroMemory(pHdr, sizeof(KDE_HDR));
+	memset(pHdr, 0, sizeof(KDE_HDR));
 
     pHdr->Type = WPA_KDE_TYPE;
 
@@ -3219,7 +3219,7 @@ void ConstructEapolMsg(
 	}
 
 	/* Clear Key MIC field for MIC calculation later   */
-    NdisZeroMemory(pMsg->KeyDesc.KeyMic, LEN_KEY_DESC_MIC);
+    memset(pMsg->KeyDesc.KeyMic, 0, LEN_KEY_DESC_MIC);
 
 	ConstructEapolKeyData(pEntry,
 						  GroupKeyWepStatus,
@@ -3298,7 +3298,7 @@ void ConstructEapolKeyData(
 	/* Key_Data Len = 512 */
 	Key_Data = (UCHAR *) ROUND_UP(eGTK + 512, 4);
 
-	NdisZeroMemory(Key_Data, 512);
+	memset(Key_Data, 0, 512);
 	SET_UINT16_TO_ARRARY(pMsg->KeyDesc.KeyDataLen, 0);
 	data_offset = 0;
 
@@ -3462,7 +3462,7 @@ void CalculateMIC(
                       CONV_ARRARY_TO_UINT16(pMsg->Body_Len) + 4,  	pMsg,
                       END_OF_ARGS);
 
-	NdisZeroMemory(mic, sizeof(mic));
+	memset(mic, 0, sizeof(mic));
 
 	/* Calculate MIC*/
     if (KeyDescVer == KEY_DESC_AES)
@@ -4063,7 +4063,7 @@ void WPAInstallPairwiseKey(
 	PMAC_TABLE_ENTRY	pEntry,
 	BOOLEAN				bAE)
 {
-    NdisZeroMemory(&pEntry->PairwiseKey, sizeof(CIPHER_KEY));
+    memset(&pEntry->PairwiseKey, 0, sizeof(CIPHER_KEY));
 
 	/* Assign the pairwise cipher algorithm	*/
     if (pEntry->WepStatus == Ndis802_11Encryption2Enabled)
@@ -4098,8 +4098,8 @@ void WPAInstallPairwiseKey(
 	if (CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_SOFTWARE_ENCRYPT))
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("===> SW_ENC ON(wcid=%d) \n", pEntry->Aid));
-		NdisZeroMemory(pEntry->PairwiseKey.TxTsc, LEN_WPA_TSC);
-		NdisZeroMemory(pEntry->PairwiseKey.RxTsc, LEN_WPA_TSC);
+		memset(pEntry->PairwiseKey.TxTsc, 0, LEN_WPA_TSC);
+		memset(pEntry->PairwiseKey.RxTsc, 0, LEN_WPA_TSC);
 	}
 	else
 #endif /* SOFT_ENCRYPT */
@@ -4140,7 +4140,7 @@ void WPAInstallSharedKey(
 	}
 
 	pSharedKey = &pAd->SharedKey[BssIdx][KeyIdx];
-	NdisZeroMemory(pSharedKey, sizeof(CIPHER_KEY));
+	memset(pSharedKey, 0, sizeof(CIPHER_KEY));
 
 	/* Set the group cipher */
 	if (GroupCipher == Ndis802_11GroupWEP40Enabled)

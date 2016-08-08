@@ -827,7 +827,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	{
 		ph = (wlan_ng_prism2_header *) skb_push(pOSPkt,
 							sizeof(wlan_ng_prism2_header));
-		NdisZeroMemory(ph, sizeof(wlan_ng_prism2_header));
+		memset(ph, 0, sizeof(wlan_ng_prism2_header));
 
 		ph->msgcode = DIDmsg_lnxind_wlansniffrm;
 		ph->msglen = sizeof (wlan_ng_prism2_header);
@@ -897,7 +897,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 	else {
 		ph_11n33 = &h;
-		NdisZeroMemory((unsigned char *)ph_11n33,
+		memset((unsigned char *)ph_11n33, 0,
 			       sizeof (ETHEREAL_RADIO));
 
 		/*802.11n fields */
@@ -1158,7 +1158,7 @@ static inline NDIS_STATUS __RtmpOSTaskInit(
 	ASSERT(pTask);
 
 #ifndef KTHREAD_SUPPORT
-	NdisZeroMemory((PUCHAR) (pTask), sizeof (OS_TASK));
+	memset((PUCHAR) (pTask), 0, sizeof (OS_TASK));
 #endif
 
 	len = strlen(pTaskName);
@@ -1311,10 +1311,10 @@ int RtmpOSNetDevAddrSet(
 #ifdef CONFIG_STA_SUPPORT
 	/* work-around for the SuSE due to it has it's own interface name management system. */
 	RT_CONFIG_IF_OPMODE_ON_STA(OpMode) {
-/*		NdisZeroMemory(pAd->StaCfg.dev_name, 16); */
+/*		memset(pAd->StaCfg.dev_name, 0, 16); */
 /*		NdisMoveMemory(pAd->StaCfg.dev_name, net_dev->name, strlen(net_dev->name)); */
 		if (dev_name != NULL) {
-			NdisZeroMemory(dev_name, 16);
+			memset(dev_name, 0, 16);
 			NdisMoveMemory(dev_name, net_dev->name, strlen(net_dev->name));
 		}
 	}
@@ -1431,7 +1431,7 @@ INT RtmpOSNetDevOpsAlloc(void **pNetDevOps)
 {
 	*pNetDevOps = (void *) vmalloc(sizeof (struct net_device_ops));
 	if (*pNetDevOps) {
-		NdisZeroMemory(*pNetDevOps, sizeof (struct net_device_ops));
+		memset(*pNetDevOps, 0, sizeof (struct net_device_ops));
 		return NDIS_STATUS_SUCCESS;
 	} else {
 		return NDIS_STATUS_FAILURE;
@@ -1667,7 +1667,7 @@ NDIS_STATUS AdapterBlockAllocateMemory(void *handle, void **ppAd, UINT32 SizeOfp
 /*	*ppAd = (void *)vmalloc(sizeof(struct rtmp_adapter)); //pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
 	*ppAd = (void *) vmalloc(SizeOfpAd);	/*pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
 	if (*ppAd) {
-		NdisZeroMemory(*ppAd, SizeOfpAd);
+		memset(*ppAd, 0, SizeOfpAd);
 		return NDIS_STATUS_SUCCESS;
 	} else
 		return NDIS_STATUS_FAILURE;
@@ -2016,14 +2016,14 @@ BOOLEAN RtmpOsStatsAlloc(
 	os_alloc_mem(NULL, (UCHAR **) ppStats, sizeof (struct net_device_stats));
 	if ((*ppStats) == NULL)
 		return FALSE;
-	NdisZeroMemory((UCHAR *) *ppStats, sizeof (struct net_device_stats));
+	memset((UCHAR *) *ppStats, 0, sizeof (struct net_device_stats));
 
 	os_alloc_mem(NULL, (UCHAR **) ppIwStats, sizeof (struct iw_statistics));
 	if ((*ppIwStats) == NULL) {
 		kfree(*ppStats);
 		return FALSE;
 	}
-	NdisZeroMemory((UCHAR *)* ppIwStats, sizeof (struct iw_statistics));
+	memset((UCHAR *)* ppIwStats, 0, sizeof (struct iw_statistics));
 
 	return TRUE;
 }
@@ -2112,7 +2112,7 @@ PNDIS_PACKET RtmpOsPktIappMakeUp(
 	}
 
 	/* init the update frame body */
-	NdisZeroMemory(&frame_body, size);
+	memset(&frame_body, 0, size);
 
 	memset(frame_body.DA, 0xFF, ETH_ALEN);
 	memcpy(frame_body.SA, pMac, ETH_ALEN);

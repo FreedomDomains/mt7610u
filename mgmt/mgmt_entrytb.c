@@ -153,7 +153,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			RTMPCancelTimer(&pEntry->RetryTimer, &Cancelled);
 			RTMPCancelTimer(&pEntry->EnqueueStartForPSKTimer, &Cancelled);
 
-			NdisZeroMemory(pEntry, sizeof(MAC_TABLE_ENTRY));
+			memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
 
 #ifdef WFA_VHT_PF
 #ifdef IP_ASSEMBLY
@@ -176,7 +176,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			{
 				pEntry->MaxSupportedRate = RATE_11;
 				pEntry->CurrTxRate = RATE_11;
-				NdisZeroMemory(pEntry, sizeof(MAC_TABLE_ENTRY));
+				memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
 				pEntry->PairwiseKey.KeyLen = 0;
 				pEntry->PairwiseKey.CipherAlg = CIPHER_NONE;
 			}
@@ -218,7 +218,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			pEntry->CMTimerRunning = FALSE;
 			pEntry->EnqueueEapolStartTimerRunning = EAPOL_START_DISABLE;
 			pEntry->RSNIE_Len = 0;
-			NdisZeroMemory(pEntry->R_Counter, sizeof(pEntry->R_Counter));
+			memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
 			pEntry->ReTryCounter = PEER_MSG1_RETRY_TIMER_CTR;
 
 			if (IS_ENTRY_MESH(pEntry))
@@ -478,13 +478,13 @@ BOOLEAN MacTableDeleteEntry(
 
 
 
-//   			NdisZeroMemory(pEntry, sizeof(MAC_TABLE_ENTRY));
-//			NdisZeroMemory(pEntry->Addr, MAC_ADDR_LEN);
+//   			memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
+//			memset(pEntry->Addr, 0, MAC_ADDR_LEN);
 //			/* invalidate the entry */
 //			SET_ENTRY_NONE(pEntry);
 
-//                      NdisZeroMemory(pEntry, sizeof(MAC_TABLE_ENTRY));
-                        NdisZeroMemory(pEntry->Addr, MAC_ADDR_LEN);
+//                      memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
+                        memset(pEntry->Addr, 0, MAC_ADDR_LEN);
                         /* invalidate the entry */
                         SET_ENTRY_NONE(pEntry);
 

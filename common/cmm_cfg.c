@@ -84,7 +84,7 @@ UINT GenerateWpsPinCode(
 	UINT 	iPin;
 	UINT	checksum;
 
-	NdisZeroMemory(macAddr, MAC_ADDR_LEN);
+	memset(macAddr, 0, MAC_ADDR_LEN);
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -211,7 +211,7 @@ UCHAR *wmode_2_str(UCHAR wmode)
 	max_len = WMODE_COMP * 3;
 	if (os_alloc_mem(NULL, &str, max_len) == NDIS_STATUS_SUCCESS)
 	{
-		NdisZeroMemory(str, max_len);
+		memset(str, 0, max_len);
 		pos = 0;
 		for (idx = 0; idx < WMODE_COMP; idx++)
 		{
@@ -462,7 +462,7 @@ INT RT_CfgSetWPAPSKKey(
 		return FALSE;
 	}
 
-	NdisZeroMemory(pPMKBuf, 32);
+	memset(pPMKBuf, 0, 32);
 	if (keyStringLen == 64)
 	{
 	    AtoH(keyString, pPMKBuf, 32);
@@ -728,7 +728,7 @@ INT RTMP_COM_IoctlHandle(
 					NdisMoveMemory(MsgElem->Msg, &DisReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
 					/* Prevent to connect AP again in STAMlmePeriodicExec*/
 					pAd->MlmeAux.AutoReconnectSsidLen= 32;
-					NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen);
+					memset(pAd->MlmeAux.AutoReconnectSsid, 0, pAd->MlmeAux.AutoReconnectSsidLen);
 					pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_DISASSOC;
 					MlmeDisassocReqAction(pAd, MsgElem);/*				kfree(MsgElem);*/
 					kfree(MsgElem);
@@ -1142,7 +1142,7 @@ INT Set_SiteSurvey_Proc(
 	}
 #endif // CONFIG_STA_SUPPORT //
 
-    NdisZeroMemory(&Ssid, sizeof(NDIS_802_11_SSID));
+    memset(&Ssid, 0, sizeof(NDIS_802_11_SSID));
 
 
 #ifdef CONFIG_STA_SUPPORT

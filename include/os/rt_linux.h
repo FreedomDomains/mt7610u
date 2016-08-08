@@ -431,7 +431,6 @@ do { \
 
 #define NdisMoveMemory(Destination, Source, Length) memmove(Destination, Source, Length)
 #define NdisCopyMemory(Destination, Source, Length) memcpy(Destination, Source, Length)
-#define NdisZeroMemory(Destination, Length)         memset(Destination, 0, Length)
 #define NdisFillMemory(Destination, Length, Fill)   memset(Destination, Fill, Length)
 #define NdisCmpMemory(Destination, Source, Length)  memcmp(Destination, Source, Length)
 #define NdisEqualMemory(Source1, Source2, Length)   (!memcmp(Source1, Source2, Length))

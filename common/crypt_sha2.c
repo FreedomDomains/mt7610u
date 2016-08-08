@@ -105,7 +105,7 @@ void RT_SHA1_Init (
 {
     NdisMoveMemory(pSHA_CTX->HashValue, SHA1_DefaultHashValue,
         sizeof(SHA1_DefaultHashValue));
-    NdisZeroMemory(pSHA_CTX->Block, SHA1_BLOCK_SIZE);
+    memset(pSHA_CTX->Block, 0, SHA1_BLOCK_SIZE);
     pSHA_CTX->MessageLen = 0;
     pSHA_CTX->BlockLen   = 0;
 } /* End of RT_SHA1_Init */
@@ -198,7 +198,7 @@ void RT_SHA1_Hash (
      pSHA_CTX->HashValue[3] += d;
      pSHA_CTX->HashValue[4] += e;
 
-    NdisZeroMemory(pSHA_CTX->Block, SHA1_BLOCK_SIZE);
+    memset(pSHA_CTX->Block, 0, SHA1_BLOCK_SIZE);
     pSHA_CTX->BlockLen = 0;
 } /* End of RT_SHA1_Hash */
 
@@ -320,7 +320,7 @@ void RT_SHA1 (
 
     SHA1_CTX_STRUC sha_ctx;
 
-    NdisZeroMemory(&sha_ctx, sizeof(SHA1_CTX_STRUC));
+    memset(&sha_ctx, 0, sizeof(SHA1_CTX_STRUC));
     RT_SHA1_Init(&sha_ctx);
     RT_SHA1_Append(&sha_ctx, Message, MessageLen);
     RT_SHA1_End(&sha_ctx, DigestMessage);
@@ -349,7 +349,7 @@ void RT_SHA256_Init (
 {
     NdisMoveMemory(pSHA_CTX->HashValue, SHA256_DefaultHashValue,
         sizeof(SHA256_DefaultHashValue));
-    NdisZeroMemory(pSHA_CTX->Block, SHA256_BLOCK_SIZE);
+    memset(pSHA_CTX->Block, 0, SHA256_BLOCK_SIZE);
     pSHA_CTX->MessageLen = 0;
     pSHA_CTX->BlockLen   = 0;
 } /* End of RT_SHA256_Init */
@@ -421,7 +421,7 @@ void RT_SHA256_Hash (
      pSHA_CTX->HashValue[6] += g;
      pSHA_CTX->HashValue[7] += h;
 
-    NdisZeroMemory(pSHA_CTX->Block, SHA256_BLOCK_SIZE);
+    memset(pSHA_CTX->Block, 0, SHA256_BLOCK_SIZE);
     pSHA_CTX->BlockLen = 0;
 } /* End of RT_SHA256_Hash */
 
@@ -542,7 +542,7 @@ void RT_SHA256 (
 {
     SHA256_CTX_STRUC sha_ctx;
 
-    NdisZeroMemory(&sha_ctx, sizeof(SHA256_CTX_STRUC));
+    memset(&sha_ctx, 0, sizeof(SHA256_CTX_STRUC));
     RT_SHA256_Init(&sha_ctx);
     RT_SHA256_Append(&sha_ctx, Message, MessageLen);
     RT_SHA256_End(&sha_ctx, DigestMessage);

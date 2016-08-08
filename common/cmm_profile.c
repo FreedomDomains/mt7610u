@@ -615,7 +615,7 @@ static void rtmp_read_key_parms_from_file(IN  struct rtmp_adapter *pAd, char *tm
 	ULONG		KeyType[HW_BEACON_MAX_NUM];
 	ULONG		KeyIdx;
 
-	NdisZeroMemory(KeyType, sizeof(KeyType));
+	memset(KeyType, 0, sizeof(KeyType));
 
 	/*DefaultKeyID*/
 	if(RTMPGetKeyParameter("DefaultKeyID", tmpbuf, 25, buffer, TRUE))
@@ -1359,16 +1359,16 @@ static void HTParametersHook(
 void RTMPSetSTASSID(struct rtmp_adapter*pAd, char *SSID)
 {
 	pAd->CommonCfg.SsidLen = (UCHAR) strlen(SSID);
-	NdisZeroMemory(pAd->CommonCfg.Ssid, NDIS_802_11_LENGTH_SSID);
+	memset(pAd->CommonCfg.Ssid, 0, NDIS_802_11_LENGTH_SSID);
 	NdisMoveMemory(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
 	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
-	NdisZeroMemory(pAd->CommonCfg.LastSsid, NDIS_802_11_LENGTH_SSID);
+	memset(pAd->CommonCfg.LastSsid, 0, NDIS_802_11_LENGTH_SSID);
 	NdisMoveMemory(pAd->CommonCfg.LastSsid, SSID, pAd->CommonCfg.LastSsidLen);
 	pAd->MlmeAux.AutoReconnectSsidLen = pAd->CommonCfg.SsidLen;
-	NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid, NDIS_802_11_LENGTH_SSID);
+	memset(pAd->MlmeAux.AutoReconnectSsid, 0, NDIS_802_11_LENGTH_SSID);
 	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, SSID, pAd->MlmeAux.AutoReconnectSsidLen);
 	pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
-	NdisZeroMemory(pAd->MlmeAux.Ssid, NDIS_802_11_LENGTH_SSID);
+	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
 	NdisMoveMemory(pAd->MlmeAux.Ssid, SSID, pAd->MlmeAux.SsidLen);
 }
 
@@ -1429,7 +1429,7 @@ NDIS_STATUS RecoverConnectInfo(
 	INT idx;
 	char ssidStr[NDIS_802_11_LENGTH_SSID + 1];
 
-	NdisZeroMemory(&ssidStr[0], sizeof(ssidStr));
+	memset(&ssidStr[0], 0, sizeof(ssidStr));
 
 	RTMP_SEM_LOCK(&pAd->StaCtIf.Lock);
 	if ((pAd->StaCtIf.Changeable== FALSE) || (pAd->StaCtIf.SsidLen > NDIS_802_11_LENGTH_SSID))
@@ -2350,7 +2350,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 	}
 
 	/* card information file exists so reading the card information */
-	NdisZeroMemory(buffer, MAX_INI_BUFFER_SIZE);
+	memset(buffer, 0, MAX_INI_BUFFER_SIZE);
 	retval = RtmpOSFileRead(srcf, buffer, MAX_INI_BUFFER_SIZE);
 	if (retval < 0)
 	{
@@ -2373,7 +2373,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 				CH_POWER *pwr = NULL;
 
 				os_alloc_mem(NULL, (UCHAR **)&pwr, sizeof(*pwr));
-				NdisZeroMemory(pwr, sizeof(*pwr));
+				memset(pwr, 0, sizeof(*pwr));
 
 				token= rstrtok(readline +2 ," ");
 				pwr->channel = simple_strtol(token, 0, 10);

@@ -86,7 +86,7 @@ void RTMPWriteTxWI(
 		Todo: remove the following line if short preamble functionality works
 	*/
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);
-	NdisZeroMemory(&TxWI, TXWISize);
+	memset(&TxWI, 0, TXWISize);
 	pTxWI = &TxWI;
 	pTxWI->TxWIFRAG= FRAG;
 	pTxWI->TxWICFACK = CFACK;
@@ -206,7 +206,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxB
 		Todo: remove the following line if short preamble functionality works
 	*/
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);
-	NdisZeroMemory(pTxWI, TXWISize);
+	memset(pTxWI, 0, TXWISize);
 
 	pTxWI->TxWIFRAG = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAllowFrag);
 	pTxWI->TxWIACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);

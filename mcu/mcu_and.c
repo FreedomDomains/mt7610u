@@ -234,7 +234,7 @@ loadfw_protect:
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
 
 			/* four zero bytes for end padding */
-			NdisZeroMemory(fw_data + sizeof(*tx_info) + sent_len, USB_END_PADDING);
+			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
 			value = (cur_len + cap->ilm_offset) & 0xFFFF;
 
@@ -383,7 +383,7 @@ loadfw_protect:
 #endif
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
 
-			NdisZeroMemory(fw_data + sizeof(*tx_info) + sent_len, USB_END_PADDING);
+			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
 			value = ((cur_len + cap->dlm_offset) & 0xFFFF);
 

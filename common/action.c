@@ -105,7 +105,7 @@ void MlmeADDBAAction(
 	BA_ORI_ENTRY			*pBAEntry = NULL;
 
 	pInfo = (MLME_ADDBA_REQ_STRUCT *)Elem->Msg;
-	NdisZeroMemory(&Frame, sizeof(FRAME_ADDBA_REQ));
+	memset(&Frame, 0, sizeof(FRAME_ADDBA_REQ));
 
 	if(MlmeAddBAReqSanity(pAd, Elem->Msg, Elem->MsgLen, Addr) &&
 		VALID_WCID(pInfo->Wcid))
@@ -207,7 +207,7 @@ void MlmeDELBAAction(
 
 	pInfo = (MLME_DELBA_REQ_STRUCT *)Elem->Msg;
 	/* must send back DELBA */
-	NdisZeroMemory(&Frame, sizeof(FRAME_DELBA_REQ));
+	memset(&Frame, 0, sizeof(FRAME_DELBA_REQ));
 	DBGPRINT(RT_DEBUG_TRACE, ("==> MlmeDELBAAction(), Initiator(%d) \n", pInfo->Initiator));
 
 	if(MlmeDelBAReqSanity(pAd, Elem->Msg, Elem->MsgLen) &&
@@ -824,7 +824,7 @@ static void respond_ht_information_exchange_action(
 	pFrame = (FRAME_HT_INFO *) &Elem->Msg[0];
 	pAddr = pFrame->Hdr.Addr2;
 
-	NdisZeroMemory(&HTINFOframe, sizeof(FRAME_HT_INFO));
+	memset(&HTINFOframe, 0, sizeof(FRAME_HT_INFO));
 	/* 2-1. Prepare ADDBA Response frame.*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -1045,7 +1045,7 @@ void ActHeaderInit(
     IN PUCHAR Addr2,
     IN PUCHAR Addr3)
 {
-    NdisZeroMemory(pHdr80211, sizeof(HEADER_802_11));
+    memset(pHdr80211, 0, sizeof(HEADER_802_11));
     pHdr80211->FC.Type = BTYPE_MGMT;
     pHdr80211->FC.SubType = SUBTYPE_ACTION;
 
@@ -1062,7 +1062,7 @@ void BarHeaderInit(
 {
 /*	USHORT	Duration;*/
 
-	NdisZeroMemory(pCntlBar, sizeof(FRAME_BAR));
+	memset(pCntlBar, 0, sizeof(FRAME_BAR));
 	pCntlBar->FC.Type = BTYPE_CNTL;
 	pCntlBar->FC.SubType = SUBTYPE_BLOCK_ACK_REQ;
    	pCntlBar->BarControl.MTID = 0;

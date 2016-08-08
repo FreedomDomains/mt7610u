@@ -811,7 +811,7 @@ void RTMPDrvSTAClose(
 
 	/* clear MAC table */
 	/* TODO: do not clear spin lock, such as fLastChangeAccordingMfbLock */
-	NdisZeroMemory(&pAd->MacTab, sizeof(MAC_TABLE));
+	memset(&pAd->MacTab, 0, sizeof(MAC_TABLE));
 
 	/* release all timers */
 	RTMPusecDelay(2000);
@@ -898,7 +898,7 @@ void RTMPInfClose(
 
 			/* Prevent to connect AP again in STAMlmePeriodicExec*/
 			pAd->MlmeAux.AutoReconnectSsidLen= 32;
-			NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen);
+			memset(pAd->MlmeAux.AutoReconnectSsid, 0, pAd->MlmeAux.AutoReconnectSsidLen);
 
 			pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_DISASSOC;
 			MlmeDisassocReqAction(pAd, MsgElem);
@@ -1004,7 +1004,7 @@ static void	WriteConfToDatFile(
 			DBGPRINT(RT_DEBUG_TRACE, ("CfgData kmalloc fail. (fileLen = %ld)\n", fileLen));
 			goto out;
 		}
-		NdisZeroMemory(cfgData, fileLen);
+		memset(cfgData, 0, fileLen);
 		RtmpOSFileSeek(file_r, 0);
 		rv = RtmpOSFileRead(file_r, (char *)cfgData, fileLen);
 		RtmpOSFileClose(file_r);
@@ -1038,7 +1038,7 @@ static void	WriteConfToDatFile(
 			int i = 0;
 			char *ptr;
 
-			NdisZeroMemory(pTempStr, 512);
+			memset(pTempStr, 0, 512);
 			ptr = (char *) offset;
 			while(*ptr && *ptr != '\n')
 			{
@@ -1050,13 +1050,13 @@ static void	WriteConfToDatFile(
 				offset += strlen(pTempStr) + 1;
 				if (strncmp(pTempStr, "SSID=", strlen("SSID=")) == 0)
 				{
-					NdisZeroMemory(pTempStr, 512);
+					memset(pTempStr, 0, 512);
 					NdisMoveMemory(pTempStr, "SSID=", strlen("SSID="));
 					NdisMoveMemory(pTempStr + 5, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 				}
 				else if (strncmp(pTempStr, "AuthMode=", strlen("AuthMode=")) == 0)
 				{
-					NdisZeroMemory(pTempStr, 512);
+					memset(pTempStr, 0, 512);
 					if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeOpen)
 						sprintf(pTempStr, "AuthMode=OPEN");
 					else if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeShared)
@@ -1076,7 +1076,7 @@ static void	WriteConfToDatFile(
 				}
 				else if (strncmp(pTempStr, "EncrypType=", strlen("EncrypType=")) == 0)
 				{
-					NdisZeroMemory(pTempStr, 512);
+					memset(pTempStr, 512);
 					if (pAd->StaCfg.WepStatus == Ndis802_11WEPDisabled)
 						sprintf(pTempStr, "EncrypType=NONE");
 					else if (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled)

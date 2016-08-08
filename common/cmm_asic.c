@@ -1680,7 +1680,7 @@ void AsicSetEdcaParm(
 
 		RTMP_IO_WRITE32(pAd, WMM_AIFSN_CFG, 0x00002222);
 
-		NdisZeroMemory(&pAd->CommonCfg.APEdcaParm, sizeof(EDCA_PARM));
+		memset(&pAd->CommonCfg.APEdcaParm, 0, sizeof(EDCA_PARM));
 
 	}
 	else
@@ -2769,7 +2769,7 @@ INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 	};
 
 
-	NdisZeroMemory(aggCnt, cnt_len * sizeof(ULONG));
+	memset(aggCnt, 0, cnt_len * sizeof(ULONG));
 	seg = (sizeof(aggReg) /sizeof(USHORT));
 
 	cnt = 0;

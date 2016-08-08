@@ -613,12 +613,12 @@ void MlmeClearTxQuality(
 {
 #ifdef TXBF_SUPPORT
 	if (pEntry->phyETxBf || pEntry->phyITxBf)
-		NdisZeroMemory(pEntry->BfTxQuality, sizeof(pEntry->BfTxQuality));
+		memset(pEntry->BfTxQuality, 0, sizeof(pEntry->BfTxQuality));
 	else
 #endif /*  TXBF_SUPPORT */
-		NdisZeroMemory(pEntry->TxQuality, sizeof(pEntry->TxQuality));
+		memset(pEntry->TxQuality, 0, sizeof(pEntry->TxQuality));
 
-	NdisZeroMemory(pEntry->PER, sizeof(pEntry->PER));
+	memset(pEntry->PER, 0, sizeof(pEntry->PER));
 }
 
 
@@ -627,11 +627,11 @@ void MlmeClearAllTxQuality(
 	IN MAC_TABLE_ENTRY	*pEntry)
 {
 #ifdef TXBF_SUPPORT
-	NdisZeroMemory(pEntry->BfTxQuality, sizeof(pEntry->BfTxQuality));
+	memset(pEntry->BfTxQuality, 0, sizeof(pEntry->BfTxQuality));
 #endif
-	NdisZeroMemory(pEntry->TxQuality, sizeof(pEntry->TxQuality));
+	memset(pEntry->TxQuality, 0, sizeof(pEntry->TxQuality));
 
-	NdisZeroMemory(pEntry->PER, sizeof(pEntry->PER));
+	memset(pEntry->PER, 0, sizeof(pEntry->PER));
 }
 
 
@@ -2061,11 +2061,11 @@ void RTMPSetSupportMCS(
 	}
 
 	/* Clear Supported MCS Table */
-	NdisZeroMemory(pEntry->SupportCCKMCS, MAX_LEN_OF_CCK_RATES);
-	NdisZeroMemory(pEntry->SupportOFDMMCS, MAX_LEN_OF_OFDM_RATES);
-	NdisZeroMemory(pEntry->SupportHTMCS, MAX_LEN_OF_HT_RATES);
+	memset(pEntry->SupportCCKMCS, 0, MAX_LEN_OF_CCK_RATES);
+	memset(pEntry->SupportOFDMMCS, 0, MAX_LEN_OF_OFDM_RATES);
+	memset(pEntry->SupportHTMCS, 0, MAX_LEN_OF_HT_RATES);
 #ifdef DOT11_VHT_AC
-	NdisZeroMemory(pEntry->SupportVHTMCS, MAX_LEN_OF_VHT_RATES);
+	memset(pEntry->SupportVHTMCS, 0, MAX_LEN_OF_VHT_RATES);
 #endif /* DOT11_VHT_AC */
 
 	pEntry->SupportRateMode = 0;
@@ -2168,7 +2168,7 @@ void RTMPSetSupportMCS(
 		if ((vht_cap_len > 0)&& (vht_cap != NULL) && pDesired_ht_phy->vht_bw == VHT_BW_80)
 		{
 			/* Currently we only support for MCS0~MCS7, so don't check mcs_map */
-			NdisZeroMemory(&pEntry->SupportVHTMCS[0], sizeof(pEntry->SupportVHTMCS));
+			memset(&pEntry->SupportVHTMCS[0], 0, sizeof(pEntry->SupportVHTMCS));
 			switch (pAd->CommonCfg.TxStream)
 			{
 				case 2:

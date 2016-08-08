@@ -41,7 +41,7 @@ void CliWds_ProxyTabInit(
 	os_alloc_mem(pAd, (UCHAR **)&(pAd->ApCfg.pCliWdsEntryPool), sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
 	if (pAd->ApCfg.pCliWdsEntryPool)
 	{
-		NdisZeroMemory(pAd->ApCfg.pCliWdsEntryPool, sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
+		memset(pAd->ApCfg.pCliWdsEntryPool, 0, sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
 		initList(&pAd->ApCfg.CliWdsEntryFreeList);
 		for (i = 0; i < CLIWDS_POOL_SIZE; i++)
 			insertTailList(&pAd->ApCfg.CliWdsEntryFreeList, (PLIST_ENTRY)(pAd->ApCfg.pCliWdsEntryPool + (ULONG)i));

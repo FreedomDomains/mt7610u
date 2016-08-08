@@ -83,7 +83,7 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, UCHAR OpMode)
 		*/
 		if (ADHOC_ON(pAd))
 		{
-			NdisZeroMemory(pAd->MlmeAux.Ssid, MAX_LEN_OF_SSID);
+			memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 			pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
 			NdisMoveMemory(pAd->MlmeAux.Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 		}

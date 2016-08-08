@@ -1389,7 +1389,7 @@ static void TDLS_UAPSD_CmdUtilMacGet(
 		return;
 	} /* End of if */
 
-	NdisZeroMemory(pDevMac, 6);
+	memset(pDevMac, 0, 6);
 
 	/* must exist 18 octets */
 	for(ID=0; ID<18; ID+=2)
@@ -1474,7 +1474,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	}
 
 	/* init link entry */
-	NdisZeroMemory(pTDLS, sizeof(RT_802_11_TDLS));
+	memset(pTDLS, 0, sizeof(RT_802_11_TDLS));
 	pTDLS->TimeOut = 0;
 	COPY_MAC_ADDR(pTDLS->MacAddr, PeerMac);
 	pTDLS->Valid = 1;

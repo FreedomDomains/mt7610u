@@ -311,7 +311,7 @@ INT build_vht_op_ie(struct rtmp_adapter*pAd, UCHAR *buf)
 {
 	VHT_OP_IE vht_op;
 
-	NdisZeroMemory((UCHAR *)&vht_op, sizeof(VHT_OP_IE));
+	memset((UCHAR *)&vht_op, 0, sizeof(VHT_OP_IE));
 	vht_op.vht_op_info.ch_width = (pAd->CommonCfg.vht_bw == VHT_BW_80 ? 1: 0);
 	switch (vht_op.vht_op_info.ch_width)
 	{
@@ -372,7 +372,7 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, UCHAR *buf)
 {
 	VHT_CAP_IE vht_cap_ie;
 
-	NdisZeroMemory((UCHAR *)&vht_cap_ie,  sizeof(VHT_CAP_IE));
+	memset((UCHAR *)&vht_cap_ie, 0, sizeof(VHT_CAP_IE));
 	vht_cap_ie.vht_cap.max_mpdu_len = 0; // TODO: Ask Jerry about hardware limitation.
 	vht_cap_ie.vht_cap.ch_width = 0; /* not support 160 or 80 + 80 MHz */
 	vht_cap_ie.vht_cap.sgi_80M = pAd->CommonCfg.vht_sgi_80;

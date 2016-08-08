@@ -192,7 +192,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 			DBGPRINT_ERR(("Failed to allocate memory - BeaconBuf!\n"));
 			break;
 		}
-		NdisZeroMemory(pBeaconBuf, MAX_BEACON_SIZE);
+		memset(pBeaconBuf, 0, MAX_BEACON_SIZE);
 
 		Status = AdapterBlockAllocateMemory(handle, (void **)&pAd, sizeof(struct rtmp_adapter));
 		if (Status != NDIS_STATUS_SUCCESS)
@@ -2204,7 +2204,7 @@ void NICUpdateRawCounters(
 
 		if (pDiag->inited == 0)
 		{
-			NdisZeroMemory(pDiag, sizeof(struct _RtmpDiagStrcut_));
+			memset(pDiag, 0, sizeof(struct _RtmpDiagStrcut_));
 			pDiag->ArrayStartIdx = pDiag->ArrayCurIdx = 0;
 			pDiag->inited = 1;
 		}
@@ -2452,7 +2452,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 	pAd->CommonCfg.TxPower = 100; /*mW*/
 
-	NdisZeroMemory(&pAd->CommonCfg.IOTestParm, sizeof(pAd->CommonCfg.IOTestParm));
+	memset(&pAd->CommonCfg.IOTestParm, 0, sizeof(pAd->CommonCfg.IOTestParm));
 #ifdef CONFIG_STA_SUPPORT
 	pAd->CountDowntoPsm = 0;
 	pAd->StaCfg.Connectinfoflag = FALSE;
@@ -2543,10 +2543,10 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.TxStream = 0;
 	pAd->CommonCfg.RxStream = 0;
 
-	NdisZeroMemory(&pAd->BeaconTxWI, TXWISize);
+	memset(&pAd->BeaconTxWI, 0, TXWISize);
 
 #ifdef DOT11_N_SUPPORT
-	NdisZeroMemory(&pAd->CommonCfg.HtCapability, sizeof(pAd->CommonCfg.HtCapability));
+	memset(&pAd->CommonCfg.HtCapability, 0, sizeof(pAd->CommonCfg.HtCapability));
 	pAd->HTCEnable = FALSE;
 	pAd->bBroadComHT = FALSE;
 	pAd->CommonCfg.bRdg = FALSE;
@@ -2566,7 +2566,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.Bss2040NeedFallBack = 0;
 #endif  /* DOT11N_DRAFT3 */
 
-	NdisZeroMemory(&pAd->CommonCfg.AddHTInfo, sizeof(pAd->CommonCfg.AddHTInfo));
+	memset(&pAd->CommonCfg.AddHTInfo, 0, sizeof(pAd->CommonCfg.AddHTInfo));
 	pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
 	pAd->CommonCfg.BACapability.field.MpduDensity = 0;
 	pAd->CommonCfg.BACapability.field.Policy = IMMED_BA;
@@ -2683,7 +2683,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->CommonCfg.NdisRadioStateOff = FALSE;		/* New to support microsoft disable radio with OID command*/
 
 		pAd->StaCfg.RssiTrigger = 0;
-		NdisZeroMemory(&pAd->StaCfg.RssiSample, sizeof(RSSI_SAMPLE));
+		memset(&pAd->StaCfg.RssiSample, 0, sizeof(RSSI_SAMPLE));
 		pAd->StaCfg.RssiTriggerMode = RSSI_TRIGGERED_UPON_BELOW_THRESHOLD;
 		pAd->StaCfg.AtimWin = 0;
 		pAd->StaCfg.DefaultListenCount = 3;/*default listen count;*/
@@ -2735,7 +2735,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 		pAd->StaCfg.LastScanTime = 0;
 
-		NdisZeroMemory(pAd->nickname, IW_ESSID_MAX_SIZE+1);
+		memset(pAd->nickname, 0, IW_ESSID_MAX_SIZE+1);
 #ifdef PROFILE_STORE
 		pAd->bWriteDat = FALSE;
 #endif /* PROFILE_STORE */
@@ -2758,12 +2758,12 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->StaCfg.WpaSupplicantScanCount = 0;
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-		NdisZeroMemory(pAd->StaCfg.ReplayCounter, 8);
+		memset(pAd->StaCfg.ReplayCounter, 0, 8);
 
 
 		pAd->StaCfg.bAutoConnectByBssid = FALSE;
 		pAd->StaCfg.BeaconLostTime = BEACON_LOST_TIME;
-		NdisZeroMemory(pAd->StaCfg.WpaPassPhrase, 64);
+		memset(pAd->StaCfg.WpaPassPhrase, 0, 64);
 		pAd->StaCfg.WpaPassPhraseLen = 0;
 		pAd->StaCfg.bAutoRoaming = FALSE;
 		pAd->StaCfg.bForceTxBurst = FALSE;
@@ -2811,7 +2811,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	/*pAd->bTest1 = FALSE;*/
 
 	/* initialize MAC table and allocate spin lock*/
-	NdisZeroMemory(&pAd->MacTab, sizeof(MAC_TABLE));
+	memset(&pAd->MacTab, 0, sizeof(MAC_TABLE));
 	InitializeQueueHeader(&pAd->MacTab.McastPsQueue);
 	NdisAllocateSpinLock(pAd, &pAd->MacTabLock);
 

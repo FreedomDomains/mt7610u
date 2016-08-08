@@ -232,7 +232,7 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("ComposePsPoll\n"));
-	NdisZeroMemory(&pAd->PsPollFrame, sizeof (PSPOLL_FRAME));
+	memset(&pAd->PsPollFrame, 0, sizeof (PSPOLL_FRAME));
 
 	pAd->PsPollFrame.FC.PwrMgmt = 0;
 	pAd->PsPollFrame.FC.Type = BTYPE_CNTL;
@@ -269,7 +269,7 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 	USHORT data_len = sizeof(pAd->NullFrame);;
 
 
-	NdisZeroMemory(&pAd->NullFrame, data_len);
+	memset(&pAd->NullFrame, 0, data_len);
 	pAd->NullFrame.FC.Type = BTYPE_DATA;
 	pAd->NullFrame.FC.SubType = SUBTYPE_NULL_FUNC;
 	pAd->NullFrame.FC.ToDs = 1;
@@ -441,7 +441,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 		}
 	}
 
-	NdisZeroMemory((PUCHAR)(&pTxBlk->HeaderBuf[0]), TXINFO_SIZE);
+	memset((PUCHAR)(&pTxBlk->HeaderBuf[0]), 0, TXINFO_SIZE);
 	pTxInfo = (TXINFO_STRUC *)(&pTxBlk->HeaderBuf[0]);
 	pTxWI= (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]);
 
@@ -514,7 +514,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 	/*	Zero the last padding.*/
 	pWirelessPacket += pTxBlk->SrcBufLen;
-	NdisZeroMemory(pWirelessPacket, padding + 8);
+	memset(pWirelessPacket, 0, padding + 8);
 
 	if (fragNum == pTxBlk->TotalFragNum)
 	{
@@ -678,7 +678,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		}
 
 #ifndef USB_BULK_BUF_ALIGMENT
-		NdisZeroMemory(pWirelessPacket, padding + 8);
+		memset(pWirelessPacket, 0, padding + 8);
 		RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
 #endif /* USB_BULK_BUF_ALIGMENT */
 
@@ -938,7 +938,7 @@ void RtmpUSB_FinalWriteTxResource(
 
 		/*	Zero the last padding.*/
 		pWirelessPacket = (&pHTTXContext->TransferBuffer->field.WirelessPacket[fillOffset + pTxBlk->Priv]);
-		NdisZeroMemory(pWirelessPacket, padding + 8);
+		memset(pWirelessPacket, 0, padding + 8);
 
 		/* Finally, set bCurWriting as FALSE*/
 		pHTTXContext->bCurWriting = FALSE;
@@ -1029,7 +1029,7 @@ if (0) {
 	/* Now memzero all extra padding bytes.*/
 	pDest = (PUCHAR)(pSrcBufVA + SrcBufLen);
 	OS_PKT_TAIL_BUF_EXTEND(pPacket, padLen);
-	NdisZeroMemory(pDest, padLen);
+	memset(pDest, 0, padLen);
 
 	RTMP_IRQ_LOCK(&pAd->MLMEBulkOutLock, IrqFlags);
 

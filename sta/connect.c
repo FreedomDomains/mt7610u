@@ -57,7 +57,7 @@ UCHAR CipherSuiteWpaNoneAesLen =
 /* and are copied to pAd->StaActive */
 #define COPY_SETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(_pAd)                                 \
 {                                                                                       \
-	NdisZeroMemory((_pAd)->CommonCfg.Ssid, MAX_LEN_OF_SSID); 							\
+	memset((_pAd)->CommonCfg.Ssid, 0, MAX_LEN_OF_SSID); 							\
 	(_pAd)->CommonCfg.SsidLen = (_pAd)->MlmeAux.SsidLen;                                \
 	NdisMoveMemory((_pAd)->CommonCfg.Ssid, (_pAd)->MlmeAux.Ssid, (_pAd)->MlmeAux.SsidLen); \
 	COPY_MAC_ADDR((_pAd)->CommonCfg.Bssid, (_pAd)->MlmeAux.Bssid);                      \
@@ -306,7 +306,7 @@ void CntlIdleProc(
 			/* Set the AutoReconnectSsid to prevent it reconnect to old SSID */
 			/* Since calling this indicate user don't want to connect to that SSID anymore. */
 			pAd->MlmeAux.AutoReconnectSsidLen = 32;
-			NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid,
+			memset(pAd->MlmeAux.AutoReconnectSsid, 0,
 				       pAd->MlmeAux.AutoReconnectSsidLen);
 		}
 		break;
@@ -402,17 +402,17 @@ void CntlOidSsidProc(
 
 
 	/* Step 1. record the desired user settings to MlmeAux */
-	NdisZeroMemory(pAd->MlmeAux.Ssid, MAX_LEN_OF_SSID);
+	memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 	NdisMoveMemory(pAd->MlmeAux.Ssid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->MlmeAux.SsidLen = (UCHAR) pOidSsid->SsidLength;
 	if (pAd->StaCfg.BssType == BSS_INFRA)
-		NdisZeroMemory(pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
+		memset(pAd->MlmeAux.Bssid, 0, MAC_ADDR_LEN);
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
 
 	pAd->StaCfg.bAutoConnectByBssid = FALSE;
 
 	/*save connect info*/
-	NdisZeroMemory(pAd->StaCfg.ConnectinfoSsid, MAX_LEN_OF_SSID);
+	memset(pAd->StaCfg.ConnectinfoSsid, 0, MAX_LEN_OF_SSID);
 	NdisMoveMemory(pAd->StaCfg.ConnectinfoSsid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->StaCfg.ConnectinfoSsidLen = pOidSsid->SsidLength;
 	pAd->StaCfg.ConnectinfoBssType = pAd->StaCfg.BssType;
@@ -420,7 +420,7 @@ void CntlOidSsidProc(
 
 
 	/* Update Reconnect Ssid, that user desired to connect. */
-	NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid, MAX_LEN_OF_SSID);
+	memset(pAd->MlmeAux.AutoReconnectSsid, 0, MAX_LEN_OF_SSID);
 	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.Ssid,
 		       pAd->MlmeAux.SsidLen);
 	pAd->MlmeAux.AutoReconnectSsidLen = pAd->MlmeAux.SsidLen;
@@ -636,7 +636,7 @@ void CntlOidRTBssidProc(
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
 
 	/*save connect info*/
-	NdisZeroMemory(pAd->StaCfg.ConnectinfoBssid, MAC_ADDR_LEN);
+	memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
 	NdisMoveMemory(pAd->StaCfg.ConnectinfoBssid, pOidBssid, MAC_ADDR_LEN);
 	DBGPRINT(RT_DEBUG_TRACE, ("ANDROID IOCTL::SIOCSIWAP %02x:%02x:%02x:%02x:%02x:%02x\n",
 		pAd->StaCfg.ConnectinfoBssid[0], pAd->StaCfg.ConnectinfoBssid[1], pAd->StaCfg.ConnectinfoBssid[2],
@@ -722,7 +722,7 @@ void CntlOidRTBssidProc(
 
 	pInBss = &pAd->ScanTab.BssEntry[BssIdx];
 	/* Update Reconnect Ssid, that user desired to connect. */
-	NdisZeroMemory(pAd->MlmeAux.AutoReconnectSsid, MAX_LEN_OF_SSID);
+	memset(pAd->MlmeAux.AutoReconnectSsid, 0, MAX_LEN_OF_SSID);
 	pAd->MlmeAux.AutoReconnectSsidLen = pInBss->SsidLen;
 	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, pInBss->Ssid, pInBss->SsidLen);
 
@@ -1161,7 +1161,7 @@ void CntlWaitStartProc(
 
 #ifdef DOT11_N_SUPPORT
 			rt_phy_info = &pAd->StaActive.SupportedPhyInfo;
-			NdisZeroMemory(&rt_phy_info->MCSSet[0], 16);
+			memset(&rt_phy_info->MCSSet[0], 0, 16);
 			if (WMODE_CAP_N(pAd->CommonCfg.PhyMode)
 			    && (pAd->StaCfg.bAdhocN == TRUE)
 			    && (!pAd->CommonCfg.HT_DisallowTKIP
@@ -1574,7 +1574,7 @@ void LinkUp(
 #endif /* DOT11_N_SUPPORT */
 
 /*
-	NdisZeroMemory(&pAd->DrsCounters, sizeof (COUNTER_DRS));
+	memset(&pAd->DrsCounters, 0, sizeof (COUNTER_DRS));
 */
 
 	NdisGetSystemUpTime(&Now);
@@ -1659,7 +1659,7 @@ void LinkUp(
 		else if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone) {
 			pAd->StaCfg.DefaultKeyId = 0;	/* always be zero */
 
-			NdisZeroMemory(&pAd->SharedKey[BSS0][0], sizeof (CIPHER_KEY));
+			memset(&pAd->SharedKey[BSS0][0], 0, sizeof (CIPHER_KEY));
 			pAd->SharedKey[BSS0][0].KeyLen = LEN_TK;
 			NdisMoveMemory(pAd->SharedKey[BSS0][0].Key, pAd->StaCfg.PMK, LEN_TK);
 
@@ -2300,13 +2300,13 @@ void LinkDown(
 	pAd->Mlme.OneSecPeriodicRound = 0;
 
 #ifdef DOT11_N_SUPPORT
-	NdisZeroMemory(&pAd->MlmeAux.HtCapability, sizeof (HT_CAPABILITY_IE));
-	NdisZeroMemory(&pAd->MlmeAux.AddHtInfo, sizeof (ADD_HT_INFO_IE));
+	memset(&pAd->MlmeAux.HtCapability, 0, sizeof (HT_CAPABILITY_IE));
+	memset(&pAd->MlmeAux.AddHtInfo, 0, sizeof (ADD_HT_INFO_IE));
 	pAd->MlmeAux.HtCapabilityLen = 0;
 	pAd->MlmeAux.NewExtChannelOffset = 0xff;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("LinkDownCleanMlmeAux.ExtCapInfo!\n"));
-	NdisZeroMemory((PUCHAR) (&pAd->MlmeAux.ExtCapInfo),
+	memset((PUCHAR) (&pAd->MlmeAux.ExtCapInfo), 0,
 		       sizeof (EXT_CAP_INFO_ELEMENT));
 #endif /* DOT11_N_SUPPORT */
 
@@ -2314,11 +2314,11 @@ void LinkDown(
 	if (pAd->StaCfg.WpaState != SS_NOTUSE) {
 		pAd->StaCfg.WpaState = SS_START;
 		/* Clear Replay counter */
-		NdisZeroMemory(pAd->StaCfg.ReplayCounter, 8);
+		memset(pAd->StaCfg.ReplayCounter, 0, 8);
 
 #ifdef QOS_DLS_SUPPORT
 		if (pAd->CommonCfg.bDLSCapable)
-			NdisZeroMemory(pAd->StaCfg.DlsReplayCounter, 8);
+			memset(pAd->StaCfg.DlsReplayCounter, 0, 8);
 #endif /* QOS_DLS_SUPPORT */
 	}
 
@@ -2347,7 +2347,7 @@ void LinkDown(
 	}
 
 	NdisAcquireSpinLock(&pAd->MacTabLock);
-	NdisZeroMemory(&pAd->MacTab.Content[BSSID_WCID], sizeof(MAC_TABLE_ENTRY));
+	memset(&pAd->MacTab.Content[BSSID_WCID], 0, sizeof(MAC_TABLE_ENTRY));
 	pAd->MacTab.Content[BSSID_WCID].PortSecured = pAd->StaCfg.PortSecured;
 	NdisReleaseSpinLock(&pAd->MacTabLock);
 
@@ -2364,7 +2364,7 @@ void LinkDown(
 #endif /* RTMP_MAC_USB */
 
 	/* Clean association information */
-	NdisZeroMemory(&pAd->StaCfg.AssocInfo,
+	memset(&pAd->StaCfg.AssocInfo, 0,
 		       sizeof (NDIS_802_11_ASSOCIATION_INFORMATION));
 	pAd->StaCfg.AssocInfo.Length =
 	    sizeof (NDIS_802_11_ASSOCIATION_INFORMATION);
@@ -2373,7 +2373,7 @@ void LinkDown(
 
 
 	/* Reset RSSI value after link down */
-	NdisZeroMemory((PUCHAR) (&pAd->StaCfg.RssiSample),
+	memset((PUCHAR) (&pAd->StaCfg.RssiSample), 0,
 		       sizeof (pAd->StaCfg.RssiSample));
 
 	/* Restore MlmeRate */
@@ -2463,8 +2463,8 @@ void LinkDown(
 	pAd->StaCfg.RssiSample.AvgRssi1	= -127;
 	pAd->StaCfg.RssiSample.AvgRssi2	= -127;
 
-	NdisZeroMemory(pAd->StaCfg.ConnectinfoSsid, MAX_LEN_OF_SSID);
-	NdisZeroMemory(pAd->StaCfg.ConnectinfoBssid, MAC_ADDR_LEN);
+	memset(pAd->StaCfg.ConnectinfoSsid, 0, MAX_LEN_OF_SSID);
+	memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
 	pAd->StaCfg.ConnectinfoSsidLen  = 0;
 	pAd->StaCfg.ConnectinfoBssType  = 1;
 	pAd->StaCfg.ConnectinfoChannel = 0;
@@ -2668,7 +2668,7 @@ void ScanParmFill(
 	IN UCHAR BssType,
 	IN UCHAR ScanType)
 {
-	NdisZeroMemory(ScanReq->Ssid, MAX_LEN_OF_SSID);
+	memset(ScanReq->Ssid, 0, MAX_LEN_OF_SSID);
 	ScanReq->SsidLen = SsidLen;
 	NdisMoveMemory(ScanReq->Ssid, Ssid, SsidLen);
 	ScanReq->BssType = BssType;
@@ -3066,7 +3066,7 @@ void MaintainBssTable(
 			}
 
 			pOldAddr = Tab->BssEntry[total_bssNr - 1].pVarIeFromProbRsp;
-			NdisZeroMemory(&(Tab->BssEntry[total_bssNr - 1]), sizeof(BSS_ENTRY));
+			memset(&(Tab->BssEntry[total_bssNr - 1]), 0, sizeof(BSS_ENTRY));
 			if (pOldAddr)
 			{
 				memset(pOldAddr, 0, MAX_VIE_LEN);

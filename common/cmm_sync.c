@@ -57,7 +57,7 @@ void BuildChannelList(
 	PUCHAR pChannelList;
 	PUCHAR pChannelListFlag;
 
-	NdisZeroMemory(pAd->ChannelList, MAX_NUM_OF_CHANNELS * sizeof(CHANNEL_TX_POWER));
+	memset(pAd->ChannelList, 0, MAX_NUM_OF_CHANNELS * sizeof(CHANNEL_TX_POWER));
 
 	/* if not 11a-only mode, channel list starts from 2.4Ghz band*/
 	if (!WMODE_5G_ONLY(pAd->CommonCfg.PhyMode))

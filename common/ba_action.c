@@ -311,7 +311,7 @@ BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num)
 		/* get mpdu_blk */
 		mpdu_blk = (struct reordering_mpdu *) mem;
 		/* initial mpdu_blk */
-		NdisZeroMemory(mpdu_blk, sizeof(struct reordering_mpdu));
+		memset(mpdu_blk, 0, sizeof(struct reordering_mpdu));
 		/* next mpdu_blk */
 		mem += sizeof(struct reordering_mpdu);
 		/* insert mpdu_blk into freelist */
@@ -333,7 +333,7 @@ static struct reordering_mpdu *ba_mpdu_blk_alloc(struct rtmp_adapter *pAd)
 	{
 /*		blk_count++; */
 		/* reset mpdu_blk */
-		NdisZeroMemory(mpdu_blk, sizeof(struct reordering_mpdu));
+		memset(mpdu_blk, 0, sizeof(struct reordering_mpdu));
 	}
 	NdisReleaseSpinLock(&pAd->mpdu_blk_pool.lock);
 	return mpdu_blk;
@@ -921,8 +921,8 @@ void BAOriSessionTearDown(
 			os_alloc_mem(NULL, (UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
 			if (Elem != NULL)
 			{
-				NdisZeroMemory(&DelbaReq, sizeof(DelbaReq));
-				NdisZeroMemory(Elem, sizeof(MLME_QUEUE_ELEM));
+				memset(&DelbaReq, 0, sizeof(DelbaReq));
+				memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
 				COPY_MAC_ADDR(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
 				DelbaReq.Wcid = Wcid;
@@ -956,8 +956,8 @@ void BAOriSessionTearDown(
 		os_alloc_mem(NULL, (UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
 		if (Elem != NULL)
 		{
-			NdisZeroMemory(&DelbaReq, sizeof(DelbaReq));
-			NdisZeroMemory(Elem, sizeof(MLME_QUEUE_ELEM));
+			memset(&DelbaReq, 0, sizeof(DelbaReq));
+			memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
 			COPY_MAC_ADDR(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
 			DelbaReq.Wcid = Wcid;
@@ -1028,8 +1028,8 @@ void BARecSessionTearDown(
 			os_alloc_mem(NULL, (UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
 			if (Elem != NULL)
 			{
-				NdisZeroMemory(&DelbaReq, sizeof(DelbaReq));
-				NdisZeroMemory(Elem, sizeof(MLME_QUEUE_ELEM));
+				memset(&DelbaReq, 0, sizeof(DelbaReq));
+				memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
 				COPY_MAC_ADDR(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
 				DelbaReq.Wcid = Wcid;
@@ -1150,7 +1150,7 @@ void BAOriSessionSetupTimeout(
 		}
 #endif /* CONFIG_STA_SUPPORT */
 
-		NdisZeroMemory(&AddbaReq, sizeof(AddbaReq));
+		memset(&AddbaReq, 0, sizeof(AddbaReq));
 		COPY_MAC_ADDR(AddbaReq.pAddr, pEntry->Addr);
 		AddbaReq.Wcid = (UCHAR)(pEntry->Aid);
 		AddbaReq.TID = pBAEntry->TID;
@@ -1274,7 +1274,7 @@ void PeerAddBAReqAction(
 		return;
 	}
 
-	NdisZeroMemory(&ADDframe, sizeof(FRAME_ADDBA_RSP));
+	memset(&ADDframe, 0, sizeof(FRAME_ADDBA_RSP));
 	/* 2-1. Prepare ADDBA Response frame.*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)

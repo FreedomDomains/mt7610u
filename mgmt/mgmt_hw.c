@@ -33,7 +33,7 @@ INT dev_adjust_radio(struct rtmp_adapter*pAd)
 	struct hw_setting *hw_cfg = &pAd->hw_cfg, new_cfg;
 
 
-	NdisZeroMemory(&new_cfg, sizeof(struct hw_setting));
+	memset(&new_cfg, 0, sizeof(struct hw_setting));
 
 
 	/* For all wdev, find the maximum inter-set */
