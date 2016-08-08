@@ -1393,7 +1393,7 @@ void RTMPSetSTAPassPhrase(struct rtmp_adapter*pAd, char *PassPh)
 
 	if (ret == TRUE)
 	{
-		RTMPZeroMemory(pAd->StaCfg.WpaPassPhrase, 64);
+		memset(pAd->StaCfg.WpaPassPhrase, 0, 64);
 		RTMPMoveMemory(pAd->StaCfg.WpaPassPhrase, PassPh, strlen(PassPh));
 		pAd->StaCfg.WpaPassPhraseLen= strlen(PassPh);
 

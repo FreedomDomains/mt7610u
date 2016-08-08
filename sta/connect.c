@@ -3057,7 +3057,7 @@ void MaintainBssTable(
 				NdisMoveMemory(&(Tab->BssEntry[j]), &(Tab->BssEntry[j + 1]), sizeof(BSS_ENTRY));
 				if (pOldAddr)
 				{
-					RTMPZeroMemory(pOldAddr, MAX_VIE_LEN);
+					memset(pOldAddr, 0, MAX_VIE_LEN);
 					NdisMoveMemory(pOldAddr,
 								   Tab->BssEntry[j + 1].pVarIeFromProbRsp,
 								   Tab->BssEntry[j + 1].VarIeFromProbeRspLen);
@@ -3069,7 +3069,7 @@ void MaintainBssTable(
 			NdisZeroMemory(&(Tab->BssEntry[total_bssNr - 1]), sizeof(BSS_ENTRY));
 			if (pOldAddr)
 			{
-				RTMPZeroMemory(pOldAddr, MAX_VIE_LEN);
+				memset(pOldAddr, 0, MAX_VIE_LEN);
 			}
 
 			total_bssNr -= 1;

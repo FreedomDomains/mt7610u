@@ -244,7 +244,7 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 	buf = &pAd->PsPollContext.TransferBuffer->field.WirelessPacket[0];
 	pTxInfo = (TXINFO_STRUC *)buf;
 	pTxWI = (TXWI_STRUC *)&buf[TXINFO_SIZE];
-	RTMPZeroMemory(buf, 100);
+	memset(buf, 0, 100);
 	data_len = sizeof (PSPOLL_FRAME);
 	rlt_usb_write_txinfo(pAd, pTxInfo, data_len + TXWISize + TSO_SIZE, TRUE,
 						EpToQueue[MGMTPIPEIDX], FALSE, FALSE);
@@ -277,7 +277,7 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 	COPY_MAC_ADDR(pAd->NullFrame.Addr2, pAd->CurrentAddress);
 	COPY_MAC_ADDR(pAd->NullFrame.Addr3, pAd->CommonCfg.Bssid);
 	buf = &pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
-	RTMPZeroMemory(buf, 100);
+	memset(buf, 0, 100);
 	pTxInfo = (TXINFO_STRUC *)buf;
 	pTxWI = (TXWI_STRUC *)&buf[TXINFO_SIZE];
 	rlt_usb_write_txinfo(pAd, pTxInfo,
@@ -1098,7 +1098,7 @@ void RtmpUSBNullFrameKickOut(
 		pNullContext->InUse = TRUE;
 		pWirelessPkt = (PUCHAR)&pNullContext->TransferBuffer->field.WirelessPacket[0];
 
-		RTMPZeroMemory(&pWirelessPkt[0], 100);
+		memset(&pWirelessPkt[0], 0, 100);
 		pTxInfo = (TXINFO_STRUC *)&pWirelessPkt[0];
 		rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(frameLen + TXWISize + TSO_SIZE), TRUE, EpToQueue[MGMTPIPEIDX], FALSE,  FALSE);
 		pTxInfo->TxInfoQSEL = FIFO_EDCA;

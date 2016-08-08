@@ -224,7 +224,7 @@ void MlmeForceJoinReqAction(
 	RTMPCancelTimer(&pAd->MlmeAux.BeaconTimer, &TimerCancelled);
 
 	{
-		RTMPZeroMemory(pAd->MlmeAux.Ssid, MAX_LEN_OF_SSID);
+		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 		NdisMoveMemory(pAd->MlmeAux.Ssid, pAd->StaCfg.ConnectinfoSsid, pAd->StaCfg.ConnectinfoSsidLen);
 		pAd->MlmeAux.SsidLen = pAd->StaCfg.ConnectinfoSsidLen;
 	}
@@ -672,7 +672,7 @@ void MlmeJoinReqAction(
 	/* If AP's SSID is not hidden, it is OK for updating ssid to MlmeAux again. */
 	if (pBss->Hidden == 0)
 	{
-		RTMPZeroMemory(pAd->MlmeAux.Ssid, MAX_LEN_OF_SSID);
+		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 		NdisMoveMemory(pAd->MlmeAux.Ssid, pBss->Ssid, pBss->SsidLen);
 		pAd->MlmeAux.SsidLen = pBss->SsidLen;
 	}
@@ -990,8 +990,8 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 
 	NdisZeroMemory(&QbssLoad, sizeof(QBSS_LOAD_PARM)); /* woody */
 #ifdef DOT11_N_SUPPORT
-    RTMPZeroMemory(pHtCapability, sizeof(HT_CAPABILITY_IE));
-	RTMPZeroMemory(pAddHtInfo, sizeof(ADD_HT_INFO_IE));
+    memset(pHtCapability, 0, sizeof(HT_CAPABILITY_IE));
+	memset(pAddHtInfo, 0, sizeof(ADD_HT_INFO_IE));
 #endif /* DOT11_N_SUPPORT */
 
 	NdisZeroMemory(Ssid, MAX_LEN_OF_SSID);
@@ -1390,7 +1390,7 @@ void PeerBeaconAtScanAction(
 				if (pBssEntry->pVarIeFromProbRsp)
 				{
 					pBssEntry->VarIeFromProbeRspLen = LenVIE;
-					RTMPZeroMemory(pBssEntry->pVarIeFromProbRsp, MAX_VIE_LEN);
+					memset(pBssEntry->pVarIeFromProbRsp, 0, MAX_VIE_LEN);
 					RTMPMoveMemory(pBssEntry->pVarIeFromProbRsp, pVIE, LenVIE);
 				}
 			}
@@ -1621,7 +1621,7 @@ void PeerBeaconAtJoinAction(
 
 			CentralChannel = ie_list->Channel;
 
-			RTMPZeroMemory(&pAd->MlmeAux.HtCapability, SIZE_HT_CAP_IE);
+			memset(&pAd->MlmeAux.HtCapability, 0, SIZE_HT_CAP_IE);
 			/* filter out un-supported ht rates */
 			if (((ie_list->HtCapabilityLen > 0) || (ie_list->PreNHtCapabilityLen > 0)) &&
 				(pAd->StaCfg.DesiredHtPhyInfo.bHtEnable) &&
@@ -1689,9 +1689,9 @@ void PeerBeaconAtJoinAction(
 				pAd->StaActive.SupportedPhyInfo.vht_bw = VHT_BW_2040;
 #endif /* DOT11_VHT_AC */
 				pAd->MlmeAux.NewExtChannelOffset = 0xff;
-				RTMPZeroMemory(&pAd->MlmeAux.HtCapability, SIZE_HT_CAP_IE);
+				memset(&pAd->MlmeAux.HtCapability, 0, SIZE_HT_CAP_IE);
 				pAd->MlmeAux.HtCapabilityLen = 0;
-				RTMPZeroMemory(&pAd->MlmeAux.AddHtInfo, SIZE_ADD_HT_INFO_IE);
+				memset(&pAd->MlmeAux.AddHtInfo, 0, SIZE_ADD_HT_INFO_IE);
 			}
 
 			pAd->hw_cfg.cent_ch = CentralChannel;
@@ -2825,7 +2825,7 @@ void BuildEffectedChannelList(
 	UCHAR		i, j, k;
 	UCHAR		UpperChannel = 0, LowerChannel = 0;
 
-	RTMPZeroMemory(EChannel, 11);
+	memset(EChannel, 0, 11);
 	DBGPRINT(RT_DEBUG_TRACE, ("BuildEffectedChannelList:CtrlCh=%d,CentCh=%d,AuxCtrlCh=%d,AuxExtCh=%d\n",
 								pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel,
 								pAd->MlmeAux.AddHtInfo.ControlChan,

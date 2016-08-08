@@ -1737,7 +1737,7 @@ void RTMPCommSiteSurveyData(
 			pBss->Bssid[5]);
 
 	/*Security*/
-	RTMPZeroMemory(SecurityStr, 32);
+	memset(SecurityStr, 0, 32);
 	if ((Ndis802_11AuthModeWPA <= pBss->AuthMode) &&
 		(pBss->AuthMode <= Ndis802_11AuthModeWPA1PSKWPA2PSK))
 	{

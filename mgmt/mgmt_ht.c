@@ -182,10 +182,10 @@ void RTMPSetHT(
 										pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
 
 	/* Don't zero supportedHyPhy structure.*/
-	RTMPZeroMemory(ht_cap, sizeof(HT_CAPABILITY_IE));
-	RTMPZeroMemory(&pAd->CommonCfg.AddHTInfo, sizeof(pAd->CommonCfg.AddHTInfo));
-	RTMPZeroMemory(&pAd->CommonCfg.NewExtChanOffset, sizeof(pAd->CommonCfg.NewExtChanOffset));
-	RTMPZeroMemory(rt_ht_cap, sizeof(RT_HT_CAPABILITY));
+	memset(ht_cap, 0, sizeof(HT_CAPABILITY_IE));
+	memset(&pAd->CommonCfg.AddHTInfo, 0, sizeof(pAd->CommonCfg.AddHTInfo));
+	memset(&pAd->CommonCfg.NewExtChanOffset, 0, sizeof(pAd->CommonCfg.NewExtChanOffset));
+	memset(rt_ht_cap, 0, sizeof(RT_HT_CAPABILITY));
 
    	if (pAd->CommonCfg.bRdg)
 	{
@@ -448,7 +448,7 @@ void RTMPSetIndividualHT(
 		DBGPRINT(RT_DEBUG_ERROR, ("RTMPSetIndividualHT: invalid apidx(%d)\n", apidx));
 		return;
 	}
-	RTMPZeroMemory(pDesired_ht_phy, sizeof(RT_PHY_INFO));
+	memset(pDesired_ht_phy, 0, sizeof(RT_PHY_INFO));
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetIndividualHT : Desired MCS = %d\n", DesiredMcs));
 	/* Check the validity of MCS */
@@ -575,7 +575,7 @@ void RTMPDisableDesiredHtInfo(
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
-		RTMPZeroMemory(&pAd->StaCfg.DesiredHtPhyInfo, sizeof(RT_PHY_INFO));
+		memset(&pAd->StaCfg.DesiredHtPhyInfo, 0, sizeof(RT_PHY_INFO));
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -639,8 +639,8 @@ void RTMPUpdateHTIE(
 	OUT HT_CAPABILITY_IE *pHtCapability,
 	OUT ADD_HT_INFO_IE *pAddHtInfo)
 {
-	RTMPZeroMemory(pHtCapability, sizeof(HT_CAPABILITY_IE));
-	RTMPZeroMemory(pAddHtInfo, sizeof(ADD_HT_INFO_IE));
+	memset(pHtCapability, 0, sizeof(HT_CAPABILITY_IE));
+	memset(pAddHtInfo, 0, sizeof(ADD_HT_INFO_IE));
 
 		pHtCapability->HtCapInfo.ChannelWidth = pRtHt->ChannelWidth;
 		pHtCapability->HtCapInfo.MimoPs = pRtHt->MimoPs;

@@ -295,7 +295,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++)
 	{
 		if (os_alloc_mem(pAd,&pAd->ProbeRespIE[index].pIe, MAX_VIE_LEN) == NDIS_STATUS_SUCCESS)
-			RTMPZeroMemory(pAd->ProbeRespIE[index].pIe, MAX_VIE_LEN);
+			memset(pAd->ProbeRespIE[index].pIe, 0, MAX_VIE_LEN);
 		else
 			pAd->ProbeRespIE[index].pIe = NULL;
 	}
@@ -2340,41 +2340,6 @@ ULONG	RTMPCompareMemory(
 	return (0);
 }
 
-
-/*
-	========================================================================
-
-	Routine Description:
-		Zero out memory block
-
-	Arguments:
-		pSrc1		Pointer to memory address
-		Length		Size
-
-	Return Value:
-		None
-
-	IRQL = PASSIVE_LEVEL
-	IRQL = DISPATCH_LEVEL
-
-	Note:
-
-	========================================================================
-*/
-void RTMPZeroMemory(
-	IN	void *pSrc,
-	IN	ULONG	Length)
-{
-	PUCHAR	pMem;
-	ULONG	Index = 0;
-
-	pMem = (PUCHAR) pSrc;
-
-	for (Index = 0; Index < Length; Index++)
-	{
-		pMem[Index] = 0x00;
-	}
-}
 
 
 /*

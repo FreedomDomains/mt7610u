@@ -1465,7 +1465,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
 	pEid = (PEID_STRUCT) Ptr;
 	brc = FALSE;
 
-	RTMPZeroMemory(BssScan, sizeof(OVERLAP_BSS_SCAN_IE));
+	memset(BssScan, 0, sizeof(OVERLAP_BSS_SCAN_IE));
 	/* get variable fields from payload and advance the pointer*/
 	while ((Length + 2 + pEid->Len) <= MsgLen)
 	{

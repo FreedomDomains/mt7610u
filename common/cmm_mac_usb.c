@@ -1784,7 +1784,7 @@ void RT28xxUsbMlmeRadioOFF(
 #ifdef CONFIG_STA_SUPPORT
 	/* Clear PMKID cache.*/
 	pAd->StaCfg.SavedPMKNum = 0;
-	RTMPZeroMemory(pAd->StaCfg.SavedPMK, (PMKID_NO * sizeof(BSSID_INFO)));
+	memset(pAd->StaCfg.SavedPMK, 0, (PMKID_NO * sizeof(BSSID_INFO)));
 
 	/* Link down first if any association exists*/
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))

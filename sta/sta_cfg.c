@@ -99,7 +99,7 @@ INT Set_SSID_Proc(
 		{
 			UCHAR keyMaterial[40];
 
-			RTMPZeroMemory(pAd->StaCfg.PMK, 32);
+			memset(pAd->StaCfg.PMK, 0, 32);
 			if (pAd->StaCfg.WpaPassPhraseLen == 64)
 			{
 			    AtoH((char *) pAd->StaCfg.WpaPassPhrase, pAd->StaCfg.PMK, 32);
@@ -3261,7 +3261,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
                 {
                 	if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
                 	{
-                		RTMPZeroMemory(pAd->StaCfg.PMK, LEN_PMK);
+                		memset(pAd->StaCfg.PMK, 0, LEN_PMK);
                 		RTMPMoveMemory(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
                 	}
 					else
@@ -3289,7 +3289,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
             case RT_CMD_STA_IOCTL_SECURITY_ALG_CCMP:
 				if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
             	{
-            		RTMPZeroMemory(pAd->StaCfg.PMK, LEN_PMK);
+            		memset(pAd->StaCfg.PMK, 0, LEN_PMK);
             		RTMPMoveMemory(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
             	}
 				else

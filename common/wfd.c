@@ -380,7 +380,7 @@ ULONG InsertWfdSubelmtTlv(
 	USHORT	EidLen = 0;
 
 	pDest = pOutBuffer;
-	RTMPZeroMemory(pDest, 255);
+	memset(pDest, 0, 255);
 	*pDest = SubId;
 	pDest += 1;
 	Length = 0;
@@ -392,7 +392,7 @@ ULONG InsertWfdSubelmtTlv(
 			WFD_DEVICE_INFO DevInfo;
 			PUSHORT pDevInfo = &DevInfo;
 
-			RTMPZeroMemory(&DevInfo, sizeof(WFD_DEVICE_INFO));
+			memset(&DevInfo, 0, sizeof(WFD_DEVICE_INFO));
 
 			EidLen = SUBID_WFD_DEVICE_INFO_LEN;
 			tmpValue = cpu2be16(EidLen);
@@ -497,7 +497,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				WFD_COUPLED_SINK_INFO SinkInfo;
 
-				RTMPZeroMemory(&SinkInfo, sizeof(WFD_COUPLED_SINK_INFO));
+				memset(&SinkInfo, 0, sizeof(WFD_COUPLED_SINK_INFO));
 				EidLen = SUBID_WFD_COUPLED_SINK_INFO_LEN;
 				tmpValue = cpu2be16(EidLen);
 				RTMPMoveMemory(pDest, &tmpValue, 2);
@@ -574,7 +574,7 @@ ULONG InsertWfdSubelmtTlv(
 						INT j = 0;
 						WFD_SESSION_INFO SessionInfo;
 
-						RTMPZeroMemory(&SessionInfo, sizeof(WFD_SESSION_INFO));
+						memset(&SessionInfo, 0, sizeof(WFD_SESSION_INFO));
 
 						SessionInfo.Length = 23;
 						RTMPMoveMemory(&SessionInfo.DeviceAddr[0], &pAd->P2pTable.Client[P2pIdx].addr[0], MAC_ADDR_LEN);
@@ -817,7 +817,7 @@ void WfdCfgInit(
 {
 	PRT_WFD_CONFIG	pWfdcfg = &pAd->StaCfg.WfdCfg;
 
-	RTMPZeroMemory(&pAd->StaCfg.WfdCfg, sizeof(RT_WFD_CONFIG));
+	memset(&pAd->StaCfg.WfdCfg, 0, sizeof(RT_WFD_CONFIG));
 	pWfdcfg->bWfdEnable = TRUE;
 #ifdef RT_CFG80211_SUPPORT
 	pWfdcfg->bSuppInsertWfdIe = FALSE;

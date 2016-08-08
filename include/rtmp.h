@@ -3998,10 +3998,6 @@ void NicGetTxRawCounters(
 	IN TX_STA_CNT0_STRUC *pStaTxCnt0,
 	IN TX_STA_CNT1_STRUC *pStaTxCnt1);
 
-void RTMPZeroMemory(
-	IN  void *  pSrc,
-	IN  ULONG   Length);
-
 ULONG RTMPCompareMemory(
 	IN  void *  pSrc1,
 	IN  void *  pSrc2,

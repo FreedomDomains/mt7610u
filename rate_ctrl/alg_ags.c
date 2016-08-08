@@ -621,8 +621,8 @@ void MlmeDynamicTxRateSwitchingAGS(
 		pNextTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1) * SIZE_OF_AGS_RATE_TABLE_ENTRY]);
 		MlmeSetTxRate(pAd, pEntry, pNextTxRate);
 
-		RTMPZeroMemory(pEntry->TxQuality, (sizeof(USHORT) * (MAX_TX_RATE_INDEX+1)));
-		RTMPZeroMemory(pEntry->PER, (sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1)));
+		memset(pEntry->TxQuality, 0, (sizeof(USHORT) * (MAX_TX_RATE_INDEX+1)));
+		memset(pEntry->PER, 0, (sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1)));
 
 		pEntry->fLastSecAccordingRSSI = TRUE;
 		/* reset all OneSecTx counters */
@@ -754,7 +754,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 
 		pEntry->LastSecTxRateChangeAction = RATE_UP;
 		pEntry->TxRateUpPenalty = 0;
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		memset(pEntry->PER, 0, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
 		pEntry->AGSCtrl.lastRateIdx = CurrRateIdx;
 
 		bTxRateChanged = TRUE;
@@ -915,8 +915,8 @@ void StaQuickResponeForRateUpExecAGS(
 	/* MCS selection based on the RSSI information when the Tx samples are fewer than 15. */
 	if (pAGSStatisticsInfo->AccuTxTotalCnt <= 15)
 	{
-		RTMPZeroMemory(pEntry->TxQuality, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		memset(pEntry->TxQuality, 0, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
+		memset(pEntry->PER, 0, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
 
 		if ((pEntry->LastSecTxRateChangeAction == 1) && (CurrRateIdx != DownRateIdx))
 		{
@@ -969,7 +969,7 @@ void StaQuickResponeForRateUpExecAGS(
 					pAGSStatisticsInfo->TxErrorRatio,
 					TrainDown));
 
-				RTMPZeroMemory(pEntry->TxQuality, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
+				memset(pEntry->TxQuality, 0, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
 
 				if (pEntry->AGSCtrl.MCSGroup == 0)
 				{
@@ -1047,7 +1047,7 @@ void StaQuickResponeForRateUpExecAGS(
 
 		pEntry->TxRateUpPenalty = 0;
 		pEntry->TxQuality[pEntry->CurrTxRateIndex] = 0; /*restore the TxQuality from max to 0 */
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		memset(pEntry->PER, 0, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
 	}
 	else if ((pEntry->CurrTxRateIndex != CurrRateIdx) &&
 	            (pEntry->LastSecTxRateChangeAction == 1)) /* Tx rate down */
