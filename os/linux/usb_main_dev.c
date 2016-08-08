@@ -560,14 +560,6 @@ static int rt2870_probe(
 
 	*ppAd = pAd;
 
-#ifdef PRE_ASSIGN_MAC_ADDR
-	UCHAR PermanentAddress[MAC_ADDR_LEN];
-	RTMP_DRIVER_MAC_ADDR_GET(pAd, &PermanentAddress[0]);
-	DBGPRINT(RT_DEBUG_TRACE, ("@%s MAC address: %02x:%02x:%02x:%02x:%02x:%02x\n", __FUNCTION__, PermanentAddress[0], PermanentAddress[1],PermanentAddress[2],PermanentAddress[3],PermanentAddress[4],PermanentAddress[5]));
-	/* Set up the Mac address */
-	RtmpOSNetDevAddrSet(OpMode, net_dev, &PermanentAddress[0], NULL);
-#endif /* PRE_ASSIGN_MAC_ADDR */
-
 #ifdef EXT_BUILD_CHANNEL_LIST
 	RTMP_DRIVER_SET_PRECONFIG_VALUE(pAd);
 #endif /* EXT_BUILD_CHANNEL_LIST */
