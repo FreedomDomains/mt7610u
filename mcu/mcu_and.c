@@ -76,7 +76,7 @@ NDIS_STATUS andes_usb_loadfw(struct rtmp_adapter*ad)
 {
 	PURB urb;
 	POS_COOKIE obj = (POS_COOKIE)ad->OS_Cookie;
-	ra_dma_addr_t fw_dma;
+	dma_addr_t fw_dma;
 	PUCHAR fw_data;
 	TXINFO_NMAC_CMD *tx_info;
 	s32 sent_len;

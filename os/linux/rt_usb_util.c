@@ -345,13 +345,13 @@ Note:
 */
 void *rausb_buffer_alloc(void *dev,
 							size_t size,
-							ra_dma_addr_t *dma)
+							dma_addr_t *dma)
 {
 	dma_addr_t DmaAddr = (dma_addr_t)(*dma);
 	void *buf;
 
 	buf = usb_alloc_coherent(dev, size, GFP_ATOMIC, &DmaAddr);
-	*dma = (ra_dma_addr_t)DmaAddr;
+	*dma = (dma_addr_t)DmaAddr;
 	return buf;
 }
 EXPORT_SYMBOL(rausb_buffer_alloc);
@@ -377,7 +377,7 @@ Note:
 void rausb_buffer_free(void *dev,
 							size_t size,
 							void *addr,
-							ra_dma_addr_t dma)
+							dma_addr_t dma)
 {
 	dma_addr_t DmaAddr = (dma_addr_t)(dma);
 
@@ -529,7 +529,7 @@ void RtmpOsUsbInitHTTxDesc(
 	IN	ULONG			BulkOutSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pTxContext,
-	IN	ra_dma_addr_t		TransferDma)
+	IN	dma_addr_t		TransferDma)
 {
 	PURB pUrb = (PURB)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
@@ -557,7 +557,7 @@ void RtmpOsUsbInitRxDesc(
 	IN	UINT32			BufSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pRxContext,
-	IN	ra_dma_addr_t		TransferDma)
+	IN	dma_addr_t		TransferDma)
 {
 	PURB pUrb = (PURB)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);

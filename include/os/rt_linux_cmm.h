@@ -412,7 +412,6 @@ extern RTMP_USB_CONFIG *pRtmpUsbConfig;
 	the address will be 0 because you need to do swap I think.
 	So if you sure your DMA address is 32-bit, do not use RTMP_DMA_ADDR_64.
 */
-#define ra_dma_addr_t					unsigned long long
 
 #else
 
@@ -423,8 +422,6 @@ extern RTMP_USB_CONFIG *pRtmpUsbConfig;
 
 #define RTMP_OS_PCI_VENDOR_ID			PCI_VENDOR_ID
 #define RTMP_OS_PCI_DEVICE_ID			PCI_DEVICE_ID
-
-#define ra_dma_addr_t					dma_addr_t
 
 #endif /* OS_ABL_SUPPORT */
 

@@ -253,7 +253,7 @@ int rt28xx_open(void *dev)
 
 
 	/* sanity check */
-	if (sizeof(ra_dma_addr_t) < sizeof(dma_addr_t))
+	if (sizeof(dma_addr_t) < sizeof(dma_addr_t))
 		DBGPRINT(RT_DEBUG_ERROR, ("Fatal error for DMA address size!!!\n"));
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);

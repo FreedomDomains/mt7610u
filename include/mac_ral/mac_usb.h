@@ -184,7 +184,7 @@ typedef struct _TX_CONTEXT
 	UCHAR			Rsv[2];
 	ULONG			DataOffset;
 	UINT			TxRate;
-	ra_dma_addr_t		data_dma;
+	dma_addr_t		data_dma;
 
 }	TX_CONTEXT, *PTX_CONTEXT, **PPTX_CONTEXT;
 
@@ -211,7 +211,7 @@ typedef struct _HT_TX_CONTEXT
 	ULONG			NextBulkOutPosition;	/* Indicate the buffer start offset of a bulk-transmission */
 	ULONG			ENextBulkOutPosition;	/* Indicate the buffer end offset of a bulk-transmission */
 	UINT			TxRate;
-	ra_dma_addr_t		data_dma;		/* urb dma on linux */
+	dma_addr_t		data_dma;		/* urb dma on linux */
 #ifdef USB_BULK_BUF_ALIGMENT
 	ULONG 			CurWriteIdx;	/* pointer to next 32k bytes position when wirte tx resource or when bulk out sizze not > 0x6000 */
 	ULONG 			NextBulkIdx;	/* pointer to next alignment section when bulk ot */
@@ -224,7 +224,7 @@ typedef struct _CMD_CONTEXT
 {
 	void *pAd;
 	PURB pUrb;
-	ra_dma_addr_t data_dma;
+	dma_addr_t data_dma;
 	PUCHAR TransferBuffer;
 	BOOLEAN IRPPending;
 }  CMD_CONTEXT, *PCMD_CONTEXT, **PPCMD_CONTEXT;
@@ -248,7 +248,7 @@ typedef struct _RX_CONTEXT
 	BOOLEAN				IRPPending;		/* TODO: To be removed */
 	/*atomic_t				IrpLock; */
 	NDIS_SPIN_LOCK		RxContextLock;
-	ra_dma_addr_t			data_dma;		/* urb dma on linux */
+	dma_addr_t			data_dma;		/* urb dma on linux */
 }	RX_CONTEXT, *PRX_CONTEXT;
 
 
@@ -260,7 +260,7 @@ typedef struct _CMD_RSP_CONTEXT
 	BOOLEAN IRPPending;
 	BOOLEAN InUse;
 	BOOLEAN Readable;
-	ra_dma_addr_t data_dma;
+	dma_addr_t data_dma;
 } CMD_RSP_CONTEXT, *PCMD_RSP_CONTEXT;
 
 /******************************************************************************

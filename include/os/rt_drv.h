@@ -79,8 +79,8 @@ typedef void				* PPCI_DEV;
 typedef void				* PNDIS_PACKET;
 typedef char				NDIS_PACKET;
 typedef PNDIS_PACKET		* PPNDIS_PACKET;
-typedef ra_dma_addr_t		NDIS_PHYSICAL_ADDRESS;
-typedef ra_dma_addr_t		* PNDIS_PHYSICAL_ADDRESS;
+typedef dma_addr_t		NDIS_PHYSICAL_ADDRESS;
+typedef dma_addr_t		* PNDIS_PHYSICAL_ADDRESS;
 typedef void				* NDIS_HANDLE;
 typedef char 				* PNDIS_BUFFER;
 
@@ -372,8 +372,8 @@ void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
 /*#ifdef RTMP_MAC_PCI*/
 #define size_t						ULONG
 
-ra_dma_addr_t linux_pci_map_single(void *handle, void *ptr, size_t size, int sd_idx, int direction);
-void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, int direction);
+dma_addr_t linux_pci_map_single(void *handle, void *ptr, size_t size, int sd_idx, int direction);
+void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int direction);
 
 #define pci_enable_msi		RtmpOsPciMsiEnable
 #define pci_disable_msi		RtmpOsPciMsiDisable
@@ -944,11 +944,11 @@ extern void rausb_free_urb(void *urb);
 extern INT32 rausb_submit_urb(void *urb);
 extern void *rausb_buffer_alloc(void *dev,
 								size_t size,
-								ra_dma_addr_t *dma);
+								dma_addr_t *dma);
 extern void rausb_buffer_free(void *dev,
 								size_t size,
 								void *addr,
-								ra_dma_addr_t dma);
+								dma_addr_t dma);
 extern void rausb_kill_urb(void *urb);
 
 extern int rausb_control_msg(void *dev,

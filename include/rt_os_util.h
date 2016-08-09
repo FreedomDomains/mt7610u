@@ -750,9 +750,9 @@ int  RTMP_Usb_AutoPM_Get_Interface(
 
 
 
-ra_dma_addr_t linux_pci_map_single(void *pPciDev, void *ptr, size_t size, int sd_idx, int direction);
+dma_addr_t linux_pci_map_single(void *pPciDev, void *ptr, size_t size, int sd_idx, int direction);
 
-void linux_pci_unmap_single(void *pPciDev, ra_dma_addr_t dma_addr, size_t size, int direction);
+void linux_pci_unmap_single(void *pPciDev, dma_addr_t dma_addr, size_t size, int direction);
 
 /* ============================ rt_usb_util.c =============================== */
 #ifdef RTMP_MAC_USB
@@ -776,12 +776,12 @@ int rausb_submit_urb(void *urb);
 
 void *rausb_buffer_alloc(void *dev,
 							size_t size,
-							ra_dma_addr_t *dma);
+							dma_addr_t *dma);
 
 void rausb_buffer_free(void *dev,
 							size_t size,
 							void *addr,
-							ra_dma_addr_t dma);
+							dma_addr_t dma);
 
 int rausb_control_msg(void *dev,
 						unsigned int pipe,
@@ -825,7 +825,7 @@ void RtmpOsUsbInitHTTxDesc(
 	IN	ULONG			BulkOutSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pTxContext,
-	IN	ra_dma_addr_t		TransferDma);
+	IN	dma_addr_t		TransferDma);
 
 void RtmpOsUsbInitRxDesc(
 	IN	void 		*pUrbSrc,
@@ -835,7 +835,7 @@ void RtmpOsUsbInitRxDesc(
 	IN	UINT32			BufSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pRxContext,
-	IN	ra_dma_addr_t		TransferDma);
+	IN	dma_addr_t		TransferDma);
 
 void *RtmpOsUsbContextGet(
 	IN	void 		*pUrb);

@@ -135,8 +135,8 @@ typedef struct pci_dev 		* PPCI_DEV;
 typedef void				* PNDIS_PACKET;
 typedef char				NDIS_PACKET;
 typedef PNDIS_PACKET		* PPNDIS_PACKET;
-typedef	ra_dma_addr_t			NDIS_PHYSICAL_ADDRESS;
-typedef	ra_dma_addr_t			* PNDIS_PHYSICAL_ADDRESS;
+typedef	dma_addr_t			NDIS_PHYSICAL_ADDRESS;
+typedef	dma_addr_t			* PNDIS_PHYSICAL_ADDRESS;
 typedef void				* NDIS_HANDLE;
 typedef char 				* PNDIS_BUFFER;
 
@@ -640,8 +640,8 @@ void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
 /***********************************************************************************
  * Device DMA Access related definitions and data structures.
  **********************************************************************************/
-ra_dma_addr_t linux_pci_map_single(void *handle, void *ptr, size_t size, int sd_idx, int direction);
-void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, int direction);
+dma_addr_t linux_pci_map_single(void *handle, void *ptr, size_t size, int sd_idx, int direction);
+void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int direction);
 
 #define PCI_MAP_SINGLE_DEV(_handle, _ptr, _size, _sd_idx, _dir)				\
 	linux_pci_map_single(_handle, _ptr, _size, _sd_idx, _dir)
@@ -1316,11 +1316,11 @@ extern int rausb_submit_urb(void *urb);
 
 extern void *rausb_buffer_alloc(void *dev,
 								size_t size,
-								ra_dma_addr_t *dma);
+								dma_addr_t *dma);
 extern void rausb_buffer_free(void *dev,
 								size_t size,
 								void *addr,
-								ra_dma_addr_t dma);
+								dma_addr_t dma);
 
 extern void rausb_kill_urb(void *urb);
 

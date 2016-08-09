@@ -38,7 +38,7 @@ static NDIS_STATUS RTMPAllocUsbBulkBufStruct(
 	IN PURB *ppUrb,
 	IN void **ppXBuffer,
 	IN INT	bufLen,
-	IN ra_dma_addr_t *pDmaAddr,
+	IN dma_addr_t *pDmaAddr,
 	IN char *pBufName)
 {
 	POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
@@ -66,7 +66,7 @@ static NDIS_STATUS RTMPFreeUsbBulkBufStruct(
 	IN PURB *ppUrb,
 	IN PUCHAR *ppXBuffer,
 	IN INT bufLen,
-	IN ra_dma_addr_t data_dma)
+	IN dma_addr_t data_dma)
 {
 	POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
 
@@ -394,7 +394,7 @@ NDIS_STATUS	NICInitTransmit(
 	RTMP_MGMT_RING  *pMgmtRing;
 	void *pTransferBuffer;
 	PURB	pUrb;
-	ra_dma_addr_t data_dma;
+	dma_addr_t data_dma;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitTransmit\n"));
 
