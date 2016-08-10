@@ -62,18 +62,6 @@ UINT32 gUAPSD_TimingSumTrig2Txqueue;
 UINT32 gUAPSD_TimingSumTxqueue2Air;
 #endif /* UAPSD_TIMING_RECORD_FUNC */
 
-
-#ifdef VENDOR_FEATURE3_SUPPORT
-static void UAPSD_InsertTailQueueAc(
-	IN	struct rtmp_adapter*pAd,
-	IN	MAC_TABLE_ENTRY	*pEntry,
-	IN	QUEUE_HEADER	*pQueueHeader,
-	IN	QUEUE_ENTRY		*pQueueEntry);
-#endif /* VENDOR_FEATURE3_SUPPORT */
-
-
-
-
 /*
 ========================================================================
 Routine Description:
@@ -2000,36 +1988,6 @@ void UAPSD_UnTagFrame(
 	RTMP_SEM_UNLOCK(&pAd->UAPSDEOSPLock);
 } /* End of UAPSD_UnTagFrame */
 #endif /* RTMP_MAC_USB */
-
-
-#ifdef VENDOR_FEATURE3_SUPPORT
-/*
-========================================================================
-Routine Description:
-    Queue packet to a AC software queue.
-
-Arguments:
-	pAd				Pointer to our adapter
-	pEntry			The station
-	pQueueHeader	The software queue header of the AC
-	bulkEnPos		The packet entry
-
-Return Value:
-    None
-
-Note:
-	Only for code size reduce purpose.
-========================================================================
-*/
-static void UAPSD_InsertTailQueueAc(
-	IN	struct rtmp_adapter*pAd,
-	IN	MAC_TABLE_ENTRY	*pEntry,
-	IN	QUEUE_HEADER	*pQueueHeader,
-	IN	QUEUE_ENTRY		*pQueueEntry)
-{
-	InsertTailQueueAc(pAd, pEntry, pQueueHeader, pQueueEntry);
-} /* End of InsertTailQueueAc */
-#endif /* VENDOR_FEATURE3_SUPPORT */
 
 #endif /* UAPSD_SUPPORT */
 

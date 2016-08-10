@@ -7643,36 +7643,6 @@ void ieee80211_notify_michael_failure(
 const CHAR* ether_sprintf(const u8 *mac);
 #endif/*HOSTAPD_SUPPORT*/
 
-#ifdef VENDOR_FEATURE3_SUPPORT
-void RTMP_IO_WRITE32(
-	struct rtmp_adapter *pAd,
-	UINT32 Offset,
-	UINT32 Value);
-
-void RTMP_BBP_IO_READ8_BY_REG_ID(
-	struct rtmp_adapter *pAd,
-	UINT32 Offset,
-	u8 *pValue);
-
-void RTMP_BBP_IO_READ8(
-	struct rtmp_adapter *pAd,
-	UCHAR Offset,
-	u8 *pValue,
-	BOOLEAN FlgValidMCR);
-
-void RTMP_BBP_IO_WRITE8_BY_REG_ID(
-	struct rtmp_adapter *pAd,
-	UINT32 Offset,
-	u8 Value);
-
-void RTMP_BBP_IO_WRITE8(
-	struct rtmp_adapter *pAd,
-	UCHAR Offset,
-	u8 Value,
-	BOOLEAN FlgValidMCR);
-#endif /* VENDOR_FEATURE3_SUPPORT */
-
-
 INT AsicGetMacVersion(
 	IN struct rtmp_adapter*pAd);
 

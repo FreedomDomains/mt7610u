@@ -29,29 +29,12 @@
 #define __RT_COMM_H__
 
 #define VENDOR_FEATURE1_SUPPORT
-/*#define VENDOR_FEATURE3_SUPPORT */
-
 
 /*#define MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 /*#define AGS_SUPPORT */
 #endif	/* CONFIG_STA_SUPPORT */
-
-#ifdef VENDOR_FEATURE3_SUPPORT
-#ifdef DOT1X_SUPPORT
-#undef DOT1X_SUPPORT
-#endif	/* DOT1X_SUPPORT */
-#ifdef LED_CONTROL_SUPPORT
-#undef LED_CONTROL_SUPPORT
-#endif	/* LED_CONTROL_SUPPORT */
-#ifdef WSC_LED_SUPPORT
-#undef WSC_LED_SUPPORT
-#endif	/* WSC_LED_SUPPORT */
-#endif /* VENDOR_FEATURE3_SUPPORT */
-
-
-
 
 /* ======================== Before include files ============================ */
 /*
