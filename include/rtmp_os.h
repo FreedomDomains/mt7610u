@@ -40,19 +40,8 @@ typedef struct _RTMP_OS_ABL_OPS {
 extern RTMP_OS_ABL_OPS *pRaOsOps;
 
 #ifdef LINUX
-#ifndef OS_ABL_FUNC_SUPPORT
 #include "os/rt_linux.h"
 
-#else
-
-#ifdef RTMP_MODULE_OS
-/* for util/netif */
-#include "os/rt_linux.h"
-#else
-/* for core */
-#include "os/rt_drv.h"
-#endif /* RTMP_MODULE_OS */
-#endif /* OS_ABL_FUNC_SUPPORT */
 #endif /* LINUX */
 
 
@@ -90,7 +79,6 @@ typedef enum _RTMP_TASK_STATUS_ {
 
 #define RTMP_OS_TASK_NAME_LEN	16
 
-#if defined(RTMP_MODULE_OS) || !defined(OS_ABL_FUNC_SUPPORT)
 /* used in UTIL/NETIF module */
 typedef struct _RTMP_OS_TASK_ {
 	char taskName[RTMP_OS_TASK_NAME_LEN];
@@ -109,7 +97,6 @@ typedef struct _RTMP_OS_TASK_ {
 	BOOLEAN kthread_running;
 #endif
 } OS_TASK;
-#endif /* RTMP_MODULE_OS || ! OS_ABL_FUNC_SUPPORT */
 
 int RtmpOSIRQRequest(
 	IN struct net_device *pNetDev);

@@ -493,12 +493,6 @@ static int rt2870_probe(
 
 
 	/* set/get operators to/from DRIVER module */
-#ifdef OS_ABL_FUNC_SUPPORT
-	/* get DRIVER operations */
-	RtmpNetOpsInit(pRtmpDrvNetOps);
-	RTMP_DRV_OPS_FUNCTION(pRtmpDrvOps, pRtmpDrvNetOps, NULL, NULL);
-	RtmpNetOpsSet(pRtmpDrvNetOps);
-#endif /* OS_ABL_FUNC_SUPPORT */
 
 	rv = RTMPAllocAdapterBlock(handle, &pAd);
 	if (rv != NDIS_STATUS_SUCCESS)

@@ -450,11 +450,7 @@ do { \
 /* TODO: Use this IOCTL carefully when linux kernel version larger than 2.6.27, because the PID only correct when the user space task do this ioctl itself. */
 /*#define RTMP_GET_OS_PID(_x, _y)    _x = get_task_pid(current, PIDTYPE_PID); */
 #define RT_GET_OS_PID(_x, _y)		do{rcu_read_lock(); _x=(ULONG)current->pids[PIDTYPE_PID].pid; rcu_read_unlock();}while(0)
-#ifdef OS_ABL_FUNC_SUPPORT
-#define RTMP_GET_OS_PID(_a, _b)			RtmpOsGetPid(&_a, _b)
-#else
 #define RTMP_GET_OS_PID(_a, _b)			RT_GET_OS_PID(_a, _b)
-#endif
 #define	GET_PID_NUMBER(_v)	pid_nr((_v))
 #define CHECK_PID_LEGALITY(_pid)	if (pid_nr((_pid)) > 0)
 #define KILL_THREAD_PID(_A, _B, _C)	kill_pid((_A), (_B), (_C))

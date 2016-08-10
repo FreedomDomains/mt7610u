@@ -33,100 +33,6 @@
 typedef void *(*RTMP_NET_ETH_CONVERT_DEV_SEARCH)(void *net_dev, UCHAR *pData);
 typedef int (*RTMP_NET_PACKET_TRANSMIT)(void *pPacket);
 
-#ifdef LINUX
-#ifdef OS_ABL_FUNC_SUPPORT
-
-/* ========================================================================== */
-/* operators used in NETIF module */
-/* Note: No need to put any compile option here */
-typedef struct _RTMP_DRV_ABL_OPS {
-
-NDIS_STATUS	(*RTMPAllocAdapterBlock)(void *handle, void **ppAdapter);
-void (*RTMPFreeAdapter)(void *pAd);
-BOOLEAN (*RtmpRaDevCtrlExit)(void *pAd);
-INT (*RtmpRaDevCtrlInit)(void *pAd, RTMP_INF_TYPE infType);
-void (*RTMPHandleInterrupt)(void *pAd);
-INT (*RTMP_COM_IoctlHandle)(
-	IN	void *pAd,
-	IN	RTMP_IOCTL_INPUT_STRUCT *wrq,
-	IN	INT cmd,
-	IN	USHORT subcmd,
-	IN	void *pData,
-	IN	ULONG Data);
-
-int (*RTMPSendPackets)(
-	IN	NDIS_HANDLE MiniportAdapterContext,
-	IN	PPNDIS_PACKET ppPacketArray,
-	IN	UINT NumberOfPackets,
-	IN	UINT32 PktTotalLen,
-	IN	RTMP_NET_ETH_CONVERT_DEV_SEARCH Func);
-
-int (*MBSS_PacketSend)(
-	IN	PNDIS_PACKET				pPktSrc,
-	IN	struct net_device *				pDev,
-	IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-int (*WDS_PacketSend)(
-	IN	PNDIS_PACKET				pPktSrc,
-	IN	struct net_device *				pDev,
-	IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-int (*APC_PacketSend)(
-	IN	PNDIS_PACKET				pPktSrc,
-	IN	struct net_device *				pDev,
-	IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-int (*MESH_PacketSend)(
-	IN	PNDIS_PACKET				pPktSrc,
-	IN	struct net_device *				pDev,
-	IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-int (*P2P_PacketSend)(
-	IN	PNDIS_PACKET				pPktSrc,
-	IN	struct net_device *				pDev,
-	IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-INT (*RTMP_AP_IoctlHandle)(
-	IN	void 				*pAd,
-	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN	INT						cmd,
-	IN	USHORT					subcmd,
-	IN	void 				*pData,
-	IN	ULONG					Data);
-
-INT (*RTMP_STA_IoctlHandle)(
-	IN	void 				*pAd,
-	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN	INT						cmd,
-	IN	USHORT					subcmd,
-	IN	void 				*pData,
-	IN	ULONG					Data,
-	IN  USHORT                  priv_flags);
-
-void (*RTMPDrvSTAOpen)(void *pAd);
-void (*RTMPDrvAPOpen)(void *pAd);
-
-void (*RTMPDrvSTAClose)(void *pAd, void *net_dev);
-void (*RTMPDrvAPClose)(void *pAd, void *net_dev);
-
-void (*RTMPInfClose)(void *pAd);
-
-int (*rt28xx_init)(void *pAd,  char *pDefaultMac, char *pHostName);
-} RTMP_DRV_ABL_OPS;
-
-extern RTMP_DRV_ABL_OPS *pRtmpDrvOps;
-
-void RtmpDrvOpsInit(
-	OUT 	void 			*pDrvOpsOrg,
-	INOUT	void 			*pDrvNetOpsOrg,
-	IN		RTMP_PCI_CONFIG		*pPciConfig,
-	IN		RTMP_USB_CONFIG		*pUsbConfig);
-#endif /* OS_ABL_FUNC_SUPPORT */
-#endif /* LINUX */
-
-
-
-
 /* ========================================================================== */
 /* operators used in DRIVER module */
 typedef void (*RTMP_DRV_USB_COMPLETE_HANDLER)(void *pURB);
@@ -163,31 +69,6 @@ void RtmpNetOpsSet(void *pNetOpsOrg);
 
 
 /* ========================================================================== */
-#if defined(RTMP_MODULE_OS) && defined(OS_ABL_FUNC_SUPPORT)
-/* for UTIL/NETIF module in OS ABL mode */
-
-#define RTMPAllocAdapterBlock (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPAllocAdapterBlock)
-#define RTMPFreeAdapter (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPFreeAdapter)
-#define RtmpRaDevCtrlExit (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RtmpRaDevCtrlExit)
-#define RtmpRaDevCtrlInit (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RtmpRaDevCtrlInit)
-#define RTMPHandleInterrupt (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPHandleInterrupt)
-#define RTMP_COM_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_COM_IoctlHandle)
-#define RTMPSendPackets (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPSendPackets)
-#define MBSS_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->MBSS_PacketSend)
-#define WDS_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->WDS_PacketSend)
-#define APC_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->APC_PacketSend)
-#define MESH_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->MESH_PacketSend)
-#define P2P_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->P2P_PacketSend)
-#define RTMP_AP_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_AP_IoctlHandle)
-#define RTMP_STA_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_STA_IoctlHandle)
-#define RTMPDrvSTAOpen (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvSTAOpen)
-#define RTMPDrvAPOpen (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvAPOpen)
-#define RTMPDrvSTAClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvSTAClose)
-#define RTMPDrvAPClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvAPClose)
-#define RTMPInfClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPInfClose)
-#define rt28xx_init (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->rt28xx_init)
-
-#else /* RTMP_MODULE_OS && OS_ABL_FUNC_SUPPORT */
 
 NDIS_STATUS RTMPAllocAdapterBlock(void *handle, void **ppAdapter);
 void RTMPFreeAdapter(void *pAd);
@@ -256,10 +137,6 @@ void RTMPInfClose(void *pAd);
 int rt28xx_init(void *pAd);
 
 struct net_device *RtmpPhyNetDevMainCreate(void *pAd);
-#endif /* RTMP_MODULE_OS */
-
-
-
 
 /* ========================================================================== */
 int rt28xx_close(void *dev);
