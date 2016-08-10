@@ -42,10 +42,6 @@
 ULONG RTDebugLevel = RT_DEBUG_ERROR;
 ULONG RTDebugFunc = 0;
 
-#ifdef VENDOR_FEATURE2_SUPPORT
-ULONG OS_NumOfPktAlloc = 0, OS_NumOfPktFree = 0;
-#endif /* VENDOR_FEATURE2_SUPPORT */
-
 /*
  * the lock will not be used in TX/RX
  * path so throughput should not be impacted
@@ -1384,11 +1380,6 @@ void RtmpOSNetDevFree(struct net_device *pNetDev)
 		kfree(pDevInfo);
 
 	free_netdev(pNetDev);
-
-#ifdef VENDOR_FEATURE2_SUPPORT
-	printk("OS_NumOfPktAlloc = %ld, OS_NumOfPktFree = %ld\n",
-			OS_NumOfPktAlloc, OS_NumOfPktFree);
-#endif /* VENDOR_FEATURE2_SUPPORT */
 }
 
 INT RtmpOSNetDevAlloc(
