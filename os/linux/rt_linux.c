@@ -42,9 +42,6 @@
 ULONG RTDebugLevel = RT_DEBUG_ERROR;
 ULONG RTDebugFunc = 0;
 
-#ifdef VENDOR_FEATURE4_SUPPORT
-ULONG OS_NumOfMemAlloc = 0, OS_NumOfMemFree = 0;
-#endif /* VENDOR_FEATURE4_SUPPORT */
 #ifdef VENDOR_FEATURE2_SUPPORT
 ULONG OS_NumOfPktAlloc = 0, OS_NumOfPktFree = 0;
 #endif /* VENDOR_FEATURE2_SUPPORT */
@@ -193,9 +190,6 @@ NDIS_STATUS os_alloc_mem(
 {
 	*mem = (PUCHAR) kmalloc(size, GFP_ATOMIC);
 	if (*mem) {
-#ifdef VENDOR_FEATURE4_SUPPORT
-		OS_NumOfMemAlloc++;
-#endif /* VENDOR_FEATURE4_SUPPORT */
 
 		return NDIS_STATUS_SUCCESS;
 	} else
@@ -209,9 +203,6 @@ NDIS_STATUS os_alloc_mem_suspend(
 {
 	*mem = (PUCHAR) kmalloc(size, GFP_KERNEL);
 	if (*mem) {
-#ifdef VENDOR_FEATURE4_SUPPORT
-		OS_NumOfMemAlloc++;
-#endif /* VENDOR_FEATURE4_SUPPORT */
 
 		return NDIS_STATUS_SUCCESS;
 	} else
@@ -1394,10 +1385,6 @@ void RtmpOSNetDevFree(struct net_device *pNetDev)
 
 	free_netdev(pNetDev);
 
-#ifdef VENDOR_FEATURE4_SUPPORT
-	printk("OS_NumOfMemAlloc = %ld, OS_NumOfMemFree = %ld\n",
-			OS_NumOfMemAlloc, OS_NumOfMemFree);
-#endif /* VENDOR_FEATURE4_SUPPORT */
 #ifdef VENDOR_FEATURE2_SUPPORT
 	printk("OS_NumOfPktAlloc = %ld, OS_NumOfPktFree = %ld\n",
 			OS_NumOfPktAlloc, OS_NumOfPktFree);
