@@ -179,41 +179,6 @@ typedef struct completion RTMP_OS_COMPLETION;
  *	OS definition related data structure and definitions
  ******************************************************************************/
 
-#ifdef OS_ABL_SUPPORT
-
-#define RTMP_USB_CONTROL_MSG_ENODEV		-1
-#define RTMP_USB_CONTROL_MSG_FAIL		-2
-
-typedef struct __RTMP_PCI_CONFIG {
-
-	UINT32	ConfigVendorID;
-} RTMP_PCI_CONFIG;
-
-typedef struct __RTMP_USB_CONFIG {
-
-	UINT32	Reserved;
-} RTMP_USB_CONFIG;
-
-extern RTMP_PCI_CONFIG *pRtmpPciConfig;
-extern RTMP_USB_CONFIG *pRtmpUsbConfig;
-
-#define RTMP_OS_PCI_VENDOR_ID			pRtmpPciConfig->ConfigVendorID
-
-/*
-	Declare dma_addr_t here, can not define it in rt_drv.h
-
-	If you define it in include/os/rt_drv.h, then the size in DRIVER module
-	will be 64-bit, but in UTIL/NET modules, it maybe 32-bit.
-	This will cause size mismatch problem when OS_ABL = yes.
-*/
-/*
-	In big-endian & 32-bit DMA address platform, if you use long long to
-	record DMA address, when you call kernel function to set DMA address,
-	the address will be 0 because you need to do swap I think.
-	So if you sure your DMA address is 32-bit, do not use RTMP_DMA_ADDR_64.
-*/
-
-#else
 
 #ifdef RTMP_USB_SUPPORT
 #define RTMP_USB_CONTROL_MSG_ENODEV		(-ENODEV)
@@ -222,8 +187,6 @@ extern RTMP_USB_CONFIG *pRtmpUsbConfig;
 
 #define RTMP_OS_PCI_VENDOR_ID			PCI_VENDOR_ID
 #define RTMP_OS_PCI_DEVICE_ID			PCI_DEVICE_ID
-
-#endif /* OS_ABL_SUPPORT */
 
 #define PCI_MAP_SINGLE					RtmpDrvPciMapSingle
 

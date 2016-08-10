@@ -1143,7 +1143,6 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #define BULKAGGRE_SIZE				60 /* 100 */
 #endif /* INF_AMAZON_SE */
 
-#ifndef OS_ABL_SUPPORT
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
 #define RTUSB_ALLOC_URB(iso)		usb_alloc_urb(iso, GFP_ATOMIC)
 #define RTUSB_SUBMIT_URB(pUrb)		usb_submit_urb(pUrb, GFP_ATOMIC)
@@ -1151,31 +1150,15 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #define RTUSB_URB_FREE_BUFFER(_dev, _size, _addr, _dma)	usb_free_coherent(_dev, _size, _addr, _dma)
 
 #define RTUSB_FILL_BULK_URB(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context) usb_fill_bulk_urb(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context)
-#else
-
-/*#define RT28XX_PUT_DEVICE			rausb_put_dev */
-#define RTUSB_ALLOC_URB(iso)		rausb_alloc_urb(iso)
-#define RTUSB_SUBMIT_URB(pUrb)		rausb_submit_urb(pUrb)
-#define RTUSB_URB_ALLOC_BUFFER		rausb_buffer_alloc
-#define RTUSB_URB_FREE_BUFFER		rausb_buffer_free
-#endif /* OS_ABL_SUPPORT */
 
 #define RT28XX_PUT_DEVICE(dev_p)
 
 
-#ifndef OS_ABL_SUPPORT
 #define RTUSB_FREE_URB(pUrb)	usb_free_urb(pUrb)
-#else
-#define RTUSB_FREE_URB(pUrb)	rausb_free_urb(pUrb)
-#endif /* OS_ABL_SUPPORT */
 
 /* unlink urb */
 
-#ifndef OS_ABL_SUPPORT
 #define RTUSB_UNLINK_URB(pUrb)		usb_kill_urb(pUrb)
-#else
-#define RTUSB_UNLINK_URB(pUrb)		rausb_kill_urb(pUrb)
-#endif /* OS_ABL_SUPPORT */
 
 
 /* Prototypes of completion funuc. */
@@ -1288,49 +1271,8 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 #define RTMP_OS_USB_CONTEXT_GET(__pURB)		__pURB->rtusb_urb_context
 #define RTMP_OS_USB_STATUS_GET(__pURB)		__pURB->rtusb_urb_status
 
-#ifndef OS_ABL_SUPPORT
 #define USB_CONTROL_MSG		usb_control_msg
 
-#else
-
-#define USB_CONTROL_MSG		rausb_control_msg
-
-/*extern int rausb_register(struct usb_driver * new_driver); */
-/*extern void rausb_deregister(struct usb_driver * driver); */
-
-extern struct urb *rausb_alloc_urb(int iso_packets);
-extern void rausb_free_urb(void *urb);
-
-extern void rausb_put_dev(void *dev);
-extern struct usb_device *rausb_get_dev(void *dev);
-
-extern int rausb_submit_urb(void *urb);
-
-#ifndef gfp_t
-#define gfp_t		INT32
-#endif /* gfp_t */
-
-extern void *rausb_buffer_alloc(void *dev,
-								size_t size,
-								dma_addr_t *dma);
-extern void rausb_buffer_free(void *dev,
-								size_t size,
-								void *addr,
-								dma_addr_t dma);
-
-extern void rausb_kill_urb(void *urb);
-
-extern int rausb_control_msg(void *dev,
-							unsigned int pipe,
-							__u8 request,
-							__u8 requesttype,
-							__u16 value,
-							__u16 index,
-							void *data,
-							__u16 size,
-							int timeout);
-
-#endif /* OS_ABL_SUPPORT */
 
 /*#endif // RTMP_USB_SUPPORT */
 

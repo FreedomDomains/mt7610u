@@ -3221,8 +3221,6 @@ struct rtmp_adapter {
 #endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
-#ifdef OS_ABL_SUPPORT
-#endif /* OS_ABL_SUPPORT */
 
 	UINT32 ContinueMemAllocFailCount;
 
@@ -3242,8 +3240,6 @@ struct rtmp_adapter {
 	/* purpose: Cancel all timers when module is removed */
 	LIST_HEADER RscTimerCreateList;	/* timers list */
 
-#ifdef OS_ABL_SUPPORT
-#endif /* OS_ABL_SUPPORT */
 
 
 

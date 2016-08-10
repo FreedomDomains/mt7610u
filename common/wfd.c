@@ -27,20 +27,8 @@
 
 #ifdef WFD_SUPPORT
 
-#ifdef OS_ABL_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-#include <linux/version.h>
-#include <net/cfg80211.h>
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* OS_ABL_SUPPORT */
-
 #include "rt_config.h"
 #include "wfd_cmm.h"
-#ifdef OS_ABL_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-#include "cfg80211.h"
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* OS_ABL_SUPPORT */
 
 UCHAR WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
 

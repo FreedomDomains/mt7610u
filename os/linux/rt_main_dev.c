@@ -41,19 +41,11 @@
 // TODO: End---
 
 #ifdef RTMP_MAC_USB
-#ifdef OS_ABL_SUPPORT
-#endif /* OS_ABL_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
 /*---------------------------------------------------------------------*/
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
-
-#ifdef OS_ABL_SUPPORT
-RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
-RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
-#endif /* OS_ABL_SUPPORT */
-
 
 /*---------------------------------------------------------------------*/
 /* Prototypes of Functions Used                                        */
