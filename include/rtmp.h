@@ -552,8 +552,8 @@ typedef struct _RTMP_DMACB {
 	ULONG AllocSize;	/* Control block size */
 	void *AllocVa;		/* Control block virtual address */
 	NDIS_PHYSICAL_ADDRESS AllocPa;	/* Control block physical address */
-	PNDIS_PACKET pNdisPacket;
-	PNDIS_PACKET pNextNdisPacket;
+	struct sk_buff * pNdisPacket;
+	struct sk_buff * pNextNdisPacket;
 
 	RTMP_DMABUF DmaBuf;	/* Associated DMA buffer structure */
 #ifdef CACHE_LINE_32B
@@ -808,7 +808,7 @@ typedef struct {
   *	Fragment Frame structure
   */
 typedef struct _FRAGMENT_FRAME {
-	PNDIS_PACKET pFragPacket;
+	struct sk_buff * pFragPacket;
 	ULONG RxSize;
 	USHORT Sequence;
 	USHORT LastFrag;
@@ -1011,7 +1011,7 @@ typedef struct _MLME_STRUCT {
   **************************************************************************/
 struct reordering_mpdu {
 	struct reordering_mpdu *next;
-	PNDIS_PACKET pPacket;	/* coverted to 802.3 frame */
+	struct sk_buff * pPacket;	/* coverted to 802.3 frame */
 	int Sequence;		/* sequence number of MPDU */
 	BOOLEAN bAMSDU;
 	UCHAR					OpMode;
@@ -3439,7 +3439,7 @@ typedef struct _RX_BLK_
 #endif /* RLT_MAC */
 	RXWI_STRUC *pRxWI;
 	PHEADER_802_11 pHeader;
-	PNDIS_PACKET pRxPacket;
+	struct sk_buff * pRxPacket;
 	UCHAR *pData;
 	USHORT DataSize;
 	USHORT Flags;
@@ -3509,7 +3509,7 @@ typedef struct _TX_BLK_
 	HTTRANSMIT_SETTING	*pTransmit;
 
 	/* Following structure used for the characteristics of a specific packet. */
-	PNDIS_PACKET		pPacket;
+	struct sk_buff *		pPacket;
 	PUCHAR				pSrcBufHeader;				/* Reference to the head of sk_buff->data */
 	PUCHAR				pSrcBufData;				/* Reference to the sk_buff->data, will changed depends on hanlding progresss */
 	UINT				SrcBufLen;					/* Length of packet payload which not including Layer 2 header */
@@ -4269,11 +4269,11 @@ void RTMPHandleRxCoherentInterrupt(
 
 NDIS_STATUS STASendPacket(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PNDIS_PACKET    pPacket);
+	IN  struct sk_buff *    pPacket);
 
 void STASendPackets(
 	IN  NDIS_HANDLE     MiniportAdapterContext,
-	IN  PPNDIS_PACKET   ppPacketArray,
+	IN  struct sk_buff **ppPacketArray,
 	IN  UINT            NumberOfPackets);
 
 void RTMPDeQueuePacket(
@@ -4284,7 +4284,7 @@ void RTMPDeQueuePacket(
 
 NDIS_STATUS	RTMPHardTransmit(
 	IN struct rtmp_adapter *pAd,
-	IN PNDIS_PACKET		pPacket,
+	IN struct sk_buff *		pPacket,
 	IN  UCHAR			QueIdx,
 	OUT	PULONG			pFreeTXDLeft);
 
@@ -4308,14 +4308,14 @@ NDIS_STATUS RTMPFreeTXDRequest(
 NDIS_STATUS MlmeHardTransmit(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR	QueIdx,
-	IN  PNDIS_PACKET    pPacket,
+	IN  struct sk_buff *    pPacket,
 	IN	BOOLEAN			FlgDataQForce,
 	IN	BOOLEAN			FlgIsLocked);
 
 NDIS_STATUS MlmeHardTransmitMgmtRing(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR	QueIdx,
-	IN  PNDIS_PACKET    pPacket);
+	IN  struct sk_buff *    pPacket);
 
 
 USHORT RTMPCalcDuration(
@@ -4407,7 +4407,7 @@ BOOLEAN RTMPFreeTXDUponTxDmaDone(
 
 BOOLEAN RTMPCheckEtherType(
 	IN	struct rtmp_adapter *pAd,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	PMAC_TABLE_ENTRY pMacEntry,
 	IN	UCHAR			OpMode,
 	OUT PUCHAR pUserPriority,
@@ -5878,7 +5878,7 @@ BOOLEAN RTMPTkipCompareMICValue(
 
 void    RTMPCalculateMICValue(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PNDIS_PACKET    pPacket,
+	IN  struct sk_buff *    pPacket,
 	IN  PUCHAR          pEncap,
 	IN  PCIPHER_KEY     pKey,
 	IN	UCHAR			apidx);
@@ -6201,13 +6201,13 @@ BOOLEAN RTMP_FillTxBlkInfo(
 
  void announce_802_3_packet(
 	IN	void 		*pAdSrc,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	UCHAR			OpMode);
 
 #ifdef DOT11_N_SUPPORT
 UINT BA_Reorder_AMSDU_Annnounce(
 	IN	struct rtmp_adapter *pAd,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	UCHAR			OpMode);
 #endif /* DOT11_N_SUPPORT */
 
@@ -6800,7 +6800,7 @@ void Indicate_EAPOL_Packet(
 
 UINT deaggregate_AMSDU_announce(
 	IN	struct rtmp_adapter *pAd,
-	PNDIS_PACKET		pPacket,
+	struct sk_buff *		pPacket,
 	IN	PUCHAR			pData,
 	IN	ULONG			DataSize,
 	IN	UCHAR			OpMode);
@@ -6882,17 +6882,17 @@ BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, PUCHAR pRspBuffer);
 
 BOOLEAN APFowardWirelessStaToWirelessSta(
 	IN	struct rtmp_adapter *pAd,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	ULONG			FromWhichBSSID);
 
 void Announce_or_Forward_802_3_Packet(
 	IN	struct rtmp_adapter *pAd,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	UCHAR			FromWhichBSSID);
 
 void Sta_Announce_or_Forward_802_3_Packet(
 	IN	struct rtmp_adapter *pAd,
-	IN	PNDIS_PACKET	pPacket,
+	IN	struct sk_buff *	pPacket,
 	IN	UCHAR			FromWhichBSSID);
 
 
@@ -6929,14 +6929,14 @@ void Update_Rssi_Sample(
 	IN RSSI_SAMPLE *pRssi,
 	IN RXWI_STRUC *pRxWI);
 
-PNDIS_PACKET GetPacketFromRxRing(
+struct sk_buff * GetPacketFromRxRing(
 	IN struct rtmp_adapter*pAd,
 	OUT RX_BLK *pRxBlk,
 	OUT BOOLEAN	 *pbReschedule,
 	INOUT UINT32 *pRxPending,
 	BOOLEAN *bCmdRspPacket);
 
-PNDIS_PACKET RTMPDeFragmentDataFrame(
+struct sk_buff * RTMPDeFragmentDataFrame(
 	IN struct rtmp_adapter*pAd,
 	IN RX_BLK *pRxBlk);
 
@@ -7263,7 +7263,7 @@ void append_pkt(
 	IN UINT HdrLen,
 	IN UCHAR *pData,
 	IN ULONG DataSize,
-	OUT PNDIS_PACKET *ppPacket);
+	OUT struct sk_buff * *ppPacket);
 
 
 void RTUSBMlmeHardTransmit(
@@ -7331,7 +7331,7 @@ void RtmpUSBDataKickOut(
 int RtmpUSBMgmtKickOut(
 	IN struct rtmp_adapter	*pAd,
 	IN UCHAR 			QueIdx,
-	IN PNDIS_PACKET		pPacket,
+	IN struct sk_buff *		pPacket,
 	IN PUCHAR			pSrcBufVA,
 	IN UINT 			SrcBufLen);
 

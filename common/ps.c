@@ -46,7 +46,7 @@
 */
 NDIS_STATUS RtmpInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
 	IN UCHAR QueIdx)
 {
@@ -95,7 +95,7 @@ void RtmpCleanupPsQueue(
 	IN  PQUEUE_HEADER   pQueue)
 {
 	PQUEUE_ENTRY pEntry;
-	PNDIS_PACKET pPacket;
+	struct sk_buff * pPacket;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RtmpCleanupPsQueue (0x%08lx)...\n", (ULONG)pQueue));
 

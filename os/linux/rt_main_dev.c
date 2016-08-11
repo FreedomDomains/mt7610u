@@ -431,12 +431,12 @@ int rt28xx_packet_xmit(void *skbsrc)
 	struct sk_buff *skb = (struct sk_buff *)skbsrc;
 	struct net_device *net_dev = skb->dev;
 	void *pAd = NULL;
-	PNDIS_PACKET pPacket = (PNDIS_PACKET) skb;
+	struct sk_buff * pPacket = (struct sk_buff *) skb;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 
-	return RTMPSendPackets((NDIS_HANDLE)pAd, (PPNDIS_PACKET) &pPacket, 1,
+	return RTMPSendPackets((NDIS_HANDLE)pAd, (struct sk_buff **) &pPacket, 1,
 							skb->len, RtmpNetEthConvertDevSearch);
 
 }
@@ -464,7 +464,7 @@ static int rt28xx_send_packets(
 {
 	if (!(RTMP_OS_NETDEV_STATE_RUNNING(net_dev)))
 	{
-		RELEASE_NDIS_PACKET(NULL, (PNDIS_PACKET)skb_p, NDIS_STATUS_FAILURE);
+		RELEASE_NDIS_PACKET(NULL, (struct sk_buff *)skb_p, NDIS_STATUS_FAILURE);
 		return 0;
 	}
 

@@ -354,7 +354,7 @@ void STAHandleRxDataFrame(
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
 	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN bFragment = FALSE;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	UCHAR FromWhichBSSID = BSS0;
@@ -823,7 +823,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 #endif /* RLT_MAC */
 	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN bFragment = FALSE;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	UCHAR FromWhichBSSID = BSS0;
@@ -1275,7 +1275,7 @@ void STAHandleRxMgmtFrame(
 {
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	UCHAR MinSNR = 0;
 
 	do {
@@ -1368,7 +1368,7 @@ void STAHandleRxControlFrame(
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
 #endif /* DOT11_N_SUPPORT */
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN retStatus;
 	NDIS_STATUS status = NDIS_STATUS_FAILURE;
 
@@ -1418,7 +1418,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	RXD_STRUC *pRxD;
 	RXWI_STRUC *pRxWI;
 	RXINFO_STRUC *pRxInfo;
-	PNDIS_PACKET pRxPacket;
+	struct sk_buff * pRxPacket;
 	HEADER_802_11 *pHeader;
 	UCHAR *pData;
 	RX_BLK RxBlk;
@@ -1680,7 +1680,7 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 
 BOOLEAN STAHandleRxDonePacket(
 	IN struct rtmp_adapter*pAd,
-	IN PNDIS_PACKET pRxPacket,
+	IN struct sk_buff * pRxPacket,
 	IN RX_BLK *pRxBlk)
 {
 	RXD_STRUC *pRxD;
@@ -1842,12 +1842,12 @@ Note:
 */
 void STASendPackets(
 	IN NDIS_HANDLE MiniportAdapterContext,
-	IN PPNDIS_PACKET ppPacketArray,
+	IN struct sk_buff **ppPacketArray,
 	IN UINT NumberOfPackets)
 {
 	UINT Index;
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *) MiniportAdapterContext;
-	PNDIS_PACKET pPacket;
+	struct sk_buff * pPacket;
 	BOOLEAN allowToSend = FALSE;
 
 
@@ -1931,7 +1931,7 @@ Note:
 */
 NDIS_STATUS STASendPacket(
 	IN struct rtmp_adapter *pAd,
-	IN PNDIS_PACKET pPacket)
+	IN struct sk_buff * pPacket)
 {
 	PACKET_INFO PacketInfo;
 	PUCHAR pSrcBufVA;
@@ -2722,7 +2722,7 @@ static inline PUCHAR STA_Build_ARalink_Frame_Header(
 {
 	PUCHAR pHeaderBufPtr;
 	HEADER_802_11 *pHeader_802_11;
-	PNDIS_PACKET pNextPacket;
+	struct sk_buff * pNextPacket;
 	UINT32 nextBufLen;
 	PQUEUE_ENTRY pQEntry;
 	u8 TXWISize = pAd->chipCap.TXWISize;
@@ -4223,7 +4223,7 @@ void STA_Fragment_Frame_Tx(
 
 	Arguments:
 		pAd 	Pointer to our adapter
-		PNDIS_PACKET	Pointer to outgoing Ndis frame
+		struct sk_buff *	Pointer to outgoing Ndis frame
 		NumberOfFrag	Number of fragment required
 
 	Return Value:
@@ -4237,7 +4237,7 @@ void STA_Fragment_Frame_Tx(
 */
 NDIS_STATUS STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 {
-	NDIS_PACKET *pPacket;
+	struct sk_buff *pPacket;
 	PQUEUE_ENTRY pQEntry;
 
 #ifdef HDR_TRANS_SUPPORT
@@ -4377,7 +4377,7 @@ NDIS_STATUS STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, UCHAR QueId
 
 void Sta_Announce_or_Forward_802_3_Packet(
 	IN struct rtmp_adapter *pAd,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN UCHAR FromWhichBSSID)
 {
 	if (TRUE

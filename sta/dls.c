@@ -1497,7 +1497,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 	UCHAR Mic[16];
 	UCHAR digest[80];
 	PUCHAR pOutBuffer = NULL;
-	PNDIS_PACKET pNdisPacket;
+	struct sk_buff * pNdisPacket;
 	UCHAR temp[64];
 	UCHAR DlsPTK[80];
 
@@ -1634,7 +1634,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	UCHAR Mic[16];
 	UCHAR digest[80];
 	PUCHAR pOutBuffer = NULL;
-	PNDIS_PACKET pNdisPacket;
+	struct sk_buff * pNdisPacket;
 	UCHAR temp[64];
 	UCHAR DlsPTK[80];	/* Due to dirver can not get PTK, use proprietary PTK */
 

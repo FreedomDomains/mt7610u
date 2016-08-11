@@ -86,33 +86,33 @@ INT RTMP_COM_IoctlHandle(
 
 int	RTMPSendPackets(
 	IN	NDIS_HANDLE		MiniportAdapterContext,
-	IN	PPNDIS_PACKET	ppPacketArray,
+	IN	struct sk_buff 		**ppPacketArray,
 	IN	UINT			NumberOfPackets,
 	IN	UINT32			PktTotalLen,
 	IN	RTMP_NET_ETH_CONVERT_DEV_SEARCH	Func);
 
 int MBSS_PacketSend(
-	IN	PNDIS_PACKET				pPktSrc,
+	IN	struct sk_buff *				pPktSrc,
 	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int WDS_PacketSend(
-	IN	PNDIS_PACKET				pPktSrc,
+	IN	struct sk_buff *				pPktSrc,
 	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int APC_PacketSend(
-	IN	PNDIS_PACKET				pPktSrc,
+	IN	struct sk_buff *				pPktSrc,
 	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int MESH_PacketSend(
-	IN	PNDIS_PACKET				pPktSrc,
+	IN	struct sk_buff *				pPktSrc,
 	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 int P2P_PacketSend(
-	IN	PNDIS_PACKET				pPktSrc,
+	IN	struct sk_buff *				pPktSrc,
 	IN	struct net_device *				pDev,
 	IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
@@ -190,7 +190,7 @@ INT MBSS_VirtualIF_Open(
 INT MBSS_VirtualIF_Close(
 	IN	struct net_device *		dev_p);
 INT MBSS_VirtualIF_PacketSend(
-	IN PNDIS_PACKET			skb_p,
+	IN struct sk_buff *			skb_p,
 	IN struct net_device *			dev_p);
 INT MBSS_VirtualIF_Ioctl(
 	IN struct net_device *			dev_p,
@@ -201,7 +201,7 @@ void RT28xx_WDS_Init(
 	IN void 				*pAd,
 	IN struct net_device *			net_dev);
 INT WdsVirtualIFSendPackets(
-	IN PNDIS_PACKET			pSkb,
+	IN struct sk_buff *			pSkb,
 	IN struct net_device *			dev);
 INT WdsVirtualIF_open(
 	IN	struct net_device *		dev);
@@ -222,7 +222,7 @@ INT ApCli_VirtualIF_Open(
 INT ApCli_VirtualIF_Close(
 	IN	struct net_device *		dev_p);
 INT ApCli_VirtualIF_PacketSend(
-	IN PNDIS_PACKET 		pPktSrc,
+	IN struct sk_buff * 		pPktSrc,
 	IN struct net_device *			pDev);
 INT ApCli_VirtualIF_Ioctl(
 	IN struct net_device *			dev_p,
@@ -242,7 +242,7 @@ INT Mesh_VirtualIF_Open(
 INT Mesh_VirtualIF_Close(
 	IN	struct net_device *		pDev);
 INT Mesh_VirtualIF_PacketSend(
-	IN PNDIS_PACKET 		pPktSrc,
+	IN struct sk_buff * 		pPktSrc,
 	IN struct net_device *			pDev);
 INT Mesh_VirtualIF_Ioctl(
 	IN struct net_device *			dev_p,
@@ -260,7 +260,7 @@ void RTMP_P2P_Init(
 	 IN  struct net_device * dev_p);
 
  INT P2P_VirtualIF_PacketSend(
-	 IN PNDIS_PACKET	 skb_p,
+	 IN struct sk_buff *	 skb_p,
 	 IN struct net_device *	 dev_p);
 
  INT P2P_VirtualIF_Ioctl(

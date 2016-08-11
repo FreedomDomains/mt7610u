@@ -76,9 +76,6 @@ typedef void pregs;
  *	OS Specific definitions and data structures
  ***********************************************************************************/
 typedef void				* PPCI_DEV;
-typedef void				* PNDIS_PACKET;
-typedef char				NDIS_PACKET;
-typedef PNDIS_PACKET		* PPNDIS_PACKET;
 typedef dma_addr_t		NDIS_PHYSICAL_ADDRESS;
 typedef dma_addr_t		* PNDIS_PHYSICAL_ADDRESS;
 typedef void				* NDIS_HANDLE;
@@ -186,6 +183,9 @@ typedef void * 			RTMP_OS_FD;
 #define NdisCmpMemory(Destination, Source, Length)  memcmp(Destination, Source, Length)
 #define NdisEqualMemory(Source1, Source2, Length)   (!memcmp(Source1, Source2, Length))
 #define RTMPEqualMemory(Source1, Source2, Length)	(!memcmp(Source1, Source2, Length))
+
+#define ether_addr_copy(Addr1, Addr2)             	memcpy((Addr1), (Addr2), MAC_ADDR_LEN)
+
 
 /***********************************************************************************
  *	OS task related data structure and definitions
@@ -530,7 +530,7 @@ do {															\
 #define RTMP_OS_NETDEV_SET_TYPE_MONITOR		RtmpOsSetNetDevTypeMonitor
 
 #define QUEUE_ENTRY_TO_PACKET(pEntry) \
-	(PNDIS_PACKET)(pEntry)
+	(struct sk_buff *)(pEntry)
 
 #define PACKET_TO_QUEUE_ENTRY(pPacket) \
 	(PQUEUE_ENTRY)(pPacket)

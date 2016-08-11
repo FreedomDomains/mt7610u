@@ -67,16 +67,16 @@ void RTMP_BASetup(
 
 void APSendPackets(
 	IN	NDIS_HANDLE		MiniportAdapterContext,
-	IN	PPNDIS_PACKET	ppPacketArray,
+	IN	struct sk_buff **ppPacketArray,
 	IN	UINT			NumberOfPackets);
 
 NDIS_STATUS APSendPacket(
     IN  struct rtmp_adapter *  pAd,
-    IN  PNDIS_PACKET    pPacket);
+    IN  struct sk_buff *    pPacket);
 
 NDIS_STATUS APInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
 	IN UCHAR QueIdx);
 

@@ -136,7 +136,7 @@ struct cmd_msg {
 	MSG_RSP_HANDLER rsp_handler;
 	enum cmd_msg_state state;
 	void *priv;
-	PNDIS_PACKET net_pkt;
+	struct sk_buff * net_pkt;
 #ifdef RTMP_USB_SUPPORT
 	PURB urb;
 #endif

@@ -355,7 +355,7 @@ void WpaEAPOLKeyAction(
 
 	Arguments:
 		pAd		Pointer	to our adapter
-		PNDIS_PACKET	Pointer to outgoing Ndis frame
+		struct sk_buff *	Pointer to outgoing Ndis frame
 		NumberOfFrag	Number of fragment required
 
 	Return Value:
@@ -374,7 +374,7 @@ void RTMPToWirelessSta(
     IN  UINT            	DataLen,
     IN	BOOLEAN				bClearFrame)
 {
-    PNDIS_PACKET    pPacket;
+    struct sk_buff *    pPacket;
     NDIS_STATUS     Status;
 
 	if ((!pEntry) || (!IS_ENTRY_CLIENT(pEntry) && !IS_ENTRY_APCLI(pEntry)

@@ -269,7 +269,7 @@ void RtmpFlashWrite(
 #endif /* defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT) */
 
 
-PNDIS_PACKET RtmpOSNetPktAlloc(void *dummy, int size)
+struct sk_buff * RtmpOSNetPktAlloc(void *dummy, int size)
 {
 	struct sk_buff *skb;
 	/* Add 2 more bytes for ip header alignment */
@@ -277,10 +277,10 @@ PNDIS_PACKET RtmpOSNetPktAlloc(void *dummy, int size)
 	if (skb != NULL)
 		MEM_DBG_PKT_ALLOC_INC(skb);
 
-	return ((PNDIS_PACKET) skb);
+	return ((struct sk_buff *) skb);
 }
 
-PNDIS_PACKET RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
+struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 {
 	struct sk_buff *pkt;
 
@@ -296,7 +296,7 @@ PNDIS_PACKET RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 		RTMP_SET_PACKET_SOURCE(OSPKT_TO_RTPKT(pkt), PKTSRC_NDIS);
 	}
 
-	return (PNDIS_PACKET) pkt;
+	return (struct sk_buff *) pkt;
 }
 
 
@@ -306,7 +306,7 @@ PNDIS_PACKET RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 */
 NDIS_STATUS RTMPAllocateNdisPacket(
 	IN void *pReserved,
-	OUT PNDIS_PACKET *ppPacket,
+	OUT struct sk_buff * *ppPacket,
 	IN UCHAR *pHeader,
 	IN UINT HeaderLen,
 	IN UCHAR *pData,
@@ -337,7 +337,7 @@ NDIS_STATUS RTMPAllocateNdisPacket(
 /* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, GET_OS_PKT_LEN(pPacket));*/
 
 	RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
-	*ppPacket = (PNDIS_PACKET)pPacket;
+	*ppPacket = (struct sk_buff *)pPacket;
 
 	return NDIS_STATUS_SUCCESS;
 }
@@ -352,7 +352,7 @@ NDIS_STATUS RTMPAllocateNdisPacket(
 */
 void RTMPFreeNdisPacket(
 	IN void *pReserved,
-	IN PNDIS_PACKET pPacket)
+	IN struct sk_buff * pPacket)
 {
 	dev_kfree_skb_any(RTPKT_TO_OSPKT(pPacket));
 	MEM_DBG_PKT_FREE_INC(pPacket);
@@ -377,7 +377,7 @@ NDIS_STATUS Sniff2BytesFromNdisBuffer(
 
 
 void RTMP_QueryPacketInfo(
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	OUT PACKET_INFO *info,
 	OUT UCHAR **pSrcBufVA,
 	OUT UINT *pSrcBufLen)
@@ -413,13 +413,13 @@ void RTMP_QueryPacketInfo(
 
 
 
-PNDIS_PACKET DuplicatePacket(
+struct sk_buff * DuplicatePacket(
 	IN struct net_device *pNetDev,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN UCHAR FromWhichBSSID)
 {
 	struct sk_buff *skb;
-	PNDIS_PACKET pRetPacket = NULL;
+	struct sk_buff * pRetPacket = NULL;
 	USHORT DataSize;
 	UCHAR *pData;
 
@@ -438,7 +438,7 @@ PNDIS_PACKET DuplicatePacket(
 }
 
 
-PNDIS_PACKET duplicate_pkt(
+struct sk_buff * duplicate_pkt(
 	IN struct net_device *pNetDev,
 	IN PUCHAR pHeader802_3,
 	IN UINT HdrLen,
@@ -447,7 +447,7 @@ PNDIS_PACKET duplicate_pkt(
 	IN UCHAR FromWhichBSSID)
 {
 	struct sk_buff *skb;
-	PNDIS_PACKET pPacket = NULL;
+	struct sk_buff * pPacket = NULL;
 
 	if ((skb =
 	     __dev_alloc_skb(HdrLen + DataSize + 2, MEM_ALLOC_FLAG)) != NULL) {
@@ -467,9 +467,9 @@ PNDIS_PACKET duplicate_pkt(
 
 
 #define TKIP_TX_MIC_SIZE		8
-PNDIS_PACKET duplicate_pkt_with_TKIP_MIC(
+struct sk_buff * duplicate_pkt_with_TKIP_MIC(
 	IN void *pReserved,
-	IN PNDIS_PACKET pPacket)
+	IN struct sk_buff * pPacket)
 {
 	struct sk_buff *skb, *newskb;
 
@@ -549,9 +549,9 @@ BOOLEAN RTMPL2FrameTxAction(
 }
 
 
-PNDIS_PACKET ExpandPacket(
+struct sk_buff * ExpandPacket(
 	IN void *pReserved,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN UINT32 ext_head_len,
 	IN UINT32 ext_tail_len)
 {
@@ -586,9 +586,9 @@ PNDIS_PACKET ExpandPacket(
 
 }
 
-PNDIS_PACKET ClonePacket(
+struct sk_buff * ClonePacket(
 	IN void *pReserved,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN PUCHAR pData,
 	IN ULONG DataSize)
 {
@@ -614,12 +614,12 @@ PNDIS_PACKET ClonePacket(
 }
 
 void RtmpOsPktInit(
-	IN PNDIS_PACKET pNetPkt,
+	IN struct sk_buff * pNetPkt,
 	IN struct net_device *pNetDev,
 	IN UCHAR *pData,
 	IN USHORT DataSize)
 {
-	PNDIS_PACKET pRxPkt;
+	struct sk_buff * pRxPkt;
 
 	pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 
@@ -635,7 +635,7 @@ void wlan_802_11_to_802_3_packet(
 	IN UCHAR OpMode,
 	IN USHORT VLAN_VID,
 	IN USHORT VLAN_Priority,
-	IN PNDIS_PACKET pRxPacket,
+	IN struct sk_buff * pRxPacket,
 	IN UCHAR *pData,
 	IN ULONG DataSize,
 	IN PUCHAR pHeader802_3,
@@ -714,7 +714,7 @@ INT32 ralinkrate[] = {
 UINT32 RT_RateSize = sizeof (ralinkrate);
 
 void send_monitor_packets(IN struct net_device *pNetDev,
-			  IN PNDIS_PACKET pRxPacket,
+			  IN struct sk_buff * pRxPacket,
 			  IN PHEADER_802_11 pHeader,
 			  IN UCHAR * pData,
 			  IN USHORT DataSize,
@@ -1954,7 +1954,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsPktProtocolAssign(PNDIS_PACKET pNetPkt)
+void RtmpOsPktProtocolAssign(struct sk_buff * pNetPkt)
 {
 	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 	pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
@@ -1994,7 +1994,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpOsPktRcvHandle(PNDIS_PACKET pNetPkt)
+void RtmpOsPktRcvHandle(struct sk_buff * pNetPkt)
 {
 	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 
@@ -2046,13 +2046,13 @@ typedef struct GNU_PACKED _RT_IAPP_L2_UPDATE_FRAME {
 } RT_IAPP_L2_UPDATE_FRAME, *PRT_IAPP_L2_UPDATE_FRAME;
 
 
-PNDIS_PACKET RtmpOsPktIappMakeUp(
+struct sk_buff * RtmpOsPktIappMakeUp(
 	IN struct net_device *pNetDev,
 	IN u8 *pMac)
 {
 	RT_IAPP_L2_UPDATE_FRAME frame_body;
 	INT size = sizeof (RT_IAPP_L2_UPDATE_FRAME);
-	PNDIS_PACKET pNetBuf;
+	struct sk_buff * pNetBuf;
 
 	if (pNetDev == NULL)
 		return NULL;

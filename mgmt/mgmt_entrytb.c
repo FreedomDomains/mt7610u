@@ -447,7 +447,7 @@ BOOLEAN MacTableDeleteEntry(
 				if (pEntry->ip_queue_inited)
 				{
 					PQUEUE_ENTRY qe;
-					PNDIS_PACKET q_pkt;
+					struct sk_buff * q_pkt;
 
 					qe = pEntry->ip_queue1;
 					while (qe->Head)

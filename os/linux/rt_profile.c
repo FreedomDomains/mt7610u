@@ -180,11 +180,11 @@ void tbtt_tasklet(unsigned long data)
 
 void announce_802_3_packet(
 	IN void *pAdSrc,
-	IN PNDIS_PACKET pPacket,
+	IN struct sk_buff * pPacket,
 	IN UCHAR OpMode)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
-	PNDIS_PACKET pRxPkt = pPacket;
+	struct sk_buff * pRxPkt = pPacket;
 
 	ASSERT(pPacket);
 	MEM_DBG_PKT_FREE_INC(pPacket);
@@ -208,7 +208,7 @@ void STA_MonPktSend(
 	IN RX_BLK *pRxBlk)
 {
 	struct net_device *pNetDev;
-	PNDIS_PACKET pRxPacket;
+	struct sk_buff * pRxPacket;
 	PHEADER_802_11 pHeader;
 	USHORT DataSize;
 	UINT32 MaxRssi;
@@ -347,13 +347,13 @@ void RTMPFreeAdapter(
 
 int	RTMPSendPackets(
 	IN NDIS_HANDLE dev_hnd,
-	IN PPNDIS_PACKET ppPacketArray,
+	IN struct sk_buff **ppPacketArray,
 	IN UINT NumberOfPackets,
 	IN UINT32 PktTotalLen,
 	IN RTMP_NET_ETH_CONVERT_DEV_SEARCH Func)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)dev_hnd;
-	PNDIS_PACKET pPacket = ppPacketArray[0];
+	struct sk_buff * pPacket = ppPacketArray[0];
 
 
 	INC_COUNTER64(pAd->WlanCounters.TransmitCountFrmOs);
@@ -401,7 +401,7 @@ int	RTMPSendPackets(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
 
-		STASendPackets((NDIS_HANDLE)pAd, (PPNDIS_PACKET) &pPacket, 1);
+		STASendPackets((NDIS_HANDLE)pAd, (struct sk_buff **) &pPacket, 1);
 	}
 
 #endif /* CONFIG_STA_SUPPORT */
