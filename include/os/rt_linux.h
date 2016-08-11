@@ -766,10 +766,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define PACKET_TO_QUEUE_ENTRY(pPacket) \
 	(PQUEUE_ENTRY)(pPacket)
 
-#ifdef CONFIG_5VT_ENHANCE
-#define BRIDGE_TAG 0x35564252    /* depends on 5VT define in br_input.c */
-#endif
-
 #define GET_SG_LIST_FROM_PACKET(_p, _sc)	\
     rt_get_sg_list_from_packet(_p, _sc)
 

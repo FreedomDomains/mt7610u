@@ -395,11 +395,6 @@ int	RTMPSendPackets(
 
 	RTMP_SET_PACKET_5VT(pPacket, 0);
 /*	MiniportMMRequest(pAd, pkt->data, pkt->len); */
-#ifdef CONFIG_5VT_ENHANCE
-    if (*(int*)(GET_OS_PKT_CB(pPacket)) == BRIDGE_TAG) {
-		RTMP_SET_PACKET_5VT(pPacket, 1);
-    }
-#endif
 
 
 #ifdef CONFIG_STA_SUPPORT
