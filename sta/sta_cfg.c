@@ -2843,7 +2843,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 	{
 		case RT_CMD_STA_IOCTL_IW_MLME_DEAUTH:
 			DBGPRINT(RT_DEBUG_TRACE, ("====> %s - IW_MLME_DEAUTH\n", __FUNCTION__));
-			COPY_MAC_ADDR(DeAuthReq.Addr, pAd->CommonCfg.Bssid);
+			ether_addr_copy(DeAuthReq.Addr, pAd->CommonCfg.Bssid);
 			DeAuthReq.Reason = reason_code;
 			pMsgElem->MsgLen = sizeof(MLME_DEAUTH_REQ_STRUCT);
 			NdisMoveMemory(pMsgElem->Msg, &DeAuthReq, sizeof(MLME_DEAUTH_REQ_STRUCT));
@@ -2862,7 +2862,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 			pAd->StaCfg.ConnectinfoBssType  = 1;
 			pAd->StaCfg.ConnectinfoChannel = 0;
 
-			COPY_MAC_ADDR(DisAssocReq.Addr, pAd->CommonCfg.Bssid);
+			ether_addr_copy(DisAssocReq.Addr, pAd->CommonCfg.Bssid);
 			DisAssocReq.Reason =  reason_code;
 
 			pMsgElem->Machine = ASSOC_STATE_MACHINE;

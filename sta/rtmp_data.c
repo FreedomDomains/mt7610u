@@ -2282,9 +2282,9 @@ void RTMPSendNullFrame(
 	pHeader_802_11->FC.Type = BTYPE_DATA;
 	pHeader_802_11->FC.SubType = SUBTYPE_NULL_FUNC;
 	pHeader_802_11->FC.ToDs = 1;
-	COPY_MAC_ADDR(pHeader_802_11->Addr1, pAd->CommonCfg.Bssid);
-	COPY_MAC_ADDR(pHeader_802_11->Addr2, pAd->CurrentAddress);
-	COPY_MAC_ADDR(pHeader_802_11->Addr3, pAd->CommonCfg.Bssid);
+	ether_addr_copy(pHeader_802_11->Addr1, pAd->CommonCfg.Bssid);
+	ether_addr_copy(pHeader_802_11->Addr2, pAd->CurrentAddress);
+	ether_addr_copy(pHeader_802_11->Addr3, pAd->CommonCfg.Bssid);
 
 	if (pAd->CommonCfg.bAPSDForcePowerSave) {
 		pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
@@ -2586,23 +2586,23 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		if (pAd->StaCfg.BssType == BSS_INFRA) {
 #ifdef QOS_DLS_SUPPORT
 			if (bDLSFrame) {
-				COPY_MAC_ADDR(wifi_hdr->Addr1, pTxBlk->pSrcBufHeader);
-				COPY_MAC_ADDR(wifi_hdr->Addr2, pAd->CurrentAddress);
-				COPY_MAC_ADDR(wifi_hdr->Addr3, pAd->CommonCfg.Bssid);
+				ether_addr_copy(wifi_hdr->Addr1, pTxBlk->pSrcBufHeader);
+				ether_addr_copy(wifi_hdr->Addr2, pAd->CurrentAddress);
+				ether_addr_copy(wifi_hdr->Addr3, pAd->CommonCfg.Bssid);
 				wifi_hdr->FC.ToDs = 0;
 			} else
 #endif /* QOS_DLS_SUPPORT */
 			{
-				COPY_MAC_ADDR(wifi_hdr->Addr1, pAd->CommonCfg.Bssid);
-				COPY_MAC_ADDR(wifi_hdr->Addr2, pAd->CurrentAddress);
-				COPY_MAC_ADDR(wifi_hdr->Addr3, pTxBlk->pSrcBufHeader);
+				ether_addr_copy(wifi_hdr->Addr1, pAd->CommonCfg.Bssid);
+				ether_addr_copy(wifi_hdr->Addr2, pAd->CurrentAddress);
+				ether_addr_copy(wifi_hdr->Addr3, pTxBlk->pSrcBufHeader);
 				wifi_hdr->FC.ToDs = 1;
 #ifdef CLIENT_WDS
 				if (!MAC_ADDR_EQUAL
 				    ((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
 				     pAd->CurrentAddress)) {
 					wifi_hdr->FC.FrDs = 1;
-					COPY_MAC_ADDR(&wifi_hdr->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);	/* ADDR4 = SA */
+					ether_addr_copy(&wifi_hdr->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);	/* ADDR4 = SA */
 					pTxBlk->MpduHeaderLen += MAC_ADDR_LEN;
 				}
 #endif /* CLIENT_WDS */
@@ -2610,15 +2610,15 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		}
 		else if (ADHOC_ON(pAd))
 		{
-			COPY_MAC_ADDR(wifi_hdr->Addr1, pTxBlk->pSrcBufHeader);
+			ether_addr_copy(wifi_hdr->Addr1, pTxBlk->pSrcBufHeader);
 #ifdef XLINK_SUPPORT
 			if (pAd->StaCfg.PSPXlink)
 				/* copy the SA of ether frames to address 2 of 802.11 frame */
-				COPY_MAC_ADDR(wifi_hdr->Addr2, pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);
+				ether_addr_copy(wifi_hdr->Addr2, pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);
 			else
 #endif /* XLINK_SUPPORT */
-				COPY_MAC_ADDR(wifi_hdr->Addr2, pAd->CurrentAddress);
-			COPY_MAC_ADDR(wifi_hdr->Addr3, pAd->CommonCfg.Bssid);
+				ether_addr_copy(wifi_hdr->Addr2, pAd->CurrentAddress);
+			ether_addr_copy(wifi_hdr->Addr3, pAd->CommonCfg.Bssid);
 			wifi_hdr->FC.ToDs = 0;
 		}
 	}
@@ -2680,23 +2680,23 @@ void STABuildCache802_11Header(
 		/* The addr3 of normal packet send from DS is Dest Mac address. */
 #ifdef QOS_DLS_SUPPORT
 		if (bDLSFrame) {
-			COPY_MAC_ADDR(pHeader80211->Addr1, pTxBlk->pSrcBufHeader);
-			COPY_MAC_ADDR(pHeader80211->Addr3, pAd->CommonCfg.Bssid);
+			ether_addr_copy(pHeader80211->Addr1, pTxBlk->pSrcBufHeader);
+			ether_addr_copy(pHeader80211->Addr3, pAd->CommonCfg.Bssid);
 			pHeader80211->FC.ToDs = 0;
 		} else
 #endif /* QOS_DLS_SUPPORT */
 		if (ADHOC_ON(pAd))
-			COPY_MAC_ADDR(pHeader80211->Addr3,
+			ether_addr_copy(pHeader80211->Addr3,
 				      pAd->CommonCfg.Bssid);
 		else {
-			COPY_MAC_ADDR(pHeader80211->Addr3,
+			ether_addr_copy(pHeader80211->Addr3,
 				      pTxBlk->pSrcBufHeader);
 #ifdef CLIENT_WDS
 			if (!MAC_ADDR_EQUAL
 			    ((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
 			     pAd->CurrentAddress)) {
 				pHeader80211->FC.FrDs = 1;
-				COPY_MAC_ADDR(&pHeader80211->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);	/* ADDR4 = SA */
+				ether_addr_copy(&pHeader80211->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN);	/* ADDR4 = SA */
 				pTxBlk->MpduHeaderLen += MAC_ADDR_LEN;
 			}
 #endif /* CLIENT_WDS */

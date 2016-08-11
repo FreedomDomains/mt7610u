@@ -1143,7 +1143,7 @@ static void TDLS_UAPSD_PeerTrafficIndAction(
 	if (TDLS_UAPSD_ARE_WE_IN_ACTIVE(pAd))
 		return; /* we are not in power-save mode */
 
-	COPY_MAC_ADDR(PeerAddr, &pFrame->Hdr.Addr3);
+	ether_addr_copy(PeerAddr, &pFrame->Hdr.Addr3);
 	// Drop not within my TDLS Table that created before !
 	LinkId = TDLS_SearchLinkId(pAd, PeerAddr);
 	if (LinkId == -1 || LinkId == MAX_NUM_OF_TDLS_ENTRY)
@@ -1212,7 +1212,7 @@ static void TDLS_UAPSD_PeerTrafficRspAction(
 
 	hex_dump("TDLS UAPSD Peer Traffic Response receive pack", pElem->Msg, pElem->MsgLen);
 
-	COPY_MAC_ADDR(PeerAddr, &pFrame->Hdr.Addr2);
+	ether_addr_copy(PeerAddr, &pFrame->Hdr.Addr2);
 	// Drop not within my TDLS Table that created before !
 	LinkId = TDLS_SearchLinkId(pAd, PeerAddr);
 	if (TDLS_UAPSD_IS_LINK_INVALID(LinkId))
@@ -1476,7 +1476,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	/* init link entry */
 	memset(pTDLS, 0, sizeof(RT_802_11_TDLS));
 	pTDLS->TimeOut = 0;
-	COPY_MAC_ADDR(pTDLS->MacAddr, PeerMac);
+	ether_addr_copy(pTDLS->MacAddr, PeerMac);
 	pTDLS->Valid = 1;
 
 	/* search a empty entry */

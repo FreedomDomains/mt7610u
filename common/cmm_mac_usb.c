@@ -1797,7 +1797,7 @@ void RT28xxUsbMlmeRadioOFF(
 			os_alloc_mem(pAd, (UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
 			if (pMsgElem)
 			{
-				COPY_MAC_ADDR(&DisReq.Addr, pAd->CommonCfg.Bssid);
+				ether_addr_copy(&DisReq.Addr, pAd->CommonCfg.Bssid);
 				DisReq.Reason =  REASON_DISASSOC_STA_LEAVING;
 
 				pMsgElem->Machine = ASSOC_STATE_MACHINE;

@@ -1522,7 +1522,7 @@ void AssocParmFill(
 	IN ULONG                      Timeout,
 	IN USHORT                     ListenIntv)
 {
-	COPY_MAC_ADDR(AssocReq->Addr, pAddr);
+	ether_addr_copy(AssocReq->Addr, pAddr);
 	/* Add mask to support 802.11b mode only */
 	AssocReq->CapabilityInfo = CapabilityInfo & SUPPORTED_CAPABILITY_INFO; /* not cf-pollable, not cf-poll-request*/
 	AssocReq->Timeout = Timeout;
@@ -1544,7 +1544,7 @@ void DisassocParmFill(
 	IN PUCHAR pAddr,
 	IN USHORT Reason)
 {
-	COPY_MAC_ADDR(DisassocReq->Addr, pAddr);
+	ether_addr_copy(DisassocReq->Addr, pAddr);
 	DisassocReq->Reason = Reason;
 }
 

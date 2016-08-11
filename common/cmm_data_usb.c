@@ -238,8 +238,8 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 	pAd->PsPollFrame.FC.Type = BTYPE_CNTL;
 	pAd->PsPollFrame.FC.SubType = SUBTYPE_PS_POLL;
 	pAd->PsPollFrame.Aid = pAd->StaActive.Aid | 0xC000;
-	COPY_MAC_ADDR(pAd->PsPollFrame.Bssid, pAd->CommonCfg.Bssid);
-	COPY_MAC_ADDR(pAd->PsPollFrame.Ta, pAd->CurrentAddress);
+	ether_addr_copy(pAd->PsPollFrame.Bssid, pAd->CommonCfg.Bssid);
+	ether_addr_copy(pAd->PsPollFrame.Ta, pAd->CurrentAddress);
 
 	buf = &pAd->PsPollContext.TransferBuffer->field.WirelessPacket[0];
 	pTxInfo = (TXINFO_STRUC *)buf;
@@ -273,9 +273,9 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 	pAd->NullFrame.FC.Type = BTYPE_DATA;
 	pAd->NullFrame.FC.SubType = SUBTYPE_NULL_FUNC;
 	pAd->NullFrame.FC.ToDs = 1;
-	COPY_MAC_ADDR(pAd->NullFrame.Addr1, pAd->CommonCfg.Bssid);
-	COPY_MAC_ADDR(pAd->NullFrame.Addr2, pAd->CurrentAddress);
-	COPY_MAC_ADDR(pAd->NullFrame.Addr3, pAd->CommonCfg.Bssid);
+	ether_addr_copy(pAd->NullFrame.Addr1, pAd->CommonCfg.Bssid);
+	ether_addr_copy(pAd->NullFrame.Addr2, pAd->CurrentAddress);
+	ether_addr_copy(pAd->NullFrame.Addr3, pAd->CommonCfg.Bssid);
 	buf = &pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
 	memset(buf, 0, 100);
 	pTxInfo = (TXINFO_STRUC *)buf;

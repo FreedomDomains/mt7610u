@@ -296,7 +296,7 @@ void MlmeAssocReqAction(
 		RTMPWPARemoveAllKeys(pAd);
 
 		RTMPCancelTimer(&pAd->MlmeAux.AssocTimer, &TimerCancelled);
-		COPY_MAC_ADDR(pAd->MlmeAux.Bssid, ApAddr);
+		ether_addr_copy(pAd->MlmeAux.Bssid, ApAddr);
 
 		/* Get an unused nonpaged memory */
 		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
@@ -319,7 +319,7 @@ void MlmeAssocReqAction(
 		pAd->StaCfg.AssocInfo.RequestFixedIEs.Capabilities = CapabilityInfo;
 		pAd->StaCfg.AssocInfo.RequestFixedIEs.ListenInterval = ListenIntv;
 		/* Only reassociate need this */
-		/*COPY_MAC_ADDR(pAd->StaCfg.AssocInfo.RequestFixedIEs.CurrentAPAddress, ApAddr); */
+		/*ether_addr_copy(pAd->StaCfg.AssocInfo.RequestFixedIEs.CurrentAPAddress, ApAddr); */
 		pAd->StaCfg.AssocInfo.OffsetRequestIEs = sizeof (NDIS_802_11_ASSOCIATION_INFORMATION);
 
 		memset(pAd->StaCfg.ReqVarIEs, 0, MAX_VIE_LEN);
@@ -735,7 +735,7 @@ void MlmeReassocReqAction(
 			return;
 		}
 
-		COPY_MAC_ADDR(pAd->MlmeAux.Bssid, ApAddr);
+		ether_addr_copy(pAd->MlmeAux.Bssid, ApAddr);
 
 		/* make frame, use bssid as the AP address?? */
 		DBGPRINT(RT_DEBUG_ERROR,
@@ -1006,7 +1006,7 @@ void MlmeDisassocReqAction(
 	kfree(pOutBuffer);
 
 	pAd->StaCfg.DisassocReason = REASON_DISASSOC_STA_LEAVING;
-	COPY_MAC_ADDR(pAd->StaCfg.DisassocSta, pDisassocReq->Addr);
+	ether_addr_copy(pAd->StaCfg.DisassocSta, pDisassocReq->Addr);
 
 	RTMPSetTimer(&pAd->MlmeAux.DisassocTimer, Timeout);	/* in mSec */
 	pAd->Mlme.AssocMachine.CurrState = DISASSOC_WAIT_RSP;
@@ -1360,7 +1360,7 @@ void AssocPostProc(
 	ULONG Idx;
 
 	pAd->MlmeAux.BssType = BSS_INFRA;
-	COPY_MAC_ADDR(pAd->MlmeAux.Bssid, pAddr2);
+	ether_addr_copy(pAd->MlmeAux.Bssid, pAddr2);
 	pAd->MlmeAux.Aid = Aid;
 	pAd->MlmeAux.CapabilityInfo = CapabilityInfo & SUPPORTED_CAPABILITY_INFO;
 
@@ -1730,7 +1730,7 @@ void Cls3errAction(
 	kfree(pOutBuffer);
 
 	pAd->StaCfg.DisassocReason = REASON_CLS3ERR;
-	COPY_MAC_ADDR(pAd->StaCfg.DisassocSta, pAddr);
+	ether_addr_copy(pAd->StaCfg.DisassocSta, pAddr);
 }
 
 

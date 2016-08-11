@@ -1049,9 +1049,9 @@ void ActHeaderInit(
     pHdr80211->FC.Type = BTYPE_MGMT;
     pHdr80211->FC.SubType = SUBTYPE_ACTION;
 
-    COPY_MAC_ADDR(pHdr80211->Addr1, Addr1);
-	COPY_MAC_ADDR(pHdr80211->Addr2, Addr2);
-    COPY_MAC_ADDR(pHdr80211->Addr3, Addr3);
+    ether_addr_copy(pHdr80211->Addr1, Addr1);
+	ether_addr_copy(pHdr80211->Addr2, Addr2);
+    ether_addr_copy(pHdr80211->Addr3, Addr3);
 }
 
 void BarHeaderInit(
@@ -1072,8 +1072,8 @@ void BarHeaderInit(
 
 	pCntlBar->Duration = 16 + RTMPCalcDuration(pAd, RATE_1, sizeof(FRAME_BA));
 
-	COPY_MAC_ADDR(pCntlBar->Addr1, pDA);
-	COPY_MAC_ADDR(pCntlBar->Addr2, pSA);
+	ether_addr_copy(pCntlBar->Addr1, pDA);
+	ether_addr_copy(pCntlBar->Addr2, pSA);
 }
 
 

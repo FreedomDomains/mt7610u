@@ -720,7 +720,7 @@ INT RTMP_COM_IoctlHandle(
 				os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 				if (MsgElem)
 				{
-					COPY_MAC_ADDR(DisReq.Addr, pAd->CommonCfg.Bssid);
+					ether_addr_copy(DisReq.Addr, pAd->CommonCfg.Bssid);
 					DisReq.Reason =  REASON_DEAUTH_STA_LEAVING;
 					MsgElem->Machine = ASSOC_STATE_MACHINE;
 					MsgElem->MsgType = MT2_MLME_DISASSOC_REQ;

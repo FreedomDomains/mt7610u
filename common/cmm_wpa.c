@@ -2065,7 +2065,7 @@ void GenRandom(
 	for	(i = 0;	i <	32;	i++)
 	{
 		/* copy the local MAC address*/
-		COPY_MAC_ADDR(local, macAddr);
+		ether_addr_copy(local, macAddr);
 		curr =	MAC_ADDR_LEN;
 
 		/* concatenate the current time*/

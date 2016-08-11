@@ -162,7 +162,7 @@ void CliWds_ProxyTabUpdate(
 		NdisGetSystemUpTime(&Now);
 
 		pCliWdsEntry->Aid = Aid;
-		COPY_MAC_ADDR(&pCliWdsEntry->Addr, pMac);
+		ether_addr_copy(&pCliWdsEntry->Addr, pMac);
 		pCliWdsEntry->LastRefTime = Now;
 		pCliWdsEntry->pNext = NULL;
 		insertTailList(&pAd->ApCfg.CliWdsProxyTab[HashId], (PLIST_ENTRY)pCliWdsEntry);

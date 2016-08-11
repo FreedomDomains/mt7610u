@@ -370,7 +370,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 	else
 	{
-		COPY_MAC_ADDR(pAd->CurrentAddress, pAd->PermanentAddress);
+		ether_addr_copy(pAd->CurrentAddress, pAd->PermanentAddress);
 		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from EEPROM. \n"));
 	}
 

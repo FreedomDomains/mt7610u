@@ -264,24 +264,24 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 				pEntry->PortSecured = WPA_802_1X_PORT_NOT_SECURED;
 
 			pEntry->PMKID_CacheIdx = ENTRY_NOT_FOUND;
-			COPY_MAC_ADDR(pEntry->Addr, pAddr);
-			COPY_MAC_ADDR(pEntry->HdrAddr1, pAddr);
+			ether_addr_copy(pEntry->Addr, pAddr);
+			ether_addr_copy(pEntry->HdrAddr1, pAddr);
 
 			do
 			{
 #ifdef APCLI_SUPPORT
 				if (IS_ENTRY_APCLI(pEntry))
 				{
-					COPY_MAC_ADDR(pEntry->HdrAddr2, pAd->ApCfg.ApCliTab[pEntry->apidx].CurrentAddress);
-					COPY_MAC_ADDR(pEntry->HdrAddr3, pAddr);
+					ether_addr_copy(pEntry->HdrAddr2, pAd->ApCfg.ApCliTab[pEntry->apidx].CurrentAddress);
+					ether_addr_copy(pEntry->HdrAddr3, pAddr);
 					break;
 				}
 #endif // APCLI_SUPPORT //
 #ifdef CONFIG_STA_SUPPORT
 				if (OpMode == OPMODE_STA)
 				{
-					COPY_MAC_ADDR(pEntry->HdrAddr2, pAd->CurrentAddress);
-					COPY_MAC_ADDR(pEntry->HdrAddr3, pAddr);
+					ether_addr_copy(pEntry->HdrAddr2, pAd->CurrentAddress);
+					ether_addr_copy(pEntry->HdrAddr3, pAddr);
 					break;
 				}
 #endif // CONFIG_STA_SUPPORT //
@@ -575,7 +575,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	{
 		pApCliEntry = &pAd->ApCfg.ApCliTab[IfIdx];
 		pEntry->Aid = pApCliEntry->MacTabWCID + 1; // TODO: We need to record count of STAs
-		COPY_MAC_ADDR(pEntry->Addr, pApCliEntry->ApCliMlmeAux.Bssid);
+		ether_addr_copy(pEntry->Addr, pApCliEntry->ApCliMlmeAux.Bssid);
 		printk("sn - InsertMacRepeaterEntry: Aid = %d\n", pEntry->Aid);
 		hex_dump("sn - InsertMacRepeaterEntry pEntry->Addr", pEntry->Addr, 6);
 		/* Add this entry into ASIC RX WCID search table */
