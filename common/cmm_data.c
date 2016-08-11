@@ -1104,9 +1104,7 @@ void RTMPDeQueuePacket(
 
 			pTxBlk->QueIdx = QueIdx;
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 			pTxBlk->HeaderBuf = (UCHAR *)pTxBlk->HeaderBuffer;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 			pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
 
@@ -1719,9 +1717,7 @@ BOOLEAN RTMPCheckEtherType(
 			break;
 	}
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 	RTMP_SET_PACKET_PROTOCOL(pPacket, TypeLen);
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 	/* have to check ACM bit. downgrade UP & QueIdx before passing ACM*/
 	/* NOTE: AP doesn't have to negotiate TSPEC. ACM is controlled purely via user setup, not protocol handshaking*/

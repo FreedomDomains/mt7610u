@@ -2854,14 +2854,7 @@ void STA_AMPDU_Frame_Tx(
 		)
 		{
 			/* NOTE: Please make sure the size of pMacEntry->CachedBuf[] is smaller than pTxBlk->HeaderBuf[]!!!! */
-#ifndef VENDOR_FEATURE1_SUPPORT
-			NdisMoveMemory((PUCHAR)
-				       (&pTxBlk->HeaderBuf[TXINFO_SIZE]),
-				       (PUCHAR) (&pMacEntry->CachedBuf[0]),
-				       TXWISize + sizeof (HEADER_802_11));
-#else
 			pTxBlk->HeaderBuf = (UCHAR *) (pMacEntry->HeaderBuf);
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 			pHeaderBufPtr =
 			    (PUCHAR) (&pTxBlk->
@@ -2891,7 +2884,6 @@ void STA_AMPDU_Frame_Tx(
 		}
 #endif /* SOFT_ENCRYPT */
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 		if (pMacEntry->isCached
 		    && (pMacEntry->Protocol ==
 			RTMP_GET_PACKET_PROTOCOL(pTxBlk->pPacket))
@@ -2928,7 +2920,6 @@ void STA_AMPDU_Frame_Tx(
 			}
 		}
 		else
-#endif /* VENDOR_FEATURE1_SUPPORT */
 		{
 			pHeader_802_11 = (HEADER_802_11 *) pHeaderBufPtr;
 
@@ -3077,9 +3068,7 @@ void STA_AMPDU_Frame_Tx(
 			pHeaderBufPtr = (PUCHAR) ROUND_UP(pHeaderBufPtr, 4);
 			pTxBlk->HdrPadLen = (ULONG) (pHeaderBufPtr - pTxBlk->HdrPadLen);
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 			pMacEntry->HdrPadLen = pTxBlk->HdrPadLen;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 #ifdef SOFT_ENCRYPT
 			if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
@@ -3148,11 +3137,9 @@ void STA_AMPDU_Frame_Tx(
 
 			}
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 			pMacEntry->Protocol =
 			    RTMP_GET_PACKET_PROTOCOL(pTxBlk->pPacket);
 			pMacEntry->MpduHeaderLen = pTxBlk->MpduHeaderLen;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 		}
 
 		if ((pMacEntry->isCached)
@@ -3168,13 +3155,11 @@ void STA_AMPDU_Frame_Tx(
 			memset((PUCHAR) (&pMacEntry->CachedBuf[0]), 0, sizeof (pMacEntry->CachedBuf));
 			NdisMoveMemory((PUCHAR) (&pMacEntry->CachedBuf[0]), (PUCHAR) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), (pHeaderBufPtr -(PUCHAR) (&pTxBlk->HeaderBuf[TXINFO_SIZE])));
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 			/* use space to get performance enhancement */
 			memset((PUCHAR) (&pMacEntry->HeaderBuf[0]), 0, sizeof (pMacEntry->HeaderBuf));
 			NdisMoveMemory((PUCHAR) (&pMacEntry->HeaderBuf[0]),
 				       (PUCHAR) (&pTxBlk->HeaderBuf[0]),
 				       (pHeaderBufPtr - (PUCHAR) (&pTxBlk->HeaderBuf[0])));
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 			pMacEntry->isCached = TRUE;
 		}

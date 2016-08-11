@@ -2286,14 +2286,12 @@ typedef struct _MAC_TABLE_ENTRY {
 	ULONG ChannelQuality;	/* 0..100, Channel Quality Indication for Roaming */
 
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 	/* total 128B, use UINT32 to avoid alignment problem */
 	UINT32 HeaderBuf[32];	/* (total 128B) TempBuffer for TX_INFO + TX_WI + 802.11 Header + padding + AMSDU SubHeader + LLC/SNAP */
 
 	UCHAR HdrPadLen;	/* recording Header Padding Length; */
 	UCHAR MpduHeaderLen;
 	UINT16 Protocol;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 #ifdef AGS_SUPPORT
 	AGS_CONTROL AGSCtrl;	/* AGS control */
@@ -3204,9 +3202,7 @@ struct rtmp_adapter {
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;
 
 
-#ifdef VENDOR_FEATURE1_SUPPORT
 	UCHAR FifoUpdateDone, FifoUpdateRx;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 
 	u8 RFICType;
 
@@ -3519,20 +3515,8 @@ typedef struct _TX_BLK_
 	UINT				SrcBufLen;					/* Length of packet payload which not including Layer 2 header */
 
 	PUCHAR				pExtraLlcSnapEncap;			/* NULL means no extra LLC/SNAP is required */
-#ifndef VENDOR_FEATURE1_SUPPORT
-	/*
-		Note: Can not insert any other new parameters
-		between pExtraLlcSnapEncap & HeaderBuf; Or
-		the start address of HeaderBuf will not be aligned by 4.
-
-		But we can not change HeaderBuf[128] to HeaderBuf[32] because
-		many codes use HeaderBuf[index].
-	*/
-	UCHAR				HeaderBuf[128];				/* TempBuffer for TX_INFO + TX_WI + TSO_INFO + 802.11 Header + padding + AMSDU SubHeader + LLC/SNAP */
-#else
 	UINT32				HeaderBuffer[32];			/* total 128B, use UINT32 to avoid alignment problem */
 	UCHAR				*HeaderBuf;
-#endif /* VENDOR_FEATURE1_SUPPORT */
 	UCHAR				MpduHeaderLen;				/* 802.11 header length NOT including the padding */
 	UCHAR				HdrPadLen;					/* recording Header Padding Length; */
 	UCHAR				apidx;						/* The interface associated to this packet */

@@ -28,8 +28,6 @@
 #ifndef __RT_COMM_H__
 #define __RT_COMM_H__
 
-#define VENDOR_FEATURE1_SUPPORT
-
 /*#define MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
