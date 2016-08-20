@@ -135,7 +135,7 @@ void RTUSBInitTxDesc(
 	IN	usb_complete_t	Func)
 {
 	PURB				pUrb;
-	PUCHAR				pSrc = NULL;
+	u8 *			pSrc = NULL;
 	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -160,7 +160,7 @@ void RTUSBInitTxDesc(
 	}
 	else
 	{
-		pSrc = (PUCHAR) pTxContext->TransferBuffer->field.WirelessPacket;
+		pSrc = (u8 *) pTxContext->TransferBuffer->field.WirelessPacket;
 
 		RTUSB_FILL_TX_BULK_URB(pUrb,
 						pObj->pUsb_Dev,
@@ -181,7 +181,7 @@ void RTUSBInitHTTxDesc(
 	IN	usb_complete_t	Func)
 {
 	PURB				pUrb;
-	PUCHAR				pSrc = NULL;
+	u8 *			pSrc = NULL;
 	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -269,7 +269,7 @@ void RTUSBBulkOutDataPacket(
 	TXWI_STRUC *pTxWI;
 	ULONG			TmpBulkEndPos, ThisBulkSize;
 	unsigned long	IrqFlags = 0, IrqFlags2 = 0;
-	PUCHAR			pWirelessPkt, pAppendant;
+	u8 *		pWirelessPkt, *pAppendant;
 
 #ifdef USB_BULK_BUF_ALIGMENT
 	BOOLEAN			bLasAlignmentsectiontRound = FALSE;
@@ -502,7 +502,7 @@ void RTUSBBulkOutDataPacket(
 			DBGPRINT(RT_DEBUG_ERROR, ("\tCWPos=%ld, NBPos=%ld, ENBPos=%ld, bCopy=%d!\n",
 										pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition,
 										pHTTXContext->ENextBulkOutPosition, pHTTXContext->bCopySavePad));
-			hex_dump("Wrong QSel Pkt:", (PUCHAR)&pWirelessPkt[TmpBulkEndPos], (pHTTXContext->CurWritePosition - pHTTXContext->NextBulkOutPosition));
+			hex_dump("Wrong QSel Pkt:", (u8 *)&pWirelessPkt[TmpBulkEndPos], (pHTTXContext->CurWritePosition - pHTTXContext->NextBulkOutPosition));
 		}
 
 		if (pTxInfo->TxInfoPktLen <= 8)
@@ -558,16 +558,16 @@ void RTUSBBulkOutDataPacket(
 			pHTTXContext->ENextBulkOutPosition = 8;
 
 	#ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)pTxInfo, TYPE_TXINFO);
-			RTMPWIEndianChange(pAd, (PUCHAR)pTxWI, TYPE_TXWI);
+			RTMPDescriptorEndianChange((u8 *)pTxInfo, TYPE_TXINFO);
+			RTMPWIEndianChange(pAd, (u8 *)pTxWI, TYPE_TXWI);
 	#endif /* RT_BIG_ENDIAN */
 
 			break;
 		}
 #endif /* USB_BULK_BUF_ALIGMENT */
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pTxInfo, TYPE_TXINFO);
-		RTMPWIEndianChange(pAd, (PUCHAR)pTxWI, TYPE_TXWI);
+		RTMPDescriptorEndianChange((u8 *)pTxInfo, TYPE_TXINFO);
+		RTMPWIEndianChange(pAd, (u8 *)pTxWI, TYPE_TXWI);
 #endif /* RT_BIG_ENDIAN */
 
 	}while (TRUE);
@@ -576,11 +576,11 @@ void RTUSBBulkOutDataPacket(
 	if (pLastTxInfo)
 	{
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pLastTxInfo, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((u8 *)pLastTxInfo, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 		pLastTxInfo->TxInfoUDMANextVld = 0;
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pLastTxInfo, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((u8 *)pLastTxInfo, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 	}
 
@@ -605,7 +605,7 @@ void RTUSBBulkOutDataPacket(
 		pHTTXContext->bCopySavePad = TRUE;
 		if (RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
 		{
-			PUCHAR	pBuf = &pHTTXContext->SavedPad[0];
+			u8 *pBuf = &pHTTXContext->SavedPad[0];
 			DBGPRINT_RAW(RT_DEBUG_ERROR,("WARNING-Zero-3:%02x%02x%02x%02x%02x%02x%02x%02x,CWPos=%ld, CWRPos=%ld, bCW=%d, NBPos=%ld, TBPos=%ld, TBSize=%ld\n",
 				pBuf[0], pBuf[1], pBuf[2],pBuf[3],pBuf[4], pBuf[5], pBuf[6],pBuf[7], pHTTXContext->CurWritePosition, pHTTXContext->CurWriteRealPos,
 				pHTTXContext->bCurWriting, pHTTXContext->NextBulkOutPosition, TmpBulkEndPos, ThisBulkSize));
@@ -771,7 +771,7 @@ void RTUSBBulkOutNullFrame(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NULL);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pNullContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((u8 *)pNullContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/
@@ -870,7 +870,7 @@ void RTUSBBulkOutMLMEPacket(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_MLME);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pMLMEContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((u8 *)pMLMEContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/
@@ -950,7 +950,7 @@ void RTUSBBulkOutPsPoll(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_PSPOLL);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pPsPollContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((u8 *)pPsPollContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/

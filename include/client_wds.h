@@ -45,15 +45,15 @@ void CliWdsEntyFree(
 	IN PCLIWDS_PROXY_ENTRY pCliWdsEntry);
 
 
-PUCHAR CliWds_ProxyLookup(
+u8 *CliWds_ProxyLookup(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pMac);
+	IN u8 *pMac);
 
 
 void CliWds_ProxyTabUpdate(
 	IN struct rtmp_adapter *pAd,
 	IN SHORT Aid,
-	IN PUCHAR pMac);
+	IN u8 *pMac);
 
 
 void CliWds_ProxyTabMaintain(

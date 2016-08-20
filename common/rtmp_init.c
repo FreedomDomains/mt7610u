@@ -2309,12 +2309,12 @@ ULONG	RTMPCompareMemory(
 	IN	void *pSrc2,
 	IN	ULONG	Length)
 {
-	PUCHAR	pMem1;
-	PUCHAR	pMem2;
+	u8 *pMem1;
+	u8 *pMem2;
 	ULONG	Index = 0;
 
-	pMem1 = (PUCHAR) pSrc1;
-	pMem2 = (PUCHAR) pSrc2;
+	pMem1 = (u8 *) pSrc1;
+	pMem2 = (u8 *) pSrc2;
 
 	for (Index = 0; Index < Length; Index++)
 	{
@@ -2356,14 +2356,14 @@ void RTMPMoveMemory(
 	IN	void *pSrc,
 	IN	ULONG	Length)
 {
-	PUCHAR	pMem1;
-	PUCHAR	pMem2;
+	u8 *pMem1;
+	u8 *pMem2;
 	UINT	Index;
 
 	ASSERT((Length==0) || (pDest && pSrc));
 
-	pMem1 = (PUCHAR) pDest;
-	pMem2 = (PUCHAR) pSrc;
+	pMem1 = (u8 *) pDest;
+	pMem2 = (u8 *) pSrc;
 
 	for (Index = 0; Index < Length; Index++)
 	{
@@ -2925,13 +2925,13 @@ UCHAR BtoH(STRING ch)
 
 /* IRQL = PASSIVE_LEVEL*/
 
-void AtoH(char *src, PUCHAR dest, int destlen)
+void AtoH(char *src, u8 *dest, int destlen)
 {
 	char *srcptr;
-	PUCHAR destTemp;
+	u8 *destTemp;
 
 	srcptr = src;
-	destTemp = (PUCHAR) dest;
+	destTemp = (u8 *) dest;
 
 	while(destlen--)
 	{
@@ -3450,7 +3450,7 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 	RTMP_SEM_EVENT_INIT(&(pAd->cal_atomic), &pAd->RscSemMemList);
 	RTMP_SEM_EVENT_INIT(&(pAd->wlan_en_atomic), &pAd->RscSemMemList);
 	RTMP_SEM_EVENT_INIT(&(pAd->mcu_atomic), &pAd->RscSemMemList);
-	os_alloc_mem(pAd, (PUCHAR *)&pAd->UsbVendorReqBuf, MAX_PARAM_BUFFER_SIZE - 1);
+	os_alloc_mem(pAd, (u8 **)&pAd->UsbVendorReqBuf, MAX_PARAM_BUFFER_SIZE - 1);
 	if (pAd->UsbVendorReqBuf == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate vendor request temp buffer failed!\n"));

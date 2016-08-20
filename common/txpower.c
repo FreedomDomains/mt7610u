@@ -358,7 +358,7 @@ void GetSingleSkuDeltaPower(
 	IN 		struct rtmp_adapter *	pAd,
 	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
-	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset)
+	INOUT  	u8 *             	pSingleSKUBbpR1Offset)
 {
 	INT		i, j;
 	CHAR	Value;

@@ -54,7 +54,7 @@ CHAR RTMP_GetTxPwr(
  */
 void MakeMeasurementReqFrame(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pOutBuffer,
+	OUT u8 *pOutBuffer,
 	OUT PULONG pFrameLen,
 	IN u8 TotalLen,
 	IN u8 Category,
@@ -78,7 +78,7 @@ void MakeMeasurementReqFrame(
  */
 void EnqueueMeasurementRep(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA,
+	IN u8 *pDA,
 	IN u8 DialogToken,
 	IN u8 MeasureToken,
 	IN u8 MeasureReqMode,
@@ -100,7 +100,7 @@ void EnqueueMeasurementRep(
  */
 void EnqueueTPCReq(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA,
+	IN u8 *pDA,
 	IN UCHAR DialogToken);
 
 /*
@@ -117,7 +117,7 @@ void EnqueueTPCReq(
  */
 void EnqueueTPCRep(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA,
+	IN u8 *pDA,
 	IN u8 DialogToken,
 	IN u8 TxPwr,
 	IN u8 LinkMargin);
@@ -180,21 +180,21 @@ void MeasureReqDelete(
 
 void InsertChannelRepIE(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pFrameBuf,
+	OUT u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN char *pCountry,
 	IN u8 RegulatoryClass);
 
 void InsertTpcReportIE(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pFrameBuf,
+	OUT u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 TxPwr,
 	IN u8 LinkMargin);
 
 void InsertDialogToken(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pFrameBuf,
+	OUT u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 DialogToken);
 
@@ -206,14 +206,14 @@ void TpcReqTabExit(
 
 void NotifyChSwAnnToPeerAPs(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pRA,
-	IN PUCHAR pTA,
+	IN u8 *pRA,
+	IN u8 *pTA,
 	IN u8 ChSwMode,
 	IN u8 Channel);
 
 void RguClass_BuildBcnChList(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pBuf,
+	OUT u8 *pBuf,
 	OUT	PULONG pBufLen);
 #endif /* __SPECTRUM_H__ */
 

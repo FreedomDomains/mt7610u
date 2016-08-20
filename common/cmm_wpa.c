@@ -210,8 +210,8 @@ void WpaEAPOLKeyAction(
     pEapol_packet = (PEAPOL_PACKET)&Elem->Msg[LENGTH_802_11 + LENGTH_802_1_H];
 	eapol_len = CONV_ARRARY_TO_UINT16(pEapol_packet->Body_Len) + LENGTH_EAPOL_H;
 
-	memset((PUCHAR)&peerKeyInfo, 0, sizeof(peerKeyInfo));
-	NdisMoveMemory((PUCHAR)&peerKeyInfo, (PUCHAR)&pEapol_packet->KeyDesc.KeyInfo, sizeof(KEY_INFO));
+	memset((u8 *)&peerKeyInfo, 0, sizeof(peerKeyInfo));
+	NdisMoveMemory((u8 *)&peerKeyInfo, (u8 *)&pEapol_packet->KeyDesc.KeyInfo, sizeof(KEY_INFO));
 
 
 	*((USHORT *)&peerKeyInfo) = cpu2le16(*((USHORT *)&peerKeyInfo));
@@ -368,9 +368,9 @@ void WpaEAPOLKeyAction(
 void RTMPToWirelessSta(
     IN  struct rtmp_adapter *  	pAd,
     IN  PMAC_TABLE_ENTRY 	pEntry,
-    IN  PUCHAR          	pHeader802_3,
+    IN  u8 *         	pHeader802_3,
     IN  UINT            	HdrLen,
-    IN  PUCHAR          	pData,
+    IN  u8 *         	pData,
     IN  UINT            	DataLen,
     IN	BOOLEAN				bClearFrame)
 {
@@ -466,9 +466,9 @@ BOOLEAN PeerWpaMessageSanity(
 	memset(mic, 0, sizeof(mic));
 	memset(digest, 0, sizeof(digest));
 	memset(KEYDATA, 0, MAX_LEN_OF_RSNIE);
-	memset((PUCHAR)&EapolKeyInfo, 0, sizeof(EapolKeyInfo));
+	memset((u8 *)&EapolKeyInfo, 0, sizeof(EapolKeyInfo));
 
-	NdisMoveMemory((PUCHAR)&EapolKeyInfo, (PUCHAR)&pMsg->KeyDesc.KeyInfo, sizeof(KEY_INFO));
+	NdisMoveMemory((u8 *)&EapolKeyInfo, (u8 *)&pMsg->KeyDesc.KeyInfo, sizeof(KEY_INFO));
 
 	*((USHORT *)&EapolKeyInfo) = cpu2le16(*((USHORT *)&EapolKeyInfo));
 
@@ -535,17 +535,17 @@ BOOLEAN PeerWpaMessageSanity(
 
         if (EapolKeyInfo.KeyDescVer == KEY_DESC_TKIP)	/* TKIP*/
         {
-            RT_HMAC_MD5(pEntry->PTK, LEN_PTK_KCK, (PUCHAR)pMsg, eapol_len, mic, MD5_DIGEST_SIZE);
+            RT_HMAC_MD5(pEntry->PTK, LEN_PTK_KCK, (u8 *)pMsg, eapol_len, mic, MD5_DIGEST_SIZE);
         }
         else if (EapolKeyInfo.KeyDescVer == KEY_DESC_AES)	/* AES        */
         {
-            RT_HMAC_SHA1(pEntry->PTK, LEN_PTK_KCK, (PUCHAR)pMsg, eapol_len, digest, SHA1_DIGEST_SIZE);
+            RT_HMAC_SHA1(pEntry->PTK, LEN_PTK_KCK, (u8 *)pMsg, eapol_len, digest, SHA1_DIGEST_SIZE);
             NdisMoveMemory(mic, digest, LEN_KEY_DESC_MIC);
         }
                 else if (EapolKeyInfo.KeyDescVer == KEY_DESC_EXT)	/* AES-128 */
                 {
                         UINT mlen = AES_KEY128_LENGTH;
-                        AES_CMAC((PUCHAR)pMsg, eapol_len, pEntry->PTK, LEN_PTK_KCK, mic, &mlen);
+                        AES_CMAC((u8 *)pMsg, eapol_len, pEntry->PTK, LEN_PTK_KCK, mic, &mlen);
                 }
 
 
@@ -687,7 +687,7 @@ void WPAStart4WayHS(
 	GenRandom(pAd, (UCHAR *)pBssid, pEntry->ANonce);
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -714,7 +714,7 @@ void WPAStart4WayHS(
 	/* Make outgoing frame*/
     MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pBssid, EAPOL);
     RTMPToWirelessSta(pAd, pEntry, Header802_3,
-					  LENGTH_802_3, (PUCHAR)pEapolFrame,
+					  LENGTH_802_3, (u8 *)pEapolFrame,
 					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4,
 					  (pEntry->PortSecured == WPA_802_1X_PORT_SECURED) ? FALSE : TRUE);
 
@@ -824,7 +824,7 @@ void PeerPairMsg1Action(
 	pEntry->WpaState = AS_PTKINIT_NEGOTIATING;
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -851,7 +851,7 @@ void PeerPairMsg1Action(
 	MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pCurrentAddr, EAPOL);
 
 	RTMPToWirelessSta(pAd, pEntry,
-					  Header802_3, sizeof(Header802_3), (PUCHAR)pEapolFrame,
+					  Header802_3, sizeof(Header802_3), (u8 *)pEapolFrame,
 					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, TRUE);
 
 	kfree(mpool);
@@ -941,7 +941,7 @@ void PeerPairMsg2Action(
     do
     {
 		/* Allocate memory for input*/
-		os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+		os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 		if (mpool == NULL)
 	    {
 	        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -975,7 +975,7 @@ void PeerPairMsg2Action(
         /* Make outgoing frame*/
         MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pBssid, EAPOL);
         RTMPToWirelessSta(pAd, pEntry, Header802_3, LENGTH_802_3,
-						  (PUCHAR)pEapolFrame,
+						  (u8 *)pEapolFrame,
 						  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4,
 						  (pEntry->PortSecured == WPA_802_1X_PORT_SECURED) ? FALSE : TRUE);
 
@@ -1064,7 +1064,7 @@ void PeerPairMsg3Action(
 	}
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1126,7 +1126,7 @@ void PeerPairMsg3Action(
 	MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pCurrentAddr, EAPOL);
 	RTMPToWirelessSta(pAd, pEntry,
 					  Header802_3, sizeof(Header802_3),
-					  (PUCHAR)pEapolFrame,
+					  (u8 *)pEapolFrame,
 					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, TRUE);
 
 	kfree(mpool);
@@ -1241,7 +1241,7 @@ void WPAStart2WayGroupHS(
 
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1276,7 +1276,7 @@ void WPAStart2WayGroupHS(
     MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pBssid, EAPOL);
     RTMPToWirelessSta(pAd, pEntry,
 					  Header802_3, LENGTH_802_3,
-					  (PUCHAR)pEapolFrame,
+					  (u8 *)pEapolFrame,
 					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, FALSE);
 
 	kfree(mpool);
@@ -1351,7 +1351,7 @@ void PeerGroupMsg1Action(
 	NdisMoveMemory(pEntry->R_Counter, pGroup->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1404,7 +1404,7 @@ void PeerGroupMsg1Action(
 
 	RTMPToWirelessSta(pAd, pEntry,
 					  Header802_3, sizeof(Header802_3),
-					  (PUCHAR)pEapolFrame,
+					  (u8 *)pEapolFrame,
 					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, FALSE);
 
 	kfree(mpool);
@@ -1449,7 +1449,7 @@ void MlmeDeAuthAction(
 	IN USHORT           Reason,
 	IN BOOLEAN          bDataFrameFirst)
 {
-    PUCHAR          pOutBuffer = NULL;
+    u8 *         pOutBuffer = NULL;
     ULONG           FrameLen = 0;
     HEADER_802_11   DeAuthHdr;
     NDIS_STATUS     NStatus;
@@ -1502,7 +1502,7 @@ void PeerGroupMsg2Action(
     IN UINT             MsgLen)
 {
     UINT            	Len;
-    PUCHAR          	pData;
+    u8 *         	pData;
     BOOLEAN         	Cancelled;
 	PEAPOL_PACKET       pMsg2;
 	UCHAR				group_cipher = Ndis802_11WEPDisabled;
@@ -1523,7 +1523,7 @@ void PeerGroupMsg2Action(
     {
 
 
-        pData = (PUCHAR)Msg;
+        pData = (u8 *)Msg;
 		pMsg2 = (PEAPOL_PACKET) (pData + LENGTH_802_1_H);
         Len = MsgLen - LENGTH_802_1_H;
 
@@ -1682,7 +1682,7 @@ void PRF(
 	INT		total_len;
 
 	/* Allocate memory for input*/
-	os_alloc_mem(NULL, (PUCHAR *)&input, 1024);
+	os_alloc_mem(NULL, (u8 **)&input, 1024);
 
     if (input == NULL)
     {
@@ -1762,7 +1762,7 @@ static void F(char *password, unsigned char *ssid, int ssidlength, int iteration
 * ssidlength - length of ssid in octets
 * output must be 40 octets in length and outputs 256 bits of key
 */
-int RtmpPasswordHash(char *password, PUCHAR ssid, INT ssidlength, PUCHAR output)
+int RtmpPasswordHash(char *password, u8 *ssid, INT ssidlength, u8 *output)
 {
     if ((strlen(password) > 63) || (ssidlength > 32))
         return 0;
@@ -1817,7 +1817,7 @@ void KDF(
 	INT		total_len;
 	UINT	len_in_bits = (len << 3);
 
-	os_alloc_mem(NULL, (PUCHAR *)&input, 1024);
+	os_alloc_mem(NULL, (u8 **)&input, 1024);
 
 	if (input == NULL)
 	{
@@ -2115,7 +2115,7 @@ static void RTMPMakeRsnIeCipher(
 	IN	UCHAR			apidx,
 	IN	BOOLEAN			bMixCipher,
 	IN	UCHAR			FlexibleCipher,
-	OUT	PUCHAR			pRsnIe,
+	OUT	u8 *		pRsnIe,
 	OUT	UCHAR			*rsn_len)
 {
 	UCHAR	PairwiseCnt;
@@ -2306,7 +2306,7 @@ static void RTMPMakeRsnIeAKM(
 	IN	UCHAR			ElementID,
 	IN	UINT			AuthMode,
 	IN	UCHAR			apidx,
-	OUT	PUCHAR			pRsnIe,
+	OUT	u8 *		pRsnIe,
 	OUT	UCHAR			*rsn_len)
 {
 	RSNIE_AUTH		*pRsnie_auth;
@@ -2390,7 +2390,7 @@ static void RTMPMakeRsnIeCap(
 	IN  struct rtmp_adapter *  pAd,
 	IN	UCHAR			ElementID,
 	IN	UCHAR			apidx,
-	OUT	PUCHAR			pRsnIe,
+	OUT	u8 *		pRsnIe,
 	OUT	UCHAR			*rsn_len)
 {
 	RSN_CAPABILITIES    *pRSN_Cap;
@@ -2455,7 +2455,7 @@ void RTMPMakeRSNIE(
     IN  UINT            WepStatus,
 	IN	UCHAR			apidx)
 {
-	PUCHAR		pRsnIe = NULL;			/* primary RSNIE*/
+	u8 *	pRsnIe = NULL;			/* primary RSNIE*/
 	UCHAR 		*rsnielen_cur_p = 0;	/* the length of the primary RSNIE 		*/
 	UCHAR		*rsnielen_ex_cur_p = 0;	/* the length of the secondary RSNIE	  	*/
 	UCHAR		PrimaryRsnie;
@@ -2609,7 +2609,7 @@ void RTMPMakeRSNIE(
 BOOLEAN RTMPCheckWPAframe(
     IN struct rtmp_adapter *   pAd,
     IN PMAC_TABLE_ENTRY	pEntry,
-    IN PUCHAR           pData,
+    IN u8 *          pData,
     IN ULONG            DataByteCount,
 	IN UCHAR			FromWhichBSSID)
 {
@@ -2677,7 +2677,7 @@ BOOLEAN RTMPCheckWPAframe(
 BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
     IN struct rtmp_adapter *   pAd,
     IN PMAC_TABLE_ENTRY	pEntry,
-    IN PUCHAR           pData,
+    IN u8 *          pData,
     IN ULONG            DataByteCount,
 	IN UCHAR			FromWhichBSSID)
 {
@@ -2791,12 +2791,12 @@ char *GetEapolMsgType(CHAR msg)
 */
 BOOLEAN RTMPCheckRSNIE(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR          pData,
+	IN  u8 *         pData,
 	IN  UCHAR           DataLen,
 	IN  MAC_TABLE_ENTRY *pEntry,
 	OUT	UCHAR			*Offset)
 {
-	PUCHAR              pVIE;
+	u8 *             pVIE;
 	UCHAR               len;
 	PEID_STRUCT         pEid;
 	BOOLEAN				result = FALSE;
@@ -2867,14 +2867,14 @@ BOOLEAN RTMPCheckRSNIE(
 */
 BOOLEAN RTMPParseEapolKeyData(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR          pKeyData,
+	IN  u8 *         pKeyData,
 	IN  UCHAR           KeyDataLen,
 	IN	UCHAR			GroupKeyIndex,
 	IN	UCHAR			MsgType,
 	IN	BOOLEAN			bWPA2,
 	IN  MAC_TABLE_ENTRY *pEntry)
 {
-    PUCHAR              pMyKeyData = pKeyData;
+    u8 *             pMyKeyData = pKeyData;
     UCHAR               KeyDataLength = KeyDataLen;
 	UCHAR				GTK[MAX_LEN_GTK];
     UCHAR               GTKLEN = 0;
@@ -3024,7 +3024,7 @@ BOOLEAN RTMPParseEapolKeyData(
 void WPA_ConstructKdeHdr(
 	IN 	u8	data_type,
 	IN 	u8 	data_len,
-	OUT PUCHAR 	pBuf)
+	OUT u8 *	pBuf)
 {
 	PKDE_HDR	pHdr;
 
@@ -3288,7 +3288,7 @@ void ConstructEapolKeyData(
 		return;
 
 	/* allocate memory pool*/
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, 1500);
+	os_alloc_mem(NULL, (u8 **)&mpool, 1500);
 
     if (mpool == NULL)
 		return;
@@ -3449,7 +3449,7 @@ void CalculateMIC(
 	UCHAR	digest[80];
 
 	/* allocate memory for MIC calculation*/
-	os_alloc_mem(NULL, (PUCHAR *)&OutBuffer, 512);
+	os_alloc_mem(NULL, (u8 **)&OutBuffer, 512);
 
     if (OutBuffer == NULL)
     {
@@ -3487,7 +3487,7 @@ void CalculateMIC(
 }
 
 UCHAR	RTMPExtractKeyIdxFromIVHdr(
-	IN	PUCHAR			pIV,
+	IN	u8 *		pIV,
 	IN	u8			CipherAlg)
 {
 	UCHAR	keyIdx = 0xFF;
@@ -3511,7 +3511,7 @@ UCHAR	RTMPExtractKeyIdxFromIVHdr(
 
 PCIPHER_KEY RTMPSwCipherKeySelection(
 	IN struct rtmp_adapter*pAd,
-	IN PUCHAR pIV,
+	IN u8 *pIV,
 	IN RX_BLK *pRxBlk,
 	IN MAC_TABLE_ENTRY *pEntry)
 {
@@ -3584,10 +3584,10 @@ PCIPHER_KEY RTMPSwCipherKeySelection(
 */
 NDIS_STATUS	RTMPSoftDecryptionAction(
 	IN	struct rtmp_adapter *	pAd,
-	IN 		PUCHAR			pHdr,
+	IN 		u8 *		pHdr,
 	IN 		UCHAR    		UserPriority,
 	IN 		PCIPHER_KEY		pKey,
-	INOUT 	PUCHAR			pData,
+	INOUT 	u8 *		pData,
 	INOUT 	UINT16			*DataByteCnt)
 {
 	switch (pKey->CipherAlg)
@@ -3636,8 +3636,8 @@ NDIS_STATUS	RTMPSoftDecryptionAction(
 void RTMPSoftConstructIVHdr(
 	IN	UCHAR			CipherAlg,
 	IN	UCHAR			key_id,
-	IN	PUCHAR			pTxIv,
-	OUT PUCHAR 			pHdrIv,
+	IN	u8 *		pTxIv,
+	OUT u8 *			pHdrIv,
 	OUT	u8			*hdr_iv_len)
 {
 	*hdr_iv_len = 0;
@@ -3662,8 +3662,8 @@ void RTMPSoftConstructIVHdr(
 void RTMPSoftEncryptionAction(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			CipherAlg,
-	IN	PUCHAR			pHdr,
-	IN	PUCHAR			pSrcBufData,
+	IN	u8 *		pHdr,
+	IN	u8 *		pSrcBufData,
 	IN	UINT32			SrcBufLen,
 	IN	UCHAR			KeyIdx,
 	IN	PCIPHER_KEY		pKey,
@@ -3986,14 +3986,14 @@ void WpaShowAllsuite(
 }
 
 void RTMPInsertRSNIE(
-	IN PUCHAR pFrameBuf,
+	IN u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 * rsnie_ptr,
 	IN u8  rsnie_len,
 	IN u8 * pmkid_ptr,
 	IN u8  pmkid_len)
 {
-	PUCHAR	pTmpBuf;
+	u8 *pTmpBuf;
 	ULONG 	TempLen = 0;
 	u8 	extra_len = 0;
 	UINT16 	pmk_count = 0;

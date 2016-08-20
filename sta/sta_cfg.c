@@ -1331,7 +1331,7 @@ void RTMPAddKey(
 	else	/* dynamic WEP from wpa_supplicant */
 	{
 		UCHAR	CipherAlg;
-    	PUCHAR	Key;
+    	u8 *Key;
 
 		if(pKey->KeyLength == 32)
 			goto end;

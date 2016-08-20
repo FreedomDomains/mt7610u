@@ -151,7 +151,7 @@
 
 #define WPA_OS_MALLOC(_p, _s)		\
 {									\
-	os_alloc_mem(NULL, (PUCHAR *)&_p, _s);		\
+	os_alloc_mem(NULL, (u8 **)&_p, _s);		\
 }
 
 #define WPA_OS_FREE(_p)		\
@@ -213,7 +213,7 @@ void WpaShowAllsuite(
 	IN UINT rsnie_len);
 
 void RTMPInsertRSNIE(
-	IN PUCHAR pFrameBuf,
+	IN u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 * rsnie_ptr,
 	IN u8 rsnie_len,
@@ -228,9 +228,9 @@ void RTMPInsertRSNIE(
 void RTMPToWirelessSta(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pHeader802_3,
+	IN u8 *pHeader802_3,
 	IN UINT HdrLen,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN UINT DataLen,
 	IN BOOLEAN bClearFrame);
 
@@ -259,7 +259,7 @@ void GenRandom(
 BOOLEAN RTMPCheckWPAframe(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN ULONG DataByteCount,
 	IN UCHAR FromWhichBSSID);
 
@@ -267,14 +267,14 @@ BOOLEAN RTMPCheckWPAframe(
 BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN ULONG DataByteCount,
 	IN UCHAR FromWhichBSSID);
 #endif /* HDR_TRANS_SUPPORT */
 
 BOOLEAN RTMPParseEapolKeyData(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pKeyData,
+	IN u8 *pKeyData,
 	IN UCHAR KeyDataLen,
 	IN UCHAR GroupKeyIndex,
 	IN UCHAR MsgType,
@@ -284,7 +284,7 @@ BOOLEAN RTMPParseEapolKeyData(
 void WPA_ConstructKdeHdr(
 	IN u8 data_type,
 	IN u8 data_len,
-	OUT PUCHAR pBuf);
+	OUT u8 *pBuf);
 
 void ConstructEapolMsg(
 	IN PMAC_TABLE_ENTRY pEntry,
@@ -300,30 +300,30 @@ void ConstructEapolMsg(
 
 PCIPHER_KEY RTMPSwCipherKeySelection(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pIV,
+	IN u8 *pIV,
 	IN RX_BLK *pRxBlk,
 	IN PMAC_TABLE_ENTRY pEntry);
 
 NDIS_STATUS RTMPSoftDecryptionAction(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN UCHAR UserPriority,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	INOUT UINT16 *DataByteCnt);
 
 void RTMPSoftConstructIVHdr(
 	IN UCHAR CipherAlg,
 	IN UCHAR key_id,
-	IN PUCHAR pTxIv,
-	OUT PUCHAR pHdrIv,
+	IN u8 *pTxIv,
+	OUT u8 *pHdrIv,
 	OUT u8 *hdr_iv_len);
 
 void RTMPSoftEncryptionAction(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR CipherAlg,
-	IN PUCHAR pHdr,
-	IN PUCHAR pSrcBufData,
+	IN u8 *pHdr,
+	IN u8 *pSrcBufData,
 	IN UINT32 SrcBufLen,
 	IN UCHAR KeyIdx,
 	IN PCIPHER_KEY pKey,
@@ -377,7 +377,7 @@ char *GetEapolMsgType(
 */
 UINT RTMP_CALC_FCS32(
 	IN UINT Fcs,
-	IN PUCHAR Cp,
+	IN u8 *Cp,
 	IN INT Len);
 
 void RTMPConstructWEPIVHdr(
@@ -387,15 +387,15 @@ void RTMPConstructWEPIVHdr(
 
 BOOLEAN RTMPSoftEncryptWEP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pIvHdr,
+	IN u8 *pIvHdr,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	IN ULONG DataByteCnt);
 
 BOOLEAN RTMPSoftDecryptWEP(
 	IN struct rtmp_adapter *pAd,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	INOUT UINT16 *DataByteCnt);
 
 /*
@@ -405,10 +405,10 @@ BOOLEAN RTMPSoftDecryptWEP(
 */
 BOOLEAN RTMPSoftDecryptTKIP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN UCHAR UserPriority,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	IN UINT16 *DataByteCnt);
 
 void TKIP_GTK_KEY_WRAP(
@@ -432,7 +432,7 @@ void TKIP_GTK_KEY_UNWRAP(
 */
 BOOLEAN RTMPSoftDecryptAES(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN ULONG DataByteCnt,
 	IN PCIPHER_KEY pWpaKey);
 
@@ -443,17 +443,17 @@ void RTMPConstructCCMPHdr(
 
 BOOLEAN RTMPSoftEncryptCCMP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
-	IN PUCHAR pIV,
-	IN PUCHAR pKey,
-	INOUT PUCHAR pData,
+	IN u8 *pHdr,
+	IN u8 *pIV,
+	IN u8 *pKey,
+	INOUT u8 *pData,
 	IN UINT32 DataLen);
 
 BOOLEAN RTMPSoftDecryptCCMP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	INOUT UINT16 *DataLen);
 
 void CCMP_test_vector(

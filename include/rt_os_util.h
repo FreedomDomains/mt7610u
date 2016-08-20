@@ -113,9 +113,9 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(
 NDIS_STATUS RTMPAllocateNdisPacket(
 	IN	void 				*pReserved,
 	OUT struct sk_buff *			*ppPacket,
-	IN	PUCHAR					pHeader,
+	IN	u8 *				pHeader,
 	IN	UINT					HeaderLen,
-	IN	PUCHAR					pData,
+	IN	u8 *				pData,
 	IN	UINT					DataLen);
 
 void RTMPFreeNdisPacket(
@@ -125,13 +125,13 @@ void RTMPFreeNdisPacket(
 NDIS_STATUS Sniff2BytesFromNdisBuffer(
 	IN  PNDIS_BUFFER			pFirstBuffer,
 	IN  UCHAR           		DesiredOffset,
-	OUT PUCHAR          		pByte0,
-	OUT PUCHAR          		pByte1);
+	OUT u8 *         		pByte0,
+	OUT u8 *         		pByte1);
 
 void RTMP_QueryPacketInfo(
 	IN  struct sk_buff *			pPacket,
 	OUT PACKET_INFO  			*pPacketInfo,
-	OUT PUCHAR		 			*pSrcBufVA,
+	OUT u8 *	 			*pSrcBufVA,
 	OUT	UINT		 			*pSrcBufLen);
 
 struct sk_buff * DuplicatePacket(
@@ -141,9 +141,9 @@ struct sk_buff * DuplicatePacket(
 
 struct sk_buff * duplicate_pkt(
 	IN	struct net_device *			pNetDev,
-	IN	PUCHAR					pHeader802_3,
+	IN	u8 *				pHeader802_3,
     IN  UINT            		HdrLen,
-	IN	PUCHAR					pData,
+	IN	u8 *				pData,
 	IN	ULONG					DataSize,
 	IN	UCHAR					FromWhichBSSID);
 
@@ -155,9 +155,9 @@ struct sk_buff * duplicate_pkt_with_VLAN(
 	IN	struct net_device *			pNetDev,
 	IN	USHORT					VLAN_VID,
 	IN	USHORT					VLAN_Priority,
-	IN	PUCHAR					pHeader802_3,
+	IN	u8 *				pHeader802_3,
     IN  UINT            		HdrLen,
-	IN	PUCHAR					pData,
+	IN	u8 *				pData,
 	IN	ULONG					DataSize,
 	IN	UCHAR					FromWhichBSSID,
 	IN	UCHAR					*TPID);
@@ -172,7 +172,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	IN	struct net_device *			pNetDev,
 	IN	RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
 	IN	UCHAR					apidx,
-	IN	PUCHAR					pData,
+	IN	u8 *				pData,
 	IN	UINT32					data_len,
 	IN	UCHAR			OpMode);
 
@@ -185,7 +185,7 @@ struct sk_buff * ExpandPacket(
 struct sk_buff * ClonePacket(
 	IN	void 				*pReserved,
 	IN	struct sk_buff *			pPacket,
-	IN	PUCHAR					pData,
+	IN	u8 *				pData,
 	IN	ULONG					DataSize);
 
 void wlan_802_11_to_802_3_packet(
@@ -196,7 +196,7 @@ void wlan_802_11_to_802_3_packet(
 	IN	struct sk_buff *			pRxPacket,
 	IN	UCHAR					*pData,
 	IN	ULONG					DataSize,
-	IN	PUCHAR					pHeader802_3,
+	IN	u8 *				pHeader802_3,
 	IN  UCHAR					FromWhichBSSID,
 	IN	UCHAR					*TPID);
 
@@ -223,9 +223,9 @@ void send_monitor_packets(
 UCHAR VLAN_8023_Header_Copy(
 	IN	USHORT					VLAN_VID,
 	IN	USHORT					VLAN_Priority,
-	IN	PUCHAR					pHeader802_3,
+	IN	u8 *				pHeader802_3,
 	IN	UINT            		HdrLen,
-	OUT PUCHAR					pData,
+	OUT u8 *				pData,
 	IN	UCHAR					FromWhichBSSID,
 	IN	UCHAR					*TPID);
 
@@ -233,7 +233,7 @@ void RtmpOsPktBodyCopy(
 	IN	struct net_device *			pNetDev,
 	IN	struct sk_buff *			pNetPkt,
 	IN	ULONG					ThisFrameLen,
-	IN	PUCHAR					pData);
+	IN	u8 *				pData);
 
 INT RtmpOsIsPktCloned(
 	IN	struct sk_buff *			pNetPkt);
@@ -256,11 +256,11 @@ void RtmpOsPktTailAdjust(
 	IN	struct sk_buff *			pNetPkt,
 	IN	UINT					removedTagLen);
 
-PUCHAR RtmpOsPktTailBufExtend(
+u8 *RtmpOsPktTailBufExtend(
 	IN	struct sk_buff *			pNetPkt,
 	IN	UINT					Len);
 
-PUCHAR RtmpOsPktHeadBufExtend(
+u8 *RtmpOsPktHeadBufExtend(
 	IN	struct sk_buff *			pNetPkt,
 	IN	UINT					Len);
 
@@ -325,8 +325,8 @@ void RtmpOSFSInfoChange(
 int RtmpOSNetDevAddrSet(
 	IN UCHAR					OpMode,
 	IN struct net_device *				pNetDev,
-	IN PUCHAR					pMacAddr,
-	IN PUCHAR					dev_name);
+	IN u8 *				pMacAddr,
+	IN u8 *				dev_name);
 
 void RtmpOSNetDevClose(
 	IN struct net_device *				pNetDev);
@@ -598,16 +598,16 @@ int RtmpOSWrielessEventSend(
 	IN	struct net_device *			pNetDev,
 	IN	UINT32					eventType,
 	IN	INT						flags,
-	IN	PUCHAR					pSrcMac,
-	IN	PUCHAR					pData,
+	IN	u8 *				pSrcMac,
+	IN	u8 *				pData,
 	IN	UINT32					dataLen);
 
 int RtmpOSWrielessEventSendExt(
 	IN	struct net_device *			pNetDev,
 	IN	UINT32					eventType,
 	IN	INT						flags,
-	IN	PUCHAR					pSrcMac,
-	IN	PUCHAR					pData,
+	IN	u8 *				pSrcMac,
+	IN	u8 *				pData,
 	IN	UINT32					dataLen,
 	IN	UINT32					family);
 
@@ -821,7 +821,7 @@ void RtmpOsUsbInitHTTxDesc(
 	IN	void 		*pUrbSrc,
 	IN	void 		*pUsb_Dev,
 	IN	UINT			BulkOutEpAddr,
-	IN	PUCHAR			pSrc,
+	IN	u8 *		pSrc,
 	IN	ULONG			BulkOutSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pTxContext,

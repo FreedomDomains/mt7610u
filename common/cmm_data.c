@@ -333,7 +333,7 @@ NDIS_STATUS MiniportMMRequest(
 		{
 			/* We need to reserve space for rtmp hardware header. i.e., TxWI for RT2860 and TxInfo+TxWI for RT2870*/
 			memset(&rtmpHwHdr, 0, hw_len);
-			Status = RTMPAllocateNdisPacket(pAd, &pPacket, (PUCHAR)&rtmpHwHdr, hw_len, pData, Length);
+			Status = RTMPAllocateNdisPacket(pAd, &pPacket, (u8 *)&rtmpHwHdr, hw_len, pData, Length);
 			if (Status != NDIS_STATUS_SUCCESS)
 			{
 				DBGPRINT(RT_DEBUG_WARN, ("MiniportMMRequest (error:: can't allocate NDIS PACKET)\n"));
@@ -397,7 +397,7 @@ NDIS_STATUS MlmeHardTransmit(
 	IN BOOLEAN FlgIsLocked)
 {
 	PACKET_INFO 	PacketInfo;
-	PUCHAR			pSrcBufVA;
+	u8 *		pSrcBufVA;
 	UINT			SrcBufLen;
 
 	if ((pAd->Dot11_H.RDMode != RD_NORMAL_MODE)
@@ -607,7 +607,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHeader_802_11, DIR_WRITE, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHeader_802_11, DIR_WRITE, FALSE);
 #endif
 
 
@@ -651,7 +651,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPWIEndianChange(pAd, (PUCHAR)pFirstTxWI, TYPE_TXWI);
+	RTMPWIEndianChange(pAd, (u8 *)pFirstTxWI, TYPE_TXWI);
 #endif
 
 //+++Add by shiang for debug
@@ -840,7 +840,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		pTxBlk->pMacEntry = NULL;
 		{
 #ifdef MCAST_RATE_SPECIFIC
-			PUCHAR pDA = GET_OS_PKT_DATAPTR(pPacket);
+			u8 *pDA = GET_OS_PKT_DATAPTR(pPacket);
 			if (((*pDA & 0x01) == 0x01) && (*pDA != 0xff))
 				pTxBlk->pTransmit = &pAd->CommonCfg.MCastPhyMode;
 			else
@@ -1100,7 +1100,7 @@ void RTMPDeQueuePacket(
 			}
 
 			pTxBlk = &TxBlk;
-			memset((PUCHAR)pTxBlk, 0, sizeof(TX_BLK));
+			memset((u8 *)pTxBlk, 0, sizeof(TX_BLK));
 
 			pTxBlk->QueIdx = QueIdx;
 
@@ -1362,7 +1362,7 @@ void RTMPResumeMsduTransmission(
 UINT deaggregate_AMSDU_announce(
 	IN	struct rtmp_adapter *pAd,
 	struct sk_buff *		pPacket,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	ULONG			DataSize,
 	IN	UCHAR			OpMode)
 {
@@ -1372,7 +1372,7 @@ UINT deaggregate_AMSDU_announce(
 	UINT			nMSDU;
     UCHAR			Header802_3[14];
 
-	PUCHAR			pPayload, pDA, pSA, pRemovedLLCSNAP;
+	u8 *pPayload, *pDA, *pSA, *pRemovedLLCSNAP;
 	struct sk_buff *	pClonePacket;
 
 
@@ -1480,11 +1480,11 @@ UINT BA_Reorder_AMSDU_Annnounce(
 	IN	struct sk_buff *	pPacket,
 	IN	UCHAR			OpMode)
 {
-	PUCHAR			pData;
+	u8 *		pData;
 	USHORT			DataSize;
 	UINT			nMSDU = 0;
 
-	pData = (PUCHAR) GET_OS_PKT_DATAPTR(pPacket);
+	pData = (u8 *) GET_OS_PKT_DATAPTR(pPacket);
 	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
 
 	nMSDU = deaggregate_AMSDU_announce(pAd, pPacket, pData, DataSize, OpMode);
@@ -1517,7 +1517,7 @@ void Indicate_AMSDU_Packet(
 void AssocParmFill(
 	IN struct rtmp_adapter *pAd,
 	IN OUT MLME_ASSOC_REQ_STRUCT *AssocReq,
-	IN PUCHAR                     pAddr,
+	IN u8 *                    pAddr,
 	IN USHORT                     CapabilityInfo,
 	IN ULONG                      Timeout,
 	IN USHORT                     ListenIntv)
@@ -1541,7 +1541,7 @@ void AssocParmFill(
 void DisassocParmFill(
 	IN struct rtmp_adapter *pAd,
 	IN OUT MLME_DISASSOC_REQ_STRUCT *DisassocReq,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN USHORT Reason)
 {
 	ether_addr_copy(DisassocReq->Addr, pAddr);
@@ -1554,12 +1554,12 @@ BOOLEAN RTMPCheckEtherType(
 	IN	struct sk_buff *	pPacket,
 	IN	PMAC_TABLE_ENTRY pMacEntry,
 	IN	UCHAR			OpMode,
-	OUT PUCHAR pUserPriority,
-	OUT PUCHAR pQueIdx)
+	OUT u8 *pUserPriority,
+	OUT u8 *pQueIdx)
 {
 	USHORT	TypeLen;
 	UCHAR	Byte0, Byte1;
-	PUCHAR	pSrcBuf;
+	u8 *pSrcBuf;
 	UINT32	pktLen;
 	UINT16 	srcPort, dstPort;
 	BOOLEAN bWmmReq;
@@ -2112,7 +2112,7 @@ void CmmRxRalinkFrameIndicate(
 	UCHAR			Header802_3[LENGTH_802_3];
 	UINT16			Msdu2Size;
 	UINT16 			Payload1Size, Payload2Size;
-	PUCHAR 			pData2;
+	u8 *			pData2;
 	struct sk_buff *	pPacket2 = NULL;
 	USHORT			VLAN_VID = 0, VLAN_Priority = 0;
 
@@ -2400,7 +2400,7 @@ BOOLEAN RTMPExpandPacketForSwEncrypt(
 void RTMPUpdateSwCacheCipherInfo(
 	IN  struct rtmp_adapter *  pAd,
 	IN	PTX_BLK			pTxBlk,
-	IN	PUCHAR			pHdr)
+	IN	u8 *		pHdr)
 {
 	PHEADER_802_11 		pHeader_802_11;
 	PMAC_TABLE_ENTRY	pMacEntry;
@@ -2438,7 +2438,7 @@ void RTMPUpdateSwCacheCipherInfo(
  */
 void RtmpEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR        pAddr,
+	IN u8 *       pAddr,
 	IN UCHAR         TxRate,
 	IN UCHAR         PID,
 	IN UCHAR         apidx,
@@ -2448,11 +2448,11 @@ void RtmpEnqueueNullFrame(
 {
 	NDIS_STATUS    NState;
 	PHEADER_802_11 pNullFr;
-	PUCHAR pFrame;
+	u8 *pFrame;
 	ULONG		   Length;
 
 	/* since TxRate may change, we have to change Duration each time */
-	NState = os_alloc_mem(pAd, (PUCHAR *)&pFrame, MGMT_DMA_BUFFER_SIZE);
+	NState = os_alloc_mem(pAd, (u8 **)&pFrame, MGMT_DMA_BUFFER_SIZE);
 	pNullFr = (PHEADER_802_11) pFrame;
     Length = sizeof(HEADER_802_11);
 
@@ -2479,7 +2479,7 @@ void RtmpEnqueueNullFrame(
 #endif /* UAPSD_SUPPORT */
 
 		DBGPRINT(RT_DEBUG_INFO, ("send NULL Frame @%d Mbps to AID#%d...\n", RateIdToMbps[TxRate], PID & 0x3f));
-		MiniportMMRequest(pAd, MapUserPriorityToAccessCategory[7], (PUCHAR)pNullFr, Length);
+		MiniportMMRequest(pAd, MapUserPriorityToAccessCategory[7], (u8 *)pNullFr, Length);
 		kfree(pFrame);
 	}
 }

@@ -184,7 +184,7 @@ NDIS_STATUS os_alloc_mem(
 	OUT UCHAR **mem,
 	IN ULONG size)
 {
-	*mem = (PUCHAR) kmalloc(size, GFP_ATOMIC);
+	*mem = (u8 *) kmalloc(size, GFP_ATOMIC);
 	if (*mem) {
 
 		return NDIS_STATUS_SUCCESS;
@@ -197,7 +197,7 @@ NDIS_STATUS os_alloc_mem_suspend(
 	OUT UCHAR **mem,
 	IN ULONG size)
 {
-	*mem = (PUCHAR) kmalloc(size, GFP_KERNEL);
+	*mem = (u8 *) kmalloc(size, GFP_KERNEL);
 	if (*mem) {
 
 		return NDIS_STATUS_SUCCESS;
@@ -366,11 +366,11 @@ void RTMPFreeNdisPacket(
 NDIS_STATUS Sniff2BytesFromNdisBuffer(
 	IN PNDIS_BUFFER pFirstBuffer,
 	IN UCHAR DesiredOffset,
-	OUT PUCHAR pByte0,
-	OUT PUCHAR pByte1)
+	OUT u8 *pByte0,
+	OUT u8 *pByte1)
 {
-	*pByte0 = *(PUCHAR) (pFirstBuffer + DesiredOffset);
-	*pByte1 = *(PUCHAR) (pFirstBuffer + DesiredOffset + 1);
+	*pByte0 = *(u8 *) (pFirstBuffer + DesiredOffset);
+	*pByte1 = *(u8 *) (pFirstBuffer + DesiredOffset + 1);
 
 	return NDIS_STATUS_SUCCESS;
 }
@@ -424,7 +424,7 @@ struct sk_buff * DuplicatePacket(
 	UCHAR *pData;
 
 	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
-	pData = (PUCHAR) GET_OS_PKT_DATAPTR(pPacket);
+	pData = (u8 *) GET_OS_PKT_DATAPTR(pPacket);
 
 	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
 	if (skb) {
@@ -440,9 +440,9 @@ struct sk_buff * DuplicatePacket(
 
 struct sk_buff * duplicate_pkt(
 	IN struct net_device *pNetDev,
-	IN PUCHAR pHeader802_3,
+	IN u8 *pHeader802_3,
 	IN UINT HdrLen,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN ULONG DataSize,
 	IN UCHAR FromWhichBSSID)
 {
@@ -515,7 +515,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	IN struct net_device *pNetDev,
 	IN RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
 	IN UCHAR apidx,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN UINT32 data_len,
 	IN	UCHAR			OpMode)
 {
@@ -589,7 +589,7 @@ struct sk_buff * ExpandPacket(
 struct sk_buff * ClonePacket(
 	IN void *pReserved,
 	IN struct sk_buff * pPacket,
-	IN PUCHAR pData,
+	IN u8 *pData,
 	IN ULONG DataSize)
 {
 	struct sk_buff *pRxPkt;
@@ -638,7 +638,7 @@ void wlan_802_11_to_802_3_packet(
 	IN struct sk_buff * pRxPacket,
 	IN UCHAR *pData,
 	IN ULONG DataSize,
-	IN PUCHAR pHeader802_3,
+	IN u8 *pHeader802_3,
 	IN UCHAR FromWhichBSSID,
 	IN UCHAR *TPID)
 {
@@ -1140,7 +1140,7 @@ static inline NDIS_STATUS __RtmpOSTaskInit(
 	ASSERT(pTask);
 
 #ifndef KTHREAD_SUPPORT
-	memset((PUCHAR) (pTask), 0, sizeof (OS_TASK));
+	memset((u8 *) (pTask), 0, sizeof (OS_TASK));
 #endif
 
 	len = strlen(pTaskName);
@@ -1221,8 +1221,8 @@ int RtmpOSWrielessEventSend(
 	IN struct net_device *pNetDev,
 	IN UINT32 eventType,
 	IN INT flags,
-	IN PUCHAR pSrcMac,
-	IN PUCHAR pData,
+	IN u8 *pSrcMac,
+	IN u8 *pData,
 	IN UINT32 dataLen)
 {
 	union iwreq_data wrqu;
@@ -1251,8 +1251,8 @@ int RtmpOSWrielessEventSendExt(
 	IN struct net_device *pNetDev,
 	IN UINT32 eventType,
 	IN INT flags,
-	IN PUCHAR pSrcMac,
-	IN PUCHAR pData,
+	IN u8 *pSrcMac,
+	IN u8 *pData,
 	IN UINT32 dataLen,
 	IN UINT32 family)
 {
@@ -1282,8 +1282,8 @@ int RtmpOSWrielessEventSendExt(
 int RtmpOSNetDevAddrSet(
 	IN UCHAR OpMode,
 	IN struct net_device *pNetDev,
-	IN PUCHAR pMacAddr,
-	IN PUCHAR dev_name)
+	IN u8 *pMacAddr,
+	IN u8 *dev_name)
 {
 	struct net_device *net_dev;
 

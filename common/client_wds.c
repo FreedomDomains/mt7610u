@@ -116,9 +116,9 @@ void CliWdsEntyFree(
 }
 
 
-PUCHAR CliWds_ProxyLookup(
+u8 *CliWds_ProxyLookup(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pMac)
+	IN u8 *pMac)
 {
 	u8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
 	PCLIWDS_PROXY_ENTRY pCliWdsEntry;
@@ -147,7 +147,7 @@ PUCHAR CliWds_ProxyLookup(
 void CliWds_ProxyTabUpdate(
 	IN struct rtmp_adapter *pAd,
 	IN SHORT Aid,
-	IN PUCHAR pMac)
+	IN u8 *pMac)
 {
 	u8 HashId = (*(pMac + 5) & (CLIWDS_HASH_TAB_SIZE - 1));
 	PCLIWDS_PROXY_ENTRY pCliWdsEntry;

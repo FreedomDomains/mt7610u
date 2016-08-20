@@ -226,7 +226,7 @@ INT Show_AGS_Proc(
 void MlmeDynamicTxRateSwitchingAGS(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pTable,
+	IN u8 *pTable,
 	IN UCHAR TableSize,
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
 	IN UCHAR InitTxRateIdx)
@@ -864,7 +864,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 void StaQuickResponeForRateUpExecAGS(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pTable,
+	IN u8 *pTable,
 	IN UCHAR TableSize,
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
 	IN UCHAR InitTxRateIdx)

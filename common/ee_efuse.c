@@ -118,7 +118,7 @@ static void eFuseWritePhysical(
 	IN	struct rtmp_adapter *pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
-  	PUCHAR lpOutBuffer,
+  	u8 *lpOutBuffer,
   	ULONG nOutBufferSize);
 
 
@@ -800,7 +800,7 @@ static void eFuseWritePhysical(
 	IN	struct rtmp_adapter *pAd,
   	PUSHORT lpInBuffer,
 	ULONG nInBufferSize,
-  	PUCHAR lpOutBuffer,
+  	u8 *lpOutBuffer,
   	ULONG nOutBufferSize
 )
 {

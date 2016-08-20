@@ -853,7 +853,7 @@ void MlmePeriodicExec(
 	==========================================================================
  */
 BOOLEAN MlmeValidateSSID(
-	IN PUCHAR	pSsid,
+	IN u8 *pSsid,
 	IN UCHAR	SsidLen)
 {
 	int	index;
@@ -2592,7 +2592,7 @@ void BssTableInit(BSS_TABLE *Tab)
  */
 ULONG BssTableSearch(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR	 pBssid,
+	IN u8 * pBssid,
 	IN UCHAR	 Channel)
 {
 	UCHAR i;
@@ -2616,8 +2616,8 @@ ULONG BssTableSearch(
 
 ULONG BssSsidTableSearch(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR	 pBssid,
-	IN PUCHAR	 pSsid,
+	IN u8 * pBssid,
+	IN u8 * pSsid,
 	IN UCHAR	 SsidLen,
 	IN UCHAR	 Channel)
 {
@@ -2642,8 +2642,8 @@ ULONG BssSsidTableSearch(
 
 ULONG BssTableSearchWithSSID(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR	 Bssid,
-	IN PUCHAR	 pSsid,
+	IN u8 * Bssid,
+	IN u8 * pSsid,
 	IN UCHAR	 SsidLen,
 	IN UCHAR	 Channel)
 {
@@ -2667,7 +2667,7 @@ ULONG BssTableSearchWithSSID(
 
 ULONG BssSsidTableSearchBySSID(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR	 pSsid,
+	IN u8 * pSsid,
 	IN UCHAR	 SsidLen)
 {
 	UCHAR i;
@@ -2686,7 +2686,7 @@ ULONG BssSsidTableSearchBySSID(
 /* IRQL = DISPATCH_LEVEL*/
 void BssTableDeleteEntry(
 	IN OUT	BSS_TABLE *Tab,
-	IN		PUCHAR	  pBssid,
+	IN		u8 *  pBssid,
 	IN		UCHAR	  Channel)
 {
 	UCHAR i, j;
@@ -3083,7 +3083,7 @@ void  TriEventInit(
 INT TriEventTableSetEntry(
 	IN	struct rtmp_adapter *pAd,
 	OUT TRIGGER_EVENT_TAB *Tab,
-	IN PUCHAR pBssid,
+	IN u8 *pBssid,
 	IN HT_CAPABILITY_IE *pHtCapability,
 	IN UCHAR			HtCapabilityLen,
 	IN UCHAR			RegClass,
@@ -3425,7 +3425,7 @@ void BssCipherParse(
 	IN OUT	PBSS_ENTRY	pBss)
 {
 	PEID_STRUCT 		 pEid;
-	PUCHAR				pTmp;
+	u8 *			pTmp;
 	PRSN_IE_HEADER_STRUCT			pRsnHeader;
 	PCIPHER_SUITE_STRUCT			pCipher;
 	PAKM_SUITE_STRUCT				pAKM;
@@ -3468,7 +3468,7 @@ void BssCipherParse(
 	while (Length > 0)
 	{
 		/* Parse cipher suite base on WPA1 & WPA2, they should be parsed differently*/
-		pTmp = ((PUCHAR) pBss->VarIEs) + pBss->VarIELen - Length;
+		pTmp = ((u8 *) pBss->VarIEs) + pBss->VarIELen - Length;
 		pEid = (PEID_STRUCT) pTmp;
 		switch (pEid->Eid)
 		{
@@ -3488,7 +3488,7 @@ void BssCipherParse(
 					This part should be improved in the future when AP supported multiple cipher suite.
 					For now, it's OK since almost all APs have fixed cipher suite supported.
 				*/
-				/* pTmp = (PUCHAR) pEid->Octet;*/
+				/* pTmp = (u8 *) pEid->Octet;*/
 				pTmp   += 11;
 
 				/*
@@ -3772,7 +3772,7 @@ void BssCipherParse(
  */
 void MacAddrRandomBssid(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pAddr)
+	OUT u8 *pAddr)
 {
 	INT i;
 
@@ -3804,8 +3804,8 @@ void MgtMacHeaderInit(
 	IN OUT PHEADER_802_11 pHdr80211,
 	IN UCHAR SubType,
 	IN UCHAR ToDs,
-	IN PUCHAR pDA,
-	IN PUCHAR pBssid)
+	IN u8 *pDA,
+	IN u8 *pBssid)
 {
 	memset(pHdr80211, 0, sizeof(HEADER_802_11));
 
@@ -4263,11 +4263,11 @@ BOOLEAN MsgTypeSubst(
 {
 	USHORT	Seq, Alg;
 	UCHAR	EAPType;
-	PUCHAR	pData;
+	u8 *pData;
 	BOOLEAN bRV = FALSE;
 
 	/* Pointer to start of data frames including SNAP header*/
-	pData = (PUCHAR) pFrame + LENGTH_802_11;
+	pData = (u8 *) pFrame + LENGTH_802_11;
 
 	/* The only data type will pass to this function is EAPOL frame*/
 	if (pFrame->Hdr.FC.Type == BTYPE_DATA)

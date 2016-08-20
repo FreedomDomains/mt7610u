@@ -390,7 +390,7 @@ int rt28xx_init(void *pAdSrc)
 
 	/* Set up the Mac address*/
 #ifdef CONFIG_STA_SUPPORT
-	RtmpOSNetDevAddrSet(pAd->OpMode, pAd->net_dev, &pAd->CurrentAddress[0], (PUCHAR)(pAd->StaCfg.dev_name));
+	RtmpOSNetDevAddrSet(pAd->OpMode, pAd->net_dev, &pAd->CurrentAddress[0], (u8 *)(pAd->StaCfg.dev_name));
 #endif /* CONFIG_STA_SUPPORT */
 
 	/* Various AP function init*/

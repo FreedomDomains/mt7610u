@@ -73,7 +73,6 @@ typedef unsigned char BOOLEAN;
 #ifdef LINUX
 #endif /* LINUX */
 
-typedef UCHAR *PUCHAR;
 typedef USHORT *PUSHORT;
 typedef LONG *PLONG;
 typedef ULONG *PULONG;

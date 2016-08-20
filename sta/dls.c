@@ -89,7 +89,7 @@ void MlmeDlsReqAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	HEADER_802_11 DlsReqHdr;
@@ -188,7 +188,7 @@ void PeerDlsReqAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	USHORT StatusCode = MLME_SUCCESS;
@@ -830,7 +830,7 @@ void MlmeDlsTearDownAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	UCHAR Category = CATEGORY_DLS;
@@ -1043,8 +1043,8 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 	BOOLEAN bFindEntry = FALSE;
 	BOOLEAN bSTAKeyFrame = FALSE;
 	PEAPOL_PACKET pEap;
-	PUCHAR pProto, pAddr = NULL;
-	PUCHAR pSTAKey = NULL;
+	u8 *pProto, pAddr = NULL;
+	u8 *pSTAKey = NULL;
 	UCHAR ZeroReplay[LEN_KEY_DESC_REPLAY];
 	UCHAR Mic[16], OldMic[16];
 	UCHAR digest[80];
@@ -1062,7 +1062,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 	if (Len < LENGTH_802_11 + 6 + 2)	/* LENGTH_802_11 + LLC + EAPOL protocol type */
 		return bSTAKeyFrame;
 
-	pProto = (PUCHAR) pHeader + LENGTH_802_11;
+	pProto = (u8 *) pHeader + LENGTH_802_11;
 
 	if ((pHeader->FC.SubType & 0x08))
 		pProto += 2;	/* QOS Control field */
@@ -1159,12 +1159,12 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 			memset(pEap->KeyDesc.KeyMic, 0, LEN_KEY_DESC_MIC);
 			if (pAd->StaCfg.WepStatus == Ndis802_11Encryption3Enabled) {
 				/* AES */
-				RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, (PUCHAR) pEap,
+				RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, (u8 *) pEap,
 					     pEap->Body_Len[1] + 4, digest,
 					     SHA1_DIGEST_SIZE);
 				NdisMoveMemory(Mic, digest, LEN_KEY_DESC_MIC);
 			} else {
-				RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, (PUCHAR) pEap,
+				RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, (u8 *) pEap,
 					    pEap->Body_Len[1] + 4, Mic,
 					    MD5_DIGEST_SIZE);
 			}
@@ -1371,7 +1371,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 */
 INT RTMPCheckDLSFrame(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA)
+	IN u8 *pDA)
 {
 	INT rval = -1;
 	INT i;
@@ -1418,9 +1418,9 @@ INT RTMPCheckDLSFrame(
  */
 void RTMPSendDLSTearDownFrame(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA)
+	IN u8 *pDA)
 {
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	HEADER_802_11 DlsTearDownHdr;
 	ULONG FrameLen = 0;
@@ -1487,7 +1487,7 @@ void RTMPSendDLSTearDownFrame(
  */
 NDIS_STATUS RTMPSendSTAKeyRequest(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA)
+	IN u8 *pDA)
 {
 	UCHAR Header802_3[14];
 	NDIS_STATUS NStatus;
@@ -1496,7 +1496,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 	UCHAR *mpool;
 	UCHAR Mic[16];
 	UCHAR digest[80];
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	struct sk_buff * pNdisPacket;
 	UCHAR temp[64];
 	UCHAR DlsPTK[80];
@@ -1510,7 +1510,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 			  pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
-	os_alloc_mem(NULL, (PUCHAR *) & mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **) & mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1624,7 +1624,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
  */
 NDIS_STATUS RTMPSendSTAKeyHandShake(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pDA)
+	IN u8 *pDA)
 {
 	UCHAR Header802_3[14];
 	NDIS_STATUS NStatus;
@@ -1633,7 +1633,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	UCHAR *mpool;
 	UCHAR Mic[16];
 	UCHAR digest[80];
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	struct sk_buff * pNdisPacket;
 	UCHAR temp[64];
 	UCHAR DlsPTK[80];	/* Due to dirver can not get PTK, use proprietary PTK */
@@ -1647,7 +1647,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 			  pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
-	os_alloc_mem(NULL, (PUCHAR *) & mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **) & mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1792,7 +1792,7 @@ from index MAX_AID_BA.
 */
 MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN UINT DlsEntryIdx)
 {
 	PMAC_TABLE_ENTRY pEntry = NULL;
@@ -1856,7 +1856,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 BOOLEAN MacTableDeleteDlsEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
-	IN PUCHAR pAddr)
+	IN u8 *pAddr)
 {
 	DBGPRINT(RT_DEBUG_TRACE, ("====> MacTableDeleteDlsEntry\n"));
 
@@ -1872,7 +1872,7 @@ BOOLEAN MacTableDeleteDlsEntry(
 
 MAC_TABLE_ENTRY *DlsEntryTableLookup(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN BOOLEAN bResetIdelCount)
 {
 	ULONG HashIdx;
@@ -1899,7 +1899,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookup(
 MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR wcid,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN BOOLEAN bResetIdelCount)
 {
 	ULONG DLsIndex;
@@ -1937,7 +1937,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 
 INT Set_DlsEntryInfo_Display_Proc(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR arg)
+	IN u8 *arg)
 {
 	INT i;
 

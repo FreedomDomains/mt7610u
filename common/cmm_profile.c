@@ -45,7 +45,7 @@ BOOLEAN rtstrmactohex(char *s1, char *s2)
 			*ptokE++ = '\0';
 		if ((strlen(ptokS) != 2) || (!isxdigit(*ptokS)) || (!isxdigit(*(ptokS+1))))
 			break; /* fail*/
-		AtoH(ptokS, (PUCHAR)&s2[i++], 1);
+		AtoH(ptokS, (u8 *)&s2[i++], 1);
 		ptokS = ptokE;
 		if (ptokS == NULL)
 			break;
@@ -382,7 +382,7 @@ INT RTMPGetKeyParameter(
 
 
 	keyLen = strlen(key);
-	os_alloc_mem(NULL, (PUCHAR *)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
+	os_alloc_mem(NULL, (u8 **)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
 	if (pMemBuf == NULL)
 		return (FALSE);
 
@@ -394,7 +394,7 @@ INT RTMPGetKeyParameter(
 	/*find section*/
 	if((offset = RTMPFindSection(buffer)) == NULL)
 	{
-		kfree((PUCHAR)pMemBuf);
+		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
 
@@ -405,7 +405,7 @@ INT RTMPGetKeyParameter(
 	/*search key*/
 	if((start_ptr=rtstrstr(offset, temp_buf1)) == NULL)
 	{
-		kfree((PUCHAR)pMemBuf);
+		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
 
@@ -415,7 +415,7 @@ INT RTMPGetKeyParameter(
 
 	if (end_ptr<start_ptr)
 	{
-		kfree((PUCHAR)pMemBuf);
+		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
 
@@ -424,7 +424,7 @@ INT RTMPGetKeyParameter(
 
 	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL)
 	{
-		kfree((PUCHAR)pMemBuf);
+		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
 	ptr = (start_ptr +1);
@@ -441,7 +441,7 @@ INT RTMPGetKeyParameter(
 	memset(dest, 0x00, destsize);
 	strncpy(dest, ptr, ((len >= destsize) ? destsize: len));
 
-	kfree((PUCHAR)pMemBuf);
+	kfree((u8 *)pMemBuf);
 
 	return TRUE;
 }
@@ -486,15 +486,15 @@ INT RTMPGetKeyParameterWithOffset(
 	if (*end_offset >= MAX_INI_BUFFER_SIZE)
 		return (FALSE);
 
-	os_alloc_mem(NULL, (PUCHAR *)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (u8 **)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
 
 	if(temp_buf1 == NULL)
         return (FALSE);
 
-	os_alloc_mem(NULL, (PUCHAR *)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (u8 **)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
 	if(temp_buf2 == NULL)
 	{
-		kfree((PUCHAR)temp_buf1);
+		kfree((u8 *)temp_buf1);
         return (FALSE);
 	}
 
@@ -503,8 +503,8 @@ INT RTMPGetKeyParameterWithOffset(
     {
 		if ((offset = RTMPFindSection(buffer)) == NULL)
 		{
-			kfree((PUCHAR)temp_buf1);
-	    	kfree((PUCHAR)temp_buf2);
+			kfree((u8 *)temp_buf1);
+	    	kfree((u8 *)temp_buf2);
     	    return (FALSE);
 		}
     }
@@ -518,8 +518,8 @@ INT RTMPGetKeyParameterWithOffset(
     /*search key*/
     if((start_ptr=rtstrstr(offset, temp_buf1))==NULL)
     {
-		kfree((PUCHAR)temp_buf1);
-    	kfree((PUCHAR)temp_buf2);
+		kfree((u8 *)temp_buf1);
+    	kfree((u8 *)temp_buf2);
         return (FALSE);
     }
 
@@ -529,8 +529,8 @@ INT RTMPGetKeyParameterWithOffset(
 
     if (end_ptr<start_ptr)
     {
-		kfree((PUCHAR)temp_buf1);
-    	kfree((PUCHAR)temp_buf2);
+		kfree((u8 *)temp_buf1);
+    	kfree((u8 *)temp_buf2);
         return (FALSE);
     }
 
@@ -542,8 +542,8 @@ INT RTMPGetKeyParameterWithOffset(
     strcpy(temp_buf1, temp_buf2);
     if((start_ptr=rtstrstr(temp_buf1, "=")) == NULL)
     {
-		kfree((PUCHAR)temp_buf1);
-    	kfree((PUCHAR)temp_buf2);
+		kfree((u8 *)temp_buf1);
+    	kfree((u8 *)temp_buf2);
         return (FALSE);
     }
 
@@ -562,8 +562,8 @@ INT RTMPGetKeyParameterWithOffset(
     memset(dest, 0x00, destsize);
     strncpy(dest, ptr, len >= destsize ?  destsize: len);
 
-	kfree((PUCHAR)temp_buf1);
-    kfree((PUCHAR)temp_buf2);
+	kfree((u8 *)temp_buf1);
+    kfree((u8 *)temp_buf2);
     return TRUE;
 }
 
@@ -1388,7 +1388,7 @@ void RTMPSetSTAPassPhrase(struct rtmp_adapter*pAd, char *PassPh)
 	}
 	else
 	{
-		ret = RT_CfgSetWPAPSKKey(pAd, PassPh, strlen(PassPh), (PUCHAR)pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen, pAd->StaCfg.PMK);
+		ret = RT_CfgSetWPAPSKKey(pAd, PassPh, strlen(PassPh), (u8 *)pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen, pAd->StaCfg.PMK);
 	}
 
 	if (ret == TRUE)

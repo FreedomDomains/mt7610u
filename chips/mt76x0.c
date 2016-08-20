@@ -5190,7 +5190,7 @@ BOOLEAN get_temp_tx_alc_level(
 void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 {
 	BOOLEAN bResetTssiInfo = TRUE, enable_tx_alc;
-	PUCHAR temp_minus_bdy, temp_plus_bdy, tx_alc_comp;
+	u8 *temp_minus_bdy, temp_plus_bdy, tx_alc_comp;
 	UCHAR temp_ref;
 
 	if ((pAd->CommonCfg.Channel > 14) ?
@@ -5392,7 +5392,7 @@ BOOLEAN load_temp_tx_alc_table(
 	IN CHAR band,
 	IN USHORT e2p_start_addr,
 	IN USHORT e2p_end_addr,
-	OUT	PUCHAR bdy_table,
+	OUT	u8 *bdy_table,
 	IN const INT start_idx,
 	IN const UINT32 table_size)
 {

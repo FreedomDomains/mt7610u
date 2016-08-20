@@ -175,7 +175,7 @@ NTSTATUS	RTUSBFirmwareOpmode(
 */
 NTSTATUS RTUSBFirmwareWrite(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR		pFwImage,
+	IN u8 *	pFwImage,
 	IN ULONG		FwLen)
 {
 	UINT32		MacReg;
@@ -244,7 +244,7 @@ NTSTATUS	RTUSBVenderReset(
 NTSTATUS	RTUSBMultiRead(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	OUT	PUCHAR			pData,
+	OUT	u8 *		pData,
 	IN	USHORT			length)
 {
 	NTSTATUS	Status;
@@ -282,13 +282,13 @@ NTSTATUS	RTUSBMultiRead(
 NTSTATUS RTUSBMultiWrite_nBytes(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	USHORT			batchLen)
 {
 	NTSTATUS Status = STATUS_SUCCESS;
 	USHORT index = Offset, actLen = batchLen, leftLen = length;
-	PUCHAR pSrc = pData;
+	u8 *pSrc = pData;
 
 
 	do
@@ -337,7 +337,7 @@ NTSTATUS RTUSBMultiWrite_nBytes(
 NTSTATUS	RTUSBMultiWrite_OneByte(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData)
+	IN	u8 *		pData)
 {
 	NTSTATUS	Status;
 
@@ -358,7 +358,7 @@ NTSTATUS	RTUSBMultiWrite_OneByte(
 NTSTATUS	RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	BOOLEAN			bWriteHigh)
 {
@@ -366,7 +366,7 @@ NTSTATUS	RTUSBMultiWrite(
 
 
 	USHORT          index = 0,Value;
-	PUCHAR          pSrc = pData;
+	u8 *         pSrc = pData;
 	USHORT          resude = 0;
 
 	resude = length % 2;
@@ -571,7 +571,7 @@ int read_reg(
 NTSTATUS	RTUSBReadBBPRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
-	IN	PUCHAR			pValue)
+	IN	u8 *		pValue)
 {
 	BBP_CSR_CFG_STRUC	BbpCsr;
 	int i, k, ret;
@@ -761,7 +761,7 @@ done:
 NTSTATUS RTUSBReadEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	OUT	PUCHAR			pData,
+	OUT	u8 *		pData,
 	IN	USHORT			length)
 {
 	NTSTATUS	Status = STATUS_SUCCESS;
@@ -797,7 +797,7 @@ NTSTATUS RTUSBReadEEPROM(
 NTSTATUS RTUSBWriteEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	USHORT			length)
 {
 	NTSTATUS Status = STATUS_SUCCESS;
@@ -825,7 +825,7 @@ NTSTATUS RTUSBReadEEPROM16(
 	NTSTATUS status;
 	USHORT  localData;
 
-	status = RTUSBReadEEPROM(pAd, offset, (PUCHAR)(&localData), 2);
+	status = RTUSBReadEEPROM(pAd, offset, (u8 *)(&localData), 2);
 	if (status == STATUS_SUCCESS)
 		*pData = le2cpu16(localData);
 
@@ -841,7 +841,7 @@ NTSTATUS RTUSBWriteEEPROM16(
 	USHORT tmpVal;
 
 	tmpVal = cpu2le16(value);
-	return RTUSBWriteEEPROM(pAd, offset, (PUCHAR)&(tmpVal), 2);
+	return RTUSBWriteEEPROM(pAd, offset, (u8 *)&(tmpVal), 2);
 }
 
 /*
@@ -938,14 +938,14 @@ NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
 	else
 		return (NDIS_STATUS_RESOURCES);
 
-	status = os_alloc_mem(pAd, (PUCHAR *)(&cmdqelmt), sizeof(CmdQElmt));
+	status = os_alloc_mem(pAd, (u8 **)(&cmdqelmt), sizeof(CmdQElmt));
 	if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt == NULL))
 		return (NDIS_STATUS_RESOURCES);
 
 		cmdqelmt->buffer = NULL;
 		if (pInformationBuffer != NULL)
 		{
-			status = os_alloc_mem(pAd, (PUCHAR *)&cmdqelmt->buffer, InformationBufferLength);
+			status = os_alloc_mem(pAd, (u8 **)&cmdqelmt->buffer, InformationBufferLength);
 			if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt->buffer == NULL))
 			{
 /*				kfree(cmdqelmt);*/
@@ -1621,7 +1621,7 @@ static NTSTATUS SetPortSecuredHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMD
 
 static NTSTATUS RemovePairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
-	UCHAR Wcid = *((PUCHAR)(CMDQelmt->buffer));
+	UCHAR Wcid = *((u8 *)(CMDQelmt->buffer));
 
 	AsicRemovePairwiseKeyEntry(pAd, Wcid);
 	return NDIS_STATUS_SUCCESS;
@@ -1711,7 +1711,7 @@ NTSTATUS QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 #ifdef LED_CONTROL_SUPPORT
 static NTSTATUS SetLEDStatusHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
-	UCHAR LEDStatus = *((PUCHAR)(CMDQelmt->buffer));
+	UCHAR LEDStatus = *((u8 *)(CMDQelmt->buffer));
 
 	RTMPSetLEDStatus(pAd, LEDStatus);
 

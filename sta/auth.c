@@ -156,7 +156,7 @@ void PeerAuthRspAtSeq2Action(
 	ULONG c_len = 0;
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status2;
@@ -371,7 +371,7 @@ void MlmeDeauthReqAction(
 {
 	MLME_DEAUTH_REQ_STRUCT *pInfo;
 	HEADER_802_11 DeauthHdr;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status;
@@ -463,10 +463,10 @@ void InvalidStateWhenAuth(
  */
 void Cls2errAction(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr)
+	IN u8 *pAddr)
 {
 	HEADER_802_11 DeauthHdr;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	USHORT Reason = REASON_CLS2ERR;
@@ -494,7 +494,7 @@ BOOLEAN AUTH_ReqSend(
 	IN PRALINK_TIMER_STRUCT pAuthTimer,
 	IN char *pSMName,
 	IN USHORT SeqNo,
-	IN PUCHAR pNewElement,
+	IN u8 *pNewElement,
 	IN ULONG ElementLen)
 {
 	USHORT Alg, Seq, Status;
@@ -503,7 +503,7 @@ BOOLEAN AUTH_ReqSend(
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
 	NDIS_STATUS NStatus;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0, tmp = 0;
 
 	/* Block all authentication request durning WPA block period */

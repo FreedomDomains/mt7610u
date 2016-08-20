@@ -363,7 +363,7 @@ void CntlOidScanProc(
 	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED)) {
 		BssIdx =
 		    BssSsidTableSearch(&pAd->ScanTab, pAd->CommonCfg.Bssid,
-				       (PUCHAR) pAd->CommonCfg.Ssid,
+				       (u8 *) pAd->CommonCfg.Ssid,
 				       pAd->CommonCfg.SsidLen,
 				       pAd->CommonCfg.Channel);
 		if (BssIdx != BSS_NOT_FOUND) {
@@ -618,7 +618,7 @@ void CntlOidRTBssidProc(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	ULONG BssIdx;
-	PUCHAR pOidBssid = (PUCHAR) Elem->Msg;
+	u8 *pOidBssid = (u8 *) Elem->Msg;
 	MLME_DISASSOC_REQ_STRUCT DisassocReq;
 	MLME_JOIN_REQ_STRUCT JoinReq;
 	PBSS_ENTRY pInBss = NULL;
@@ -2306,7 +2306,7 @@ void LinkDown(
 	pAd->MlmeAux.NewExtChannelOffset = 0xff;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("LinkDownCleanMlmeAux.ExtCapInfo!\n"));
-	memset((PUCHAR) (&pAd->MlmeAux.ExtCapInfo), 0,
+	memset((u8 *) (&pAd->MlmeAux.ExtCapInfo), 0,
 		       sizeof (EXT_CAP_INFO_ELEMENT));
 #endif /* DOT11_N_SUPPORT */
 
@@ -2373,7 +2373,7 @@ void LinkDown(
 
 
 	/* Reset RSSI value after link down */
-	memset((PUCHAR) (&pAd->StaCfg.RssiSample), 0,
+	memset((u8 *) (&pAd->StaCfg.RssiSample), 0,
 		       sizeof (pAd->StaCfg.RssiSample));
 
 	/* Restore MlmeRate */
@@ -2727,7 +2727,7 @@ void StartParmFill(
 void AuthParmFill(
 	IN struct rtmp_adapter *pAd,
 	IN OUT MLME_AUTH_REQ_STRUCT *AuthReq,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN USHORT Alg)
 {
 	ether_addr_copy(AuthReq->Addr, pAddr);
@@ -2960,7 +2960,7 @@ ULONG MakeIbssBeacon(
 
 #ifdef RT_BIG_ENDIAN
 	RTMPFrameEndianChange(pAd, pBeaconFrame, DIR_WRITE, FALSE);
-	RTMPWIEndianChange(pAd, (PUCHAR) pTxWI, TYPE_TXWI);
+	RTMPWIEndianChange(pAd, (u8 *) pTxWI, TYPE_TXWI);
 #endif
 
 	DBGPRINT(RT_DEBUG_TRACE,

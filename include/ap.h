@@ -54,9 +54,9 @@
 
 BOOLEAN APBridgeToWirelessSta(
     IN  struct rtmp_adapter *  pAd,
-    IN  PUCHAR          pHeader,
+    IN  u8 *         pHeader,
     IN  UINT            HdrLen,
-    IN  PUCHAR          pData,
+    IN  u8 *         pData,
     IN  UINT            DataLen,
     IN  ULONG           fromwdsidx);
 
@@ -103,17 +103,17 @@ BOOLEAN APCheckClass2Class3Error(
 
 void APHandleRxPsPoll(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pAddr,
+	IN	u8 *		pAddr,
 	IN	USHORT			Aid,
     IN	BOOLEAN			isActive);
 
 void    RTMPDescriptorEndianChange(
-    IN  PUCHAR          pData,
+    IN  u8 *         pData,
     IN  ULONG           DescriptorType);
 
 void    RTMPFrameEndianChange(
     IN  struct rtmp_adapter *  pAd,
-    IN  PUCHAR          pData,
+    IN  u8 *         pData,
     IN  ULONG           Dir,
     IN  BOOLEAN         FromRxDoneInt);
 
@@ -132,7 +132,7 @@ void MbssKickOutStas(
 
 void APMlmeKickOutSta(
     IN struct rtmp_adapter *pAd,
-	IN PUCHAR pStaAddr,
+	IN u8 *pStaAddr,
 	IN UCHAR Wcid,
 	IN USHORT Reason);
 
@@ -149,9 +149,9 @@ void RTMPAddClientSec(
 	IN	UCHAR	BssIdx,
 	IN UCHAR		 KeyIdx,
 	IN UCHAR		 CipherAlg,
-	IN PUCHAR		 pKey,
-	IN PUCHAR		 pTxMic,
-	IN PUCHAR		 pRxMic,
+	IN u8 *	 pKey,
+	IN u8 *	 pTxMic,
+	IN u8 *	 pRxMic,
 	IN MAC_TABLE_ENTRY *pEntry);
 */
 
@@ -233,13 +233,13 @@ void ApSiteSurvey(
 	IN	BOOLEAN				ChannelSel);
 
 void SupportRate(
-	IN PUCHAR SupRate,
+	IN u8 *SupRate,
 	IN UCHAR SupRateLen,
-	IN PUCHAR ExtRate,
+	IN u8 *ExtRate,
 	IN UCHAR ExtRateLen,
-	OUT PUCHAR *Rates,
-	OUT PUCHAR RatesLen,
-	OUT PUCHAR pMaxSupportRate);
+	OUT u8 **Rates,
+	OUT u8 *RatesLen,
+	OUT u8 *pMaxSupportRate);
 
 
 BOOLEAN ApScanRunning(
@@ -321,7 +321,7 @@ UINT32 MacTableAssocStaNumGet(
 
 MAC_TABLE_ENTRY *APSsPsInquiry(
     IN  struct rtmp_adapter *  pAd,
-    IN  PUCHAR          pAddr,
+    IN  u8 *         pAddr,
     OUT SST             *Sst,
     OUT USHORT          *Aid,
     OUT UCHAR           *PsMode,
@@ -329,7 +329,7 @@ MAC_TABLE_ENTRY *APSsPsInquiry(
 
 BOOLEAN APPsIndicate(
     IN  struct rtmp_adapter *  pAd,
-    IN  PUCHAR          pAddr,
+    IN  u8 *         pAddr,
 	IN ULONG Wcid,
     IN  UCHAR           Psm);
 
@@ -343,7 +343,7 @@ void APUpdateCapabilityAndErpIe(
 
 BOOLEAN ApCheckAccessControlList(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR        pAddr,
+	IN u8 *       pAddr,
 	IN UCHAR         Apidx);
 
 void ApUpdateAccessControlList(
@@ -352,7 +352,7 @@ void ApUpdateAccessControlList(
 
 void ApEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR        pAddr,
+	IN u8 *       pAddr,
 	IN UCHAR         TxRate,
 	IN UCHAR         PID,
 	IN UCHAR         apidx,
@@ -375,7 +375,7 @@ BOOLEAN PeerDisassocReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pAddr2,
+    OUT u8 *pAddr2,
     OUT	UINT16	*SeqNum,
     OUT USHORT *Reason);
 
@@ -383,7 +383,7 @@ BOOLEAN PeerDeauthReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pAddr2,
+    OUT u8 *pAddr2,
    	OUT	UINT16	*SeqNum,
     OUT USHORT *Reason);
 
@@ -391,8 +391,8 @@ BOOLEAN APPeerAuthSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-	OUT PUCHAR pAddr1,
-    OUT PUCHAR pAddr2,
+	OUT u8 *pAddr1,
+    OUT u8 *pAddr2,
     OUT USHORT *Alg,
     OUT USHORT *Seq,
     OUT USHORT *Status,

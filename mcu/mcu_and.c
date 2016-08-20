@@ -77,7 +77,7 @@ NDIS_STATUS andes_usb_loadfw(struct rtmp_adapter*ad)
 	PURB urb;
 	POS_COOKIE obj = (POS_COOKIE)ad->OS_Cookie;
 	dma_addr_t fw_dma;
-	PUCHAR fw_data;
+	u8 *fw_data;
 	TXINFO_NMAC_CMD *tx_info;
 	s32 sent_len;
 	u32 cur_len = 0;
@@ -229,7 +229,7 @@ loadfw_protect:
 			tx_info->d_port = CPU_TX_PORT;
 
 #ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
 
@@ -379,7 +379,7 @@ loadfw_protect:
 			tx_info->d_port = CPU_TX_PORT;
 
 #ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
 
@@ -564,7 +564,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int 
 
 	OS_PKT_RESERVE(net_pkt, cap->cmd_header_len);
 
-	os_alloc_mem(NULL, (PUCHAR *)&msg, sizeof(*msg));
+	os_alloc_mem(NULL, (u8 **)&msg, sizeof(*msg));
 
 	if (!msg) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate cmd msg\n"));
@@ -868,7 +868,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)rx_info, TYPE_RXINFO);
+	RTMPDescriptorEndianChange((u8 *)rx_info, TYPE_RXINFO);
 #endif
 
 
@@ -1302,7 +1302,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 		tx_info->pkt_len = GET_OS_PKT_LEN(net_pkt) - sizeof(*tx_info);
 
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
 
 

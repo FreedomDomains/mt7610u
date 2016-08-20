@@ -451,7 +451,7 @@ INT RT_CfgSetWPAPSKKey(
 	IN INT			keyStringLen,
 	IN UCHAR		*pHashStr,
 	IN INT			hashStrLen,
-	OUT PUCHAR		pPMKBuf)
+	OUT u8 *	pPMKBuf)
 {
 	UCHAR keyMaterial[40];
 

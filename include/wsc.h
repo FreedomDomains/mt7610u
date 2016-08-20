@@ -80,7 +80,7 @@ typedef	struct GNU_PACKED _EAP_FRAME	{
 }	EAP_FRAME, *PEAP_FRAME;
 
 static inline BOOLEAN WscCheckWSCHeader(
-    IN  PUCHAR              pData)
+    IN  u8 *             pData)
 {
     PWSC_FRAME			pWsc;
 

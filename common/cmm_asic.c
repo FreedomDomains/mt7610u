@@ -32,7 +32,7 @@
 #ifdef CONFIG_STA_SUPPORT
 void AsicUpdateAutoFallBackTable(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pRateTable)
+	IN	u8 *		pRateTable)
 {
 	UCHAR					i;
 	HT_FBK_CFG0_STRUC		HtCfg0;
@@ -100,7 +100,7 @@ void AsicUpdateAutoFallBackTable(
 #endif /* AGS_SUPPORT */
 		pNextTxRate = (RTMP_RA_LEGACY_TB *)pRateTable+1;
 
-	for (i = 1; i < *((PUCHAR) pRateTable); i++)
+	for (i = 1; i < *((u8 *) pRateTable); i++)
 	{
 #ifdef AGS_SUPPORT
 		if (bUseAGS)
@@ -1315,7 +1315,7 @@ void AsicForceWakeup(
  */
 void AsicSetBssid(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pBssid)
+	IN u8 *pBssid)
 {
 	ULONG		  Addr4;
 
@@ -1496,7 +1496,7 @@ void AsicEnableIbssSync(
 	IN struct rtmp_adapter *pAd)
 {
 	BCN_TIME_CFG_STRUC csr9;
-	PUCHAR			ptr;
+	u8 *		ptr;
 	UINT i;
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
@@ -1507,8 +1507,8 @@ void AsicEnableIbssSync(
 	{
 	TXWI_STRUC		localTxWI;
 
-	NdisMoveMemory((PUCHAR)&localTxWI, (PUCHAR)&pAd->BeaconTxWI, TXWISize);
-	RTMPWIEndianChange(pAd, (PUCHAR)&localTxWI, TYPE_TXWI);
+	NdisMoveMemory((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
+	RTMPWIEndianChange(pAd, (u8 *)&localTxWI, TYPE_TXWI);
 	beaconLen = (USHORT) localTxWI.TxWIMPDUByteCnt;
 	}
 #endif /* RT_BIG_ENDIAN */
@@ -1528,7 +1528,7 @@ void AsicEnableIbssSync(
 
 #ifdef RTMP_MAC_USB
 	/* move BEACON TXD and frame content to on-chip memory*/
-	ptr = (PUCHAR)&pAd->BeaconTxWI;
+	ptr = (u8 *)&pAd->BeaconTxWI;
 	for (i=0; i < TXWISize; i+=2)
 	{
 		longptr =  *ptr + (*(ptr+1)<<8);
@@ -1970,9 +1970,9 @@ void AsicAddSharedKeyEntry(
 	SHAREDKEY_MODE_STRUC csr1;
 	UINT16 SharedKeyTableBase, SharedKeyModeBase;
 
-	PUCHAR		pKey = pCipherKey->Key;
-	PUCHAR		pTxMic = pCipherKey->TxMic;
-	PUCHAR		pRxMic = pCipherKey->RxMic;
+	u8 *	pKey = pCipherKey->Key;
+	u8 *	pTxMic = pCipherKey->TxMic;
+	u8 *	pRxMic = pCipherKey->RxMic;
 	UCHAR		CipherAlg = pCipherKey->CipherAlg;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AsicAddSharedKeyEntry BssIndex=%d, KeyIdx=%d\n", BssIndex,KeyIdx));
@@ -2134,7 +2134,7 @@ void AsicUpdateWCIDIVEIV(
 void AsicUpdateRxWCIDTable(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT		WCID,
-	IN PUCHAR        pAddr)
+	IN u8 *       pAddr)
 {
 	ULONG offset;
 	ULONG Addr;
@@ -2271,9 +2271,9 @@ void AsicAddPairwiseKeyEntry(
 {
 	INT i;
 	ULONG 		offset;
-	PUCHAR		 pKey = pCipherKey->Key;
-	PUCHAR		 pTxMic = pCipherKey->TxMic;
-	PUCHAR		 pRxMic = pCipherKey->RxMic;
+	u8 *	 pKey = pCipherKey->Key;
+	u8 *	 pTxMic = pCipherKey->TxMic;
+	u8 *	 pRxMic = pCipherKey->RxMic;
 	UCHAR		CipherAlg = pCipherKey->CipherAlg;
 
 	/* EKEY*/
@@ -2517,7 +2517,7 @@ UINT32 StreamModeRegVal(
 */
 void AsicSetStreamMode(
 	IN struct rtmp_adapter*pAd,
-	IN PUCHAR pMacAddr,
+	IN u8 *pMacAddr,
 	IN INT chainIdx,
 	IN BOOLEAN bEnabled)
 {
@@ -2650,9 +2650,9 @@ void AsicWOWSendNullFrame(
 {
 
 	TXWI_STRUC *TxWI;
-	PUCHAR NullFrame;
+	u8 *NullFrame;
 	u8  packet_len;
-	PUCHAR ptr;
+	u8 *ptr;
 	USHORT offset;
 	UINT32 cipher = pAd->StaCfg.GroupCipher;
 	UINT32 Value;
@@ -2661,12 +2661,12 @@ void AsicWOWSendNullFrame(
 
 	ComposeNullFrame(pAd);
 	TxWI = (TXWI_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
-	NullFrame = (PUCHAR)&pAd->NullFrame;
+	NullFrame = (u8 *)&pAd->NullFrame;
 	packet_len = TxWI->TxWIMPDUByteCnt;
 
 	DBGPRINT(RT_DEBUG_OFF, ("TxWI:\n"));
 	/* copy TxWI to MCU memory */
-	ptr = (PUCHAR)TxWI;
+	ptr = (u8 *)TxWI;
 	for (offset = 0; offset < TXWISize; offset += 4)
 	{
 		RTMPMoveMemory(&Value, ptr+offset, 4);
@@ -2676,7 +2676,7 @@ void AsicWOWSendNullFrame(
 
 	DBGPRINT(RT_DEBUG_OFF, ("802.11 header:\n"));
 	/* copy 802.11 header to memory */
-	ptr = (PUCHAR)NullFrame;
+	ptr = (u8 *)NullFrame;
 	for (offset = 0; offset < packet_len; offset += 4)
 	{
 		RTMPMoveMemory(&Value, ptr+offset, 4);
@@ -2828,7 +2828,7 @@ INT AsicSetChannel(struct rtmp_adapter*pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BO
  */
 void AsicSetApCliBssid(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pBssid,
+	IN u8 *pBssid,
 	IN UCHAR index)
 {
 	UINT32		  Addr4 = 0;
@@ -2862,7 +2862,7 @@ void AsicSetApCliBssid(
  */
 void AsicSetExtendedMacAddr(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pMacAddr,
+	IN u8 *pMacAddr,
 	IN UINT32 Idx)
 {
 	UINT32		  Addr4 = 0;

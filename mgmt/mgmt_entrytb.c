@@ -74,7 +74,7 @@ void set_entry_phy_cfg(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 */
 MAC_TABLE_ENTRY *MacTableLookup(
 	IN struct rtmp_adapter *pAd,
-	PUCHAR pAddr)
+	u8 *pAddr)
 {
 	ULONG HashIdx;
 	MAC_TABLE_ENTRY *pEntry = NULL;
@@ -98,7 +98,7 @@ MAC_TABLE_ENTRY *MacTableLookup(
 
 MAC_TABLE_ENTRY *MacTableInsertEntry(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR			pAddr,
+	IN  u8 *		pAddr,
 	IN	UCHAR			apidx,
 	IN	UCHAR			OpMode,
 	IN BOOLEAN	CleanAll)
@@ -359,7 +359,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 BOOLEAN MacTableDeleteEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
-	IN PUCHAR pAddr)
+	IN u8 *pAddr)
 {
 	USHORT HashIdx;
 	MAC_TABLE_ENTRY *pEntry, *pPrevEntry, *pProbeEntry;
@@ -563,7 +563,7 @@ void MacTableReset(
 #ifdef MAC_REPEATER_SUPPORT
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR			pAddr,
+	IN  u8 *		pAddr,
 	IN  UCHAR			IfIdx)
 {
 	MAC_TABLE_ENTRY *pEntry = NULL;

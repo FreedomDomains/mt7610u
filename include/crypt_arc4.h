@@ -42,7 +42,7 @@ typedef struct {
 /* ARC4 operations */
 void ARC4_INIT(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
-	IN PUCHAR pKey,
+	IN u8 *pKey,
 	IN UINT KeyLength);
 
 void ARC4_Compute(

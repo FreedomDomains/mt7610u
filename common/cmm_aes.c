@@ -70,9 +70,9 @@ UCHAR SboxTable[256] =
 };
 
 void xor_32(
-	IN  PUCHAR  a,
-	IN  PUCHAR  b,
-	OUT PUCHAR  out)
+	IN  u8 * a,
+	IN  u8 * b,
+	OUT u8 * out)
 {
 	INT i;
 
@@ -83,9 +83,9 @@ void xor_32(
 }
 
 void xor_128(
-	IN  PUCHAR  a,
-	IN  PUCHAR  b,
-	OUT PUCHAR  out)
+	IN  u8 * a,
+	IN  u8 * b,
+	OUT u8 * out)
 {
 	INT i;
 
@@ -102,7 +102,7 @@ UCHAR RTMPCkipSbox(
 }
 
 void next_key(
-	IN  PUCHAR  key,
+	IN  u8 * key,
 	IN  INT     round)
 {
 	UCHAR       rcon;
@@ -129,8 +129,8 @@ void next_key(
 }
 
 void byte_sub(
-	IN  PUCHAR  in,
-	OUT PUCHAR  out)
+	IN  u8 * in,
+	OUT u8 * out)
 {
 	INT i;
 
@@ -155,8 +155,8 @@ void bitwise_xor(unsigned char *ina, unsigned char *inb, unsigned char *out)
 }
 
 void shift_row(
-	IN  PUCHAR  in,
-	OUT PUCHAR  out)
+	IN  u8 * in,
+	OUT u8 * out)
 {
 	out[0] =  in[0];
 	out[1] =  in[5];
@@ -177,8 +177,8 @@ void shift_row(
 }
 
 void mix_column(
-	IN  PUCHAR  in,
-	OUT PUCHAR  out)
+	IN  u8 * in,
+	OUT u8 * out)
 {
 	INT         i;
 	UCHAR       add1b[4];
@@ -432,7 +432,7 @@ void construct_ctr_preload(
 
 BOOLEAN RTMPSoftDecryptAES(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR	pData,
+	IN u8 *pData,
 	IN ULONG	DataByteCnt,
 	IN PCIPHER_KEY	pWpaKey)
 {
@@ -463,7 +463,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	UCHAR			TrailMIC[8];
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, FALSE);
 #endif
 
 	fc0 = *pData;
@@ -636,7 +636,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, FALSE);
 #endif
 
 	return TRUE;
@@ -660,7 +660,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	========================================================================
 */
 void RTMPConstructCCMPAAD(
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN BOOLEAN isDataFrame,
 	IN u8 a4_exists,
 	IN u8 qc_exists,
@@ -739,7 +739,7 @@ void RTMPConstructCCMPAAD(
 	========================================================================
 */
 void RTMPConstructCCMPNonce(
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN u8 a4_exists,
 	IN u8 qc_exists,
 	IN BOOLEAN isMgmtFrame,
@@ -824,10 +824,10 @@ void RTMPConstructCCMPHdr(
 */
 BOOLEAN RTMPSoftEncryptCCMP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
-	IN PUCHAR pIV,
-	IN PUCHAR pKey,
-	INOUT PUCHAR pData,
+	IN u8 *pHdr,
+	IN u8 *pIV,
+	IN u8 *pKey,
+	INOUT u8 *pData,
 	IN UINT32 DataLen)
 {
 	u8 frame_type, frame_subtype;
@@ -840,7 +840,7 @@ BOOLEAN RTMPSoftEncryptCCMP(
 	UINT32 out_len = DataLen + 8;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
 #endif
 
 	/* Initial variable */
@@ -894,7 +894,7 @@ BOOLEAN RTMPSoftEncryptCCMP(
 		return FALSE;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
 #endif
 
 	return TRUE;
@@ -916,9 +916,9 @@ BOOLEAN RTMPSoftEncryptCCMP(
 */
 BOOLEAN RTMPSoftDecryptCCMP(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pHdr,
+	IN u8 *pHdr,
 	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
+	INOUT u8 *pData,
 	INOUT UINT16 *DataLen)
 {
 	u8 frame_type, frame_subtype;
@@ -927,14 +927,14 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	u8 aad_hdr[30];
 	UINT aad_len = 0;
 	u8 pn[LEN_PN];
-	PUCHAR cipherData_ptr;
+	u8 *cipherData_ptr;
 	UINT32 cipherData_len;
 	u8 nonce_hdr[13];
 	UINT32 nonce_hdr_len = 0;
 	UINT32 out_len = *DataLen;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
 #endif
 
 	/* Check the key is valid */
@@ -1009,7 +1009,7 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	*DataLen = out_len;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
 #endif
 
 	return TRUE;

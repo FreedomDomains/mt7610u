@@ -48,7 +48,7 @@ static ULONG TDLS_UAPSD_TrafficIndBuild(
 /* build the traffic indication frame payload */
 static void TDLS_UAPSD_TrafficIndPayloadBuild(
 	IN	struct rtmp_adapter *			pAd,
-	OUT PUCHAR						pFrameBuf,
+	OUT u8 *					pFrameBuf,
 	OUT PULONG						pFrameLen,
 	IN	PRT_802_11_TDLS				pTDLS);
 
@@ -64,7 +64,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 /* build the traffic response frame body */
 static void TDLS_UAPSD_TrafficRspBuild(
 	IN	struct rtmp_adapter *			pAd,
-	OUT PUCHAR						pFrameBuf,
+	OUT u8 *					pFrameBuf,
 	OUT PULONG						pFrameLen,
 	IN	PRT_802_11_TDLS				pTDLS,
 	IN	UCHAR						PeerToken);
@@ -846,7 +846,7 @@ Note:
 */
 static void TDLS_UAPSD_TrafficIndPayloadBuild(
 	IN	struct rtmp_adapter *			pAd,
-	OUT PUCHAR						pFrameBuf,
+	OUT u8 *					pFrameBuf,
 	OUT PULONG						pFrameLen,
 	IN	PRT_802_11_TDLS				pTDLS)
 {
@@ -916,7 +916,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac)
 {
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	UCHAR Header802_3[14];
 	NDIS_STATUS	NStatus = NDIS_STATUS_FAILURE;
@@ -980,7 +980,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 	RT_802_11_TDLS *pTDLS = NULL;
 	UCHAR	TDLS_ETHERTYPE[] = {0x89, 0x0d};
 	UCHAR	Header802_3[14];
-	PUCHAR	pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG	FrameLen = 0;
 	ULONG	TempLen;
 	INT32	LinkId;
@@ -1073,7 +1073,7 @@ Note:
 */
 static void TDLS_UAPSD_TrafficRspBuild(
 	IN	struct rtmp_adapter *			pAd,
-	OUT PUCHAR						pFrameBuf,
+	OUT u8 *					pFrameBuf,
 	OUT PULONG						pFrameLen,
 	IN	PRT_802_11_TDLS				pTDLS,
 	IN	UCHAR						PeerToken)
@@ -1449,7 +1449,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	RT_802_11_TDLS TDLS, *pTDLS = &TDLS;
 	UCHAR	TDLS_ETHERTYPE[] = {0x89, 0x0d};
 	UCHAR	Header802_3[14];
-	PUCHAR	pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG	FrameLen = 0;
 	ULONG	TempLen;
 	UCHAR	RemoteFrameType = PROTO_NAME_TDLS;
@@ -1632,7 +1632,7 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 {
 	UCHAR PeerMac[6];
 	MLME_QUEUE_ELEM *pElem = NULL;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	INT32 LinkId;
 	RT_802_11_TDLS *pTDLS = NULL;

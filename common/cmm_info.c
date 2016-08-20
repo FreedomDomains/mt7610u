@@ -659,7 +659,7 @@ INT Set_ChannelListAdd_Proc(
 	/* Parsing the arg, IN:arg; OUT:inChRegion */
 	{
 		UCHAR strBuff[64], count = 0;
-		PUCHAR	pStart, pEnd, tempIdx, tempBuff[5];
+		u8 *pStart, *pEnd, *tempIdx, *tempBuff[5];
 
 		if (strlen(arg) <64)
 			NdisCopyMemory(strBuff, arg, strlen(arg));
@@ -2036,7 +2036,7 @@ INT	Set_BASetup_Proc(
 		DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x-%02x\n",
 								mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], tid));
 
-	    pEntry = MacTableLookup(pAd, (PUCHAR) mac);
+	    pEntry = MacTableLookup(pAd, (u8 *) mac);
 
     	if (pEntry) {
         	DBGPRINT(RT_DEBUG_OFF, ("\nSetup BA Session: Tid = %d\n", tid));
@@ -2116,7 +2116,7 @@ INT	Set_BAOriTearDown_Proc(
 	    DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x-%02x",
 								mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], tid));
 
-	    pEntry = MacTableLookup(pAd, (PUCHAR) mac);
+	    pEntry = MacTableLookup(pAd, (u8 *) mac);
 
 	    if (pEntry) {
 	        DBGPRINT(RT_DEBUG_OFF, ("\nTear down Ori BA Session: Tid = %d\n", tid));
@@ -2170,7 +2170,7 @@ INT	Set_BARecTearDown_Proc(
 		DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x-%02x",
 								mac[0], mac[1], mac[2], mac[3], mac[4], mac[5], tid));
 
-		pEntry = MacTableLookup(pAd, (PUCHAR) mac);
+		pEntry = MacTableLookup(pAd, (u8 *) mac);
 
 		if (pEntry) {
 		    DBGPRINT(RT_DEBUG_OFF, ("\nTear down Rec BA Session: Tid = %d\n", tid));
@@ -5011,11 +5011,11 @@ INT	Set_ETxBfEnCond_Proc(
 
 	if (pAd->CommonCfg.RegTransmitSetting.field.ITxBfEn || enableETxBf)
 	{
-		RT30xxReadRFRegister(pAd, RF_R39, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 		byteValue |= 0x40;
 		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
 
-		RT30xxReadRFRegister(pAd, RF_R49, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 		byteValue |= 0x20;
 		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
 	}
@@ -5024,11 +5024,11 @@ INT	Set_ETxBfEnCond_Proc(
 		/* depends on Gary Tsao's comments. we shall disable it */
 		if (pAd->CommonCfg.RegTransmitSetting.field.ITxBfEn == 0)
 		{
-			RT30xxReadRFRegister(pAd, RF_R39, (PUCHAR)&byteValue);
+			RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 			byteValue &= (~0x40);
 			RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
 
-			RT30xxReadRFRegister(pAd, RF_R49, (PUCHAR)&byteValue);
+			RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 			byteValue &= (~0x20);
 			RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
 		}
@@ -5131,11 +5131,11 @@ INT	Set_ITxBfEn_Proc(
 
 	if (enableITxBF || pAd->CommonCfg.ETxBfEnCond)
 	{
-		RT30xxReadRFRegister(pAd, RF_R39, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 		byteValue |= 0x40;
 		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
 
-		RT30xxReadRFRegister(pAd, RF_R49, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 		byteValue |= 0x20;
 		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
 	}
@@ -5150,11 +5150,11 @@ INT	Set_ITxBfEn_Proc(
 		/* depends on Gary Tsao's comments. */
 		if (pAd->CommonCfg.ETxBfEnCond == 0)
 		{
-		RT30xxReadRFRegister(pAd, RF_R39, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 			byteValue &= (~0x40);
 		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
 
-		RT30xxReadRFRegister(pAd, RF_R49, (PUCHAR)&byteValue);
+		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 			byteValue &= (~0x20);
 		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
 	}

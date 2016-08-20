@@ -51,7 +51,7 @@
 void MlmeDynamicTxRateSwitching(
 	IN struct rtmp_adapter *pAd)
 {
-	PUCHAR					pTable;
+	u8 *				pTable;
 	UCHAR					TableSize = 0;
 	UCHAR					UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx;
 	ULONG					i, TxTotalCnt;
@@ -555,7 +555,7 @@ void StaQuickResponeForRateUpExec(
 {
 	struct rtmp_adapter *		pAd = (struct rtmp_adapter *)FunctionContext;
 	ULONG					i;
-	PUCHAR					pTable;
+	u8 *				pTable;
 	UCHAR					TableSize = 0;
 	UCHAR					CurrRateIdx;
 	ULONG					TxTotalCnt;

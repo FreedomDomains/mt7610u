@@ -1041,7 +1041,7 @@ void StaQuickResponeForRateUpExecAdapt(
 	IN ULONG i,
 	IN CHAR  Rssi)
 {
-	PUCHAR					pTable;
+	u8 *				pTable;
 	UCHAR					CurrRateIdx;
 	ULONG					TxTotalCnt;
 	ULONG					TxErrorRatio = 0;
@@ -1303,7 +1303,7 @@ void MlmeDynamicTxRateSwitchingAdapt(
 	IN ULONG TxRetransmit,
 	IN ULONG TxFailCount)
 {
-	PUCHAR			  pTable;
+	u8 *		  pTable;
 	UCHAR			  UpRateIdx, DownRateIdx, CurrRateIdx;
 	ULONG			  TxTotalCnt;
 	ULONG			  TxErrorRatio = 0;

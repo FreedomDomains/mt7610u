@@ -124,7 +124,7 @@ void RtmpCleanupPsQueue(
 */
 void RtmpHandleRxPsPoll(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pAddr,
+	IN	u8 *		pAddr,
 	IN	USHORT			Aid,
     IN	BOOLEAN			isActive)
 {
@@ -294,7 +294,7 @@ void RtmpHandleRxPsPoll(
  */
 BOOLEAN RtmpPsIndicate(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr,
+	IN u8 *pAddr,
 	IN ULONG Wcid,
 	IN UCHAR Psm)
 {

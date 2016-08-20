@@ -97,7 +97,7 @@ void MlmeADDBAAction(
 {
 	MLME_ADDBA_REQ_STRUCT *pInfo;
 	UCHAR           Addr[6];
-	PUCHAR         pOutBuffer = NULL;
+	u8 *        pOutBuffer = NULL;
 	NDIS_STATUS     NStatus;
 	ULONG		Idx;
 	FRAME_ADDBA_REQ  Frame;
@@ -158,9 +158,9 @@ void MlmeADDBAAction(
 		{
 			BA_PARM		tmpBaParm;
 
-			NdisMoveMemory((PUCHAR)(&tmpBaParm), (PUCHAR)(&Frame.BaParm), sizeof(BA_PARM));
+			NdisMoveMemory((u8 *)(&tmpBaParm), (u8 *)(&Frame.BaParm), sizeof(BA_PARM));
 			*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-			NdisMoveMemory((PUCHAR)(&Frame.BaParm), (PUCHAR)(&tmpBaParm), sizeof(BA_PARM));
+			NdisMoveMemory((u8 *)(&Frame.BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
 		}
 #else
 		*(USHORT *)(&(Frame.BaParm)) = cpu2le16((*(USHORT *)(&(Frame.BaParm))));
@@ -197,8 +197,8 @@ void MlmeDELBAAction(
     IN MLME_QUEUE_ELEM *Elem)
 {
 	MLME_DELBA_REQ_STRUCT *pInfo;
-	PUCHAR         pOutBuffer = NULL;
-	PUCHAR		   pOutBuffer2 = NULL;
+	u8 *        pOutBuffer = NULL;
+	u8 *	   pOutBuffer2 = NULL;
 	NDIS_STATUS     NStatus;
 	ULONG		Idx;
 	FRAME_DELBA_REQ  Frame;
@@ -300,7 +300,7 @@ void MlmeInvalidAction(
     IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
 {
-	/*PUCHAR		   pOutBuffer = NULL;*/
+	/*u8 *	   pOutBuffer = NULL;*/
 	/*Return the receiving frame except the MSB of category filed set to 1.  7.3.1.11*/
 }
 
@@ -376,7 +376,7 @@ void StaPublicAction(
 {
 	MLME_SCAN_REQ_STRUCT ScanReq;
 
-	DBGPRINT(RT_DEBUG_TRACE,("ACTION - StaPeerPublicAction  Bss2040Coexist = %x\n", *((PUCHAR)pBssCoexIE)));
+	DBGPRINT(RT_DEBUG_TRACE,("ACTION - StaPeerPublicAction  Bss2040Coexist = %x\n", *((u8 *)pBssCoexIE)));
 
 	/* AP asks Station to return a 20/40 BSS Coexistence mgmt frame.  So we first starts a scan, then send back 20/40 BSS Coexistence mgmt frame */
 	if ((pBssCoexIE->field.InfoReq == 1) && (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_SCAN_2040)))
@@ -402,7 +402,7 @@ return : how many bytes copied.
 */
 ULONG BuildIntolerantChannelRep(
 	IN	struct rtmp_adapter *pAd,
-	IN    PUCHAR  pDest)
+	IN    u8 * pDest)
 {
 	ULONG			FrameLen = 0;
 	ULONG			ReadOffset = 0;
@@ -506,7 +506,7 @@ void Send2040CoexistAction(
 	IN    UCHAR  Wcid,
 	IN	BOOLEAN	bAddIntolerantCha)
 {
-	PUCHAR			pOutBuffer = NULL;
+	u8 *		pOutBuffer = NULL;
 	NDIS_STATUS 	NStatus;
 	FRAME_ACTION_HDR	Frame;
 	ULONG			FrameLen;
@@ -732,12 +732,12 @@ void PeerPublicAction(
 
 
 				pCoexistInfo = (BSS_2040_COEXIST_ELEMENT *) &Elem->Msg[LENGTH_802_11+2];
-				/*hex_dump("CoexistInfo", (PUCHAR)pCoexistInfo, sizeof(BSS_2040_COEXIST_ELEMENT));*/
+				/*hex_dump("CoexistInfo", (u8 *)pCoexistInfo, sizeof(BSS_2040_COEXIST_ELEMENT));*/
 				if (Elem->MsgLen >= (LENGTH_802_11 + sizeof(BSS_2040_COEXIST_ELEMENT) + sizeof(BSS_2040_INTOLERANT_CH_REPORT)))
 				{
-					pIntolerantReport = (BSS_2040_INTOLERANT_CH_REPORT *)((PUCHAR)pCoexistInfo + sizeof(BSS_2040_COEXIST_ELEMENT));
+					pIntolerantReport = (BSS_2040_INTOLERANT_CH_REPORT *)((u8 *)pCoexistInfo + sizeof(BSS_2040_COEXIST_ELEMENT));
 				}
-				/*hex_dump("IntolerantReport ", (PUCHAR)pIntolerantReport, sizeof(BSS_2040_INTOLERANT_CH_REPORT));*/
+				/*hex_dump("IntolerantReport ", (u8 *)pIntolerantReport, sizeof(BSS_2040_INTOLERANT_CH_REPORT));*/
 
 				if(pAd->CommonCfg.bBssCoexEnable == FALSE || (pAd->CommonCfg.bForty_Mhz_Intolerant == TRUE))
 				{
@@ -804,7 +804,7 @@ static void respond_ht_information_exchange_action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR			pOutBuffer = NULL;
+	u8 *		pOutBuffer = NULL;
 	NDIS_STATUS		NStatus;
 	ULONG			FrameLen;
 	FRAME_HT_INFO	HTINFOframe, *pFrame;
@@ -950,7 +950,7 @@ void ORIBATimerTimeout(
 /*	FRAME_BAR			FrameBar;*/
 /*	ULONG			FrameLen;*/
 /*	NDIS_STATUS 	NStatus;*/
-/*	PUCHAR			pOutBuffer = NULL;*/
+/*	u8 *		pOutBuffer = NULL;*/
 /*	USHORT			Sequence;*/
 	UCHAR			TID;
 
@@ -982,7 +982,7 @@ void SendRefreshBAR(
 	FRAME_BAR		FrameBar;
 	ULONG			FrameLen;
 	NDIS_STATUS 	NStatus;
-	PUCHAR			pOutBuffer = NULL;
+	u8 *		pOutBuffer = NULL;
 	USHORT			Sequence;
 	UCHAR			i, TID;
 	USHORT			idx;
@@ -1041,9 +1041,9 @@ void SendRefreshBAR(
 void ActHeaderInit(
     IN	struct rtmp_adapter *pAd,
     IN OUT PHEADER_802_11 pHdr80211,
-    IN PUCHAR Addr1,
-    IN PUCHAR Addr2,
-    IN PUCHAR Addr3)
+    IN u8 *Addr1,
+    IN u8 *Addr2,
+    IN u8 *Addr3)
 {
     memset(pHdr80211, 0, sizeof(HEADER_802_11));
     pHdr80211->FC.Type = BTYPE_MGMT;
@@ -1057,8 +1057,8 @@ void ActHeaderInit(
 void BarHeaderInit(
 	IN	struct rtmp_adapter *pAd,
 	IN OUT PFRAME_BAR pCntlBar,
-	IN PUCHAR pDA,
-	IN PUCHAR pSA)
+	IN u8 *pDA,
+	IN u8 *pSA)
 {
 /*	USHORT	Duration;*/
 
@@ -1093,7 +1093,7 @@ void BarHeaderInit(
  */
 void InsertActField(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pFrameBuf,
+	OUT u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 Category,
 	IN u8 ActCode)

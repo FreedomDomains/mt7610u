@@ -471,7 +471,7 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
     if (NdisEqualMemory(SNAP_802_1H, _pData, 6)  ||                     \
         NdisEqualMemory(SNAP_BRIDGE_TUNNEL, _pData, 6))                 \
     {                                                                   \
-        PUCHAR pProto = _pData + 6;                                     \
+        u8 *pProto = _pData + 6;                                     \
                                                                         \
         if ((NdisEqualMemory(IPX, pProto, 2) || NdisEqualMemory(APPLE_TALK, pProto, 2)) &&  \
             NdisEqualMemory(SNAP_802_1H, _pData, 6))                    \
@@ -1327,7 +1327,7 @@ struct common_config {
 #ifdef EXT_BUILD_CHANNEL_LIST
 	UCHAR Geography;
 	UCHAR DfsType;
-	PUCHAR pChDesp;
+	u8 *pChDesp;
 #endif				/* EXT_BUILD_CHANNEL_LIST */
 	UCHAR CountryRegion;	/* Enum of country region, 0:FCC, 1:IC, 2:ETSI, 3:SPAIN, 4:France, 5:MKK, 6:MKK1, 7:Israel */
 	UCHAR CountryRegionForABand;	/* Enum of country region for A band */
@@ -2960,7 +2960,7 @@ struct rtmp_adapter {
 /*****************************************************************************************/
 	/* outgoing BEACON frame buffer and corresponding TXD */
 	TXWI_STRUC BeaconTxWI;
-	PUCHAR BeaconBuf;
+	u8 *BeaconBuf;
 	USHORT BeaconOffset[HW_BEACON_MAX_NUM];
 
 	/* pre-build PS-POLL and NULL frame upon link up. for efficiency purpose. */
@@ -3510,11 +3510,11 @@ typedef struct _TX_BLK_
 
 	/* Following structure used for the characteristics of a specific packet. */
 	struct sk_buff *		pPacket;
-	PUCHAR				pSrcBufHeader;				/* Reference to the head of sk_buff->data */
-	PUCHAR				pSrcBufData;				/* Reference to the sk_buff->data, will changed depends on hanlding progresss */
+	u8 *			pSrcBufHeader;				/* Reference to the head of sk_buff->data */
+	u8 *			pSrcBufData;				/* Reference to the sk_buff->data, will changed depends on hanlding progresss */
 	UINT				SrcBufLen;					/* Length of packet payload which not including Layer 2 header */
 
-	PUCHAR				pExtraLlcSnapEncap;			/* NULL means no extra LLC/SNAP is required */
+	u8 *			pExtraLlcSnapEncap;			/* NULL means no extra LLC/SNAP is required */
 	UINT32				HeaderBuffer[32];			/* total 128B, use UINT32 to avoid alignment problem */
 	UCHAR				*HeaderBuf;
 	UCHAR				MpduHeaderLen;				/* 802.11 header length NOT including the padding */
@@ -3612,7 +3612,7 @@ typedef struct _TX_BLK_
 */
 static inline void RTMPWIEndianChange(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	ULONG			DescriptorType)
 {
 	int size;
@@ -3683,12 +3683,12 @@ static inline void RTMPDescriptorEndianChange(UCHAR *pData, ULONG DescType)
 */
 static inline void RTMPFrameEndianChange(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	ULONG			Dir,
 	IN	BOOLEAN 		FromRxDoneInt)
 {
 	PHEADER_802_11 pFrame;
-	PUCHAR	pMacHdr;
+	u8 *pMacHdr;
 
 	/* swab 16 bit fields - Frame Control field */
 	if(Dir == DIR_READ)
@@ -3697,7 +3697,7 @@ static inline void RTMPFrameEndianChange(
 	}
 
 	pFrame = (PHEADER_802_11) pData;
-	pMacHdr = (PUCHAR) pFrame;
+	pMacHdr = (u8 *) pFrame;
 
 	/* swab 16 bit fields - Duration/ID field */
 	*(USHORT *)(pMacHdr + 2) = SWAP16(*(USHORT *)(pMacHdr + 2));
@@ -3829,8 +3829,8 @@ static inline void RTMPFrameEndianChange(
   *	Other static inline function definitions
   **************************************************************************/
 static inline void ConvertMulticastIP2MAC(
-	IN PUCHAR pIpAddr,
-	IN PUCHAR *ppMacAddr,
+	IN u8 *pIpAddr,
+	IN u8 **ppMacAddr,
 	IN UINT16 ProtoType)
 {
 	if (pIpAddr == NULL)
@@ -3990,7 +3990,7 @@ void RTMPMoveMemory(
 
 void AtoH(
 	char *src,
-	PUCHAR dest,
+	u8 *dest,
 	int		destlen);
 
 UCHAR BtoH(
@@ -4173,7 +4173,7 @@ void ChannelSwitchAction(
 
 ULONG BuildIntolerantChannelRep(
 	IN	struct rtmp_adapter *pAd,
-	IN    PUCHAR  pDest);
+	IN    u8 * pDest);
 
 void Update2040CoexistFrameAndNotify(
 	IN	struct rtmp_adapter *pAd,
@@ -4200,19 +4200,19 @@ void AsicDisableRalinkBurstMode(
 void ActHeaderInit(
     IN	struct rtmp_adapter *pAd,
     IN OUT PHEADER_802_11 pHdr80211,
-    IN PUCHAR Addr1,
-    IN PUCHAR Addr2,
-    IN PUCHAR Addr3);
+    IN u8 *Addr1,
+    IN u8 *Addr2,
+    IN u8 *Addr3);
 
 void BarHeaderInit(
 	IN	struct rtmp_adapter *pAd,
 	IN OUT PFRAME_BAR pCntlBar,
-	IN PUCHAR pDA,
-	IN PUCHAR pSA);
+	IN u8 *pDA,
+	IN u8 *pSA);
 
 void InsertActField(
 	IN struct rtmp_adapter *pAd,
-	OUT PUCHAR pFrameBuf,
+	OUT u8 *pFrameBuf,
 	OUT PULONG pFrameLen,
 	IN u8 Category,
 	IN u8 ActCode);
@@ -4220,7 +4220,7 @@ void InsertActField(
 BOOLEAN QosBADataParse(
 	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN bAMSDU,
-	IN PUCHAR p8023Header,
+	IN u8 *p8023Header,
 	IN UCHAR	WCID,
 	IN UCHAR	TID,
 	IN USHORT Sequence,
@@ -4303,7 +4303,7 @@ NDIS_STATUS RTMPFreeTXDRequest(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR           RingType,
 	IN  UCHAR           NumberRequired,
-	IN 	PUCHAR          FreeNumberIs);
+	IN 	u8 *         FreeNumberIs);
 
 NDIS_STATUS MlmeHardTransmit(
 	IN  struct rtmp_adapter *  pAd,
@@ -4395,7 +4395,7 @@ void WpaStaGroupKeySetting(
 
 void    WpaSendEapolStart(
 	IN	struct rtmp_adapter *pAdapter,
-	IN  PUCHAR          pBssid);
+	IN  u8 *         pBssid);
 
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -4410,8 +4410,8 @@ BOOLEAN RTMPCheckEtherType(
 	IN	struct sk_buff *	pPacket,
 	IN	PMAC_TABLE_ENTRY pMacEntry,
 	IN	UCHAR			OpMode,
-	OUT PUCHAR pUserPriority,
-	OUT PUCHAR pQueIdx);
+	OUT u8 *pUserPriority,
+	OUT u8 *pQueIdx);
 
 
 void RTMPCckBbpTuning(
@@ -4449,7 +4449,7 @@ void GetSingleSkuDeltaPower(
 	IN 		struct rtmp_adapter *	pAd,
 	IN 		char *			pTotalDeltaPower,
 	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
-	INOUT  	PUCHAR              	pSingleSKUBbpR1Offset);
+	INOUT  	u8 *             	pSingleSKUBbpR1Offset);
 #endif /* SINGLE_SKU*/
 
 void AsicPercentageDeltaPower(
@@ -4513,7 +4513,7 @@ void AsicForceWakeup(
 
 void AsicSetBssid(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR pBssid);
+	IN  u8 *pBssid);
 
 void AsicDelWcidTab(
 	IN struct rtmp_adapter *pAd,
@@ -4522,13 +4522,13 @@ void AsicDelWcidTab(
 #ifdef RLT_MAC
 void AsicSetApCliBssid(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pBssid,
+	IN u8 *pBssid,
 	IN UCHAR index);
 
 #ifdef MAC_REPEATER_SUPPORT
 void AsicSetExtendedMacAddr(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pMacAddr,
+	IN u8 *pMacAddr,
 	IN UINT32 Idx);
 #endif /* MAC_REPEATER_SUPPORT */
 #endif /* RLT_MAC */
@@ -4578,7 +4578,7 @@ void AsicUpdateWCIDIVEIV(
 void AsicUpdateRxWCIDTable(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT		WCID,
-	IN PUCHAR        pAddr);
+	IN u8 *       pAddr);
 
 void AsicUpdateWcidAttributeEntry(
 	IN	struct rtmp_adapter *pAd,
@@ -4623,7 +4623,7 @@ UINT32 StreamModeRegVal(
 
 void AsicSetStreamMode(
 	IN struct rtmp_adapter*pAd,
-	IN PUCHAR pMacAddr,
+	IN u8 *pMacAddr,
 	IN INT chainIdx,
 	IN BOOLEAN bEnabled);
 
@@ -4641,7 +4641,7 @@ void RtmpStreamModeInit(
 */
 void AsicUpdateTxChainAddress(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pMacAddress);
+	IN u8 *pMacAddress);
 
 INT Set_StreamMode_Proc(
     IN  struct rtmp_adapter *  pAd,
@@ -4672,15 +4672,15 @@ void AsicLoadWOWFirmware(
 
 void MacAddrRandomBssid(
 	IN  struct rtmp_adapter *  pAd,
-	OUT PUCHAR pAddr);
+	OUT u8 *pAddr);
 
 void MgtMacHeaderInit(
 	IN  struct rtmp_adapter *    pAd,
 	IN OUT PHEADER_802_11 pHdr80211,
 	IN UCHAR SubType,
 	IN UCHAR ToDs,
-	IN PUCHAR pDA,
-	IN PUCHAR pBssid);
+	IN u8 *pDA,
+	IN u8 *pBssid);
 
 void MlmeRadioOff(
 	IN struct rtmp_adapter *pAd);
@@ -4703,31 +4703,31 @@ void BATableExit(
 
 ULONG BssTableSearch(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR pBssid,
+	IN u8 *pBssid,
 	IN UCHAR Channel);
 
 ULONG BssSsidTableSearch(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR    pBssid,
-	IN PUCHAR    pSsid,
+	IN u8 *   pBssid,
+	IN u8 *   pSsid,
 	IN UCHAR     SsidLen,
 	IN UCHAR     Channel);
 
 ULONG BssTableSearchWithSSID(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR    Bssid,
-	IN PUCHAR    pSsid,
+	IN u8 *   Bssid,
+	IN u8 *   pSsid,
 	IN UCHAR     SsidLen,
 	IN UCHAR     Channel);
 
 ULONG BssSsidTableSearchBySSID(
 	IN BSS_TABLE *Tab,
-	IN PUCHAR	 pSsid,
+	IN u8 * pSsid,
 	IN UCHAR	 SsidLen);
 
 void BssTableDeleteEntry(
 	IN OUT  PBSS_TABLE pTab,
-	IN      PUCHAR pBssid,
+	IN      u8 *pBssid,
 	IN      UCHAR Channel);
 
 ULONG BssTableSetEntry(
@@ -4764,7 +4764,7 @@ void  TriEventInit(
 INT TriEventTableSetEntry(
 	IN	struct rtmp_adapter *pAd,
 	OUT TRIGGER_EVENT_TAB *Tab,
-	IN PUCHAR pBssid,
+	IN u8 *pBssid,
 	IN HT_CAPABILITY_IE *pHtCapability,
 	IN UCHAR			HtCapabilityLen,
 	IN UCHAR			RegClass,
@@ -4925,7 +4925,7 @@ void  ReassocTimeoutAction(
 
 void  Cls3errAction(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR pAddr);
+	IN  u8 *pAddr);
 
 void  InvalidStateWhenAssoc(
 	IN  struct rtmp_adapter *  pAd,
@@ -4954,7 +4954,7 @@ void  ComposeNullFrame(
 
 void  AssocPostProc(
 	IN  struct rtmp_adapter *pAd,
-	IN  PUCHAR pAddr2,
+	IN  u8 *pAddr2,
 	IN  USHORT CapabilityInfo,
 	IN  USHORT Aid,
 	IN  UCHAR SupRate[],
@@ -4996,7 +4996,7 @@ void AuthTimeoutAction(
 
 void Cls2errAction(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR pAddr);
+	IN  u8 *pAddr);
 
 void MlmeDeauthReqAction(
 	IN  struct rtmp_adapter *  pAd,
@@ -5071,15 +5071,15 @@ INT	RTMPCheckDLSFrame(
 
 void RTMPSendDLSTearDownFrame(
 	IN	struct rtmp_adapter *pAd,
-	IN  PUCHAR          pDA);
+	IN  u8 *         pDA);
 
 NDIS_STATUS RTMPSendSTAKeyRequest(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pDA);
+	IN	u8 *		pDA);
 
 NDIS_STATUS RTMPSendSTAKeyHandShake(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pDA);
+	IN	u8 *		pDA);
 
 void DlsTimeoutAction(
 	IN void *SystemSpecific1,
@@ -5096,27 +5096,27 @@ BOOLEAN MlmeDlsReqSanity(
 
 INT Set_DlsEntryInfo_Display_Proc(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR arg);
+	IN u8 *arg);
 
 MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR	pAddr,
+	IN  u8 *pAddr,
 	IN  UINT	DlsEntryIdx);
 
 BOOLEAN MacTableDeleteDlsEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
-	IN PUCHAR pAddr);
+	IN u8 *pAddr);
 
 MAC_TABLE_ENTRY *DlsEntryTableLookup(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR	pAddr,
+	IN u8 *pAddr,
 	IN BOOLEAN	bResetIdelCount);
 
 MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR	wcid,
-	IN PUCHAR	pAddr,
+	IN u8 *pAddr,
 	IN BOOLEAN	bResetIdelCount);
 
 INT	Set_DlsAddEntry_Proc(
@@ -5134,8 +5134,8 @@ BOOLEAN PeerDlsReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pDA,
-    OUT PUCHAR pSA,
+    OUT u8 *pDA,
+    OUT u8 *pSA,
     OUT USHORT *pCapabilityInfo,
     OUT USHORT *pDlsTimeout,
     OUT UCHAR *pRatesLen,
@@ -5147,8 +5147,8 @@ BOOLEAN PeerDlsRspSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pDA,
-    OUT PUCHAR pSA,
+    OUT u8 *pDA,
+    OUT u8 *pSA,
     OUT USHORT *pCapabilityInfo,
     OUT USHORT *pStatus,
     OUT UCHAR *pRatesLen,
@@ -5160,8 +5160,8 @@ BOOLEAN PeerDlsTearDownSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pDA,
-    OUT PUCHAR pSA,
+    OUT u8 *pDA,
+    OUT u8 *pSA,
     OUT USHORT *pReason);
 #endif /* QOS_DLS_SUPPORT */
 
@@ -5169,7 +5169,7 @@ BOOLEAN PeerProbeReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pAddr2,
+    OUT u8 *pAddr2,
     OUT CHAR Ssid[],
     OUT UCHAR *SsidLen,
     OUT BOOLEAN *bRequestRssi);
@@ -5307,7 +5307,7 @@ void JoinParmFill(
 void AssocParmFill(
 	IN  struct rtmp_adapter *  pAd,
 	IN OUT MLME_ASSOC_REQ_STRUCT *AssocReq,
-	IN  PUCHAR pAddr,
+	IN  u8 *pAddr,
 	IN  USHORT CapabilityInfo,
 	IN  ULONG Timeout,
 	IN  USHORT ListenIntv);
@@ -5323,7 +5323,7 @@ void ScanParmFill(
 void DisassocParmFill(
 	IN  struct rtmp_adapter *  pAd,
 	IN  OUT MLME_DISASSOC_REQ_STRUCT *DisassocReq,
-	IN  PUCHAR pAddr,
+	IN  u8 *pAddr,
 	IN  USHORT Reason);
 
 void StartParmFill(
@@ -5335,7 +5335,7 @@ void StartParmFill(
 void AuthParmFill(
 	IN  struct rtmp_adapter *  pAd,
 	IN  OUT MLME_AUTH_REQ_STRUCT *AuthReq,
-	IN  PUCHAR pAddr,
+	IN  u8 *pAddr,
 	IN  USHORT Alg);
 
 void EnqueuePsPoll(
@@ -5424,8 +5424,8 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 	IN  void *Msg,
 	IN  ULONG MsgLen,
 	IN  UCHAR MsgChannel,
-	OUT PUCHAR pAddr2,
-	OUT PUCHAR pBssid,
+	OUT u8 *pAddr2,
+	OUT u8 *pBssid,
 	OUT CHAR Ssid[],
 	OUT UCHAR *pSsidLen,
 	OUT UCHAR *pBssType,
@@ -5489,7 +5489,7 @@ BOOLEAN PeerAddBAReqActionSanity(
     IN struct rtmp_adapter *pAd,
     IN void *pMsg,
     IN ULONG MsgLen,
-	OUT PUCHAR pAddr2);
+	OUT u8 *pAddr2);
 
 BOOLEAN PeerAddBARspActionSanity(
     IN struct rtmp_adapter *pAd,
@@ -5506,7 +5506,7 @@ BOOLEAN MlmeAssocReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pApAddr,
+	OUT u8 *pApAddr,
 	OUT USHORT *CapabilityInfo,
 	OUT ULONG *Timeout,
 	OUT USHORT *ListenIntv);
@@ -5515,7 +5515,7 @@ BOOLEAN MlmeAuthReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pAddr,
+	OUT u8 *pAddr,
 	OUT ULONG *Timeout,
 	OUT USHORT *Alg);
 
@@ -5530,7 +5530,7 @@ BOOLEAN PeerAuthSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pAddr,
+	OUT u8 *pAddr,
 	OUT USHORT *Alg,
 	OUT USHORT *Seq,
 	OUT USHORT *Status,
@@ -5540,7 +5540,7 @@ BOOLEAN PeerAssocRspSanity(
 	IN  struct rtmp_adapter *  pAd,
     IN void *pMsg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pAddr2,
+	OUT u8 *pAddr2,
 	OUT USHORT *pCapabilityInfo,
 	OUT USHORT *pStatus,
 	OUT USHORT *pAid,
@@ -5562,16 +5562,16 @@ BOOLEAN PeerDisassocSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pAddr2,
+	OUT u8 *pAddr2,
 	OUT USHORT *Reason);
 
 BOOLEAN PeerDeauthSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
-	OUT PUCHAR pAddr1,
-	OUT PUCHAR pAddr2,
-	OUT PUCHAR pAddr3,
+	OUT u8 *pAddr1,
+	OUT u8 *pAddr2,
+	OUT u8 *pAddr3,
 	OUT USHORT *Reason);
 
 BOOLEAN GetTimBit(
@@ -5599,7 +5599,7 @@ BOOLEAN MlmeAddBAReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
-    OUT PUCHAR pAddr2);
+    OUT u8 *pAddr2);
 
 ULONG MakeOutgoingFrame(
 	OUT UCHAR *Buffer,
@@ -5613,7 +5613,7 @@ UCHAR RandomByte2(
 
 void AsicUpdateAutoFallBackTable(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pTxRate);
+	IN	u8 *		pTxRate);
 
 
 
@@ -5645,7 +5645,7 @@ void MlmeAutoReconnectLastSSID(
 	IN struct rtmp_adapter *pAd);
 
 BOOLEAN MlmeValidateSSID(
-	IN PUCHAR pSsid,
+	IN u8 *pSsid,
 	IN UCHAR  SsidLen);
 
 void MlmeCheckForRoaming(
@@ -5671,7 +5671,7 @@ INT Show_AGS_Proc(
 void MlmeDynamicTxRateSwitchingAGS(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pTable,
+	IN u8 *pTable,
 	IN UCHAR TableSize,
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
 	IN UCHAR InitTxRateIdx);
@@ -5679,7 +5679,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 void StaQuickResponeForRateUpExecAGS(
 	IN struct rtmp_adapter *pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pTable,
+	IN u8 *pTable,
 	IN UCHAR TableSize,
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
 	IN UCHAR InitTxRateIdx);
@@ -5861,25 +5861,25 @@ void ChangeToCellPowerLimit(
 /* */
 void    RTMPInitMICEngine(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR          pKey,
-	IN  PUCHAR          pDA,
-	IN  PUCHAR          pSA,
+	IN  u8 *         pKey,
+	IN  u8 *         pDA,
+	IN  u8 *         pSA,
 	IN  UCHAR           UserPriority,
-	IN  PUCHAR          pMICKey);
+	IN  u8 *         pMICKey);
 
 BOOLEAN RTMPTkipCompareMICValue(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR          pSrc,
-	IN  PUCHAR          pDA,
-	IN  PUCHAR          pSA,
-	IN  PUCHAR          pMICKey,
+	IN  u8 *         pSrc,
+	IN  u8 *         pDA,
+	IN  u8 *         pSA,
+	IN  u8 *         pMICKey,
 	IN	UCHAR			UserPriority,
 	IN  UINT            Len);
 
 void    RTMPCalculateMICValue(
 	IN  struct rtmp_adapter *  pAd,
 	IN  struct sk_buff *    pPacket,
-	IN  PUCHAR          pEncap,
+	IN  u8 *         pEncap,
 	IN  PCIPHER_KEY     pKey,
 	IN	UCHAR			apidx);
 
@@ -5889,7 +5889,7 @@ void    RTMPTkipAppendByte(
 
 void    RTMPTkipAppend(
 	IN  PTKIP_KEY_INFO  pTkip,
-	IN  PUCHAR          pSrc,
+	IN  u8 *         pSrc,
 	IN  UINT            nBytes);
 
 void    RTMPTkipGetMIC(
@@ -5927,7 +5927,7 @@ INT RT_CfgSetWPAPSKKey(
 	IN INT			keyStringLen,
 	IN UCHAR		*pHashStr,
 	IN INT			hashStrLen,
-	OUT PUCHAR		pPMKBuf);
+	OUT u8 *	pPMKBuf);
 
 INT	RT_CfgSetFixedTxPhyMode(
 	IN	char *		arg);
@@ -6051,7 +6051,7 @@ void APAsicRxAntEvalTimeout(
 void RTMPGetTxTscFromAsic(
 	IN  struct rtmp_adapter *  pAd,
 	IN	UCHAR			apidx,
-	OUT	PUCHAR			pTxTsc);
+	OUT	u8 *		pTxTsc);
 
 MAC_TABLE_ENTRY *PACInquiry(
 	IN  struct rtmp_adapter *  pAd,
@@ -6060,7 +6060,7 @@ MAC_TABLE_ENTRY *PACInquiry(
 UINT	APValidateRSNIE(
 	IN struct rtmp_adapter *   pAd,
 	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR			pRsnIe,
+	IN u8 *		pRsnIe,
 	IN UCHAR			rsnie_len);
 
 void HandleCounterMeasure(
@@ -6153,28 +6153,28 @@ void GREKEYPeriodicExec(
 	IN  void *  SystemSpecific3);
 
 void AES_128_CMAC(
-	IN	PUCHAR	key,
-	IN	PUCHAR	input,
+	IN	u8 *key,
+	IN	u8 *input,
 	IN	INT		len,
-	OUT	PUCHAR	mac);
+	OUT	u8 *mac);
 
 #ifdef DOT1X_SUPPORT
 void    WpaSend(
     IN  struct rtmp_adapter *  pAdapter,
-    IN  PUCHAR          pPacket,
+    IN  u8 *         pPacket,
     IN  ULONG           Len);
 
 void RTMPAddPMKIDCache(
 	IN  struct rtmp_adapter *  		pAd,
 	IN	INT						apidx,
-	IN	PUCHAR				pAddr,
+	IN	u8 *			pAddr,
 	IN	UCHAR					*PMKID,
 	IN	UCHAR					*PMK);
 
 INT RTMPSearchPMKIDCache(
 	IN  struct rtmp_adapter *  pAd,
 	IN	INT				apidx,
-	IN	PUCHAR		pAddr);
+	IN	u8 *	pAddr);
 
 void RTMPDeletePMKIDCache(
 	IN  struct rtmp_adapter *  pAd,
@@ -6271,7 +6271,7 @@ UCHAR	CheckNINTENDO_TABLE(
 	IN struct rtmp_adapter *pAd,
 	char *pDS_Ssid,
 	UCHAR DS_SsidLen,
-	PUCHAR pDS_Addr);
+	u8 *pDS_Addr);
 
 UCHAR	DelNINTENDO_ENTRY(
 	IN	struct rtmp_adapter *pAd,
@@ -6719,7 +6719,7 @@ INT RTMPIoctlConnStatus(
 #ifdef CONFIG_STA_SUPPORT
 void RTMPSendDLSTearDownFrame(
 	IN	struct rtmp_adapter *pAd,
-	IN	PUCHAR			pDA);
+	IN	u8 *		pDA);
 
 #ifdef DOT11_N_SUPPORT
 void QueryBATABLE(
@@ -6730,7 +6730,7 @@ void QueryBATABLE(
 #ifdef WPA_SUPPLICANT_SUPPORT
 INT	    WpaCheckEapCode(
 	IN  struct rtmp_adapter *  	pAd,
-	IN  PUCHAR				pFrame,
+	IN  u8 *			pFrame,
 	IN  USHORT				FrameLen,
 	IN  USHORT				OffSet);
 #endif /* WPA_SUPPLICANT_SUPPORT */
@@ -6801,7 +6801,7 @@ void Indicate_EAPOL_Packet(
 UINT deaggregate_AMSDU_announce(
 	IN	struct rtmp_adapter *pAd,
 	struct sk_buff *		pPacket,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	ULONG			DataSize,
 	IN	UCHAR			OpMode);
 
@@ -6843,19 +6843,19 @@ BOOLEAN rtmp_chk_itxbf_calibration(
 
 #endif /* TXBF_SUPPORT */
 
-BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, PUCHAR pRspBuffer);
+BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, u8 *pRspBuffer);
 
 
 #ifdef CONFIG_STA_SUPPORT
 /* remove LLC and get 802_3 Header */
 #define  RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(_pRxBlk, _pHeader802_3)	\
 {																				\
-	PUCHAR _pRemovedLLCSNAP = NULL, _pDA, _pSA;                                 \
+	u8 *_pRemovedLLCSNAP = NULL, *_pDA, *_pSA;                                 \
 																				\
 	if (RX_BLK_TEST_FLAG(_pRxBlk, fRX_WDS) || RX_BLK_TEST_FLAG(_pRxBlk, fRX_MESH)) \
 	{                                                                           \
 		_pDA = _pRxBlk->pHeader->Addr3;                                         \
-		_pSA = (PUCHAR)_pRxBlk->pHeader + sizeof(HEADER_802_11);                \
+		_pSA = (u8 *)_pRxBlk->pHeader + sizeof(HEADER_802_11);                \
 	}                                                                           \
 	else                                                                        \
 	{                                                                           \
@@ -7114,32 +7114,32 @@ void RtmpTimerQInit(
 NTSTATUS RTUSBMultiRead(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	OUT	PUCHAR			pData,
+	OUT	u8 *		pData,
 	IN	USHORT			length);
 
 NTSTATUS RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	BOOLEAN			bWriteHigh);
 
 NTSTATUS RTUSBMultiWrite_nBytes(
         IN      struct rtmp_adapter *  pAd,
         IN      USHORT                  Offset,
-        IN      PUCHAR                  pData,
+        IN      u8 *                 pData,
         IN      USHORT                  length,
         IN      USHORT                  batchLen);
 
 NTSTATUS RTUSBMultiWrite_OneByte(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData);
+	IN	u8 *		pData);
 
 NTSTATUS RTUSBReadBBPRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
-	IN	PUCHAR			pValue);
+	IN	u8 *		pValue);
 
 NTSTATUS RTUSBWriteBBPRegister(
 	IN	struct rtmp_adapter *pAd,
@@ -7163,13 +7163,13 @@ NTSTATUS RTUSB_VendorRequest(
 NTSTATUS RTUSBReadEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	OUT	PUCHAR			pData,
+	OUT	u8 *		pData,
 	IN	USHORT			length);
 
 NTSTATUS RTUSBWriteEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	PUCHAR			pData,
+	IN	u8 *		pData,
 	IN	USHORT			length);
 
 void RTUSBPutToSleep(
@@ -7226,7 +7226,7 @@ NTSTATUS RTUSBSingleWrite(
 
 NTSTATUS RTUSBFirmwareWrite(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR		pFwImage,
+	IN u8 *	pFwImage,
 	IN ULONG		FwLen);
 
 NTSTATUS	RTUSBVenderReset(
@@ -7332,7 +7332,7 @@ int RtmpUSBMgmtKickOut(
 	IN struct rtmp_adapter	*pAd,
 	IN UCHAR 			QueIdx,
 	IN struct sk_buff *		pPacket,
-	IN PUCHAR			pSrcBufVA,
+	IN u8 *		pSrcBufVA,
 	IN UINT 			SrcBufLen);
 
 void RtmpUSBNullFrameKickOut(
@@ -7467,7 +7467,7 @@ BOOLEAN	AUTH_ReqSend(
 	IN  PRALINK_TIMER_STRUCT pAuthTimer,
 	IN  char *			pSMName,
 	IN  USHORT				SeqNo,
-	IN  PUCHAR				pNewElement,
+	IN  u8 *			pNewElement,
 	IN  ULONG				ElementLen);
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -7589,7 +7589,7 @@ BOOLEAN RTMPExpandPacketForSwEncrypt(
 void RTMPUpdateSwCacheCipherInfo(
 	IN  struct rtmp_adapter *  pAd,
 	IN	PTX_BLK			pTxBlk,
-	IN	PUCHAR			pHdr);
+	IN	u8 *		pHdr);
 #endif /* SOFT_ENCRYPT */
 
 
@@ -7790,13 +7790,13 @@ void    ApcliSendAssocIEsToWpaSupplicant(
 
 INT	    ApcliWpaCheckEapCode(
 	IN  struct rtmp_adapter *  		pAd,
-	IN  PUCHAR				pFrame,
+	IN  u8 *			pFrame,
 	IN  USHORT				FrameLen,
 	IN  USHORT				OffSet);
 
 void    ApcliWpaSendEapolStart(
 	IN	struct rtmp_adapter *pAd,
-	IN  PUCHAR          pBssid,
+	IN  u8 *         pBssid,
 	IN  PMAC_TABLE_ENTRY pMacEntry,
 	IN	PAPCLI_STRUCT pApCliEntry);
 
@@ -7846,7 +7846,7 @@ INT Set_ModuleTxpower_Proc(
 
 void RtmpEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR        pAddr,
+	IN u8 *       pAddr,
 	IN UCHAR         TxRate,
 	IN UCHAR         PID,
 	IN UCHAR         apidx,
@@ -7888,7 +7888,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 #ifdef MAC_REPEATER_SUPPORT
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  struct rtmp_adapter *  pAd,
-	IN  PUCHAR			pAddr,
+	IN  u8 *		pAddr,
 	IN  UCHAR			IfIdx);
 #endif /* MAC_REPEATER_SUPPORT */
 

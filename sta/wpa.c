@@ -109,12 +109,12 @@ void RTMPReportMicError(
 /* If the received frame is EAP-Packet ,find out its EAP-Code (Request(0x01), Response(0x02), Success(0x03), Failure(0x04)). */
 INT	    WpaCheckEapCode(
 	IN  struct rtmp_adapter *  		pAd,
-	IN  PUCHAR				pFrame,
+	IN  u8 *			pFrame,
 	IN  USHORT				FrameLen,
 	IN  USHORT				OffSet)
 {
 
-	PUCHAR	pData;
+	u8 *pData;
 	INT	result = 0;
 
 	if( FrameLen < OffSet + LENGTH_EAPOL_H + LENGTH_EAP_H )
@@ -136,7 +136,7 @@ void WpaMicFailureReportFrame(
 	IN  struct rtmp_adapter *  pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR              pOutBuffer = NULL;
+	u8 *             pOutBuffer = NULL;
 	UCHAR               Header802_3[14];
 	ULONG               FrameLen = 0;
 	UCHAR				*mpool;
@@ -153,7 +153,7 @@ void WpaMicFailureReportFrame(
 	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -199,7 +199,7 @@ void WpaMicFailureReportFrame(
 	*((USHORT *)&pPacket->KeyDesc.KeyInfo) = cpu2le16(*((USHORT *)&pPacket->KeyDesc.KeyInfo));
 
 
-	os_alloc_mem(pAd, (PUCHAR *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* allocate memory */
+	os_alloc_mem(pAd, (u8 **)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* allocate memory */
 	if(pOutBuffer == NULL)
 	{
 		kfree(mpool);
@@ -231,10 +231,10 @@ void WpaMicFailureReportFrame(
 	/* copy frame to Tx ring and send MIC failure report frame to authenticator */
 	RTMPToWirelessSta(pAd, &pAd->MacTab.Content[BSSID_WCID],
 					  Header802_3, LENGTH_802_3,
-					  (PUCHAR)pPacket,
+					  (u8 *)pPacket,
 					  CONV_ARRARY_TO_UINT16(pPacket->Body_Len) + 4, FALSE);
 
-	kfree((PUCHAR)pOutBuffer);
+	kfree((u8 *)pOutBuffer);
 
 	kfree(mpool);
 
@@ -392,7 +392,7 @@ void WpaStaGroupKeySetting(
 */
 void    WpaSendEapolStart(
 	IN	struct rtmp_adapter *pAd,
-	IN  PUCHAR          pBssid)
+	IN  u8 *         pBssid)
 {
 	IEEE8021X_FRAME		Packet;
 	UCHAR               Header802_3[14];
@@ -411,7 +411,7 @@ void    WpaSendEapolStart(
 
 	/* Copy frame to Tx ring */
 	RTMPToWirelessSta((struct rtmp_adapter *)pAd, &pAd->MacTab.Content[BSSID_WCID],
-					 Header802_3, LENGTH_802_3, (PUCHAR)&Packet, 4, TRUE);
+					 Header802_3, LENGTH_802_3, (u8 *)&Packet, 4, TRUE);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<----- WpaSendEapolStart\n"));
 }

@@ -143,7 +143,7 @@ void WpaSendMicFailureToWpaSupplicant(
 	if(bUnicast)
 		sprintf(custom, "%s unicast", custom);
 
-	RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (PUCHAR)custom, strlen(custom));
+	RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (u8 *)custom, strlen(custom));
 
 	return;
 }
@@ -186,7 +186,7 @@ void SendAssocIEsToWpaSupplicant(
 	{
 		snprintf(custom, sizeof(custom), "ASSOCINFO_ReqIEs=");
 		NdisMoveMemory(custom+17, ReqVarIEs, ReqVarIELen);
-		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (PUCHAR)custom, ReqVarIELen + 17);
+		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (u8 *)custom, ReqVarIELen + 17);
 
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);
 	}

@@ -264,7 +264,7 @@ void MlmeAssocReqAction(
 	ULONG Timeout;
 	USHORT CapabilityInfo;
 	BOOLEAN TimerCancelled;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	NDIS_STATUS NStatus;
 	ULONG FrameLen = 0;
 	ULONG tmp;
@@ -485,7 +485,7 @@ void MlmeAssocReqAction(
 				QosInfo.UAPSD_AC_VI = pAd->CommonCfg.bAPSDAC_VI;
 				QosInfo.UAPSD_AC_VO = pAd->CommonCfg.bAPSDAC_VO;
 				QosInfo.MaxSPLength = pAd->CommonCfg.MaxSPLength;
-				WmeIe[8] |= *(PUCHAR) & QosInfo;
+				WmeIe[8] |= *(u8 *) & QosInfo;
 			} else {
 				/* The Parameter Set Count is set to \A1\A70\A1\A8 in the association request frames */
 				/* WmeIe[8] |= (pAd->MlmeAux.APEdcaParm.EdcaUpdateCount & 0x0f); */
@@ -640,7 +640,7 @@ void MlmeAssocReqAction(
 		if (pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
 		{
 			ULONG	WfdIeLen, WfdIeBitmap;
-			PUCHAR	ptr;
+			u8 *ptr;
 
 			ptr = pOutBuffer + FrameLen;
 			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
@@ -697,7 +697,7 @@ void MlmeReassocReqAction(
 	BOOLEAN TimerCancelled;
 	NDIS_STATUS NStatus;
 	ULONG tmp;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	USHORT Status;
 
 #ifdef WPA_SUPPLICANT_SUPPORT
@@ -777,7 +777,7 @@ void MlmeReassocReqAction(
 				DBGPRINT(RT_DEBUG_TRACE,
 					 ("uapsd> MaxSPLength = %d!\n",
 					  QosInfo.MaxSPLength));
-				WmeIe[8] |= *(PUCHAR) & QosInfo;
+				WmeIe[8] |= *(u8 *) & QosInfo;
 			}
 
 			MakeOutgoingFrame(pOutBuffer + FrameLen, &tmp,
@@ -890,7 +890,7 @@ void MlmeReassocReqAction(
 		if (pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
 		{
 			ULONG	WfdIeLen, WfdIeBitmap;
-			PUCHAR	ptr;
+			u8 *ptr;
 
 			ptr = pOutBuffer + FrameLen;
 			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
@@ -934,7 +934,7 @@ void MlmeDisassocReqAction(
 	PMLME_DISASSOC_REQ_STRUCT pDisassocReq;
 	HEADER_802_11 DisassocHdr;
 	PHEADER_802_11 pDisassocHdr;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	NDIS_STATUS NStatus;
 	BOOLEAN TimerCancelled;
@@ -1344,7 +1344,7 @@ void PeerReassocRspAction(
  */
 void AssocPostProc(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr2,
+	IN u8 *pAddr2,
 	IN USHORT CapabilityInfo,
 	IN USHORT Aid,
 	IN UCHAR SupRate[],
@@ -1444,7 +1444,7 @@ void AssocPostProc(
 
 			DBGPRINT_ERR(("Storing RSS_IE for WPA SM negotiation later\n"));
 
-			PUCHAR pVIE;
+			u8 *pVIE;
 			USHORT len;
 			PEID_STRUCT pEid;
 
@@ -1698,11 +1698,11 @@ void InvalidStateWhenDisassociate(
  */
 void Cls3errAction(
 	IN struct rtmp_adapter *pAd,
-	IN PUCHAR pAddr)
+	IN u8 *pAddr)
 {
 	HEADER_802_11 DisassocHdr;
 	PHEADER_802_11 pDisassocHdr;
-	PUCHAR pOutBuffer = NULL;
+	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	NDIS_STATUS NStatus;
 	USHORT Reason = REASON_CLS3ERR;

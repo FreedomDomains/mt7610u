@@ -221,7 +221,7 @@ void RtmpOsUsbInitHTTxDesc(
 	IN	void 		*pUrbSrc,
 	IN	void 		*pUsb_Dev,
 	IN	UINT			BulkOutEpAddr,
-	IN	PUCHAR			pSrc,
+	IN	u8 *			pSrc,
 	IN	ULONG			BulkOutSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pTxContext,
