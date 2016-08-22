@@ -4,8 +4,8 @@
 *.cm
 Module.symvers
 modules.order
-rtl8821au.mod.c
 .tmp_versions
 tools/bin2h
 include/mcu/mt7610_firmware.h
+include/mcu/mt7650_firmware.h
 mt7610u.mod.c

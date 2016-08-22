@@ -528,7 +528,7 @@ TARGET = LINUX
 # rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
 
 ifeq ($(CHIPSET),)
-CHIPSET = mt7610u
+CHIPSET = mt7610u mt7630u mt7650u
 endif
 
 MODULE = $(word 1, $(CHIPSET))
@@ -793,6 +793,7 @@ clean:
 	rm -f */*/*.{o,ko,mod.{o,c}}
 	rm -f */*/.*.{cmd,flags,d}
 	rm -fr .tmp_versions
+	rm -f include/mcu/mt76*
 #Must clean Module.symvers; or you will suffer symbol version not match
 #when OS_ABL = YES.
 	rm -f Module.symvers
