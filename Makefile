@@ -802,12 +802,12 @@ clean:
 	rm -f modules.order
 
 installfw:
-	@echo "installfw currently defunct"
+	cp -n firmware/* /lib/firmware
 
 help:
 	@echo "options :"
 	@echo "modules		build this module"
-	@echo "installfw	install firmware file (currently defunct)"
+	@echo "installfw	install firmware file"
 	@echo "clean		clean"
 	@echo "help		this help text"
 
