@@ -781,7 +781,7 @@ void UAPSD_SP_AUE_Handle(
 			{
 				struct os_cookie *pCookie;
 
-				pCookie = (struct os_cookie *) pAd->OS_Cookie;
+				pCookie = pAd->OS_Cookie;
 
 				/*
 					Too many functions call NICUpdateFifoStaCounters() and

@@ -33,7 +33,7 @@
 
 #ifdef PCI_MSI_SUPPORT
 #define RTMP_MSI_ENABLE(_pAd) \
-	{     struct os_cookie *_pObj = (struct os_cookie *)(_pAd->OS_Cookie); \
+	{     struct os_cookie *_pObj = (_pAd->OS_Cookie); \
 		(_pAd)->HaveMsi = pci_enable_msi(_pObj->pci_dev) == 0 ? TRUE : FALSE; \
 	}
 

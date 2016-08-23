@@ -1039,7 +1039,7 @@ NTSTATUS    RTUSB_VendorRequest(
 	IN	UINT32			TransferBufferLength)
 {
 	int				RET = 0;
-	struct os_cookie *	pObj = (struct os_cookie *) pAd->OS_Cookie;
+	struct os_cookie *	pObj = pAd->OS_Cookie;
 
 	if(in_interrupt())
 	{

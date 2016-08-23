@@ -205,7 +205,7 @@ void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, UCHAR Stage)
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	struct os_cookie * pObj = (struct os_cookie *) pAd->OS_Cookie;
+	struct os_cookie * pObj = pAd->OS_Cookie;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
 

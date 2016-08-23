@@ -2651,7 +2651,7 @@ typedef struct tx_agc_ctrl{
 	The miniport adapter structure
 */
 struct rtmp_adapter {
-	void *OS_Cookie;	/* save specific structure relative to OS */
+	struct os_cookie *OS_Cookie;	/* save specific structure relative to OS */
 	struct net_device *net_dev;
 	ULONG VirtualIfCnt;
 

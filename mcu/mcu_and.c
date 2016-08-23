@@ -75,7 +75,7 @@ static NDIS_STATUS usb_load_ivb(struct rtmp_adapter*ad)
 NDIS_STATUS andes_usb_loadfw(struct rtmp_adapter*ad)
 {
 	PURB urb;
-	struct os_cookie *obj = (struct os_cookie *)ad->OS_Cookie;
+	struct os_cookie *obj = ad->OS_Cookie;
 	dma_addr_t fw_dma;
 	u8 *fw_data;
 	TXINFO_NMAC_CMD *tx_info;
@@ -922,7 +922,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 	struct sk_buff * net_pkt = (struct sk_buff *)RTMP_OS_USB_CONTEXT_GET(urb);
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
-	struct os_cookie *pObj = (struct os_cookie *)ad->OS_Cookie;
+	struct os_cookie *pObj = ad->OS_Cookie;
 	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
@@ -977,7 +977,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 {
 	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;
-	struct os_cookie *pObj = (struct os_cookie *)ad->OS_Cookie;
+	struct os_cookie *pObj = ad->OS_Cookie;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 	struct sk_buff * net_pkt = NULL;
@@ -1119,7 +1119,7 @@ static void usb_kick_out_cmd_msg_complete(PURB urb)
 int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
-	struct os_cookie *pObj = (struct os_cookie *)ad->OS_Cookie;
+	struct os_cookie *pObj = ad->OS_Cookie;
 	int ret = 0;
 	struct sk_buff * net_pkt = msg->net_pkt;
 	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;

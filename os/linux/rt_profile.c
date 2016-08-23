@@ -281,7 +281,7 @@ void RTMPFreeAdapter(
 	struct os_cookie *os_cookie;
 	int index;
 
-	os_cookie=(struct os_cookie *)pAd->OS_Cookie;
+	os_cookie = pAd->OS_Cookie;
 
 	if (pAd->BeaconBuf)
 		kfree(pAd->BeaconBuf);

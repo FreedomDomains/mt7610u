@@ -882,7 +882,7 @@ void STAMlmePeriodicExec(
 	BOOLEAN bCheckBeaconLost = TRUE;
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	struct os_cookie * pObj = (struct os_cookie *) pAd->OS_Cookie;
+	struct os_cookie * pObj = pAd->OS_Cookie;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 

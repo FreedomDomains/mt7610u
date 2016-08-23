@@ -1968,7 +1968,7 @@ INT rt28xx_sta_ioctl(
 	wrq->u.data.length = wrqin->u.data.length;
 	org_len = wrq->u.data.length;
 
-/*	pObj = (struct os_cookie *) pAd->OS_Cookie; */
+/*	pObj = pAd->OS_Cookie; */
 
     /*check if the interface is down */
 /*    if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */

@@ -179,7 +179,7 @@ static void rtusb_dataout_complete(unsigned long data)
 	pHTTXContext	= (PHT_TX_CONTEXT)RTMP_USB_URB_DATA_GET(pUrb);
 	Status			= RTMP_USB_URB_STATUS_GET(pUrb);
 	pAd				= pHTTXContext->pAd;
-	pObj 			= (struct os_cookie *) pAd->OS_Cookie;
+	pObj 			= pAd->OS_Cookie;
 /*	Status			= pUrb->status; */
 
 	/* Store BulkOut PipeId */
@@ -947,7 +947,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 NDIS_STATUS RtmpNetTaskInit(
 	IN struct rtmp_adapter*pAd)
 {
-	struct os_cookie *pObj = (struct os_cookie *) pAd->OS_Cookie;
+	struct os_cookie *pObj = pAd->OS_Cookie;
 
 	/* Create receive tasklet */
 	RTMP_OS_TASKLET_INIT(pAd, &pObj->rx_done_task, rx_done_tasklet, (ULONG)pAd);
@@ -973,7 +973,7 @@ void RtmpNetTaskExit(IN struct rtmp_adapter*pAd)
 {
 	struct os_cookie *pObj;
 
-	pObj = (struct os_cookie *) pAd->OS_Cookie;
+	pObj = pAd->OS_Cookie;
 
 	RTMP_OS_TASKLET_KILL(&pObj->rx_done_task);
 	RTMP_OS_TASKLET_KILL(&pObj->cmd_rsp_event_task);

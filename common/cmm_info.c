@@ -1235,7 +1235,7 @@ NDIS_STATUS RTMPWPARemoveKeyProc(
 	UCHAR ifIndex;
 	BOOLEAN apcliEn=FALSE;
 	INT 		idx, BssIdx;
-	struct os_cookie *pObj = (struct os_cookie *) pAd->OS_Cookie;
+	struct os_cookie *pObj = pAd->OS_Cookie;
 #endif/*APCLI_WPA_SUPPLICANT_SUPPORT*/
 #endif/*APCLI_SUPPORT*/
 	DBGPRINT(RT_DEBUG_TRACE,("---> RTMPWPARemoveKeyProc\n"));
@@ -4197,7 +4197,7 @@ INT	Show_ModuleTxpower_Proc(
  	UCHAR ifIndex;
 	BOOLEAN bConnect=FALSE;
 
- 	pObj = (struct os_cookie *) pAd->OS_Cookie;
+ 	pObj = pAd->OS_Cookie;
 
 
 
