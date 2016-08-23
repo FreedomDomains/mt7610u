@@ -1035,7 +1035,7 @@ INT AES_CCM_Decrypt (
     /*
      * 6. Check the MIC
      */
-    if (NdisCmpMemory(Block_MAC_From_Cipher, Block_MAC, MACLength) != 0) {
+    if (memcmp(Block_MAC_From_Cipher, Block_MAC, MACLength) != 0) {
     	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The MIC does not match.\n"));
         return -5;
     }

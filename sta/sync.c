@@ -1056,13 +1056,13 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 		}
 		else
 		{
-			if (NdisCmpMemory(&ie_list->Addr2[0], &Addr2[0], MAC_ADDR_LEN) != 0)
+			if (memcmp(&ie_list->Addr2[0], &Addr2[0], MAC_ADDR_LEN) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("Add2 mismatch!Old=%02x:%02x:%02x:%02x:%02x:%02x!New=%02x:%02x:%02x:%02x:%02x:%02x!\n",
 									PRINT_MAC(Addr2), PRINT_MAC(ie_list->Addr2)));
 			}
 
-			if (NdisCmpMemory(&ie_list->Bssid[0], &Bssid[0], MAC_ADDR_LEN) != 0)
+			if (memcmp(&ie_list->Bssid[0], &Bssid[0], MAC_ADDR_LEN) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("Bssid mismatch!Old=%02x:%02x:%02x:%02x:%02x:%02x!New=%02x:%02x:%02x:%02x:%02x:%02x!\n",
 									PRINT_MAC(Bssid), PRINT_MAC(ie_list->Bssid)));
@@ -1073,7 +1073,7 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 				DBGPRINT(RT_DEBUG_ERROR, ("SsidLen mismatch!Old=%d, New=%d\n", SsidLen, ie_list->SsidLen));
 			}
 
-			if (NdisCmpMemory(&ie_list->Ssid[0], &Ssid[0], SsidLen) != 0)
+			if (memcmp(&ie_list->Ssid[0], &Ssid[0], SsidLen) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("Ssid mismatch!Old=%s, New=%s\n", Ssid, ie_list->Ssid));
 			}
@@ -1098,14 +1098,14 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 				DBGPRINT(RT_DEBUG_ERROR, ("NewChannel mismatch!Old=%d, New=%d\n", NewChannel, ie_list->NewChannel));
 			}
 
-			if (NdisCmpMemory(&ie_list->TimeStamp, &TimeStamp, sizeof(LARGE_INTEGER)) != 0)
+			if (memcmp(&ie_list->TimeStamp, &TimeStamp, sizeof(LARGE_INTEGER)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("TimeStamp mismatch!Old=%d - %d, New=%d - %d\n",
 							TimeStamp.u.LowPart, TimeStamp.u.HighPart,
 							ie_list->TimeStamp.u.LowPart, ie_list->TimeStamp.u.HighPart));
 			}
 
-			if (NdisCmpMemory(&ie_list->CfParm, &CfParm, sizeof(CF_PARM)) != 0)
+			if (memcmp(&ie_list->CfParm, &CfParm, sizeof(CF_PARM)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("CFParam mismatch!\n"));
 				hex_dump("Old CFParam", (UCHAR *)&CfParm, sizeof(CF_PARM));
@@ -1153,7 +1153,7 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 				DBGPRINT(RT_DEBUG_ERROR, ("SupRateLen mismatch!Old=%d, New=%d\n", SupRateLen, ie_list->SupRateLen));
 			}
 
-			if (NdisCmpMemory(&ie_list->SupRate[0], &SupRate, ie_list->SupRateLen) != 0)
+			if (memcmp(&ie_list->SupRate[0], &SupRate, ie_list->SupRateLen) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("SupRate mismatch!\n"));
 				hex_dump("Old SupRate", (UCHAR *)&SupRate, ie_list->SupRateLen);
@@ -1165,7 +1165,7 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("ExtRateLen mismatch!Old=%d, New=%d\n", ExtRateLen, ie_list->ExtRateLen));
 			}
-			if (NdisCmpMemory(&ie_list->ExtRate[0], &ExtRate, ie_list->ExtRateLen) != 0)
+			if (memcmp(&ie_list->ExtRate[0], &ExtRate, ie_list->ExtRateLen) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("ExtRate mismatch!\n"));
 				hex_dump("Old ExtRate", (UCHAR *)&ExtRate, ie_list->ExtRateLen);
@@ -1182,21 +1182,21 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("AironetCellPowerLimit mismatch!Old=%d, New=%d\n", AironetCellPowerLimit, ie_list->AironetCellPowerLimit));
 			}
-			if (NdisCmpMemory(&ie_list->EdcaParm, &EdcaParm, sizeof(EDCA_PARM)) != 0)
+			if (memcmp(&ie_list->EdcaParm, &EdcaParm, sizeof(EDCA_PARM)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("EdcaParm mismatch!\n"));
 				hex_dump("Old EdcaParm", (UCHAR *)&EdcaParm, sizeof(EDCA_PARM));
 				hex_dump("New EdcaParm", (UCHAR *)&ie_list->EdcaParm, sizeof(EDCA_PARM));
 			}
 
-			if (NdisCmpMemory(&ie_list->QbssLoad, &QbssLoad, sizeof(QBSS_LOAD_PARM)) != 0)
+			if (memcmp(&ie_list->QbssLoad, &QbssLoad, sizeof(QBSS_LOAD_PARM)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("QbssLoad mismatch!\n"));
 				hex_dump("Old QbssLoad", (UCHAR *)&QbssLoad, sizeof(QBSS_LOAD_PARM));
 				hex_dump("New QbssLoad", (UCHAR *)&ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
 			}
 
-			if (NdisCmpMemory(&ie_list->QosCapability, &QosCapability, sizeof(QOS_CAPABILITY_PARM)) != 0)
+			if (memcmp(&ie_list->QosCapability, &QosCapability, sizeof(QOS_CAPABILITY_PARM)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("QosCapability mismatch!\n"));
 				hex_dump("Old QosCapability", (UCHAR *)&QosCapability, sizeof(QOS_CAPABILITY_PARM));
@@ -1219,14 +1219,14 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 				DBGPRINT(RT_DEBUG_ERROR, ("PreNHtCapabilityLen mismatch!Old=%d, New=%d\n", PreNHtCapabilityLen, ie_list->PreNHtCapabilityLen));
 			}
 #endif /* CONFIG_STA_SUPPORT */
-			if (NdisCmpMemory(&ie_list->HtCapability, pHtCapability, sizeof(HT_CAPABILITY_IE)) != 0)
+			if (memcmp(&ie_list->HtCapability, pHtCapability, sizeof(HT_CAPABILITY_IE)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("pHtCapability mismatch!\n"));
 				hex_dump("Old HtCapability", (UCHAR *)pHtCapability, sizeof(HT_CAPABILITY_IE));
 				hex_dump("New HtCapability", (UCHAR *)&ie_list->HtCapability, sizeof(HT_CAPABILITY_IE));
 			}
 
-			if (NdisCmpMemory(&ie_list->ExtCapInfo, &ExtCapInfo, sizeof(EXT_CAP_INFO_ELEMENT)) != 0)
+			if (memcmp(&ie_list->ExtCapInfo, &ExtCapInfo, sizeof(EXT_CAP_INFO_ELEMENT)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("ExtCapInfo mismatch!\n"));
 				hex_dump("Old ExtCapInfo", (UCHAR *)&ExtCapInfo, sizeof(EXT_CAP_INFO_ELEMENT));
@@ -1238,7 +1238,7 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 				DBGPRINT(RT_DEBUG_ERROR, ("AddHtInfoLen mismatch!Old=%d, New=%d\n", AddHtInfoLen, ie_list->AddHtInfoLen));
 			}
 
-			if (NdisCmpMemory(&ie_list->AddHtInfo, pAddHtInfo, sizeof(ADD_HT_INFO_IE)) != 0)
+			if (memcmp(&ie_list->AddHtInfo, pAddHtInfo, sizeof(ADD_HT_INFO_IE)) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("AddHtInfo mismatch!\n"));
 				hex_dump("Old AddHtInfo", (UCHAR *)pAddHtInfo, sizeof(ADD_HT_INFO_IE));
