@@ -3856,10 +3856,10 @@ RtmpIoctl_rt_ioctl_setparam(
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
-	POS_COOKIE pObj;
+	struct os_cookie *pObj;
 
 
-	pObj = (POS_COOKIE) pAd->OS_Cookie;
+	pObj = (struct os_cookie *) pAd->OS_Cookie;
 	{
 		pObj->ioctl_if_type = INT_MAIN;
         pObj->ioctl_if = MAIN_MBSSID;
@@ -3952,7 +3952,7 @@ INT RTMP_STA_IoctlHandle(
 	IN  USHORT                  priv_flags)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
-	POS_COOKIE pObj = (POS_COOKIE)pAd->OS_Cookie;
+	struct os_cookie *pObj = (struct os_cookie *)pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS;
 
 	{	/* determine this ioctl command is comming from which interface. */

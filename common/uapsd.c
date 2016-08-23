@@ -779,9 +779,9 @@ void UAPSD_SP_AUE_Handle(
 			/* maybe transmit the EOSP frame */
 			if (FlgEosp == TRUE)
 			{
-				POS_COOKIE pCookie;
+				struct os_cookie *pCookie;
 
-				pCookie = (POS_COOKIE) pAd->OS_Cookie;
+				pCookie = (struct os_cookie *) pAd->OS_Cookie;
 
 				/*
 					Too many functions call NICUpdateFifoStaCounters() and

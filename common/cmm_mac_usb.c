@@ -41,7 +41,7 @@ static NDIS_STATUS RTMPAllocUsbBulkBufStruct(
 	IN dma_addr_t *pDmaAddr,
 	IN char *pBufName)
 {
-	POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
+	struct os_cookie *pObj = (struct os_cookie *) pAd->OS_Cookie;
 
 
 	*ppUrb = RTUSB_ALLOC_URB(0);
@@ -68,7 +68,7 @@ static NDIS_STATUS RTMPFreeUsbBulkBufStruct(
 	IN INT bufLen,
 	IN dma_addr_t data_dma)
 {
-	POS_COOKIE pObj = (POS_COOKIE) pAd->OS_Cookie;
+	struct os_cookie *pObj = (struct os_cookie *) pAd->OS_Cookie;
 
 	if (NULL != *ppUrb) {
 		RTUSB_UNLINK_URB(*ppUrb);
@@ -753,7 +753,7 @@ NDIS_STATUS	NICInitRecv(
 {
 	UCHAR				i;
 	NDIS_STATUS			Status = NDIS_STATUS_SUCCESS;
-	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
+	struct os_cookie *		pObj = (struct os_cookie *) pAd->OS_Cookie;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitRecv\n"));
@@ -852,7 +852,7 @@ NDIS_STATUS	NICInitTransmit(
 	PTX_CONTEXT		pNullContext   = &(pAd->NullContext);
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
 	PTX_CONTEXT		pMLMEContext = NULL;
-	POS_COOKIE		pObj = (POS_COOKIE) pAd->OS_Cookie;
+	struct os_cookie *	pObj = (struct os_cookie *) pAd->OS_Cookie;
 	void *		RingBaseVa;
 	RTMP_MGMT_RING  *pMgmtRing;
 

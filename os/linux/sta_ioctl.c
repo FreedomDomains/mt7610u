@@ -1946,7 +1946,7 @@ INT rt28xx_sta_ioctl(
 	IN	OUT	struct ifreq	*rq,
 	IN	INT					cmd)
 {
-/*	POS_COOKIE			pObj; */
+/*	struct os_cookie *		pObj; */
 	void        		*pAd = NULL;
 	struct iwreq        *wrqin = (struct iwreq *) rq;
 	RTMP_IOCTL_INPUT_STRUCT rt_wrq, *wrq = &rt_wrq;
@@ -1968,7 +1968,7 @@ INT rt28xx_sta_ioctl(
 	wrq->u.data.length = wrqin->u.data.length;
 	org_len = wrq->u.data.length;
 
-/*	pObj = (POS_COOKIE) pAd->OS_Cookie; */
+/*	pObj = (struct os_cookie *) pAd->OS_Cookie; */
 
     /*check if the interface is down */
 /*    if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */

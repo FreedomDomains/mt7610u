@@ -615,7 +615,7 @@ INT RTMP_COM_IoctlHandle(
 	IN	ULONG					Data)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
-	POS_COOKIE pObj = (POS_COOKIE)pAd->OS_Cookie;
+	struct os_cookie *pObj = (struct os_cookie *)pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
 	UCHAR PermanentAddress[MAC_ADDR_LEN];
 	USHORT Addr01, Addr23, Addr45;
@@ -1120,9 +1120,9 @@ INT Set_SiteSurvey_Proc(
 	IN	char *		arg)
 {
 	NDIS_802_11_SSID Ssid;
-	POS_COOKIE pObj;
+	struct os_cookie *pObj;
 
-	pObj = (POS_COOKIE) pAd->OS_Cookie;
+	pObj = (struct os_cookie *) pAd->OS_Cookie;
 
 	//check if the interface is down
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
