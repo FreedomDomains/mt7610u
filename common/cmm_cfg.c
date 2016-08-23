@@ -778,7 +778,7 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_AP_BSSID_GET:
 			if (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED)
-				NdisCopyMemory(pData, pAd->MlmeAux.Bssid, 6);
+				memcpy(pData, pAd->MlmeAux.Bssid, 6);
 			else
 				return NDIS_STATUS_FAILURE;
 			break;

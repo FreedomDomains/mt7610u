@@ -662,7 +662,7 @@ INT Set_ChannelListAdd_Proc(
 		u8 *pStart, *pEnd, *tempIdx, *tempBuff[5];
 
 		if (strlen(arg) <64)
-			NdisCopyMemory(strBuff, arg, strlen(arg));
+			memcpy(strBuff, arg, strlen(arg));
 
 		if ((pStart = rtstrchr(strBuff, '[')) != NULL)
 		{
@@ -724,10 +724,10 @@ INT Set_ChannelListAdd_Proc(
 						DBGPRINT(RT_DEBUG_TRACE, ("Table is full.\n"));
 						return TRUE;
 					}
-					NdisCopyMemory(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
+					memcpy(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
 				}
 				/* Copy the NULL entry*/
-				NdisCopyMemory(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
+				memcpy(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
 			}
 			else
 			{
@@ -755,7 +755,7 @@ INT Set_ChannelListAdd_Proc(
 							(inChDesp.Geography == BOTH) ? "BOTH" : (inChDesp.Geography == IDOR) ?  "IDOR" : "ODOR",
 							(inChDesp.DfsReq == TRUE) ? "TRUE" : "FALSE",
 							CountryCode));
-		NdisCopyMemory(&pChDesp[EntryIdx], &inChDesp, sizeof(CH_DESP));
+		memcpy(&pChDesp[EntryIdx], &inChDesp, sizeof(CH_DESP));
 		pChDesp[++EntryIdx].FirstChannel = 0;
 	}
 	return TRUE;
@@ -875,10 +875,10 @@ INT Set_ChannelListDel_Proc(
 					DBGPRINT(RT_DEBUG_TRACE, ("Table is full.\n"));
 					return TRUE;
 				}
-				NdisCopyMemory(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
+				memcpy(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
 			}
 			/* Copy the NULL entry*/
-			NdisCopyMemory(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
+			memcpy(&pChDesp[EntryIdx], &pChRegion->pChDesp[EntryIdx], sizeof(CH_DESP));
 		}
 		else
 		{
@@ -921,7 +921,7 @@ INT Set_ChannelListDel_Proc(
 			return TRUE;
 		}
 		for (EntryIdx = TargetIdx; EntryIdx < NumOfEntry; EntryIdx++)
-			NdisCopyMemory(&pChDesp[EntryIdx], &pChDesp[EntryIdx+1], sizeof(CH_DESP));
+			memcpy(&pChDesp[EntryIdx], &pChDesp[EntryIdx+1], sizeof(CH_DESP));
 		memset(&pChDesp[EntryIdx], 0, sizeof(CH_DESP)); /*NULL entry*/
 		DBGPRINT(RT_DEBUG_TRACE, ("Entry %u deleted.\n", TargetIdx));
 	}

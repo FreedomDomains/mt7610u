@@ -609,7 +609,7 @@ INT TDLS_Ioctl(
 
 	/* get command type */
 	/* command format is iwpriv ra0 set tdls=[cmd id]_[arg1]_......_[argn] */
-	NdisCopyMemory(BufCmd, pArgv, 2);
+	memcpy(BufCmd, pArgv, 2);
 	Command = simple_strtol((char *)BufCmd, 0, 10);
 	pArgv += 2; /* skip command field */
 
