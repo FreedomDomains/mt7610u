@@ -1303,7 +1303,7 @@ void AES_CBC_Encrypt (
     }
 
     memmove(Block, (&PlainText[0] + PlainBlockStart), (PlainTextLength - PlainBlockStart));
-    NdisFillMemory((Block + (((UINT) AES_BLOCK_SIZES) -PaddingSize)), PaddingSize, (u8) PaddingSize);
+    memset((Block + (((UINT) AES_BLOCK_SIZES) -PaddingSize)), (u8) PaddingSize, PaddingSize);
     if (CipherBlockStart == 0) {
        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
            Block[Index] ^= IV[Index];

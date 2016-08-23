@@ -275,7 +275,7 @@ void RT_SHA1_End (
     UINT64 message_length_bits;
 
     /* Append bit 1 to end of the message */
-    NdisFillMemory(pSHA_CTX->Block + pSHA_CTX->BlockLen, 1, 0x80);
+    memset(pSHA_CTX->Block + pSHA_CTX->BlockLen, 0x080, 1);
 
     /* 55 = 64 - 8 - 1: append 1 bit(1 byte) and message length (8 bytes) */
     if (pSHA_CTX->BlockLen > 55)
@@ -498,7 +498,7 @@ void RT_SHA256_End (
     UINT64 message_length_bits;
 
     /* Append bit 1 to end of the message */
-    NdisFillMemory(pSHA_CTX->Block + pSHA_CTX->BlockLen, 1, 0x80);
+    memset(pSHA_CTX->Block + pSHA_CTX->BlockLen, 0x080, 1);
 
     /* 55 = 64 - 8 - 1: append 1 bit(1 byte) and message length (8 bytes) */
     if (pSHA_CTX->BlockLen > 55)

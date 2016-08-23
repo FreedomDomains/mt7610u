@@ -299,7 +299,7 @@ void RT_MD5_End (
     UINT64 message_length_bits;
 
     /* append 1 bits to end of the message */
-    NdisFillMemory(pMD5_CTX->Block + pMD5_CTX->BlockLen, 1, 0x80);
+    memset(pMD5_CTX->Block + pMD5_CTX->BlockLen, 0x080, 1);
 
     /* 55 = 64 - 8 - 1: append 1 bit(1 byte) and message length (8 bytes) */
     if (pMD5_CTX->BlockLen > 55)
