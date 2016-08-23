@@ -225,7 +225,7 @@ void MlmeForceJoinReqAction(
 
 	{
 		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-		NdisMoveMemory(pAd->MlmeAux.Ssid, pAd->StaCfg.ConnectinfoSsid, pAd->StaCfg.ConnectinfoSsidLen);
+		memmove(pAd->MlmeAux.Ssid, pAd->StaCfg.ConnectinfoSsid, pAd->StaCfg.ConnectinfoSsidLen);
 		pAd->MlmeAux.SsidLen = pAd->StaCfg.ConnectinfoSsidLen;
 	}
 
@@ -409,7 +409,7 @@ void MlmeForceScanReqAction(
 		pAd->MlmeAux.ScanType = ScanType;
 		pAd->MlmeAux.SsidLen = SsidLen;
        	 memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-		NdisMoveMemory(pAd->MlmeAux.Ssid, Ssid, SsidLen);
+		memmove(pAd->MlmeAux.Ssid, Ssid, SsidLen);
 
 		/*
 			Scanning was pending (for fast scanning)
@@ -547,7 +547,7 @@ void MlmeScanReqAction(
 		pAd->MlmeAux.ScanType = ScanType;
 		pAd->MlmeAux.SsidLen = SsidLen;
 		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-		NdisMoveMemory(pAd->MlmeAux.Ssid, Ssid, SsidLen);
+		memmove(pAd->MlmeAux.Ssid, Ssid, SsidLen);
 
 		/*
 			Scanning was pending (for fast scanning)
@@ -673,7 +673,7 @@ void MlmeJoinReqAction(
 	if (pBss->Hidden == 0)
 	{
 		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-		NdisMoveMemory(pAd->MlmeAux.Ssid, pBss->Ssid, pBss->SsidLen);
+		memmove(pAd->MlmeAux.Ssid, pBss->Ssid, pBss->SsidLen);
 		pAd->MlmeAux.SsidLen = pBss->SsidLen;
 	}
 
@@ -686,7 +686,7 @@ void MlmeJoinReqAction(
 	if ((pAd->StaCfg.IEEE80211dClientMode != Rt802_11_D_None) &&
 		(pBss->bHasCountryIE == TRUE))
 	{
-		NdisMoveMemory(&pAd->CommonCfg.CountryCode[0], &pBss->CountryString[0], 2);
+		memmove(&pAd->CommonCfg.CountryCode[0], &pBss->CountryString[0], 2);
 		if (pBss->CountryString[2] == 'I')
 			pAd->CommonCfg.Geography = IDOR;
 		else if (pBss->CountryString[2] == 'O')
@@ -866,7 +866,7 @@ void MlmeStartReqAction(
 		/* Start a new IBSS. All IBSS parameters are decided now */
 		DBGPRINT(RT_DEBUG_TRACE, ("MlmeStartReqAction - Start a new IBSS. All IBSS parameters are decided now.... \n"));
 		pAd->MlmeAux.BssType = BSS_ADHOC;
-		NdisMoveMemory(pAd->MlmeAux.Ssid, Ssid, SsidLen);
+		memmove(pAd->MlmeAux.Ssid, Ssid, SsidLen);
 		pAd->MlmeAux.SsidLen = SsidLen;
 
 		{
@@ -887,10 +887,10 @@ void MlmeStartReqAction(
 		pAd->MlmeAux.CentralChannel = pAd->CommonCfg.CentralChannel;
 
 		pAd->MlmeAux.SupRateLen= pAd->CommonCfg.SupRateLen;
-		NdisMoveMemory(pAd->MlmeAux.SupRate, pAd->CommonCfg.SupRate, MAX_LEN_OF_SUPPORTED_RATES);
+		memmove(pAd->MlmeAux.SupRate, pAd->CommonCfg.SupRate, MAX_LEN_OF_SUPPORTED_RATES);
 		RTMPCheckRates(pAd, pAd->MlmeAux.SupRate, &pAd->MlmeAux.SupRateLen);
 		pAd->MlmeAux.ExtRateLen = pAd->CommonCfg.ExtRateLen;
-		NdisMoveMemory(pAd->MlmeAux.ExtRate, pAd->CommonCfg.ExtRate, MAX_LEN_OF_SUPPORTED_RATES);
+		memmove(pAd->MlmeAux.ExtRate, pAd->CommonCfg.ExtRate, MAX_LEN_OF_SUPPORTED_RATES);
 		RTMPCheckRates(pAd, pAd->MlmeAux.ExtRate, &pAd->MlmeAux.ExtRateLen);
 #ifdef DOT11_N_SUPPORT
 		if (WMODE_CAP_N(pAd->CommonCfg.PhyMode) && (pAd->StaCfg.bAdhocN == TRUE))
@@ -1374,15 +1374,15 @@ void PeerBeaconAtScanAction(
 		if (Idx != BSS_NOT_FOUND)
 		{
 			PBSS_ENTRY	pBssEntry = &pAd->ScanTab.BssEntry[Idx];
-			NdisMoveMemory(pBssEntry->PTSF, &Elem->Msg[24], 4);
-			NdisMoveMemory(&pBssEntry->TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
-			NdisMoveMemory(&pBssEntry->TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
+			memmove(pBssEntry->PTSF, &Elem->Msg[24], 4);
+			memmove(&pBssEntry->TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
+			memmove(&pBssEntry->TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
 
 			pBssEntry->MinSNR = Elem->Signal % 10;
 			if (pBssEntry->MinSNR == 0)
 				pBssEntry->MinSNR = -5;
 
-			NdisMoveMemory(pBssEntry->MacAddr, &ie_list->Addr2[0], MAC_ADDR_LEN);
+			memmove(pBssEntry->MacAddr, &ie_list->Addr2[0], MAC_ADDR_LEN);
 
 			if ((pFrame->Hdr.FC.SubType == SUBTYPE_PROBE_RSP) && (LenVIE != 0))
 			{
@@ -1503,7 +1503,7 @@ void PeerBeaconAtJoinAction(
 			*/
 			if (pAd->MlmeAux.SsidLen == 0)
 			{
-				NdisMoveMemory(pAd->MlmeAux.Ssid, ie_list->Ssid, ie_list->SsidLen);
+				memmove(pAd->MlmeAux.Ssid, ie_list->Ssid, ie_list->SsidLen);
 				pAd->MlmeAux.SsidLen = ie_list->SsidLen;
 			}
 			else
@@ -1520,16 +1520,16 @@ void PeerBeaconAtJoinAction(
 					Idx = BssTableSetEntry(pAd, &pAd->ScanTab, ie_list, Rssi, LenVIE, pVIE);
 					if (Idx != BSS_NOT_FOUND)
 					{
-						NdisMoveMemory(pAd->ScanTab.BssEntry[Idx].PTSF, &Elem->Msg[24], 4);
-						NdisMoveMemory(&pAd->ScanTab.BssEntry[Idx].TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
-						NdisMoveMemory(&pAd->ScanTab.BssEntry[Idx].TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
+						memmove(pAd->ScanTab.BssEntry[Idx].PTSF, &Elem->Msg[24], 4);
+						memmove(&pAd->ScanTab.BssEntry[Idx].TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
+						memmove(&pAd->ScanTab.BssEntry[Idx].TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
 						ie_list->CapabilityInfo = pAd->ScanTab.BssEntry[Idx].CapabilityInfo;
 
 						pAd->ScanTab.BssEntry[Idx].MinSNR = Elem->Signal % 10;
 						if (pAd->ScanTab.BssEntry[Idx].MinSNR == 0)
 							pAd->ScanTab.BssEntry[Idx].MinSNR = -5;
 
-						NdisMoveMemory(pAd->ScanTab.BssEntry[Idx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+						memmove(pAd->ScanTab.BssEntry[Idx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
 					}
 				}
 				else
@@ -1586,17 +1586,17 @@ void PeerBeaconAtJoinAction(
 			    Also filter out not supported rate
 			*/
 			pAd->MlmeAux.SupRateLen = ie_list->SupRateLen;
-			NdisMoveMemory(pAd->MlmeAux.SupRate, ie_list->SupRate, ie_list->SupRateLen);
+			memmove(pAd->MlmeAux.SupRate, ie_list->SupRate, ie_list->SupRateLen);
 			RTMPCheckRates(pAd, pAd->MlmeAux.SupRate, &pAd->MlmeAux.SupRateLen);
 			pAd->MlmeAux.ExtRateLen = ie_list->ExtRateLen;
-			NdisMoveMemory(pAd->MlmeAux.ExtRate, ie_list->ExtRate, ie_list->ExtRateLen);
+			memmove(pAd->MlmeAux.ExtRate, ie_list->ExtRate, ie_list->ExtRateLen);
 			RTMPCheckRates(pAd, pAd->MlmeAux.ExtRate, &pAd->MlmeAux.ExtRateLen);
 
 			memset(pAd->StaActive.SupportedPhyInfo.MCSSet, 0, 16);
 
 
 			/*  Get the ext capability info element */
-			NdisMoveMemory(&pAd->MlmeAux.ExtCapInfo, &ie_list->ExtCapInfo,sizeof(ie_list->ExtCapInfo));
+			memmove(&pAd->MlmeAux.ExtCapInfo, &ie_list->ExtCapInfo,sizeof(ie_list->ExtCapInfo));
 
 			pAd->StaActive.SupportedPhyInfo.bVhtEnable = FALSE;
 			pAd->StaActive.SupportedPhyInfo.vht_bw = VHT_BW_2040;
@@ -1630,7 +1630,7 @@ void PeerBeaconAtJoinAction(
    				RTMPMoveMemory(&pAd->MlmeAux.AddHtInfo, &ie_list->AddHtInfo, SIZE_ADD_HT_INFO_IE);
 
                 		/* StaActive.SupportedHtPhy.MCSSet stores Peer AP's 11n Rx capability */
-				NdisMoveMemory(pAd->StaActive.SupportedPhyInfo.MCSSet, ie_list->HtCapability.MCSSet, 16);
+				memmove(pAd->StaActive.SupportedPhyInfo.MCSSet, ie_list->HtCapability.MCSSet, 16);
 				pAd->MlmeAux.NewExtChannelOffset = ie_list->NewExtChannelOffset;
 				pAd->MlmeAux.HtCapabilityLen = SIZE_HT_CAP_IE;
 				pAd->StaActive.SupportedPhyInfo.bHtEnable = TRUE;
@@ -1661,7 +1661,7 @@ void PeerBeaconAtJoinAction(
 				{
 					VHT_OP_INFO *vht_op = &ie_list->vht_op_ie.vht_op_info;
 
-					NdisMoveMemory(&pAd->MlmeAux.vht_cap, &ie_list->vht_cap_ie, ie_list->vht_cap_len);
+					memmove(&pAd->MlmeAux.vht_cap, &ie_list->vht_cap_ie, ie_list->vht_cap_len);
 					pAd->MlmeAux.vht_cap_len = ie_list->vht_cap_len;
 					pAd->StaActive.SupportedPhyInfo.bVhtEnable = TRUE;
 					if (vht_op->ch_width == 0) {
@@ -1707,9 +1707,9 @@ void PeerBeaconAtJoinAction(
 #endif /* DOT11_N_SUPPORT */
 				)
 			{
-				NdisMoveMemory(&pAd->MlmeAux.APEdcaParm, &ie_list->EdcaParm, sizeof(EDCA_PARM));
-				NdisMoveMemory(&pAd->MlmeAux.APQbssLoad, &ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
-				NdisMoveMemory(&pAd->MlmeAux.APQosCapability, &ie_list->QosCapability, sizeof(QOS_CAPABILITY_PARM));
+				memmove(&pAd->MlmeAux.APEdcaParm, &ie_list->EdcaParm, sizeof(EDCA_PARM));
+				memmove(&pAd->MlmeAux.APQbssLoad, &ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
+				memmove(&pAd->MlmeAux.APQosCapability, &ie_list->QosCapability, sizeof(QOS_CAPABILITY_PARM));
 			}
 			else
 			{
@@ -1873,12 +1873,12 @@ void PeerBeacon(
 			else
 			{
 				PBSS_ENTRY	pBssEntry = &pAd->MlmeAux.SsidBssTab.BssEntry[Bssidx];
-				NdisMoveMemory(&pBssEntry->PTSF[0], &Elem->Msg[24], 4);
-				NdisMoveMemory(&pBssEntry->TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
-				NdisMoveMemory(&pBssEntry->TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
+				memmove(&pBssEntry->PTSF[0], &Elem->Msg[24], 4);
+				memmove(&pBssEntry->TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
+				memmove(&pBssEntry->TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
 				pBssEntry->Rssi = RealRssi;
 
-				NdisMoveMemory(pBssEntry->MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+				memmove(pBssEntry->MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
 
 
 			}
@@ -1895,14 +1895,14 @@ void PeerBeacon(
 			if (Bssidx == BSS_NOT_FOUND) /* return if BSS table full */
 				goto LabelOK;
 
-			NdisMoveMemory(pAd->ScanTab.BssEntry[Bssidx].PTSF, &Elem->Msg[24], 4);
-			NdisMoveMemory(&pAd->ScanTab.BssEntry[Bssidx].TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
-			NdisMoveMemory(&pAd->ScanTab.BssEntry[Bssidx].TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
+			memmove(pAd->ScanTab.BssEntry[Bssidx].PTSF, &Elem->Msg[24], 4);
+			memmove(&pAd->ScanTab.BssEntry[Bssidx].TTSF[0], &Elem->TimeStamp.u.LowPart, 4);
+			memmove(&pAd->ScanTab.BssEntry[Bssidx].TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
 			pAd->ScanTab.BssEntry[Bssidx].MinSNR = Elem->Signal % 10;
 			if (pAd->ScanTab.BssEntry[Bssidx].MinSNR == 0)
 				pAd->ScanTab.BssEntry[Bssidx].MinSNR = -5;
 
-			NdisMoveMemory(pAd->ScanTab.BssEntry[Bssidx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+			memmove(pAd->ScanTab.BssEntry[Bssidx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
 
 
 
@@ -2110,8 +2110,8 @@ void PeerBeacon(
 
 					if (ie_list->vht_cap_len && ie_list->vht_op_len)
 					{
-						NdisMoveMemory(&ielist->vht_cap, &ie_list->vht_cap_ie, sizeof(VHT_CAP_IE));
-						NdisMoveMemory(&ielist->vht_op, &ie_list->vht_op_ie, sizeof(VHT_OP_IE));
+						memmove(&ielist->vht_cap, &ie_list->vht_cap_ie, sizeof(VHT_CAP_IE));
+						memmove(&ielist->vht_op, &ie_list->vht_op_ie, sizeof(VHT_OP_IE));
 						ielist->vht_cap_len = ie_list->vht_cap_len;
 						ielist->vht_op_len = ie_list->vht_op_len;
 					}
@@ -2273,8 +2273,8 @@ void PeerBeacon(
 				}
 
 				/* copy QOS related information */
-				NdisMoveMemory(&pAd->CommonCfg.APQbssLoad, &ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
-				NdisMoveMemory(&pAd->CommonCfg.APQosCapability, &ie_list->QosCapability, sizeof(QOS_CAPABILITY_PARM));
+				memmove(&pAd->CommonCfg.APQbssLoad, &ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
+				memmove(&pAd->CommonCfg.APQosCapability, &ie_list->QosCapability, sizeof(QOS_CAPABILITY_PARM));
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3
 				/*

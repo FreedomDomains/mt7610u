@@ -821,7 +821,7 @@ void RTMPInfClose(
 			MsgElem->Machine = ASSOC_STATE_MACHINE;
 			MsgElem->MsgType = MT2_MLME_DISASSOC_REQ;
 			MsgElem->MsgLen = sizeof(MLME_DISASSOC_REQ_STRUCT);
-			NdisMoveMemory(MsgElem->Msg, &DisReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
+			memmove(MsgElem->Msg, &DisReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
 
 			/* Prevent to connect AP again in STAMlmePeriodicExec*/
 			pAd->MlmeAux.AutoReconnectSsidLen= 32;
@@ -978,8 +978,8 @@ static void	WriteConfToDatFile(
 				if (strncmp(pTempStr, "SSID=", strlen("SSID=")) == 0)
 				{
 					memset(pTempStr, 0, 512);
-					NdisMoveMemory(pTempStr, "SSID=", strlen("SSID="));
-					NdisMoveMemory(pTempStr + 5, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
+					memmove(pTempStr, "SSID=", strlen("SSID="));
+					memmove(pTempStr + 5, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 				}
 				else if (strncmp(pTempStr, "AuthMode=", strlen("AuthMode=")) == 0)
 				{

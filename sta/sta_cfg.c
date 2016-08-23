@@ -75,7 +75,7 @@ INT Set_SSID_Proc(
         memset(&Ssid, 0, sizeof(NDIS_802_11_SSID));
         if (strlen(arg) != 0)
         {
-            NdisMoveMemory(Ssid.Ssid, arg, strlen(arg));
+            memmove(Ssid.Ssid, arg, strlen(arg));
             Ssid.SsidLength = strlen(arg);
         }
         else   /*ANY ssid */
@@ -107,16 +107,16 @@ INT Set_SSID_Proc(
 			else
 			{
 			    RtmpPasswordHash((char *) pAd->StaCfg.WpaPassPhrase, Ssid.Ssid, Ssid.SsidLength, keyMaterial);
-			    NdisMoveMemory(pAd->StaCfg.PMK, keyMaterial, 32);
+			    memmove(pAd->StaCfg.PMK, keyMaterial, 32);
 			}
 		}
 
 		/* Record the desired user settings to MlmeAux */
 		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-		NdisMoveMemory(pAd->MlmeAux.Ssid, Ssid.Ssid, Ssid.SsidLength);
+		memmove(pAd->MlmeAux.Ssid, Ssid.Ssid, Ssid.SsidLength);
 		pAd->MlmeAux.SsidLen = (UCHAR)Ssid.SsidLength;
 
-		NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, Ssid.Ssid, Ssid.SsidLength);
+		memmove(pAd->MlmeAux.AutoReconnectSsid, Ssid.Ssid, Ssid.SsidLength);
 		pAd->MlmeAux.AutoReconnectSsidLen = (UCHAR)Ssid.SsidLength;
 
         pAd->MlmeAux.CurrReqIsFromNdis = TRUE;
@@ -913,7 +913,7 @@ INT Set_WPAPSK_Proc(
 		return FALSE;
 	}
 	memset(pAd->StaCfg.WpaPassPhrase, 0, 64);
-    NdisMoveMemory(pAd->StaCfg.WpaPassPhrase, arg, strlen(arg));
+    memmove(pAd->StaCfg.WpaPassPhrase, arg, strlen(arg));
     pAd->StaCfg.WpaPassPhraseLen = (UINT)strlen(arg);
 
 
@@ -1234,24 +1234,24 @@ void RTMPAddKey(
 		    if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
             {
                 memset(pAd->StaCfg.PMK, 0, 32);
-                NdisMoveMemory(pAd->StaCfg.PMK, pKey->KeyMaterial, pKey->KeyLength);
+                memmove(pAd->StaCfg.PMK, pKey->KeyMaterial, pKey->KeyLength);
                 goto end;
             }
 		    /* Update PTK */
 		    memset(&pAd->SharedKey[BSS0][0], 0, sizeof(CIPHER_KEY));
             pAd->SharedKey[BSS0][0].KeyLen = LEN_TK;
-            NdisMoveMemory(pAd->SharedKey[BSS0][0].Key, pKey->KeyMaterial, LEN_TK);
+            memmove(pAd->SharedKey[BSS0][0].Key, pKey->KeyMaterial, LEN_TK);
 #ifdef WPA_SUPPLICANT_SUPPORT
             if (pAd->StaCfg.PairCipher == Ndis802_11Encryption2Enabled)
             {
-                NdisMoveMemory(pAd->SharedKey[BSS0][0].RxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
-                NdisMoveMemory(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][0].RxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
             else
 #endif /* WPA_SUPPLICANT_SUPPORT */
             {
-            	NdisMoveMemory(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
-                NdisMoveMemory(pAd->SharedKey[BSS0][0].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
+            	memmove(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][0].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
 
             /* Decide its ChiperAlg */
@@ -1265,9 +1265,9 @@ void RTMPAddKey(
             /* Update these related information to MAC_TABLE_ENTRY */
         	pEntry = &pAd->MacTab.Content[BSSID_WCID];
         	pEntry->PairwiseKey.KeyLen = LEN_TK;
-        	NdisMoveMemory(pEntry->PairwiseKey.Key, pAd->SharedKey[BSS0][0].Key, LEN_TK);
-        	NdisMoveMemory(pEntry->PairwiseKey.RxMic, pAd->SharedKey[BSS0][0].RxMic, LEN_TKIP_MIC);
-        	NdisMoveMemory(pEntry->PairwiseKey.TxMic, pAd->SharedKey[BSS0][0].TxMic, LEN_TKIP_MIC);
+        	memmove(pEntry->PairwiseKey.Key, pAd->SharedKey[BSS0][0].Key, LEN_TK);
+        	memmove(pEntry->PairwiseKey.RxMic, pAd->SharedKey[BSS0][0].RxMic, LEN_TKIP_MIC);
+        	memmove(pEntry->PairwiseKey.TxMic, pAd->SharedKey[BSS0][0].TxMic, LEN_TKIP_MIC);
         	pEntry->PairwiseKey.CipherAlg = pAd->SharedKey[BSS0][0].CipherAlg;
 
         	/* Update pairwise key information to ASIC Shared Key Table */
@@ -1296,18 +1296,18 @@ void RTMPAddKey(
             pAd->StaCfg.DefaultKeyId = (pKey->KeyIndex & 0xFF);
             memset(&pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId], 0, sizeof(CIPHER_KEY));
             pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].KeyLen = LEN_TK;
-            NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].Key, pKey->KeyMaterial, LEN_TK);
+            memmove(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].Key, pKey->KeyMaterial, LEN_TK);
 #ifdef WPA_SUPPLICANT_SUPPORT
             if (pAd->StaCfg.GroupCipher == Ndis802_11Encryption2Enabled)
             {
-                NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].RxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
-                NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].RxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
             else
 #endif /* WPA_SUPPLICANT_SUPPORT */
             {
-            	NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
-                NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
+            	memmove(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
+                memmove(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
 
             /* Update Shared Key CipherAlg */
@@ -1351,7 +1351,7 @@ void RTMPAddKey(
 
 					/* set key material and key length */
  					pEntry->PairwiseKey.KeyLen = (UCHAR)pKey->KeyLength;
-					NdisMoveMemory(pEntry->PairwiseKey.Key, &pKey->KeyMaterial, pKey->KeyLength);
+					memmove(pEntry->PairwiseKey.Key, &pKey->KeyMaterial, pKey->KeyLength);
 
 					/* set Cipher type */
 					if (pKey->KeyLength == 5)
@@ -1381,7 +1381,7 @@ void RTMPAddKey(
 
 				/* set key material and key length */
 				pAd->SharedKey[BSS0][KeyIdx].KeyLen = (UCHAR) pKey->KeyLength;
-				NdisMoveMemory(pAd->SharedKey[BSS0][KeyIdx].Key, &pKey->KeyMaterial, pKey->KeyLength);
+				memmove(pAd->SharedKey[BSS0][KeyIdx].Key, &pKey->KeyMaterial, pKey->KeyLength);
 
 				/* Set Ciper type */
 				if (pKey->KeyLength == 5)
@@ -2099,11 +2099,11 @@ RtmpIoctl_rt_ioctl_giwap(
 	IN	ULONG					Data)
 {
 	if (INFRA_ON(pAd) || ADHOC_ON(pAd))
-		NdisMoveMemory(pData, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+		memmove(pData, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
 #ifdef WPA_SUPPLICANT_SUPPORT
 	/* Add for RT2870 */
 	else if (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
-		NdisMoveMemory(pData, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
+		memmove(pData, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	else
 		return NDIS_STATUS_FAILURE;
@@ -2181,7 +2181,7 @@ RtmpIoctl_rt_ioctl_siwscan(
 				Ssid.SsidLength = pConfig->SsidLen;
 				DBGPRINT(RT_DEBUG_TRACE, ("rt_ioctl_siwscan:: req.essid_len-%d, essid-%s\n", pConfig->SsidLen, pConfig->pSsid));
 				memset(&Ssid.Ssid, 0, NDIS_802_11_LENGTH_SSID);
-				NdisMoveMemory(Ssid.Ssid, pConfig->pSsid, Ssid.SsidLength);
+				memmove(Ssid.Ssid, pConfig->pSsid, Ssid.SsidLength);
 				StaSiteSurvey(pAd, &Ssid, SCAN_ACTIVE);
 		}
 		else
@@ -2360,7 +2360,7 @@ RtmpIoctl_rt_ioctl_siwessid(
 		if (pSsidString)
 		{
 			memset(pSsidString, 0, MAX_LEN_OF_SSID+1);
-			NdisMoveMemory(pSsidString, pSsid->pSsid, pSsid->SsidLen);
+			memmove(pSsidString, pSsid->pSsid, pSsid->SsidLen);
 			if (Set_SSID_Proc(pAd, pSsidString) == FALSE)
 			{
 				kfree(pSsidString);
@@ -2705,7 +2705,7 @@ RtmpIoctl_rt_ioctl_siwencode(
 		if(!(pIoctlSec->flags & RT_CMD_STA_IOCTL_SECURITY_NOKEY))
 		{
 			/* Copy the key in the driver */
-			NdisMoveMemory(pAd->SharedKey[BSS0][keyIdx].Key, pIoctlSec->pData, pIoctlSec->length);
+			memmove(pAd->SharedKey[BSS0][keyIdx].Key, pIoctlSec->pData, pIoctlSec->length);
         }
 	}
     else
@@ -2846,7 +2846,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 			ether_addr_copy(DeAuthReq.Addr, pAd->CommonCfg.Bssid);
 			DeAuthReq.Reason = reason_code;
 			pMsgElem->MsgLen = sizeof(MLME_DEAUTH_REQ_STRUCT);
-			NdisMoveMemory(pMsgElem->Msg, &DeAuthReq, sizeof(MLME_DEAUTH_REQ_STRUCT));
+			memmove(pMsgElem->Msg, &DeAuthReq, sizeof(MLME_DEAUTH_REQ_STRUCT));
 			MlmeDeauthReqAction(pAd, pMsgElem);
 			if (INFRA_ON(pAd))
 			{
@@ -2868,7 +2868,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 			pMsgElem->Machine = ASSOC_STATE_MACHINE;
 			pMsgElem->MsgType = MT2_MLME_DISASSOC_REQ;
 			pMsgElem->MsgLen = sizeof(MLME_DISASSOC_REQ_STRUCT);
-			NdisMoveMemory(pMsgElem->Msg, &DisAssocReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
+			memmove(pMsgElem->Msg, &DisAssocReq, sizeof(MLME_DISASSOC_REQ_STRUCT));
 
 			pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_DISASSOC;
 			MlmeDisassocReqAction(pAd, pMsgElem);
@@ -3121,9 +3121,9 @@ void fnSetCipherKey(
 {
     memset(&pAd->SharedKey[BSS0][keyIdx], 0, sizeof(CIPHER_KEY));
     pAd->SharedKey[BSS0][keyIdx].KeyLen = LEN_TK;
-    NdisMoveMemory(pAd->SharedKey[BSS0][keyIdx].Key, pKey, LEN_TK);
-    NdisMoveMemory(pAd->SharedKey[BSS0][keyIdx].TxMic, pKey + LEN_TK, LEN_TKIP_MIC);
-    NdisMoveMemory(pAd->SharedKey[BSS0][keyIdx].RxMic, pKey + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
+    memmove(pAd->SharedKey[BSS0][keyIdx].Key, pKey, LEN_TK);
+    memmove(pAd->SharedKey[BSS0][keyIdx].TxMic, pKey + LEN_TK, LEN_TKIP_MIC);
+    memmove(pAd->SharedKey[BSS0][keyIdx].RxMic, pKey + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
     pAd->SharedKey[BSS0][keyIdx].CipherAlg = CipherAlg;
 
 	if (!bGTK)
@@ -3136,9 +3136,9 @@ void fnSetCipherKey(
 	            /* Update these related information to MAC_TABLE_ENTRY */
 	        	pEntry = &pAd->MacTab.Content[BSSID_WCID];
 	        	pEntry->PairwiseKey.KeyLen = LEN_TK;
-	            	NdisMoveMemory(pEntry->PairwiseKey.Key, pAd->SharedKey[BSS0][keyIdx].Key, LEN_TK);
-	        	NdisMoveMemory(pEntry->PairwiseKey.RxMic, pAd->SharedKey[BSS0][keyIdx].RxMic, LEN_TKIP_MIC);
-	        	NdisMoveMemory(pEntry->PairwiseKey.TxMic, pAd->SharedKey[BSS0][keyIdx].TxMic, LEN_TKIP_MIC);
+	            	memmove(pEntry->PairwiseKey.Key, pAd->SharedKey[BSS0][keyIdx].Key, LEN_TK);
+	        	memmove(pEntry->PairwiseKey.RxMic, pAd->SharedKey[BSS0][keyIdx].RxMic, LEN_TKIP_MIC);
+	        	memmove(pEntry->PairwiseKey.TxMic, pAd->SharedKey[BSS0][keyIdx].TxMic, LEN_TKIP_MIC);
 	        	pEntry->PairwiseKey.CipherAlg = pAd->SharedKey[BSS0][keyIdx].CipherAlg;
 
 			/* Add Pair-wise key to Asic */
@@ -3236,7 +3236,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
                     return NDIS_STATUS_FAILURE;
 
                 memset(pAd->SharedKey[BSS0][keyIdx].Key,  0, 16);
-			    NdisMoveMemory(pAd->SharedKey[BSS0][keyIdx].Key, pIoctlSec->pData, pIoctlSec->length);
+			    memmove(pAd->SharedKey[BSS0][keyIdx].Key, pIoctlSec->pData, pIoctlSec->length);
 
 				if ((pAd->StaCfg.GroupCipher == Ndis802_11GroupWEP40Enabled) ||
 					(pAd->StaCfg.GroupCipher == Ndis802_11GroupWEP104Enabled))
@@ -3465,7 +3465,7 @@ RtmpIoctl_rt_ioctl_siwgenie(
 			if (pAd->StaCfg.pWpaAssocIe)
 			{
 				pAd->StaCfg.WpaAssocIeLen = length;
-				NdisMoveMemory(pAd->StaCfg.pWpaAssocIe, pData, pAd->StaCfg.WpaAssocIeLen);
+				memmove(pAd->StaCfg.pWpaAssocIe, pData, pAd->StaCfg.WpaAssocIeLen);
 				pAd->StaCfg.bRSN_IE_FromWpaSupplicant = TRUE;
 			}
 			else
@@ -3591,8 +3591,8 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 					memset(pAd->StaCfg.SavedPMK[CachedIdx].PMKID, 0, 16);
 					for (idx = CachedIdx; idx < (pAd->StaCfg.SavedPMKNum - 1); idx++)
 					{
-						NdisMoveMemory(&pAd->StaCfg.SavedPMK[idx].BSSID[0], &pAd->StaCfg.SavedPMK[idx+1].BSSID[0], MAC_ADDR_LEN);
-						NdisMoveMemory(&pAd->StaCfg.SavedPMK[idx].PMKID[0], &pAd->StaCfg.SavedPMK[idx+1].PMKID[0], 16);
+						memmove(&pAd->StaCfg.SavedPMK[idx].BSSID[0], &pAd->StaCfg.SavedPMK[idx+1].BSSID[0], MAC_ADDR_LEN);
+						memmove(&pAd->StaCfg.SavedPMK[idx].PMKID[0], &pAd->StaCfg.SavedPMK[idx+1].PMKID[0], 16);
 					}
 					pAd->StaCfg.SavedPMKNum--;
 			        break;
@@ -3613,8 +3613,8 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 	        if (CachedIdx < PMKID_NO)
 	        {
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
-				NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
+				memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
 		        pAd->StaCfg.SavedPMKNum++;
 	        }
 	        /* Not found, replace the last one */
@@ -3623,8 +3623,8 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 		        /* Randomly replace one */
 		        CachedIdx = (pIoctlPmaSa->pBssid[5] % PMKID_NO);
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
-				NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
+				memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
 	        }
 
 			DBGPRINT(RT_DEBUG_TRACE ,("rt_ioctl_siwpmksa - IW_PMKSA_ADD\n"));

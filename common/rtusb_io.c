@@ -954,7 +954,7 @@ NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
 			}
 			else
 			{
-				NdisMoveMemory(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
+				memmove(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
 				cmdqelmt->bufferlength = InformationBufferLength;
 			}
 		}
@@ -1071,7 +1071,7 @@ NTSTATUS    RTUSB_VendorRequest(
 		}
 
 		if ((TransferBufferLength > 0) && (RequestType == DEVICE_VENDOR_REQUEST_OUT))
-			NdisMoveMemory(pAd->UsbVendorReqBuf, TransferBuffer, TransferBufferLength);
+			memmove(pAd->UsbVendorReqBuf, TransferBuffer, TransferBufferLength);
 
 		do {
 				RTUSB_CONTROL_MSG(pObj->pUsb_Dev, 0, Request, RequestType, Value, Index, pAd->UsbVendorReqBuf, TransferBufferLength, CONTROL_TIMEOUT_JIFFIES, RET);
@@ -1089,7 +1089,7 @@ NTSTATUS    RTUSB_VendorRequest(
 		} while((RET < 0 ) && (RetryCount < MAX_VENDOR_REQ_RETRY_COUNT));
 
 	  	if ( (!(RET < 0)) && (TransferBufferLength > 0) && (RequestType == DEVICE_VENDOR_REQUEST_IN))
-			NdisMoveMemory(TransferBuffer, pAd->UsbVendorReqBuf, TransferBufferLength);
+			memmove(TransferBuffer, pAd->UsbVendorReqBuf, TransferBufferLength);
 
 	  	RTMP_SEM_EVENT_UP(&(pAd->UsbVendorReq_semaphore));
 

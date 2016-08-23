@@ -155,7 +155,7 @@ void MlmeDlsReqAction(
 				  HtLen, &pAd->CommonCfg.HtCapability,
 				  END_OF_ARGS);
 #else
-		NdisMoveMemory(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, HtLen);
+		memmove(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, HtLen);
 		*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 		*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
 
@@ -288,7 +288,7 @@ void PeerDlsReqAction(
 					pAd->StaCfg.DLSEntry[i].Valid = TRUE;
 					pAd->StaCfg.DLSEntry[i].TimeOut = DLSTimeOut;
 					pAd->StaCfg.DLSEntry[i].CountDownTimer = DLSTimeOut;
-					NdisMoveMemory(pAd->StaCfg.DLSEntry[i].MacAddr, SA, MAC_ADDR_LEN);
+					memmove(pAd->StaCfg.DLSEntry[i].MacAddr, SA, MAC_ADDR_LEN);
 					if (HtCapabilityLen != 0)
 						pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
 					else
@@ -353,7 +353,7 @@ void PeerDlsReqAction(
 						if (HtCapability.ExtHtCapInfo.MCSFeedback == 0x03)
 							CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_MCSFEEDBACK_CAPABLE);
 
-						NdisMoveMemory(&pEntry->HTCapability,
+						memmove(&pEntry->HTCapability,
 							       &HtCapability, sizeof(HT_CAPABILITY_IE));
 					}
 #endif /* DOT11_N_SUPPORT */
@@ -443,7 +443,7 @@ void PeerDlsReqAction(
 					  HtLen, &pAd->CommonCfg.HtCapability,
 					  END_OF_ARGS);
 #else
-			NdisMoveMemory(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, HtLen);
+			memmove(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, HtLen);
 			*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 			*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
 
@@ -575,7 +575,7 @@ void PeerDlsRspAction(
 					if (HtCapability.ExtHtCapInfo.MCSFeedback == 0x03)
 						CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_MCSFEEDBACK_CAPABLE);
 
-					NdisMoveMemory(&pEntry->HTCapability,
+					memmove(&pEntry->HTCapability,
 						       &HtCapability,
 						       sizeof(HT_CAPABILITY_IE));
 				}
@@ -737,7 +737,7 @@ void PeerDlsRspAction(
 						if (HtCapability.ExtHtCapInfo.MCSFeedback == 0x03)
 							CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_MCSFEEDBACK_CAPABLE);
 
-						NdisMoveMemory(&pEntry->HTCapability,
+						memmove(&pEntry->HTCapability,
 							       &HtCapability,
 							       sizeof(HT_CAPABILITY_IE));
 					}
@@ -1150,11 +1150,11 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 			/* Save the MIC and replace with zero */
 			/* use proprietary PTK */
 			memset(temp, 0, 64);
-			NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
+			memmove(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 			WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid,
 				     temp, pAd->CurrentAddress, DlsPTK, LEN_PTK);
 
-			NdisMoveMemory(OldMic, pEap->KeyDesc.KeyMic,
+			memmove(OldMic, pEap->KeyDesc.KeyMic,
 				       LEN_KEY_DESC_MIC);
 			memset(pEap->KeyDesc.KeyMic, 0, LEN_KEY_DESC_MIC);
 			if (pAd->StaCfg.WepStatus == Ndis802_11Encryption3Enabled) {
@@ -1162,7 +1162,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 				RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, (u8 *) pEap,
 					     pEap->Body_Len[1] + 4, digest,
 					     SHA1_DIGEST_SIZE);
-				NdisMoveMemory(Mic, digest, LEN_KEY_DESC_MIC);
+				memmove(Mic, digest, LEN_KEY_DESC_MIC);
 			} else {
 				RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, (u8 *) pEap,
 					    pEap->Body_Len[1] + 4, Mic,
@@ -1226,9 +1226,9 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 						&TimerCancelled);
 
 				PairwiseKey.KeyLen = LEN_TK;
-				NdisMoveMemory(PairwiseKey.Key, &pSTAKey[0], LEN_TK);
-				NdisMoveMemory(PairwiseKey.TxMic, &pSTAKey[16], LEN_TKIP_MIC);
-				NdisMoveMemory(PairwiseKey.RxMic, &pSTAKey[24], LEN_TKIP_MIC);
+				memmove(PairwiseKey.Key, &pSTAKey[0], LEN_TK);
+				memmove(PairwiseKey.TxMic, &pSTAKey[16], LEN_TKIP_MIC);
+				memmove(PairwiseKey.RxMic, &pSTAKey[24], LEN_TKIP_MIC);
 
 				if (pAd->StaCfg.PairCipher == Ndis802_11Encryption2Enabled)
 					PairwiseKey.CipherAlg = CIPHER_TKIP;
@@ -1250,7 +1250,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 						       (UCHAR) pAd->StaCfg.DLSEntry[i].MacTabMatchWCID,
 						       PAIRWISEKEYTABLE);
 
-				NdisMoveMemory(&pEntry->PairwiseKey,
+				memmove(&pEntry->PairwiseKey,
 					       &PairwiseKey,
 					       sizeof (CIPHER_KEY));
 				DBGPRINT(RT_DEBUG_TRACE,
@@ -1283,11 +1283,11 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 				RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer, &TimerCancelled);
 
 				PairwiseKey.KeyLen = LEN_TK;
-				NdisMoveMemory(PairwiseKey.Key, &pSTAKey[0],
+				memmove(PairwiseKey.Key, &pSTAKey[0],
 					       LEN_TK);
-				NdisMoveMemory(PairwiseKey.TxMic, &pSTAKey[16],
+				memmove(PairwiseKey.TxMic, &pSTAKey[16],
 					       LEN_TKIP_MIC);
-				NdisMoveMemory(PairwiseKey.RxMic, &pSTAKey[24],
+				memmove(PairwiseKey.RxMic, &pSTAKey[24],
 					       LEN_TKIP_MIC);
 
 				/*PairwiseKey.CipherAlg = pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].CipherAlg; */
@@ -1314,7 +1314,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 						       (UCHAR) pAd->StaCfg.DLSEntry[i].MacTabMatchWCID,
 						       PAIRWISEKEYTABLE);
 
-				NdisMoveMemory(&pEntry->PairwiseKey,
+				memmove(&pEntry->PairwiseKey,
 					       &PairwiseKey,
 					       sizeof (CIPHER_KEY));
 				DBGPRINT(RT_DEBUG_TRACE,
@@ -1554,9 +1554,9 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 	pPacket->KeyDesc.KeyData[3] = 0x0C;
 	pPacket->KeyDesc.KeyData[4] = 0x43;
 	pPacket->KeyDesc.KeyData[5] = 0x03;
-	NdisMoveMemory(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
+	memmove(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
 
-	NdisMoveMemory(pPacket->KeyDesc.ReplayCounter,
+	memmove(pPacket->KeyDesc.ReplayCounter,
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate buffer for transmitting message */
@@ -1572,7 +1572,7 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 
 	/* use proprietary PTK */
 	memset(temp, 0, 64);
-	NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
+	memmove(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 	WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid, temp,
 		     pAd->CurrentAddress, DlsPTK, LEN_PTK);
 
@@ -1582,13 +1582,13 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 		memset(digest, 0, sizeof (digest));
 		RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, digest,
 			     SHA1_DIGEST_SIZE);
-		NdisMoveMemory(pPacket->KeyDesc.KeyMic, digest,
+		memmove(pPacket->KeyDesc.KeyMic, digest,
 			       LEN_KEY_DESC_MIC);
 	} else {
 		memset(Mic, 0, sizeof (Mic));
 		RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, Mic,
 			    MD5_DIGEST_SIZE);
-		NdisMoveMemory(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
+		memmove(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
 	}
 
 	MakeOutgoingFrame(pOutBuffer, &FrameLen,
@@ -1690,9 +1690,9 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 	pPacket->KeyDesc.KeyData[3] = 0x0C;
 	pPacket->KeyDesc.KeyData[4] = 0x43;
 	pPacket->KeyDesc.KeyData[5] = 0x03;
-	NdisMoveMemory(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
+	memmove(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
 
-	NdisMoveMemory(pPacket->KeyDesc.ReplayCounter,
+	memmove(pPacket->KeyDesc.ReplayCounter,
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate buffer for transmitting message */
@@ -1708,7 +1708,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 
 	/* use proprietary PTK */
 	memset(temp, 0, 64);
-	NdisMoveMemory(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
+	memmove(temp, "IEEE802.11 WIRELESS ACCESS POINT", 32);
 	WpaDerivePTK(pAd, temp, temp, pAd->CommonCfg.Bssid, temp,
 		     pAd->CurrentAddress, DlsPTK, LEN_PTK);
 
@@ -1718,13 +1718,13 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
 		memset(digest, 0, sizeof (digest));
 		RT_HMAC_SHA1(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, digest,
 			     SHA1_DIGEST_SIZE);
-		NdisMoveMemory(pPacket->KeyDesc.KeyMic, digest,
+		memmove(pPacket->KeyDesc.KeyMic, digest,
 			       LEN_KEY_DESC_MIC);
 	} else {
 		memset(Mic, 0, sizeof (Mic));
 		RT_HMAC_MD5(DlsPTK, LEN_PTK_KCK, pOutBuffer, FrameLen, Mic,
 			    MD5_DIGEST_SIZE);
-		NdisMoveMemory(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
+		memmove(pPacket->KeyDesc.KeyMic, Mic, LEN_KEY_DESC_MIC);
 	}
 
 	MakeOutgoingFrame(pOutBuffer, &FrameLen,

@@ -160,7 +160,7 @@ int wext_notify_event_assoc(
 
 	if (ReqVarIELen <= IW_CUSTOM_MAX)
 	{
-		NdisMoveMemory(custom, ReqVarIEs, ReqVarIELen);
+		memmove(custom, ReqVarIEs, ReqVarIELen);
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_ASSOC_REQ_IE, -1, NULL,
 								(UCHAR *)custom, ReqVarIELen);
 	}
@@ -185,7 +185,7 @@ void SendAssocIEsToWpaSupplicant(
 	if ((ReqVarIELen + 17) <= IW_CUSTOM_MAX)
 	{
 		snprintf(custom, sizeof(custom), "ASSOCINFO_ReqIEs=");
-		NdisMoveMemory(custom+17, ReqVarIEs, ReqVarIELen);
+		memmove(custom+17, ReqVarIEs, ReqVarIELen);
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (u8 *)custom, ReqVarIELen + 17);
 
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);

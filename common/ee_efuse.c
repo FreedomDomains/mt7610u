@@ -164,7 +164,7 @@ UCHAR eFuseReadRegisters(
 	/*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
-	NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+	memmove(&data, &eFuseCtrlStruc, 4);
 	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -217,7 +217,7 @@ UCHAR eFuseReadRegisters(
 		data = data >> (8*(Offset & 0x3));
 #endif /* RT_BIG_ENDIAN */
 
-		NdisMoveMemory(pData, &data, Length);
+		memmove(pData, &data, Length);
 	}
 
 	return (UCHAR) eFuseCtrlStruc.field.EFSROM_AOUT;
@@ -266,7 +266,7 @@ void eFusePhysicalReadRegisters(
 	/*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
-	NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+	memmove(&data, &eFuseCtrlStruc, 4);
 	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -306,7 +306,7 @@ void eFusePhysicalReadRegisters(
 	data = data >> (8*(Offset & 0x3));
 #endif /* RT_BIG_ENDIAN */
 
-	NdisMoveMemory(pData, &data, Length);
+	memmove(pData, &data, Length);
 
 }
 
@@ -427,7 +427,7 @@ static void eFusePhysicalWriteRegisters(
 	/*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
-	NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+	memmove(&data, &eFuseCtrlStruc, 4);
 	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -492,7 +492,7 @@ static void eFusePhysicalWriteRegisters(
 	/*Step3. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical write procedure.*/
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
-	NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+	memmove(&data, &eFuseCtrlStruc, 4);
 	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
 	/*Step4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It¡¦s done.*/
@@ -948,7 +948,7 @@ int rtmp_ee_efuse_read16(
 	if (pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
 	{
 	    DBGPRINT(RT_DEBUG_TRACE,  ("Read from EEPROM Buffer\n"));
-	    NdisMoveMemory(pValue, &(pAd->EEPROMImage[Offset]), 2);
+	    memmove(pValue, &(pAd->EEPROMImage[Offset]), 2);
 	    *pValue = le2cpu16(*pValue);
 	}
 	else
@@ -966,7 +966,7 @@ int rtmp_ee_efuse_write16(
     {
     	data = le2cpu16(data);
         DBGPRINT(RT_DEBUG_TRACE,  ("Write to EEPROM Buffer\n"));
-        NdisMoveMemory(&(pAd->EEPROMImage[Offset]), &data, 2);
+        memmove(&(pAd->EEPROMImage[Offset]), &data, 2);
     }
     else
         eFuseWrite(pAd,Offset ,&data, 2);

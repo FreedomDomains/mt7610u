@@ -348,7 +348,7 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
 	_pAd->StaActive.SupportedHtPhy.RecomWidth = _pAd->MlmeAux.AddHtInfo.AddHtInfo.RecomWidth;      \
 	_pAd->StaActive.SupportedHtPhy.OperaionMode = _pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode;      \
 	_pAd->StaActive.SupportedHtPhy.NonGfPresent = _pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent;      \
-	NdisMoveMemory((_pAd)->MacTab.Content[BSSID_WCID].HTCapability.MCSSet, (_pAd)->StaActive.SupportedPhyInfo.MCSSet, sizeof(UCHAR) * 16);\
+	memmove((_pAd)->MacTab.Content[BSSID_WCID].HTCapability.MCSSet, (_pAd)->StaActive.SupportedPhyInfo.MCSSet, sizeof(UCHAR) * 16);\
 }
 
 #define COPY_AP_HTSETTINGS_FROM_BEACON(_pAd, _pHtCapability)                                 \
@@ -446,9 +446,9 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 
 #define MAKE_802_3_HEADER(_p, _pMac1, _pMac2, _pType)                   \
 {                                                                       \
-    NdisMoveMemory(_p, _pMac1, MAC_ADDR_LEN);                           \
-    NdisMoveMemory((_p + MAC_ADDR_LEN), _pMac2, MAC_ADDR_LEN);          \
-    NdisMoveMemory((_p + MAC_ADDR_LEN * 2), _pType, LENGTH_802_3_TYPE); \
+    memmove(_p, _pMac1, MAC_ADDR_LEN);                           \
+    memmove((_p + MAC_ADDR_LEN), _pMac2, MAC_ADDR_LEN);          \
+    memmove((_p + MAC_ADDR_LEN * 2), _pType, LENGTH_802_3_TYPE); \
 }
 
 /*

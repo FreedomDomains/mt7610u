@@ -59,7 +59,7 @@ UCHAR CipherSuiteWpaNoneAesLen =
 {                                                                                       \
 	memset((_pAd)->CommonCfg.Ssid, 0, MAX_LEN_OF_SSID); 							\
 	(_pAd)->CommonCfg.SsidLen = (_pAd)->MlmeAux.SsidLen;                                \
-	NdisMoveMemory((_pAd)->CommonCfg.Ssid, (_pAd)->MlmeAux.Ssid, (_pAd)->MlmeAux.SsidLen); \
+	memmove((_pAd)->CommonCfg.Ssid, (_pAd)->MlmeAux.Ssid, (_pAd)->MlmeAux.SsidLen); \
 	ether_addr_copy((_pAd)->CommonCfg.Bssid, (_pAd)->MlmeAux.Bssid);                      \
 	(_pAd)->CommonCfg.Channel = (_pAd)->MlmeAux.Channel;                                \
 	(_pAd)->CommonCfg.CentralChannel = (_pAd)->MlmeAux.CentralChannel;                  \
@@ -71,12 +71,12 @@ UCHAR CipherSuiteWpaNoneAesLen =
 	(_pAd)->StaActive.CfpMaxDuration = (_pAd)->MlmeAux.CfpMaxDuration;                  \
 	(_pAd)->StaActive.CfpPeriod = (_pAd)->MlmeAux.CfpPeriod;                            \
 	(_pAd)->StaActive.SupRateLen = (_pAd)->MlmeAux.SupRateLen;                          \
-	NdisMoveMemory((_pAd)->StaActive.SupRate, (_pAd)->MlmeAux.SupRate, (_pAd)->MlmeAux.SupRateLen);\
+	memmove((_pAd)->StaActive.SupRate, (_pAd)->MlmeAux.SupRate, (_pAd)->MlmeAux.SupRateLen);\
 	(_pAd)->StaActive.ExtRateLen = (_pAd)->MlmeAux.ExtRateLen;                          \
-	NdisMoveMemory((_pAd)->StaActive.ExtRate, (_pAd)->MlmeAux.ExtRate, (_pAd)->MlmeAux.ExtRateLen);\
-	NdisMoveMemory(&(_pAd)->CommonCfg.APEdcaParm, &(_pAd)->MlmeAux.APEdcaParm, sizeof(EDCA_PARM));\
-	NdisMoveMemory(&(_pAd)->CommonCfg.APQosCapability, &(_pAd)->MlmeAux.APQosCapability, sizeof(QOS_CAPABILITY_PARM));\
-	NdisMoveMemory(&(_pAd)->CommonCfg.APQbssLoad, &(_pAd)->MlmeAux.APQbssLoad, sizeof(QBSS_LOAD_PARM));\
+	memmove((_pAd)->StaActive.ExtRate, (_pAd)->MlmeAux.ExtRate, (_pAd)->MlmeAux.ExtRateLen);\
+	memmove(&(_pAd)->CommonCfg.APEdcaParm, &(_pAd)->MlmeAux.APEdcaParm, sizeof(EDCA_PARM));\
+	memmove(&(_pAd)->CommonCfg.APQosCapability, &(_pAd)->MlmeAux.APQosCapability, sizeof(QOS_CAPABILITY_PARM));\
+	memmove(&(_pAd)->CommonCfg.APQbssLoad, &(_pAd)->MlmeAux.APQbssLoad, sizeof(QBSS_LOAD_PARM));\
 	ether_addr_copy((_pAd)->MacTab.Content[BSSID_WCID].Addr, (_pAd)->MlmeAux.Bssid);      \
 	(_pAd)->MacTab.Content[BSSID_WCID].PairwiseKey.CipherAlg = (_pAd)->StaCfg.PairCipher;\
 	ether_addr_copy((_pAd)->MacTab.Content[BSSID_WCID].PairwiseKey.BssId, (_pAd)->MlmeAux.Bssid);\
@@ -152,7 +152,7 @@ void MlmeCntlMachinePerformAction(
 		if (Elem->MsgType == MT2_SCAN_CONF) {
 			USHORT	Status = MLME_SUCCESS;
 
-			NdisMoveMemory(&Status, Elem->Msg, sizeof(USHORT));
+			memmove(&Status, Elem->Msg, sizeof(USHORT));
 
 			/* Resume TxRing after SCANING complete. We hope the out-of-service time */
 			/* won't be too long to let upper layer time-out the waiting frames */
@@ -245,7 +245,7 @@ when disassoc from ap1 ,and send even_scan will direct connect to ap2 , not need
 	case CNTL_WAIT_SCAN_FOR_CONNECT:
 		if (Elem->MsgType == MT2_SCAN_CONF) {
 			USHORT	Status = MLME_SUCCESS;
-			NdisMoveMemory(&Status, Elem->Msg, sizeof(USHORT));
+			memmove(&Status, Elem->Msg, sizeof(USHORT));
 			/* Resume TxRing after SCANING complete. We hope the out-of-service time */
 			/* won't be too long to let upper layer time-out the waiting frames */
 			RTMPResumeMsduTransmission(pAd);
@@ -367,7 +367,7 @@ void CntlOidScanProc(
 				       pAd->CommonCfg.SsidLen,
 				       pAd->CommonCfg.Channel);
 		if (BssIdx != BSS_NOT_FOUND) {
-			NdisMoveMemory(pCurrBss, &pAd->ScanTab.BssEntry[BssIdx],
+			memmove(pCurrBss, &pAd->ScanTab.BssEntry[BssIdx],
 				       sizeof (BSS_ENTRY));
 		}
 	}
@@ -403,7 +403,7 @@ void CntlOidSsidProc(
 
 	/* Step 1. record the desired user settings to MlmeAux */
 	memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
-	NdisMoveMemory(pAd->MlmeAux.Ssid, pOidSsid->Ssid, pOidSsid->SsidLength);
+	memmove(pAd->MlmeAux.Ssid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->MlmeAux.SsidLen = (UCHAR) pOidSsid->SsidLength;
 	if (pAd->StaCfg.BssType == BSS_INFRA)
 		memset(pAd->MlmeAux.Bssid, 0, MAC_ADDR_LEN);
@@ -413,7 +413,7 @@ void CntlOidSsidProc(
 
 	/*save connect info*/
 	memset(pAd->StaCfg.ConnectinfoSsid, 0, MAX_LEN_OF_SSID);
-	NdisMoveMemory(pAd->StaCfg.ConnectinfoSsid, pOidSsid->Ssid, pOidSsid->SsidLength);
+	memmove(pAd->StaCfg.ConnectinfoSsid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->StaCfg.ConnectinfoSsidLen = pOidSsid->SsidLength;
 	pAd->StaCfg.ConnectinfoBssType = pAd->StaCfg.BssType;
 
@@ -421,7 +421,7 @@ void CntlOidSsidProc(
 
 	/* Update Reconnect Ssid, that user desired to connect. */
 	memset(pAd->MlmeAux.AutoReconnectSsid, 0, MAX_LEN_OF_SSID);
-	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.Ssid,
+	memmove(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.Ssid,
 		       pAd->MlmeAux.SsidLen);
 	pAd->MlmeAux.AutoReconnectSsidLen = pAd->MlmeAux.SsidLen;
 
@@ -637,7 +637,7 @@ void CntlOidRTBssidProc(
 
 	/*save connect info*/
 	memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
-	NdisMoveMemory(pAd->StaCfg.ConnectinfoBssid, pOidBssid, MAC_ADDR_LEN);
+	memmove(pAd->StaCfg.ConnectinfoBssid, pOidBssid, MAC_ADDR_LEN);
 	DBGPRINT(RT_DEBUG_TRACE, ("ANDROID IOCTL::SIOCSIWAP %02x:%02x:%02x:%02x:%02x:%02x\n",
 		pAd->StaCfg.ConnectinfoBssid[0], pAd->StaCfg.ConnectinfoBssid[1], pAd->StaCfg.ConnectinfoBssid[2],
 		pAd->StaCfg.ConnectinfoBssid[3], pAd->StaCfg.ConnectinfoBssid[4], pAd->StaCfg.ConnectinfoBssid[5]));
@@ -724,14 +724,14 @@ void CntlOidRTBssidProc(
 	/* Update Reconnect Ssid, that user desired to connect. */
 	memset(pAd->MlmeAux.AutoReconnectSsid, 0, MAX_LEN_OF_SSID);
 	pAd->MlmeAux.AutoReconnectSsidLen = pInBss->SsidLen;
-	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, pInBss->Ssid, pInBss->SsidLen);
+	memmove(pAd->MlmeAux.AutoReconnectSsid, pInBss->Ssid, pInBss->SsidLen);
 
 
 	/* copy the matched BSS entry from ScanTab to MlmeAux.SsidBssTab. Why? */
 	/* Because we need this entry to become the JOIN target in later on SYNC state machine */
 	pAd->MlmeAux.BssIdx = 0;
 	pAd->MlmeAux.SsidBssTab.BssNr = 1;
-	NdisMoveMemory(&pAd->MlmeAux.SsidBssTab.BssEntry[0], pInBss,
+	memmove(&pAd->MlmeAux.SsidBssTab.BssEntry[0], pInBss,
 		       sizeof (BSS_ENTRY));
 
 	{
@@ -835,7 +835,7 @@ void CntlMlmeRoamingProc(
 		/*Let BBP register at 20MHz to do (fast) roaming. */
 		rtmp_bbp_set_bw(pAd, BW_20);
 
-		NdisMoveMemory(&pAd->MlmeAux.SsidBssTab, &pAd->MlmeAux.RoamTab,
+		memmove(&pAd->MlmeAux.SsidBssTab, &pAd->MlmeAux.RoamTab,
 			       sizeof (pAd->MlmeAux.RoamTab));
 		pAd->MlmeAux.SsidBssTab.BssNr = pAd->MlmeAux.RoamTab.BssNr;
 
@@ -909,7 +909,7 @@ void CntlOidDLSSetupProc(
 			} else if ((i < MAX_NUM_OF_DLS_ENTRY) && pDLS->Valid
 				   && !pAd->StaCfg.DLSEntry[i].Valid) {
 				/* 3. Enable case, start DLS setup procedure */
-				NdisMoveMemory(&pAd->StaCfg.DLSEntry[i], pDLS,
+				memmove(&pAd->StaCfg.DLSEntry[i], pDLS,
 					       sizeof (RT_802_11_DLS_UI));
 
 				/*Update countdown timer */
@@ -941,7 +941,7 @@ void CntlOidDLSSetupProc(
 					    MT2_MLME_DLS_TEAR_DOWN,
 					    sizeof (MLME_DLS_REQ_STRUCT),
 					    &MlmeDlsReq, 0);
-				NdisMoveMemory(&pAd->StaCfg.DLSEntry[i], pDLS,
+				memmove(&pAd->StaCfg.DLSEntry[i], pDLS,
 					       sizeof (RT_802_11_DLS_UI));
 				DlsParmFill(pAd, &MlmeDlsReq,
 					    &pAd->StaCfg.DLSEntry[i], reason);
@@ -1062,7 +1062,7 @@ void CntlWaitJoinProc(
 	MLME_AUTH_REQ_STRUCT AuthReq;
 
 	if (Elem->MsgType == MT2_JOIN_CONF) {
-		NdisMoveMemory(&Reason, Elem->Msg, sizeof (USHORT));
+		memmove(&Reason, Elem->Msg, sizeof (USHORT));
 		if (Reason == MLME_SUCCESS) {
 			/* 1. joined an IBSS, we are pretty much done here */
 			if (pAd->MlmeAux.BssType == BSS_ADHOC) {
@@ -1142,7 +1142,7 @@ void CntlWaitStartProc(
 
 
 	if (Elem->MsgType == MT2_START_CONF) {
-		NdisMoveMemory(&Result, Elem->Msg, sizeof (USHORT));
+		memmove(&Result, Elem->Msg, sizeof (USHORT));
 		if (Result == MLME_SUCCESS) {
 			/* */
 			/* 5G bands rules of Japan: */
@@ -1172,14 +1172,14 @@ void CntlWaitStartProc(
 				pAd->MlmeAux.CentralChannel = get_cent_ch_by_htinfo(pAd,
 												&pAd->CommonCfg.AddHTInfo,
 												&pAd->CommonCfg.HtCapability);
-				NdisMoveMemory(&pAd->MlmeAux.AddHtInfo,
+				memmove(&pAd->MlmeAux.AddHtInfo,
 					       &pAd->CommonCfg.AddHTInfo,
 					       sizeof (ADD_HT_INFO_IE));
 				RTMPCheckHt(pAd, BSSID_WCID,
 					    &pAd->CommonCfg.HtCapability,
 					    &pAd->CommonCfg.AddHTInfo);
 				rt_phy_info->bHtEnable = TRUE;
-				NdisMoveMemory(&rt_phy_info->MCSSet[0],
+				memmove(&rt_phy_info->MCSSet[0],
 					       &pAd->CommonCfg.HtCapability.MCSSet[0], 16);
 				COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
 #ifdef DOT11_VHT_AC
@@ -1241,7 +1241,7 @@ void CntlWaitAuthProc(
 	MLME_AUTH_REQ_STRUCT AuthReq;
 
 	if (Elem->MsgType == MT2_AUTH_CONF) {
-		NdisMoveMemory(&Reason, Elem->Msg, sizeof (USHORT));
+		memmove(&Reason, Elem->Msg, sizeof (USHORT));
 		if (Reason == MLME_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE, ("CNTL - AUTH OK\n"));
 			AssocParmFill(pAd, &AssocReq, pAd->MlmeAux.Bssid,
@@ -1304,7 +1304,7 @@ void CntlWaitAuthProc2(
 	MLME_AUTH_REQ_STRUCT AuthReq;
 
 	if (Elem->MsgType == MT2_AUTH_CONF) {
-		NdisMoveMemory(&Reason, Elem->Msg, sizeof (USHORT));
+		memmove(&Reason, Elem->Msg, sizeof (USHORT));
 		if (Reason == MLME_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE, ("CNTL - AUTH OK\n"));
 			AssocParmFill(pAd, &AssocReq, pAd->MlmeAux.Bssid,
@@ -1362,7 +1362,7 @@ void CntlWaitAssocProc(
 	USHORT Reason;
 
 	if (Elem->MsgType == MT2_ASSOC_CONF) {
-		NdisMoveMemory(&Reason, Elem->Msg, sizeof (USHORT));
+		memmove(&Reason, Elem->Msg, sizeof (USHORT));
 		if (Reason == MLME_SUCCESS) {
 			LinkUp(pAd, BSS_INFRA);
 			pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
@@ -1394,7 +1394,7 @@ void CntlWaitReassocProc(
 	USHORT Result;
 
 	if (Elem->MsgType == MT2_REASSOC_CONF) {
-		NdisMoveMemory(&Result, Elem->Msg, sizeof (USHORT));
+		memmove(&Result, Elem->Msg, sizeof (USHORT));
 		if (Result == MLME_SUCCESS) {
 			/* */
 			/* NDIS requires a new Link UP indication but no Link Down for RE-ASSOC */
@@ -1661,12 +1661,12 @@ void LinkUp(
 
 			memset(&pAd->SharedKey[BSS0][0], 0, sizeof (CIPHER_KEY));
 			pAd->SharedKey[BSS0][0].KeyLen = LEN_TK;
-			NdisMoveMemory(pAd->SharedKey[BSS0][0].Key, pAd->StaCfg.PMK, LEN_TK);
+			memmove(pAd->SharedKey[BSS0][0].Key, pAd->StaCfg.PMK, LEN_TK);
 
 			if (pAd->StaCfg.PairCipher == Ndis802_11Encryption2Enabled) {
-				NdisMoveMemory(pAd->SharedKey[BSS0][0].RxMic,
+				memmove(pAd->SharedKey[BSS0][0].RxMic,
 					       &pAd->StaCfg.PMK[16], LEN_TKIP_MIC);
-				NdisMoveMemory(pAd->SharedKey[BSS0][0].TxMic,
+				memmove(pAd->SharedKey[BSS0][0].TxMic,
 					       &pAd->StaCfg.PMK[16], LEN_TKIP_MIC);
 			}
 
@@ -2236,7 +2236,7 @@ void LinkDown(
 
 		/* Saved last SSID for linkup comparison */
 		pAd->CommonCfg.LastSsidLen = pAd->CommonCfg.SsidLen;
-		NdisMoveMemory(pAd->CommonCfg.LastSsid, pAd->CommonCfg.Ssid,
+		memmove(pAd->CommonCfg.LastSsid, pAd->CommonCfg.Ssid,
 			       pAd->CommonCfg.LastSsidLen);
 		ether_addr_copy(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid);
 		if (pAd->MlmeAux.CurrReqIsFromNdis == TRUE) {
@@ -2267,7 +2267,7 @@ void LinkDown(
 #ifdef EXT_BUILD_CHANNEL_LIST
 		/* Country IE of the AP will be evaluated and will be used. */
 		if (pAd->StaCfg.IEEE80211dClientMode != Rt802_11_D_None) {
-			NdisMoveMemory(&pAd->CommonCfg.CountryCode[0],
+			memmove(&pAd->CommonCfg.CountryCode[0],
 				       &pAd->StaCfg.StaOriCountryCode[0], 2);
 			pAd->CommonCfg.Geography = pAd->StaCfg.StaOriGeography;
 			BuildChannelListEx(pAd);
@@ -2670,7 +2670,7 @@ void ScanParmFill(
 {
 	memset(ScanReq->Ssid, 0, MAX_LEN_OF_SSID);
 	ScanReq->SsidLen = SsidLen;
-	NdisMoveMemory(ScanReq->Ssid, Ssid, SsidLen);
+	memmove(ScanReq->Ssid, Ssid, SsidLen);
 	ScanReq->BssType = BssType;
 	ScanReq->ScanType = ScanType;
 }
@@ -2712,7 +2712,7 @@ void StartParmFill(
 	ASSERT(SsidLen <= MAX_LEN_OF_SSID);
 	if (SsidLen > MAX_LEN_OF_SSID)
 		SsidLen = MAX_LEN_OF_SSID;
-	NdisMoveMemory(StartReq->Ssid, Ssid, SsidLen);
+	memmove(StartReq->Ssid, Ssid, SsidLen);
 	StartReq->SsidLen = SsidLen;
 }
 
@@ -2830,9 +2830,9 @@ ULONG MakeIbssBeacon(
 	}
 
 	pAd->StaActive.SupRateLen = SupRateLen;
-	NdisMoveMemory(pAd->StaActive.SupRate, SupRate, SupRateLen);
+	memmove(pAd->StaActive.SupRate, SupRate, SupRateLen);
 	pAd->StaActive.ExtRateLen = ExtRateLen;
-	NdisMoveMemory(pAd->StaActive.ExtRate, ExtRate, ExtRateLen);
+	memmove(pAd->StaActive.ExtRate, ExtRate, ExtRateLen);
 
 	/* compose IBSS beacon frame */
 	MgtMacHeaderInit(pAd, &BcnHdr, SUBTYPE_BEACON, 0, BROADCAST_ADDR,
@@ -2917,14 +2917,14 @@ ULONG MakeIbssBeacon(
 				  HtLen1, &pAd->CommonCfg.AddHTInfo,
 				  END_OF_ARGS);
 #else
-		NdisMoveMemory(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability,
+		memmove(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability,
 			       HtLen);
 		*(USHORT *) (&HtCapabilityTmp.HtCapInfo) =
 		    SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 		*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) =
 		    SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
 
-		NdisMoveMemory(&addHTInfoTmp, &pAd->CommonCfg.AddHTInfo,
+		memmove(&addHTInfoTmp, &pAd->CommonCfg.AddHTInfo,
 			       HtLen1);
 		*(USHORT *) (&addHTInfoTmp.AddHtInfo2) =
 		    SWAP16(*(USHORT *) (&addHTInfoTmp.AddHtInfo2));
@@ -3054,11 +3054,11 @@ void MaintainBssTable(
 			for (j = i; j < total_bssNr - 1; j++)
 			{
 				pOldAddr = Tab->BssEntry[j].pVarIeFromProbRsp;
-				NdisMoveMemory(&(Tab->BssEntry[j]), &(Tab->BssEntry[j + 1]), sizeof(BSS_ENTRY));
+				memmove(&(Tab->BssEntry[j]), &(Tab->BssEntry[j + 1]), sizeof(BSS_ENTRY));
 				if (pOldAddr)
 				{
 					memset(pOldAddr, 0, MAX_VIE_LEN);
-					NdisMoveMemory(pOldAddr,
+					memmove(pOldAddr,
 								   Tab->BssEntry[j + 1].pVarIeFromProbRsp,
 								   Tab->BssEntry[j + 1].VarIeFromProbeRspLen);
 					Tab->BssEntry[j].pVarIeFromProbRsp = pOldAddr;

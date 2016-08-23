@@ -325,19 +325,19 @@ void MlmeAssocReqAction(
 		memset(pAd->StaCfg.ReqVarIEs, 0, MAX_VIE_LEN);
 		/* First add SSID */
 		VarIesOffset = 0;
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &SsidIe, 1);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &SsidIe, 1);
 		VarIesOffset += 1;
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->MlmeAux.SsidLen, 1);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->MlmeAux.SsidLen, 1);
 		VarIesOffset += 1;
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
 		VarIesOffset += pAd->MlmeAux.SsidLen;
 
 		/* Second add Supported rates */
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &SupRateIe, 1);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &SupRateIe, 1);
 		VarIesOffset += 1;
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->MlmeAux.SupRateLen, 1);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->MlmeAux.SupRateLen, 1);
 		VarIesOffset += 1;
-		NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->MlmeAux.SupRate, pAd->MlmeAux.SupRateLen);
+		memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->MlmeAux.SupRate, pAd->MlmeAux.SupRateLen);
 		VarIesOffset += pAd->MlmeAux.SupRateLen;
 		/* End Add by James */
 
@@ -377,7 +377,7 @@ void MlmeAssocReqAction(
 #ifdef RT_BIG_ENDIAN
 			HT_CAPABILITY_IE HtCapabilityTmp;
 			memset(&HtCapabilityTmp, 0, sizeof (HT_CAPABILITY_IE));
-			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
+			memmove(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
 			*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 			*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
 			pHtCapability = &HtCapabilityTmp;
@@ -550,7 +550,7 @@ void MlmeAssocReqAction(
 					if (FoundPMK) {
 						/* Set PMK number */
 						*(PUSHORT) & pAd->StaCfg.RSN_IE[pAd->StaCfg.RSNIE_Len] = 1;
-						NdisMoveMemory(&pAd->StaCfg.RSN_IE[pAd->StaCfg.RSNIE_Len + 2],
+						memmove(&pAd->StaCfg.RSN_IE[pAd->StaCfg.RSNIE_Len + 2],
 							       &pAd->StaCfg.SavedPMK[idx].PMKID, 16);
 						pAd->StaCfg.RSNIE_Len += 18;
 					}
@@ -593,12 +593,12 @@ void MlmeAssocReqAction(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 			{
 				/* Append Variable IE */
-				NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &RSNIe, 1);
+				memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &RSNIe, 1);
 				VarIesOffset += 1;
-				NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->StaCfg.RSNIE_Len, 1);
+				memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, &pAd->StaCfg.RSNIE_Len, 1);
 				VarIesOffset += 1;
 
-				NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->StaCfg.RSN_IE, pAd->StaCfg.RSNIE_Len);
+				memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset, pAd->StaCfg.RSN_IE, pAd->StaCfg.RSNIE_Len);
 				VarIesOffset += pAd->StaCfg.RSNIE_Len;
 
 				/* Set Variable IEs Length */
@@ -624,7 +624,7 @@ void MlmeAssocReqAction(
 
 			FrameLen += TmpWpaAssocIeLen;
 
-			NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset,
+			memmove(pAd->StaCfg.ReqVarIEs + VarIesOffset,
 				       pAd->StaCfg.pWpaAssocIe,
 				       pAd->StaCfg.WpaAssocIeLen);
 			VarIesOffset += pAd->StaCfg.WpaAssocIeLen;
@@ -796,7 +796,7 @@ void MlmeReassocReqAction(
 #ifdef RT_BIG_ENDIAN
 			HT_CAPABILITY_IE HtCapabilityTmp;
 			memset(&HtCapabilityTmp, 0, sizeof (HT_CAPABILITY_IE));
-			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
+			memmove(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, pAd->MlmeAux.HtCapabilityLen);
 			*(USHORT *) (&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.HtCapInfo));
 			*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo) = SWAP16(*(USHORT *) (&HtCapabilityTmp.ExtHtCapInfo));
 			pHtCapability = &HtCapabilityTmp;
@@ -1391,16 +1391,16 @@ void AssocPostProc(
 	}
 #endif /* DOT11_N_SUPPORT */
 
-	NdisMoveMemory(&pAd->MlmeAux.APEdcaParm, pEdcaParm, sizeof (EDCA_PARM));
+	memmove(&pAd->MlmeAux.APEdcaParm, pEdcaParm, sizeof (EDCA_PARM));
 
 	/* filter out un-supported rates */
 	pAd->MlmeAux.SupRateLen = SupRateLen;
-	NdisMoveMemory(pAd->MlmeAux.SupRate, SupRate, SupRateLen);
+	memmove(pAd->MlmeAux.SupRate, SupRate, SupRateLen);
 	RTMPCheckRates(pAd, pAd->MlmeAux.SupRate, &pAd->MlmeAux.SupRateLen);
 
 	/* filter out un-supported rates */
 	pAd->MlmeAux.ExtRateLen = ExtRateLen;
-	NdisMoveMemory(pAd->MlmeAux.ExtRate, ExtRate, ExtRateLen);
+	memmove(pAd->MlmeAux.ExtRate, ExtRate, ExtRateLen);
 	RTMPCheckRates(pAd, pAd->MlmeAux.ExtRate, &pAd->MlmeAux.ExtRateLen);
 
 #ifdef DOT11_N_SUPPORT
@@ -1463,7 +1463,7 @@ void AssocPostProc(
 				    && (NdisEqualMemory(pEid->Octet, WPA_OUI, 4))
 				    && (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA
 					|| pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPAPSK)) {
-					NdisMoveMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
+					memmove(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
 					pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = (pEid->Len + 2);
 					DBGPRINT(RT_DEBUG_ERROR,
 						 ("%s():=> Store RSN_IE for WPA SM negotiation\n", __FUNCTION__));
@@ -1473,7 +1473,7 @@ void AssocPostProc(
 					 && (NdisEqualMemory(pEid->Octet + 2, RSN_OUI, 3))
 					 && (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2
 					     || pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK)) {
-					NdisMoveMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
+					memmove(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
 					pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = (pEid->Len + 2);
 					DBGPRINT(RT_DEBUG_ERROR,
 						 ("%s():=> Store RSN_IE for WPA2 SM negotiation\n", __FUNCTION__));
@@ -1854,7 +1854,7 @@ BOOLEAN StaAddMacTableEntry(
 			CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE);
 		if (pHtCapability->ExtHtCapInfo.MCSFeedback == 0x03)
 			CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_MCSFEEDBACK_CAPABLE);
-		NdisMoveMemory(&pEntry->HTCapability, pHtCapability, HtCapabilityLen);
+		memmove(&pEntry->HTCapability, pHtCapability, HtCapabilityLen);
 
 		assoc_ht_info_debugshow(pAd, pEntry, HtCapabilityLen, pHtCapability);
 #ifdef DOT11_VHT_AC

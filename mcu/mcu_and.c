@@ -231,7 +231,7 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
 
 			/* four zero bytes for end padding */
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
@@ -381,7 +381,7 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
 
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
@@ -1500,7 +1500,7 @@ static void andes_burst_read_callback(struct cmd_msg *msg, char *rsp_payload, u1
 {
 	u32 i;
 	u32 *data;
-	NdisMoveMemory(msg->rsp_payload, rsp_payload + 4, rsp_payload_len - 4);
+	memmove(msg->rsp_payload, rsp_payload + 4, rsp_payload_len - 4);
 
 	for (i = 0; i < (msg->rsp_payload_len - 4) / 4; i++) {
 		data = (u32 *)(msg->rsp_payload + i * 4);
@@ -1568,7 +1568,7 @@ static void andes_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u
 	RTMP_REG_PAIR *reg_pair = (RTMP_REG_PAIR *)msg->rsp_payload;
 
 	for (i = 0; i < msg->rsp_payload_len / 8; i++) {
-		NdisMoveMemory(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 4);
+		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 4);
 		reg_pair[i].Value = le2cpu32(reg_pair[i].Value);
 	}
 }
@@ -1625,7 +1625,7 @@ static void andes_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload
 	BANK_RF_REG_PAIR *reg_pair = (BANK_RF_REG_PAIR *)msg->rsp_payload;
 
 	for (i = 0; i < msg->rsp_payload_len / 8; i++) {
-		NdisMoveMemory(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
+		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
 	}
 }
 

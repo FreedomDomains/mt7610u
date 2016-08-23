@@ -357,7 +357,7 @@ INT build_vht_op_ie(struct rtmp_adapter*pAd, UCHAR *buf)
 			break;
 	}
 
-	NdisMoveMemory((UCHAR *)buf, (UCHAR *)&vht_op, sizeof(VHT_OP_IE));
+	memmove((UCHAR *)buf, (UCHAR *)&vht_op, sizeof(VHT_OP_IE));
 
 	return sizeof(VHT_OP_IE);
 }
@@ -469,7 +469,7 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, UCHAR *buf)
 			break;
 	}
 
-	NdisMoveMemory(buf, (UCHAR *)&vht_cap_ie, sizeof(VHT_CAP_IE));
+	memmove(buf, (UCHAR *)&vht_cap_ie, sizeof(VHT_CAP_IE));
 
 	return sizeof(VHT_CAP_IE);
 }
@@ -483,7 +483,7 @@ INT build_vht_ies(struct rtmp_adapter*pAd, UCHAR *buf, UCHAR frm)
 
 	eid_hdr.Eid = IE_VHT_CAP;
 	eid_hdr.Len = sizeof(VHT_CAP_IE);
-	NdisMoveMemory(buf, (UCHAR *)&eid_hdr, 2);
+	memmove(buf, (UCHAR *)&eid_hdr, 2);
 	len = 2;
 
 	len += build_vht_cap_ie(pAd, (UCHAR *)(buf + len));
@@ -492,7 +492,7 @@ INT build_vht_ies(struct rtmp_adapter*pAd, UCHAR *buf, UCHAR frm)
 	{
 		eid_hdr.Eid = IE_VHT_OP;
 		eid_hdr.Len = sizeof(VHT_OP_IE);
-		NdisMoveMemory((UCHAR *)(buf + len), (UCHAR *)&eid_hdr, 2);
+		memmove((UCHAR *)(buf + len), (UCHAR *)&eid_hdr, 2);
 		len +=2;
 
 		len += build_vht_op_ie(pAd, (UCHAR *)(buf + len));

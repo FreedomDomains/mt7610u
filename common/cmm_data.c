@@ -819,7 +819,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	pPacket = pTxBlk->pPacket;
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pTxBlk->pSrcBufHeader, &pTxBlk->SrcBufLen);
 #ifdef TX_PKT_SG
-	NdisMoveMemory( &pTxBlk->pkt_info, &PacketInfo, sizeof(PacketInfo));
+	memmove( &pTxBlk->pkt_info, &PacketInfo, sizeof(PacketInfo));
 #endif /* TX_PKT_SG */
 	pTxBlk->Wcid = RTMP_GET_PACKET_WCID(pPacket);
 	pTxBlk->apidx = RTMP_GET_PACKET_IF(pPacket);
@@ -1431,7 +1431,7 @@ UINT deaggregate_AMSDU_announce(
 	        	{
 	    			pPayload -= LENGTH_802_3;
 	    			PayloadSize += LENGTH_802_3;
-	    			NdisMoveMemory(pPayload, &Header802_3[0], LENGTH_802_3);
+	    			memmove(pPayload, &Header802_3[0], LENGTH_802_3);
 	        	}
 		}
 #endif /* CONFIG_STA_SUPPORT */
@@ -2218,7 +2218,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 			ASSERT(pAd->FragFrame.pFragPacket);
 			pFragBuffer = GET_OS_PKT_DATAPTR(pAd->FragFrame.pFragPacket);
 			pAd->FragFrame.RxSize   = DataSize + HeaderRoom;
-			NdisMoveMemory(pFragBuffer,	 pHeader, pAd->FragFrame.RxSize);
+			memmove(pFragBuffer,	 pHeader, pAd->FragFrame.RxSize);
 			pAd->FragFrame.Sequence = pHeader->Sequence;
 			pAd->FragFrame.LastFrag = pHeader->Frag;	   /* Should be 0*/
 			ASSERT(pAd->FragFrame.LastFrag == 0);
@@ -2258,7 +2258,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 		pFragBuffer = GET_OS_PKT_DATAPTR(pAd->FragFrame.pFragPacket);
 
 		/* concatenate this fragment into the re-assembly buffer*/
-		NdisMoveMemory((pFragBuffer + pAd->FragFrame.RxSize), pData, DataSize);
+		memmove((pFragBuffer + pAd->FragFrame.RxSize), pData, DataSize);
 		pAd->FragFrame.RxSize  += DataSize;
 		pAd->FragFrame.LastFrag = pHeader->Frag;	   /* Update fragment number*/
 

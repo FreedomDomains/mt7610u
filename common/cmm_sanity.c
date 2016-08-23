@@ -161,9 +161,9 @@ BOOLEAN PeerAddBAReqActionSanity(
 	{
 		BA_PARM		tmpBaParm;
 
-		NdisMoveMemory((u8 *)(&tmpBaParm), (u8 *)(&pAddFrame->BaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&tmpBaParm), (u8 *)(&pAddFrame->BaParm), sizeof(BA_PARM));
 		*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-		NdisMoveMemory((u8 *)(&pAddFrame->BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&pAddFrame->BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
 	}
 #else
 	*(USHORT *)(&pAddFrame->BaParm) = cpu2le16(*(USHORT *)(&pAddFrame->BaParm));
@@ -202,9 +202,9 @@ BOOLEAN PeerAddBARspActionSanity(
 	{
 		BA_PARM		tmpBaParm;
 
-		NdisMoveMemory((u8 *)(&tmpBaParm), (u8 *)(&pAddFrame->BaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&tmpBaParm), (u8 *)(&pAddFrame->BaParm), sizeof(BA_PARM));
 		*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-		NdisMoveMemory((u8 *)(&pAddFrame->BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&pAddFrame->BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
 	}
 #else
 	*(USHORT *)(&pAddFrame->BaParm) = cpu2le16(*(USHORT *)(&pAddFrame->BaParm));
@@ -358,7 +358,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     Length += LENGTH_802_11;
 
     /* get timestamp from payload and advance the pointer*/
-    NdisMoveMemory(pTimestamp, Ptr, TIMESTAMP_LEN);
+    memmove(pTimestamp, Ptr, TIMESTAMP_LEN);
 
 	pTimestamp->u.LowPart = cpu2le32(pTimestamp->u.LowPart);
 	pTimestamp->u.HighPart = cpu2le32(pTimestamp->u.HighPart);
@@ -367,12 +367,12 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     Length += TIMESTAMP_LEN;
 
     /* get beacon interval from payload and advance the pointer*/
-    NdisMoveMemory(pBeaconPeriod, Ptr, 2);
+    memmove(pBeaconPeriod, Ptr, 2);
     Ptr += 2;
     Length += 2;
 
     /* get capability info from payload and advance the pointer*/
-    NdisMoveMemory(pCapabilityInfo, Ptr, 2);
+    memmove(pCapabilityInfo, Ptr, 2);
     Ptr += 2;
     Length += 2;
 
@@ -403,7 +403,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                     break;
                 if(pEid->Len <= MAX_LEN_OF_SSID)
                 {
-                    NdisMoveMemory(Ssid, pEid->Octet, pEid->Len);
+                    memmove(Ssid, pEid->Octet, pEid->Len);
                     *pSsidLen = pEid->Len;
                     Sanity |= 0x1;
                 }
@@ -418,7 +418,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 if(pEid->Len <= MAX_LEN_OF_SUPPORTED_RATES)
                 {
                     Sanity |= 0x2;
-                    NdisMoveMemory(SupRate, pEid->Octet, pEid->Len);
+                    memmove(SupRate, pEid->Octet, pEid->Len);
                     *pSupRateLen = pEid->Len;
 
                     /*
@@ -439,16 +439,16 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             case IE_HT_CAP:
 			if (pEid->Len >= SIZE_HT_CAP_IE)  /*Note: allow extension.!!*/
 			{
-				NdisMoveMemory(pHtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
+				memmove(pHtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
 				*pHtCapabilityLen = SIZE_HT_CAP_IE;	/* Nnow we only support 26 bytes.*/
 
 				*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 				{
 					EXT_HT_CAP_INFO extHtCapInfo;
-					NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					memmove((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 					*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-					NdisMoveMemory((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					memmove((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				}
 #else
 				*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
@@ -460,7 +460,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 					*pPreNHtCapabilityLen = 0;	/* Now we only support 26 bytes.*/
 
 					Ptr = (u8 *) pVIE;
-					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+					memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
 #endif /* CONFIG_STA_SUPPORT */
@@ -478,7 +478,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 					This IE allows extension, but we can ignore extra bytes beyond our
 					knowledge , so only copy first sizeof(ADD_HT_INFO_IE)
 				*/
-				NdisMoveMemory(AddHtInfo, pEid->Octet, sizeof(ADD_HT_INFO_IE));
+				memmove(AddHtInfo, pEid->Octet, sizeof(ADD_HT_INFO_IE));
 				*AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
 
 				CtrlChannel = AddHtInfo->ControlChan;
@@ -490,7 +490,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 				{
 			                Ptr = (u8 *) pVIE;
-			                NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+			                memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 			                *LengthVIE += (pEid->Len + 2);
 				}
 #endif /* CONFIG_STA_SUPPORT */
@@ -560,7 +560,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             case IE_IBSS_PARM:
                 if(pEid->Len == 2)
                 {
-                    NdisMoveMemory(pAtimWin, pEid->Octet, pEid->Len);
+                    memmove(pAtimWin, pEid->Octet, pEid->Len);
                 }
                 else
                 {
@@ -614,13 +614,13 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 {
                     if ((pEid->Octet[3] == OUI_PREN_HT_CAP) && (pEid->Len >= 30) && (*pHtCapabilityLen == 0))
                     {
-                        NdisMoveMemory(pHtCapability, &pEid->Octet[4], sizeof(HT_CAPABILITY_IE));
+                        memmove(pHtCapability, &pEid->Octet[4], sizeof(HT_CAPABILITY_IE));
                         *pPreNHtCapabilityLen = SIZE_HT_CAP_IE;
                     }
 
                     if ((pEid->Octet[3] == OUI_PREN_ADD_HT) && (pEid->Len >= 26))
                     {
-                        NdisMoveMemory(AddHtInfo, &pEid->Octet[4], sizeof(ADD_HT_INFO_IE));
+                        memmove(AddHtInfo, &pEid->Octet[4], sizeof(ADD_HT_INFO_IE));
                         *AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
                     }
                 }
@@ -630,7 +630,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 {
                     /* Copy to pVIE which will report to bssid list.*/
                     Ptr = (u8 *) pVIE;
-                    NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+                    memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
                 else if (NdisEqualMemory(pEid->Octet, WME_PARM_ELEM, 6) && (pEid->Len == 24))
@@ -699,7 +699,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 						DBGPRINT(RT_DEBUG_ERROR, ("%s: PeerWscIeLen = %d (>= 512)\n", __FUNCTION__, PeerWscIeLen));
 					if (pPeerWscIe && (PeerWscIeLen < 512))
 					{
-						NdisMoveMemory(pPeerWscIe+PeerWscIeLen, pEid->Octet+4, pEid->Len-4);
+						memmove(pPeerWscIe+PeerWscIeLen, pEid->Octet+4, pEid->Len-4);
 						PeerWscIeLen += (pEid->Len - 4);
 					}
 
@@ -713,7 +713,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             case IE_EXT_SUPP_RATES:
                 if (pEid->Len <= MAX_LEN_OF_SUPPORTED_RATES)
                 {
-                    NdisMoveMemory(ExtRate, pEid->Octet, pEid->Len);
+                    memmove(ExtRate, pEid->Octet, pEid->Len);
                     *pExtRateLen = pEid->Len;
 
                     /*
@@ -764,7 +764,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 {
                     /* Copy to pVIE which will report to microsoft bssid list.*/
                     Ptr = (u8 *) pVIE;
-                    NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+                    memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
                 break;
@@ -773,7 +773,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 #if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 			case IE_COUNTRY:
 				Ptr = (u8 *) pVIE;
-                NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+                memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                 *LengthVIE += (pEid->Len + 2);
 				break;
 #endif /* EXT_BUILD_CHANNEL_LIST */
@@ -789,7 +789,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 
 					/* Copy to pVIE*/
                     Ptr = (u8 *) pVIE;
-                    NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+                    memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
                 break;
@@ -804,7 +804,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 
 					MaxSize = min(pEid->Len, MySize);
 
-					NdisMoveMemory(pExtCapInfo,&pEid->Octet[0], MaxSize);
+					memmove(pExtCapInfo,&pEid->Octet[0], MaxSize);
 				}
 				break;
             default:
@@ -831,8 +831,8 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 			UCHAR WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
 			Ptr = (u8 *) pVIE;
 			WscIe[1] = PeerWscIeLen + 4;
-			NdisMoveMemory(Ptr + *LengthVIE, WscIe, 6);
-			NdisMoveMemory(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
+			memmove(Ptr + *LengthVIE, WscIe, 6);
+			memmove(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
 			*LengthVIE += (PeerWscIeLen + 6);
 		}
 
@@ -919,7 +919,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
     Length += LENGTH_802_11;
 
     /* get timestamp from payload and advance the pointer*/
-    NdisMoveMemory(&ie_list->TimeStamp, Ptr, TIMESTAMP_LEN);
+    memmove(&ie_list->TimeStamp, Ptr, TIMESTAMP_LEN);
 
 	ie_list->TimeStamp.u.LowPart = cpu2le32(ie_list->TimeStamp.u.LowPart);
 	ie_list->TimeStamp.u.HighPart = cpu2le32(ie_list->TimeStamp.u.HighPart);
@@ -928,12 +928,12 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
     Length += TIMESTAMP_LEN;
 
     /* get beacon interval from payload and advance the pointer*/
-    NdisMoveMemory(&ie_list->BeaconPeriod, Ptr, 2);
+    memmove(&ie_list->BeaconPeriod, Ptr, 2);
     Ptr += 2;
     Length += 2;
 
     /* get capability info from payload and advance the pointer*/
-    NdisMoveMemory(&ie_list->CapabilityInfo, Ptr, 2);
+    memmove(&ie_list->CapabilityInfo, Ptr, 2);
     Ptr += 2;
     Length += 2;
 
@@ -964,7 +964,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 				break;
 			if(pEid->Len <= MAX_LEN_OF_SSID)
 			{
-				NdisMoveMemory(&ie_list->Ssid[0], pEid->Octet, pEid->Len);
+				memmove(&ie_list->Ssid[0], pEid->Octet, pEid->Len);
 				ie_list->SsidLen = pEid->Len;
 				Sanity |= 0x1;
 			}
@@ -979,7 +979,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			if(pEid->Len <= MAX_LEN_OF_SUPPORTED_RATES)
 			{
 				Sanity |= 0x2;
-				NdisMoveMemory(&ie_list->SupRate[0], pEid->Octet, pEid->Len);
+				memmove(&ie_list->SupRate[0], pEid->Octet, pEid->Len);
 				ie_list->SupRateLen = pEid->Len;
 
 				/*
@@ -1000,16 +1000,16 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		case IE_HT_CAP:
 			if (pEid->Len >= SIZE_HT_CAP_IE)  /*Note: allow extension.!!*/
 			{
-				NdisMoveMemory(&ie_list->HtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
+				memmove(&ie_list->HtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
 				ie_list->HtCapabilityLen = SIZE_HT_CAP_IE;	/* Nnow we only support 26 bytes.*/
 
 				*(USHORT *)(&ie_list->HtCapability.HtCapInfo) = cpu2le16(*(USHORT *)(&ie_list->HtCapability.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 				{
 					EXT_HT_CAP_INFO extHtCapInfo;
-					NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&ie_list->HtCapability.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					memmove((u8 *)(&extHtCapInfo), (u8 *)(&ie_list->HtCapability.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 					*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-					NdisMoveMemory((u8 *)(&ie_list->HtCapability.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					memmove((u8 *)(&ie_list->HtCapability.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				}
 #else
 				*(USHORT *)(&ie_list->HtCapability.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&ie_list->HtCapability.ExtHtCapInfo));
@@ -1021,7 +1021,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 					ie_list->PreNHtCapabilityLen = 0;	/* Now we only support 26 bytes.*/
 
 					Ptr = (u8 *) pVIE;
-					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+					memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
 #endif /* CONFIG_STA_SUPPORT */
@@ -1039,7 +1039,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 				This IE allows extension, but we can ignore extra bytes beyond our
 				knowledge , so only copy first sizeof(ADD_HT_INFO_IE)
 				*/
-				NdisMoveMemory(&ie_list->AddHtInfo, pEid->Octet, sizeof(ADD_HT_INFO_IE));
+				memmove(&ie_list->AddHtInfo, pEid->Octet, sizeof(ADD_HT_INFO_IE));
 				ie_list->AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
 
 				CtrlChannel = ie_list->AddHtInfo.ControlChan;
@@ -1051,7 +1051,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 				{
 					Ptr = (u8 *) pVIE;
-					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+					memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
 #endif /* CONFIG_STA_SUPPORT */
@@ -1118,7 +1118,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		case IE_IBSS_PARM:
 			if(pEid->Len == 2)
 			{
-				NdisMoveMemory(&ie_list->AtimWin, pEid->Octet, pEid->Len);
+				memmove(&ie_list->AtimWin, pEid->Octet, pEid->Len);
 			}
 			else
 			{
@@ -1171,13 +1171,13 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			{
 				if ((pEid->Octet[3] == OUI_PREN_HT_CAP) && (pEid->Len >= 30) && (ie_list->HtCapabilityLen == 0))
 				{
-					NdisMoveMemory(&ie_list->HtCapability, &pEid->Octet[4], sizeof(HT_CAPABILITY_IE));
+					memmove(&ie_list->HtCapability, &pEid->Octet[4], sizeof(HT_CAPABILITY_IE));
 					ie_list->PreNHtCapabilityLen = SIZE_HT_CAP_IE;
 				}
 
 				if ((pEid->Octet[3] == OUI_PREN_ADD_HT) && (pEid->Len >= 26))
 				{
-					NdisMoveMemory(&ie_list->AddHtInfo, &pEid->Octet[4], sizeof(ADD_HT_INFO_IE));
+					memmove(&ie_list->AddHtInfo, &pEid->Octet[4], sizeof(ADD_HT_INFO_IE));
 					ie_list->AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
 				}
 			}
@@ -1187,7 +1187,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			{
 				/* Copy to pVIE which will report to bssid list.*/
 				Ptr = (u8 *) pVIE;
-				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+				memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
 			else if (NdisEqualMemory(pEid->Octet, WME_PARM_ELEM, 6) && (pEid->Len == 24))
@@ -1256,7 +1256,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 				DBGPRINT(RT_DEBUG_ERROR, ("%s: PeerWscIeLen = %d (>= 512)\n", __FUNCTION__, PeerWscIeLen));
 				if (pPeerWscIe && (PeerWscIeLen < 512))
 				{
-				NdisMoveMemory(pPeerWscIe+PeerWscIeLen, pEid->Octet+4, pEid->Len-4);
+				memmove(pPeerWscIe+PeerWscIeLen, pEid->Octet+4, pEid->Len-4);
 				PeerWscIeLen += (pEid->Len - 4);
 				}
 
@@ -1269,7 +1269,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		case IE_EXT_SUPP_RATES:
 			if (pEid->Len <= MAX_LEN_OF_SUPPORTED_RATES)
 			{
-				NdisMoveMemory(&ie_list->ExtRate[0], pEid->Octet, pEid->Len);
+				memmove(&ie_list->ExtRate[0], pEid->Octet, pEid->Len);
 				ie_list->ExtRateLen = pEid->Len;
 
 				/*
@@ -1318,7 +1318,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			{
 				/* Copy to pVIE which will report to microsoft bssid list.*/
 				Ptr = (u8 *) pVIE;
-				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+				memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
 			break;
@@ -1328,7 +1328,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 #if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 		case IE_COUNTRY:
 			Ptr = (u8 *) pVIE;
-			NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+			memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 			*LengthVIE += (pEid->Len + 2);
 			break;
 #endif /* EXT_BUILD_CHANNEL_LIST */
@@ -1344,7 +1344,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 
 				/* Copy to pVIE*/
 				Ptr = (u8 *) pVIE;
-				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
+				memmove(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
 			break;
@@ -1354,20 +1354,20 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		case IE_EXT_CAPABILITY:
 			if (pEid->Len >= 1)
 			{
-				NdisMoveMemory(&ie_list->ExtCapInfo,&pEid->Octet[0], sizeof(EXT_CAP_INFO_ELEMENT) /*4*/);
+				memmove(&ie_list->ExtCapInfo,&pEid->Octet[0], sizeof(EXT_CAP_INFO_ELEMENT) /*4*/);
 				break;
 			}
 
 #ifdef DOT11_VHT_AC
 		case IE_VHT_CAP:
 			if (pEid->Len == sizeof(VHT_CAP_IE)) {
-				NdisMoveMemory(&ie_list->vht_cap_ie, &pEid->Octet[0], sizeof(VHT_CAP_IE));
+				memmove(&ie_list->vht_cap_ie, &pEid->Octet[0], sizeof(VHT_CAP_IE));
 				ie_list->vht_cap_len = pEid->Len;
 			}
 			break;
 		case IE_VHT_OP:
 			if (pEid->Len == sizeof(VHT_OP_IE)) {
-				NdisMoveMemory(&ie_list->vht_op_ie, &pEid->Octet[0], sizeof(VHT_OP_IE));
+				memmove(&ie_list->vht_op_ie, &pEid->Octet[0], sizeof(VHT_OP_IE));
 				ie_list->vht_op_len = pEid->Len;
 			}
 			break;
@@ -1397,8 +1397,8 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		UCHAR WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
 		Ptr = (u8 *) pVIE;
 		WscIe[1] = PeerWscIeLen + 4;
-		NdisMoveMemory(Ptr + *LengthVIE, WscIe, 6);
-		NdisMoveMemory(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
+		memmove(Ptr + *LengthVIE, WscIe, 6);
+		memmove(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
 		*LengthVIE += (PeerWscIeLen + 6);
 	}
 
@@ -1531,7 +1531,7 @@ BOOLEAN MlmeScanReqSanity(
 	Info = (MLME_SCAN_REQ_STRUCT *)(Msg);
 	*pBssType = Info->BssType;
 	*pSsidLen = Info->SsidLen;
-	NdisMoveMemory(Ssid, Info->Ssid, *pSsidLen);
+	memmove(Ssid, Info->Ssid, *pSsidLen);
 	*pScanType = Info->ScanType;
 
 	if ((*pBssType == BSS_INFRA || *pBssType == BSS_ADHOC || *pBssType == BSS_ANY)
@@ -1588,7 +1588,7 @@ BOOLEAN PeerDeauthSanity(
 	ether_addr_copy(pAddr1, pFrame->Hdr.Addr1);
     ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
 	ether_addr_copy(pAddr3, pFrame->Hdr.Addr3);
-    NdisMoveMemory(pReason, &pFrame->Octet[0], 2);
+    memmove(pReason, &pFrame->Octet[0], 2);
 
     return TRUE;
 }
@@ -1617,9 +1617,9 @@ BOOLEAN PeerAuthSanity(
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
     ether_addr_copy(pAddr,   pFrame->Hdr.Addr2);
-    NdisMoveMemory(pAlg,    &pFrame->Octet[0], 2);
-    NdisMoveMemory(pSeq,    &pFrame->Octet[2], 2);
-    NdisMoveMemory(pStatus, &pFrame->Octet[4], 2);
+    memmove(pAlg,    &pFrame->Octet[0], 2);
+    memmove(pSeq,    &pFrame->Octet[2], 2);
+    memmove(pStatus, &pFrame->Octet[4], 2);
 
     if (*pAlg == AUTH_MODE_OPEN)
     {
@@ -1641,7 +1641,7 @@ BOOLEAN PeerAuthSanity(
         }
         else if (*pSeq == 2 || *pSeq == 3)
         {
-            NdisMoveMemory(pChlgText, &pFrame->Octet[8], CIPHER_TEXT_LEN);
+            memmove(pChlgText, &pFrame->Octet[8], CIPHER_TEXT_LEN);
             return TRUE;
         }
         else
@@ -1747,7 +1747,7 @@ BOOLEAN PeerDisassocSanity(
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
     ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
-    NdisMoveMemory(pReason, &pFrame->Octet[0], 2);
+    memmove(pReason, &pFrame->Octet[0], 2);
 
     return TRUE;
 }
@@ -1884,19 +1884,19 @@ BOOLEAN PeerDlsReqSanity(
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    NdisMoveMemory(pDA, Ptr, MAC_ADDR_LEN);
+    memmove(pDA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
     /* get SA from payload and advance the pointer*/
-    NdisMoveMemory(pSA, Ptr, MAC_ADDR_LEN);
+    memmove(pSA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
     /* get capability info from payload and advance the pointer*/
-    NdisMoveMemory(pCapabilityInfo, Ptr, 2);
+    memmove(pCapabilityInfo, Ptr, 2);
     Ptr += 2;
 
     /* get capability info from payload and advance the pointer*/
-    NdisMoveMemory(pDlsTimeout, Ptr, 2);
+    memmove(pDlsTimeout, Ptr, 2);
     Ptr += 2;
 
 	/* Category and Action field + DA + SA + capability + Timeout*/
@@ -1909,7 +1909,7 @@ BOOLEAN PeerDlsReqSanity(
 			case IE_SUPP_RATES:
                 if ((eid_ptr->Len <= MAX_LEN_OF_SUPPORTED_RATES) && (eid_ptr->Len > 0))
                 {
-                    NdisMoveMemory(Rates, eid_ptr->Octet, eid_ptr->Len);
+                    memmove(Rates, eid_ptr->Octet, eid_ptr->Len);
                     DBGPRINT(RT_DEBUG_TRACE, ("PeerDlsReqSanity - IE_SUPP_RATES., Len=%d. Rates[0]=%x\n",eid_ptr->Len, Rates[0]));
                     DBGPRINT(RT_DEBUG_TRACE, ("Rates[1]=%x %x %x %x %x %x %x\n", Rates[1], Rates[2], Rates[3], Rates[4], Rates[5], Rates[6], Rates[7]));
                     *pRatesLen = eid_ptr->Len;
@@ -1932,12 +1932,12 @@ BOOLEAN PeerDlsReqSanity(
 			case IE_EXT_SUPP_RATES:
                 if (eid_ptr->Len + *pRatesLen <= MAX_LEN_OF_SUPPORTED_RATES)
                 {
-                    NdisMoveMemory(&Rates[*pRatesLen], eid_ptr->Octet, eid_ptr->Len);
+                    memmove(&Rates[*pRatesLen], eid_ptr->Octet, eid_ptr->Len);
                     *pRatesLen = (*pRatesLen) + eid_ptr->Len;
                 }
                 else
                 {
-                    NdisMoveMemory(&Rates[*pRatesLen], eid_ptr->Octet, MAX_LEN_OF_SUPPORTED_RATES - (*pRatesLen));
+                    memmove(&Rates[*pRatesLen], eid_ptr->Octet, MAX_LEN_OF_SUPPORTED_RATES - (*pRatesLen));
                     *pRatesLen = MAX_LEN_OF_SUPPORTED_RATES;
                 }
 				break;
@@ -1945,16 +1945,16 @@ BOOLEAN PeerDlsReqSanity(
 			case IE_HT_CAP:
 				if (eid_ptr->Len >= sizeof(HT_CAPABILITY_IE))
 				{
-					NdisMoveMemory(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
+					memmove(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
 
 					*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 					{
 						EXT_HT_CAP_INFO extHtCapInfo;
 
-						NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						memmove((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 						*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-						NdisMoveMemory((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						memmove((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 					}
 #else
 					*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
@@ -2009,21 +2009,21 @@ BOOLEAN PeerDlsRspSanity(
 
 	/* get status code from payload and advance the pointer*/
 	if (pStatus)
-		NdisMoveMemory(pStatus, Ptr, 2);
+		memmove(pStatus, Ptr, 2);
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    NdisMoveMemory(pDA, Ptr, MAC_ADDR_LEN);
+    memmove(pDA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
     /* get SA from payload and advance the pointer*/
-    NdisMoveMemory(pSA, Ptr, MAC_ADDR_LEN);
+    memmove(pSA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
 	if (pStatus == 0)
 	{
 	    /* get capability info from payload and advance the pointer*/
-	    NdisMoveMemory(pCapabilityInfo, Ptr, 2);
+	    memmove(pCapabilityInfo, Ptr, 2);
 	    Ptr += 2;
 	}
 
@@ -2037,7 +2037,7 @@ BOOLEAN PeerDlsRspSanity(
 			case IE_SUPP_RATES:
                 if ((eid_ptr->Len <= MAX_LEN_OF_SUPPORTED_RATES) && (eid_ptr->Len > 0))
                 {
-                    NdisMoveMemory(Rates, eid_ptr->Octet, eid_ptr->Len);
+                    memmove(Rates, eid_ptr->Octet, eid_ptr->Len);
                     DBGPRINT(RT_DEBUG_TRACE, ("PeerDlsRspSanity - IE_SUPP_RATES., Len=%d. Rates[0]=%x\n",eid_ptr->Len, Rates[0]));
                     DBGPRINT(RT_DEBUG_TRACE, ("Rates[1]=%x %x %x %x %x %x %x\n", Rates[1], Rates[2], Rates[3], Rates[4], Rates[5], Rates[6], Rates[7]));
                     *pRatesLen = eid_ptr->Len;
@@ -2060,12 +2060,12 @@ BOOLEAN PeerDlsRspSanity(
 			case IE_EXT_SUPP_RATES:
                 if (eid_ptr->Len + *pRatesLen <= MAX_LEN_OF_SUPPORTED_RATES)
                 {
-                    NdisMoveMemory(&Rates[*pRatesLen], eid_ptr->Octet, eid_ptr->Len);
+                    memmove(&Rates[*pRatesLen], eid_ptr->Octet, eid_ptr->Len);
                     *pRatesLen = (*pRatesLen) + eid_ptr->Len;
                 }
                 else
                 {
-                    NdisMoveMemory(&Rates[*pRatesLen], eid_ptr->Octet, MAX_LEN_OF_SUPPORTED_RATES - (*pRatesLen));
+                    memmove(&Rates[*pRatesLen], eid_ptr->Octet, MAX_LEN_OF_SUPPORTED_RATES - (*pRatesLen));
                     *pRatesLen = MAX_LEN_OF_SUPPORTED_RATES;
                 }
 				break;
@@ -2073,16 +2073,16 @@ BOOLEAN PeerDlsRspSanity(
 			case IE_HT_CAP:
 				if (eid_ptr->Len >= sizeof(HT_CAPABILITY_IE))
 				{
-					NdisMoveMemory(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
+					memmove(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
 
 					*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 					{
 						EXT_HT_CAP_INFO extHtCapInfo;
 
-						NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						memmove((u8 *)(&extHtCapInfo), (u8 *)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 						*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-						NdisMoveMemory((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						memmove((u8 *)(&pHtCapability->ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 					}
 #else
 					*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
@@ -2127,15 +2127,15 @@ BOOLEAN PeerDlsTearDownSanity(
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    NdisMoveMemory(pDA, Ptr, MAC_ADDR_LEN);
+    memmove(pDA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
     /* get SA from payload and advance the pointer*/
-    NdisMoveMemory(pSA, Ptr, MAC_ADDR_LEN);
+    memmove(pSA, Ptr, MAC_ADDR_LEN);
     Ptr += MAC_ADDR_LEN;
 
 	/* get reason code from payload and advance the pointer*/
-    NdisMoveMemory(pReason, Ptr, 2);
+    memmove(pReason, Ptr, 2);
     Ptr += 2;
 
     return TRUE;
@@ -2176,7 +2176,7 @@ BOOLEAN PeerProbeReqSanity(
     }
 
     *SsidLen = Fr->Octet[1];
-    NdisMoveMemory(Ssid, &Fr->Octet[2], *SsidLen);
+    memmove(Ssid, &Fr->Octet[2], *SsidLen);
 
 
     Ptr = Fr->Octet;

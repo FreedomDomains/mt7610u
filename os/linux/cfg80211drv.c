@@ -1128,7 +1128,7 @@ void CFG80211_RegRuleApply(
 				if (ChanId == pAd->TxPower[IdPwr].Channel)
 				{
 					/* init the channel info. */
-					NdisMoveMemory(&pAd->ChannelList[RecId],
+					memmove(&pAd->ChannelList[RecId],
 									&pAd->TxPower[IdPwr],
 									sizeof(CHANNEL_TX_POWER));
 

@@ -344,7 +344,7 @@ void RTUSBBulkOutDataPacket(
 				pHTTXContext->SavedPad[0], pHTTXContext->SavedPad[1], pHTTXContext->SavedPad[2],pHTTXContext->SavedPad[3]
 				,pHTTXContext->SavedPad[4], pHTTXContext->SavedPad[5], pHTTXContext->SavedPad[6],pHTTXContext->SavedPad[7]));
 		}
-		NdisMoveMemory(&pWirelessPkt[TmpBulkEndPos], pHTTXContext->SavedPad, 8);
+		memmove(&pWirelessPkt[TmpBulkEndPos], pHTTXContext->SavedPad, 8);
 		pHTTXContext->bCopySavePad = FALSE;
 		if (pAd->bForcePrintTX == TRUE)
 			DBGPRINT(RT_DEBUG_TRACE,("RTUSBBulkOutDataPacket --> COPY PAD. CurWrite = %ld, NextBulk = %ld.   ENextBulk = %ld.\n",   pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition, pHTTXContext->ENextBulkOutPosition));
@@ -601,7 +601,7 @@ void RTUSBBulkOutDataPacket(
 		  (pHTTXContext->ENextBulkOutPosition != pHTTXContext->CurWritePosition))
 		)
 	{
-		NdisMoveMemory(pHTTXContext->SavedPad, &pWirelessPkt[pHTTXContext->ENextBulkOutPosition], 8);
+		memmove(pHTTXContext->SavedPad, &pWirelessPkt[pHTTXContext->ENextBulkOutPosition], 8);
 		pHTTXContext->bCopySavePad = TRUE;
 		if (RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
 		{

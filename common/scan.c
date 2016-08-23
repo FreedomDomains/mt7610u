@@ -85,7 +85,7 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, UCHAR OpMode)
 		{
 			memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 			pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
-			NdisMoveMemory(pAd->MlmeAux.Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
+			memmove(pAd->MlmeAux.Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 		}
 
 
@@ -229,15 +229,15 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 		{
 			HtLen = pAd->MlmeAux.HtCapabilityLen + 4;
 #ifdef RT_BIG_ENDIAN
-			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, SIZE_HT_CAP_IE);
+			memmove(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, SIZE_HT_CAP_IE);
 			*(USHORT *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *)(&HtCapabilityTmp.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 			{
 				EXT_HT_CAP_INFO extHtCapInfo;
 
-				NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				memmove((u8 *)(&extHtCapInfo), (u8 *)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((u8 *)(&HtCapabilityTmp.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				memmove((u8 *)(&HtCapabilityTmp.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 			}
 #else
 			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));
@@ -262,15 +262,15 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 		{
 			HtLen = sizeof(HT_CAPABILITY_IE);
 #ifdef RT_BIG_ENDIAN
-			NdisMoveMemory(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, SIZE_HT_CAP_IE);
+			memmove(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, SIZE_HT_CAP_IE);
 			*(USHORT *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *)(&HtCapabilityTmp.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 			{
 				EXT_HT_CAP_INFO extHtCapInfo;
 
-				NdisMoveMemory((u8 *)(&extHtCapInfo), (u8 *)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				memmove((u8 *)(&extHtCapInfo), (u8 *)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((u8 *)(&HtCapabilityTmp.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				memmove((u8 *)(&HtCapabilityTmp.ExtHtCapInfo), (u8 *)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 			}
 #else
 			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));

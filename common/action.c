@@ -158,9 +158,9 @@ void MlmeADDBAAction(
 		{
 			BA_PARM		tmpBaParm;
 
-			NdisMoveMemory((u8 *)(&tmpBaParm), (u8 *)(&Frame.BaParm), sizeof(BA_PARM));
+			memmove((u8 *)(&tmpBaParm), (u8 *)(&Frame.BaParm), sizeof(BA_PARM));
 			*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-			NdisMoveMemory((u8 *)(&Frame.BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
+			memmove((u8 *)(&Frame.BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
 		}
 #else
 		*(USHORT *)(&(Frame.BaParm)) = cpu2le16((*(USHORT *)(&(Frame.BaParm))));

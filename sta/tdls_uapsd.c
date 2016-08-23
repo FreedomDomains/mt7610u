@@ -1484,7 +1484,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	{
 		if (!pAd->StaCfg.TdlsInfo.TDLSEntry[IdTdls].Valid)
 		{
-			NdisMoveMemory(&pAd->StaCfg.TdlsInfo.TDLSEntry[IdTdls],
+			memmove(&pAd->StaCfg.TdlsInfo.TDLSEntry[IdTdls],
 							pTDLS, sizeof(RT_802_11_TDLS_UI));
 			break;
 		}

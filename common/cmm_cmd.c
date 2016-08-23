@@ -126,7 +126,7 @@ NDIS_STATUS RTEnqueueInternalCmd(
 		}
 		else
 		{
-			NdisMoveMemory(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
+			memmove(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
 			cmdqelmt->bufferlength = InformationBufferLength;
 		}
 	}

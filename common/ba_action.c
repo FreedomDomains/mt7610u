@@ -929,7 +929,7 @@ void BAOriSessionTearDown(
 				DelbaReq.TID = TID;
 				DelbaReq.Initiator = ORIGINATOR;
 				Elem->MsgLen  = sizeof(DelbaReq);
-				NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
+				memmove(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 				MlmeDELBAAction(pAd, Elem);
 /*				kfree(Elem);*/
 				kfree(Elem);
@@ -964,7 +964,7 @@ void BAOriSessionTearDown(
 			DelbaReq.TID = pBAEntry->TID;
 			DelbaReq.Initiator = ORIGINATOR;
 			Elem->MsgLen  = sizeof(DelbaReq);
-			NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
+			memmove(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 			MlmeDELBAAction(pAd, Elem);
 /*			kfree(Elem);*/
 			kfree(Elem);
@@ -1036,7 +1036,7 @@ void BARecSessionTearDown(
 				DelbaReq.TID = TID;
 				DelbaReq.Initiator = RECIPIENT;
 				Elem->MsgLen  = sizeof(DelbaReq);
-				NdisMoveMemory(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
+				memmove(Elem->Msg, &DelbaReq, sizeof(DelbaReq));
 				MlmeDELBAAction(pAd, Elem);
 /*				kfree(Elem);*/
 				kfree(Elem);
@@ -1308,9 +1308,9 @@ void PeerAddBAReqAction(
 	{
 		BA_PARM		tmpBaParm;
 
-		NdisMoveMemory((u8 *)(&tmpBaParm), (u8 *)(&ADDframe.BaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&tmpBaParm), (u8 *)(&ADDframe.BaParm), sizeof(BA_PARM));
 		*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-		NdisMoveMemory((u8 *)(&ADDframe.BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
+		memmove((u8 *)(&ADDframe.BaParm), (u8 *)(&tmpBaParm), sizeof(BA_PARM));
 	}
 #else
 	*(USHORT *)(&ADDframe.BaParm) = cpu2le16(*(USHORT *)(&ADDframe.BaParm));
@@ -1581,7 +1581,7 @@ void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 #ifdef LINUX
 			UCHAR *data_p;
 			data_p = OS_PKT_HEAD_BUF_EXTEND(pRxPkt, LENGTH_802_3);
-			NdisMoveMemory(data_p, Header802_3, LENGTH_802_3);
+			memmove(data_p, Header802_3, LENGTH_802_3);
 #endif
 		}
 #endif /* CONFIG_STA_SUPPORT */

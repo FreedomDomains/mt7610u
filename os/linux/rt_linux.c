@@ -330,9 +330,9 @@ NDIS_STATUS RTMPAllocateNdisPacket(
 
 	/* Clone the frame content and update the length of packet */
 	if (HeaderLen > 0)
-		NdisMoveMemory(pPacket->data, pHeader, HeaderLen);
+		memmove(pPacket->data, pHeader, HeaderLen);
 	if (DataLen > 0)
-		NdisMoveMemory(pPacket->data + HeaderLen, pData, DataLen);
+		memmove(pPacket->data + HeaderLen, pData, DataLen);
 	skb_put(pPacket, HeaderLen + DataLen);
 /* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, GET_OS_PKT_LEN(pPacket));*/
 
@@ -454,9 +454,9 @@ struct sk_buff * duplicate_pkt(
 		MEM_DBG_PKT_ALLOC_INC(skb);
 
 		skb_reserve(skb, 2);
-		NdisMoveMemory(GET_OS_PKT_DATATAIL(skb), pHeader802_3, HdrLen);
+		memmove(GET_OS_PKT_DATATAIL(skb), pHeader802_3, HdrLen);
 		skb_put(skb, HdrLen);
-		NdisMoveMemory(GET_OS_PKT_DATATAIL(skb), pData, DataSize);
+		memmove(GET_OS_PKT_DATATAIL(skb), pData, DataSize);
 		skb_put(skb, DataSize);
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 		pPacket = OSPKT_TO_RTPKT(skb);
@@ -535,7 +535,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	skb_reserve(skb, 2);
 
 	/* Insert the frame content */
-	NdisMoveMemory(GET_OS_PKT_DATAPTR(skb), pData, data_len);
+	memmove(GET_OS_PKT_DATAPTR(skb), pData, data_len);
 
 	/* End this frame */
 	skb_put(GET_OS_PKT_TYPE(skb), data_len);
@@ -659,7 +659,7 @@ void wlan_802_11_to_802_3_packet(
 #ifdef CONFIG_STA_SUPPORT
 	RT_CONFIG_IF_OPMODE_ON_STA(OpMode)
 	{
-	    NdisMoveMemory(skb_push(pOSPkt, LENGTH_802_3), pHeader802_3, LENGTH_802_3);
+	    memmove(skb_push(pOSPkt, LENGTH_802_3), pHeader802_3, LENGTH_802_3);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -770,7 +770,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 
 		/* Copy Header */
 		if (header_len <= 40)
-			NdisMoveMemory(temp_header, pData, header_len);
+			memmove(temp_header, pData, header_len);
 
 		/* skip HW padding */
 		if (L2PAD)
@@ -800,7 +800,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	}
 
 	if (header_len > 0)
-		NdisMoveMemory(skb_push(pOSPkt, header_len), temp_header,
+		memmove(skb_push(pOSPkt, header_len), temp_header,
 			       header_len);
 
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
@@ -935,7 +935,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 		/*channel field */
 		ph_11n33->channel = (UCHAR) Channel;
 
-		NdisMoveMemory(skb_put(pOSPkt, sizeof (ETHEREAL_RADIO)),
+		memmove(skb_put(pOSPkt, sizeof (ETHEREAL_RADIO)),
 			       (UCHAR *) ph_11n33, sizeof (ETHEREAL_RADIO));
 	}
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
@@ -1145,7 +1145,7 @@ static inline NDIS_STATUS __RtmpOSTaskInit(
 
 	len = strlen(pTaskName);
 	len = len > (RTMP_OS_TASK_NAME_LEN - 1) ? (RTMP_OS_TASK_NAME_LEN - 1) : len;
-	NdisMoveMemory(&pTask->taskName[0], pTaskName, len);
+	memmove(&pTask->taskName[0], pTaskName, len);
 	pTask->priv = pPriv;
 
 #ifndef KTHREAD_SUPPORT
@@ -1294,15 +1294,15 @@ int RtmpOSNetDevAddrSet(
 	/* work-around for the SuSE due to it has it's own interface name management system. */
 	RT_CONFIG_IF_OPMODE_ON_STA(OpMode) {
 /*		memset(pAd->StaCfg.dev_name, 0, 16); */
-/*		NdisMoveMemory(pAd->StaCfg.dev_name, net_dev->name, strlen(net_dev->name)); */
+/*		memmove(pAd->StaCfg.dev_name, net_dev->name, strlen(net_dev->name)); */
 		if (dev_name != NULL) {
 			memset(dev_name, 0, 16);
-			NdisMoveMemory(dev_name, net_dev->name, strlen(net_dev->name));
+			memmove(dev_name, net_dev->name, strlen(net_dev->name));
 		}
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	NdisMoveMemory(net_dev->dev_addr, pMacAddr, 6);
+	memmove(net_dev->dev_addr, pMacAddr, 6);
 
 	return 0;
 }
@@ -1523,7 +1523,7 @@ int RtmpOSNetDevAttach(
 #endif /* CONFIG_STA_SUPPORT */
 
 		/* copy the net device mac address to the net_device structure. */
-		NdisMoveMemory(pNetDev->dev_addr, &pDevOpHook->devAddr[0],
+		memmove(pNetDev->dev_addr, &pDevOpHook->devAddr[0],
 			       MAC_ADDR_LEN);
 
 		rtnl_locked = pDevOpHook->needProtcted;

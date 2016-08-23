@@ -419,7 +419,7 @@ INT RTMPGetKeyParameter(
 		return (FALSE);
 	}
 
-	NdisMoveMemory(temp_buf2, start_ptr, end_ptr-start_ptr);
+	memmove(temp_buf2, start_ptr, end_ptr-start_ptr);
 	temp_buf2[end_ptr-start_ptr]='\0';
 
 	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL)
@@ -536,7 +536,7 @@ INT RTMPGetKeyParameterWithOffset(
 
 	*end_offset = end_ptr - buffer;
 
-    NdisMoveMemory(temp_buf2, start_ptr, end_ptr-start_ptr);
+    memmove(temp_buf2, start_ptr, end_ptr-start_ptr);
     temp_buf2[end_ptr-start_ptr]='\0';
     len = strlen(temp_buf2);
     strcpy(temp_buf1, temp_buf2);
@@ -1360,16 +1360,16 @@ void RTMPSetSTASSID(struct rtmp_adapter*pAd, char *SSID)
 {
 	pAd->CommonCfg.SsidLen = (UCHAR) strlen(SSID);
 	memset(pAd->CommonCfg.Ssid, 0, NDIS_802_11_LENGTH_SSID);
-	NdisMoveMemory(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
+	memmove(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
 	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
 	memset(pAd->CommonCfg.LastSsid, 0, NDIS_802_11_LENGTH_SSID);
-	NdisMoveMemory(pAd->CommonCfg.LastSsid, SSID, pAd->CommonCfg.LastSsidLen);
+	memmove(pAd->CommonCfg.LastSsid, SSID, pAd->CommonCfg.LastSsidLen);
 	pAd->MlmeAux.AutoReconnectSsidLen = pAd->CommonCfg.SsidLen;
 	memset(pAd->MlmeAux.AutoReconnectSsid, 0, NDIS_802_11_LENGTH_SSID);
-	NdisMoveMemory(pAd->MlmeAux.AutoReconnectSsid, SSID, pAd->MlmeAux.AutoReconnectSsidLen);
+	memmove(pAd->MlmeAux.AutoReconnectSsid, SSID, pAd->MlmeAux.AutoReconnectSsidLen);
 	pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
 	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
-	NdisMoveMemory(pAd->MlmeAux.Ssid, SSID, pAd->MlmeAux.SsidLen);
+	memmove(pAd->MlmeAux.Ssid, SSID, pAd->MlmeAux.SsidLen);
 }
 
 
@@ -1440,7 +1440,7 @@ NDIS_STATUS RecoverConnectInfo(
 	}
 	DBGPRINT(RT_DEBUG_TRACE, ("-->RecoverConnectInfo()\n"));
 
-	NdisMoveMemory(ssidStr, pAd->StaCtIf.Ssid, pAd->StaCtIf.SsidLen);
+	memmove(ssidStr, pAd->StaCtIf.Ssid, pAd->StaCtIf.SsidLen);
 	RTMPSetSTASSID(pAd, &ssidStr[0]);
 
 	pAd->StaCfg.AuthMode = pAd->StaCtIf.AuthMode;
@@ -1450,14 +1450,14 @@ NDIS_STATUS RecoverConnectInfo(
 	pAd->StaCfg.DesireSharedKeyId = pAd->StaCtIf.DefaultKeyId;
 #endif // WPA_SUPPLICANT_SUPPORT //
 	pAd->StaCfg.DefaultKeyId = pAd->StaCtIf.DefaultKeyId;
-	NdisMoveMemory( pAd->StaCfg.PMK, pAd->StaCtIf.PMK, 32);
+	memmove( pAd->StaCfg.PMK, pAd->StaCtIf.PMK, 32);
 	RTMPMoveMemory(pAd->StaCfg.WpaPassPhrase, pAd->StaCtIf.WpaPassPhrase, pAd->StaCfg.WpaPassPhraseLen);
 	pAd->StaCfg.WpaPassPhraseLen = pAd->StaCtIf.WpaPassPhraseLen;
 	for (idx = 0; idx < 4; idx++)
 	{
-		NdisMoveMemory(&pAd->SharedKey[BSS0][idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
+		memmove(&pAd->SharedKey[BSS0][idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
 #ifdef WPA_SUPPLICANT_SUPPORT
-		NdisMoveMemory(&pAd->StaCfg.DesireSharedKey[idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
+		memmove(&pAd->StaCfg.DesireSharedKey[idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
 #endif // WPA_SUPPLICANT_SUPPORT //
 
 	}
@@ -1490,7 +1490,7 @@ NDIS_STATUS StoreConnectInfo(
 	RTMP_SEM_LOCK(&pAd->StaCtIf.Lock);
 	pAd->StaCtIf.Changeable = TRUE;
  	pAd->StaCtIf.SsidLen = pAd->CommonCfg.SsidLen;
-	NdisMoveMemory(pAd->StaCtIf.Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
+	memmove(pAd->StaCtIf.Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 	pAd->StaCtIf.AuthMode = pAd->StaCfg.AuthMode;
 	pAd->StaCtIf.WepStatus = pAd->StaCfg.WepStatus;
 
@@ -1499,13 +1499,13 @@ NDIS_STATUS StoreConnectInfo(
 	pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DesireSharedKeyId;
 	pAd->StaCtIf.IEEE8021X = pAd->StaCfg.IEEE8021X;
 #endif // WPA_SUPPLICANT_SUPPORT //
-	NdisMoveMemory(pAd->StaCtIf.PMK, pAd->StaCfg.PMK, 32);
+	memmove(pAd->StaCtIf.PMK, pAd->StaCfg.PMK, 32);
 	RTMPMoveMemory(pAd->StaCtIf.WpaPassPhrase, pAd->StaCfg.WpaPassPhrase, pAd->StaCfg.WpaPassPhraseLen);
 	pAd->StaCtIf.WpaPassPhraseLen = pAd->StaCfg.WpaPassPhraseLen;
 
 	for (idx = 0; idx < 4; idx++)
 	{
-		NdisMoveMemory(&pAd->StaCtIf.SharedKey[BSS0][idx], &pAd->SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
+		memmove(&pAd->StaCtIf.SharedKey[BSS0][idx], &pAd->SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
 	}
 
 	RTMP_SEM_UNLOCK(&pAd->StaCtIf.Lock);
@@ -1522,12 +1522,12 @@ NDIS_STATUS StoreConnectInfo(
 
 void RTMPSetCountryCode(struct rtmp_adapter*pAd, char *CountryCode)
 {
-	NdisMoveMemory(pAd->CommonCfg.CountryCode, CountryCode , 2);
+	memmove(pAd->CommonCfg.CountryCode, CountryCode , 2);
 	pAd->CommonCfg.CountryCode[2] = ' ';
 #ifdef CONFIG_STA_SUPPORT
 #ifdef EXT_BUILD_CHANNEL_LIST
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		NdisMoveMemory(pAd->StaCfg.StaOriCountryCode, CountryCode , 2);
+		memmove(pAd->StaCfg.StaOriCountryCode, CountryCode , 2);
 #endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 	if (strlen((char *) pAd->CommonCfg.CountryCode) != 0)
@@ -1941,7 +1941,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 			if (NdisEqualMemory(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], MAC_ADDR_LEN))
 			{
 				/* set default broadcast mac to entry 0 if user not set it */
-				NdisMoveMemory(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, MAC_ADDR_LEN);
+				memmove(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, MAC_ADDR_LEN);
 			}
 		}
 #endif /* STREAM_MODE_SUPPORT */

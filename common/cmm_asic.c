@@ -1507,7 +1507,7 @@ void AsicEnableIbssSync(
 	{
 	TXWI_STRUC		localTxWI;
 
-	NdisMoveMemory((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
+	memmove((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
 	RTMPWIEndianChange(pAd, (u8 *)&localTxWI, TYPE_TXWI);
 	beaconLen = (USHORT) localTxWI.TxWIMPDUByteCnt;
 	}
@@ -1839,7 +1839,7 @@ void AsicSetEdcaParm(
 #endif /* CONFIG_STA_SUPPORT */
 		RTMP_IO_WRITE32(pAd, WMM_AIFSN_CFG, AifsnCsr.word);
 
-		NdisMoveMemory(&pAd->CommonCfg.APEdcaParm, pEdcaParm, sizeof(EDCA_PARM));
+		memmove(&pAd->CommonCfg.APEdcaParm, pEdcaParm, sizeof(EDCA_PARM));
 		if (!ADHOC_ON(pAd))
 		{
 			DBGPRINT(RT_DEBUG_TRACE,("EDCA [#%d]: AIFSN CWmin CWmax  TXOP(us)  ACM\n", pEdcaParm->EdcaUpdateCount));
