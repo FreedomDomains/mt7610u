@@ -500,7 +500,7 @@ BOOLEAN PeerWpaMessageSanity(
 	else if (MsgType == EAPOL_PAIR_MSG_2 || MsgType == EAPOL_PAIR_MSG_4 || MsgType == EAPOL_GROUP_MSG_2)	/* For authenticator*/
 	{
 		/* check Replay Counter coresponds to MSG from authenticator, otherwise discard*/
-    	if (!NdisEqualMemory(pMsg->KeyDesc.ReplayCounter, pEntry->R_Counter, LEN_KEY_DESC_REPLAY))
+	if (memcmp(pMsg->KeyDesc.ReplayCounter, pEntry->R_Counter, LEN_KEY_DESC_REPLAY) != 0)
     	{
 			bReplayDiff = TRUE;
     	}
@@ -549,7 +549,7 @@ BOOLEAN PeerWpaMessageSanity(
                 }
 
 
-        if (!NdisEqualMemory(rcvd_mic, mic, LEN_KEY_DESC_MIC))
+        if (memcmp(rcvd_mic, mic, LEN_KEY_DESC_MIC) != 0)
         {
 			if (MsgType < EAPOL_GROUP_MSG_1)
 			{
@@ -1058,7 +1058,7 @@ void PeerPairMsg3Action(
 	memmove(pEntry->R_Counter, pMsg3->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Double check ANonce*/
-	if (!NdisEqualMemory(pEntry->ANonce, pMsg3->KeyDesc.KeyNonce, LEN_KEY_DESC_NONCE))
+	if (memcmp(pEntry->ANonce, pMsg3->KeyDesc.KeyNonce, LEN_KEY_DESC_NONCE) != 0)
 	{
 		return;
 	}
@@ -2625,14 +2625,14 @@ BOOLEAN RTMPCheckWPAframe(
 
 
 	/* Skip LLC header	*/
-    if (NdisEqualMemory(SNAP_802_1H, pData, 6) ||
+    if (memcmp(SNAP_802_1H, pData, 6) == 0 ||
         /* Cisco 1200 AP may send packet with SNAP_BRIDGE_TUNNEL*/
-        NdisEqualMemory(SNAP_BRIDGE_TUNNEL, pData, 6))
+        memcmp(SNAP_BRIDGE_TUNNEL, pData, 6) == 0)
     {
         pData += 6;
     }
 	/* Skip 2-bytes EAPoL type */
-    if (NdisEqualMemory(EAPOL, pData, 2))
+    if (memcmp(EAPOL, pData, 2) == 0)
 /*	if (*(UINT16 *)EAPOL == *(UINT16 *)pData)*/
     {
         pData += 2;
@@ -2697,7 +2697,7 @@ BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
 	pData += LENGTH_802_3;
 
 	/* Skip 2-bytes EAPoL type */
-    if (NdisEqualMemory(EAPOL, pData, 2))
+    if (memcmp(EAPOL, pData, 2) == 0)
 /*	if (*(UINT16 *)EAPOL == *(UINT16 *)pData)*/
     {
         pData += 2;
@@ -2809,10 +2809,10 @@ BOOLEAN RTMPCheckRSNIE(
 	{
 		pEid = (PEID_STRUCT) pVIE;
 		/* WPA RSN IE*/
-		if ((pEid->Eid == IE_WPA) && (NdisEqualMemory(pEid->Octet, WPA_OUI, 4)))
+		if ((pEid->Eid == IE_WPA) && (memcmp(pEid->Octet, WPA_OUI, 4) == 0))
 		{
 			if ((pEntry->AuthMode == Ndis802_11AuthModeWPA || pEntry->AuthMode == Ndis802_11AuthModeWPAPSK) &&
-				(NdisEqualMemory(pVIE, pEntry->RSN_IE, pEntry->RSNIE_Len)) &&
+				(memcmp(pVIE, pEntry->RSN_IE, pEntry->RSNIE_Len) == 0) &&
 				(pEntry->RSNIE_Len == (pEid->Len + 2)))
 			{
 					result = TRUE;
@@ -2821,12 +2821,12 @@ BOOLEAN RTMPCheckRSNIE(
 			*Offset += (pEid->Len + 2);
 		}
 		/* WPA2 RSN IE, doesn't need to check RSNIE Capabilities field        */
-		else if ((pEid->Eid == IE_RSN) && (NdisEqualMemory(pEid->Octet + 2, RSN_OUI, 3)))
+		else if ((pEid->Eid == IE_RSN) && (memcmp(pEid->Octet + 2, RSN_OUI, 3) == 0))
 		{
 			if ((pEntry->AuthMode == Ndis802_11AuthModeWPA2 || pEntry->AuthMode == Ndis802_11AuthModeWPA2PSK) &&
 				(pEid->Eid == pEntry->RSN_IE[0]) &&
 				((pEid->Len + 2) >= pEntry->RSNIE_Len) &&
-				(NdisEqualMemory(pEid->Octet, &pEntry->RSN_IE[2], pEntry->RSNIE_Len - 4)))
+				(memcmp(pEid->Octet, &pEntry->RSN_IE[2], pEntry->RSNIE_Len - 4) == 0))
 			{
 
 					result = TRUE;
@@ -2922,7 +2922,7 @@ BOOLEAN RTMPParseEapolKeyData(
 						PKDE_HDR	pKDE;
 
 						pKDE = (PKDE_HDR)pEid;
-						if (NdisEqualMemory(pKDE->OUI, OUI_WPA2, 3))
+						if (memcmp(pKDE->OUI, OUI_WPA2, 3) == 0)
     					{
 							if (pKDE->DataType == KDE_GTK)
 							{
@@ -4021,7 +4021,7 @@ void RTMPInsertRSNIE(
 		ie_num = IE_WPA;
 		total_len = rsnie_len;
 
-		if (NdisEqualMemory(rsnie_ptr + 2, WPA2_OUI, sizeof(WPA2_OUI)))
+		if (memcmp(rsnie_ptr + 2, WPA2_OUI, sizeof(WPA2_OUI)) == 0)
 		{
 			ie_num = IE_RSN;
 			total_len += extra_len;

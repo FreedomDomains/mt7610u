@@ -1169,7 +1169,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 					    MD5_DIGEST_SIZE);
 			}
 
-			if (!NdisEqualMemory(OldMic, Mic, LEN_KEY_DESC_MIC)) {
+			if (memcmp(OldMic, Mic, LEN_KEY_DESC_MIC) != 0) {
 				DBGPRINT(RT_DEBUG_ERROR,
 					 ("MIC Different in Msg1 of STAKey handshake! \n"));
 				return bSTAKeyFrame;

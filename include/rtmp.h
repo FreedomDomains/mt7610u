@@ -414,8 +414,8 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 	if (((*(_pBufVA + 12) << 8) + *(_pBufVA + 13)) > 1500)		\
 	{															\
 		_pExtraLlcSnapEncap = SNAP_802_1H;						\
-		if (NdisEqualMemory(IPX, _pBufVA + 12, 2) || 			\
-			NdisEqualMemory(APPLE_TALK, _pBufVA + 12, 2))		\
+		if (memcmp(IPX, _pBufVA + 12, 2) == 0|| 			\
+		    memcmp(APPLE_TALK, _pBufVA + 12, 2) == 0)		\
 		{														\
 			_pExtraLlcSnapEncap = SNAP_BRIDGE_TUNNEL;			\
 		}														\
@@ -432,8 +432,8 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 	if (((*(_pBufVA) << 8) + *(_pBufVA + 1)) > 1500)			\
 	{															\
 		_pExtraLlcSnapEncap = SNAP_802_1H;						\
-		if (NdisEqualMemory(IPX, _pBufVA, 2) || 				\
-			NdisEqualMemory(APPLE_TALK, _pBufVA, 2))			\
+		if (memcmp(IPX, _pBufVA, 2) == 0|| 				\
+		    memcmp(APPLE_TALK, _pBufVA, 2) == 0)			\
 		{														\
 			_pExtraLlcSnapEncap = SNAP_BRIDGE_TUNNEL;			\
 		}														\
@@ -468,13 +468,13 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
     char LLC_Len[2];                                                    \
                                                                         \
     _pRemovedLLCSNAP = NULL;                                            \
-    if (NdisEqualMemory(SNAP_802_1H, _pData, 6)  ||                     \
-        NdisEqualMemory(SNAP_BRIDGE_TUNNEL, _pData, 6))                 \
+    if (memcmp(SNAP_802_1H, _pData, 6) == 0 ||                     \
+        memcmp(SNAP_BRIDGE_TUNNEL, _pData, 6) == 0)                 \
     {                                                                   \
         u8 *pProto = _pData + 6;                                     \
                                                                         \
-        if ((NdisEqualMemory(IPX, pProto, 2) || NdisEqualMemory(APPLE_TALK, pProto, 2)) &&  \
-            NdisEqualMemory(SNAP_802_1H, _pData, 6))                    \
+        if ((memcmp(IPX, pProto, 2) == 0 || memcmp(APPLE_TALK, pProto, 2) == 0) &&  \
+            memcmp(SNAP_802_1H, _pData, 6) == 0)                    \
         {                                                               \
             LLC_Len[0] = (UCHAR)(_DataSize >> 8);                       \
             LLC_Len[1] = (UCHAR)(_DataSize & (256 - 1));                \

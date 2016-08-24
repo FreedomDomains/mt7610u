@@ -3585,7 +3585,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (NdisEqualMemory(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN))
+		        if (memcmp(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
 		        {
 		        	memset(pAd->StaCfg.SavedPMK[CachedIdx].BSSID, 0, MAC_ADDR_LEN);
 					memset(pAd->StaCfg.SavedPMK[CachedIdx].PMKID, 0, 16);
@@ -3605,7 +3605,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (NdisEqualMemory(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN))
+		        if (memcmp(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
 			        break;
 	        }
 

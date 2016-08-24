@@ -1938,7 +1938,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 				}
 			}
 
-			if (NdisEqualMemory(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], MAC_ADDR_LEN))
+			if (memcmp(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], MAC_ADDR_LEN) == 0)
 			{
 				/* set default broadcast mac to entry 0 if user not set it */
 				memmove(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, MAC_ADDR_LEN);

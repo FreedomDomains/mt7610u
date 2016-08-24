@@ -2249,7 +2249,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 		/* Broadcom AP(BCM94704AGR) will send out LLC in fragment's packet, LLC only can accpet at first fragment.*/
 		/* In this case, we will dropt it.*/
 
-		if (NdisEqualMemory(pData, SNAP_802_1H, sizeof(SNAP_802_1H)))
+		if (memcmp(pData, SNAP_802_1H, sizeof(SNAP_802_1H)) == 0)
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("Find another LLC at Middle or End fragment(SN=%d, Frag=%d)\n", pHeader->Sequence, pHeader->Frag));
 			goto done; /* give up this frame*/

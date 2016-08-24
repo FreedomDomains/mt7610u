@@ -446,7 +446,7 @@ void CntlOidSsidProc(
 	if (INFRA_ON(pAd) &&
 	    OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) &&
 	    (pAd->CommonCfg.SsidLen == pAd->MlmeAux.SsidBssTab.BssEntry[0].SsidLen)
-	    && NdisEqualMemory(pAd->CommonCfg.Ssid, pAd->MlmeAux.SsidBssTab.BssEntry[0].Ssid, pAd->CommonCfg.SsidLen)
+	    && memcmp(pAd->CommonCfg.Ssid, pAd->MlmeAux.SsidBssTab.BssEntry[0].Ssid, pAd->CommonCfg.SsidLen) == 0
 	    && MAC_ADDR_EQUAL(pAd->CommonCfg.Bssid, pAd->MlmeAux.SsidBssTab.BssEntry[0].Bssid)) {
 		/* Case 1. already connected with an AP who has the desired SSID */
 		/*         with highest RSSI */
@@ -2013,7 +2013,7 @@ void LinkUp(
 	 */
 	if ((pAd->StaCfg.BssType == BSS_INFRA) &&
 	    (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) &&
-	    (NdisEqualMemory(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) == FALSE) &&
+	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) != 0) &&
 	     (pAd->StaCfg.bLostAp == TRUE)) {
 		pAd->StaCfg.bLostAp = FALSE;
 	}
@@ -2086,8 +2086,7 @@ void LinkUp(
 	 */
 	if ((pAd->StaCfg.BssType == BSS_INFRA) &&
 	    (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) &&
-	    (NdisEqualMemory
-	     (pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN))
+	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) == 0)
 	    && (pAd->StaCfg.bLostAp == TRUE)) {
 		WpaSendEapolStart(pAd, pAd->CommonCfg.Bssid);
 		pAd->StaCfg.bLostAp = FALSE;
@@ -3044,7 +3043,7 @@ void MaintainBssTable(
 			bDelEntry = TRUE;
 
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED)
-			&& NdisEqualMemory(pBss->Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen))
+			&& memcmp(pBss->Ssid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen) == 0)
 			bDelEntry = FALSE;
 
 		if (bDelEntry)

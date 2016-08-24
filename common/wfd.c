@@ -416,7 +416,7 @@ ULONG InsertWfdSubelmtTlv(
 				tmpValue = cpu2be16(EidLen);
 				RTMPMoveMemory(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
-				if (!NdisEqualMemory(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) &&
+				if (memcmp(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) != 0 &&
 					(Action == ACTION_GAS_INITIAL_RSP))
 				{
 					RTMPMoveMemory(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
@@ -424,7 +424,7 @@ ULONG InsertWfdSubelmtTlv(
 			}
 			else
 			{
-				if (!NdisEqualMemory(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN))
+				if (memcmp(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) != 0)
 				{
 					EidLen = SUBID_WFD_ASSOCIATED_BSSID_LEN;
 					tmpValue = cpu2be16(EidLen);
@@ -601,7 +601,7 @@ ULONG InsertWfdSubelmtTlv(
 		{
 			UCHAR AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-			if (!NdisEqualMemory(AllZero, pAd->CurrentAddress, MAC_ADDR_LEN))
+			if (memcmp(AllZero, pAd->CurrentAddress, MAC_ADDR_LEN) != 0)
 			{
 				EidLen = SUBID_WFD_ALTERNATE_MAC_ADDR_LEN;
 				*((PUSHORT) (pDest)) = cpu2be16(EidLen);

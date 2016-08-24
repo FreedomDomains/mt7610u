@@ -1441,7 +1441,7 @@ void RT28xx_UpdateBeaconToAsic(
 #ifdef RT_BIG_ENDIAN
 		RTMPWIEndianChange(pAd, ptr, TYPE_TXWI);
 #endif
-		if (NdisEqualMemory(pBeaconSync->BeaconTxWI[bcn_idx], &pAd->BeaconTxWI, TXWISize) == FALSE)
+		if (memcmp(pBeaconSync->BeaconTxWI[bcn_idx], &pAd->BeaconTxWI, TXWISize) != 0)
 		{	/* If BeaconTxWI changed, we need to rewrite the TxWI for the Beacon frames.*/
 			pBeaconSync->BeaconBitMap &= (~(BEACON_BITMAP_MASK & (1 << bcn_idx)));
 			memmove(pBeaconSync->BeaconTxWI[bcn_idx], &pAd->BeaconTxWI, TXWISize);
@@ -1463,7 +1463,7 @@ void RT28xx_UpdateBeaconToAsic(
 		FrameLen += padding;
 		for (i = 0 ; i < FrameLen /*HW_BEACON_OFFSET*/; i += 2)
 		{
-			if (NdisEqualMemory(ptr, pBeaconFrame, 2) == FALSE)
+			if (memcmp(ptr, pBeaconFrame, 2) != 0)
 			{
 				memmove(ptr, pBeaconFrame, 2);
 				longValue =  *ptr + (*(ptr+1)<<8);

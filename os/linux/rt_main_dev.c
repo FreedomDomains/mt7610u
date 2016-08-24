@@ -399,7 +399,7 @@ void *RtmpNetEthConvertDevSearch(
 	for_each_netdev(net, pNetDev)
 	{
 		if ((pNetDev->type == ARPHRD_ETHER)
-			&& NdisEqualMemory(pNetDev->dev_addr, &pData[6], pNetDev->addr_len))
+			&& memcmp(pNetDev->dev_addr, &pData[6], pNetDev->addr_len) == 0)
 			break;
 	}
 
