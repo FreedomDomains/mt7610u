@@ -426,8 +426,6 @@ do { \
  ***********************************************************************************/
 #define MEM_ALLOC_FLAG      (GFP_ATOMIC) /*(GFP_DMA | GFP_ATOMIC) */
 
-#define RTMPEqualMemory(Source1, Source2, Length)	(!memcmp(Source1, Source2, Length))
-
 /***********************************************************************************
  *	OS task related data structure and definitions
  ***********************************************************************************/

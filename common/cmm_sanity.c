@@ -760,7 +760,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             /* WPA2 & 802.11i RSN*/
             case IE_RSN:
                 /* There is no OUI for version anymore, check the group cipher OUI before copying*/
-                if (RTMPEqualMemory(pEid->Octet + 2, RSN_OUI, 3))
+                if (memcmp(pEid->Octet + 2, RSN_OUI, 3) == 0)
                 {
                     /* Copy to pVIE which will report to microsoft bssid list.*/
                     Ptr = (u8 *) pVIE;
@@ -1316,7 +1316,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 		/* WPA2 & 802.11i RSN*/
 		case IE_RSN:
 			/* There is no OUI for version anymore, check the group cipher OUI before copying*/
-			if (RTMPEqualMemory(pEid->Octet + 2, RSN_OUI, 3))
+			if (memcmp(pEid->Octet + 2, RSN_OUI, 3) == 0)
 			{
 				/* Copy to pVIE which will report to microsoft bssid list.*/
 				Ptr = (u8 *) pVIE;

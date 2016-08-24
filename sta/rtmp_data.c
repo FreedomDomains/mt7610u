@@ -470,7 +470,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 			    && (!pAd->CommonCfg.bDLSCapable)
 #endif /* QOS_DLS_SUPPORT */
 			    ) {
-				if (!RTMPEqualMemory(&pHeader->Addr2, &pAd->MlmeAux.Bssid, 6))
+				if (memcmp(&pHeader->Addr2, &pAd->MlmeAux.Bssid, 6) != 0)
 				{
 					/* Receive frame not my BSSID */
 					/* release packet */
@@ -483,7 +483,7 @@ if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
 		{	/* Ad-Hoc mode or Not associated */
 
 			/* Ad-Hoc mode, check address 3 for BSSID */
-			if (!RTMPEqualMemory(&pHeader->Addr3, &pAd->CommonCfg.Bssid, 6)) {
+			if (memcmp(&pHeader->Addr3, &pAd->CommonCfg.Bssid, 6) != 0) {
 				/* Receive frame not my BSSID */
 				/* release packet */
 				RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_FAILURE);

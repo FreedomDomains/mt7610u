@@ -3617,7 +3617,7 @@ void BssCipherParse(
 
 				/* 1. Check group cipher*/
 				pCipher = (PCIPHER_SUITE_STRUCT) pTmp;
-				if (!RTMPEqualMemory(pTmp, RSN_OUI, 3))
+				if (memcmp(pTmp, RSN_OUI, 3) != 0)
 					break;
 
 				/* Parse group cipher*/
@@ -3692,7 +3692,7 @@ void BssCipherParse(
 				while (Count > 0)
 				{
 					pAKM = (PAKM_SUITE_STRUCT) pTmp;
-					if (!RTMPEqualMemory(pTmp, RSN_OUI, 3))
+					if (memcmp(pTmp, RSN_OUI, 3) != 0)
 						break;
 
 					switch (pAKM->Type)

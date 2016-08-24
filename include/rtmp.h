@@ -509,8 +509,8 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 }
 #endif /* RTMP_MAC_USB */
 
-#define MAC_ADDR_EQUAL(pAddr1,pAddr2)           RTMPEqualMemory((void *)(pAddr1), (void *)(pAddr2), MAC_ADDR_LEN)
-#define SSID_EQUAL(ssid1, len1, ssid2, len2)    ((len1==len2) && (RTMPEqualMemory(ssid1, ssid2, len1)))
+#define MAC_ADDR_EQUAL(pAddr1,pAddr2)           (memcmp(pAddr1, pAddr2, MAC_ADDR_LEN) == 0)
+#define SSID_EQUAL(ssid1, len1, ssid2, len2)    ((len1==len2) && (memcmp(ssid1, ssid2, len1) == 0))
 
 
 #ifdef CONFIG_STA_SUPPORT

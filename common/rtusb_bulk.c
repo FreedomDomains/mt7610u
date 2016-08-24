@@ -338,7 +338,7 @@ void RTUSBBulkOutDataPacket(
 #ifndef USB_BULK_BUF_ALIGMENT
 	if ((pHTTXContext->bCopySavePad == TRUE))
 	{
-		if (RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
+		if (memcmp(pHTTXContext->SavedPad, allzero,4) == 0)
 		{
 			DBGPRINT_RAW(RT_DEBUG_ERROR,("e1, allzero : %x  %x  %x  %x  %x  %x  %x  %x \n",
 				pHTTXContext->SavedPad[0], pHTTXContext->SavedPad[1], pHTTXContext->SavedPad[2],pHTTXContext->SavedPad[3]
@@ -603,7 +603,7 @@ void RTUSBBulkOutDataPacket(
 	{
 		memmove(pHTTXContext->SavedPad, &pWirelessPkt[pHTTXContext->ENextBulkOutPosition], 8);
 		pHTTXContext->bCopySavePad = TRUE;
-		if (RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
+		if (memcmp(pHTTXContext->SavedPad, allzero,4) == 0)
 		{
 			u8 *pBuf = &pHTTXContext->SavedPad[0];
 			DBGPRINT_RAW(RT_DEBUG_ERROR,("WARNING-Zero-3:%02x%02x%02x%02x%02x%02x%02x%02x,CWPos=%ld, CWRPos=%ld, bCW=%d, NBPos=%ld, TBPos=%ld, TBSize=%ld\n",

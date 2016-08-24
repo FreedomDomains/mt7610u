@@ -136,7 +136,7 @@ void RtmpHandleRxPsPoll(
 	/*	  Aid, pAddr[0], pAddr[1], pAddr[2], pAddr[3], pAddr[4], pAddr[5])); */
 
 	pMacEntry = &pAd->MacTab.Content[Aid];
-	if (RTMPEqualMemory(pMacEntry->Addr, pAddr, MAC_ADDR_LEN))
+	if (memcmp(pMacEntry->Addr, pAddr, MAC_ADDR_LEN) == 0)
 	{
 		/*
 			Sta is change to Power Active stat.
