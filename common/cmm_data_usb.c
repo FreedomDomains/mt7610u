@@ -193,9 +193,6 @@ void rlt_usb_write_txinfo(
 	nmac_info->tso = 0;
 #endif /* RLT_MAC */
 
-#ifdef RTMP_MAC
-#endif /* RTMP_MAC */
-
 	pTxInfo->TxInfoPktLen = USBDMApktLen;
 	pTxInfo->TxInfoQSEL = QueueSel;
 	if (QueueSel != FIFO_EDCA)
@@ -1230,10 +1227,6 @@ struct sk_buff * GetPacketFromRxRing(
 
 	pData += RXINFO_SIZE;
 #endif /* RLT_MAC */
-
-#ifdef RTMP_MAC
-	pRxInfo = *(RXINFO_STRUC *)(pData + ThisFrameLen);
-#endif /* RTMP_MAC */
 
 	pRxWI = (RXWI_STRUC *)pData;
 

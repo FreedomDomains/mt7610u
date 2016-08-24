@@ -77,9 +77,6 @@ void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo)
 	DBGPRINT(RT_DEBUG_OFF, ("\trsv=%d\n", pRxInfo->rsv));
 #endif /* RLT_MAC */
 
-#ifdef RTMP_MAC
-	DBGPRINT(RT_DEBUG_OFF, ("\t", ));
-#endif /* RTMP_MAC */
 }
 
 
@@ -190,9 +187,6 @@ void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo)
 }
 #endif /* RLT_MAC */
 
-#ifdef RTMP_MAC
-	DBGPRINT(RT_DEBUG_OFF, ("\n"));
-#endif /* RTMP_MAC */
 }
 
 

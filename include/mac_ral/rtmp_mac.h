@@ -32,9 +32,6 @@
 #include "mac_ral/nmac/ral_nmac.h"
 #endif /* RLT_MAC */
 
-#ifdef RTMP_MAC
-#include "mac_ral/omac/ral_omac.h"
-#endif /* RTMP_MAC */
 
 /*
 	TX / RX ring descriptor format
@@ -57,18 +54,12 @@ typedef	union GNU_PACKED _TXWI_STRUC {
 #ifdef RLT_MAC
 	struct _TXWI_NMAC TXWI_N;
 #endif /* RLT_MAC */
-#ifdef RTMP_MAC
-	struct _TXWI_OMAC TXWI_O;
-#endif /* RTMP_MAC */
 	UINT32 word;
 }TXWI_STRUC;
 
 
 #define TXINFO_SIZE			4
 typedef union GNU_PACKED _TXINFO_STRUC{
-#ifdef RTMP_MAC
-	struct _TXINFO_OMAC txinfo_omac;
-#endif /* RTMP_MAC */
 #ifdef RLT_MAC
 	struct _TXINFO_NMAC_PKT txinfo_nmac_pkt;
 	struct _TXINFO_NMAC_CMD txinfo_nmac_cmd;
@@ -84,9 +75,6 @@ typedef	union GNU_PACKED _RXWI_STRUC {
 #ifdef RLT_MAC
 	struct _RXWI_NMAC RXWI_N;
 #endif /* RLT_MAC */
-#ifdef RTMP_MAC
-	struct _RXWI_OMAC RXWI_O;
-#endif /* RTMP_MAC */
 }RXWI_STRUC, *PRXWI_STRUC;
 
 

@@ -1422,14 +1422,6 @@ NDIS_STATUS	NICInitializeAsic(
 	MACValue &= (~0x2000);
 	RTMP_IO_WRITE32(pAd, PBF_SYS_CTRL, MACValue);
 
-#ifdef RTMP_MAC
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x3);
-	USB_CFG_WRITE(pAd, 0x0);
-	RTUSBVenderReset(pAd);
-	RTMPusecDelay(1000);
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x0);
-#endif /* RTMP_MAC */
-
 	RtmpOsMsDelay(200);
 
 #ifdef RTMP_MAC_USB

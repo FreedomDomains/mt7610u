@@ -28,10 +28,6 @@
 #ifndef __RF_CTRL_H__
 #define __RF_CTRL_H__
 
-#ifdef RTMP_MAC
-#include "mac_ral/omac/ral_omac_rf_ctrl.h"
-#endif /* RTMP_MAC */
-
 #ifdef RLT_MAC
 
 #endif /* RLT_MAC */

@@ -1972,17 +1972,11 @@ void LinkUp(
 		Data |= 0x60;
 		RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
 		pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = TRUE;
-#ifdef RTMP_MAC
-		RTMP_IO_WRITE32(pAd, PBF_MAX_PCNT, 0x1F3FBF9F);
-#endif
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 2\n"));
 	} else {
 		RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
 		Data &= 0xFFFFFF00;
 		RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
-#ifdef RTMP_MAC
-		RTMP_IO_WRITE32(pAd, PBF_MAX_PCNT, 0x1F3F7F9F);
-#endif
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 3\n"));
 	}
 
