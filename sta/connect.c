@@ -1960,9 +1960,6 @@ void LinkUp(
 		Data &= 0xFFFFFF00;
 		RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
 
-#ifndef RLT_MAC
-		RTMP_IO_WRITE32(pAd, PBF_MAX_PCNT, 0x1F3F7F9F);
-#endif
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 1\n"));
 	} else
 #endif /* DOT11_N_SUPPORT */
