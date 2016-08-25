@@ -396,33 +396,6 @@ ifeq ($(HAS_TEMPERATURE_TX_ALC),y)
 WFLAGS += -DRTMP_TEMPERATURE_TX_ALC
 endif
 
-#################################################
-# ChipSet specific definitions.
-#
-
-ifneq ($(or $(findstring mt7650e,$(CHIPSET))$(findstring mt7630e,$(CHIPSET)),$(findstring mt7610e,$(CHIPSET))),)
-WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_PCI -DRTMP_PCI_SUPPORT -DA_BAND_SUPPORT -DRX_DMA_SCATTER -DNEW_MBSSID_MODE -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
-#-DRTMP_FREQ_CALIBRATION_SUPPORT -DVCORECAL_SUPPORT
-#-DENHANCE_NEW_MBSSID_MODE
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-#WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
-endif
-
-ifneq ($(findstring mt7650e,$(CHIPSET)),)
-WFLAGS += -DMT7650
-endif
-
-ifneq ($(findstring mt7630e,$(CHIPSET)),)
-WFLAGS += -DMT7630
-endif
-
-ifneq ($(findstring mt7610e,$(CHIPSET)),)
-WFLAGS += -DMT7610
-endif
-
-CHIPSET_DAT = 2860
-endif
-
 ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
 WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT
 #-DRTMP_FREQ_CALIBRATION_SUPPORT
@@ -448,23 +421,6 @@ WFLAGS += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
 endif
 
 CHIPSET_DAT = 2870
-endif
-
-ifneq ($(or $(findstring mt7662e,$(CHIPSET)),$(findstring mt7612e,$(CHIPSET))),)
-WFLAGS += -DMT76x2 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_PCI -DRTMP_PCI_SUPPORT -DA_BAND_SUPPORT -DRX_DMA_SCATTER -DNEW_MBSSID_MODE -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
-#-DRTMP_FREQ_CALIBRATION_SUPPORT -DVCORECAL_SUPPORT
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-#WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
-endif
-CHIPSET_DAT = 2860
-
-ifneq ($(findstring mt7662e,$(CHIPSET)),)
-WFLAGS += -DMT7662
-endif
-
-ifneq ($(findstring mt7612e,$(CHIPSET)),)
-WFLAGS += -DMT7612
-endif
 endif
 
 ifneq ($(or $(findstring mt7662u,$(CHIPSET)),$(findstring mt7662u,$(CHIPSET))),)
