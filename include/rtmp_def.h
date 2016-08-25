@@ -1610,33 +1610,6 @@ enum WIFI_MODE{
 #define CONFIG_RT_FIRST_CARD 7610
 #define CONFIG_RT_SECOND_CARD 7610
 
-#if CONFIG_RT_FIRST_CARD == 7610
-#define INF_MAIN_DEV_NAME		"ra"
-#define INF_MBSSID_DEV_NAME		"ra"
-#elif CONFIG_RT_SECOND_CARD == 7610
-#define INF_MAIN_DEV_NAME		"rai"
-#define INF_MBSSID_DEV_NAME		"rai"
-#else
-#define INF_MAIN_DEV_NAME		"ra"
-#define INF_MBSSID_DEV_NAME		"ra"
-#endif
-#if CONFIG_RT_FIRST_CARD == 7610
-#define INF_WDS_DEV_NAME		"wds"
-#define INF_APCLI_DEV_NAME		"apcli"
-#define INF_MESH_DEV_NAME		"mesh"
-#define INF_P2P_DEV_NAME		"p2p"
-#elif CONFIG_RT_SECOND_CARD == 7610
-#define INF_WDS_DEV_NAME		"wdsi"
-#define INF_APCLI_DEV_NAME		"apclii"
-#define INF_MESH_DEV_NAME		"meshi"
-#define INF_P2P_DEV_NAME		"p2pi"
-#else
-#define INF_WDS_DEV_NAME		"wds"
-#define INF_APCLI_DEV_NAME		"apcli"
-#define INF_MESH_DEV_NAME		"mesh"
-#define INF_P2P_DEV_NAME		"p2p"
-#endif
-
 /* WEP Key TYPE */
 #define WEP_HEXADECIMAL_TYPE    0
 #define WEP_ASCII_TYPE          1

@@ -882,7 +882,7 @@ struct net_device *RtmpPhyNetDevMainCreate(
 #endif /* HOSTAPD_SUPPORT */
 
 	pDevNew = RtmpOSNetDevCreate((INT32)MC_RowID, (UINT32 *)&IoctlIF,
-					INT_MAIN, 0, sizeof(struct rtmp_adapter *), INF_MAIN_DEV_NAME);
+					INT_MAIN, 0, sizeof(struct rtmp_adapter *), "wlan");
 
 #ifdef HOSTAPD_SUPPORT
 	pAd->IoctlIF = IoctlIF;
