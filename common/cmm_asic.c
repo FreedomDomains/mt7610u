@@ -2816,7 +2816,6 @@ INT AsicSetChannel(struct rtmp_adapter*pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BO
 	return 0;
 }
 
-#ifdef RLT_MAC
 /*
 	==========================================================================
 	Description:
@@ -2884,5 +2883,4 @@ void AsicSetExtendedMacAddr(
 	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_47_32 + (Idx*8), Addr4);
 }
 #endif /* MAC_REPEATER_SUPPORT */
-#endif /* RLT_MAC */
 

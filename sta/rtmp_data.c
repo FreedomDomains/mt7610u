@@ -818,9 +818,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 	IN RX_BLK *pRxBlk)
 {
 	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
-#ifdef RLT_MAC
 	RXFCE_INFO *pRxFceInfo = pRxBlk->pRxFceInfo;
-#endif /* RLT_MAC */
 	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
@@ -1423,10 +1421,8 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	UCHAR *pData;
 	RX_BLK RxBlk;
 	u8 RXWISize = pAd->chipCap.RXWISize;
-#ifdef RLT_MAC
 	RXFCE_INFO *pFceInfo;
 	BOOLEAN bCmdRspPacket = FALSE;
-#endif /* RLT_MAC */
 
 	RxProcessed = RxPending = 0;
 
@@ -1464,16 +1460,13 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 
 		/* get rx descriptor and buffer */
 		pRxD = (RXD_STRUC *)(&RxBlk.hw_rx_info[0]);
-#ifdef RLT_MAC
 		pFceInfo = RxBlk.pRxFceInfo;
-#endif /* RLT_MAC */
 		pRxInfo = RxBlk.pRxInfo;
 		pData = GET_OS_PKT_DATAPTR(pRxPacket);
 		pRxWI = (RXWI_STRUC *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
 #ifndef HDR_TRANS_SUPPORT
-#ifdef RLT_MAC
 		// TODO: shiang-6590, handle packet from other ports
 		if ((pFceInfo->info_type != 0) || (pFceInfo->pkt_80211 != 1))
 		{
@@ -1481,16 +1474,13 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 			hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
 			hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
-#ifdef RLT_MAC
 			dumpRxFCEInfo(pAd, pFceInfo);
-#endif /* RLT_MAC */
 			dump_rxinfo(pAd, pRxInfo);
 			hex_dump("RxFrame", (UCHAR *)pData, (pFceInfo->pkt_len));
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
 			RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_SUCCESS);
 			continue;
 		}
-#endif /* RLT_MAC */
 #endif /* !HDR_TRANS_SUPPORT */
 
 #ifdef RT_BIG_ENDIAN
@@ -1515,9 +1505,7 @@ if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
 		hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
 		DBGPRINT(RT_DEBUG_TRACE, ("==>%s():Dump the RxD, RxFCEInfo and RxInfo:\n", __FUNCTION__));
 		hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
-#ifdef RLT_MAC
 		dumpRxFCEInfo(pAd, pFceInfo);
-#endif /* RLT_MAC */
 		dump_rxinfo(pAd, pRxInfo);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxWI and RxPacket:\n"));

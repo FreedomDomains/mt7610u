@@ -322,7 +322,6 @@ void RtmpChipBcnInit(
 }
 
 
-#ifdef RLT_MAC
 /*
 ========================================================================
 Routine Description:
@@ -385,7 +384,6 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("\tBcnBase[8] = \t0x%x\n", pChipCap->BcnBase[8]));
 
 }
-#endif /* RLT_MAC */
 
 
 /*

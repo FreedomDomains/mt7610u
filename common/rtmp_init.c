@@ -60,20 +60,9 @@ RTMP_REG_PAIR MACRegTable[] = {
 	{MAX_LEN_CFG,		MAX_AGGREGATION_SIZE | 0x00001000},	/* 0x3018, MAX frame length. Max PSDU = 16kbytes.*/
 	{LED_CFG,		0x7f031e46}, /* Gary, 2006-08-23*/
 
-#ifdef RLT_MAC
 	{TX_MAX_PCNT,		0x1fbf1f1f /*0xbfbf3f1f*/},
 	{RX_MAX_PCNT,		0x9f},
 
-// TODO: shiang-6590, need set this in FPGA mode
-#else
-#ifdef INF_AMAZON_SE
-	{PBF_MAX_PCNT,			0x1F3F6F6F}, 	/*iverson modify for usb issue, 2008/09/19*/
-											/* 6F + 6F < total page count FE*/
-											/* so that RX doesn't occupy TX's buffer space when WMM congestion.*/
-#else
-	{PBF_MAX_PCNT,			0x1F3FBF9F}, 	/*0x1F3f7f9f},		Jan, 2006/04/20*/
-#endif /* INF_AMAZON_SE */
-#endif /* RLT_MAC */
 
 	/*{TX_RTY_CFG,			0x6bb80408},	 Jan, 2006/11/16*/
 /* WMM_ACM_SUPPORT*/
@@ -1286,7 +1275,6 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 	}
 
 
-#ifdef RLT_MAC
 	{
 		RTMP_REG_PAIR bcn_mac_reg_tb[] = {
 			{BCN_OFFSET0, 0x18100800},
@@ -1300,7 +1288,6 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 									bcn_mac_reg_tb[idx].Value);
 		}
 	}
-#endif /* RLT_MAC */
 
 }
 
@@ -1395,9 +1382,7 @@ NDIS_STATUS	NICInitializeAsic(
 	USB_DMA_CFG_STRUC UsbCfg;
 #endif /* RTMP_MAC_USB */
 
-#ifdef RLT_MAC
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
-#endif
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitializeAsic\n"));
 
@@ -1468,12 +1453,10 @@ NDIS_STATUS	NICInitializeAsic(
 	RTMP_IO_WRITE32(pAd, TSO_CTRL, 0x0);
 #endif /* HDR_TRANS_SUPPORT */
 
-#ifdef RLT_MAC
 	/* Select Q2 to receive command response */
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	andes_fun_set(pAd, Q_SELECT, pChipCap->CmdRspRxRing);
 	usb_rx_cmd_msgs_receive(pAd);
-#endif /* RLT_MAC */
 
 	//RTUSBBulkReceive(pAd);
 #endif /* RTMP_MAC_USB */

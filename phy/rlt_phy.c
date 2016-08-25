@@ -28,8 +28,6 @@
 #include "rt_config.h"
 
 
-#ifdef RLT_MAC
-
 NDIS_STATUS NICInitBBP(struct rtmp_adapter*pAd)
 {
 	INT idx;
@@ -406,5 +404,4 @@ INT rlt_bbp_is_ready(struct rtmp_adapter *pAd)
 	return (((val == 0xffffffff) || (val == 0x0)) ? FALSE : TRUE);
 }
 
-#endif /* RLT_MAC */
 

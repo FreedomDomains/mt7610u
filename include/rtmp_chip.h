@@ -1185,9 +1185,7 @@ do {	\
 int RtmpChipOpsHook(void *pCB);
 void RtmpChipBcnInit(struct rtmp_adapter *pAd);
 void RtmpChipBcnSpecInit(struct rtmp_adapter *pAd);
-#ifdef RLT_MAC
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
-#endif /* RLT_MAC */
 
 void RtmpChipWriteHighMemory(
 	IN	struct rtmp_adapter *pAd,

@@ -30,9 +30,7 @@
 
 
 #include "mac_ral/rf_ctrl.h"
-#ifdef RLT_MAC
 #include "phy/rlt_phy.h"
-#endif /* RLT_MAC */
 
 /*
 	RF sections

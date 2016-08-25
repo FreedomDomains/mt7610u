@@ -182,7 +182,6 @@ void rlt_usb_write_txinfo(
 	IN UCHAR NextValid,
 	IN UCHAR TxBurst)
 {
-#ifdef RLT_MAC
 	struct _TXINFO_NMAC_PKT *nmac_info;
 
 	nmac_info = (struct _TXINFO_NMAC_PKT *)pTxInfo;
@@ -191,7 +190,6 @@ void rlt_usb_write_txinfo(
 	nmac_info->d_port = 0;
 	nmac_info->cso = 0;
 	nmac_info->tso = 0;
-#endif /* RLT_MAC */
 
 	pTxInfo->TxInfoPktLen = USBDMApktLen;
 	pTxInfo->TxInfoQSEL = QueueSel;
@@ -213,8 +211,6 @@ static void rlt_usb_update_txinfo(
 	IN TXINFO_STRUC *pTxInfo,
 	IN TX_BLK *pTxBlk)
 {
-#ifdef RLT_MAC
-#endif /* RLT_MAC */
 }
 
 
@@ -1157,9 +1153,7 @@ struct sk_buff * GetPacketFromRxRing(
 	RXWI_STRUC *pRxWI;
 	u8 RXWISize = pAd->chipCap.RXWISize;
 	RXINFO_STRUC *pRxInfo;
-#ifdef RLT_MAC
 	RXFCE_INFO *pRxFceInfo;
-#endif /* RLT_MAC */
 
 	*bCmdRspPacket = FALSE;
 
@@ -1207,7 +1201,6 @@ struct sk_buff * GetPacketFromRxRing(
 	/* skip USB frame length field*/
 	pData += RXDMA_FIELD_SIZE;
 
-#ifdef RLT_MAC
 	pRxFceInfo = (RXFCE_INFO *)(pData + ThisFrameLen);
 
 	/* Check if command response or data packet */
@@ -1226,7 +1219,6 @@ struct sk_buff * GetPacketFromRxRing(
 	pRxInfo = (RXINFO_STRUC *)pData;
 
 	pData += RXINFO_SIZE;
-#endif /* RLT_MAC */
 
 	pRxWI = (RXWI_STRUC *)pData;
 
@@ -1258,10 +1250,8 @@ struct sk_buff * GetPacketFromRxRing(
 	RTMPDescriptorEndianChange((u8 *)pRxInfo, TYPE_RXINFO);
 #endif /* RT_BIG_ENDIAN */
 
-#ifdef RLT_MAC
 	memmove((void *)&pRxBlk->hw_rx_info[0], (void *)pRxFceInfo, sizeof(RXFCE_INFO));
 	pRxBlk->pRxFceInfo = (RXFCE_INFO *)&pRxBlk->hw_rx_info[0];
-#endif /* RLT_MAC */
 
 	memmove(&pRxBlk->hw_rx_info[RXINFO_OFFSET], pRxInfo, RXINFO_SIZE);
 	pRxBlk->pRxInfo = (RXINFO_STRUC *)&pRxBlk->hw_rx_info[RXINFO_OFFSET];

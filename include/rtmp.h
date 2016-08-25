@@ -3434,9 +3434,7 @@ typedef struct _RX_BLK_
 {
 	UCHAR hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
 	RXINFO_STRUC *pRxInfo;
-#ifdef RLT_MAC
 	RXFCE_INFO *pRxFceInfo;
-#endif /* RLT_MAC */
 	RXWI_STRUC *pRxWI;
 	PHEADER_802_11 pHeader;
 	struct sk_buff * pRxPacket;
@@ -4519,7 +4517,6 @@ void AsicDelWcidTab(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR	Wcid);
 
-#ifdef RLT_MAC
 void AsicSetApCliBssid(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pBssid,
@@ -4531,7 +4528,6 @@ void AsicSetExtendedMacAddr(
 	IN u8 *pMacAddr,
 	IN UINT32 Idx);
 #endif /* MAC_REPEATER_SUPPORT */
-#endif /* RLT_MAC */
 
 #ifdef DOT11_N_SUPPORT
 void AsicEnableRDG(
