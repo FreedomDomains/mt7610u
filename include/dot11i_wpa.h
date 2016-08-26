@@ -140,7 +140,7 @@ typedef enum _WPA_KDE_ID
 } WPA_KDE_ID;
 
 /* EAPOL Key Information definition within Key descriptor format */
-typedef	struct GNU_PACKED _KEY_INFO
+typedef	struct __attribute__ ((packed)) _KEY_INFO
 {
 #ifdef RT_BIG_ENDIAN
 	UCHAR	KeyAck:1;
@@ -170,7 +170,7 @@ typedef	struct GNU_PACKED _KEY_INFO
 }	KEY_INFO, *PKEY_INFO;
 
 /* EAPOL Key descriptor format */
-typedef	struct GNU_PACKED _KEY_DESCRIPTER
+typedef	struct __attribute__ ((packed)) _KEY_DESCRIPTER
 {
 	UCHAR		Type;
 	KEY_INFO	KeyInfo;
@@ -185,7 +185,7 @@ typedef	struct GNU_PACKED _KEY_DESCRIPTER
 	UCHAR		KeyData[0];
 }	KEY_DESCRIPTER, *PKEY_DESCRIPTER;
 
-typedef	struct GNU_PACKED _EAPOL_PACKET
+typedef	struct __attribute__ ((packed)) _EAPOL_PACKET
 {
 	UCHAR	 			ProVer;
 	UCHAR	 			ProType;
@@ -193,7 +193,7 @@ typedef	struct GNU_PACKED _EAPOL_PACKET
 	KEY_DESCRIPTER		KeyDesc;
 }	EAPOL_PACKET, *PEAPOL_PACKET;
 
-typedef struct GNU_PACKED _KDE_HDR
+typedef struct __attribute__ ((packed)) _KDE_HDR
 {
     UCHAR               Type;
     UCHAR               Len;
@@ -203,7 +203,7 @@ typedef struct GNU_PACKED _KDE_HDR
 }   KDE_HDR, *PKDE_HDR;
 
 /*802.11i D10 page 83 */
-typedef struct GNU_PACKED _GTK_KDE
+typedef struct __attribute__ ((packed)) _GTK_KDE
 {
 #ifndef RT_BIG_ENDIAN
     UCHAR               Kid:2;
@@ -220,44 +220,44 @@ typedef struct GNU_PACKED _GTK_KDE
 }   GTK_KDE, *PGTK_KDE;
 
 /* For WPA1 */
-typedef struct GNU_PACKED _RSNIE {
+typedef struct __attribute__ ((packed)) _RSNIE {
     UCHAR   oui[4];
     USHORT  version;
     UCHAR   mcast[4];
     USHORT  ucount;
-    struct GNU_PACKED {
+    struct __attribute__ ((packed)) {
         UCHAR oui[4];
     }ucast[1];
 } RSNIE, *PRSNIE;
 
 /* For WPA2 */
-typedef struct GNU_PACKED _RSNIE2 {
+typedef struct __attribute__ ((packed)) _RSNIE2 {
     USHORT  version;
     UCHAR   mcast[4];
     USHORT  ucount;
-    struct GNU_PACKED {
+    struct __attribute__ ((packed)) {
         UCHAR oui[4];
     }ucast[1];
 } RSNIE2, *PRSNIE2;
 
 /* AKM Suite */
-typedef struct GNU_PACKED _RSNIE_AUTH {
+typedef struct __attribute__ ((packed)) _RSNIE_AUTH {
     USHORT acount;
-    struct GNU_PACKED {
+    struct __attribute__ ((packed)) {
         UCHAR oui[4];
     }auth[1];
 } RSNIE_AUTH,*PRSNIE_AUTH;
 
 /* PMKID List */
-typedef struct GNU_PACKED _RSNIE_PMKID {
+typedef struct __attribute__ ((packed)) _RSNIE_PMKID {
     USHORT pcount;
-    struct GNU_PACKED {
+    struct __attribute__ ((packed)) {
         UCHAR list[16];
     }pmkid[1];
 } RSNIE_PMKID,*PRSNIE_PMKID;
 
-typedef	union GNU_PACKED _RSN_CAPABILITIES	{
-	struct	GNU_PACKED {
+typedef	union __attribute__ ((packed)) _RSN_CAPABILITIES	{
+	struct	__attribute__ ((packed)) {
 #ifdef RT_BIG_ENDIAN
         USHORT		Rsvd:8;
 		USHORT		MFPC:1;
@@ -279,7 +279,7 @@ typedef	union GNU_PACKED _RSN_CAPABILITIES	{
 	USHORT			word;
 }	RSN_CAPABILITIES, *PRSN_CAPABILITIES;
 
-typedef struct GNU_PACKED _EAP_HDR {
+typedef struct __attribute__ ((packed)) _EAP_HDR {
     UCHAR   ProVer;
     UCHAR   ProType;
     UCHAR   Body_Len[2];

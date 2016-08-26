@@ -108,11 +108,11 @@
 	Rx descriptor format, Rx Ring
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _RXD_STRUC{
+typedef	struct __attribute__ ((packed)) _RXD_STRUC{
 	UINT32 dma_len;
 }RXD_STRUC, *PRXD_STRUC;
 #else
-typedef	struct GNU_PACKED _RXD_STRUC{
+typedef	struct __attribute__ ((packed)) _RXD_STRUC{
 	UINT32 dma_len;
 }RXD_STRUC, *PRXD_STRUC;
 #endif

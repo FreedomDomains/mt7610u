@@ -103,23 +103,23 @@ typedef struct _DOT11_REGULATORY_INFORMATION
 #define RM_NOISE_HISTOGRAM		4
 
 
-typedef struct GNU_PACKED _TPC_REPORT_INFO
+typedef struct __attribute__ ((packed)) _TPC_REPORT_INFO
 {
 	u8 TxPwr;
 	u8 LinkMargin;
 } TPC_REPORT_INFO, *PTPC_REPORT_INFO;
 
-typedef struct GNU_PACKED _CH_SW_ANN_INFO
+typedef struct __attribute__ ((packed)) _CH_SW_ANN_INFO
 {
 	u8 ChSwMode;
 	u8 Channel;
 	u8 ChSwCnt;
 } CH_SW_ANN_INFO, *PCH_SW_ANN_INFO;
 
-typedef union GNU_PACKED _MEASURE_REQ_MODE
+typedef union __attribute__ ((packed)) _MEASURE_REQ_MODE
 {
 #ifdef RT_BIG_ENDIAN
-	struct GNU_PACKED
+	struct __attribute__ ((packed))
 	{
 
 		u8 :3;
@@ -130,7 +130,7 @@ typedef union GNU_PACKED _MEASURE_REQ_MODE
 		u8 Parallel:1;
 	} field;
 #else
-	struct GNU_PACKED
+	struct __attribute__ ((packed))
 	{
 		u8 Parallel:1;
 		u8 Enable:1;
@@ -143,14 +143,14 @@ typedef union GNU_PACKED _MEASURE_REQ_MODE
 	u8 word;
 } MEASURE_REQ_MODE, *PMEASURE_REQ_MODE;
 
-typedef struct GNU_PACKED _MEASURE_REQ
+typedef struct __attribute__ ((packed)) _MEASURE_REQ
 {
 	u8 ChNum;
 	UINT64 MeasureStartTime;
 	UINT16 MeasureDuration;
 } MEASURE_REQ, *PMEASURE_REQ;
 
-typedef struct GNU_PACKED _MEASURE_REQ_INFO
+typedef struct __attribute__ ((packed)) _MEASURE_REQ_INFO
 {
 	u8 Token;
 	MEASURE_REQ_MODE ReqMode;
@@ -158,10 +158,10 @@ typedef struct GNU_PACKED _MEASURE_REQ_INFO
 	u8 Oct[0];
 } MEASURE_REQ_INFO, *PMEASURE_REQ_INFO;
 
-typedef union GNU_PACKED _MEASURE_BASIC_REPORT_MAP
+typedef union __attribute__ ((packed)) _MEASURE_BASIC_REPORT_MAP
 {
 #ifdef RT_BIG_ENDIAN
-	struct GNU_PACKED
+	struct __attribute__ ((packed))
 	{
 		u8 Rev:3;
 
@@ -172,7 +172,7 @@ typedef union GNU_PACKED _MEASURE_BASIC_REPORT_MAP
 		u8 BSS:1;
 	} field;
 #else
-	struct GNU_PACKED
+	struct __attribute__ ((packed))
 	{
 		u8 BSS:1;
 
@@ -186,7 +186,7 @@ typedef union GNU_PACKED _MEASURE_BASIC_REPORT_MAP
 	u8 word;
 } MEASURE_BASIC_REPORT_MAP, *PMEASURE_BASIC_REPORT_MAP;
 
-typedef struct GNU_PACKED _MEASURE_BASIC_REPORT
+typedef struct __attribute__ ((packed)) _MEASURE_BASIC_REPORT
 {
 	u8 ChNum;
 	UINT64 MeasureStartTime;
@@ -194,7 +194,7 @@ typedef struct GNU_PACKED _MEASURE_BASIC_REPORT
 	MEASURE_BASIC_REPORT_MAP Map;
 } MEASURE_BASIC_REPORT, *PMEASURE_BASIC_REPORT;
 
-typedef struct GNU_PACKED _MEASURE_CCA_REPORT
+typedef struct __attribute__ ((packed)) _MEASURE_CCA_REPORT
 {
 	u8 ChNum;
 	UINT64 MeasureStartTime;
@@ -202,7 +202,7 @@ typedef struct GNU_PACKED _MEASURE_CCA_REPORT
 	u8 CCA_Busy_Fraction;
 } MEASURE_CCA_REPORT, *PMEASURE_CCA_REPORT;
 
-typedef struct GNU_PACKED _MEASURE_RPI_REPORT
+typedef struct __attribute__ ((packed)) _MEASURE_RPI_REPORT
 {
 	u8 ChNum;
 	UINT64 MeasureStartTime;
@@ -210,9 +210,9 @@ typedef struct GNU_PACKED _MEASURE_RPI_REPORT
 	u8 RPI_Density[8];
 } MEASURE_RPI_REPORT, *PMEASURE_RPI_REPORT;
 
-typedef union GNU_PACKED _MEASURE_REPORT_MODE
+typedef union __attribute__ ((packed)) _MEASURE_REPORT_MODE
 {
-	struct GNU_PACKED
+	struct __attribute__ ((packed))
 	{
 #ifdef RT_BIG_ENDIAN
 		u8 Rev:5;
@@ -229,7 +229,7 @@ typedef union GNU_PACKED _MEASURE_REPORT_MODE
 	u8 word;
 } MEASURE_REPORT_MODE, *PMEASURE_REPORT_MODE;
 
-typedef struct GNU_PACKED _MEASURE_REPORT_INFO
+typedef struct __attribute__ ((packed)) _MEASURE_REPORT_INFO
 {
 	u8 Token;
 	u8 ReportMode;
@@ -237,7 +237,7 @@ typedef struct GNU_PACKED _MEASURE_REPORT_INFO
 	u8 Octect[0];
 } MEASURE_REPORT_INFO, *PMEASURE_REPORT_INFO;
 
-typedef struct GNU_PACKED _QUIET_INFO
+typedef struct __attribute__ ((packed)) _QUIET_INFO
 {
 	u8 QuietCnt;
 	u8 QuietPeriod;

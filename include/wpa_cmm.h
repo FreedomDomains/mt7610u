@@ -196,26 +196,26 @@ typedef struct _IEEE8021X_FRAME {
 	USHORT Length;
 } IEEE8021X_FRAME, *PIEEE8021X_FRAME;
 
-typedef struct GNU_PACKED _RSN_IE_HEADER_STRUCT {
+typedef struct __attribute__ ((packed)) _RSN_IE_HEADER_STRUCT {
 	UCHAR Eid;
 	UCHAR Length;
 	USHORT Version;		/* Little endian format */
 } RSN_IE_HEADER_STRUCT, *PRSN_IE_HEADER_STRUCT;
 
 /* Cipher suite selector types */
-typedef struct GNU_PACKED _CIPHER_SUITE_STRUCT {
+typedef struct __attribute__ ((packed)) _CIPHER_SUITE_STRUCT {
 	UCHAR Oui[3];
 	UCHAR Type;
 } CIPHER_SUITE_STRUCT, *PCIPHER_SUITE_STRUCT;
 
 /* Authentication and Key Management suite selector */
-typedef struct GNU_PACKED _AKM_SUITE_STRUCT {
+typedef struct __attribute__ ((packed)) _AKM_SUITE_STRUCT {
 	UCHAR Oui[3];
 	UCHAR Type;
 } AKM_SUITE_STRUCT, *PAKM_SUITE_STRUCT;
 
 /* RSN capability */
-typedef struct GNU_PACKED _RSN_CAPABILITY {
+typedef struct __attribute__ ((packed)) _RSN_CAPABILITY {
 	USHORT Rsv:10;
 	USHORT GTKSAReplayCnt:2;
 	USHORT PTKSAReplayCnt:2;

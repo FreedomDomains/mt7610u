@@ -342,7 +342,7 @@ typedef struct  _PACKET_INFO    {
 #define MAC_ADDR_LEN                    6
 
 /* 2-byte Frame control field */
-    typedef struct GNU_PACKED {
+    typedef struct __attribute__ ((packed)) {
 
 #ifdef RT_BIG_ENDIAN
 	USHORT Order:1;		/* Strict order expected */
@@ -372,7 +372,7 @@ typedef struct  _PACKET_INFO    {
 } FRAME_CONTROL, *PFRAME_CONTROL;
 
 
-typedef struct GNU_PACKED _HEADER_802_11 {
+typedef struct __attribute__ ((packed)) _HEADER_802_11 {
         FRAME_CONTROL   FC;
         USHORT          Duration;
         UCHAR           Addr1[MAC_ADDR_LEN];

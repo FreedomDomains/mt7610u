@@ -48,14 +48,14 @@
 #define FIFO_HCCA	1
 #define FIFO_EDCA	2
 
-typedef	union GNU_PACKED _TXWI_STRUC {
+typedef	union __attribute__ ((packed)) _TXWI_STRUC {
 	struct _TXWI_NMAC TXWI_N;
 	UINT32 word;
 }TXWI_STRUC;
 
 
 #define TXINFO_SIZE			4
-typedef union GNU_PACKED _TXINFO_STRUC{
+typedef union __attribute__ ((packed)) _TXINFO_STRUC{
 	struct _TXINFO_NMAC_PKT txinfo_nmac_pkt;
 	struct _TXINFO_NMAC_CMD txinfo_nmac_cmd;
 	UINT32 word;
@@ -65,14 +65,14 @@ typedef union GNU_PACKED _TXINFO_STRUC{
 /*
 	RXWI wireless information format, in PBF. invisible in driver.
 */
-typedef	union GNU_PACKED _RXWI_STRUC {
+typedef	union __attribute__ ((packed)) _RXWI_STRUC {
 	struct _RXWI_NMAC RXWI_N;
 }RXWI_STRUC, *PRXWI_STRUC;
 
 
 #define RXINFO_SIZE			4
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _RXINFO_STRUC {
+typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
 	UINT32		ip_sum_err:1;		/* IP checksum error */
 	UINT32		tcp_sum_err:1;	/* TCP checksum error */
 	UINT32		rsv:1;
@@ -104,7 +104,7 @@ typedef	struct GNU_PACKED _RXINFO_STRUC {
 	UINT32		BA:1;
 }	RXINFO_STRUC, *PRXINFO_STRUC;
 #else
-typedef	struct GNU_PACKED _RXINFO_STRUC {
+typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
 	UINT32		BA:1;
 	UINT32		DATA:1;
 	UINT32		NULLDATA:1;

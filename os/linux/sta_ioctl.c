@@ -49,7 +49,7 @@ extern ULONG RTDebugFunc;
 
 extern UCHAR    CipherWpa2Template[];
 
-typedef struct GNU_PACKED _RT_VERSION_INFO{
+typedef struct __attribute__ ((packed)) _RT_VERSION_INFO{
     UCHAR       DriverVersionW;
     UCHAR       DriverVersionX;
     UCHAR       DriverVersionY;

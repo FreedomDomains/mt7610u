@@ -107,19 +107,19 @@ UINT Tkip_Sbox_Upper[256] =
 
 /* Expanded IV for TKIP function.*/
 
-typedef	struct GNU_PACKED _IV_CONTROL_
+typedef	struct __attribute__ ((packed)) _IV_CONTROL_
 {
-	union GNU_PACKED
+	union __attribute__ ((packed))
 	{
-		struct GNU_PACKED
+		struct __attribute__ ((packed))
 		{
 			UCHAR		rc0;
 			UCHAR		rc1;
 			UCHAR		rc2;
 
-			union GNU_PACKED
+			union __attribute__ ((packed))
 			{
-				struct GNU_PACKED
+				struct __attribute__ ((packed))
 				{
 #ifdef RT_BIG_ENDIAN
 					UCHAR	KeyID:2;

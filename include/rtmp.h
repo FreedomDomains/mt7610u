@@ -760,7 +760,7 @@ typedef struct _STREAM_MODE_ENTRY_{
   **************************************************************************/
 
 /* structure to define WPA Group Key Rekey Interval */
-typedef struct GNU_PACKED _RT_802_11_WPA_REKEY {
+typedef struct __attribute__ ((packed)) _RT_802_11_WPA_REKEY {
 	ULONG ReKeyMethod;	/* mechanism for rekeying: 0:disable, 1: time-based, 2: packet-based */
 	ULONG ReKeyInterval;	/* time-based: seconds, packet-based: kilo-packets */
 } RT_WPA_REKEY,*PRT_WPA_REKEY, RT_802_11_WPA_REKEY, *PRT_802_11_WPA_REKEY;
@@ -1088,7 +1088,7 @@ typedef struct {
 } BA_TABLE, *PBA_TABLE;
 
 /*For QureyBATableOID use; */
-typedef struct GNU_PACKED _OID_BA_REC_ENTRY {
+typedef struct __attribute__ ((packed)) _OID_BA_REC_ENTRY {
 	UCHAR MACAddr[MAC_ADDR_LEN];
 	UCHAR BaBitmap;		/* if (BaBitmap&(1<<TID)), this session with{MACAddr, TID}exists, so read BufSize[TID] for BufferSize */
 	UCHAR rsv;
@@ -1097,7 +1097,7 @@ typedef struct GNU_PACKED _OID_BA_REC_ENTRY {
 } OID_BA_REC_ENTRY, *POID_BA_REC_ENTRY;
 
 /*For QureyBATableOID use; */
-typedef struct GNU_PACKED _OID_BA_ORI_ENTRY {
+typedef struct __attribute__ ((packed)) _OID_BA_ORI_ENTRY {
 	UCHAR MACAddr[MAC_ADDR_LEN];
 	UCHAR BaBitmap;		/* if (BaBitmap&(1<<TID)), this session with{MACAddr, TID}exists, so read BufSize[TID] for BufferSize, read ORI_BA_Status[TID] for status */
 	UCHAR rsv;
@@ -6951,7 +6951,7 @@ typedef struct _DefaultKeyIdxValue
 #ifdef CONFIG_STA_SUPPORT
 
 /* The radio capture header precedes the 802.11 header. */
-typedef struct GNU_PACKED _ieee80211_radiotap_header {
+typedef struct __attribute__ ((packed)) _ieee80211_radiotap_header {
     u8	it_version;	/* Version 0. Only increases
 				 * for drastic changes,
 				 * introduction of compatible

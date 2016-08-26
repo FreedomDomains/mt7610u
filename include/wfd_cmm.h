@@ -103,7 +103,7 @@
 /* Default content protection bit */
 #define WFD_CONTENT_PROTECT_DEFAULT			WFD_CP_NOT_SUPPORT
 
-typedef	struct GNU_PACKED _WFD_DEVICE_INFO
+typedef	struct __attribute__ ((packed)) _WFD_DEVICE_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	USHORT DeviceType:2;
@@ -129,7 +129,7 @@ typedef	struct GNU_PACKED _WFD_DEVICE_INFO
 }	WFD_DEVICE_INFO, *PWFD_DEVICE_INFO;
 
 
-typedef	struct GNU_PACKED _WFD_COUPLED_SINK_INFO
+typedef	struct __attribute__ ((packed)) _WFD_COUPLED_SINK_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	UCHAR CoupledStat:2;
@@ -141,7 +141,7 @@ typedef	struct GNU_PACKED _WFD_COUPLED_SINK_INFO
 }	WFD_COUPLED_SINK_INFO, *PWFD_COUPLED_SINK_INFO;
 
 
-typedef	struct GNU_PACKED _WFD_SESSION_INFO
+typedef	struct __attribute__ ((packed)) _WFD_SESSION_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	UCHAR 					Length;

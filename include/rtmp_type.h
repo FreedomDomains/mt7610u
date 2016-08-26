@@ -30,9 +30,6 @@
 
 
 
-#ifndef GNU_PACKED
-#define GNU_PACKED  __attribute__ ((packed))
-#endif /* GNU_PACKED */
 
 
 #ifdef LINUX

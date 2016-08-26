@@ -43,7 +43,7 @@
 #endif /* TXBF_SUPPORT */
 
 /* 4-byte HTC field.  maybe included in any frame except non-QOS data frame.  The Order bit must set 1. */
-typedef struct GNU_PACKED _HT_CONTROL{
+typedef struct __attribute__ ((packed)) _HT_CONTROL{
 #ifdef RT_BIG_ENDIAN
 	UINT32 RDG:1;
 	UINT32 ACConstraint:1;
@@ -78,7 +78,7 @@ typedef struct GNU_PACKED _HT_CONTROL{
 } HT_CONTROL, *PHT_CONTROL;
 
 /* 2-byte QOS CONTROL field */
-typedef struct GNU_PACKED _QOS_CONTROL{
+typedef struct __attribute__ ((packed)) _QOS_CONTROL{
 #ifdef RT_BIG_ENDIAN
 	USHORT Txop_QueueSize:8;
 	USHORT AMsduPresent:1;
@@ -95,7 +95,7 @@ typedef struct GNU_PACKED _QOS_CONTROL{
 } QOS_CONTROL, *PQOS_CONTROL;
 
 
-typedef struct GNU_PACKED _AC_PARAM_RECORD{
+typedef struct __attribute__ ((packed)) _AC_PARAM_RECORD{
 	u8 aci_aifsn;
 	u8 ecw_max:4;
 	u8 ecw_min: 4;
@@ -103,7 +103,7 @@ typedef struct GNU_PACKED _AC_PARAM_RECORD{
 }AC_PARAM_RECORD;
 
 
-typedef struct GNU_PACKED _PSPOLL_FRAME {
+typedef struct __attribute__ ((packed)) _PSPOLL_FRAME {
 	FRAME_CONTROL FC;
 	USHORT Aid;
 	UCHAR Bssid[MAC_ADDR_LEN];
@@ -111,7 +111,7 @@ typedef struct GNU_PACKED _PSPOLL_FRAME {
 } PSPOLL_FRAME, *PPSPOLL_FRAME;
 
 
-typedef struct GNU_PACKED _RTS_FRAME {
+typedef struct __attribute__ ((packed)) _RTS_FRAME {
 	FRAME_CONTROL FC;
 	USHORT Duration;
 	UCHAR Addr1[MAC_ADDR_LEN];

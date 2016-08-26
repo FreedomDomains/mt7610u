@@ -43,19 +43,19 @@
 
 
 /* structure to store Simple Config Attributes Info */
-typedef struct GNU_PACKED _WSC_LV_INFO {
+typedef struct __attribute__ ((packed)) _WSC_LV_INFO {
     USHORT  ValueLen;
     UCHAR   Value[512];
 } WSC_LV_INFO;
 
-typedef struct GNU_PACKED _WSC_IE_HEADER {
+typedef struct __attribute__ ((packed)) _WSC_IE_HEADER {
 	UCHAR elemId;
 	UCHAR length;
 	UCHAR oui[4];
 } WSC_IE_HEADER;
 
 /* WSC IE structure */
-typedef	struct GNU_PACKED _WSC_IE
+typedef	struct __attribute__ ((packed)) _WSC_IE
 {
 	USHORT	Type;
 	USHORT	Length;
@@ -63,7 +63,7 @@ typedef	struct GNU_PACKED _WSC_IE
 }	WSC_IE, *PWSC_IE;
 
 /* WSC fixed information within EAP */
-typedef	struct GNU_PACKED _WSC_FRAME
+typedef	struct __attribute__ ((packed)) _WSC_FRAME
 {
 	UCHAR	SMI[3];
 	UINT	VendorType;
@@ -72,7 +72,7 @@ typedef	struct GNU_PACKED _WSC_FRAME
 }	WSC_FRAME, *PWSC_FRAME;
 
 /* EAP frame format */
-typedef	struct GNU_PACKED _EAP_FRAME	{
+typedef	struct __attribute__ ((packed)) _EAP_FRAME	{
 	UCHAR	Code;						/* 1 = Request, 2 = Response */
 	UCHAR	Id;
 	USHORT	Length;

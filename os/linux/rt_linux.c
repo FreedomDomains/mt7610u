@@ -2010,7 +2010,7 @@ struct net_device *RtmpOsPktNetDevGet(void *pPkt)
 /* For any Layer2 devices, e.g., bridges, switches and other APs, the frame
    can update their forwarding tables with the correct port to reach the new
    location of the STA */
-typedef struct GNU_PACKED _RT_IAPP_L2_UPDATE_FRAME {
+typedef struct __attribute__ ((packed)) _RT_IAPP_L2_UPDATE_FRAME {
 
 	UCHAR DA[ETH_ALEN];	/* broadcast MAC address */
 	UCHAR SA[ETH_ALEN];	/* the MAC address of the STA that has just associated

@@ -1513,7 +1513,7 @@ void SendPSMPAction(
 
 #define RADIO_MEASUREMENT_REQUEST_ACTION	0
 
-typedef struct GNU_PACKED _BEACON_REQUEST {
+typedef struct __attribute__ ((packed)) _BEACON_REQUEST {
 	UCHAR	RegulatoryClass;
 	UCHAR	ChannelNumber;
 	USHORT	RandomInterval;
@@ -1525,7 +1525,7 @@ typedef struct GNU_PACKED _BEACON_REQUEST {
 	UCHAR   SSIDIE[2];			/* 2 byte*/
 } BEACON_REQUEST;
 
-typedef struct GNU_PACKED _MEASUREMENT_REQ
+typedef struct __attribute__ ((packed)) _MEASUREMENT_REQ
 {
 	UCHAR	ID;
 	UCHAR	Length;

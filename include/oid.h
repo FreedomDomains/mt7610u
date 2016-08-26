@@ -495,14 +495,14 @@ typedef ULONGLONG NDIS_802_11_KEY_RSC;
 
 /* The dot1x related structure.
    It's used to communicate with DOT1X daemon */
-typedef struct GNU_PACKED _RADIUS_SRV_INFO {
+typedef struct __attribute__ ((packed)) _RADIUS_SRV_INFO {
 	UINT32 radius_ip;
 	UINT32 radius_port;
 	UCHAR radius_key[64];
 	UCHAR radius_key_len;
 } RADIUS_SRV_INFO, *PRADIUS_SRV_INFO;
 
-typedef struct GNU_PACKED _DOT1X_BSS_INFO {
+typedef struct __attribute__ ((packed)) _DOT1X_BSS_INFO {
 	UCHAR radius_srv_num;
 	RADIUS_SRV_INFO radius_srv_info[MAX_RADIUS_SRV_NUM];
 	UCHAR ieee8021xWEP;	/* dynamic WEP */
@@ -513,7 +513,7 @@ typedef struct GNU_PACKED _DOT1X_BSS_INFO {
 	UCHAR nasId_len;
 } DOT1X_BSS_INFO, *PDOT1X_BSS_INFO;
 
-typedef struct GNU_PACKED _DOT1X_CMM_CONF {
+typedef struct __attribute__ ((packed)) _DOT1X_CMM_CONF {
 	UINT32 Length;		/* Length of this structure */
 	UCHAR mbss_num;		/* indicate multiple BSS number */
 	UINT32 own_ip_addr;
@@ -527,7 +527,7 @@ typedef struct GNU_PACKED _DOT1X_CMM_CONF {
 	DOT1X_BSS_INFO Dot1xBssInfo[8];
 } DOT1X_CMM_CONF, *PDOT1X_CMM_CONF;
 
-typedef struct GNU_PACKED _DOT1X_IDLE_TIMEOUT {
+typedef struct __attribute__ ((packed)) _DOT1X_IDLE_TIMEOUT {
 	UCHAR StaAddr[6];
 	UINT32 idle_timeout;
 } DOT1X_IDLE_TIMEOUT, *PDOT1X_IDLE_TIMEOUT;
@@ -599,13 +599,13 @@ typedef enum _NDIS_802_11_AUTHENTICATION_MODE {
 typedef UCHAR NDIS_802_11_RATES[NDIS_802_11_LENGTH_RATES];	/* Set of 8 data rates */
 typedef UCHAR NDIS_802_11_RATES_EX[NDIS_802_11_LENGTH_RATES_EX];	/* Set of 16 data rates */
 
-typedef struct GNU_PACKED _NDIS_802_11_SSID {
+typedef struct __attribute__ ((packed)) _NDIS_802_11_SSID {
 	UINT SsidLength;	/* length of SSID field below, in bytes; */
 	/* this can be zero. */
 	UCHAR Ssid[NDIS_802_11_LENGTH_SSID];	/* SSID information field */
 } NDIS_802_11_SSID, *PNDIS_802_11_SSID;
 
-typedef struct GNU_PACKED _NDIS_WLAN_BSSID {
+typedef struct __attribute__ ((packed)) _NDIS_WLAN_BSSID {
 	ULONG Length;		/* Length of this structure */
 	NDIS_802_11_MAC_ADDRESS MacAddress;	/* BSSID */
 	UCHAR Reserved[2];
@@ -618,7 +618,7 @@ typedef struct GNU_PACKED _NDIS_WLAN_BSSID {
 	NDIS_802_11_RATES SupportedRates;
 } NDIS_WLAN_BSSID, *PNDIS_WLAN_BSSID;
 
-typedef struct GNU_PACKED _NDIS_802_11_BSSID_LIST {
+typedef struct __attribute__ ((packed)) _NDIS_802_11_BSSID_LIST {
 	UINT NumberOfItems;	/* in list below, at least 1 */
 	NDIS_WLAN_BSSID Bssid[1];
 } NDIS_802_11_BSSID_LIST, *PNDIS_802_11_BSSID_LIST;
@@ -631,7 +631,7 @@ typedef struct {
 } QBSS_LOAD_UI, *PQBSS_LOAD_UI;
 
 /* Added Capabilities, IELength and IEs for each BSSID */
-typedef struct GNU_PACKED _NDIS_WLAN_BSSID_EX {
+typedef struct __attribute__ ((packed)) _NDIS_WLAN_BSSID_EX {
 	ULONG Length;		/* Length of this structure */
 	NDIS_802_11_MAC_ADDRESS MacAddress;	/* BSSID */
 	UCHAR WpsAP; /* 0x00: not support WPS, 0x01: support normal WPS, 0x02: support Ralink auto WPS, 0x04: support Samsung WAC */
@@ -649,12 +649,12 @@ typedef struct GNU_PACKED _NDIS_WLAN_BSSID_EX {
 
 } NDIS_WLAN_BSSID_EX, *PNDIS_WLAN_BSSID_EX;
 
-typedef struct GNU_PACKED _NDIS_802_11_BSSID_LIST_EX {
+typedef struct __attribute__ ((packed)) _NDIS_802_11_BSSID_LIST_EX {
 	UINT NumberOfItems;	/* in list below, at least 1 */
 	NDIS_WLAN_BSSID_EX Bssid[1];
 } NDIS_802_11_BSSID_LIST_EX, *PNDIS_802_11_BSSID_LIST_EX;
 
-typedef struct GNU_PACKED _NDIS_802_11_FIXED_IEs {
+typedef struct __attribute__ ((packed)) _NDIS_802_11_FIXED_IEs {
 	UCHAR Timestamp[8];
 	USHORT BeaconInterval;
 	USHORT Capabilities;
@@ -1100,7 +1100,7 @@ typedef struct _RT_802_11_ACL_ENTRY {
 	USHORT Rsv;
 } RT_802_11_ACL_ENTRY, *PRT_802_11_ACL_ENTRY;
 
-typedef struct GNU_PACKED _RT_802_11_ACL {
+typedef struct __attribute__ ((packed)) _RT_802_11_ACL {
 	ULONG Policy;		/* 0-disable, 1-positive list, 2-negative list */
 	ULONG Num;
 	RT_802_11_ACL_ENTRY Entry[MAX_NUMBER_OF_ACL];

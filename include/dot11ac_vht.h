@@ -144,7 +144,7 @@
 				0: if Tx antenna pattern might change during association
 				1: if Tx antenna pattern does not change during association
 */
-typedef struct GNU_PACKED _VHT_CAP_INFO{
+typedef struct __attribute__ ((packed)) _VHT_CAP_INFO{
 #ifdef RT_BIG_ENDIAN
 	UINT32 rsv:2;
 	UINT32 tx_ant_consistency:1;
@@ -222,7 +222,7 @@ typedef struct GNU_PACKED _VHT_CAP_INFO{
 #define VHT_MCS_CAP_9	2
 #define VHT_MCS_CAP_NA	3
 
-typedef struct GNU_PACKED _VHT_MCS_MAP{
+typedef struct __attribute__ ((packed)) _VHT_MCS_MAP{
 #ifdef RT_BIG_ENDIAN
 	UINT16 mcs_ss8:2;
 	UINT16 mcs_ss7:2;
@@ -269,7 +269,7 @@ typedef struct GNU_PACKED _VHT_MCS_MAP{
 */
 
 // TODO: shiang-6590, check the layout of this data structure!!!!
-typedef struct GNU_PACKED _VHT_MCS_SET{
+typedef struct __attribute__ ((packed)) _VHT_MCS_SET{
 #ifdef RT_BIG_ENDIAN
 	UINT16 rsv2:3;
 	UINT16 tx_high_rate:13;
@@ -303,7 +303,7 @@ typedef struct GNU_PACKED _VHT_MCS_SET{
 		->Used to convey the combinations of MCSs and spatial streams a STA
 			supports for both reception and transmission.
 */
-typedef struct GNU_PACKED _VHT_CAP_IE{
+typedef struct __attribute__ ((packed)) _VHT_CAP_IE{
 	VHT_CAP_INFO vht_cap;
 	VHT_MCS_SET mcs_set;
 }VHT_CAP_IE;
@@ -341,7 +341,7 @@ typedef struct GNU_PACKED _VHT_CAP_IE{
 			frequency index of the 80MHz channel of frequency segment 2 on
 			which the VHT BSS operates. Reserved otherwise.
 */
-typedef struct GNU_PACKED _VHT_OP_INFO{
+typedef struct __attribute__ ((packed)) _VHT_OP_INFO{
 	u8 ch_width;
 	u8 center_freq_1;
 	u8 center_freq_2;
@@ -362,7 +362,7 @@ typedef struct GNU_PACKED _VHT_OP_INFO{
 	vht_op_info: VHT Operation Information
 	basic_mcs_set: VHT Basic MCS Set
 */
-typedef struct GNU_PACKED _VHT_OP_IE{
+typedef struct __attribute__ ((packed)) _VHT_OP_IE{
 	VHT_OP_INFO vht_op_info;
 	VHT_MCS_MAP basic_mcs_set;
 }VHT_OP_IE;
@@ -380,7 +380,7 @@ typedef struct GNU_PACKED _VHT_OP_IE{
 
 	The definition of upper subfields is the same as "VHT_OP_INFO"
 */
-typedef struct GNU_PACKED _WIDE_BW_CH_SWITCH_IE{
+typedef struct __attribute__ ((packed)) _WIDE_BW_CH_SWITCH_IE{
 	u8 e_id;
 	UINT len;
 	u8 new_ch_width;
@@ -395,7 +395,7 @@ typedef struct GNU_PACKED _WIDE_BW_CH_SWITCH_IE{
 
 
 */
-typedef struct GNU_PACKED _CH_SEG_PAIR{
+typedef struct __attribute__ ((packed)) _CH_SEG_PAIR{
 	u8 ch_center_freq;
 	u8 seg_ch_width;
 }CH_SEG_PAIR;
@@ -415,7 +415,7 @@ typedef struct GNU_PACKED _CH_SEG_PAIR{
 		center_freq_1: Channel Center Frequency Segment
 		ch_seg_width: Segment Channel Width
 */
-typedef struct GNU_PACKED _VHT_TXPWR_ENV_IE{
+typedef struct __attribute__ ((packed)) _VHT_TXPWR_ENV_IE{
 	u8 e_id;
 	u8 len;
 	u8 max_txpwr;
@@ -424,7 +424,7 @@ typedef struct GNU_PACKED _VHT_TXPWR_ENV_IE{
 
 
 
-typedef struct  GNU_PACKED _VHT_CONTROL{
+typedef struct  __attribute__ ((packed)) _VHT_CONTROL{
 #ifdef RT_BIG_ENDIAN
 	UINT32 RDG:1;
 	UINT32 ACConstraint:1;
@@ -463,7 +463,7 @@ typedef struct  GNU_PACKED _VHT_CONTROL{
 }VHT_CONTROL;
 
 
-typedef struct GNU_PACKED _NDPA_PKT{
+typedef struct __attribute__ ((packed)) _NDPA_PKT{
 	USHORT frm_ctrl;
 	USHORT duration;
 	u8 ra[MAC_ADDR_LEN];

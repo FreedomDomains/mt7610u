@@ -46,7 +46,7 @@ enum D_PORT {
 #include "rtmp_type.h"
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _TXINFO_NMAC_PKT{
+typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT{
 	UINT32 info_type:2;
 	UINT32 d_port:3;
 	UINT32 QSEL:2;
@@ -61,7 +61,7 @@ typedef struct GNU_PACKED _TXINFO_NMAC_PKT{
 	UINT32 pkt_len:16;
 }TXINFO_NMAC_PKT;
 #else
-typedef struct GNU_PACKED _TXINFO_NMAC_PKT {
+typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT {
 	UINT32 pkt_len:16;
 	UINT32 next_vld:1;
 	UINT32 tx_burst:1;
@@ -86,7 +86,7 @@ typedef struct GNU_PACKED _TXINFO_NMAC_PKT {
 #define TxInfoPkt80211		txinfo_nmac_pkt.pkt_80211
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _TXINFO_NMAC_CMD{
+typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
 	UINT32 info_type:2;
 	UINT32 d_port:3;
 	UINT32 cmd_type:7;
@@ -94,7 +94,7 @@ typedef struct GNU_PACKED _TXINFO_NMAC_CMD{
 	UINT32 pkt_len:16;
 }TXINFO_NMAC_CMD;
 #else
-typedef struct GNU_PACKED _TXINFO_NMAC_CMD{
+typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
 	UINT32 pkt_len:16;
 	UINT32 cmd_seq:4;
 	UINT32 cmd_type:7;
@@ -104,20 +104,20 @@ typedef struct GNU_PACKED _TXINFO_NMAC_CMD{
 #endif /* RT_BIG_ENDIAN */
 
 
-typedef union GNU_PACKED _TXINFO_NMAC{
+typedef union __attribute__ ((packed)) _TXINFO_NMAC{
 	struct _TXINFO_NMAC_PKT txinfo_pkt;
 	struct _TXINFO_NMAC_CMD txinfo_cmd;
 }TXINFO_NMAC;
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _LED_NMAC_CMD{
+typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
 	UINT32  rsv:8;
 	UINT32 CmdID:8;
 	UINT32 Arg0:8;
 	UINT32 Arg1:8;
 }LED_NMAC_CMD;
 #else
-typedef struct GNU_PACKED _LED_NMAC_CMD{
+typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
 	UINT32 Arg1:8;
 	UINT32 Arg0:8;
 	UINT32 CmdID:8;
@@ -126,7 +126,7 @@ typedef struct GNU_PACKED _LED_NMAC_CMD{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _TXWI_NMAC {
+typedef struct __attribute__ ((packed)) _TXWI_NMAC {
 	/* Word 0 */
 	UINT32		PHYMODE:3;
 	UINT32		iTxBF:1;
@@ -173,7 +173,7 @@ typedef struct GNU_PACKED _TXWI_NMAC {
 	UINT32		TxEAPId:8;
 }	TXWI_NMAC, *PTXWI_NMAC;
 #else
-typedef	struct GNU_PACKED _TXWI_NMAC {
+typedef	struct __attribute__ ((packed)) _TXWI_NMAC {
 	/* Word	0 */
 	/* ex: 00 03 00 40 means txop = 3, PHYMODE = 1 */
 	UINT32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
@@ -259,7 +259,7 @@ typedef	struct GNU_PACKED _TXWI_NMAC {
 
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _RXFCE_INFO{
+typedef struct __attribute__ ((packed)) _RXFCE_INFO{
 	UINT32 info_type:2;
 	UINT32 s_port:3;
 	UINT32 qsel:2;
@@ -276,7 +276,7 @@ typedef struct GNU_PACKED _RXFCE_INFO{
 	UINT32 pkt_len:14;
 }RXFCE_INFO;
 #else
-typedef struct GNU_PACKED _RXFCE_INFO{
+typedef struct __attribute__ ((packed)) _RXFCE_INFO{
 	UINT32 pkt_len:14;
 	UINT32 rsv:2;
 
@@ -295,7 +295,7 @@ typedef struct GNU_PACKED _RXFCE_INFO{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _RXFCE_INFO_CMD{
+typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
 	UINT32 info_type:2;
 	UINT32 d_port:3;
 	UINT32 qsel:2;
@@ -307,7 +307,7 @@ typedef struct GNU_PACKED _RXFCE_INFO_CMD{
 	UINT32 pkt_len:14;
 }RXFCE_INFO_CMD;
 #else
-typedef struct GNU_PACKED _RXFCE_INFO_CMD{
+typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
 	UINT32 pkt_len:14;
 	UINT32 rsv:1;
 	UINT32 self_gen:1;
@@ -322,7 +322,7 @@ typedef struct GNU_PACKED _RXFCE_INFO_CMD{
 
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _RXINFO_NMAC{
+typedef struct __attribute__ ((packed)) _RXINFO_NMAC{
 	UINT32 ic_err:1;
 	UINT32 tc_err:1;
 	UINT32 rsv:1;
@@ -355,7 +355,7 @@ typedef struct GNU_PACKED _RXINFO_NMAC{
 	UINT32 ba:1;
 }RXINFO_NMAC;
 #else
-typedef struct GNU_PACKED _RXINFO_NMAC{
+typedef struct __attribute__ ((packed)) _RXINFO_NMAC{
 	UINT32 ba:1;
 	UINT32 data:1;
 	UINT32 null:1;
@@ -394,7 +394,7 @@ typedef struct GNU_PACKED _RXINFO_NMAC{
 	RXWI wireless information format.
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _RXWI_NMAC{
+typedef	struct __attribute__ ((packed)) _RXWI_NMAC{
 	/* Word 0 */
 	UINT32 eof:1;
 	UINT32 rsv:1;
@@ -423,7 +423,7 @@ typedef	struct GNU_PACKED _RXWI_NMAC{
 	u8 bbp_rxinfo[16];
 }	RXWI_NMAC;
 #else
-typedef	struct GNU_PACKED _RXWI_NMAC {
+typedef	struct __attribute__ ((packed)) _RXWI_NMAC {
 	/* Word 0 */
 	UINT32 wcid:8;
 	UINT32 key_idx:2;
@@ -475,7 +475,7 @@ typedef	struct GNU_PACKED _RXWI_NMAC {
 #define RxWIFOFFSET			RXWI_N.bbp_rxinfo[3]
 
 
-typedef struct GNU_PACKED _HW_RATE_CTRL_STRUCT_{
+typedef struct __attribute__ ((packed)) _HW_RATE_CTRL_STRUCT_{
 #ifdef RT_BIG_ENDIAN
 	UINT16 PHYMODE:3;
 	UINT16 iTxBF:1;
@@ -691,7 +691,7 @@ typedef union _TSO_CTRL_STRUC {
 #define WIFI_INFO_SIZE		0
 #endif
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _WIFI_INFO_STRUC {
+typedef union __attribute__ ((packed)) _WIFI_INFO_STRUC {
 	struct {
     	UINT32 More_Data:1;
     	UINT32 WEP:1;
@@ -709,7 +709,7 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC {
 	UINT32 word;
 } WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
 #else
-typedef union GNU_PACKED _WIFI_INFO_STRUC {
+typedef union __attribute__ ((packed)) _WIFI_INFO_STRUC {
 	struct {
     	UINT32 Seq_Num:12;
     	UINT32 BssIdx:4;
@@ -743,7 +743,7 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC {
 #define HT_MAC_BSSID_DW1		0x02B0
 
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC {
+typedef union __attribute__ ((packed)) _HDR_TRANS_CTRL_STRUC {
 	struct {
     	UINT32 Rsv:30;
     	UINT32 Rx_En:1;
@@ -752,7 +752,7 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC {
 	UINT32 word;
 } HDR_TRANS_CTRL_STRUC, *PHDR_TRANS_CTRL_STRUC;
 #else
-typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC {
+typedef union __attribute__ ((packed)) _HDR_TRANS_CTRL_STRUC {
 	struct {
     	UINT32 Tx_En:1;
     	UINT32 Rx_En:1;
@@ -771,7 +771,7 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC {
 #define HT_RX_WCID_SIZE		(HT_RX_WCID_OFFSET * 8)	/*	256 WCIDs */
 #endif /* defined(RT63xx) */
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC {
+typedef union __attribute__ ((packed)) _HT_RX_WCID_EN_STRUC {
 	struct {
     	UINT32 RX_WCID31_TRAN_EN:1;
     	UINT32 RX_WCID30_TRAN_EN:1;
@@ -809,7 +809,7 @@ typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC {
 	UINT32 word;
 } HT_RX_WCID_EN_STRUC, *PHT_RX_WCID_EN_STRUC;
 #else
-typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC {
+typedef union __attribute__ ((packed)) _HT_RX_WCID_EN_STRUC {
 	struct {
     	UINT32 RX_WCID0_TRAN_EN:1;
     	UINT32 RX_WCID1_TRAN_EN:1;
@@ -853,7 +853,7 @@ typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC {
 #define HT_RX_BL_OFFSET		2
 #define HT_RX_BL_SIZE		8
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC {
+typedef union __attribute__ ((packed)) _HT_RX_BLACK_LIST_STRUC {
 	struct {
     	UINT32 BLACK_ETHER_TYPE1:16;
     	UINT32 BLACK_ETHER_TYPE0:16;
@@ -861,7 +861,7 @@ typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC {
 	UINT32 word;
 } HT_RX_BLACK_LIST_STRUC, *PHT_RX_BLACK_LIST_STRUC;
 #else
-typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC {
+typedef union __attribute__ ((packed)) _HT_RX_BLACK_LIST_STRUC {
 	struct {
     	UINT32 BLACK_ETHER_TYPE0:16;
     	UINT32 BLACK_ETHER_TYPE1:16;
@@ -875,7 +875,7 @@ typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC {
 #define HT_BSS_VLAN_OFFSET	2
 #define HT_BSS_VLAN_SIZE	8
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_BSS_VLAN_STRUC {
+typedef union __attribute__ ((packed)) _HT_BSS_VLAN_STRUC {
 	struct {
     	UINT32 TCI1_VID:12;
     	UINT32 TCI1_CFI:1;
@@ -887,7 +887,7 @@ typedef union GNU_PACKED _HT_BSS_VLAN_STRUC {
 	UINT32 word;
 } HT_BSS_VLAN_STRUC, *PHT_BSS_VLAN_STRUC;
 #else
-typedef union GNU_PACKED _HT_BSS_VLAN_STRUC {
+typedef union __attribute__ ((packed)) _HT_BSS_VLAN_STRUC {
 	struct {
     	UINT32 TCI0_PCP:3;
     	UINT32 TCI0_CFI:1;

@@ -28,7 +28,7 @@
 #ifndef	__ACTION_H__
 #define	__ACTION_H__
 
-typedef struct GNU_PACKED __HT_INFO_OCTET {
+typedef struct __attribute__ ((packed)) __HT_INFO_OCTET {
 #ifdef RT_BIG_ENDIAN
 	UCHAR Reserved:5;
 	UCHAR STA_Channel_Width:1;
@@ -42,7 +42,7 @@ typedef struct GNU_PACKED __HT_INFO_OCTET {
 #endif
 } HT_INFORMATION_OCTET;
 
-typedef struct GNU_PACKED __FRAME_HT_INFO {
+typedef struct __attribute__ ((packed)) __FRAME_HT_INFO {
 	HEADER_802_11 Hdr;
 	UCHAR Category;
 	UCHAR Action;

@@ -231,7 +231,7 @@ if (((__pEntry)) != NULL) \
 	802.11 frame formats
 */
 /*  HT Capability INFO field in HT Cap IE . */
-typedef struct GNU_PACKED{
+typedef struct __attribute__ ((packed)){
 #ifdef RT_BIG_ENDIAN
 	USHORT	LSIGTxopProSup:1;
 	USHORT	Forty_Mhz_Intolerant:1;
@@ -267,7 +267,7 @@ typedef struct GNU_PACKED{
 
 
 /*  HT Capability INFO field in HT Cap IE . */
-typedef struct GNU_PACKED _HT_CAP_PARM{
+typedef struct __attribute__ ((packed)) _HT_CAP_PARM{
 #ifdef RT_BIG_ENDIAN
 	UCHAR	rsv:3;/*momi power safe */
 	UCHAR	MpduDensity:3;
@@ -280,7 +280,7 @@ typedef struct GNU_PACKED _HT_CAP_PARM{
 } HT_CAP_PARM, *PHT_CAP_PARM;
 
 
-typedef struct GNU_PACKED _HT_MCS_SET_TX_SUBFIELD{
+typedef struct __attribute__ ((packed)) _HT_MCS_SET_TX_SUBFIELD{
 #ifdef RT_BIG_ENDIAN
 	UCHAR	TxMCSSetDefined:1;
 	UCHAR	TxRxNotEqual:1;
@@ -298,7 +298,7 @@ typedef struct GNU_PACKED _HT_MCS_SET_TX_SUBFIELD{
 
 
 /*  HT Capability INFO field in HT Cap IE . */
-typedef struct GNU_PACKED _HT_MCS_SET{
+typedef struct __attribute__ ((packed)) _HT_MCS_SET{
 	UCHAR	MCSSet[10];
 	UCHAR	SupRate[2];  /* unit : 1Mbps */
 #ifdef RT_BIG_ENDIAN
@@ -318,7 +318,7 @@ typedef struct GNU_PACKED _HT_MCS_SET{
 } HT_MCS_SET, *PHT_MCS_SET;
 
 /*  HT Capability INFO field in HT Cap IE . */
-typedef struct GNU_PACKED _EXT_HT_CAP_INFO{
+typedef struct __attribute__ ((packed)) _EXT_HT_CAP_INFO{
 #ifdef RT_BIG_ENDIAN
 	USHORT	rsv2:4;
 	USHORT	RDGSupport:1;	/*reverse Direction Grant  support */
@@ -345,7 +345,7 @@ typedef struct GNU_PACKED _EXT_HT_CAP_INFO{
 #define HT_ExBF_FB_CAP_BOTH			3
 
 /* HT Beamforming field in HT Cap IE */
-typedef struct GNU_PACKED _HT_BF_CAP{
+typedef struct __attribute__ ((packed)) _HT_BF_CAP{
 #ifdef RT_BIG_ENDIAN
 	ULONG	rsv:3;
 	ULONG	ChanEstimation:2;
@@ -392,7 +392,7 @@ typedef struct GNU_PACKED _HT_BF_CAP{
 } HT_BF_CAP, *PHT_BF_CAP;
 
 /*  HT antenna selection field in HT Cap IE . */
-typedef struct GNU_PACKED _HT_AS_CAP{
+typedef struct __attribute__ ((packed)) _HT_AS_CAP{
 #ifdef RT_BIG_ENDIAN
 	UCHAR	rsv:1;
 	UCHAR	TxSoundPPDU:1;
@@ -417,7 +417,7 @@ typedef struct GNU_PACKED _HT_AS_CAP{
 /* Draft 1.0 set IE length 26, but is extensible.. */
 #define SIZE_HT_CAP_IE		26
 /* The structure for HT Capability IE. */
-typedef struct GNU_PACKED _HT_CAPABILITY_IE{
+typedef struct __attribute__ ((packed)) _HT_CAPABILITY_IE{
 	HT_CAP_INFO		HtCapInfo;
 	HT_CAP_PARM		HtCapParm;
 /*	HT_MCS_SET		HtMCSSet; */
@@ -441,7 +441,7 @@ typedef struct GNU_PACKED _HT_CAPABILITY_IE{
 																/*	(dot11BSSWidthChannelTransactionDelayFactor * dot11BSSWidthTriggerScanInterval) seconds without */
 																/*	being obligated to perform OBSS Scan operations. default is 25(== 0.25%) */
 
-typedef struct GNU_PACKED _OVERLAP_BSS_SCAN_IE{
+typedef struct __attribute__ ((packed)) _OVERLAP_BSS_SCAN_IE{
 	USHORT		ScanPassiveDwell;
 	USHORT		ScanActiveDwell;
 	USHORT		TriggerScanInt;				/* Trigger scan interval */
@@ -453,8 +453,8 @@ typedef struct GNU_PACKED _OVERLAP_BSS_SCAN_IE{
 
 
 /*  7.3.2.56. 20/40 Coexistence element used in  Element ID = 72 = IE_2040_BSS_COEXIST */
-typedef union GNU_PACKED _BSS_2040_COEXIST_IE{
- struct GNU_PACKED {
+typedef union __attribute__ ((packed)) _BSS_2040_COEXIST_IE{
+ struct __attribute__ ((packed)) {
 #ifdef RT_BIG_ENDIAN
 	UCHAR	rsv:3;
  	UCHAR	ObssScanExempGrant:1;
@@ -495,7 +495,7 @@ typedef struct  _TRIGGER_EVENT_TAB{
 
 /* 7.3.27 20/40 Bss Coexistence Mgmt capability used in extended capabilities information IE( ID = 127 = IE_EXT_CAPABILITY). */
 /*	This is the first octet and was defined in 802.11n D3.03 and 802.11yD9.0 */
-typedef struct GNU_PACKED _EXT_CAP_INFO_ELEMENT{
+typedef struct __attribute__ ((packed)) _EXT_CAP_INFO_ELEMENT{
 #ifdef RT_BIG_ENDIAN
 	// TODO: shiang-6590, check the data structure format if this IE
 	UINT32	rsv7:1;
@@ -539,7 +539,7 @@ typedef struct GNU_PACKED _EXT_CAP_INFO_ELEMENT{
 
 
 /* 802.11n 7.3.2.61 */
-typedef struct GNU_PACKED _BSS_2040_COEXIST_ELEMENT{
+typedef struct __attribute__ ((packed)) _BSS_2040_COEXIST_ELEMENT{
 	UCHAR					ElementID;		/* ID = IE_2040_BSS_COEXIST = 72 */
 	UCHAR					Len;
 	BSS_2040_COEXIST_IE		BssCoexistIe;
@@ -547,7 +547,7 @@ typedef struct GNU_PACKED _BSS_2040_COEXIST_ELEMENT{
 
 
 /*802.11n 7.3.2.59 */
-typedef struct GNU_PACKED _BSS_2040_INTOLERANT_CH_REPORT{
+typedef struct __attribute__ ((packed)) _BSS_2040_INTOLERANT_CH_REPORT{
 	UCHAR				ElementID;		/* ID = IE_2040_BSS_INTOLERANT_REPORT = 73 */
 	UCHAR				Len;
 	UCHAR				RegulatoryClass;
@@ -556,7 +556,7 @@ typedef struct GNU_PACKED _BSS_2040_INTOLERANT_CH_REPORT{
 
 
 /* The structure for channel switch annoucement IE. This is in 802.11n D3.03 */
-typedef struct GNU_PACKED _CHA_SWITCH_ANNOUNCE_IE{
+typedef struct __attribute__ ((packed)) _CHA_SWITCH_ANNOUNCE_IE{
 	UCHAR			SwitchMode;	/*channel switch mode */
 	UCHAR			NewChannel;	/* */
 	UCHAR			SwitchCount;	/* */
@@ -564,7 +564,7 @@ typedef struct GNU_PACKED _CHA_SWITCH_ANNOUNCE_IE{
 
 
 /* The structure for channel switch annoucement IE. This is in 802.11n D3.03 */
-typedef struct GNU_PACKED _SEC_CHA_OFFSET_IE{
+typedef struct __attribute__ ((packed)) _SEC_CHA_OFFSET_IE{
 	UCHAR			SecondaryChannelOffset;	 /* 1: Secondary above, 3: Secondary below, 0: no Secondary */
 } SEC_CHA_OFFSET_IE, *PSEC_CHA_OFFSET_IE;
 
@@ -665,7 +665,7 @@ typedef struct {
 
 
 /*   field in Addtional HT Information IE . */
-typedef struct GNU_PACKED _ADD_HTINFO{
+typedef struct __attribute__ ((packed)) _ADD_HTINFO{
 #ifdef RT_BIG_ENDIAN
 	UCHAR	SerInterGranu:3;
 	UCHAR	S_PSMPSup:1;
@@ -682,7 +682,7 @@ typedef struct GNU_PACKED _ADD_HTINFO{
 } ADD_HTINFO, *PADD_HTINFO;
 
 
-typedef struct GNU_PACKED _ADD_HTINFO2{
+typedef struct __attribute__ ((packed)) _ADD_HTINFO2{
 #ifdef RT_BIG_ENDIAN
 	USHORT	rsv2:11;
 	USHORT	OBSS_NonHTExist:1;
@@ -700,7 +700,7 @@ typedef struct GNU_PACKED _ADD_HTINFO2{
 
 
 /* TODO: Need sync with spec about the definition of StbcMcs. In Draft 3.03, it's reserved. */
-typedef struct GNU_PACKED _ADD_HTINFO3{
+typedef struct __attribute__ ((packed)) _ADD_HTINFO3{
 #ifdef RT_BIG_ENDIAN
 	USHORT	rsv:4;
 	USHORT	PcoPhase:1;
@@ -723,7 +723,7 @@ typedef struct GNU_PACKED _ADD_HTINFO3{
 } ADD_HTINFO3, *PADD_HTINFO3;
 
 #define SIZE_ADD_HT_INFO_IE		22
-typedef struct  GNU_PACKED _ADD_HT_INFO_IE{
+typedef struct  __attribute__ ((packed)) _ADD_HT_INFO_IE{
 	UCHAR				ControlChan;
 	ADD_HTINFO			AddHtInfo;
 	ADD_HTINFO2			AddHtInfo2;
@@ -731,23 +731,23 @@ typedef struct  GNU_PACKED _ADD_HT_INFO_IE{
 	UCHAR				MCSSet[16];		/* Basic MCS set */
 } ADD_HT_INFO_IE, *PADD_HT_INFO_IE;
 
-typedef struct  GNU_PACKED _NEW_EXT_CHAN_IE{
+typedef struct  __attribute__ ((packed)) _NEW_EXT_CHAN_IE{
 	UCHAR				NewExtChanOffset;
 } NEW_EXT_CHAN_IE, *PNEW_EXT_CHAN_IE;
 
-typedef struct GNU_PACKED _FRAME_802_11 {
+typedef struct __attribute__ ((packed)) _FRAME_802_11 {
     HEADER_802_11   Hdr;
     UCHAR            Octet[1];
 } FRAME_802_11, *PFRAME_802_11;
 
 /* QoSNull embedding of management action. When HT Control MA field set to 1. */
-typedef struct GNU_PACKED _MA_BODY {
+typedef struct __attribute__ ((packed)) _MA_BODY {
     UCHAR            Category;
     UCHAR            Action;
     UCHAR            Octet[1];
 } MA_BODY, *PMA_BODY;
 
-typedef	struct GNU_PACKED _HEADER_802_3	{
+typedef	struct __attribute__ ((packed)) _HEADER_802_3	{
     UCHAR           DAAddr1[MAC_ADDR_LEN];
     UCHAR           SAAddr2[MAC_ADDR_LEN];
     UCHAR           Octet[2];
@@ -756,7 +756,7 @@ typedef	struct GNU_PACKED _HEADER_802_3	{
 
 /* Block ACK related format */
 /* 2-byte BA Parameter  field  in 	DELBA frames to terminate an already set up bA */
-typedef struct GNU_PACKED _DELBA_PARM{
+typedef struct __attribute__ ((packed)) _DELBA_PARM{
 #ifdef RT_BIG_ENDIAN
     USHORT      TID:4;	/* value of TC os TS */
     USHORT      Initiator:1;	/* 1: originator    0:recipient */
@@ -769,7 +769,7 @@ typedef struct GNU_PACKED _DELBA_PARM{
 } DELBA_PARM, *PDELBA_PARM;
 
 /* 2-byte BA Parameter Set field  in ADDBA frames to signal parm for setting up a BA */
-typedef struct GNU_PACKED _BA_PARM{
+typedef struct __attribute__ ((packed)) _BA_PARM{
 #ifdef RT_BIG_ENDIAN
     USHORT      BufSize:10;	/* number of buffe of size 2304 octetsr */
     USHORT      TID:4;	/* value of TC os TS */
@@ -784,8 +784,8 @@ typedef struct GNU_PACKED _BA_PARM{
 } BA_PARM, *PBA_PARM;
 
 /* 2-byte BA Starting Seq CONTROL field */
-typedef union GNU_PACKED _BASEQ_CONTROL{
-    struct GNU_PACKED {
+typedef union __attribute__ ((packed)) _BASEQ_CONTROL{
+    struct __attribute__ ((packed)) {
 #ifdef RT_BIG_ENDIAN
     USHORT      StartSeq:12;   /* sequence number of the 1st MSDU for which this BAR is sent */
 	USHORT      FragNum:4;	/* always set to 0 */
@@ -799,7 +799,7 @@ typedef union GNU_PACKED _BASEQ_CONTROL{
 
 /*BAControl and BARControl are the same */
 /* 2-byte BA CONTROL field in BA frame */
-typedef struct GNU_PACKED _BA_CONTROL{
+typedef struct __attribute__ ((packed)) _BA_CONTROL{
 #ifdef RT_BIG_ENDIAN
     USHORT      TID:4;
     USHORT      Rsv:9;
@@ -816,7 +816,7 @@ typedef struct GNU_PACKED _BA_CONTROL{
 } BA_CONTROL, *PBA_CONTROL;
 
 /* 2-byte BAR CONTROL field in BAR frame */
-typedef struct GNU_PACKED _BAR_CONTROL{
+typedef struct __attribute__ ((packed)) _BAR_CONTROL{
 #ifdef RT_BIG_ENDIAN
     USHORT      TID:4;
     USHORT      Rsv1:9;
@@ -833,7 +833,7 @@ typedef struct GNU_PACKED _BAR_CONTROL{
 } BAR_CONTROL, *PBAR_CONTROL;
 
 /* BARControl in MTBAR frame */
-typedef struct GNU_PACKED _MTBAR_CONTROL{
+typedef struct __attribute__ ((packed)) _MTBAR_CONTROL{
 #ifdef RT_BIG_ENDIAN
     USHORT      NumTID:4;
     USHORT      Rsv1:9;
@@ -849,7 +849,7 @@ typedef struct GNU_PACKED _MTBAR_CONTROL{
 #endif /* RT_BIG_ENDIAN */
 } MTBAR_CONTROL, *PMTBAR_CONTROL;
 
-typedef struct GNU_PACKED _PER_TID_INFO{
+typedef struct __attribute__ ((packed)) _PER_TID_INFO{
 #ifdef RT_BIG_ENDIAN
     USHORT      TID:4;
     USHORT      Rsv1:12;
@@ -866,7 +866,7 @@ typedef struct {
 
 
 /* BAREQ AND MTBAREQ have the same subtype BAR, 802.11n BAR use compressed bitmap. */
-typedef struct GNU_PACKED _FRAME_BA_REQ {
+typedef struct __attribute__ ((packed)) _FRAME_BA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
 	UCHAR           Addr1[MAC_ADDR_LEN];
@@ -875,7 +875,7 @@ typedef struct GNU_PACKED _FRAME_BA_REQ {
 	BASEQ_CONTROL 	 BAStartingSeq;
 }   FRAME_BA_REQ, *PFRAME_BA_REQ;
 
-typedef struct GNU_PACKED _FRAME_MTBA_REQ {
+typedef struct __attribute__ ((packed)) _FRAME_MTBA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
 	UCHAR           Addr1[MAC_ADDR_LEN];
@@ -886,7 +886,7 @@ typedef struct GNU_PACKED _FRAME_MTBA_REQ {
 }   FRAME_MTBA_REQ, *PFRAME_MTBA_REQ;
 
 /* Compressed format is mandantory in HT STA */
-typedef struct GNU_PACKED _FRAME_MTBA {
+typedef struct __attribute__ ((packed)) _FRAME_MTBA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
 	UCHAR           Addr1[MAC_ADDR_LEN];
@@ -896,14 +896,14 @@ typedef struct GNU_PACKED _FRAME_MTBA {
 	UCHAR		BitMap[8];
 }   FRAME_MTBA, *PFRAME_MTBA;
 
-typedef struct GNU_PACKED _FRAME_PSMP_ACTION {
+typedef struct __attribute__ ((packed)) _FRAME_PSMP_ACTION {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
 	UCHAR	Psmp;	/* 7.3.1.25 */
 }   FRAME_PSMP_ACTION, *PFRAME_PSMP_ACTION;
 
-typedef struct GNU_PACKED _FRAME_ACTION_HDR {
+typedef struct __attribute__ ((packed)) _FRAME_ACTION_HDR {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -911,7 +911,7 @@ typedef struct GNU_PACKED _FRAME_ACTION_HDR {
 
 /*Action Frame */
 /*Action Frame  Category:Spectrum,  Action:Channel Switch. 7.3.2.20 */
-typedef struct GNU_PACKED _CHAN_SWITCH_ANNOUNCE {
+typedef struct __attribute__ ((packed)) _CHAN_SWITCH_ANNOUNCE {
 	UCHAR					ElementID;	/* ID = IE_CHANNEL_SWITCH_ANNOUNCEMENT = 37 */
 	UCHAR					Len;
 	CHA_SWITCH_ANNOUNCE_IE	CSAnnounceIe;
@@ -919,14 +919,14 @@ typedef struct GNU_PACKED _CHAN_SWITCH_ANNOUNCE {
 
 
 /*802.11n : 7.3.2.20a */
-typedef struct GNU_PACKED _SECOND_CHAN_OFFSET {
+typedef struct __attribute__ ((packed)) _SECOND_CHAN_OFFSET {
 	UCHAR				ElementID;		/* ID = IE_SECONDARY_CH_OFFSET = 62 */
 	UCHAR				Len;
 	SEC_CHA_OFFSET_IE	SecChOffsetIe;
 }   SECOND_CHAN_OFFSET, *PSECOND_CHAN_OFFSET;
 
 
-typedef struct GNU_PACKED _FRAME_SPETRUM_CS {
+typedef struct __attribute__ ((packed)) _FRAME_SPETRUM_CS {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -935,7 +935,7 @@ typedef struct GNU_PACKED _FRAME_SPETRUM_CS {
 }   FRAME_SPETRUM_CS, *PFRAME_SPETRUM_CS;
 
 
-typedef struct GNU_PACKED _FRAME_ADDBA_REQ {
+typedef struct __attribute__ ((packed)) _FRAME_ADDBA_REQ {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -945,7 +945,7 @@ typedef struct GNU_PACKED _FRAME_ADDBA_REQ {
 	BASEQ_CONTROL	BaStartSeq; /* 0-0 */
 }   FRAME_ADDBA_REQ, *PFRAME_ADDBA_REQ;
 
-typedef struct GNU_PACKED _FRAME_ADDBA_RSP {
+typedef struct __attribute__ ((packed)) _FRAME_ADDBA_RSP {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -955,7 +955,7 @@ typedef struct GNU_PACKED _FRAME_ADDBA_RSP {
 	USHORT		TimeOutValue;
 }   FRAME_ADDBA_RSP, *PFRAME_ADDBA_RSP;
 
-typedef struct GNU_PACKED _FRAME_DELBA_REQ {
+typedef struct __attribute__ ((packed)) _FRAME_DELBA_REQ {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -965,7 +965,7 @@ typedef struct GNU_PACKED _FRAME_DELBA_REQ {
 
 
 /*7.2.1.7 */
-typedef struct GNU_PACKED _FRAME_BAR {
+typedef struct __attribute__ ((packed)) _FRAME_BAR {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
 	UCHAR           Addr1[MAC_ADDR_LEN];
@@ -975,7 +975,7 @@ typedef struct GNU_PACKED _FRAME_BAR {
 }   FRAME_BAR, *PFRAME_BAR;
 
 /*7.2.1.7 */
-typedef struct GNU_PACKED _FRAME_BA {
+typedef struct __attribute__ ((packed)) _FRAME_BA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
 	UCHAR           Addr1[MAC_ADDR_LEN];
@@ -987,7 +987,7 @@ typedef struct GNU_PACKED _FRAME_BA {
 
 
 /* Radio Measuement Request Frame Format */
-typedef struct GNU_PACKED _FRAME_RM_REQ_ACTION {
+typedef struct __attribute__ ((packed)) _FRAME_RM_REQ_ACTION {
 	HEADER_802_11   Hdr;
 	UCHAR	Category;
 	UCHAR	Action;
@@ -996,7 +996,7 @@ typedef struct GNU_PACKED _FRAME_RM_REQ_ACTION {
 	UCHAR   data[0];
 }   FRAME_RM_REQ_ACTION, *PFRAME_RM_REQ_ACTION;
 
-typedef struct GNU_PACKED _HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE{
+typedef struct __attribute__ ((packed)) _HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE{
 	UCHAR		ID;
 	UCHAR		Length;
 	UCHAR		ChannelSwitchMode;
@@ -1019,7 +1019,7 @@ typedef struct GNU_PACKED _HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE{
 /* */
 /* Contention-free parameter (without ID and Length) */
 /* */
-typedef struct GNU_PACKED _CF_PARM{
+typedef struct __attribute__ ((packed)) _CF_PARM{
     BOOLEAN     bValid;         /* 1: variable contains valid value */
     UCHAR       CfpCount;
     UCHAR       CfpPeriod;
@@ -1062,7 +1062,7 @@ typedef struct {
 } QBSS_LOAD_PARM, *PQBSS_LOAD_PARM;
 
 /* QBSS Info field in QSTA's assoc req */
-typedef struct GNU_PACKED _QBSS_STA_INFO_PARM{
+typedef struct __attribute__ ((packed)) _QBSS_STA_INFO_PARM{
 #ifdef RT_BIG_ENDIAN
 	UCHAR		Rsv2:1;
 	UCHAR		MaxSPLength:2;
@@ -1092,7 +1092,7 @@ typedef struct {
 } QBSS_STA_EDCA_PARM, *PQBSS_STA_EDCA_PARM;
 
 /* QBSS Info field in QAP's Beacon/ProbeRsp */
-typedef struct GNU_PACKED _QBSS_AP_INFO_PARM{
+typedef struct __attribute__ ((packed)) _QBSS_AP_INFO_PARM{
 #ifdef RT_BIG_ENDIAN
 	UCHAR		UAPSD:1;
 	UCHAR		Rsv:3;
@@ -1407,7 +1407,7 @@ typedef struct _MLME_DLS_REQ_STRUCT {
 #endif /* QOS_DLS_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
-typedef struct GNU_PACKED _EID_STRUCT{
+typedef struct __attribute__ ((packed)) _EID_STRUCT{
     UCHAR   Eid;
     UCHAR   Len;
     UCHAR   Octet[1];

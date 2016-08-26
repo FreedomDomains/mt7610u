@@ -31,7 +31,7 @@
 #define HDR_TRANS_LEN	50
 
 #ifdef RT_BIG_ENDIAN
-typedef struct GNU_PACKED _WIFI_INFO_STRUCT{
+typedef struct __attribute__ ((packed)) _WIFI_INFO_STRUCT{
 	UINT32 more_data:1;
 	UINT32 wep:1;
 	UINT32 ps:1;
@@ -45,7 +45,7 @@ typedef struct GNU_PACKED _WIFI_INFO_STRUCT{
 	UINT32 seq_num:12;
 }WIFI_INFO_STRUCT;
 #else
-typedef struct GNU_PACKED _WIFI_INFO_STRUCT{
+typedef struct __attribute__ ((packed)) _WIFI_INFO_STRUCT{
 	UINT32 seq_num:12;
 	UINT32 bssidx:4;
 	UINT32 rev:3;
