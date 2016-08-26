@@ -3112,7 +3112,7 @@ INT TriEventTableSetEntry(
 		*/
 		if (Tab->EventANo < MAX_TRIGGER_EVENT)
 		{
-			RTMPMoveMemory(Tab->EventA[Tab->EventANo].BSSID, pBssid, 6);
+			memmove(Tab->EventA[Tab->EventANo].BSSID, pBssid, 6);
 			Tab->EventA[Tab->EventANo].bValid = TRUE;
 			Tab->EventA[Tab->EventANo].Channel = ChannelNo;
 			if (RegClass != 0)

@@ -3981,11 +3981,6 @@ ULONG RTMPCompareMemory(
 	IN  void *  pSrc2,
 	IN  ULONG   Length);
 
-void RTMPMoveMemory(
-	OUT void *  pDest,
-	IN  void *  pSrc,
-	IN  ULONG   Length);
-
 void AtoH(
 	char *src,
 	u8 *dest,

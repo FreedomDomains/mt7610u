@@ -1125,8 +1125,8 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 			      LEN_KEY_DESC_REPLAY) != 0))
 				return bSTAKeyFrame;
 
-			/*RTMPMoveMemory(pAd->StaCfg.ReplayCounter, pEap->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY); */
-			RTMPMoveMemory(pAd->StaCfg.DlsReplayCounter,
+			/*memmove(pAd->StaCfg.ReplayCounter, pEap->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY); */
+			memmove(pAd->StaCfg.DlsReplayCounter,
 				       pEap->KeyDesc.ReplayCounter,
 				       LEN_KEY_DESC_REPLAY);
 			DBGPRINT(RT_DEBUG_TRACE,
@@ -1195,7 +1195,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 		}
 		else if (Len >= (LENGTH_802_11 + 6 + 2 + 2 + MIN_LEN_OF_EAPOL_KEY_MSG))
 		{
-			RTMPMoveMemory(pAd->StaCfg.DlsReplayCounter,
+			memmove(pAd->StaCfg.DlsReplayCounter,
 				       pEap->KeyDesc.ReplayCounter,
 				       LEN_KEY_DESC_REPLAY);
 			DBGPRINT(RT_DEBUG_TRACE,

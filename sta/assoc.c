@@ -1941,7 +1941,7 @@ BOOLEAN StaAddMacTableEntry(
 			}
 			pCurrEntry->pNext = pEntry;
 		}
-		RTMPMoveMemory(pEntry->Addr, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
+		memmove(pEntry->Addr, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
 		pEntry->Aid = BSSID_WCID;
 		pEntry->pAd = pAd;
 		SET_ENTRY_CLIENT(pEntry);

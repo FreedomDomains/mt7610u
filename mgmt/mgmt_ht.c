@@ -657,7 +657,7 @@ void RTMPUpdateHTIE(
 		pAddHtInfo->AddHtInfo.RecomWidth = pRtHt->RecomWidth;
 		pAddHtInfo->AddHtInfo2.OperaionMode = pRtHt->OperaionMode;
 		pAddHtInfo->AddHtInfo2.NonGfPresent = pRtHt->NonGfPresent;
-		RTMPMoveMemory(pAddHtInfo->MCSSet, /*pRtHt->MCSSet*/pMcsSet, 4); /* rt2860 only support MCS max=32, no need to copy all 16 uchar.*/
+		memmove(pAddHtInfo->MCSSet, /*pRtHt->MCSSet*/pMcsSet, 4); /* rt2860 only support MCS max=32, no need to copy all 16 uchar.*/
 
         DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <== \n"));
 }

@@ -2019,12 +2019,12 @@ void PeerSpectrumAction(
 				CHA_SWITCH_ANNOUNCE_IE	ChannelSwitch;
 
 				/* 802.11h only has Channel Switch Announcement IE. */
-				RTMPMoveMemory(&ChannelSwitch, &Elem->Msg[LENGTH_802_11+4], sizeof (CHA_SWITCH_ANNOUNCE_IE));
+				memmove(&ChannelSwitch, &Elem->Msg[LENGTH_802_11+4], sizeof (CHA_SWITCH_ANNOUNCE_IE));
 
 				/* 802.11n D3.03 adds secondary channel offset element in the end.*/
 				if (Elem->MsgLen ==  (LENGTH_802_11 + 2 + sizeof (CHA_SWITCH_ANNOUNCE_IE) + sizeof (SEC_CHA_OFFSET_IE)))
 				{
-					RTMPMoveMemory(&Secondary, &Elem->Msg[LENGTH_802_11+9], sizeof (SEC_CHA_OFFSET_IE));
+					memmove(&Secondary, &Elem->Msg[LENGTH_802_11+9], sizeof (SEC_CHA_OFFSET_IE));
 				}
 				else
 				{

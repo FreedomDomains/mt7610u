@@ -2669,7 +2669,7 @@ void AsicWOWSendNullFrame(
 	ptr = (u8 *)TxWI;
 	for (offset = 0; offset < TXWISize; offset += 4)
 	{
-		RTMPMoveMemory(&Value, ptr+offset, 4);
+		memmove(&Value, ptr+offset, 4);
 		DBGPRINT(RT_DEBUG_OFF, ("offset: %02d %08x\n", offset, Value));
 		RTMP_IO_WRITE32(pAd, HW_NULL2_BASE + offset, Value);
 	}
@@ -2679,7 +2679,7 @@ void AsicWOWSendNullFrame(
 	ptr = (u8 *)NullFrame;
 	for (offset = 0; offset < packet_len; offset += 4)
 	{
-		RTMPMoveMemory(&Value, ptr+offset, 4);
+		memmove(&Value, ptr+offset, 4);
 		DBGPRINT(RT_DEBUG_OFF, ("offset: %02d %08x\n", offset, Value));
 		RTMP_IO_WRITE32(pAd, HW_NULL2_BASE + TXWISize + offset, Value);
 	}

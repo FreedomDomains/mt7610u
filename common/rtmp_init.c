@@ -2326,25 +2326,6 @@ ULONG	RTMPCompareMemory(
 
 	========================================================================
 */
-void RTMPMoveMemory(
-	OUT	void *pDest,
-	IN	void *pSrc,
-	IN	ULONG	Length)
-{
-	u8 *pMem1;
-	u8 *pMem2;
-	UINT	Index;
-
-	ASSERT((Length==0) || (pDest && pSrc));
-
-	pMem1 = (u8 *) pDest;
-	pMem2 = (u8 *) pSrc;
-
-	for (Index = 0; Index < Length; Index++)
-	{
-		pMem1[Index] = pMem2[Index];
-	}
-}
 
 void UserCfgExit(
 	IN struct rtmp_adapter*pAd)

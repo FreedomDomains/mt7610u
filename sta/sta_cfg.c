@@ -3262,7 +3262,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
                 	if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
                 	{
                 		memset(pAd->StaCfg.PMK, 0, LEN_PMK);
-                		RTMPMoveMemory(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
+				memmove(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
                 	}
 					else
 					{
@@ -3290,7 +3290,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
 				if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
             	{
             		memset(pAd->StaCfg.PMK, 0, LEN_PMK);
-            		RTMPMoveMemory(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
+			memmove(pAd->StaCfg.PMK, pIoctlSec->pData, pIoctlSec->length);
             	}
 				else
 				{

@@ -251,7 +251,7 @@ INT Set_WfdLocalIp_Proc(
 	rtinet_aton(arg, &ip_addr);
 	printk("IP = %04x\n", ip_addr);
 	pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[0] = WFD_LOCAL_IP_ADDR_VERSION_IPV4;
-	RTMPMoveMemory(&pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], &ip_addr, sizeof(UINT32));
+	memmove(&pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], &ip_addr, sizeof(UINT32));
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: local IP Address = %d.%d.%d.%d\n", __FUNCTION__,
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[2],
@@ -326,7 +326,7 @@ void WfdMakeWfdIE(
 	if (!pWFDCtrl->bWfdEnable)
 		return;
 
-	RTMPMoveMemory(pData, &WfdIEFixed[0], 6);
+	memmove(pData, &WfdIEFixed[0], 6);
 	pData += 6;
 	Len += 6;
 
@@ -384,7 +384,7 @@ ULONG InsertWfdSubelmtTlv(
 
 			EidLen = SUBID_WFD_DEVICE_INFO_LEN;
 			tmpValue = cpu2be16(EidLen);
-			RTMPMoveMemory(pDest, &tmpValue, 2);
+			memmove(pDest, &tmpValue, 2);
 			DevInfo.DeviceType = pWFDCtrl->DeviceType;
 			DevInfo.SourceCoupled = pWFDCtrl->SourceCoupled;
 			DevInfo.SinkCoupled = pWFDCtrl->SinkCoupled;
@@ -396,13 +396,13 @@ ULONG InsertWfdSubelmtTlv(
 				DevInfo.PC = WFD_PC_P2P;
 			DevInfo.CP = pWFDCtrl->CP;
 			DevInfo.TimeSync = pWFDCtrl->TimeSync;
-			/* RTMPMoveMemory(pDest + 1, &DevInfo, sizeof(WFD_DEVICE_INFO)); */
+			/* memmove(pDest + 1, &DevInfo, sizeof(WFD_DEVICE_INFO)); */
 			tmpValue = cpu2be16(*pDevInfo);
-			RTMPMoveMemory((pDest + 2), &tmpValue, 2);
+			memmove((pDest + 2), &tmpValue, 2);
 			tmpValue = cpu2be16(pWFDCtrl->RtspPort);
-			RTMPMoveMemory((pDest + 4), &tmpValue, 2);
+			memmove((pDest + 4), &tmpValue, 2);
 			tmpValue = cpu2be16(pWFDCtrl->MaxThroughput);
-			RTMPMoveMemory((pDest + 6), &tmpValue, 2);
+			memmove((pDest + 6), &tmpValue, 2);
 			Length = 9;
 			break;
 		}
@@ -414,12 +414,12 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_ASSOCIATED_BSSID_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 				if (memcmp(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) != 0 &&
 					(Action == ACTION_GAS_INITIAL_RSP))
 				{
-					RTMPMoveMemory(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+					memmove(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
 				}
 			}
 			else
@@ -428,8 +428,8 @@ ULONG InsertWfdSubelmtTlv(
 				{
 					EidLen = SUBID_WFD_ASSOCIATED_BSSID_LEN;
 					tmpValue = cpu2be16(EidLen);
-					RTMPMoveMemory(pDest, &tmpValue, 2);
-					RTMPMoveMemory(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+					memmove(pDest, &tmpValue, 2);
+					memmove(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
 					Length = EidLen + 3;
 				}
 			}
@@ -441,7 +441,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_AUDIO_FORMATS_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			break;
@@ -452,7 +452,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_VIDEO_FORMATS_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			break;
@@ -463,7 +463,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_3D_VIDEO_FORMATS_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			break;
@@ -474,7 +474,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_CONTENT_PROTECTION_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			break;
@@ -488,9 +488,9 @@ ULONG InsertWfdSubelmtTlv(
 				memset(&SinkInfo, 0, sizeof(WFD_COUPLED_SINK_INFO));
 				EidLen = SUBID_WFD_COUPLED_SINK_INFO_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				SinkInfo.CoupledStat = pWFDCtrl->CoupledSinkStatus.CoupledStat;
-				RTMPMoveMemory(pDest + 2, &SinkInfo, sizeof(WFD_COUPLED_SINK_INFO));
+				memmove(pDest + 2, &SinkInfo, sizeof(WFD_COUPLED_SINK_INFO));
 				Length = EidLen + 3;
 			}
 			break;
@@ -501,7 +501,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_EXTENDED_CAP_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			break;
@@ -512,15 +512,15 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_LOCAL_IP_ADDR_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
 			}
 			else
 			{
 				EidLen = SUBID_WFD_LOCAL_IP_ADDR_LEN;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
-				RTMPMoveMemory(pDest + 2, &pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie, SUBID_WFD_LOCAL_IP_ADDR_LEN);
+				memmove(pDest, &tmpValue, 2);
+				memmove(pDest + 2, &pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie, SUBID_WFD_LOCAL_IP_ADDR_LEN);
 				Length = EidLen + 3;
 			}
 			break;
@@ -548,7 +548,7 @@ ULONG InsertWfdSubelmtTlv(
 
 				EidLen = 24*NumOfDev;
 				tmpValue = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest, &tmpValue, 2);
+				memmove(pDest, &tmpValue, 2);
 				DBGPRINT(RT_DEBUG_INFO, ("%s:: NumOfDev = %d, Len = %d\n", __FUNCTION__, NumOfDev, *pDest));
 
 				pDest+=2;
@@ -565,8 +565,8 @@ ULONG InsertWfdSubelmtTlv(
 						memset(&SessionInfo, 0, sizeof(WFD_SESSION_INFO));
 
 						SessionInfo.Length = 23;
-						RTMPMoveMemory(&SessionInfo.DeviceAddr[0], &pAd->P2pTable.Client[P2pIdx].addr[0], MAC_ADDR_LEN);
-						RTMPMoveMemory(&SessionInfo.Bssid[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.assoc_addr[0], MAC_ADDR_LEN);
+						memmove(&SessionInfo.DeviceAddr[0], &pAd->P2pTable.Client[P2pIdx].addr[0], MAC_ADDR_LEN);
+						memmove(&SessionInfo.Bssid[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.assoc_addr[0], MAC_ADDR_LEN);
 						/*  Below is the WFD Device Information */
 						SessionInfo.WfdDevInfo.DeviceType = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.wfd_devive_type;
 						SessionInfo.WfdDevInfo.SourceCoupled = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.source_coupled;
@@ -582,8 +582,8 @@ ULONG InsertWfdSubelmtTlv(
 							So far we cannot know the address of coupled devices,
 						   	the coupled address will be filled "0" until WiFi Display spec. is ready for this part.
 						*/
-						RTMPMoveMemory(&SessionInfo.CoupledPeerAddr[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_peer_addr[0], MAC_ADDR_LEN);
-						RTMPMoveMemory(pDest, &SessionInfo, sizeof(WFD_SESSION_INFO));
+						memmove(&SessionInfo.CoupledPeerAddr[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_peer_addr[0], MAC_ADDR_LEN);
+						memmove(pDest, &SessionInfo, sizeof(WFD_SESSION_INFO));
 
 						for (j = 0; j < 24; j++)
 							DBGPRINT(RT_DEBUG_INFO, ("%02x ", *(pDest+j)));
@@ -605,7 +605,7 @@ ULONG InsertWfdSubelmtTlv(
 			{
 				EidLen = SUBID_WFD_ALTERNATE_MAC_ADDR_LEN;
 				*((PUSHORT) (pDest)) = cpu2be16(EidLen);
-				RTMPMoveMemory(pDest + 2, pAd->CurrentAddress, MAC_ADDR_LEN);
+				memmove(pDest + 2, pAd->CurrentAddress, MAC_ADDR_LEN);
 				Length = EidLen + 3;
 			}
 
@@ -675,8 +675,8 @@ void WfdParseSubElmt(
 					case SUBID_WFD_DEVICE_INFO:
 					{
 						pWfd_info = &(pWfdEid->Octet[0]);
-						RTMPMoveMemory(&DevInfo, pWfdIe, sizeof(WFD_DEVICE_INFO));
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_device_info_ie, pWfdEid->Octet, SUBID_WFD_DEVICE_INFO_LEN);
+						memmove(&DevInfo, pWfdIe, sizeof(WFD_DEVICE_INFO));
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_device_info_ie, pWfdEid->Octet, SUBID_WFD_DEVICE_INFO_LEN);
 						cpu2le16(&DevInfo);
 
 						pWfdEntryInfo->wfd_devive_type = ((be2cpu16(get_unaligned((PUSHORT)(&pWfdEid->Octet[0]))) >> 0) & 0x3);
@@ -698,64 +698,64 @@ void WfdParseSubElmt(
 					}
 					case SUBID_WFD_ASSOCIATED_BSSID:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_associate_bssid_ie, pWfdEid->Octet, SUBID_WFD_ASSOCIATED_BSSID_LEN);
-						RTMPMoveMemory(&pWfdEntryInfo->assoc_addr, pWfdEid->Octet, MAC_ADDR_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_associate_bssid_ie, pWfdEid->Octet, SUBID_WFD_ASSOCIATED_BSSID_LEN);
+						memmove(&pWfdEntryInfo->assoc_addr, pWfdEid->Octet, MAC_ADDR_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_ASSOCIATED_BSSID\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_AUDIO_FORMATS:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_audio_format_ie, pWfdEid->Octet, SUBID_WFD_AUDIO_FORMATS_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_audio_format_ie, pWfdEid->Octet, SUBID_WFD_AUDIO_FORMATS_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_AUDIO_FORMATS\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_VIDEO_FORMATS:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_video_format_ie, pWfdEid->Octet, SUBID_WFD_VIDEO_FORMATS_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_video_format_ie, pWfdEid->Octet, SUBID_WFD_VIDEO_FORMATS_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_VIDEO_FORMATS\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_3D_VIDEO_FORMATS:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_3d_video_format_ie, pWfdEid->Octet, SUBID_WFD_3D_VIDEO_FORMATS_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_3d_video_format_ie, pWfdEid->Octet, SUBID_WFD_3D_VIDEO_FORMATS_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_3D_VIDEO_FORMATS\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_CONTENT_PROTECTION:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_content_proctection, pWfdEid->Octet, SUBID_WFD_CONTENT_PROTECTION_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_content_proctection, pWfdEid->Octet, SUBID_WFD_CONTENT_PROTECTION_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_CONTENT_PROTECTION\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_COUPLED_SINK_INFO:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_couple_sink_info_ie, pWfdEid->Octet, SUBID_WFD_COUPLED_SINK_INFO_LEN);
-						RTMPMoveMemory(&pWfdEntryInfo->coupled_sink_status, pWfdEid->Octet, SUBID_WFD_COUPLED_SINK_INFO_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_couple_sink_info_ie, pWfdEid->Octet, SUBID_WFD_COUPLED_SINK_INFO_LEN);
+						memmove(&pWfdEntryInfo->coupled_sink_status, pWfdEid->Octet, SUBID_WFD_COUPLED_SINK_INFO_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_COUPLED_SINK_INFO\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_EXTENDED_CAP:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_extent_capability_ie, &pWfdEid->Octet, SUBID_WFD_EXTENDED_CAP_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_extent_capability_ie, &pWfdEid->Octet, SUBID_WFD_EXTENDED_CAP_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_EXTENDED_CAP\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_LOCAL_IP_ADDR:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_local_ip_ie, &pWfdEid->Octet, SUBID_WFD_LOCAL_IP_ADDR_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_local_ip_ie, &pWfdEid->Octet, SUBID_WFD_LOCAL_IP_ADDR_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_LOCAL_IP_ADDR\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_SESSION_INFO:
 					{
 						/* TODO : allocate memory to store the parsed WFD device tables */
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_session_info_ie, &pWfdEid->Octet, SUBID_WFD_DEVICE_INFO_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_session_info_ie, &pWfdEid->Octet, SUBID_WFD_DEVICE_INFO_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_SESSION_INFO\n", __FUNCTION__));
 						break;
 					}
 					case SUBID_WFD_ALTERNATE_MAC_ADDR:
 					{
-						RTMPMoveMemory(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_alternate_mac_addr_ie, &pWfdEid->Octet, SUBID_WFD_ALTERNATE_MAC_ADDR_LEN);
+						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_alternate_mac_addr_ie, &pWfdEid->Octet, SUBID_WFD_ALTERNATE_MAC_ADDR_LEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_ALTERNATE_MAC_ADDR\n", __FUNCTION__));
 						break;
 					}

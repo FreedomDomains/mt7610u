@@ -1485,7 +1485,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
 				if (pEid->Len == sizeof(OVERLAP_BSS_SCAN_IE))
 				{
 					brc = TRUE;
-					RTMPMoveMemory(BssScan, pEid->Octet, sizeof(OVERLAP_BSS_SCAN_IE));
+					memmove(BssScan, pEid->Octet, sizeof(OVERLAP_BSS_SCAN_IE));
 				}
 				else
 				{
