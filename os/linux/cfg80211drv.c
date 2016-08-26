@@ -714,7 +714,6 @@ BOOLEAN CFG80211DRV_Connect(
 
 		// reset key
 #ifdef RT_CFG80211_DEBUG
-		hex_dump("KeyBuf=", (u8 *)pConnInfo->pKey, pConnInfo->KeyLen);
 #endif
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; // base 0
@@ -764,7 +763,6 @@ BOOLEAN CFG80211DRV_Connect(
 
 		/* reset key */
 #ifdef RT_CFG80211_DEBUG
-		hex_dump("KeyBuf=", (u8 *)pConnInfo->pKey, pConnInfo->KeyLen);
 #endif /* RT_CFG80211_DEBUG */
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; /* base 0 */

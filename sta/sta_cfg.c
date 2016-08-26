@@ -132,7 +132,7 @@ INT Set_SSID_Proc(
 
         StateMachineTouched = TRUE;
 		if (Ssid.SsidLength == MAX_LEN_OF_SSID)
-			hex_dump("Set_SSID_Proc::Ssid", Ssid.Ssid, Ssid.SsidLength);
+			;
 		else
 			DBGPRINT(RT_DEBUG_TRACE, ("Set_SSID_Proc::(Len=%d,Ssid=%s)\n", Ssid.SsidLength, Ssid.Ssid));
     }

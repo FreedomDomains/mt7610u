@@ -352,8 +352,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
     ether_addr_copy(pBssid, pFrame->Hdr.Addr3);
 
-/*	hex_dump("Beacon", Msg, MsgLen);*/
-
     Ptr = pFrame->Octet;
     Length += LENGTH_802_11;
 

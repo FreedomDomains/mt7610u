@@ -665,29 +665,6 @@ void wlan_802_11_to_802_3_packet(
 
 }
 
-
-void hex_dump(char *str, UCHAR *pSrcBufVA, UINT SrcBufLen)
-{
-#ifdef DBG
-	unsigned char *pt;
-	int x;
-
-	if (RTDebugLevel < RT_DEBUG_TRACE)
-		return;
-
-	pt = pSrcBufVA;
-	printk("%s: %p, len = %d\n", str, pSrcBufVA, SrcBufLen);
-	for (x = 0; x < SrcBufLen; x++) {
-		if (x % 16 == 0)
-			printk("0x%04x : ", x);
-		printk("%02x ", ((unsigned char)pt[x]));
-		if (x % 16 == 15)
-			printk("\n");
-	}
-	printk("\n");
-#endif /* DBG */
-}
-
 #ifdef CONFIG_STA_SUPPORT
 INT32 ralinkrate[] = {
 	2,  4, 11, 22,

@@ -577,7 +577,6 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 		pEntry->Aid = pApCliEntry->MacTabWCID + 1; // TODO: We need to record count of STAs
 		ether_addr_copy(pEntry->Addr, pApCliEntry->ApCliMlmeAux.Bssid);
 		printk("sn - InsertMacRepeaterEntry: Aid = %d\n", pEntry->Aid);
-		hex_dump("sn - InsertMacRepeaterEntry pEntry->Addr", pEntry->Addr, 6);
 		/* Add this entry into ASIC RX WCID search table */
 		RTMP_STA_ENTRY_ADD(pAd, pEntry);
 		kfree(pEntry);

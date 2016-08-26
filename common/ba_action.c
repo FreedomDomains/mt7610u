@@ -1233,8 +1233,6 @@ void PeerAddBAReqAction(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s ==> (Wcid = %d)\n", __FUNCTION__, Elem->Wcid));
 
-	/*hex_dump("AddBAReq", Elem->Msg, Elem->MsgLen);*/
-
 	/*ADDBA Request from unknown peer, ignore this.*/
 	if (Elem->Wcid >= MAX_LEN_OF_MAC_TABLE)
 		return;
@@ -1346,8 +1344,6 @@ void PeerAddBARspAction(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s ==> Wcid(%d)\n", __FUNCTION__, Elem->Wcid));
 
-	/*hex_dump("PeerAddBARspAction()", Elem->Msg, Elem->MsgLen);*/
-
 	if (PeerAddBARspActionSanity(pAd, Elem->Msg, Elem->MsgLen))
 	{
 		pFrame = (PFRAME_ADDBA_RSP)(&Elem->Msg[0]);
@@ -1398,7 +1394,6 @@ void PeerDelBAAction(
 		else
 		{
 			DBGPRINT(RT_DEBUG_TRACE,("BA - PeerDelBAAction----> RECIPIENT, Reason = %d\n",  pDelFrame->ReasonCode));
-			/*hex_dump("DelBA Frame", pDelFrame, Elem->MsgLen);*/
 			BAOriSessionTearDown(pAd, Elem->Wcid, pDelFrame->DelbaParm.TID, TRUE, FALSE);
 		}
 	}
@@ -1423,7 +1418,6 @@ BOOLEAN CntlEnqueueForRecv(
 	TID = (UCHAR)pFrame->BARControl.TID;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): BAR-Wcid(%ld), Tid (%d)\n", __FUNCTION__, Wcid, TID));
-	/*hex_dump("BAR", (char *) pFrame, MsgLen);*/
 	/* Do nothing if the driver is starting halt state.*/
 	/* This might happen when timer already been fired before cancel timer with mlmehalt*/
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
@@ -1797,8 +1791,6 @@ void Indicate_AMPDU_Packet(
 		err_size++;
 		if (err_size > 20) {
 			 DBGPRINT(RT_DEBUG_TRACE, ("AMPDU DataSize = %d\n", pRxBlk->DataSize));
-			 hex_dump("802.11 Header", (UCHAR *)pRxBlk->pHeader, 24);
-			 hex_dump("Payload", pRxBlk->pData, 64);
 			 err_size = 0;
 		}
 
@@ -1943,8 +1935,6 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 		err_size++;
 		if (err_size > 20) {
 			 DBGPRINT(RT_DEBUG_TRACE, ("AMPDU DataSize = %d\n", pRxBlk->DataSize));
-			 hex_dump("802.11 Header", (UCHAR *)pRxBlk->pHeader, 24);
-			 hex_dump("Payload", pRxBlk->pData, 64);
 			 err_size = 0;
 		}
 

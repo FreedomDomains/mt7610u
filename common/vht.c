@@ -104,7 +104,6 @@ void dump_vht_cap(struct rtmp_adapter*pAd, VHT_CAP_IE *vht_ie)
 	VHT_MCS_SET *vht_mcs = &vht_ie->mcs_set;
 
 	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_CAP IE\n"));
-	hex_dump("VHT CAP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_CAP_IE));
 
 	DBGPRINT(RT_DEBUG_OFF, ("VHT Capabilities Info Field\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tMaximum MPDU Length=%d\n", vht_cap->max_mpdu_len));
@@ -141,7 +140,6 @@ void dump_vht_op(struct rtmp_adapter*pAd, VHT_OP_IE *vht_ie)
 	VHT_MCS_MAP *vht_mcs = &vht_ie->basic_mcs_set;
 
 	DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_OP IE\n"));
-	hex_dump("VHT OP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_OP_IE));
 
 	DBGPRINT(RT_DEBUG_OFF, ("VHT Operation Info Field\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tChannelWidth=%d\n", vht_op->ch_width));

@@ -1100,7 +1100,7 @@ NTSTATUS    RTUSB_VendorRequest(
 				DBGPRINT(RT_DEBUG_ERROR, ("\tRequest Value=0x%04x!\n", Value));
 
 			if ((!TransferBuffer) && (TransferBufferLength > 0))
-				hex_dump("Failed TransferBuffer value", TransferBuffer, TransferBufferLength);
+				;
 
 			if (RET == RTMP_USB_CONTROL_MSG_ENODEV)
 					RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);

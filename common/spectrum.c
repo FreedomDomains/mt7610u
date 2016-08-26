@@ -1754,7 +1754,6 @@ static void PeerChSwAnnAction(
 		}
 
 		DBGPRINT(RT_DEBUG_TRACE, ("\n****Bssidx is %d, Channel = %d\n", index, pAd->ScanTab.BssEntry[Bssidx].Channel));
-		hex_dump("SSID",pAd->ScanTab.BssEntry[Bssidx].Bssid ,6);
 
 		Channel = pAd->CommonCfg.Channel;
 		NewChannel = ChSwAnnInfo.Channel;

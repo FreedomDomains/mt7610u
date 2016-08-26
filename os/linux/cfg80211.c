@@ -720,7 +720,6 @@ static int CFG80211_OpsKeyAdd(
 	MAC80211_PAD_GET(pAd, pWiphy);
 
 #ifdef RT_CFG80211_DEBUG
-	hex_dump("KeyBuf=", (u8 *)pParams->key, pParams->key_len);
 #endif /* RT_CFG80211_DEBUG */
 
 	//CFG80211DBG(RT_DEBUG_ERROR, ("80211> KeyIdx = %d\n", KeyIdx));

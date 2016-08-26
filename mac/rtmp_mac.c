@@ -178,10 +178,6 @@ void RTMPWriteTxWI(
 
 	pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
 	memmove(pOutTxWI, &TxWI, TXWISize);
-//+++Add by shiang for debug
-if (0){
-	hex_dump("TxWI", (UCHAR *)pOutTxWI, TXWISize);
-}
 //---Add by shiang for debug
 }
 

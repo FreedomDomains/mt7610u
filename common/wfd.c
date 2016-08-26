@@ -647,7 +647,6 @@ void WfdParseSubElmt(
 			return;
 	}
 
-//	hex_dump("WfdParseSubElmt::", Msg, MsgLen);
 	pEid = (PEID_STRUCT)Msg;
 	AccuIeLen = pEid->Len + 2;
 //	printk("MsgLen = %d. AccuIeLen = %d.\n", MsgLen, AccuIeLen);
@@ -762,7 +761,6 @@ void WfdParseSubElmt(
 					}
 					default:
 						DBGPRINT(RT_DEBUG_ERROR, (" SUBID_WFD_ unknown  Eid = %x \n", pWfdEid->Eid));
-						hex_dump("WfdParseSubElement::", Msg, MsgLen);
 						break;
 				}
 //				printk("<< Length = %d. AttriLen = %d. AccuWfdIELen = %d.\n", Length, AttriLen, AccuWfdIELen);

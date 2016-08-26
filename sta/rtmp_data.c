@@ -360,15 +360,6 @@ void STAHandleRxDataFrame(
 	UCHAR FromWhichBSSID = BSS0;
 	UCHAR UserPriority = 0;
 
-//+++Add by shiang for debug
-if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
-	DBGPRINT(RT_DEBUG_OFF, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
-	dump_rxinfo(pAd, pRxInfo);
-	hex_dump("DataFrameHeader", (UCHAR *)pHeader, sizeof(HEADER_802_11));
-	hex_dump("DataFramePayload", pRxBlk->pData , pRxBlk->DataSize);
-}
-//---Add by shiangf for debug
-
 	if ((pHeader->FC.FrDs == 1) && (pHeader->FC.ToDs == 1)) {
 #ifdef CLIENT_WDS
 			if ((pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)
@@ -827,14 +818,6 @@ void STAHandleRxDataFrame_Hdr_Trns(
 	UCHAR FromWhichBSSID = BSS0;
 	UCHAR UserPriority = 0;
 	UCHAR *pData;
-
-//+++Add by shiang for debug
-if (0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/){
-	DBGPRINT(RT_DEBUG_OFF, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
-	hex_dump("DataFrameHeader", pHeader, 36);
-	hex_dump("DataFramePayload", pRxBlk->pTransData , pRxBlk->TransDataSize);
-}
-//---Add by shiangf for debug
 
 	if ((pHeader->FC.FrDs == 1) && (pHeader->FC.ToDs == 1)) {
 #ifdef CLIENT_WDS
@@ -1471,12 +1454,9 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 		if ((pFceInfo->info_type != 0) || (pFceInfo->pkt_80211 != 1))
 		{
 			DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
-			hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
-			hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
 			dumpRxFCEInfo(pAd, pFceInfo);
 			dump_rxinfo(pAd, pRxInfo);
-			hex_dump("RxFrame", (UCHAR *)pData, (pFceInfo->pkt_len));
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
 			RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_SUCCESS);
 			continue;
@@ -1500,20 +1480,6 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 		}
 	}
 #endif /* CONFIG_FPGA_MODE */
-
-if (0)/*pHeader->FC.Type != BTYPE_MGMT)*/{
-		hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
-		DBGPRINT(RT_DEBUG_TRACE, ("==>%s():Dump the RxD, RxFCEInfo and RxInfo:\n", __FUNCTION__));
-		hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
-		dumpRxFCEInfo(pAd, pFceInfo);
-		dump_rxinfo(pAd, pRxInfo);
-
-		DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxWI and RxPacket:\n"));
-		dump_rxwi(pAd, pRxWI);
-		hex_dump("RxPacket", (UCHAR *)pHeader, pRxWI->RxWIMPDUByteCnt);
-		DBGPRINT(RT_DEBUG_TRACE, ("<==%s():Finish dump!\n", __FUNCTION__));
-}
-
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
@@ -3676,11 +3642,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 
 	pWI = (PWIFI_INFO_STRUC)pHeaderBufPtr;
 
-	//hex_dump("wifi info:", pWI, sizeof(WIFI_INFO_STRUC));
-
 	pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader;
-
-	//hex_dump("pSrcBufData" , pTxBlk->pSrcBufData, pTxBlk->SrcBufLen);
 
 	if(bVLANPkt)
 		pWI->field.VLAN = TRUE;

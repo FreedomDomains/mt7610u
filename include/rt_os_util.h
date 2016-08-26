@@ -591,9 +591,6 @@ LONG RtmpOsAtomicRead(RTMP_OS_ATOMIC *pAtomic);
 void RtmpOsAtomicDec(RTMP_OS_ATOMIC *pAtomic);
 void RtmpOsAtomicInterlockedExchange(RTMP_OS_ATOMIC *pAtomicSrc, LONG Value);
 
-/* OS Utility */
-void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
-
 int RtmpOSWrielessEventSend(
 	IN	struct net_device *			pNetDev,
 	IN	UINT32					eventType,

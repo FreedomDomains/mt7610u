@@ -1495,9 +1495,7 @@ void AssocPostProc(
 			DBGPRINT(RT_DEBUG_ERROR,
 				 ("%s():=> no RSN_IE\n", __FUNCTION__));
 		} else {
-			hex_dump("RSN_IE",
-				 pAd->MacTab.Content[BSSID_WCID].RSN_IE,
-				 pAd->MacTab.Content[BSSID_WCID].RSNIE_Len);
+			;
 		}
 	}
 }

@@ -607,8 +607,6 @@ do{                                   \
 #define ASSERT(x)
 #endif /* DBG */
 
-void hex_dump(char *str, unsigned char *pSrcBufVA, unsigned int SrcBufLen);
-
 
 /*********************************************************************************************************
 	The following code are not revised, temporary put it here.

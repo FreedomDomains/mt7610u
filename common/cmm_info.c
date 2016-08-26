@@ -5302,9 +5302,6 @@ void assoc_vht_info_debugshow(
 		cap_info = &vht_cap->vht_cap;
 		mcs_set = &vht_cap->mcs_set;
 
-		hex_dump("peer vht_cap raw data", (UCHAR *)cap_info, sizeof(VHT_CAP_INFO));
-		hex_dump("peer vht_mcs raw data", (UCHAR *)mcs_set, sizeof(VHT_MCS_SET));
-
 		DBGPRINT(RT_DEBUG_TRACE, ("\tVHT Cap Info: \n"));
 		DBGPRINT(RT_DEBUG_TRACE, ("\t\tMaxMpduLen(%d), BW(%d), SGI_80M(%d), TxSTBC(%d), RxSTBC(%d), +HTC-VHT(%d)\n",
 				cap_info->max_mpdu_len, cap_info->ch_width, cap_info->sgi_80M, cap_info->tx_stbc,

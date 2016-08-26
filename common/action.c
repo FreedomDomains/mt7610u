@@ -460,7 +460,6 @@ ULONG BuildIntolerantChannelRep(
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR,("ACT-BuildIntolerantChannelRep(Size=%ld)\n", FrameLen));
-	hex_dump("ACT-pDestMsg", pDest, FrameLen);
 
 	return FrameLen;
 }
@@ -728,16 +727,13 @@ void PeerPublicAction(
 					break;
 				}
 				DBGPRINT(RT_DEBUG_TRACE, ("ACTION - 20/40 BSS Coexistence Management action----> \n"));
-				hex_dump("CoexistenceMgmtFrame", Elem->Msg, Elem->MsgLen);
-
 
 				pCoexistInfo = (BSS_2040_COEXIST_ELEMENT *) &Elem->Msg[LENGTH_802_11+2];
-				/*hex_dump("CoexistInfo", (u8 *)pCoexistInfo, sizeof(BSS_2040_COEXIST_ELEMENT));*/
+
 				if (Elem->MsgLen >= (LENGTH_802_11 + sizeof(BSS_2040_COEXIST_ELEMENT) + sizeof(BSS_2040_INTOLERANT_CH_REPORT)))
 				{
 					pIntolerantReport = (BSS_2040_INTOLERANT_CH_REPORT *)((u8 *)pCoexistInfo + sizeof(BSS_2040_COEXIST_ELEMENT));
 				}
-				/*hex_dump("IntolerantReport ", (u8 *)pIntolerantReport, sizeof(BSS_2040_INTOLERANT_CH_REPORT));*/
 
 				if(pAd->CommonCfg.bBssCoexEnable == FALSE || (pAd->CommonCfg.bForty_Mhz_Intolerant == TRUE))
 				{
@@ -788,7 +784,6 @@ static void ReservedAction(
 
 	Category = Elem->Msg[LENGTH_802_11];
 	DBGPRINT(RT_DEBUG_TRACE,("Rcv reserved category(%d) Action Frame\n", Category));
-	hex_dump("Reserved Action Frame", &Elem->Msg[0], Elem->MsgLen);
 }
 
 void PeerRMAction(

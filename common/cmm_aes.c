@@ -1070,7 +1070,6 @@ void CCMP_test_vector(
 	else
 	{
 		printk("\n!!!Construct AAD is FAILURE!!!\n\n");
-		hex_dump("Calculate AAD", res_buf, res_len);
 	}
 	/* Check NONCE */
 	memset(res_buf, 0, 100);
@@ -1081,7 +1080,6 @@ void CCMP_test_vector(
 	else
 	{
 		printk("\n!!!Construct NONCE is FAILURE!!!\n\n");
-		hex_dump("Calculate NONCE", res_buf, res_len);
 	}
 	/* Check CCMP-Header */
 	memset(res_buf, 0, 100);
@@ -1092,7 +1090,6 @@ void CCMP_test_vector(
 	else
 	{
 		printk("\n!!!Construct CCMP_HDR is FAILURE!!!\n\n");
-		hex_dump("Calculate CCMP_HDR", res_buf, 8);
 	}
 
 	/* Encrypt action */
@@ -1111,7 +1108,6 @@ void CCMP_test_vector(
 		else
 		{
 			printk("\n!!!CCM_Encrypt is FAILURE!!!\n\n");
-			hex_dump("CCM_Encrypt", res_buf, res_len);
 		}
 	}
 
@@ -1130,7 +1126,6 @@ void CCMP_test_vector(
 		else
 		{
 			printk("\n!!!CCM_Decrypt is FAILURE!!!\n\n");
-			hex_dump("CCM_Decrypt", res_buf, res_len);
 		}
 	}
 

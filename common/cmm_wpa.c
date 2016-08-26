@@ -518,8 +518,6 @@ BOOLEAN PeerWpaMessageSanity(
 			DBGPRINT(RT_DEBUG_ERROR, ("Replay Counter Different in group msg %d of 2-way handshake!\n", (MsgType - EAPOL_PAIR_MSG_4)));
 		}
 
-		hex_dump("Receive replay counter ", pMsg->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY);
-		hex_dump("Current replay counter ", pEntry->R_Counter, LEN_KEY_DESC_REPLAY);
         goto LabelErr;
 	}
 
@@ -559,9 +557,6 @@ BOOLEAN PeerWpaMessageSanity(
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("MIC Different in group msg %d of 2-way handshake!\n", (MsgType - EAPOL_PAIR_MSG_4)));
 			}
-
-			hex_dump("Received MIC", rcvd_mic, LEN_KEY_DESC_MIC);
-			hex_dump("Desired  MIC", mic, LEN_KEY_DESC_MIC);
 
 			goto LabelErr;
         }
@@ -1979,9 +1974,6 @@ void WpaDerivePTK(
 		memmove(&concatenation[CurrPos], SNonce, 32);
 	CurrPos += 32;
 
-	hex_dump("PMK", PMK, LEN_PMK);
-	hex_dump("concatenation=", concatenation, 76);
-
 	/* Use PRF to generate PTK*/
 	PRF(PMK, LEN_PMK, Prefix, 22, concatenation, 76, output, len);
 
@@ -2583,10 +2575,6 @@ void RTMPMakeRSNIE(
 	}
 
 	*rsnielen_cur_p = p_offset;
-
-	hex_dump("The primary RSNIE", pRsnIe, (*rsnielen_cur_p));
-
-
 }
 
 /*
@@ -2903,8 +2891,6 @@ BOOLEAN RTMPParseEapolKeyData(
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE,("RTMPParseEapolKeyData ==> KeyDataLength %d without RSN_IE \n", KeyDataLength));
-	/*hex_dump("remain data", pMyKeyData, KeyDataLength);*/
-
 
 	/* Parse KDE format in pairwise_msg_3_WPA2 && group_msg_1_WPA2*/
 	if (bWPA2 && (MsgType == EAPOL_PAIR_MSG_3 || MsgType == EAPOL_GROUP_MSG_1))
@@ -3359,8 +3345,6 @@ void ConstructEapolKeyData(
 	/* Encrypt the data material in key data field with KEK*/
 	if (GTK_Included)
 	{
-		/*hex_dump("GTK_Included", Key_Data, data_offset);*/
-
 		if (
 			(keyDescVer == KEY_DESC_AES))
 		{
@@ -3957,31 +3941,6 @@ void WpaShowAllsuite(
 	u8 * pSuite = NULL;
 	u8 count;
 
-	hex_dump("RSNIE", rsnie, rsnie_len);
-
-	/* group cipher*/
-	if ((pSuite = WPA_ExtractSuiteFromRSNIE(rsnie, rsnie_len, GROUP_SUITE, &count)) != NULL)
-	{
-		hex_dump("group cipher", pSuite, 4*count);
-	}
-
-	/* pairwise cipher*/
-	if ((pSuite = WPA_ExtractSuiteFromRSNIE(rsnie, rsnie_len, PAIRWISE_SUITE, &count)) != NULL)
-	{
-		hex_dump("pairwise cipher", pSuite, 4*count);
-	}
-
-	/* AKM*/
-	if ((pSuite = WPA_ExtractSuiteFromRSNIE(rsnie, rsnie_len, AKM_SUITE, &count)) != NULL)
-	{
-		hex_dump("AKM suite", pSuite, 4*count);
-	}
-
-	/* PMKID*/
-	if ((pSuite = WPA_ExtractSuiteFromRSNIE(rsnie, rsnie_len, PMKID_LIST, &count)) != NULL)
-	{
-		hex_dump("PMKID", pSuite, LEN_PMKID);
-	}
 
 }
 

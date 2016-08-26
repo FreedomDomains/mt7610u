@@ -43,8 +43,6 @@ UCHAR MapUserPriorityToAccessCategory[8] = {QID_AC_BE, QID_AC_BK, QID_AC_BK, QID
 
 void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo)
 {
-	hex_dump("RxInfo Raw Data", (UCHAR *)pRxInfo, sizeof(RXINFO_STRUC));
-
 	DBGPRINT(RT_DEBUG_OFF, ("RxInfo Fields:\n"));
 
 	DBGPRINT(RT_DEBUG_OFF, ("\tBA=%d\n", pRxInfo->BA));
@@ -80,8 +78,6 @@ void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo)
 
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo)
 {
-	hex_dump("RxFCEInfo Raw Data", (UCHAR *)pRxFceInfo, sizeof(RXFCE_INFO));
-
 	DBGPRINT(RT_DEBUG_OFF, ("RxFCEInfo Fields:\n"));
 
 	DBGPRINT(RT_DEBUG_OFF, ("\tinfo_type=%d\n", pRxFceInfo->info_type));
@@ -103,8 +99,6 @@ static UCHAR *txwi_txop_str[]={"HT_TXOP", "PIFS", "SIFS", "BACKOFF", "Invalid"};
 
 void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI)
 {
-	hex_dump("TxWI Raw Data: ", (UCHAR *)pTxWI, sizeof(TXWI_STRUC));
-
 	DBGPRINT(RT_DEBUG_OFF, ("TxWI Fields:\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
 	DBGPRINT(RT_DEBUG_OFF, ("\tSTBC=%d\n", pTxWI->TxWISTBC));
@@ -132,8 +126,6 @@ void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI)
 
 void dump_rxwi(struct rtmp_adapter*pAd, RXWI_STRUC *pRxWI)
 {
-	hex_dump("RxWI Raw Data", (UCHAR *)pRxWI, sizeof(RXWI_STRUC));
-
 	DBGPRINT(RT_DEBUG_OFF, ("RxWI Fields:\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tWCID=%d\n", pRxWI->RxWIWirelessCliID));
 	DBGPRINT(RT_DEBUG_OFF, ("\tPhyMode=%d(%s)\n", pRxWI->RxWIPhyMode, get_phymode_str(pRxWI->RxWIPhyMode)));
@@ -164,8 +156,6 @@ static UCHAR *txinfo_que_str[]={"MGMT", "HCCA", "EDCA_1", "EDCA_2", "Invalid"};
 
 void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo)
 {
-	hex_dump("TxInfo Raw Data: ", (UCHAR *)pTxInfo, sizeof(TXINFO_STRUC));
-
 	DBGPRINT(RT_DEBUG_OFF, ("TxInfo Fields:\n"));
 
 	{
@@ -641,12 +631,6 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 #ifdef RT_BIG_ENDIAN
 	RTMPWIEndianChange(pAd, (u8 *)pFirstTxWI, TYPE_TXWI);
 #endif
-
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("TxMgmtPkt", (UCHAR *)pHeader_802_11, ((SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE) > 7000 ? 7000 : (SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE)));
-}
-//---Add by shiang for debug
 
 	/* Now do hardware-depened kick out.*/
 	HAL_KickOutMgmtTx(pAd, QueIdx, pPacket, pSrcBufVA, SrcBufLen);
@@ -1371,7 +1355,6 @@ UINT deaggregate_AMSDU_announce(
 
 		nMSDU++;
 
-		/*hex_dump("subheader", pData, 64);*/
 		pAMSDUsubheader = (PHEADER_802_3)pData;
 		/*pData += LENGTH_802_3;*/
 		PayloadSize = pAMSDUsubheader->Octet[1] + (pAMSDUsubheader->Octet[0]<<8);
@@ -1828,12 +1811,6 @@ void Indicate_Legacy_Packet(
 	USHORT VLAN_VID = 0, VLAN_Priority = 0;
 
 
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("Indicate_Legacy_Packet", pRxBlk->pData, pRxBlk->DataSize);
-	hex_dump("802_11_hdr", (UCHAR *)pRxBlk->pHeader, LENGTH_802_11);
-}
-//---Add by shiang for debug
 
 	/*
 		1. get 802.3 Header
@@ -1882,7 +1859,6 @@ if (0) {
 				{
 					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
 												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
-					hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
 					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
 				}
 			}
@@ -1891,21 +1867,8 @@ if (0) {
 #endif /* DOT11_N_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
-
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("Before80211_2_8023", pRxBlk->pData, pRxBlk->DataSize);
-	hex_dump("header802_3", &Header802_3[0], LENGTH_802_3);
-}
-//---Add by shiang for debug
 	RT_80211_TO_8023_PACKET(pAd, VLAN_VID, VLAN_Priority,
 							pRxBlk, Header802_3, FromWhichBSSID, TPID);
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("After80211_2_8023", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), GET_OS_PKT_LEN(pRxBlk->pRxPacket));
-}
-//---Add by shiang for debug
-
 
 	/* pass this 802.3 packet to upper layer or forward this packet to WM directly*/
 
@@ -1929,13 +1892,6 @@ void Indicate_Legacy_Packet_Hdr_Trns(
 	USHORT VLAN_VID = 0, VLAN_Priority = 0;
 
 	struct sk_buff *pOSPkt;
-
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("Indicate_Legacy_Packet", pRxBlk->pTransData, pRxBlk->TransDataSize);
-	hex_dump("802_11_hdr", pRxBlk->pHeader, LENGTH_802_11);
-}
-//---Add by shiang for debug
 
 	/*
 		1. get 802.3 Header
@@ -1981,7 +1937,6 @@ if (0) {
 				{
 					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
 												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
-					hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
 					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
 				}
 			}
@@ -1989,15 +1944,6 @@ if (0) {
 	}
 #endif /* DOT11_N_SUPPORT */
 #endif /* RTMP_MAC_USB */
-
-
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("Before80211_2_8023", pRxBlk->pData, pRxBlk->TransDataSize);
-	hex_dump("header802_3", &Header802_3[0], LENGTH_802_3);
-}
-//---Add by shiang for debug
-
 
 
 
@@ -2012,12 +1958,6 @@ if (0) {
 		//printk("\x1b[31m%s: rx trans ...%d\x1b[m\n", __FUNCTION__, __LINE__);
 	}
 
-
-//+++Add by shiang for debug
-if (0) {
-	hex_dump("After80211_2_8023", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), GET_OS_PKT_LEN(pRxBlk->pRxPacket));
-}
-//---Add by shiang for debug
 
 
 	/* pass this 802.3 packet to upper layer or forward this packet to WM directly*/

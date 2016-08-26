@@ -276,7 +276,6 @@ BOOLEAN TDLS_UAPSDP_AsicCanSleep(
 						("tdls uapsd> SP not close or Ind sent (%d %d)!\n",
 						pEntry->bAPSDFlagSPStart,
 						pTDLS->FlgIsWaitingUapsdTraRsp));
-				hex_dump("pEntry=", pEntry->Addr, 6);
 				FlgAllSpClosed = FALSE;
 				break;
 			}
@@ -808,7 +807,6 @@ static ULONG TDLS_UAPSD_TrafficIndBuild(
 	/* build the frame */
 	TDLS_UAPSD_TrafficIndPayloadBuild(pAd, pFrameBuf, &FrameLen, pTDLS);
 
-	hex_dump("TDLS UAPSD Peer Traffic Ind sending packet", pFrameBuf, FrameLen);
 	/*
 		11.2.1.14.1 Peer U-APSD Behavior at the PU buffer STA
 		When no corresponding TDLS Peer Traffic Response frame has been
@@ -943,7 +941,6 @@ static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
 
 	/* send the frame to the peer with AP's help */
 	TDLS_UAPSD_PKT_SEND_THROUGH_AP(pAd, Header802_3, pOutBuffer, FrameLen);
-/*	hex_dump("TDLS traffic indication send pack", pOutBuffer, FrameLen); */
 
 	NStatus = NDIS_STATUS_SUCCESS;
 
@@ -1029,8 +1026,6 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 
 	TDLS_UAPSD_TrafficRspBuild(pAd, pOutBuffer, &FrameLen, pTDLS, PeerToken);
 
-	hex_dump("TDLS UAPSD Peer Traffic Response sending packet", pOutBuffer, FrameLen);
-
 	/* need to set the power save mode of the peer to ACTIVE */
 	/* we will recover its mode after EOSP frame is received */
 	pMacEntry = MacTableLookup(pAd, pTDLS->MacAddr);
@@ -1042,7 +1037,6 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 
 	/* send the frame to the peer without AP's help */
 	TDLS_UAPSD_PKT_SEND_TO_PEER(pAd, Header802_3, pOutBuffer, FrameLen, pTDLS);
-/*	hex_dump("TDLS traffic response send pack", pOutBuffer, FrameLen); */
 
 	NStatus = NDIS_STATUS_SUCCESS;
 
@@ -1137,8 +1131,6 @@ static void TDLS_UAPSD_PeerTrafficIndAction(
 	if (!INFRA_ON(pAd))
 		return;
 
-	hex_dump("TDLS UAPSD Peer Traffic Ind receive pack", pElem->Msg, pElem->MsgLen);
-
 	/* sanity check */
 	if (TDLS_UAPSD_ARE_WE_IN_ACTIVE(pAd))
 		return; /* we are not in power-save mode */
@@ -1164,7 +1156,6 @@ static void TDLS_UAPSD_PeerTrafficIndAction(
 	if (OffsetPuBuff <= 0)
 		return;
 
-/*	hex_dump("PeerAddr=", PeerAddr, 6); */
 	DBGPRINT(RT_DEBUG_ERROR, ("tdls uapsd> PU Buffer Status = 0x%x\n",
 			pElem->Msg[OffsetPuBuff+2])); /* 2: skip ID and length field */
 
@@ -1210,8 +1201,6 @@ static void TDLS_UAPSD_PeerTrafficRspAction(
 	if (!INFRA_ON(pAd))
 		return;
 
-	hex_dump("TDLS UAPSD Peer Traffic Response receive pack", pElem->Msg, pElem->MsgLen);
-
 	ether_addr_copy(PeerAddr, &pFrame->Hdr.Addr2);
 	// Drop not within my TDLS Table that created before !
 	LinkId = TDLS_SearchLinkId(pAd, PeerAddr);
@@ -1231,8 +1220,6 @@ static void TDLS_UAPSD_PeerTrafficRspAction(
 						pTDLS->bInitiator,
 						&Token,
 						PeerAddr1);
-
-/*	hex_dump("PeerAddr=", PeerAddr, 6); */
 
 	/* search TDLS entry */
 	LinkId = TDLS_SearchLinkId(pAd, PeerAddr);
@@ -1507,8 +1494,6 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	FrameLen = FrameLen + TempLen;
 	TDLS_BuildSetupRequest(pAd, pOutBuffer, &FrameLen,
 							TDLS_UAPSD_ENTRY_GET(pAd, IdTdls));
-	hex_dump("Request=", pOutBuffer, FrameLen);
-
 	TDLS_UAPSD_PKT_SEND_THROUGH_AP(pAd, Header802_3, pOutBuffer, FrameLen);
 
 	/* init response frame */
@@ -1688,8 +1673,6 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 
 	if (FrameLen <= 0)
 		goto LabelExit;
-
-/*	hex_dump("TDLS traffic indication send pack", pOutBuffer, FrameLen); */
 
 	/* allocate resources */
 	os_alloc_mem(NULL, (UCHAR **)&pElem, sizeof(MLME_QUEUE_ELEM));

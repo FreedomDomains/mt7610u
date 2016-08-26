@@ -437,7 +437,7 @@ void CntlOidSsidProc(
 		 ("CntlOidSsidProc():CNTL - %d BSS of %d BSS match the desire ",
 		  pAd->MlmeAux.SsidBssTab.BssNr, pAd->ScanTab.BssNr));
 	if (pAd->MlmeAux.SsidLen == MAX_LEN_OF_SSID)
-		hex_dump("\nSSID", pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen);
+		;
 	else
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("(%d)SSID - %s\n", pAd->MlmeAux.SsidLen,
