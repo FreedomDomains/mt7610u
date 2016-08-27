@@ -496,8 +496,8 @@ typedef ULONGLONG NDIS_802_11_KEY_RSC;
 /* The dot1x related structure.
    It's used to communicate with DOT1X daemon */
 typedef struct __attribute__ ((packed)) _RADIUS_SRV_INFO {
-	UINT32 radius_ip;
-	UINT32 radius_port;
+	u32 radius_ip;
+	u32 radius_port;
 	UCHAR radius_key[64];
 	UCHAR radius_key_len;
 } RADIUS_SRV_INFO, *PRADIUS_SRV_INFO;
@@ -514,12 +514,12 @@ typedef struct __attribute__ ((packed)) _DOT1X_BSS_INFO {
 } DOT1X_BSS_INFO, *PDOT1X_BSS_INFO;
 
 typedef struct __attribute__ ((packed)) _DOT1X_CMM_CONF {
-	UINT32 Length;		/* Length of this structure */
+	u32 Length;		/* Length of this structure */
 	UCHAR mbss_num;		/* indicate multiple BSS number */
-	UINT32 own_ip_addr;
-	UINT32 retry_interval;
-	UINT32 session_timeout_interval;
-	UINT32 quiet_interval;
+	u32 own_ip_addr;
+	u32 retry_interval;
+	u32 session_timeout_interval;
+	u32 quiet_interval;
 	UCHAR EAPifname[8][IFNAMSIZ];
 	UCHAR EAPifname_len[8];
 	UCHAR PreAuthifname[8][IFNAMSIZ];
@@ -529,7 +529,7 @@ typedef struct __attribute__ ((packed)) _DOT1X_CMM_CONF {
 
 typedef struct __attribute__ ((packed)) _DOT1X_IDLE_TIMEOUT {
 	UCHAR StaAddr[6];
-	UINT32 idle_timeout;
+	u32 idle_timeout;
 } DOT1X_IDLE_TIMEOUT, *PDOT1X_IDLE_TIMEOUT;
 #endif /* DOT1X_SUPPORT */
 
@@ -1019,7 +1019,7 @@ typedef struct _RT_802_11_MAC_ENTRY {
 	CHAR AvgRssi0;
 	CHAR AvgRssi1;
 	CHAR AvgRssi2;
-	UINT32 ConnectedTime;
+	u32 ConnectedTime;
 	MACHTTRANSMIT_SETTING TxRate;
 } RT_802_11_MAC_ENTRY, *PRT_802_11_MAC_ENTRY;
 
@@ -1310,15 +1310,15 @@ enum {
 };
 
 struct bbp_info {
-	UINT32 bbp_start;
-	UINT32 bbp_end;
+	u32 bbp_start;
+	u32 bbp_end;
 	u8 bbp_value[0];
 };
 
 struct bbp32_info {
-	UINT32 bbp_start;
-	UINT32 bbp_end;
-	UINT32 bbp_value[0];
+	u32 bbp_start;
+	u32 bbp_end;
+	u32 bbp_value[0];
 };
 
 struct rf_info {
@@ -1335,16 +1335,16 @@ struct rf_bank_info {
 };
 
 struct mac_info {
-	UINT32 mac_start;
-	UINT32 mac_end;
-	UINT32 mac_value[0];
+	u32 mac_start;
+	u32 mac_end;
+	u32 mac_value[0];
 };
 
 struct mem_map_info {
 	u32 base;
 	UINT16 mem_map_start;
 	UINT16 mem_map_end;
-	UINT32 mem_map_value[0];
+	u32 mem_map_value[0];
 };
 
 struct e2p_info {

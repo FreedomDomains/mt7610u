@@ -209,7 +209,7 @@ void MlmeDynamicTxRateSwitching(
 			{
 				TX_RTY_CFG_STRUC	TxRtyCfg,TxRtyCfgtmp;
 				ULONG	Index;
-				UINT32	MACValue;
+				u32	MACValue;
 
 				RTMP_IO_READ32(pAd, TX_RTY_CFG, &TxRtyCfg.word);
 				TxRtyCfgtmp.word = TxRtyCfg.word;
@@ -689,7 +689,7 @@ void StaQuickResponeForRateUpExec(
 				if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
 				{
 					WCID_TX_CNT_STRUC wcidTxCnt;
-					UINT32 regAddr, offset;
+					u32 regAddr, offset;
 					ULONG HwTxCnt, HwErrRatio = 0;
 
 					regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;

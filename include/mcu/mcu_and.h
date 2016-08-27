@@ -38,19 +38,19 @@ struct rtmp_adapter;
 
 #ifdef RT_BIG_ENDIAN
 typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD_PKT{
-	UINT32 info_type:2;
-	UINT32 d_port:3;
-	UINT32 cmd_type:7;
-	UINT32 cmd_seq:4;
-	UINT32 pkt_len:16;
+	u32 info_type:2;
+	u32 d_port:3;
+	u32 cmd_type:7;
+	u32 cmd_seq:4;
+	u32 pkt_len:16;
 }TXINFO_NMAC_CMD_PKT;
 #else
 typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD_PKT {
-	UINT32 pkt_len:16;
-	UINT32 cmd_seq:4;
-	UINT32 cmd_type:7;
-	UINT32 d_port:3;
-	UINT32 info_type:2;
+	u32 pkt_len:16;
+	u32 cmd_seq:4;
+	u32 cmd_type:7;
+	u32 d_port:3;
+	u32 info_type:2;
 }TXINFO_NMAC_CMD_PKT;
 #endif /* RT_BIG_ENDIAN */
 

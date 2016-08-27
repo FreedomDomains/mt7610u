@@ -178,7 +178,7 @@ int RTUSBFirmwareWrite(
 	IN u8 *	pFwImage,
 	IN ULONG		FwLen)
 {
-	UINT32		MacReg;
+	u32		MacReg;
 	int 	Status;
 /*	ULONG 		i;*/
 	USHORT		writeLen;
@@ -425,10 +425,10 @@ int RTUSBSingleWrite(
 int	RTUSBReadMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	OUT	PUINT32			pValue)
+	OUT	u32 			*pValue)
 {
 	int	Status = 0;
-	UINT32		localVal;
+	u32		localVal;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -468,11 +468,11 @@ int	RTUSBReadMACRegister(
 int RTUSBWriteMACRegister(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
-	IN UINT32 Value,
+	IN u32 Value,
 	IN BOOLEAN bWriteHigh)
 {
 	int Status;
-	UINT32 localVal;
+	u32 localVal;
 
 	localVal = Value;
 
@@ -699,7 +699,7 @@ int RTUSBWriteBBPRegister(
 */
 int	RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
-	IN	UINT32			Value)
+	IN	u32			Value)
 {
 	RF_CSR_CFG0_STRUC PhyCsr4;
 	UINT			i = 0;
@@ -862,7 +862,7 @@ int RTUSBWriteEEPROM16(
 void RTUSBPutToSleep(
 	IN	struct rtmp_adapter *pAd)
 {
-	UINT32		value;
+	u32		value;
 
 	/* Timeout 0x40 x 50us*/
 	value = (SLEEPCID<<16)+(OWNERMCU<<24)+ (0x40<<8)+1;
@@ -926,7 +926,7 @@ int	RTUSBEnqueueCmdFromNdis(
 	IN	NDIS_OID		Oid,
 	IN	BOOLEAN			SetInformation,
 	IN	void *		pInformationBuffer,
-	IN	UINT32			InformationBufferLength)
+	IN	u32			InformationBufferLength)
 {
 	int	status;
 	PCmdQElmt	cmdqelmt = NULL;
@@ -1030,13 +1030,13 @@ int	RTUSBEnqueueCmdFromNdis(
 */
 int    RTUSB_VendorRequest(
 	IN	struct rtmp_adapter *pAd,
-	IN	UINT32			TransferFlags,
+	IN	u32			TransferFlags,
 	IN	UCHAR			RequestType,
 	IN	UCHAR			Request,
 	IN	USHORT			Value,
 	IN	USHORT			Index,
 	IN	void *		TransferBuffer,
-	IN	UINT32			TransferBufferLength)
+	IN	u32			TransferBufferLength)
 {
 	int				RET = 0;
 	struct os_cookie *	pObj = pAd->OS_Cookie;
@@ -1159,7 +1159,7 @@ int CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
-			UINT32 data;
+			u32 data;
 			/* Read GPIO pin2 as Hardware controlled radio state*/
 
 			RTUSBReadMACRegister( pAd, GPIO_CTRL_CFG, &data);
@@ -1371,7 +1371,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 /* All transfers must be aborted or cancelled before attempting to reset the pipe.*/
 static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
-	UINT32 MACValue;
+	u32 MACValue;
 	int ntStatus;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("CmdThread : CMDTHREAD_RESET_BULK_IN === >\n"));
@@ -1495,7 +1495,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID	SetAsicWcid;
 	USHORT		offset;
-	UINT32		MACValue, MACRValue = 0;
+	u32		MACValue, MACRValue = 0;
 	SetAsicWcid = *((PRT_SET_ASIC_WCID)(CMDQelmt->buffer));
 
 	if (SetAsicWcid.WCID >= MAX_LEN_OF_MAC_TABLE)
@@ -1942,7 +1942,7 @@ void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 	ULONG				irqFlags;
 	PURB		   		pUrb;
 	BOOLEAN				needDumpSeq = FALSE;
-	UINT32          	MACValue;
+	u32          	MACValue;
 
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 		return;

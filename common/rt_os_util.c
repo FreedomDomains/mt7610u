@@ -35,7 +35,7 @@
 #include "rtmp_osabl.h"
 
 
- UINT32 RalinkRate[256] = {
+ u32 RalinkRate[256] = {
 	2,  4, 11, 22,
 	12, 18, 24, 36, 48, 72, 96, 108, 109, 110, 111, 112, /* CCK and OFDM */
 	13, 26, 39, 52, 78, 104, 117, 130, 26, 52, 78, 104, 156, 208, 234, 260,
@@ -65,7 +65,7 @@ void RtmpDrvMaxRateGet(
 	IN	u8					ShortGI,
 	IN	u8					BW,
 	IN	u8					MCS,
-	OUT	UINT32					*pRate)
+	OUT	u32					*pRate)
 {
 	int rate_index = 0;
 
@@ -122,8 +122,8 @@ void RtmpMeshDown(
 
 
 BOOLEAN RtmpOsCmdDisplayLenCheck(
-	IN UINT32 LenSrc,
-	IN UINT32 Offset)
+	IN u32 LenSrc,
+	IN u32 Offset)
 {
 	if (LenSrc > (IW_PRIV_SIZE_MASK - Offset))
 		return FALSE;
@@ -154,7 +154,7 @@ void WpaSendMicFailureToWpaSupplicant(
 int wext_notify_event_assoc(
 	IN struct net_device *pNetDev,
 	IN UCHAR *ReqVarIEs,
-	IN UINT32 ReqVarIELen)
+	IN u32 ReqVarIELen)
 {
 	char custom[IW_CUSTOM_MAX] = {0};
 
@@ -178,7 +178,7 @@ int wext_notify_event_assoc(
 void SendAssocIEsToWpaSupplicant(
 	IN struct net_device *pNetDev,
 	IN UCHAR *ReqVarIEs,
-	IN UINT32 ReqVarIELen)
+	IN u32 ReqVarIELen)
 {
 	STRING custom[IW_CUSTOM_MAX] = {0};
 

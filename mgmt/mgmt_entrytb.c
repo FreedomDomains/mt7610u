@@ -109,7 +109,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 /*	USHORT	offset;*/
 /*	ULONG	addr;*/
 	BOOLEAN Cancelled;
-	UINT32 MaxWcidNum = MAX_LEN_OF_MAC_TABLE;
+	u32 MaxWcidNum = MAX_LEN_OF_MAC_TABLE;
 #ifdef MAC_REPEATER_SUPPORT
 	BOOLEAN bAPCLI = FALSE;
 #endif /* MAC_REPEATER_SUPPORT */

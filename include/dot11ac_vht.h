@@ -146,51 +146,51 @@
 */
 typedef struct __attribute__ ((packed)) _VHT_CAP_INFO{
 #ifdef RT_BIG_ENDIAN
-	UINT32 rsv:2;
-	UINT32 tx_ant_consistency:1;
-	UINT32 rx_ant_consistency:1;
-	UINT32 vht_link_adapt:2;
-	UINT32 max_ampdu_exp:3;
-	UINT32 htc_vht_cap:1;
-	UINT32 vht_txop_ps:1;
-	UINT32 bfee_cap_mu:1;
-	UINT32 bfer_cap_mu:1;
-	UINT32 num_snd_dimension:3;
+	u32 rsv:2;
+	u32 tx_ant_consistency:1;
+	u32 rx_ant_consistency:1;
+	u32 vht_link_adapt:2;
+	u32 max_ampdu_exp:3;
+	u32 htc_vht_cap:1;
+	u32 vht_txop_ps:1;
+	u32 bfee_cap_mu:1;
+	u32 bfer_cap_mu:1;
+	u32 num_snd_dimension:3;
 
-	UINT32 cmp_st_num_bfer:3;
-	UINT32 bfee_cap_su:1;
-	UINT32 bfer_cap_su:1;
-	UINT32 rx_stbc:3;
+	u32 cmp_st_num_bfer:3;
+	u32 bfee_cap_su:1;
+	u32 bfer_cap_su:1;
+	u32 rx_stbc:3;
 
-	UINT32 tx_stbc:1;
-	UINT32 sgi_160M:1;
-	UINT32 sgi_80M:1;
-	UINT32 rx_ldpc:1;
-	UINT32 ch_width:2;
-	UINT32 max_mpdu_len:2;
+	u32 tx_stbc:1;
+	u32 sgi_160M:1;
+	u32 sgi_80M:1;
+	u32 rx_ldpc:1;
+	u32 ch_width:2;
+	u32 max_mpdu_len:2;
 #else
-	UINT32 max_mpdu_len:2;	/* 0: 3895, 1: 7991, 2: 11454, 3: rsv */
-	UINT32 ch_width:2;	/* */
-	UINT32 rx_ldpc:1;
-	UINT32 sgi_80M:1;
-	UINT32 sgi_160M:1;
-	UINT32 tx_stbc:1;
+	u32 max_mpdu_len:2;	/* 0: 3895, 1: 7991, 2: 11454, 3: rsv */
+	u32 ch_width:2;	/* */
+	u32 rx_ldpc:1;
+	u32 sgi_80M:1;
+	u32 sgi_160M:1;
+	u32 tx_stbc:1;
 
-	UINT32 rx_stbc:3;
-	UINT32 bfer_cap_su:1;
-	UINT32 bfee_cap_su:1;
-	UINT32 cmp_st_num_bfer:3;
+	u32 rx_stbc:3;
+	u32 bfer_cap_su:1;
+	u32 bfee_cap_su:1;
+	u32 cmp_st_num_bfer:3;
 
-	UINT32 num_snd_dimension:3;
-	UINT32 bfer_cap_mu:1;
-	UINT32 bfee_cap_mu:1;
-	UINT32 vht_txop_ps:1;
-	UINT32 htc_vht_cap:1;
-	UINT32 max_ampdu_exp:3;
-	UINT32 vht_link_adapt:2;
-	UINT32 rx_ant_consistency:1;
-	UINT32 tx_ant_consistency:1;
-	UINT32 rsv:2;
+	u32 num_snd_dimension:3;
+	u32 bfer_cap_mu:1;
+	u32 bfee_cap_mu:1;
+	u32 vht_txop_ps:1;
+	u32 htc_vht_cap:1;
+	u32 max_ampdu_exp:3;
+	u32 vht_link_adapt:2;
+	u32 rx_ant_consistency:1;
+	u32 tx_ant_consistency:1;
+	u32 rsv:2;
 #endif /* RT_BIG_ENDIAN */
 }VHT_CAP_INFO;
 
@@ -426,39 +426,39 @@ typedef struct __attribute__ ((packed)) _VHT_TXPWR_ENV_IE{
 
 typedef struct  __attribute__ ((packed)) _VHT_CONTROL{
 #ifdef RT_BIG_ENDIAN
-	UINT32 RDG:1;
-	UINT32 ACConstraint:1;
-	UINT32 unso_mfb:1;
-	UINT32 fb_tx_type:1;
-	UINT32 coding:1;
-	UINT32 gid_h:3;
-	UINT32 mfb_snr:6;
-	UINT32 mfb_bw:2;
-	UINT32 mfb_mcs:4;
-	UINT32 mfb_n_sts:3;
-	UINT32 mfsi_gidl:3;
-	UINT32 stbc_ind:1;
-	UINT32 comp_msi:2;
-	UINT32 mrq:1;
-	UINT32 rsv:1;
-	UINT32 vht:1;
+	u32 RDG:1;
+	u32 ACConstraint:1;
+	u32 unso_mfb:1;
+	u32 fb_tx_type:1;
+	u32 coding:1;
+	u32 gid_h:3;
+	u32 mfb_snr:6;
+	u32 mfb_bw:2;
+	u32 mfb_mcs:4;
+	u32 mfb_n_sts:3;
+	u32 mfsi_gidl:3;
+	u32 stbc_ind:1;
+	u32 comp_msi:2;
+	u32 mrq:1;
+	u32 rsv:1;
+	u32 vht:1;
 #else
-	UINT32 vht:1;
-	UINT32 rsv:1;
-	UINT32 mrq:1;
-	UINT32 comp_msi:2;
-	UINT32 stbc_ind:1;
-	UINT32 mfsi_gidl:3;
-	UINT32 mfb_n_sts:3;
-	UINT32 mfb_mcs:4;
-	UINT32 mfb_bw:2;
-	UINT32 mfb_snr:6;
-	UINT32 gid_h:3;
-	UINT32 coding:1;
-	UINT32 fb_tx_type:1;
-	UINT32 unso_mfb:1;
-	UINT32 ACConstraint:1;
-	UINT32 RDG:1;
+	u32 vht:1;
+	u32 rsv:1;
+	u32 mrq:1;
+	u32 comp_msi:2;
+	u32 stbc_ind:1;
+	u32 mfsi_gidl:3;
+	u32 mfb_n_sts:3;
+	u32 mfb_mcs:4;
+	u32 mfb_bw:2;
+	u32 mfb_snr:6;
+	u32 gid_h:3;
+	u32 coding:1;
+	u32 fb_tx_type:1;
+	u32 unso_mfb:1;
+	u32 ACConstraint:1;
+	u32 RDG:1;
 #endif
 }VHT_CONTROL;
 

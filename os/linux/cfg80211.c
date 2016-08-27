@@ -58,7 +58,7 @@ static const UCHAR Cfg80211_Chan[] = {
 };
 
 
-static const UINT32 CipherSuites[] = {
+static const u32 CipherSuites[] = {
 	WLAN_CIPHER_SUITE_WEP40,
 	WLAN_CIPHER_SUITE_WEP104,
 	WLAN_CIPHER_SUITE_TKIP,
@@ -128,7 +128,7 @@ static int CFG80211_OpsChannelSet(
 	struct rtmp_adapter  *pAd;
 	CFG80211_CB *p80211CB;
 	CMD_RTPRIV_IOCTL_80211_CHAN ChanInfo;
-	UINT32 ChanId;
+	u32 ChanId;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
@@ -210,7 +210,7 @@ static int CFG80211_OpsVirtualInfChg(
 	struct rtmp_adapter  *pAd;
 	CFG80211_CB *pCfg80211_CB;
 	struct net_device *pNetDev;
-	UINT32 Filter;
+	u32 Filter;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
@@ -675,7 +675,7 @@ Note:
 */
 static int CFG80211_OpsWiphyParamsSet(
 	IN struct wiphy						*pWiphy,
-	IN UINT32							Changed)
+	IN u32							Changed)
 {
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	return -EOPNOTSUPP;

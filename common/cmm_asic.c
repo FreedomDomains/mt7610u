@@ -325,10 +325,10 @@ void AsicUpdateProtect(
 	IN BOOLEAN bNonGFExist)
 {
 	PROT_CFG_STRUC	ProtCfg, ProtCfg4;
-	UINT32 Protect[6];
+	u32 Protect[6];
 	USHORT offset;
 	u32 i, PhyMode = 0x4000;
-	UINT32 MacReg = 0;
+	u32 MacReg = 0;
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -1141,7 +1141,7 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 #ifdef RT65xx
 		if (IS_RT65XX(pAd))
 		{
-			UINT32 bbp_val;
+			u32 bbp_val;
 			RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
 			CurrentTemp = (UCHAR)(bbp_val & 0xff);
 		}
@@ -1366,7 +1366,7 @@ void AsicEnableRDG(
 	IN struct rtmp_adapter *pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
-	UINT32				Data = 0;
+	u32				Data = 0;
 
 	RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 	TxLinkCfg.field.TxRDGEn = 1;
@@ -1390,7 +1390,7 @@ void AsicDisableRDG(
 	IN struct rtmp_adapter *pAd)
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
-	UINT32				Data = 0;
+	u32				Data = 0;
 
 
 
@@ -1501,7 +1501,7 @@ void AsicEnableIbssSync(
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
 	u8 TXWISize = pAd->chipCap.TXWISize;
-	UINT32 longptr;
+	u32 longptr;
 
 #ifdef RT_BIG_ENDIAN
 	{
@@ -1888,7 +1888,7 @@ void 	AsicSetSlotTime(
 	IN BOOLEAN bUseShortSlotTime)
 {
 	ULONG	SlotTime;
-	UINT32	RegValue = 0;
+	u32	RegValue = 0;
 
 #ifdef CONFIG_STA_SUPPORT
 	if (pAd->CommonCfg.Channel > 14)
@@ -2219,7 +2219,7 @@ void AsicUpdateWcidAttributeEntry(
  */
 void AsicDelWcidTab(struct rtmp_adapter*pAd, UCHAR wcid_idx)
 {
-	UINT32 offset;
+	u32 offset;
 	UCHAR cnt, cnt_s, cnt_e;
 #ifdef MCS_LUT_SUPPORT
 	UCHAR mcs_tb_offset = 0;
@@ -2283,7 +2283,7 @@ void AsicAddPairwiseKeyEntry(
 #endif /* RTMP_MAC_USB */
 	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
 	{
-		UINT32 Value;
+		u32 Value;
 		RTMP_IO_READ32(pAd, offset + i, &Value);
 	}
 
@@ -2415,7 +2415,7 @@ void AsicTurnOffRFClk(
 	{
 #if defined(RT28xx) || defined(RT2880) || defined(RT2883)
 		/* RF R2 bit 18 = 0*/
-		UINT32			R1 = 0, R2 = 0, R3 = 0;
+		u32			R1 = 0, R2 = 0, R3 = 0;
 		UCHAR			index;
 		RTMP_RF_REGS	*RFRegTable;
 
@@ -2476,10 +2476,10 @@ void AsicTurnOffRFClk(
 
 #ifdef STREAM_MODE_SUPPORT
 // StreamModeRegVal - return MAC reg value for StreamMode setting
-UINT32 StreamModeRegVal(
+u32 StreamModeRegVal(
 	IN struct rtmp_adapter*pAd)
 {
-	UINT32 streamWord;
+	u32 streamWord;
 
 	switch (pAd->CommonCfg.StreamMode)
 	{
@@ -2521,8 +2521,8 @@ void AsicSetStreamMode(
 	IN INT chainIdx,
 	IN BOOLEAN bEnabled)
 {
-	UINT32 streamWord;
-	UINT32 regAddr, regVal;
+	u32 streamWord;
+	u32 regAddr, regVal;
 
 
 	if (!pAd->chipCap.FlgHwStreamMode)
@@ -2534,17 +2534,17 @@ void AsicSetStreamMode(
 
 	regAddr = TX_CHAIN_ADDR0_L + chainIdx * 8;
 	RTMP_IO_WRITE32(pAd, regAddr,
-					(UINT32)(pMacAddr[0]) |
-					(UINT32)(pMacAddr[1] << 8)  |
-					(UINT32)(pMacAddr[2] << 16) |
-					(UINT32)(pMacAddr[3] << 24));
+					(u32)(pMacAddr[0]) |
+					(u32)(pMacAddr[1] << 8)  |
+					(u32)(pMacAddr[2] << 16) |
+					(u32)(pMacAddr[3] << 24));
 
 	RTMP_IO_READ32(pAd, regAddr + 4, &regVal);
 	regVal &= (~0x000f0000);
 	RTMP_IO_WRITE32(pAd, regAddr + 4,
 					(regVal | streamWord) |
-					(UINT32)(pMacAddr[4]) |
-					(UINT32)(pMacAddr[5] << 8));
+					(u32)(pMacAddr[4]) |
+					(u32)(pMacAddr[5] << 8));
 
 }
 
@@ -2579,7 +2579,7 @@ void RtmpStreamModeInit(
 void AsicEnableRalinkBurstMode(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32				Data = 0;
+	u32				Data = 0;
 
 	RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
 	pAd->CommonCfg.RestoreBurstMode = Data;
@@ -2599,7 +2599,7 @@ void AsicEnableRalinkBurstMode(
 void AsicDisableRalinkBurstMode(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32				Data = 0;
+	u32				Data = 0;
 
 	RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
 
@@ -2654,8 +2654,8 @@ void AsicWOWSendNullFrame(
 	u8  packet_len;
 	u8 *ptr;
 	USHORT offset;
-	UINT32 cipher = pAd->StaCfg.GroupCipher;
-	UINT32 Value;
+	u32 cipher = pAd->StaCfg.GroupCipher;
+	u32 Value;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 
 
@@ -2707,7 +2707,7 @@ void AsicWOWSendNullFrame(
 
 INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, BOOLEAN enable)
 {
-	UINT32 val;
+	u32 val;
 
 	RTMP_IO_READ32(pAd, INT_TIMER_CFG, &val);
 	val &= 0xffff0000;
@@ -2755,7 +2755,7 @@ BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us)
 #endif
 INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 {
-	UINT32 reg_addr;
+	u32 reg_addr;
 	TX_AGG_CNT_STRUC reg_val;
 	int i, cnt, seg;
 	static USHORT aggReg[] = {
@@ -2830,15 +2830,15 @@ void AsicSetApCliBssid(
 	IN u8 *pBssid,
 	IN UCHAR index)
 {
-	UINT32		  Addr4 = 0;
+	u32		  Addr4 = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetApCliBssid %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pBssid)));
 
-	Addr4 = (UINT32)(pBssid[0]) |
-			(UINT32)(pBssid[1] << 8)  |
-			(UINT32)(pBssid[2] << 16) |
-			(UINT32)(pBssid[3] << 24);
+	Addr4 = (u32)(pBssid[0]) |
+			(u32)(pBssid[1] << 8)  |
+			(u32)(pBssid[2] << 16) |
+			(u32)(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
 
 	Addr4 = 0;
@@ -2862,17 +2862,17 @@ void AsicSetApCliBssid(
 void AsicSetExtendedMacAddr(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pMacAddr,
-	IN UINT32 Idx)
+	IN u32 Idx)
 {
-	UINT32		  Addr4 = 0;
+	u32		  Addr4 = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetExtendedMacAddr %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pMacAddr)));
 
-	Addr4 = (UINT32)(pMacAddr[0]) |
-			(UINT32)(pMacAddr[1] << 8)  |
-			(UINT32)(pMacAddr[2] << 16) |
-			(UINT32)(pMacAddr[3] << 24);
+	Addr4 = (u32)(pMacAddr[0]) |
+			(u32)(pMacAddr[1] << 8)  |
+			(u32)(pMacAddr[2] << 16) |
+			(u32)(pMacAddr[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
 
 	Addr4 = 0;

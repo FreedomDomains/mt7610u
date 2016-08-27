@@ -119,7 +119,7 @@ INT CFG80211DRV_IoctlHandle(
 #ifdef RFKILL_HW_SUPPORT
 		case CMD_RTPRIV_IOCTL_80211_RFKILL:
 		{
-			UINT32 data = 0;
+			u32 data = 0;
 			BOOLEAN active;
 
 			/* Read GPIO pin2 as Hardware controlled radio state */
@@ -298,7 +298,7 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 {
 #ifdef CONFIG_STA_SUPPORT
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
-	UINT32 FlgFilter = *(UINT32 *)pFlgFilter;
+	u32 FlgFilter = *(u32 *)pFlgFilter;
 
 
 	/* change type */
@@ -313,7 +313,7 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 
 		if (FlgFilter != 0)
 		{
-			UINT32 Filter;
+			u32 Filter;
 
 
 			RTMP_IO_READ32(pAd, RX_FILTR_CFG, &Filter);
@@ -355,7 +355,7 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 			/* End of if */
 
 			RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, Filter);
-			*(UINT32 *)pFlgFilter = Filter;
+			*(u32 *)pFlgFilter = Filter;
 		} /* End of if */
 
 		return TRUE; /* not need to set SSID */
@@ -435,7 +435,7 @@ BOOLEAN CFG80211DRV_StaGet(
 {
 	HTTRANSMIT_SETTING PhyInfo;
 	ULONG DataRate = 0;
-	UINT32 RSSI;
+	u32 RSSI;
 
 
 	/* fill tx rate */
@@ -576,7 +576,7 @@ BOOLEAN CFG80211DRV_Connect(
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
 	CMD_RTPRIV_IOCTL_80211_CONNECT *pConnInfo;
 	UCHAR SSID[NDIS_802_11_LENGTH_SSID + 1]; /* Add One for SSID_Len == 32 */
-	UINT32 SSIDLen;
+	u32 SSIDLen;
 	RT_CMD_STA_IOCTL_SECURITY_ADV IoctlWpa;
 
 	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_INFRA_ON) &&
@@ -893,7 +893,7 @@ void CFG80211_BeaconCountryRegionParse(
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 	UCHAR *pElement = (UCHAR *)pVIE;
-	UINT32 LenEmt;
+	u32 LenEmt;
 
 
 	while(LenVIE > 0)
@@ -1006,8 +1006,8 @@ void CFG80211_RegRuleApply(
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 	void *pBand24G, *pBand5G;
-	UINT32 IdBand, IdChan, IdPwr;
-	UINT32 ChanNum, ChanId, Power, RecId, DfsType;
+	u32 IdBand, IdChan, IdPwr;
+	u32 ChanNum, ChanId, Power, RecId, DfsType;
 	BOOLEAN FlgIsRadar;
 	ULONG IrqFlags;
 #ifdef DFS_SUPPORT
@@ -1049,7 +1049,7 @@ void CFG80211_RegRuleApply(
 #ifdef EXT_BUILD_CHANNEL_LIST
 	if ((pAlpha2[0] != '0') && (pAlpha2[1] != '0'))
 	{
-		UINT32 IdReg;
+		u32 IdReg;
 
 		if (pBand5G != NULL)
 		{
@@ -1188,10 +1188,10 @@ Note:
 */
 void CFG80211_Scaning(
 	IN void 						*pAdCB,
-	IN UINT32						BssIdx,
-	IN UINT32						ChanId,
+	IN u32						BssIdx,
+	IN u32						ChanId,
 	IN UCHAR						*pFrame,
-	IN UINT32						FrameLen,
+	IN u32						FrameLen,
 	IN INT32						RSSI)
 {
 #ifdef CONFIG_STA_SUPPORT
@@ -1314,9 +1314,9 @@ void CFG80211_ConnectResultInform(
 	IN void 					*pAdCB,
 	IN UCHAR					*pBSSID,
 	IN UCHAR					*pReqIe,
-	IN UINT32					ReqIeLen,
+	IN u32					ReqIeLen,
 	IN UCHAR					*pRspIe,
-	IN UINT32					RspIeLen,
+	IN u32					RspIeLen,
 	IN UCHAR					FlgIsSuccess)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;

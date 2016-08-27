@@ -1465,7 +1465,7 @@ void LinkUp(
 	IN UCHAR BssType)
 {
 	ULONG Now;
-	UINT32 Data;
+	u32 Data;
 	BOOLEAN Cancelled;
 	UCHAR idx = 0;
 	MAC_TABLE_ENTRY *pEntry = NULL;
@@ -1983,7 +1983,7 @@ void LinkUp(
 	    && ((STA_WEP_ON(pAd)) || (STA_TKIP_ON(pAd)))) {
 		pAd->CommonCfg.IOTestParm.bNextDisableRxBA = TRUE;
 		if (pAd->CommonCfg.bEnableTxBurst) {
-			UINT32 MACValue = 0;
+			u32 MACValue = 0;
 			/* Force disable TXOP value in this case. The same action in MLMEUpdateProtect too */
 			/* I didn't change PBF_MAX_PCNT setting. */
 			RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &MACValue);

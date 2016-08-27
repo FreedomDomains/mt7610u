@@ -417,7 +417,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
 	{RF_BANK0,	RF_R72, 0xD0},
 	{RF_BANK0,	RF_R73, 0x93},
 };
-static UINT32 MT76x0_RF_Central_RegTb_Size = (sizeof(MT76x0_RF_Central_RegTb) / sizeof(BANK_RF_REG_PAIR));
+static u32 MT76x0_RF_Central_RegTb_Size = (sizeof(MT76x0_RF_Central_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
 /*
@@ -517,7 +517,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
 	{RF_BANK5,	RF_R69, 0xF0},
 	{RF_BANK5,	RF_R127, 0x04},
 };
-static UINT32 MT76x0_RF_2G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_2G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
+static u32 MT76x0_RF_2G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_2G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
 /*
@@ -593,7 +593,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
 	{RF_BANK6,	RF_R64, 0xF1},
 	{RF_BANK6,	RF_R65, 0x0F},
 };
-static UINT32 MT76x0_RF_5G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_5G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
+static u32 MT76x0_RF_5G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_5G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_VGA_Channel_0_RegTb[] = {
 /*
@@ -641,7 +641,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_VGA_Channel_0_RegTb[] = {
 	{RF_BANK7,	RF_R73, 0x34},
 	{RF_BANK7,	RF_R74, 0x00},
 };
-static UINT32 MT76x0_RF_VGA_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_VGA_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
+static u32 MT76x0_RF_VGA_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_VGA_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static const MT76x0_FREQ_ITEM MT76x0_Frequency_Plan[] =
 {
@@ -1098,14 +1098,14 @@ static MT76x0_RF_SWITCH_ITEM MT76x0_RF_EXT_PA_RegTb[] = {
 	{RF_BANK6,	RF_R59,		RF_A_BAND_HB,	0x02},
 	{RF_BANK6,	RF_R59,		RF_A_BAND_11J,	0x07},
 };
-static UINT32 MT76x0_RF_EXT_PA_RegTb_Size = (sizeof(MT76x0_RF_EXT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
+static u32 MT76x0_RF_EXT_PA_RegTb_Size = (sizeof(MT76x0_RF_EXT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
 
 /*
 	Internal PA
 */
 static MT76x0_RF_SWITCH_ITEM MT76x0_RF_INT_PA_RegTb[] = {
 };
-static UINT32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
+static u32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
 
 //
 // Initialize FCE
@@ -1192,7 +1192,7 @@ void SetRfChFreqParametersMT76x0(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR Channel)
 {
-	UINT32 i = 0, RfBand = 0, MacReg = 0;
+	u32 i = 0, RfBand = 0, MacReg = 0;
 	UCHAR RFValue = 0;
 	BOOLEAN bSDM = FALSE;
 	MT76x0_FREQ_ITEM *pMT76x0_freq_item = NULL;
@@ -1525,7 +1525,7 @@ void SetRfChFreqParametersMT76x0(
 static void NICInitMT76x0RFRegisters(struct rtmp_adapter*pAd)
 {
 
-	UINT32 IdReg;
+	u32 IdReg;
 	UCHAR RFValue;
 
 
@@ -1616,7 +1616,7 @@ Note:
 */
 static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 {
-	UINT32 MacReg = 0;
+	u32 MacReg = 0;
 	USHORT trsw_mode = 0;
 
 	/*
@@ -1785,14 +1785,14 @@ static void MT76x0_ChipSwitchChannel(
 {
 	CHAR TxPwer = 0; /* Bbp94 = BBPR94_DEFAULT, TxPwer2 = DEFAULT_RF_TX_POWER; */
 	UCHAR RFValue = 0;
-	UINT32 RegValue = 0;
-	UINT32 Index;
-	UINT32 rf_phy_mode, rf_bw = RF_BW_20;
+	u32 RegValue = 0;
+	u32 Index;
+	u32 rf_phy_mode, rf_bw = RF_BW_20;
 	UCHAR bbp_ch_idx, delta_pwr;
-	UINT32 ret;
+	u32 ret;
 	ULONG Old, New, Diff;
 #ifndef MT76x0_TSSI_CAL_COMPENSATION
-	UINT32 Value;
+	u32 Value;
 #endif /* !MT76x0_TSSI_CAL_COMPENSATION */
 #ifdef SINGLE_SKU_V2
 	CHAR SkuBasePwr;
@@ -1903,7 +1903,7 @@ static void MT76x0_ChipSwitchChannel(
 		{
 			if ((MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register == AGC1_R8))
 			{
-				UINT32 eLNAgain = (MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value & 0x0000FF00) >> 8;
+				u32 eLNAgain = (MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value & 0x0000FF00) >> 8;
 
 				if (Channel > 14)
 				{
@@ -2071,7 +2071,7 @@ static UCHAR mt76x0_txpwr_chlist[] = {
 
 INT MT76x0_ReadChannelPwr(struct rtmp_adapter*pAd)
 {
-	UINT32 i, choffset, idx, ss_offset_g, ss_num;
+	u32 i, choffset, idx, ss_offset_g, ss_num;
 	EEPROM_TX_PWR_STRUC Power;
 	CHAR tx_pwr1, tx_pwr2;
 
@@ -2200,8 +2200,8 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter*pAd)
 void MT76x0_AsicExtraPowerOverMAC(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 ExtraPwrOverMAC = 0;
-	UINT32 ExtraPwrOverTxPwrCfg7 = 0, ExtraPwrOverTxPwrCfg8 = 0, ExtraPwrOverTxPwrCfg9 = 0;
+	u32 ExtraPwrOverMAC = 0;
+	u32 ExtraPwrOverTxPwrCfg7 = 0, ExtraPwrOverTxPwrCfg8 = 0, ExtraPwrOverTxPwrCfg9 = 0;
 
 	/*
 		For OFDM_54 and HT_MCS_7, extra fill the corresponding register value into MAC 0x13D4
@@ -2314,7 +2314,7 @@ static void calc_bw_delta_pwr(
 void mt76x0_read_per_rate_tx_pwr(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 data;
+	u32 data;
 	USHORT e2p_val = 0, e2p_val2 = 0;;
 	UCHAR bw40_gband_delta = 0, bw40_aband_delta = 0, bw80_aband_delta = 0;
 	CHAR t1 = 0, t2 = 0, t3 = 0, t4 = 0;
@@ -2628,7 +2628,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
-	UINT32 Value;
+	u32 Value;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("-->%s():\n", __FUNCTION__));
 
@@ -2869,8 +2869,8 @@ void MT76x0_AntennaSelCtrl(
 	IN struct rtmp_adapter*pAd)
 {
 	USHORT e2p_val = 0;
-	UINT32 WlanFunCtrl = 0, CmbCtrl = 0, CoexCfg0 = 0, CoexCfg3 = 0;
-	UINT32 ret;
+	u32 WlanFunCtrl = 0, CmbCtrl = 0, CoexCfg0 = 0, CoexCfg3 = 0;
+	u32 ret;
 
 
 #ifdef RTMP_MAC_USB
@@ -2952,7 +2952,7 @@ void MT76x0_dynamic_vga_tuning(
 
 
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
-	UINT32 reg_val = 0, init_vga = 0, rssi = 0;
+	u32 reg_val = 0, init_vga = 0, rssi = 0;
 
 	rssi = pAd->StaCfg.RssiSample.AvgRssi0 - pAd->BbpRssiToDbmDelta;
 
@@ -3049,9 +3049,9 @@ void MT76x0_Calibration(
 	IN BOOLEAN bDoTSSI,
 	IN BOOLEAN bFullCal)
 {
-	UINT32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
+	u32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	u32 ret;
 #endif /* RTMP_MAC_USB */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d, bPowerOn = %d, bFullCal = %d\n", __FUNCTION__, Channel, bPowerOn, bFullCal));
@@ -3288,7 +3288,7 @@ void MT76x0_Calibration(
 				NOTE: disable DPD calibration for USB products
 		*/
 		if (IS_MT76x0E(pAd)) {
-			UINT32 dpd_val = 0;
+			u32 dpd_val = 0;
 
 			dpd_val = (pAd->CommonCfg.BBPCurrentBW << 8) | Channel;
 			RTMP_CHIP_CALIBRATION(pAd, DPD_CALIBRATION, dpd_val);
@@ -3320,12 +3320,12 @@ void MT76x0_TempSensor(
 	IN struct rtmp_adapter*pAd)
 {
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
-	UINT32 reg_val = 0;
+	u32 reg_val = 0;
 	SHORT temperature = 0;
 	INT32 Dout = 0;
-	UINT32 MTxCycle = 0;
+	u32 MTxCycle = 0;
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	u32 ret;
 #endif /* RTMP_MAC_USB */
 
 
@@ -3438,7 +3438,7 @@ void MT76x0_ReadFlashAndInitAsic(
 	IN struct rtmp_adapter*pAd)
 {
 	USHORT ee_val = 0;
-	UINT32 reg_val = 0;
+	u32 reg_val = 0;
 
 
 	pAd->chipCap.eebuf = MT76x0_EeBuffer;
@@ -3465,7 +3465,7 @@ void MT76x0_ReadFlashAndInitAsic(
 void MT76x0_MakeUpRatePwrTable(
 	IN struct rtmp_adapter*pAd)
 {
-	UINT32 reg_val;
+	u32 reg_val;
 
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_0, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_0, reg_val));
@@ -3825,7 +3825,7 @@ INT16 lin2dBd(
 void MT76x0_MakeUpTssiTable(
 	IN  struct rtmp_adapter*pAd)
 {
-	UINT32 reg_val;
+	u32 reg_val;
 
 	// MCS POWER
 	RTMP_IO_READ32(pAd, TX_PWR_CFG_0, &reg_val);
@@ -4089,7 +4089,7 @@ void MT76x0_TSSI_DC_Calibration(
 	IN  struct rtmp_adapter*pAd)
 {
 	UCHAR RF_Value;
-	UINT32 MAC_Value, BBP_Value;
+	u32 MAC_Value, BBP_Value;
 	USHORT i = 0;
 
 	if( pAd->hw_cfg.cent_ch > 14 )
@@ -4205,8 +4205,8 @@ BOOLEAN MT76x0_Enable9BitIchannelADC(
 	IN  UCHAR Channel,
 	IN  SHORT *pTSSI_Linear)
 {
-	UINT32 bbp_val;
-	UINT32 MTxCycle = 0;
+	u32 bbp_val;
+	u32 MTxCycle = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): Channel = %d\n", __FUNCTION__, Channel));
 
@@ -4313,7 +4313,7 @@ BOOLEAN MT76x0_GetTargetPower(
 {
 	UCHAR Tx_Rate, CurrentPower0;
 	USHORT index;
-	UINT32 reg_val = 0;
+	u32 reg_val = 0;
 	CHAR Eas_power_adj = 0;
 
 	RTMP_IO_READ32(pAd, TX_ALC_CFG_0, &reg_val);
@@ -4429,7 +4429,7 @@ void MT76x0_EstimateDeltaPower(
 	INT tssi_meas=0;
 	INT tssi_dc;
 	INT pkt_type_delta=0, bbp_6db_power=0;
-	UINT32 BBP_Value;
+	u32 BBP_Value;
 	CHAR idx = 0;
 
 	// a.  tssi_dc gotten from Power on calibration
@@ -4633,7 +4633,7 @@ void MT76x0_IntTxAlcProcess(
 	IN  struct rtmp_adapter*pAd)
 {
 	INT tssi_delta0 = 0;
-	UINT32 reg_val = 0;
+	u32 reg_val = 0;
 	CHAR tssi_write = 0;
 	CHAR TargetPower = 0, TargetPA_mode = 0;
 	SHORT TSSI_Linear = 0;
@@ -4675,7 +4675,7 @@ BOOLEAN mt76x0_get_tssi_report(
 	IN BOOLEAN bResetTssiInfo,
 	OUT char *pTssiReport)
 {
-	UINT32 wait = 0, reg_val = 0;
+	u32 wait = 0, reg_val = 0;
 	UCHAR rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
 	BOOLEAN status;
 
@@ -4820,7 +4820,7 @@ UCHAR MT76x0_GetSkuChannelBasePwr(
 void MT76x0_WriteNewPerRatePwr(
 	IN struct rtmp_adapter	*pAd)
 {
-	UINT32 data;
+	u32 data;
 	UCHAR t1, t2, t3, t4;
 
 	/*
@@ -4974,7 +4974,7 @@ UCHAR MT76x0_UpdateSkuPwr(
 {
 	CH_POWER *ch, *ch_temp;
 	INT32 i, pwr_delta = 0;
-	UINT32 reg_val;
+	u32 reg_val;
 	UCHAR ch_init_pwr = 0;
 	CHAR ch_delta_pwr = 0;
 	INT32 rate_pwr = 0;
@@ -5232,7 +5232,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 					pAd->CurrTemperature,
 					tx_alc_comp) == TRUE)
 		{
-			UINT32 mac_val;
+			u32 mac_val;
 			CHAR last_delta_pwr, delta_pwr = 0;
 
 			/* adjust compensation value by MP temperature readings (i.e., e2p[77h]) */
@@ -5394,7 +5394,7 @@ BOOLEAN load_temp_tx_alc_table(
 	IN USHORT e2p_end_addr,
 	OUT	u8 *bdy_table,
 	IN const INT start_idx,
-	IN const UINT32 table_size)
+	IN const u32 table_size)
 {
 	USHORT e2p_value;
 	INT e2p_idx = 0, table_idx = 0;
@@ -5586,7 +5586,7 @@ INT Set_AntennaSelect_Proc(
 	IN char *		arg)
 {
 	u8 val = (u8)simple_strtol(arg, 0, 10);
-	UINT32 reg_val = 0;
+	u32 reg_val = 0;
 
 	/*
 		0x2300[5] Default Antenna:

@@ -192,7 +192,7 @@ INT Set_NetworkType_Proc(
     IN  struct rtmp_adapter *  pAd,
     IN  char *         arg)
 {
-    UINT32	Value = 0;
+    u32	Value = 0;
 
     if (strcmp(arg, "Adhoc") == 0)
 	{
@@ -1089,7 +1089,7 @@ INT Set_StaCarrierDetect_Proc(
 INT	Show_Adhoc_MacTable_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		extra,
-	IN	UINT32			size)
+	IN	u32			size)
 {
 	INT i;
 
@@ -1195,7 +1195,7 @@ INT Set_XlinkMode_Proc(
     IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
-	UINT32 Value = 0;
+	u32 Value = 0;
 
     if (simple_strtol(arg, 0, 10) == 0)
         pAd->StaCfg.PSPXlink = 0;
@@ -1496,7 +1496,7 @@ INT Set_WOW_Enable(
         IN struct rtmp_adapter *       pAd,
         IN char *             arg)
 {
-	UINT32 Val;
+	u32 Val;
 	u8 Pin = pAd->WOW_Cfg.nSelectedGPIO;
 	ULONG Value = simple_strtol(arg, 0, 10);
 
@@ -1600,7 +1600,7 @@ void RTMPIoctlMAC(
 	INT j = 0, k = 0;
 	STRING *msg = NULL;
 	STRING *arg = NULL;
-	UINT32 macAddr = 0, macValue = 0;
+	u32 macAddr = 0, macValue = 0;
 	UCHAR temp[16];
 	STRING temp2[16];
 	INT Status;
@@ -1758,9 +1758,9 @@ DBGPRINT(RT_DEBUG_OFF, ("%s():wrq->u.data.length=%d, wrq->u.data.pointer=%s!\n",
 next:
 	if (bIsPrintAllMAC)
 	{
-		UINT32 *pBufMac = NULL, *pBuf;
-		UINT32 AddrStart = 0x1000, AddrEnd = 0x1800;
-		UINT32 IdAddr;
+		u32 *pBufMac = NULL, *pBuf;
+		u32 AddrStart = 0x1000, AddrEnd = 0x1800;
+		u32 IdAddr;
 
 		ASSERT((AddrEnd >= AddrStart));
 		/* *2 for safe */
@@ -1806,7 +1806,7 @@ LabelOK:
 void	getBaInfo(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		pOutBuf,
-	IN	UINT32			size)
+	IN	u32			size)
 {
 	INT i, j;
 	BA_ORI_ENTRY *pOriBAEntry;
@@ -2260,7 +2260,7 @@ RtmpIoctl_rt_ioctl_giwscan(
 	RT_CMD_STA_IOCTL_SCAN_TABLE *pIoctlScan = (RT_CMD_STA_IOCTL_SCAN_TABLE *)pData;
 	RT_CMD_STA_IOCTL_BSS_TABLE *pBssTable;
 	PBSS_ENTRY pBssEntry;
-	UINT32 IdBss;
+	u32 IdBss;
 
 
 	pIoctlScan->BssNr = 0;
@@ -2823,7 +2823,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 	IN	struct rtmp_adapter		*pAd,
 	IN	void 				*pData,
 	IN	ULONG					Data,
-	IN	UINT32					Subcmd)
+	IN	u32					Subcmd)
 {
 	MLME_QUEUE_ELEM				*pMsgElem = NULL;
 	MLME_DISASSOC_REQ_STRUCT	DisAssocReq;
@@ -3661,8 +3661,8 @@ RtmpIoctl_rt_ioctl_siwrate(
 	IN	ULONG					Data)
 {
 	RT_CMD_RATE_SET *pCmdRate = (RT_CMD_RATE_SET *)pData;
-	UINT32 rate = pCmdRate->Rate;
-	UINT32 fixed = pCmdRate->Fixed;
+	u32 rate = pCmdRate->Rate;
+	u32 fixed = pCmdRate->Fixed;
 
 
     /* rate = -1 => auto rate
@@ -3972,11 +3972,11 @@ INT RTMP_STA_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_CHID_2_FREQ:
-			RTMP_MapChannelID2KHZ(Data, (UINT32 *)pData);
+			RTMP_MapChannelID2KHZ(Data, (u32 *)pData);
 			break;
 
 		case CMD_RTPRIV_IOCTL_FREQ_2_CHID:
-			RTMP_MapKHZ2ChannelID(Data, (UINT32 *)pData);
+			RTMP_MapKHZ2ChannelID(Data, (u32 *)pData);
 			break;
 
 		case CMD_RTPRIV_IOCTL_ORI_DEV_TYPE_SET:
@@ -4017,7 +4017,7 @@ INT RTMP_STA_IoctlHandle(
 		{
 			RT_CMD_STA_IOCTL_BSS_LIST *pBssList = (RT_CMD_STA_IOCTL_BSS_LIST *)pData;
 			RT_CMD_STA_IOCTL_BSS *pList;
-			UINT32 i;
+			u32 i;
 
 			pBssList->BssNum = pAd->ScanTab.BssNr;
 			for (i = 0; i <pBssList->MaxNum ; i++)

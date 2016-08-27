@@ -109,11 +109,11 @@
 */
 #ifdef RT_BIG_ENDIAN
 typedef	struct __attribute__ ((packed)) _RXD_STRUC{
-	UINT32 dma_len;
+	u32 dma_len;
 }RXD_STRUC, *PRXD_STRUC;
 #else
 typedef	struct __attribute__ ((packed)) _RXD_STRUC{
-	UINT32 dma_len;
+	u32 dma_len;
 }RXD_STRUC, *PRXD_STRUC;
 #endif
 

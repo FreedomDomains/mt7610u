@@ -67,7 +67,7 @@ int RTUSBFreeDescriptorRelease(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
 int	RTUSBFreeDescRequest(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR BulkOutPipeId,
-	IN UINT32 req_cnt)
+	IN u32 req_cnt)
 {
 	int	 Status = NDIS_STATUS_FAILURE;
 	unsigned long IrqFlags;
@@ -363,14 +363,14 @@ USHORT	RtmpUSB_WriteFragTxResource(
 {
 	HT_TX_CONTEXT	*pHTTXContext;
 	USHORT			hwHdrLen;	/* The hwHdrLen consist of 802.11 header length plus the header padding length.*/
-	UINT32			fillOffset;
+	u32			fillOffset;
 	TXINFO_STRUC	*pTxInfo;
 	TXWI_STRUC		*pTxWI;
 	u8 *		pWirelessPacket = NULL;
 	UCHAR			QueIdx;
 	int		Status;
 	unsigned long	IrqFlags;
-	UINT32			USBDMApktLen = 0, DMAHdrLen, padding;
+	u32			USBDMApktLen = 0, DMAHdrLen, padding;
 #ifdef USB_BULK_BUF_ALIGMENT
 	BOOLEAN			bLasAlignmentsectiontRound = FALSE;
 #else
@@ -553,14 +553,14 @@ USHORT RtmpUSB_WriteSingleTxResource(
 	OUT	USHORT *freeCnt)
 {
 	HT_TX_CONTEXT *pHTTXContext;
-	UINT32 fillOffset;
+	u32 fillOffset;
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
 	UCHAR *pWirelessPacket, *buf;
 	UCHAR QueIdx;
 	unsigned long	IrqFlags;
 	int Status;
-	UINT32 hdr_copy_len, hdr_len, dma_len = 0, padding;
+	u32 hdr_copy_len, hdr_len, dma_len = 0, padding;
 #ifndef USB_BULK_BUF_ALIGMENT
 	BOOLEAN bTxQLastRound = FALSE;
 #endif /* USB_BULK_BUF_ALIGMENT */
@@ -720,7 +720,7 @@ USHORT RtmpUSB_WriteMultiTxResource(
 {
 	HT_TX_CONTEXT *pHTTXContext;
 	USHORT hwHdrLen;	/* The hwHdrLen consist of 802.11 header length plus the header padding length.*/
-	UINT32 fillOffset;
+	u32 fillOffset;
 	TXINFO_STRUC *pTxInfo;
 	TXWI_STRUC *pTxWI;
 	UCHAR *pWirelessPacket = NULL;
@@ -853,10 +853,10 @@ void RtmpUSB_FinalWriteTxResource(
 {
 	UCHAR			QueIdx;
 	HT_TX_CONTEXT	*pHTTXContext;
-	UINT32			fillOffset;
+	u32			fillOffset;
 	TXINFO_STRUC	*pTxInfo;
 	TXWI_STRUC		*pTxWI;
-	UINT32			USBDMApktLen, padding;
+	u32			USBDMApktLen, padding;
 	unsigned long	IrqFlags;
 	u8 *		pWirelessPacket;
 
@@ -1073,7 +1073,7 @@ void RtmpUSBNullFrameKickOut(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR *pNullFrame,
-	IN UINT32 frameLen)
+	IN u32 frameLen)
 {
 	if (pAd->NullContext.InUse == FALSE)
 	{
@@ -1141,7 +1141,7 @@ struct sk_buff * GetPacketFromRxRing(
 	IN struct rtmp_adapter*pAd,
 	OUT RX_BLK *pRxBlk,
 	OUT BOOLEAN *pbReschedule,
-	INOUT UINT32 *pRxPending,
+	INOUT u32 *pRxPending,
 	OUT BOOLEAN *bCmdRspPacket)
 {
 	RX_CONTEXT *pRxContext;

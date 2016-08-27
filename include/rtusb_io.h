@@ -106,8 +106,8 @@ typedef struct _RT_ASIC_WCID_SEC_INFO {
 
 typedef struct _RT_ASIC_WCID_IVEIV_ENTRY {
 	u8 Wcid;
-	UINT32 Iv;
-	UINT32 Eiv;
+	u32 Iv;
+	u32 Eiv;
 } RT_ASIC_WCID_IVEIV_ENTRY, *PRT_ASIC_WCID_IVEIV_ENTRY;
 
 typedef struct _RT_ASIC_WCID_ATTR_ENTRY {

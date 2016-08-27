@@ -1392,7 +1392,7 @@ void RT28xx_UpdateBeaconToAsic(
 	UCHAR  			*ptr;
 	UINT  			i, padding;
 	BEACON_SYNC_STRUCT	*pBeaconSync = pAd->CommonCfg.pBeaconSync;
-	UINT32			longValue;
+	u32			longValue;
 /*	USHORT			shortValue;*/
 	BOOLEAN			bBcnReq = FALSE;
 	UCHAR			bcn_idx = 0;
@@ -1656,7 +1656,7 @@ void BeaconUpdateExec(
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)FunctionContext;
 	LARGE_INTEGER	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
-	UINT32			delta, delta2MS, period2US, remain, remain_low, remain_high;
+	u32			delta, delta2MS, period2US, remain, remain_low, remain_high;
 /*	BOOLEAN			positive;*/
 
 	if (pAd->CommonCfg.IsUpdateBeacon==TRUE)
@@ -1835,8 +1835,8 @@ BOOLEAN AsicCheckCommandOk(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR		 Command)
 {
-	UINT32	CmdStatus, CID, i;
-	UINT32	ThisCIDMask = 0;
+	u32	CmdStatus, CID, i;
+	u32	ThisCIDMask = 0;
 	INT ret;
 
 
@@ -1908,7 +1908,7 @@ BOOLEAN AsicCheckCommandOk(
 void RT28xxUsbAsicWOWEnable(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 Value;
+	u32 Value;
 
 	/* load WOW-enable firmware */
 	AsicLoadWOWFirmware(pAd, TRUE);
@@ -1929,7 +1929,7 @@ void RT28xxUsbAsicWOWEnable(
 void RT28xxUsbAsicWOWDisable(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 Value;
+	u32 Value;
 	/* load normal firmware */
 	AsicLoadWOWFirmware(pAd, FALSE);
 	/* for suspend/resume, needs to restore RX Queue operation mode to auto mode */

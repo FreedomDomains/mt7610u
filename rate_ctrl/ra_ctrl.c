@@ -683,7 +683,7 @@ void asic_mcs_lut_update(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 {
 	if(RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) && (pEntry->Aid < 128))
 	{
-		UINT32 wcid_offset;
+		u32 wcid_offset;
 		HW_RATE_CTRL_STRUCT rate_ctrl;
 
 		rate_ctrl.PHYMODE = pEntry->HTPhyMode.field.MODE;
@@ -2209,13 +2209,13 @@ INT	Set_RateAlg_Proc(
 	IN	struct rtmp_adapter *		pAd,
 	IN	char *				arg)
 {
-	UINT32 ra_alg;
+	u32 ra_alg;
 
 	ra_alg = simple_strtol(arg, 0, 10);
 
 	if ((ra_alg < RATE_ALG_MAX_NUM) && (ra_alg != pAd->rateAlg))
 	{
-		UINT32 IdEntry;
+		u32 IdEntry;
 
 		pAd->rateAlg = ra_alg;
 		for(IdEntry = 0; IdEntry < MAX_LEN_OF_MAC_TABLE; IdEntry++)

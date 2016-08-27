@@ -509,7 +509,7 @@ void Send2040CoexistAction(
 	int 	NStatus;
 	FRAME_ACTION_HDR	Frame;
 	ULONG			FrameLen;
-	UINT32			IntolerantChaRepLen;
+	u32			IntolerantChaRepLen;
 	UCHAR			HtLen = 1;
 
 	IntolerantChaRepLen = 0;

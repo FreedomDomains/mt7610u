@@ -106,7 +106,7 @@ static BOOLEAN USBDevConfigInit(
 	struct usb_host_interface *iface_desc;
 	ULONG BulkOutIdx;
 	ULONG BulkInIdx;
-	UINT32 i;
+	u32 i;
 	RT_CMD_USB_DEV_CONFIG Config, *pConfig = &Config;
 
 	/* get the active interface descriptor */

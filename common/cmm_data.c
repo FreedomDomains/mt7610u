@@ -199,7 +199,7 @@ static void dumpTxBlk(TX_BLK *pTxBlk)
 		if (pPacket)
 		{
 			pBuf = GET_OS_PKT_DATAPTR(pPacket);
-			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (UINT32)(GET_OS_PKT_DATAPTR(pPacket)), GET_OS_PKT_LEN(pPacket)));
+			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (u32)(GET_OS_PKT_DATAPTR(pPacket)), GET_OS_PKT_LEN(pPacket)));
 			DBGPRINT(RT_DEBUG_TRACE,("\t\t"));
 			for (j =0 ; j < GET_OS_PKT_LEN(pPacket); j++)
 			{
@@ -1531,7 +1531,7 @@ BOOLEAN RTMPCheckEtherType(
 	USHORT	TypeLen;
 	UCHAR	Byte0, Byte1;
 	u8 *pSrcBuf;
-	UINT32	pktLen;
+	u32	pktLen;
 	UINT16 	srcPort, dstPort;
 	BOOLEAN bWmmReq;
 
@@ -2270,7 +2270,7 @@ void Indicate_EAPOL_Packet(
 void ReSyncBeaconTime(
 	IN struct rtmp_adapter*pAd)
 {
-	UINT32  Offset;
+	u32  Offset;
 
 
 	Offset = (pAd->TbttTickCount) % (BCN_TBTT_OFFSET);
@@ -2306,7 +2306,7 @@ BOOLEAN RTMPExpandPacketForSwEncrypt(
 	IN	PTX_BLK			pTxBlk)
 {
 	PACKET_INFO		PacketInfo;
-	UINT32	ex_head = 0, ex_tail = 0;
+	u32	ex_head = 0, ex_tail = 0;
 	UCHAR 	NumberOfFrag = RTMP_GET_PACKET_FRAGMENTS(pTxBlk->pPacket);
 
 	if (pTxBlk->CipherAlg == CIPHER_AES)
@@ -2508,7 +2508,7 @@ INT ip_assembly(
 	IP_V4_HDR *pIpv4Hdr, Ipv4Hdr;
 	IP_FLAGS_FRAG_OFFSET *pFlags_frag_offset, Flags_frag_offset;
 	ULONG Now;
-	UINT32 i;
+	u32 i;
 	QUEUE_HEADER *pTempqueue;
 	PQUEUE_ENTRY pBackupPktEntry;
 	struct sk_buff * pBackupPkt;
@@ -2594,7 +2594,7 @@ INT ip_assembly(
 				if ((Flags_frag_offset.field.flags_more_frag == 0)
 				    && (Flags_frag_offset.field.frag_offset != 0))
 				{
-					UINT32 fragment_count = 0;
+					u32 fragment_count = 0;
 					BOOLEAN bDrop = FALSE;
 					if (Ipv4Hdr.identifier == (*pAC_ID1)) {
 						fragment_count = ((Flags_frag_offset.field.frag_offset * 8) / (*pAC_ID1_FragSize)) + 1;
@@ -2674,7 +2674,7 @@ void StopDmaRx(
 {
 	struct sk_buff *	pRxPacket;
 	RX_BLK			RxBlk, *pRxBlk;
-	UINT32 RxPending = 0, MacReg = 0, MTxCycle = 0;
+	u32 RxPending = 0, MacReg = 0, MTxCycle = 0;
 	BOOLEAN bReschedule = FALSE;
 	BOOLEAN bCmdRspPacket = FALSE;
 	u8 IdleNums = 0;
@@ -2744,7 +2744,7 @@ void StopDmaTx(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR Level)
 {
-	UINT32 MacReg = 0, MTxCycle = 0;
+	u32 MacReg = 0, MTxCycle = 0;
 	u8 IdleNums = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));

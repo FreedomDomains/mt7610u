@@ -324,7 +324,7 @@ void RTMPSoftEncryptionAction(
 	IN UCHAR CipherAlg,
 	IN u8 *pHdr,
 	IN u8 *pSrcBufData,
-	IN UINT32 SrcBufLen,
+	IN u32 SrcBufLen,
 	IN UCHAR KeyIdx,
 	IN PCIPHER_KEY pKey,
 	OUT u8 *ext_len);
@@ -415,14 +415,14 @@ void TKIP_GTK_KEY_WRAP(
 	IN UCHAR *key,
 	IN UCHAR *iv,
 	IN UCHAR *input_text,
-	IN UINT32 input_len,
+	IN u32 input_len,
 	OUT UCHAR *output_text);
 
 void TKIP_GTK_KEY_UNWRAP(
 	IN UCHAR *key,
 	IN UCHAR *iv,
 	IN UCHAR *input_text,
-	IN UINT32 input_len,
+	IN u32 input_len,
 	OUT UCHAR *output_text);
 
 /*
@@ -447,7 +447,7 @@ BOOLEAN RTMPSoftEncryptCCMP(
 	IN u8 *pIV,
 	IN u8 *pKey,
 	INOUT u8 *pData,
-	IN UINT32 DataLen);
+	IN u32 DataLen);
 
 BOOLEAN RTMPSoftDecryptCCMP(
 	IN struct rtmp_adapter *pAd,

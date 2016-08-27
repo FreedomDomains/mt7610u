@@ -61,19 +61,19 @@ struct rtmp_adapter;
 */
 #ifdef RT_BIG_ENDIAN
 typedef struct _TSO_INFO_{
-	UINT32 mss:16;
-	UINT32 ips:8;
-	UINT32 tups:6;
-	UINT32 tcp:1;
-	UINT32 rsv:1;
+	u32 mss:16;
+	u32 ips:8;
+	u32 tups:6;
+	u32 tcp:1;
+	u32 rsv:1;
 }TSO_INFO;
 #else
 typedef struct _TSO_INFO_{
-	UINT32 rsv:1;
-	UINT32 tcp:1;
-	UINT32 tups:6;
-	UINT32 ips:8;
-	UINT32 mss:16;
+	u32 rsv:1;
+	u32 tcp:1;
+	u32 tups:6;
+	u32 ips:8;
+	u32 mss:16;
 }TSO_INFO;
 #endif /* RT_BIG_ENDIAN */
 
@@ -115,7 +115,7 @@ typedef struct _RT8592_FREQ_ITEM {
 */
 typedef struct _MT76x0_FREQ_ITEM {
 	u8 Channel;
-	UINT32 Band;
+	u32 Band;
 	u8 pllR37;
 	u8 pllR36;
 	u8 pllR35;
@@ -132,7 +132,7 @@ typedef struct _MT76x0_FREQ_ITEM {
 	u8 pllR28_b7b6; /* isi,iso */
 	u8 pllR28_b5b4; /* pfd_dly */
 	u8 pllR28_b3b2; /* clksel option */
-	UINT32 Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
+	u32 Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
 	u8 pllR24_b1b0; /* xo_div */
 } MT76x0_FREQ_ITEM;
 
@@ -154,12 +154,12 @@ enum PA_TYPE {
 typedef struct _RT6590_RF_SWITCH_ITEM {
 	UCHAR Bank;
 	UCHAR Register;
-	UINT32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
+	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
 	UCHAR Value;
 } MT76x0_RF_SWITCH_ITEM, *PMT76x0_RF_SWITCH_ITEM;
 
 typedef struct _MT76x0_BBP_Table {
-	UINT32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
+	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
 	RTMP_REG_PAIR RegDate;
 } MT76x0_BBP_Table, *PMT76x0_BBP_Table;
 

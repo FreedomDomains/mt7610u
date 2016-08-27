@@ -61,7 +61,7 @@
 /* timing */
 #define UAPSD_TIMESTAMP_GET(__pAd, __TimeStamp)			\
 	{													\
-		UINT32 __CSR=0;	UINT64 __Value64;				\
+		u32 __CSR=0;	UINT64 __Value64;				\
 		RTMP_IO_READ32((__pAd), TSF_TIMER_DW0, &__CSR);	\
 		__TimeStamp = (UINT64)__CSR;					\
 		RTMP_IO_READ32((__pAd), TSF_TIMER_DW1, &__CSR);	\
@@ -210,7 +210,7 @@
 #define UAPSD_MR_ENTRY_RESET(__pAd, __pEntry)								\
 	{																		\
 		MAC_TABLE_ENTRY *__pSta; 											\
-		UINT32 __IdAc;														\
+		u32 __IdAc;														\
 		__pSta = (__pEntry);												\
 		/* clear all U-APSD queues */										\
 		for(__IdAc=0; __IdAc<WMM_NUM_OF_AC; __IdAc++)						\
@@ -467,7 +467,7 @@ UAPSD_EXTERN void UAPSD_PacketEnqueue(
 	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	IN	struct sk_buff *		pPacket,
-	IN	UINT32				IdAc);
+	IN	u32				IdAc);
 
 
 /*
@@ -607,7 +607,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_TimingRecordCtrl(
-	IN	UINT32				Flag);
+	IN	u32				Flag);
 
 /*
 ========================================================================
@@ -631,7 +631,7 @@ Note:
 */
 UAPSD_EXTERN void UAPSD_TimingRecord(
 	IN	struct rtmp_adapter *	pAd,
-	IN	UINT32				Type);
+	IN	u32				Type);
 
 /*
 ========================================================================
@@ -649,7 +649,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN void UAPSD_TimeingRecordLoopIndex(
-	IN	UINT32				LoopIndex);
+	IN	u32				LoopIndex);
 #endif /* UAPSD_TIMING_RECORD_FUNC */
 
 
@@ -726,7 +726,7 @@ UAPSD_EXTERN void UAPSD_TagFrame(
 	IN	struct rtmp_adapter	*pAd,
 	IN	NDIS_PACKET			*pPkt,
 	IN	UCHAR				Wcid,
-	IN	UINT32				PktOffset);
+	IN	u32				PktOffset);
 
 
 /*
@@ -750,8 +750,8 @@ Note:
 UAPSD_EXTERN void UAPSD_UnTagFrame(
 	IN	struct rtmp_adapter*pAd,
 	IN	UCHAR			AcQueId,
-	IN	UINT32			bulkStartPos,
-	IN	UINT32			bulkEnPos);
+	IN	u32			bulkStartPos,
+	IN	u32			bulkEnPos);
 #endif /* RTMP_MAC_USB */
 
 /* End of ap_uapsd.h */

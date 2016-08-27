@@ -211,7 +211,7 @@ void STA_MonPktSend(
 	struct sk_buff * pRxPacket;
 	PHEADER_802_11 pHeader;
 	USHORT DataSize;
-	UINT32 MaxRssi;
+	u32 MaxRssi;
 	UCHAR L2PAD, PHYMODE, BW, ShortGI, MCS, AMPDU, STBC, RSSI1;
 	UCHAR BssMonitorFlag11n, Channel, CentralChannel;
 	UCHAR *pData, *pDevName;
@@ -335,7 +335,7 @@ int	RTMPSendPackets(
 	IN NDIS_HANDLE dev_hnd,
 	IN struct sk_buff **ppPacketArray,
 	IN UINT NumberOfPackets,
-	IN UINT32 PktTotalLen,
+	IN u32 PktTotalLen,
 	IN RTMP_NET_ETH_CONVERT_DEV_SEARCH Func)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)dev_hnd;

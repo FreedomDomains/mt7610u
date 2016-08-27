@@ -53,7 +53,7 @@ void VideoTurbineUpdate(
 }
 
 
-void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN UINT32 qLen)
+void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN u32 qLen)
 {
 	ULONG IrqFlags;
 	INT qIdx;
@@ -89,7 +89,7 @@ void VideoTurbineDynamicTune(
 {
 	if (pAd->VideoTurbine.Enable == TRUE)
 	{
-			UINT32 MacReg = 0;
+			u32 MacReg = 0;
 
 		{
 			/* Tx retry limit = 2F,1F */
@@ -107,7 +107,7 @@ void VideoTurbineDynamicTune(
 	}
 	else
 	{
-			UINT32 MacReg = 0;
+			u32 MacReg = 0;
 
 
 		/* Default Tx retry limit = 1F,0F */
@@ -127,10 +127,10 @@ void VideoTurbineDynamicTune(
 	}
 }
 
-UINT32 GetAsicDefaultRetry(
+u32 GetAsicDefaultRetry(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 RetryLimit;
+	u32 RetryLimit;
 
 	RetryLimit = 0x1F0F;
 
@@ -143,7 +143,7 @@ UCHAR GetAsicDefaultTxBA(
         return pAd->CommonCfg.TxBASize;
 }
 
-UINT32 GetAsicVideoRetry(
+u32 GetAsicVideoRetry(
 	IN struct rtmp_adapter *pAd)
 {
 	return pAd->VideoTurbine.TxRetryLimit;

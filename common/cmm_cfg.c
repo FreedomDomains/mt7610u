@@ -821,7 +821,7 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_CHAN_LIST_GET:
 		{
-			UINT32 i;
+			u32 i;
 			UCHAR *pChannel = (UCHAR *)pData;
 
 			for (i = 1; i <= pAd->ChannelListNum; i++)
@@ -834,9 +834,9 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_FREQ_LIST_GET:
 		{
-			UINT32 i;
-			UINT32 *pFreq = (UINT32 *)pData;
-			UINT32 m;
+			u32 i;
+			u32 *pFreq = (u32 *)pData;
+			u32 m;
 
 			for (i = 1; i <= pAd->ChannelListNum; i++)
 			{
@@ -860,7 +860,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_USB_MORE_FLAG_SET:
 		{
 			RT_CMD_USB_MORE_FLAG_CONFIG *pConfig;
-			UINT32 VendorID, ProductID;
+			u32 VendorID, ProductID;
 
 
 			pConfig = (RT_CMD_USB_MORE_FLAG_CONFIG *)pData;
@@ -894,7 +894,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_USB_CONFIG_INIT:
 		{
 			RT_CMD_USB_DEV_CONFIG *pConfig;
-			UINT32 i;
+			u32 i;
 			pConfig = (RT_CMD_USB_DEV_CONFIG *)pData;
 
 			pAd->NumberOfPipes = pConfig->NumberOfPipes;

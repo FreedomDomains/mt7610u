@@ -59,7 +59,7 @@ void ral_wlan_chip_onoff(
 
 
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	u32 ret;
 
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
@@ -112,7 +112,7 @@ void ral_wlan_chip_onoff(
 
 void dump_bw_info(struct rtmp_adapter*pAd)
 {
-		UINT32 core_r1, agc_r0, be_r0, band_cfg;
+		u32 core_r1, agc_r0, be_r0, band_cfg;
 		static UCHAR *bw_str[]={"20", "10", "40", "80"};
 		UCHAR bw, prim_ch_idx, decode_cap;
 		static UCHAR *decode_str[] = {"0", "20", "40", "20/40",
@@ -153,7 +153,7 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 #ifdef RTMP_USB_SUPPORT
 void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, UCHAR Stage)
 {
-	UINT32 ret;
+	u32 ret;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
 
@@ -198,9 +198,9 @@ void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, UCHAR Stage)
 
 void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, UCHAR Stage)
 {
-	UINT32 MACValue = 0;
-	UINT32 rx_filter_flag;
-	UINT32 ret;
+	u32 MACValue = 0;
+	u32 rx_filter_flag;
+	u32 ret;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 #ifdef CONFIG_PM
@@ -289,8 +289,8 @@ void RT65xxDisableTxRx(
 	struct rtmp_adapter*pAd,
 	UCHAR Level)
 {
-	UINT32 MacReg = 0;
-	UINT32 MTxCycle;
+	u32 MacReg = 0;
+	u32 MTxCycle;
 	BOOLEAN bResetWLAN = FALSE;
 	BOOLEAN bFree = TRUE;
 	u8 CheckFreeTimes = 0;
@@ -508,7 +508,7 @@ void RT65xx_WLAN_ChipOnOff(
 
 
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	u32 ret;
 
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);

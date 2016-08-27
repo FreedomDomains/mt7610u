@@ -29,7 +29,7 @@
 
 
 /* The value given by [x^(i-1),{00},{00},{00}], with x^(i-1) being powers of x in the field GF(2^8). */
-static const UINT32 aes_rcon[] = {
+static const u32 aes_rcon[] = {
 	0x00000000, 0x01000000, 0x02000000, 0x04000000,
     0x08000000, 0x10000000, 0x20000000, 0x40000000,
     0x80000000, 0x1B000000, 0x36000000};
@@ -251,7 +251,7 @@ void RT_AES_KeyExpansion (
     UINT KeyIndex = 0;
     UINT NumberOfWordOfKey, NumberOfWordOfKeyExpansion;
     u8  TempWord[AES_KEY_ROWS], Temp;
-    UINT32 Temprcon;
+    u32 Temprcon;
 
     NumberOfWordOfKey = KeyLength >> 2;
     while (KeyIndex < NumberOfWordOfKey)

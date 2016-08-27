@@ -191,11 +191,11 @@ int	RTMPAllocAdapterBlock(
 
 			pAd->OS_Cookie = handle;
 #ifdef WORKQUEUE_BH
-			((struct os_cookie *)(handle))->pAd_va = (UINT32)pAd;
+			((struct os_cookie *)(handle))->pAd_va = (u32)pAd;
 #endif /* WORKQUEUE_BH */
 		}
 		pAd->BeaconBuf = pBeaconBuf;
-		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(struct rtmp_adapter)));
+		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (u32)sizeof(struct rtmp_adapter)));
 
 		if (RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE)
 		{
@@ -446,7 +446,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 	{
 		EEPROM_NIC_CONFIG0_STRUC NicCfg0;
-		UINT32 reg_val = 0;
+		u32 reg_val = 0;
 
 		RT28xx_EEPROM_READ16(pAd, 0x24, value);
 		RTMP_IO_READ32(pAd, 0x0104, &reg_val);
@@ -1019,7 +1019,7 @@ void NICInitAsicFromEEPROM(
 	IN	struct rtmp_adapter *pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
-	UINT32 data = 0;
+	u32 data = 0;
 #endif /* CONFIG_STA_SUPPORT */
 	USHORT i;
 #ifdef RALINK_ATE
@@ -1376,9 +1376,9 @@ int	NICInitializeAsic(
 	IN  BOOLEAN		bHardReset)
 {
 	ULONG			Index = 0;
-	UINT32			MACValue = 0;
+	u32			MACValue = 0;
 #ifdef RTMP_MAC_USB
-	UINT32			Counter = 0;
+	u32			Counter = 0;
 	USB_DMA_CFG_STRUC UsbCfg;
 #endif /* RTMP_MAC_USB */
 
@@ -1514,7 +1514,7 @@ int	NICInitializeAsic(
 		(pAd->MACVersion < RALINK_3070_VERSION))) /* 3*3*/
 	{
 		/* enlarge MAX_LEN_CFG*/
-		UINT32 csr;
+		u32 csr;
 		RTMP_IO_READ32(pAd, MAX_LEN_CFG, &csr);
 #if defined(RT2883) || defined(RT3883) || defined(RT3593) || defined(RT65xx)
 		if (IS_RT2883(pAd) || IS_RT3883(pAd) || IS_RT3593(pAd) || IS_RT65XX(pAd))
@@ -1532,7 +1532,7 @@ int	NICInitializeAsic(
 
 #ifdef RTMP_MAC_USB
 {
-		UINT32 MACValue[254 * 2];
+		u32 MACValue[254 * 2];
 
 		for (Index = 0; Index < 254 * 2; Index += 2)
 		{
@@ -1567,7 +1567,7 @@ int	NICInitializeAsic(
 	{
 #ifdef RTMP_MAC_USB
 		{
-			UINT32 MACValue[4];
+			u32 MACValue[4];
 
 			for (Index = 0; Index < 4; Index++)
 				MACValue[Index] = 0;
@@ -1577,7 +1577,7 @@ int	NICInitializeAsic(
 
 		/* Clear all pairwise key table when initial*/
 		{
-			UINT32 MACValue[256];
+			u32 MACValue[256];
 
 			for (Index = 0; Index < 256; Index++)
 				MACValue[Index] = 1;
@@ -1620,7 +1620,7 @@ int	NICInitializeAsic(
 #ifdef RT3290
 	if (IS_RT3290(pAd))
 	{
-		UINT32 coex_val;
+		u32 coex_val;
 		//halt wlan tx when bt_rx_busy asserted
 		RTMP_IO_READ32(pAd, COEXCFG2, &coex_val);
 		coex_val |= 0x100;
@@ -1641,7 +1641,7 @@ void NICUpdateFifoStaCounters(
 {
 	TX_STA_FIFO_STRUC	StaFifo;
 	MAC_TABLE_ENTRY		*pEntry = NULL;
-	UINT32				i = 0;
+	u32				i = 0;
 	UCHAR				pid = 0, wcid = 0;
 	INT32				reTry;
 	UCHAR				succMCS;
@@ -1866,7 +1866,7 @@ BOOLEAN NicGetMacFifoTxCnt(
 	if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
 	{
 		WCID_TX_CNT_STRUC wcidTxCnt;
-		UINT32 regAddr;
+		u32 regAddr;
 
 		regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
 		RTMP_IO_READ32(pAd, regAddr, &wcidTxCnt.word);
@@ -1894,7 +1894,7 @@ void AsicFifoExtEntryClean(
 	IN MAC_TABLE_ENTRY *pEntry)
 {
 	WCID_TX_CNT_STRUC wcidTxCnt;
-	UINT32 regAddr;
+	u32 regAddr;
 
 	if (pAd->chipCap.FlgHwFifoExtCap)
 	{
@@ -1967,7 +1967,7 @@ void NicGetTxRawCounters(
 */
 void NicResetRawCounters(struct rtmp_adapter*pAd)
 {
-	UINT32 Counter;
+	u32 Counter;
 
 	RTMP_IO_READ32(pAd, RX_STA_CNT0, &Counter);
 	RTMP_IO_READ32(pAd, RX_STA_CNT1, &Counter);
@@ -1998,7 +1998,7 @@ void NicResetRawCounters(struct rtmp_adapter*pAd)
 void NICUpdateRawCounters(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32	OldValue;/*, Value2;*/
+	u32	OldValue;/*, Value2;*/
 	/*ULONG	PageSum, OneSecTransmitCount;*/
 	/*ULONG	TxErrorRatio, Retry, Fail;*/
 	RX_STA_CNT0_STRUC	 RxStaCnt0;
@@ -3258,7 +3258,7 @@ void RTMPReleaseTimer(
 void RTMPEnableRxTx(
 	IN struct rtmp_adapter *pAd)
 {
-	UINT32 rx_filter_flag;
+	u32 rx_filter_flag;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==> RTMPEnableRxTx\n"));
 

@@ -29,14 +29,13 @@
 #define __RTMP_TYPE_H__
 
 
-
+#include <linux/types.h>
 
 
 #ifdef LINUX
 /* Put platform dependent declaration here */
 /* For example, linux type definition */
 typedef unsigned short UINT16;
-typedef unsigned int UINT32;
 typedef unsigned long long UINT64;
 typedef short INT16;
 typedef int INT32;
@@ -49,7 +48,6 @@ typedef unsigned long ULONG;
 #endif /* LINUX */
 
 typedef unsigned short *PUINT16;
-typedef unsigned int *PUINT32;
 typedef unsigned long long *PUINT64;
 typedef int *PINT32;
 typedef long long *PINT64;
@@ -93,8 +91,8 @@ typedef union _LARGE_INTEGER {
 
 /* Register set pair for initialzation register set definition */
 typedef struct _RTMP_REG_PAIR {
-	UINT32 Register;
-	UINT32 Value;
+	u32 Register;
+	u32 Value;
 } RTMP_REG_PAIR, *PRTMP_REG_PAIR;
 
 typedef struct _REG_PAIR {
@@ -129,10 +127,10 @@ typedef struct _REG_PAIR_PHY{
 /* Register set pair for initialzation register set definition */
 typedef struct _RTMP_RF_REGS {
 	UCHAR Channel;
-	UINT32 R1;
-	UINT32 R2;
-	UINT32 R3;
-	UINT32 R4;
+	u32 R1;
+	u32 R2;
+	u32 R3;
+	u32 R4;
 } RTMP_RF_REGS, *PRTMP_RF_REGS;
 
 typedef struct _FREQUENCY_ITEM {
@@ -163,9 +161,9 @@ typedef struct _BANK_RF_REG_PAIR {
 } BANK_RF_REG_PAIR, *PBANK_RF_REG_PAIR;
 
 typedef struct _R_M_W_REG{
-	UINT32 Register;
-	UINT32 ClearBitMask;
-	UINT32 Value;
+	u32 Register;
+	u32 ClearBitMask;
+	u32 Value;
 } R_M_W_REG, *PR_M_W_REG;
 
 typedef struct _RF_R_M_W_REG{

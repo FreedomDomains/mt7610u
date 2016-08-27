@@ -98,11 +98,11 @@ typedef enum{
 	       (((UINT16) (x) & (UINT16) 0xff00U) >> 8)))
 
 #define SWAP32(x) \
-    ((UINT32) (\
-	       (((UINT32) (x) & (UINT32) 0x000000ffUL) << 24) | \
-	       (((UINT32) (x) & (UINT32) 0x0000ff00UL) << 8) | \
-	       (((UINT32) (x) & (UINT32) 0x00ff0000UL) >> 8) | \
-	       (((UINT32) (x) & (UINT32) 0xff000000UL) >> 24)))
+    ((u32) (\
+	       (((u32) (x) & (u32) 0x000000ffUL) << 24) | \
+	       (((u32) (x) & (u32) 0x0000ff00UL) << 8) | \
+	       (((u32) (x) & (u32) 0x00ff0000UL) >> 8) | \
+	       (((u32) (x) & (u32) 0xff000000UL) >> 24)))
 
 #define SWAP64(x) \
     ((UINT64)( \
@@ -125,8 +125,8 @@ typedef enum{
 #define le2cpu16(x) SWAP16((x))
 #define cpu2be64(x) ((UINT64)(x))
 #define be2cpu64(x) ((UINT64)(x))
-#define cpu2be32(x) ((UINT32)(x))
-#define be2cpu32(x) ((UINT32)(x))
+#define cpu2be32(x) ((u32)(x))
+#define be2cpu32(x) ((u32)(x))
 #define cpu2be16(x) ((UINT16)(x))
 #define be2cpu16(x) ((UINT16)(x))
 
@@ -134,8 +134,8 @@ typedef enum{
 
 #define cpu2le64(x) ((UINT64)(x))
 #define le2cpu64(x) ((UINT64)(x))
-#define cpu2le32(x) ((UINT32)(x))
-#define le2cpu32(x) ((UINT32)(x))
+#define cpu2le32(x) ((u32)(x))
+#define le2cpu32(x) ((u32)(x))
 #define cpu2le16(x) ((UINT16)(x))
 #define le2cpu16(x) ((UINT16)(x))
 #define cpu2be64(x) SWAP64((x))
@@ -413,15 +413,15 @@ P80211ENUM_truth_true = 0x01
 
 /* Definition from madwifi */
 typedef struct {
-        UINT32 did;
+        u32 did;
         UINT16 status;
         UINT16 len;
-        UINT32 data;
+        u32 data;
 } p80211item_uint32_t;
 
 typedef struct {
-        UINT32 msgcode;
-        UINT32 msglen;
+        u32 msgcode;
+        u32 msglen;
 #define WLAN_DEVNAMELEN_MAX 16
         u8 devname[WLAN_DEVNAMELEN_MAX];
         p80211item_uint32_t hosttime;

@@ -538,14 +538,14 @@ struct RF_BANK_OFFSET {
 */
 
 struct _RTMP_CHIP_CAP_ {
-	UINT32 ChipID;
+	u32 ChipID;
 	/* register */
 	REG_PAIR *pRFRegTable;
 	REG_PAIR *pBBPRegTable;
 	UCHAR bbpRegTbSize;
 
-	UINT32 MaxNumOfRfId;
-	UINT32 MaxNumOfBbpId;
+	u32 MaxNumOfRfId;
+	u32 MaxNumOfBbpId;
 
 #define RF_REG_WT_METHOD_NONE			0
 #define RF_REG_WT_METHOD_STEP_ON		1
@@ -666,8 +666,8 @@ struct _RTMP_CHIP_CAP_ {
 	u8 CCACheckPeriod; /* unit: second */
 	CHAR RssiThreshold;
 	CHAR RssiAvg;
-	UINT32 CCAThresholdA;
-	UINT32 CCAThresholdB;
+	u32 CCAThresholdA;
+	u32 CCAThresholdB;
 	ULONG CCARecordCnt; /* unit: second */
 	ULONG CCAAvg[CCA_AVG_MAX_COUNT];
 	UCHAR CCAAvgIdx;
@@ -681,7 +681,7 @@ struct _RTMP_CHIP_CAP_ {
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RT5592EP_SUPPORT
-	UINT32 Priv; /* Flag for RT5592 EP */
+	u32 Priv; /* Flag for RT5592 EP */
 #endif /* RT5592EP_SUPPORT */
 
 #ifdef RT65xx
@@ -689,8 +689,8 @@ struct _RTMP_CHIP_CAP_ {
 #endif /* RT65xx */
 
 #ifdef CONFIG_ANDES_SUPPORT
-	UINT32 WlanMemmapOffset;
-	UINT32 InbandPacketMaxLen; /* must be 48 multible */
+	u32 WlanMemmapOffset;
+	u32 InbandPacketMaxLen; /* must be 48 multible */
 	u8 CmdRspRxRing;
 	BOOLEAN IsComboChip;
 	u8 load_iv;
@@ -749,18 +749,18 @@ struct _RTMP_CHIP_CAP_ {
 #endif /* MT76x0 */
 
 #ifdef CONFIG_WIFI_TEST
-	UINT32 MemMapStart;
-	UINT32 MemMapEnd;
-	UINT32 BBPMemMapOffset;
+	u32 MemMapStart;
+	u32 MemMapEnd;
+	u32 BBPMemMapOffset;
 	UINT16 BBPStart;
 	UINT16 BBPEnd;
 	UINT16 RFStart;
 	UINT16 RFEnd;
 	u8 RFBankNum;
 	struct RF_BANK_OFFSET *RFBankOffset;
-	UINT32 MacMemMapOffset;
-	UINT32 MacStart;
-	UINT32 MacEnd;
+	u32 MacMemMapOffset;
+	u32 MacStart;
+	u32 MacEnd;
 	UINT16 E2PStart;
 	UINT16 E2PEnd;
 #endif
@@ -803,15 +803,15 @@ struct _RTMP_CHIP_OP_ {
 	/* Power save */
 	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN BOOLEAN ReduceCorePower);
 	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
-	INT (*PwrSavingOP)(struct rtmp_adapter *pAd, UINT32 PwrOP, UINT32 PwrLevel,
-							UINT32 ListenInterval, UINT32 PreTBTTLeadTime,
+	INT (*PwrSavingOP)(struct rtmp_adapter *pAd, u32 PwrOP, u32 PwrLevel,
+							u32 ListenInterval, u32 PreTBTTLeadTime,
 							u8 TIMByteOffset, u8 TIMBytePattern);
 
 	/* Chip tuning */
 	void (*RxSensitivityTuning)(IN struct rtmp_adapter *pAd);
 
 	/* MAC */
-	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, UINT32 Value, u8 Unit);
+	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, u32 Value, u8 Unit);
 
 	/* BBP adjust */
 	void (*ChipBBPAdjust)(IN struct rtmp_adapter *pAd);
@@ -827,7 +827,7 @@ struct _RTMP_CHIP_OP_ {
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, UCHAR Channel);
 
 	/* TX ALC */
-	UINT32 (*TSSIRatio)(INT32 delta_power);
+	u32 (*TSSIRatio)(INT32 delta_power);
 	void (*InitDesiredTSSITable)(IN struct rtmp_adapter *pAd);
 	int (*ATETssiCalibration)(struct rtmp_adapter *pAd, char *arg);
 	int (*ATETssiCalibrationExtend)(struct rtmp_adapter *pAd, char *arg);
@@ -869,24 +869,24 @@ struct _RTMP_CHIP_OP_ {
 	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
-	void (*Calibration)(struct rtmp_adapter *pAd, UINT32 CalibrationID, UINT32 Parameter);
+	void (*Calibration)(struct rtmp_adapter *pAd, u32 CalibrationID, u32 Parameter);
 	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
 
-	int (*BurstWrite)(struct rtmp_adapter *ad, UINT32 Offset, UINT32 *Data, UINT32 Cnt);
+	int (*BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
 
-	int (*BurstRead)(struct rtmp_adapter *ad, UINT32 Offset, UINT32 Cnt, UINT32 *Data);
+	int (*BurstRead)(struct rtmp_adapter *ad, u32 Offset, u32 Cnt, u32 *Data);
 
-	int (*RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
+	int (*RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
-	int (*RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
+	int (*RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
-	int (*ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, UINT32 Num);
+	int (*ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
-	int (*RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, UINT32 Num);
+	int (*RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, u32 Num);
 
-	int (*RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, UINT32 Num);
+	int (*RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
-	int (*RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, UINT32 Num);
+	int (*RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
 	void (*DisableTxRx)(struct rtmp_adapter *ad, UCHAR Level);
 
@@ -1190,13 +1190,13 @@ void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 void RtmpChipWriteHighMemory(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	UINT32			Value,
+	IN	u32			Value,
 	IN	u8			Unit);
 
 void RtmpChipWriteMemory(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	UINT32			Value,
+	IN	u32			Value,
 	IN	u8			Unit);
 
 void RTMPReadChannelPwr(struct rtmp_adapter *pAd);

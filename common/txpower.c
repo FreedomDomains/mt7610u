@@ -924,7 +924,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 */
 void RTMPReadChannelPwr(struct rtmp_adapter*pAd)
 {
-	UINT32					i, choffset;
+	u32					i, choffset;
 	EEPROM_TX_PWR_STRUC	    Power;
 	EEPROM_TX_PWR_STRUC	    Power2;
 

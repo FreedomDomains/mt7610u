@@ -32,32 +32,32 @@
 
 #ifdef RT_BIG_ENDIAN
 typedef struct __attribute__ ((packed)) _WIFI_INFO_STRUCT{
-	UINT32 more_data:1;
-	UINT32 wep:1;
-	UINT32 ps:1;
-	UINT32 qos:1;
-	UINT32 eosp:1;
-	UINT32 tid:4;
-	UINT32 mode:2;
-	UINT32 vlan:1;
-	UINT32 rev:3;
-	UINT32 bssidx:4;
-	UINT32 seq_num:12;
+	u32 more_data:1;
+	u32 wep:1;
+	u32 ps:1;
+	u32 qos:1;
+	u32 eosp:1;
+	u32 tid:4;
+	u32 mode:2;
+	u32 vlan:1;
+	u32 rev:3;
+	u32 bssidx:4;
+	u32 seq_num:12;
 }WIFI_INFO_STRUCT;
 #else
 typedef struct __attribute__ ((packed)) _WIFI_INFO_STRUCT{
-	UINT32 seq_num:12;
-	UINT32 bssidx:4;
-	UINT32 rev:3;
-	UINT32 vlan:1;
-	UINT32 mode:2;
-	UINT32 tid:4;
-	UINT32 eosp:1;
-	UINT32 qos:1;
-	UINT32 rdg:1;
-	UINT32 ps:1;
-	UINT32 wep:1;
-	UINT32 more_data:1;
+	u32 seq_num:12;
+	u32 bssidx:4;
+	u32 rev:3;
+	u32 vlan:1;
+	u32 mode:2;
+	u32 tid:4;
+	u32 eosp:1;
+	u32 qos:1;
+	u32 rdg:1;
+	u32 ps:1;
+	u32 wep:1;
+	u32 more_data:1;
 }WIFI_INFO_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
@@ -100,9 +100,9 @@ u8 Hdr_Wcid[][6] = {
 					};
 u8 MAC_WCID[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-//UINT32 RX_Black_List[] = {0x0d898e88}; /* EAPOL 888E, TDLS 890D */
-//UINT32 RX_Black_List[] = {0x888e0800}; /* EAPOL 888E, TDLS 890D */
-UINT32 RX_Black_List[] = {}; /* EAPOL 888E, TDLS 890D */
-UINT32 TCI[] = {0x10021001, 0x10041003, 0x10061005, 0x10081007};
-UINT32 RX_WCID_En[] = {0xFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+//u32 RX_Black_List[] = {0x0d898e88}; /* EAPOL 888E, TDLS 890D */
+//u32 RX_Black_List[] = {0x888e0800}; /* EAPOL 888E, TDLS 890D */
+u32 RX_Black_List[] = {}; /* EAPOL 888E, TDLS 890D */
+u32 TCI[] = {0x10021001, 0x10041003, 0x10061005, 0x10081007};
+u32 RX_WCID_En[] = {0xFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
 #endif

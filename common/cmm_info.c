@@ -1542,7 +1542,7 @@ void RTMPAddWcidAttributeEntry(
 	IN 	UCHAR		 	CipherAlg,
 	IN 	MAC_TABLE_ENTRY *pEntry)
 {
-	UINT32		WCIDAttri = 0;
+	u32		WCIDAttri = 0;
 	USHORT		offset;
 	UCHAR		IVEIV = 0;
 	USHORT		Wcid = 0;
@@ -1700,7 +1700,7 @@ char *GetAuthMode(CHAR auth)
 void RTMPCommSiteSurveyData(
 	IN  char *	msg,
 	IN  PBSS_ENTRY	pBss,
-	IN  UINT32		MsgLen)
+	IN  u32		MsgLen)
 {
 	INT         Rssi = 0;
 	UINT        Rssi_Quality = 0;
@@ -3213,7 +3213,7 @@ INT Set_StreamMode_Proc(
     IN  struct rtmp_adapter *  pAd,
     IN  char *        arg)
 {
-	UINT32 streamWord, reg, regAddr;
+	u32 streamWord, reg, regAddr;
 
 	if (pAd->chipCap.FlgHwStreamMode == FALSE)
 	{
@@ -4040,7 +4040,7 @@ INT	Show_STA_RAInfo_Proc(
 INT Show_MacTable_Proc(struct rtmp_adapter*pAd, char **arg)
 {
 	INT i;
-    	UINT32 RegValue;
+    	u32 RegValue;
 	ULONG DataRate=0;
 
 
@@ -5340,7 +5340,7 @@ INT Set_RateAdaptInterval(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg)
 {
-	UINT32 ra_time, ra_qtime;
+	u32 ra_time, ra_qtime;
 	char *token;
 	char sep = ':';
 	ULONG irqFlags;
@@ -5415,7 +5415,7 @@ INT set_cap_dump(struct rtmp_adapter*pAd, char *arg)
 {
 	ULONG seg = simple_strtol(arg, 0, 10);;
 	CHAR *buf1, *buf2;
-	UINT32 offset = 0;
+	u32 offset = 0;
 
 	seg = ((seg > 0 && seg <= 4)  ? seg : 1);
 	if (pAd->cap_done == TRUE && (pAd->cap_buf != NULL)) {
@@ -5494,7 +5494,7 @@ INT set_cap_trigger_offset(struct rtmp_adapter*pAd, char *arg)
 
 	trigger_offset = simple_strtol(arg, 0, 10);
 
-	pAd->trigger_offset = (UINT32)trigger_offset;
+	pAd->trigger_offset = (u32)trigger_offset;
 	DBGPRINT(RT_DEBUG_OFF, ("%s():set trigger_offset=%d\n", __FUNCTION__, pAd->trigger_offset));
 
 	return TRUE;
@@ -5700,7 +5700,7 @@ INT set_force_vht_tx_stbc(struct rtmp_adapter*pAd, char *arg)
 INT set_force_ext_cca(struct rtmp_adapter*pAd, char *arg)
 {
 	ULONG cca_cfg;
-	UINT32 mac_val;
+	u32 mac_val;
 
 	cca_cfg = (simple_strtol(arg, 0, 10) > 0 ? TRUE : FALSE);
 	if (cca_cfg)
@@ -5816,7 +5816,7 @@ INT RTMPShowCfgValue(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		pName,
 	IN	char *		pBuf,
-	IN	UINT32			MaxLen)
+	IN	u32			MaxLen)
 {
 	INT	Status = 0;
 

@@ -1394,7 +1394,7 @@ void STAHandleRxControlFrame(
 BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 {
 	int Status;
-	UINT32 RxProcessed, RxPending;
+	u32 RxProcessed, RxPending;
 	BOOLEAN bReschedule = FALSE;
 	RXD_STRUC *pRxD;
 	RXWI_STRUC *pRxWI;
@@ -2677,7 +2677,7 @@ static inline u8 *STA_Build_ARalink_Frame_Header(
 	u8 *pHeaderBufPtr;
 	HEADER_802_11 *pHeader_802_11;
 	struct sk_buff * pNextPacket;
-	UINT32 nextBufLen;
+	u32 nextBufLen;
 	PQUEUE_ENTRY pQEntry;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 
@@ -3818,7 +3818,7 @@ void STA_Fragment_Frame_Tx(
 	UCHAR fragNum = 0;
 	PACKET_INFO PacketInfo;
 	USHORT EncryptionOverhead = 0;
-	UINT32 FreeMpduSize, SrcRemainingBytes;
+	u32 FreeMpduSize, SrcRemainingBytes;
 	USHORT AckDuration;
 	UINT NextMpduSize;
 	BOOLEAN bVLANPkt;
@@ -3826,7 +3826,7 @@ void STA_Fragment_Frame_Tx(
 	HTTRANSMIT_SETTING *pTransmit;
 #ifdef SOFT_ENCRYPT
 	u8 *tmp_ptr = NULL;
-	UINT32 buf_offset = 0;
+	u32 buf_offset = 0;
 #endif /* SOFT_ENCRYPT */
 	u8 TXWISize = pAd->chipCap.TXWISize;
 

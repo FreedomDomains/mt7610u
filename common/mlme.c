@@ -619,7 +619,7 @@ void MlmePeriodicExec(
 			(STA_TGN_WIFI_ON(pAd)) &&
 			((pAd->MACVersion & 0xffff) == 0x0101))
 		{
-			UINT32 txop_cfg;
+			u32 txop_cfg;
 
 			/* This is the fix for wifi 11n extension channel overlapping test case.  for 2860D*/
 			if (pAd->CommonCfg.IOTestParm.bToggle == FALSE)
@@ -812,7 +812,7 @@ void MlmePeriodicExec(
 			{
 
 
-			UINT32	MacReg = 0;
+			u32	MacReg = 0;
 
 			RTMP_IO_READ32(pAd, 0x10F4, &MacReg);
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
@@ -1789,11 +1789,11 @@ void MlmeCalculateChannelQuality(
 	UCHAR NorRssi;
 	CHAR  MaxRssi;
 	RSSI_SAMPLE *pRssiSample = NULL;
-	UINT32 OneSecTxNoRetryOkCount = 0;
-	UINT32 OneSecTxRetryOkCount = 0;
-	UINT32 OneSecTxFailCount = 0;
-	UINT32 OneSecRxOkCnt = 0;
-	UINT32 OneSecRxFcsErrCnt = 0;
+	u32 OneSecTxNoRetryOkCount = 0;
+	u32 OneSecTxRetryOkCount = 0;
+	u32 OneSecTxFailCount = 0;
+	u32 OneSecRxOkCnt = 0;
+	u32 OneSecRxFcsErrCnt = 0;
 	ULONG ChannelQuality = 0;  /* 0..100, Channel Quality Indication for Roaming*/
 #ifdef CONFIG_STA_SUPPORT
 	ULONG LastBeaconRxTime = 0;
@@ -4511,7 +4511,7 @@ UCHAR RandomByte(
 UCHAR RandomByte2(
         IN struct rtmp_adapter *pAd)
 {
-	UINT32 a,b;
+	u32 a,b;
 	UCHAR value, seed = 0;
 
 	/*MAC statistic related*/
@@ -5490,10 +5490,10 @@ Note:
 */
 BOOLEAN CHAN_PropertyCheck(
 	IN struct rtmp_adapter *pAd,
-	IN UINT32			ChanNum,
+	IN u32			ChanNum,
 	IN UCHAR			Property)
 {
-	UINT32 IdChan;
+	u32 IdChan;
 
 
 	/* look for all registered channels */

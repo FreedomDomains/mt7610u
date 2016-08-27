@@ -95,7 +95,7 @@ extern int CH_HZ_ID_MAP_NUM;
 
 
 #define     MAP_CHANNEL_ID_TO_KHZ(_ch, _khz)                 \
-			RTMP_MapChannelID2KHZ(_ch, (UINT32 *)&(_khz))
+			RTMP_MapChannelID2KHZ(_ch, (u32 *)&(_khz))
 #define     MAP_KHZ_TO_CHANNEL_ID(_khz, _ch)                 \
 			RTMP_MapKHZ2ChannelID(_khz, (INT *)&(_ch))
 
@@ -126,7 +126,7 @@ u8 GetCuntryMaxTxPwr(
 
 void RTMP_MapChannelID2KHZ(
 	IN UCHAR Ch,
-	OUT UINT32 *pFreq);
+	OUT u32 *pFreq);
 
 void RTMP_MapKHZ2ChannelID(
 	IN ULONG Freq,

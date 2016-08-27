@@ -53,7 +53,7 @@ int rt28xx_init(void *pAdSrc)
 	DBGPRINT(RT_DEBUG_OFF, ("MACVersion=0x%x\n", pAd->MACVersion));
 	if (IS_RT3290(pAd))
 	{
-		UINT32 MacRegValue;
+		u32 MacRegValue;
 		OSCCTL_STRUC osCtrl = {.word = 0};
 		CMB_CTRL_STRUC cmbCtrl = {.word = 0};
 		WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
@@ -537,7 +537,7 @@ void RTMPDrvSTAOpen(
 	IN void *pAdSrc)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
-	UINT32 reg = 0;
+	u32 reg = 0;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
@@ -601,7 +601,7 @@ void RTMPDrvSTAClose(
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	BOOLEAN Cancelled;
-	UINT32 i = 0;
+	u32 i = 0;
 	Cancelled = FALSE;
 
 #ifdef CREDENTIAL_STORE
@@ -870,7 +870,7 @@ struct net_device *RtmpPhyNetDevMainCreate(
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	struct net_device *pDevNew;
-	UINT32 MC_RowID = 0, IoctlIF = 0;
+	u32 MC_RowID = 0, IoctlIF = 0;
 
 
 	pAd = pAd;
@@ -879,7 +879,7 @@ struct net_device *RtmpPhyNetDevMainCreate(
 	IoctlIF = pAd->IoctlIF;
 #endif /* HOSTAPD_SUPPORT */
 
-	pDevNew = RtmpOSNetDevCreate((INT32)MC_RowID, (UINT32 *)&IoctlIF,
+	pDevNew = RtmpOSNetDevCreate((INT32)MC_RowID, (u32 *)&IoctlIF,
 					INT_MAIN, 0, sizeof(struct rtmp_adapter *), "wlan");
 
 #ifdef HOSTAPD_SUPPORT

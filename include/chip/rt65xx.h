@@ -51,35 +51,35 @@ struct rtmp_adapter;
 #ifdef RT_BIG_ENDIAN
 typedef union _COEXCFG0_STRUC{
 	struct{
-		UINT32       	COEX_CFG1:8;
-		UINT32       	COEX_CFG0:8;
-		UINT32       	FIX_WL_RF_LNA:2;
-		UINT32		FIX_BT_H_PA:3;
-		UINT32		FIX_BT_L_PA:3;
-		UINT32		FIX_WL_TX_PWR:2;
-		UINT32		Rsv:3;
-		UINT32		FIX_WL_ANT_EN:1;
-		UINT32		FIX_WL_DI_ANT:1;
-		UINT32		COEX_ENT:1;
+		u32       	COEX_CFG1:8;
+		u32       	COEX_CFG0:8;
+		u32       	FIX_WL_RF_LNA:2;
+		u32		FIX_BT_H_PA:3;
+		u32		FIX_BT_L_PA:3;
+		u32		FIX_WL_TX_PWR:2;
+		u32		Rsv:3;
+		u32		FIX_WL_ANT_EN:1;
+		u32		FIX_WL_DI_ANT:1;
+		u32		COEX_ENT:1;
 	}field;
-	UINT32 word;
+	u32 word;
 }COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
 #else
 typedef union _COEXCFG0_STRUC{
 	struct{
-		UINT32		COEX_ENT:1;
-		UINT32		FIX_WL_DI_ANT:1;
-		UINT32		FIX_WL_ANT_EN:1;
-		UINT32		Rsv:3;
-		UINT32		FIX_WL_TX_PWR:2;
-		UINT32		FIX_BT_L_PA:3;
-		UINT32		FIX_BT_H_PA:3;
-		UINT32       	FIX_WL_RF_LNA:2;
+		u32		COEX_ENT:1;
+		u32		FIX_WL_DI_ANT:1;
+		u32		FIX_WL_ANT_EN:1;
+		u32		Rsv:3;
+		u32		FIX_WL_TX_PWR:2;
+		u32		FIX_BT_L_PA:3;
+		u32		FIX_BT_H_PA:3;
+		u32       	FIX_WL_RF_LNA:2;
 
-		UINT32       	COEX_CFG0:8;
-		UINT32       	COEX_CFG1:8;
+		u32       	COEX_CFG0:8;
+		u32       	COEX_CFG1:8;
 	}field;
-	UINT32 word;
+	u32 word;
 }COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
 #endif
 

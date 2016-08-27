@@ -70,10 +70,10 @@ static void TDLS_UAPSD_TrafficRspBuild(
 	IN	UCHAR						PeerToken);
 
 /* get argument number value */
-static UINT32 TDLS_UAPSD_CmdUtilHexGet(
+static u32 TDLS_UAPSD_CmdUtilHexGet(
 	IN	CHAR						**ppArgv);
 /* get argument number value */
-static UINT32 TDLS_UAPSD_CmdUtilNumGet(
+static u32 TDLS_UAPSD_CmdUtilNumGet(
 	IN	CHAR						**ppArgv);
 /* get argument MAC value */
 static void TDLS_UAPSD_CmdUtilMacGet(
@@ -242,7 +242,7 @@ BOOLEAN TDLS_UAPSDP_AsicCanSleep(
 	IN	struct rtmp_adapter *			pAd)
 {
 	RT_802_11_TDLS *pTDLS;
-	UINT32 IdEntry;
+	u32 IdEntry;
 	BOOLEAN FlgAllSpClosed = TRUE;
 
 
@@ -256,7 +256,7 @@ BOOLEAN TDLS_UAPSDP_AsicCanSleep(
 		if ((pTDLS->Valid == TRUE) &&
 			(pTDLS->Status == TDLS_MODE_CONNECTED))
 		{
-			UINT32 Wcid = pTDLS->MacTabMatchWCID;
+			u32 Wcid = pTDLS->MacTabMatchWCID;
 			PMAC_TABLE_ENTRY pEntry = &pAd->MacTab.Content[Wcid];
 
 
@@ -310,7 +310,7 @@ void TDLS_UAPSDP_PsmModeChange(
 {
 	MAC_TABLE_ENTRY	*pMacEntry;
 	RT_802_11_TDLS *pTDLS;
-	UINT32 IdTdls;
+	u32 IdTdls;
 
 
 	if (PsmOld == PsmNew)
@@ -403,7 +403,7 @@ static void TDLS_UAPSD_CmdPeerInfoDisplay(
 {
 	MAC_TABLE_ENTRY	*pMacEntry;
 	UCHAR PeerMac[6];
-	UINT32 IdAcNum;
+	u32 IdAcNum;
 
 
 	/* get MAC address */
@@ -598,7 +598,7 @@ INT TDLS_Ioctl(
 {
 	CHAR BufCmd[3] = { 0, 0, 0 };
 	CHAR *pArgv, *pParam;
-	UINT32 Command;
+	u32 Command;
 	INT32 Argc;
 
 
@@ -1257,11 +1257,11 @@ Note:
 	Only for one hex byte.
 ========================================================================
 */
-static UINT32 TDLS_UAPSD_CmdUtilHexGet(
+static u32 TDLS_UAPSD_CmdUtilHexGet(
 	IN	CHAR						**ppArgv)
 {
 	CHAR Buf[3], *pNum;
-	UINT32 ID;
+	u32 ID;
 	UCHAR Value;
 
 
@@ -1296,7 +1296,7 @@ static UINT32 TDLS_UAPSD_CmdUtilHexGet(
 	/* End of if */
 
 	AtoH(Buf, &Value, 1);
-	return (UINT32)Value;
+	return (u32)Value;
 } /* End of TDLS_UAPSD_CmdUtilHexGet */
 
 
@@ -1314,11 +1314,11 @@ Return Value:
 Note:
 ========================================================================
 */
-static UINT32 TDLS_UAPSD_CmdUtilNumGet(
+static u32 TDLS_UAPSD_CmdUtilNumGet(
 	IN	CHAR						**ppArgv)
 {
 	CHAR Buf[20], *pNum;
-	UINT32 ID;
+	u32 ID;
 
 
 	pNum = (*ppArgv);
@@ -1366,7 +1366,7 @@ static void TDLS_UAPSD_CmdUtilMacGet(
 {
 	CHAR Buf[3];
 	CHAR *pMAC = (CHAR *)(*ppArgv);
-	UINT32 ID;
+	u32 ID;
 
 
 	if ((pMAC[0] == '0') && (pMAC[1] == '_'))
@@ -1441,7 +1441,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	UCHAR	RemoteFrameType = PROTO_NAME_TDLS;
 	int	NStatus = NDIS_STATUS_SUCCESS;
 	UCHAR PeerMac[6];
-	UINT32 IdTdls;
+	u32 IdTdls;
 
 
 	/* get MAC address */
@@ -1723,7 +1723,7 @@ static void TDLS_UAPSD_CmdSimPeerPowerSaveChg(
 {
 	MAC_TABLE_ENTRY	*pMacEntry;
 	UCHAR PeerMac[6];
-	UINT32 PeerPsMode;
+	u32 PeerPsMode;
 
 
 	/* get MAC address */
@@ -1777,7 +1777,7 @@ static void TDLS_UAPSD_CmdSimSelfPowerSaveChg(
 	IN	INT32						Argc,
 	IN	CHAR						*pArgv)
 {
-	UINT32 PeerPsMode;
+	u32 PeerPsMode;
 
 
 	PeerPsMode = TDLS_UAPSD_CmdUtilNumGet(&pArgv);

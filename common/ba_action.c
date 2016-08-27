@@ -292,7 +292,7 @@ BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num)
 	freelist->next = NULL;
 	freelist->qlen = 0;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("Allocate %d memory for BA reordering\n", (UINT32)(num*sizeof(struct reordering_mpdu))));
+	DBGPRINT(RT_DEBUG_TRACE, ("Allocate %d memory for BA reordering\n", (u32)(num*sizeof(struct reordering_mpdu))));
 
 	/* allocate number of mpdu_blk memory */
 	os_alloc_mem(pAd, (u8 **)&mem, (num*sizeof(struct reordering_mpdu)));
@@ -667,7 +667,7 @@ BOOLEAN BARecSessionAdd(
 	USHORT                  Idx;
 	UCHAR                   TID;
 	UCHAR                   BAWinSize;
-	/*UINT32                  Value;*/
+	/*u32                  Value;*/
 	/*UINT                    offset;*/
 
 
@@ -1016,7 +1016,7 @@ void BARecSessionTearDown(
 		MLME_DELBA_REQ_STRUCT   DelbaReq;
 		BOOLEAN 				Cancelled;
 		/*ULONG   offset; */
-		/*UINT32  VALUE;*/
+		/*u32  VALUE;*/
 
 		RTMPCancelTimer(&pBAEntry->RECBATimer, &Cancelled);
 

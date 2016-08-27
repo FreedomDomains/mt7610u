@@ -769,7 +769,7 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char
 #ifdef XLINK_SUPPORT
 static void rtmp_get_psp_xlink_mode_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
 {
-	UINT32 Value = 0;
+	u32 Value = 0;
 
 	/* Xlink Mode*/
 	if (RTMPGetKeyParameter("PSP_XLINK_MODE", tmpbuf, 32, buffer, TRUE))

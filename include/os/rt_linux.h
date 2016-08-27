@@ -508,7 +508,7 @@ struct os_cookie {
 #endif /* RTMP_MAC_USB */
 
 #ifdef WORKQUEUE_BH
-	UINT32		     pAd_va;
+	u32		     pAd_va;
 #endif /* WORKQUEUE_BH */
 
 	RTMP_NET_TASK_STRUCT rx_done_task;
@@ -670,12 +670,12 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 #ifdef RTMP_MAC_USB
 #define RTMP_IO_FORCE_READ32(_A, _R, _pV)								\
-	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
+	RTUSBReadMACRegister((_A), (_R), (_pV))
 
 #define RTMP_IO_FORCE_WRITE32(_A, _R, _V)	\
 	do{\
 		/*if ((_R) != 0x404)*/ /* TODO:shiang-6590, depends on sw porting guide, don't acccess it now */\
-			RTUSBWriteMACRegister((_A), (_R), (UINT32) (_V), FALSE);		\
+			RTUSBWriteMACRegister((_A), (_R), (u32) (_V), FALSE);		\
 	}while(0)
 
 #define RTMP_IO_READ8(_A, _R, _pV)								\
@@ -684,10 +684,10 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 //BURST_READ(_A, _R, 1, _pV);
 #define RTMP_IO_READ32(_A, _R, _pV)								\
-	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
+	RTUSBReadMACRegister((_A), (_R), (_pV))
 
 #define RTMP_IO_WRITE32(_A, _R, _V)								\
-	RTUSBWriteMACRegister((_A), (_R), (UINT32) (_V), FALSE)
+	RTUSBWriteMACRegister((_A), (_R), (u32) (_V), FALSE)
 
 #define RTMP_IO_WRITE8(_A, _R, _V)								\
 {																\

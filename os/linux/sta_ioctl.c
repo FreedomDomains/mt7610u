@@ -60,7 +60,7 @@ typedef struct __attribute__ ((packed)) _RT_VERSION_INFO{
 } RT_VERSION_INFO, *PRT_VERSION_INFO;
 
 extern INT32 ralinkrate[];
-extern UINT32 RT_RateSize;
+extern u32 RT_RateSize;
 
 
 
@@ -261,7 +261,7 @@ int rt_ioctl_giwrange(struct net_device *dev,
 	int i;
 	ULONG Mode, ChannelListNum;
 	UCHAR *pChannel;
-	UINT32 *pFreq;
+	u32 *pFreq;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -321,7 +321,7 @@ int rt_ioctl_giwrange(struct net_device *dev,
 	os_alloc_mem(NULL, (UCHAR **)&pChannel, sizeof(UCHAR)*ChannelListNum);
 	if (pChannel == NULL)
 		return -ENOMEM;
-	os_alloc_mem(NULL, (UCHAR **)&pFreq, sizeof(UINT32)*ChannelListNum);
+	os_alloc_mem(NULL, (UCHAR **)&pFreq, sizeof(u32)*ChannelListNum);
 	if (pFreq == NULL)
 	{
 		kfree(pChannel);
@@ -1805,7 +1805,7 @@ int rt_ioctl_siwrate(struct net_device *dev,
 			union iwreq_data *wrqu, char *extra)
 {
     struct rtmp_adapter *pAd = NULL;
-    UINT32          rate = wrqu->bitrate.value, fixed = wrqu->bitrate.fixed;
+    u32          rate = wrqu->bitrate.value, fixed = wrqu->bitrate.fixed;
 	RT_CMD_RATE_SET CmdRate;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1953,7 +1953,7 @@ INT rt28xx_sta_ioctl(
 /*	BOOLEAN				StateMachineTouched = FALSE; */
 	INT					Status = NDIS_STATUS_SUCCESS;
 	USHORT				subcmd;
-	UINT32				org_len;
+	u32				org_len;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 

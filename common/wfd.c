@@ -246,12 +246,12 @@ INT Set_WfdLocalIp_Proc(
 	IN	char *		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
-	UINT32 ip_addr;
+	u32 ip_addr;
 
 	rtinet_aton(arg, &ip_addr);
 	printk("IP = %04x\n", ip_addr);
 	pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[0] = WFD_LOCAL_IP_ADDR_VERSION_IPV4;
-	memmove(&pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], &ip_addr, sizeof(UINT32));
+	memmove(&pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1], &ip_addr, sizeof(u32));
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: local IP Address = %d.%d.%d.%d\n", __FUNCTION__,
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[1],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[2],
@@ -266,7 +266,7 @@ INT Set_PeerRtspPort_Proc(
 	IN	char *		arg)
 {
 	PRT_WFD_CONFIG pWFDCtrl = &pAd->StaCfg.WfdCfg;
-	UINT32 ip_addr;
+	u32 ip_addr;
 
 	MAC_TABLE_ENTRY *pEntry;
 	USHORT RtspPort = WFD_RTSP_DEFAULT_PORT;
