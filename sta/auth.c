@@ -157,7 +157,7 @@ void PeerAuthRspAtSeq2Action(
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status2;
 	UCHAR ChallengeIe = IE_CHALLENGE_TEXT;
@@ -372,7 +372,7 @@ void MlmeDeauthReqAction(
 	MLME_DEAUTH_REQ_STRUCT *pInfo;
 	HEADER_802_11 DeauthHdr;
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status;
 
@@ -467,7 +467,7 @@ void Cls2errAction(
 {
 	HEADER_802_11 DeauthHdr;
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Reason = REASON_CLS2ERR;
 
@@ -502,7 +502,7 @@ BOOLEAN AUTH_ReqSend(
 	ULONG Timeout;
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0, tmp = 0;
 

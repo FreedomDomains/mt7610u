@@ -327,10 +327,10 @@ CHAR RTMP_GetTxPwr(
 }
 
 
-NDIS_STATUS	MeasureReqTabInit(
+int	MeasureReqTabInit(
 	IN struct rtmp_adapter *pAd)
 {
-	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
+	int     Status = NDIS_STATUS_SUCCESS;
 
 	NdisAllocateSpinLock(pAd, &pAd->CommonCfg.MeasureReqTabLock);
 
@@ -552,10 +552,10 @@ void MeasureReqDelete(
 	return;
 }
 
-NDIS_STATUS	TpcReqTabInit(
+int	TpcReqTabInit(
 	IN struct rtmp_adapter *pAd)
 {
-	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
+	int     Status = NDIS_STATUS_SUCCESS;
 
 	NdisAllocateSpinLock(pAd, &pAd->CommonCfg.TpcReqTabLock);
 
@@ -1156,7 +1156,7 @@ void EnqueueMeasurementRep(
 	IN u8 * pReportInfo)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen;
 	HEADER_802_11 ActHdr;
 	MEASURE_REPORT_INFO MeasureRepIE;
@@ -1210,7 +1210,7 @@ void EnqueueTPCReq(
 	IN UCHAR DialogToken)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen;
 
 	HEADER_802_11 ActHdr;
@@ -1262,7 +1262,7 @@ void EnqueueTPCRep(
 	IN u8 LinkMargin)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen;
 
 	HEADER_802_11 ActHdr;
@@ -2072,7 +2072,7 @@ INT Set_MeasureReq_Proc(
 
 	HEADER_802_11 ActHdr;
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen;
 
 	NStatus = os_alloc_mem(pAd, (void *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/

@@ -1217,13 +1217,13 @@ void    RTMPSetDesiredRates(
 #endif /* CONFIG_STA_SUPPORT */
 
 #if defined(CONFIG_STA_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
-NDIS_STATUS RTMPWPARemoveKeyProc(
+int RTMPWPARemoveKeyProc(
 	IN	struct rtmp_adapter *pAd,
 	IN	void *		pBuf)
 {
 	PNDIS_802_11_REMOVE_KEY pKey;
 	ULONG					KeyIdx;
-	NDIS_STATUS 			Status = NDIS_STATUS_FAILURE;
+	int 			Status = NDIS_STATUS_FAILURE;
 	BOOLEAN 	bTxKey; 		/* Set the key as transmit key*/
 	BOOLEAN 	bPairwise;		/* Indicate the key is pairwise key*/
 	BOOLEAN 	bKeyRSC;		/* indicate the receive  SC set by KeyRSC value.*/

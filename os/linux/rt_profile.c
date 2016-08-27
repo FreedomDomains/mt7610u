@@ -119,7 +119,7 @@ static char *RT2870STA_dat =
 "PMFMFPR=0\n"
 "PMFSHA256=0\n";
 
-NDIS_STATUS	RTMPReadParametersHook(
+int	RTMPReadParametersHook(
 	IN	struct rtmp_adapter *pAd)
 {
 	INT   retval = NDIS_STATUS_FAILURE;

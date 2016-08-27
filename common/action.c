@@ -98,7 +98,7 @@ void MlmeADDBAAction(
 	MLME_ADDBA_REQ_STRUCT *pInfo;
 	UCHAR           Addr[6];
 	u8 *        pOutBuffer = NULL;
-	NDIS_STATUS     NStatus;
+	int     NStatus;
 	ULONG		Idx;
 	FRAME_ADDBA_REQ  Frame;
 	ULONG		FrameLen;
@@ -199,7 +199,7 @@ void MlmeDELBAAction(
 	MLME_DELBA_REQ_STRUCT *pInfo;
 	u8 *        pOutBuffer = NULL;
 	u8 *	   pOutBuffer2 = NULL;
-	NDIS_STATUS     NStatus;
+	int     NStatus;
 	ULONG		Idx;
 	FRAME_DELBA_REQ  Frame;
 	ULONG		FrameLen;
@@ -506,7 +506,7 @@ void Send2040CoexistAction(
 	IN	BOOLEAN	bAddIntolerantCha)
 {
 	u8 *		pOutBuffer = NULL;
-	NDIS_STATUS 	NStatus;
+	int 	NStatus;
 	FRAME_ACTION_HDR	Frame;
 	ULONG			FrameLen;
 	UINT32			IntolerantChaRepLen;
@@ -800,7 +800,7 @@ static void respond_ht_information_exchange_action(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	u8 *		pOutBuffer = NULL;
-	NDIS_STATUS		NStatus;
+	int		NStatus;
 	ULONG			FrameLen;
 	FRAME_HT_INFO	HTINFOframe, *pFrame;
 	UCHAR   		*pAddr;
@@ -944,7 +944,7 @@ void ORIBATimerTimeout(
 	INT			i, total;
 /*	FRAME_BAR			FrameBar;*/
 /*	ULONG			FrameLen;*/
-/*	NDIS_STATUS 	NStatus;*/
+/*	int 	NStatus;*/
 /*	u8 *		pOutBuffer = NULL;*/
 /*	USHORT			Sequence;*/
 	UCHAR			TID;
@@ -976,7 +976,7 @@ void SendRefreshBAR(
 {
 	FRAME_BAR		FrameBar;
 	ULONG			FrameLen;
-	NDIS_STATUS 	NStatus;
+	int 	NStatus;
 	u8 *		pOutBuffer = NULL;
 	USHORT			Sequence;
 	UCHAR			i, TID;

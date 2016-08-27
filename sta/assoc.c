@@ -265,7 +265,7 @@ void MlmeAssocReqAction(
 	USHORT CapabilityInfo;
 	BOOLEAN TimerCancelled;
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	ULONG tmp;
 	USHORT VarIesOffset = 0;
@@ -695,7 +695,7 @@ void MlmeReassocReqAction(
 	ULONG Timeout;
 	ULONG FrameLen = 0;
 	BOOLEAN TimerCancelled;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG tmp;
 	u8 *pOutBuffer = NULL;
 	USHORT Status;
@@ -936,7 +936,7 @@ void MlmeDisassocReqAction(
 	PHEADER_802_11 pDisassocHdr;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	BOOLEAN TimerCancelled;
 	ULONG Timeout = 500;
 	USHORT Status;
@@ -1702,7 +1702,7 @@ void Cls3errAction(
 	PHEADER_802_11 pDisassocHdr;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	USHORT Reason = REASON_CLS3ERR;
 
 	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */

@@ -142,12 +142,12 @@ NDIS_SPIN_LOCK TimerSemLock;
 
 	========================================================================
 */
-NDIS_STATUS	RTMPAllocAdapterBlock(
+int	RTMPAllocAdapterBlock(
 	IN  void *handle,
 	OUT	void **ppAdapter)
 {
 	struct rtmp_adapter *pAd = NULL;
-	NDIS_STATUS		Status;
+	int		Status;
 	INT 			index;
 	UCHAR			*pBeaconBuf = NULL;
 
@@ -1310,11 +1310,11 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 
 	========================================================================
 */
-NDIS_STATUS	NICInitializeAdapter(
+int	NICInitializeAdapter(
 	IN	struct rtmp_adapter *pAd,
 	IN   BOOLEAN    bHardReset)
 {
-	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
+	int     Status = NDIS_STATUS_SUCCESS;
 	ULONG j=0;
 
 
@@ -1371,7 +1371,7 @@ retry:
 
 	========================================================================
 */
-NDIS_STATUS	NICInitializeAsic(
+int	NICInitializeAsic(
 	IN	struct rtmp_adapter *pAd,
 	IN  BOOLEAN		bHardReset)
 {
@@ -2228,10 +2228,10 @@ void NICUpdateRawCounters(
 
 }
 
-NDIS_STATUS NICLoadFirmware(
+int NICLoadFirmware(
 	IN struct rtmp_adapter *pAd)
 {
-	NDIS_STATUS	 status = NDIS_STATUS_SUCCESS;
+	int	 status = NDIS_STATUS_SUCCESS;
 	ULONG Old, New, Diff;
 
 	RTMP_GetCurrentSystemTick(&Old);

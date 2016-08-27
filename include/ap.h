@@ -70,17 +70,17 @@ void APSendPackets(
 	IN	struct sk_buff **ppPacketArray,
 	IN	UINT			NumberOfPackets);
 
-NDIS_STATUS APSendPacket(
+int APSendPacket(
     IN  struct rtmp_adapter *  pAd,
     IN  struct sk_buff *    pPacket);
 
-NDIS_STATUS APInsertPsQueue(
+int APInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
 	IN UCHAR QueIdx);
 
-NDIS_STATUS APHardTransmit(
+int APHardTransmit(
 	IN	struct rtmp_adapter *pAd,
 	IN	TX_BLK			*pTxBlk,
 	IN	UCHAR			QueIdx);
@@ -91,7 +91,7 @@ void APRxEAPOLFrameIndicate(
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID);
 
-NDIS_STATUS APCheckRxError(
+int APCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN RXINFO_STRUC *pRxInfo,
 	IN UCHAR Wcid);
@@ -296,7 +296,7 @@ void APAsicRxAntEvalTimeout(
 	IN struct rtmp_adapter *pAd);
 
 /* ap.c */
-NDIS_STATUS APInitialize(
+int APInitialize(
     IN  struct rtmp_adapter *  pAd);
 
 void APShutdown(

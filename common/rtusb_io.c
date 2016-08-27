@@ -921,14 +921,14 @@ int RTUSBWakeUp(
 
 	========================================================================
 */
-NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
+int	RTUSBEnqueueCmdFromNdis(
 	IN	struct rtmp_adapter *pAd,
 	IN	NDIS_OID		Oid,
 	IN	BOOLEAN			SetInformation,
 	IN	void *		pInformationBuffer,
 	IN	UINT32			InformationBufferLength)
 {
-	NDIS_STATUS	status;
+	int	status;
 	PCmdQElmt	cmdqelmt = NULL;
 	RTMP_OS_TASK	*pTask = &pAd->cmdQTask;
 
@@ -1897,7 +1897,7 @@ void CMDHandler(
     IN struct rtmp_adapter *pAd)
 {
 	PCmdQElmt		cmdqelmt;
-	NDIS_STATUS		NdisStatus = NDIS_STATUS_SUCCESS;
+	int		NdisStatus = NDIS_STATUS_SUCCESS;
 	int		ntStatus;
 /*	unsigned long	IrqFlags;*/
 

@@ -3875,23 +3875,23 @@ BOOLEAN RTMPCheckForHang(
 /*
 	Private routines in rtmp_init.c
 */
-NDIS_STATUS RTMPAllocTxRxRingMemory(
+int RTMPAllocTxRxRingMemory(
 	IN  struct rtmp_adapter *  pAd);
 
 #ifdef RESOURCE_PRE_ALLOC
-NDIS_STATUS RTMPInitTxRxRingMemory(
+int RTMPInitTxRxRingMemory(
 	IN struct rtmp_adapter*pAd);
 #endif /* RESOURCE_PRE_ALLOC */
 
-NDIS_STATUS	RTMPReadParametersHook(
+int	RTMPReadParametersHook(
 	IN	struct rtmp_adapter *pAd);
 
-NDIS_STATUS	RTMPSetProfileParameters(
+int	RTMPSetProfileParameters(
 	IN struct rtmp_adapter*pAd,
 	IN char *	pBuffer);
 
 #ifdef SINGLE_SKU_V2
-NDIS_STATUS	RTMPSetSingleSKUParameters(
+int	RTMPSetSingleSKUParameters(
 	IN struct rtmp_adapter*pAd);
 #endif /* SINGLE_SKU_V2 */
 
@@ -3906,13 +3906,13 @@ INT RTMPGetKeyParameter(
 
 
 #ifdef RLT_RF
-NDIS_STATUS rlt_rf_write(
+int rlt_rf_write(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
 	IN UCHAR value);
 
-NDIS_STATUS rlt_rf_read(
+int rlt_rf_read(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
@@ -3925,11 +3925,11 @@ void NICReadEEPROMParameters(
 void NICInitAsicFromEEPROM(
 	IN  struct rtmp_adapter *      pAd);
 
-NDIS_STATUS NICInitializeAdapter(
+int NICInitializeAdapter(
 	IN  struct rtmp_adapter *  pAd,
 	IN   BOOLEAN    bHardReset);
 
-NDIS_STATUS NICInitializeAsic(
+int NICInitializeAsic(
 	IN  struct rtmp_adapter *  pAd,
 	IN  BOOLEAN		bHardReset);
 
@@ -3944,7 +3944,7 @@ void UserCfgExit(
 void UserCfgInit(
 	IN  struct rtmp_adapter *  pAd);
 
-NDIS_STATUS NICLoadFirmware(
+int NICLoadFirmware(
 	IN  struct rtmp_adapter *  pAd);
 
 void NICEraseFirmware(
@@ -4260,7 +4260,7 @@ void RTMPHandleRxCoherentInterrupt(
 
 
 
-NDIS_STATUS STASendPacket(
+int STASendPacket(
 	IN  struct rtmp_adapter *  pAd,
 	IN  struct sk_buff *    pPacket);
 
@@ -4275,13 +4275,13 @@ void RTMPDeQueuePacket(
 	IN UCHAR QueIdx,
 	IN INT Max_Tx_Packets);
 
-NDIS_STATUS	RTMPHardTransmit(
+int	RTMPHardTransmit(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff *		pPacket,
 	IN  UCHAR			QueIdx,
 	OUT	PULONG			pFreeTXDLeft);
 
-NDIS_STATUS	STAHardTransmit(
+int	STAHardTransmit(
 	IN struct rtmp_adapter *pAd,
 	IN TX_BLK			*pTxBlk,
 	IN  UCHAR			QueIdx);
@@ -4292,20 +4292,20 @@ void STARxEAPOLFrameIndicate(
 	IN	RX_BLK			*pRxBlk,
 	IN	UCHAR			FromWhichBSSID);
 
-NDIS_STATUS RTMPFreeTXDRequest(
+int RTMPFreeTXDRequest(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR           RingType,
 	IN  UCHAR           NumberRequired,
 	IN 	u8 *         FreeNumberIs);
 
-NDIS_STATUS MlmeHardTransmit(
+int MlmeHardTransmit(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR	QueIdx,
 	IN  struct sk_buff *    pPacket,
 	IN	BOOLEAN			FlgDataQForce,
 	IN	BOOLEAN			FlgIsLocked);
 
-NDIS_STATUS MlmeHardTransmitMgmtRing(
+int MlmeHardTransmitMgmtRing(
 	IN  struct rtmp_adapter *  pAd,
 	IN  UCHAR	QueIdx,
 	IN  struct sk_buff *    pPacket);
@@ -4353,7 +4353,7 @@ void RTMPSuspendMsduTransmission(
 void RTMPResumeMsduTransmission(
 	IN struct rtmp_adapter*pAd);
 
-NDIS_STATUS MiniportMMRequest(
+int MiniportMMRequest(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR *pData,
@@ -4776,7 +4776,7 @@ void  BssTableSortByRssi(
 void BssCipherParse(
 	IN OUT  PBSS_ENTRY  pBss);
 
-NDIS_STATUS  MlmeQueueInit(
+int  MlmeQueueInit(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE *Queue);
 
@@ -5064,11 +5064,11 @@ void RTMPSendDLSTearDownFrame(
 	IN	struct rtmp_adapter *pAd,
 	IN  u8 *         pDA);
 
-NDIS_STATUS RTMPSendSTAKeyRequest(
+int RTMPSendSTAKeyRequest(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pDA);
 
-NDIS_STATUS RTMPSendSTAKeyHandShake(
+int RTMPSendSTAKeyHandShake(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pDA);
 
@@ -5812,7 +5812,7 @@ void RTMPUpdateLegacyTxSetting(
 BOOLEAN RTMPAutoRateSwitchCheck(
 	IN struct rtmp_adapter *   pAd);
 
-NDIS_STATUS MlmeInit(
+int MlmeInit(
 	IN  struct rtmp_adapter *  pAd);
 
 
@@ -5944,7 +5944,7 @@ INT	Set_Antenna_Proc(
 /* */
 /* Prototypes of function definition in cmm_info.c */
 /* */
-NDIS_STATUS RTMPWPARemoveKeyProc(
+int RTMPWPARemoveKeyProc(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *          pBuf);
 
@@ -7046,13 +7046,13 @@ void RT28xx_UpdateBeaconToAsic(
 void CfgInitHook(struct rtmp_adapter *pAd);
 
 
-NDIS_STATUS RtmpNetTaskInit(
+int RtmpNetTaskInit(
 	IN struct rtmp_adapter*pAd);
 
 void RtmpNetTaskExit(
 	IN struct rtmp_adapter *pAd);
 
-NDIS_STATUS RtmpMgmtTaskInit(
+int RtmpMgmtTaskInit(
 	IN struct rtmp_adapter*pAd);
 
 void RtmpMgmtTaskExit(
@@ -7066,10 +7066,10 @@ void tbtt_tasklet(unsigned long data);
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
-NDIS_STATUS RecoverConnectInfo(
+int RecoverConnectInfo(
 	IN  struct rtmp_adapter*pAd);
 
-NDIS_STATUS StoreConnectInfo(
+int StoreConnectInfo(
 	IN  struct rtmp_adapter*pAd);
 #endif /* CREDENTIAL_STORE */
 #endif /* CONFIG_STA_SUPPORT */
@@ -7169,7 +7169,7 @@ void RTUSBPutToSleep(
 int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd);
 
-NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
+int	RTUSBEnqueueCmdFromNdis(
 	IN	struct rtmp_adapter *pAd,
 	IN	NDIS_OID		Oid,
 	IN	BOOLEAN			SetInformation,
@@ -7223,25 +7223,25 @@ int RTUSBFirmwareWrite(
 int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd);
 
-NDIS_STATUS RTUSBSetHardWareRegister(
+int RTUSBSetHardWareRegister(
 	IN	struct rtmp_adapter *pAdapter,
 	IN	void *		pBuf);
 
-NDIS_STATUS RTUSBQueryHardWareRegister(
+int RTUSBQueryHardWareRegister(
 	IN	struct rtmp_adapter *pAdapter,
 	IN	void *		pBuf);
 
 /*void CMDHandler( */
 /*    IN struct rtmp_adapter *pAd); */
 
-NDIS_STATUS	RTUSBWriteHWMACAddress(
+int	RTUSBWriteHWMACAddress(
 	IN struct rtmp_adapter*pAd);
 
 void MlmeSetPsm(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT psm);
 
-NDIS_STATUS RTMPWPAAddKeyProc(
+int RTMPWPAAddKeyProc(
 	IN struct rtmp_adapter*pAd,
 	IN void *pBuf);
 
@@ -7267,7 +7267,7 @@ INT MlmeThread(ULONG Context);
 /*
 	Function Prototype in rtusb_data.c
 */
-NDIS_STATUS	RTUSBFreeDescRequest(
+int	RTUSBFreeDescRequest(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR BulkOutPipeId,
 	IN UINT32 req_cnt);
@@ -7370,7 +7370,7 @@ void RT28xxUsbAsicWOWDisable(
 
 #endif /* RTMP_MAC_USB */
 
-NDIS_STATUS RTMPCheckRxError(
+int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN RXWI_STRUC *pRxWI,
@@ -7602,7 +7602,7 @@ void RTThreadDequeueCmd(
 	IN	PCmdQ		cmdq,
 	OUT	PCmdQElmt	*pcmdqelmt);
 
-NDIS_STATUS RTEnqueueInternalCmd(
+int RTEnqueueInternalCmd(
 	IN struct rtmp_adapter *pAd,
 	IN NDIS_OID			Oid,
 	IN void *		pInformationBuffer,
@@ -7700,7 +7700,7 @@ void RTMPIoctlMAC(
 #endif /* DBG */
 
 
-NDIS_STATUS RTMPWPANoneAddKeyProc(
+int RTMPWPANoneAddKeyProc(
     IN  struct rtmp_adapter *  pAd,
     IN	void *		pBuf);
 

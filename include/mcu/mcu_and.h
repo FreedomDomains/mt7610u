@@ -244,7 +244,7 @@ struct mcu_skb_data {
 };
 
 #ifdef RTMP_MAC_USB
-NDIS_STATUS andes_usb_loadfw(struct rtmp_adapter *ad);
+int andes_usb_loadfw(struct rtmp_adapter *ad);
 #endif /* RTMP_MAC_USB */
 void andes_ctrl_init(struct rtmp_adapter *ad);
 void andes_ctrl_enable(struct rtmp_adapter *ad);

@@ -242,14 +242,14 @@ static void dumpTxBlk(TX_BLK *pTxBlk)
 
 	========================================================================
 */
-NDIS_STATUS MiniportMMRequest(
+int MiniportMMRequest(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR *pData,
 	IN UINT Length)
 {
 	struct sk_buff * pPacket;
-	NDIS_STATUS Status = NDIS_STATUS_SUCCESS;
+	int Status = NDIS_STATUS_SUCCESS;
 	ULONG FreeNum;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 	UCHAR rtmpHwHdr[40];
@@ -367,7 +367,7 @@ NDIS_STATUS MiniportMMRequest(
 
 	========================================================================
 */
-NDIS_STATUS MlmeHardTransmit(
+int MlmeHardTransmit(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN struct sk_buff * pPacket,
@@ -396,7 +396,7 @@ NDIS_STATUS MlmeHardTransmit(
 }
 
 
-NDIS_STATUS MlmeHardTransmitMgmtRing(
+int MlmeHardTransmitMgmtRing(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR QueIdx,
 	IN struct sk_buff * pPacket)
@@ -1000,7 +1000,7 @@ void RTMPDeQueuePacket(
 {
 	PQUEUE_ENTRY pEntry = NULL;
 	struct sk_buff * pPacket;
-	NDIS_STATUS Status = NDIS_STATUS_SUCCESS;
+	int Status = NDIS_STATUS_SUCCESS;
 	UCHAR Count=0;
 	PQUEUE_HEADER   pQueue;
 	ULONG FreeNumber[NUM_OF_TX_RING];
@@ -2374,7 +2374,7 @@ void RtmpEnqueueNullFrame(
     IN BOOLEAN       bEOSP,
     IN UCHAR         OldUP)
 {
-	NDIS_STATUS    NState;
+	int    NState;
 	PHEADER_802_11 pNullFr;
 	u8 *pFrame;
 	ULONG		   Length;

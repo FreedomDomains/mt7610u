@@ -70,7 +70,7 @@ void RtmpNetOpsSet(void *pNetOpsOrg);
 
 /* ========================================================================== */
 
-NDIS_STATUS RTMPAllocAdapterBlock(void *handle, void **ppAdapter);
+int RTMPAllocAdapterBlock(void *handle, void **ppAdapter);
 void RTMPFreeAdapter(void *pAd);
 BOOLEAN RtmpRaDevCtrlExit(void *pAd);
 INT RtmpRaDevCtrlInit(void *pAd, RTMP_INF_TYPE infType);

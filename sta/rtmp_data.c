@@ -1351,7 +1351,7 @@ void STAHandleRxControlFrame(
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN retStatus;
-	NDIS_STATUS status = NDIS_STATUS_FAILURE;
+	int status = NDIS_STATUS_FAILURE;
 
 	switch (pHeader->FC.SubType) {
 	case SUBTYPE_BLOCK_ACK_REQ:
@@ -1393,7 +1393,7 @@ void STAHandleRxControlFrame(
 */
 BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 {
-	NDIS_STATUS Status;
+	int Status;
 	UINT32 RxProcessed, RxPending;
 	BOOLEAN bReschedule = FALSE;
 	RXD_STRUC *pRxD;
@@ -1642,7 +1642,7 @@ BOOLEAN STAHandleRxDonePacket(
 	RXINFO_STRUC *pRxInfo;
 	PHEADER_802_11 pHeader;
 	BOOLEAN bReschedule = FALSE;
-	NDIS_STATUS Status;
+	int Status;
 
 	pRxWI = pRxBlk->pRxWI;
 	pRxD = (RXD_STRUC *)&pRxBlk->hw_rx_info[0];
@@ -1883,7 +1883,7 @@ Note:
 	You only can put OS-indepened & STA related code in here.
 ========================================================================
 */
-NDIS_STATUS STASendPacket(
+int STASendPacket(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket)
 {
@@ -2148,14 +2148,14 @@ NDIS_STATUS STASendPacket(
 	Actually, this function used to check if the TxHardware Queue still has frame need to send.
 	If no frame need to send, go to sleep, else, still wake up.
 */
-NDIS_STATUS RTMPFreeTXDRequest(
+int RTMPFreeTXDRequest(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR QueIdx,
 	IN UCHAR NumberRequired,
 	IN u8 *FreeNumberIs)
 {
 	/*ULONG         FreeNumber = 0; */
-	NDIS_STATUS Status = NDIS_STATUS_FAILURE;
+	int Status = NDIS_STATUS_FAILURE;
 	unsigned long IrqFlags;
 	HT_TX_CONTEXT *pHTTXContext;
 
@@ -4185,7 +4185,7 @@ void STA_Fragment_Frame_Tx(
 
 	========================================================================
 */
-NDIS_STATUS STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
+int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, UCHAR QueIdx)
 {
 	struct sk_buff *pPacket;
 	PQUEUE_ENTRY pQEntry;

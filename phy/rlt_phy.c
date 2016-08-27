@@ -28,7 +28,7 @@
 #include "rt_config.h"
 
 
-NDIS_STATUS NICInitBBP(struct rtmp_adapter*pAd)
+int NICInitBBP(struct rtmp_adapter*pAd)
 {
 	INT idx;
 

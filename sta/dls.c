@@ -90,7 +90,7 @@ void MlmeDlsReqAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	HEADER_802_11 DlsReqHdr;
 	PRT_802_11_DLS pDLS = NULL;
@@ -189,7 +189,7 @@ void PeerDlsReqAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT StatusCode = MLME_SUCCESS;
 	HEADER_802_11 DlsRspHdr;
@@ -831,7 +831,7 @@ void MlmeDlsTearDownAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	UCHAR Category = CATEGORY_DLS;
 	UCHAR Action = ACTION_DLS_TEARDOWN;
@@ -1421,7 +1421,7 @@ void RTMPSendDLSTearDownFrame(
 	IN u8 *pDA)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	HEADER_802_11 DlsTearDownHdr;
 	ULONG FrameLen = 0;
 	USHORT Reason = REASON_QOS_QSTA_LEAVING_QBSS;
@@ -1485,12 +1485,12 @@ void RTMPSendDLSTearDownFrame(
 
     ==========================================================================
  */
-NDIS_STATUS RTMPSendSTAKeyRequest(
+int RTMPSendSTAKeyRequest(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pDA)
 {
 	UCHAR Header802_3[14];
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	PEAPOL_PACKET pPacket;
 	UCHAR *mpool;
@@ -1622,12 +1622,12 @@ NDIS_STATUS RTMPSendSTAKeyRequest(
 
     ==========================================================================
  */
-NDIS_STATUS RTMPSendSTAKeyHandShake(
+int RTMPSendSTAKeyHandShake(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pDA)
 {
 	UCHAR Header802_3[14];
-	NDIS_STATUS NStatus;
+	int NStatus;
 	ULONG FrameLen = 0;
 	PEAPOL_PACKET pPacket;
 	UCHAR *mpool;

@@ -53,11 +53,11 @@ static void TDLS_UAPSD_TrafficIndPayloadBuild(
 	IN	PRT_802_11_TDLS				pTDLS);
 
 /* send a traffic indication frame */
-static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
+static int TDLS_UAPSD_TrafficIndSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac);
 /* send a traffic response frame */
-static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
+static int TDLS_UAPSD_TrafficRspSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac,
 	IN	UCHAR						PeerToken);
@@ -209,11 +209,11 @@ Note:
 		beacon intervals have expired after the last service period.
 ========================================================================
 */
-NDIS_STATUS TDLS_UAPSDP_TrafficIndSend(
+int TDLS_UAPSDP_TrafficIndSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac)
 {
-	NDIS_STATUS	NStatus;
+	int	NStatus;
 
 
 	TDLS_SEMLOCK(pAd);
@@ -910,14 +910,14 @@ Note:
 		beacon intervals have expired after the last service period.
 ========================================================================
 */
-static NDIS_STATUS TDLS_UAPSD_TrafficIndSend(
+static int TDLS_UAPSD_TrafficIndSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac)
 {
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	UCHAR Header802_3[14];
-	NDIS_STATUS	NStatus = NDIS_STATUS_FAILURE;
+	int	NStatus = NDIS_STATUS_FAILURE;
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
@@ -968,7 +968,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
+static int TDLS_UAPSD_TrafficRspSend(
 	IN	struct rtmp_adapter *			pAd,
 	IN	UCHAR						*pPeerMac,
 	IN	UCHAR						PeerToken)
@@ -982,7 +982,7 @@ static NDIS_STATUS TDLS_UAPSD_TrafficRspSend(
 	ULONG	TempLen;
 	INT32	LinkId;
 	UCHAR	RemoteFrameType = PROTO_NAME_TDLS;
-	NDIS_STATUS	NStatus = NDIS_STATUS_FAILURE;
+	int	NStatus = NDIS_STATUS_FAILURE;
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
@@ -1440,7 +1440,7 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	ULONG	FrameLen = 0;
 	ULONG	TempLen;
 	UCHAR	RemoteFrameType = PROTO_NAME_TDLS;
-	NDIS_STATUS	NStatus = NDIS_STATUS_SUCCESS;
+	int	NStatus = NDIS_STATUS_SUCCESS;
 	UCHAR PeerMac[6];
 	UINT32 IdTdls;
 
@@ -1621,7 +1621,7 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	ULONG FrameLen = 0;
 	INT32 LinkId;
 	RT_802_11_TDLS *pTDLS = NULL;
-	NDIS_STATUS	NStatus = NDIS_STATUS_SUCCESS;
+	int	NStatus = NDIS_STATUS_SUCCESS;
 	UCHAR RemoteFrameType = PROTO_NAME_TDLS;
 	ULONG TempLen;
 	UCHAR Token;			// Dialog token

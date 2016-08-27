@@ -66,17 +66,17 @@ void RtmpOsGetSystemUpTime(
 UINT32 RtmpOsTickUnitGet(void);
 
 /* OS Memory */
-NDIS_STATUS os_alloc_mem(
+int os_alloc_mem(
 	IN	void 				*pReserved,
 	OUT	UCHAR					**mem,
 	IN	ULONG					size);
 
-NDIS_STATUS os_alloc_mem_suspend(
+int os_alloc_mem_suspend(
 	IN	void 				*pReserved,
 	OUT	UCHAR					**mem,
 	IN	ULONG					size);
 
-NDIS_STATUS AdapterBlockAllocateMemory(
+int AdapterBlockAllocateMemory(
 	IN	void *				handle,
 	OUT	void *				*ppAd,
 	IN	UINT32					SizeOfpAd);
@@ -110,7 +110,7 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(
 	IN	void 				*pReserved,
 	IN	ULONG					Length);
 
-NDIS_STATUS RTMPAllocateNdisPacket(
+int RTMPAllocateNdisPacket(
 	IN	void 				*pReserved,
 	OUT struct sk_buff *			*ppPacket,
 	IN	u8 *				pHeader,
@@ -122,7 +122,7 @@ void RTMPFreeNdisPacket(
 	IN	void 				*pReserved,
 	IN	struct sk_buff *			pPacket);
 
-NDIS_STATUS Sniff2BytesFromNdisBuffer(
+int Sniff2BytesFromNdisBuffer(
 	IN  PNDIS_BUFFER			pFirstBuffer,
 	IN  UCHAR           		DesiredOffset,
 	OUT u8 *         		pByte0,
@@ -449,7 +449,7 @@ BOOLEAN RtmpOSTaskAlloc(
 void RtmpOSTaskFree(
 	IN	RTMP_OS_TASK			*pTask);
 
-NDIS_STATUS RtmpOSTaskKill(
+int RtmpOSTaskKill(
 	IN	RTMP_OS_TASK			*pTaskOrg);
 
 INT RtmpOSTaskNotifyToExit(
@@ -458,12 +458,12 @@ INT RtmpOSTaskNotifyToExit(
 void RtmpOSTaskCustomize(
 	IN	RTMP_OS_TASK			*pTaskOrg);
 
-NDIS_STATUS RtmpOSTaskAttach(
+int RtmpOSTaskAttach(
 	IN	RTMP_OS_TASK			*pTaskOrg,
 	IN	RTMP_OS_TASK_CALLBACK	fn,
 	IN	ULONG					arg);
 
-NDIS_STATUS RtmpOSTaskInit(
+int RtmpOSTaskInit(
 	IN	RTMP_OS_TASK			*pTaskOrg,
 	IN	char *				pTaskName,
 	IN	void 				*pPriv,

@@ -589,7 +589,7 @@ void BAOriSessionAdd(
 	UCHAR         TID;
 	USHORT        Idx;
 	u8 *         pOutBuffer2 = NULL;
-	NDIS_STATUS     NStatus;
+	int     NStatus;
 	ULONG           FrameLen;
 	FRAME_BAR       FrameBar;
 	UCHAR			MaxPeerBufSize;
@@ -1224,7 +1224,7 @@ void PeerAddBAReqAction(
 	UCHAR   pAddr[6];
 	FRAME_ADDBA_RSP ADDframe;
 	u8 *        pOutBuffer = NULL;
-	NDIS_STATUS     NStatus;
+	int     NStatus;
 	PFRAME_ADDBA_REQ  pAddreqFrame = NULL;
 	/*UCHAR		BufSize;*/
 	ULONG       FrameLen;
@@ -1472,7 +1472,7 @@ void SendPSMPAction(
 				   IN UCHAR				Psmp)
 {
 	u8 *pOutBuffer = NULL;
-	NDIS_STATUS NStatus;
+	int NStatus;
 	FRAME_PSMP_ACTION Frame;
 	ULONG FrameLen;
 

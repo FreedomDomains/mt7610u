@@ -44,7 +44,7 @@
 		NDIS_STATUS_FAILURE: If failed to do en-queue.
 ========================================================================
 */
-NDIS_STATUS RtmpInsertPsQueue(
+int RtmpInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,

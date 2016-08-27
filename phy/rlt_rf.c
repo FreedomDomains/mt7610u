@@ -29,13 +29,13 @@
 
 #include "rt_config.h"
 
-NDIS_STATUS rlt_rf_write(
+int rlt_rf_write(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
 	IN UCHAR value)
 {
-	NDIS_STATUS	 ret = 0;
+	int	 ret = 0;
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
 		BANK_RF_REG_PAIR reg;
@@ -115,13 +115,13 @@ done:
 
 	========================================================================
 */
-NDIS_STATUS rlt_rf_read(
+int rlt_rf_read(
 	IN struct rtmp_adapter*pAd,
 	IN UCHAR bank,
 	IN UCHAR regID,
 	IN UCHAR *pValue)
 {
-	NDIS_STATUS	 ret = 0;
+	int	 ret = 0;
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
 		BANK_RF_REG_PAIR reg;
 		reg.Bank = bank;

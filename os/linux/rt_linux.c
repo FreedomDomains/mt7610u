@@ -179,7 +179,7 @@ ULONG RTMPMsecsToJiffies(UINT32 m)
 
 /* pAd MUST allow to be NULL */
 
-NDIS_STATUS os_alloc_mem(
+int os_alloc_mem(
 	IN void *pReserved,
 	OUT UCHAR **mem,
 	IN ULONG size)
@@ -192,7 +192,7 @@ NDIS_STATUS os_alloc_mem(
 		return NDIS_STATUS_FAILURE;
 }
 
-NDIS_STATUS os_alloc_mem_suspend(
+int os_alloc_mem_suspend(
 	IN void *pReserved,
 	OUT UCHAR **mem,
 	IN ULONG size)
@@ -304,7 +304,7 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 /*
 	The allocated NDIS PACKET must be freed via RTMPFreeNdisPacket()
 */
-NDIS_STATUS RTMPAllocateNdisPacket(
+int RTMPAllocateNdisPacket(
 	IN void *pReserved,
 	OUT struct sk_buff * *ppPacket,
 	IN UCHAR *pHeader,
@@ -363,7 +363,7 @@ void RTMPFreeNdisPacket(
 /* NOTE: we do have an assumption here, that Byte0 and Byte1
  * always reasid at the same scatter gather buffer
  */
-NDIS_STATUS Sniff2BytesFromNdisBuffer(
+int Sniff2BytesFromNdisBuffer(
 	IN PNDIS_BUFFER pFirstBuffer,
 	IN UCHAR DesiredOffset,
 	OUT u8 *pByte0,
@@ -1008,7 +1008,7 @@ static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, BOOLEAN bSet)
 	Task create/management/kill related functions.
 
  *******************************************************************************/
-static inline NDIS_STATUS __RtmpOSTaskKill(OS_TASK *pTask)
+static inline int __RtmpOSTaskKill(OS_TASK *pTask)
 {
 	int ret = NDIS_STATUS_FAILURE;
 
@@ -1073,12 +1073,12 @@ static inline void __RtmpOSTaskCustomize(OS_TASK *pTask)
 #endif
 }
 
-static inline NDIS_STATUS __RtmpOSTaskAttach(
+static inline int __RtmpOSTaskAttach(
 	IN OS_TASK *pTask,
 	IN RTMP_OS_TASK_CALLBACK fn,
 	IN ULONG arg)
 {
-	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
+	int status = NDIS_STATUS_SUCCESS;
 #ifndef KTHREAD_SUPPORT
 	pid_t pid_number = -1;
 #endif /* KTHREAD_SUPPORT */
@@ -1106,7 +1106,7 @@ static inline NDIS_STATUS __RtmpOSTaskAttach(
 	return status;
 }
 
-static inline NDIS_STATUS __RtmpOSTaskInit(
+static inline int __RtmpOSTaskInit(
 	IN OS_TASK *pTask,
 	IN char *pTaskName,
 	IN void *pPriv,
@@ -1590,7 +1590,7 @@ Return Value:
 Note:
 ========================================================================
 */
-NDIS_STATUS AdapterBlockAllocateMemory(void *handle, void **ppAd, UINT32 SizeOfpAd)
+int AdapterBlockAllocateMemory(void *handle, void **ppAd, UINT32 SizeOfpAd)
 {
 
 /*	*ppAd = (void *)vmalloc(sizeof(struct rtmp_adapter)); //pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
@@ -3096,7 +3096,7 @@ void RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
 }
 
 
-NDIS_STATUS RtmpOSTaskKill(RTMP_OS_TASK *pTask)
+int RtmpOSTaskKill(RTMP_OS_TASK *pTask)
 {
 	return __RtmpOSTaskKill(pTask);
 }
@@ -3114,7 +3114,7 @@ void RtmpOSTaskCustomize(RTMP_OS_TASK *pTask)
 }
 
 
-NDIS_STATUS RtmpOSTaskAttach(
+int RtmpOSTaskAttach(
 	RTMP_OS_TASK *pTask,
 	RTMP_OS_TASK_CALLBACK fn,
 	ULONG arg)
@@ -3123,7 +3123,7 @@ NDIS_STATUS RtmpOSTaskAttach(
 }
 
 
-NDIS_STATUS RtmpOSTaskInit(
+int RtmpOSTaskInit(
 	RTMP_OS_TASK *pTask,
 	char *pTaskName,
 	void *pPriv,

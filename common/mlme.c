@@ -163,10 +163,10 @@ UCHAR dot11_2_ra_rate(UCHAR MaxSupportedRateIn500Kbps)
 
 	==========================================================================
 */
-NDIS_STATUS MlmeInit(
+int MlmeInit(
 	IN struct rtmp_adapter *pAd)
 {
-	NDIS_STATUS Status = NDIS_STATUS_SUCCESS;
+	int Status = NDIS_STATUS_SUCCESS;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> MLME Initialize\n"));
 
@@ -3886,7 +3886,7 @@ ULONG MakeOutgoingFrame(
  IRQL = PASSIVE_LEVEL
 
  */
-NDIS_STATUS MlmeQueueInit(
+int MlmeQueueInit(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE *Queue)
 {
