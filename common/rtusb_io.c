@@ -102,10 +102,10 @@ void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value)
 	}
 }
 
-static NTSTATUS	RTUSBFirmwareRun(
+static int	RTUSBFirmwareRun(
 	IN	struct rtmp_adapter *pAd)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -139,11 +139,11 @@ static NTSTATUS	RTUSBFirmwareRun(
 
 	========================================================================
 */
-NTSTATUS	RTUSBFirmwareOpmode(
+int	RTUSBFirmwareOpmode(
 	IN	struct rtmp_adapter *pAd,
 	OUT	PULONG			pValue)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -173,13 +173,13 @@ NTSTATUS	RTUSBFirmwareOpmode(
 
 	========================================================================
 */
-NTSTATUS RTUSBFirmwareWrite(
+int RTUSBFirmwareWrite(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *	pFwImage,
 	IN ULONG		FwLen)
 {
 	UINT32		MacReg;
-	NTSTATUS 	Status;
+	int 	Status;
 /*	ULONG 		i;*/
 	USHORT		writeLen;
 	/*ULONG		FMode = 0;*/
@@ -208,10 +208,10 @@ NTSTATUS RTUSBFirmwareWrite(
 }
 
 
-NTSTATUS	RTUSBVenderReset(
+int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd)
 {
-	NTSTATUS	Status;
+	int	Status;
 	DBGPRINT_RAW(RT_DEBUG_ERROR, ("-->RTUSBVenderReset\n"));
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -241,13 +241,13 @@ NTSTATUS	RTUSBVenderReset(
 
 	========================================================================
 */
-NTSTATUS	RTUSBMultiRead(
+int	RTUSBMultiRead(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	u8 *		pData,
 	IN	USHORT			length)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -279,14 +279,14 @@ NTSTATUS	RTUSBMultiRead(
 
 	========================================================================
 */
-NTSTATUS RTUSBMultiWrite_nBytes(
+int RTUSBMultiWrite_nBytes(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	USHORT			batchLen)
 {
-	NTSTATUS Status = STATUS_SUCCESS;
+	int Status = STATUS_SUCCESS;
 	USHORT index = Offset, actLen = batchLen, leftLen = length;
 	u8 *pSrc = pData;
 
@@ -334,12 +334,12 @@ NTSTATUS RTUSBMultiWrite_nBytes(
 
 	========================================================================
 */
-NTSTATUS	RTUSBMultiWrite_OneByte(
+int	RTUSBMultiWrite_OneByte(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	/* TODO: In 2870, use this funciton carefully cause it's not stable.*/
 	Status = RTUSB_VendorRequest(
@@ -355,14 +355,14 @@ NTSTATUS	RTUSBMultiWrite_OneByte(
 	return Status;
 }
 
-NTSTATUS	RTUSBMultiWrite(
+int	RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	BOOLEAN			bWriteHigh)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 
 	USHORT          index = 0,Value;
@@ -384,13 +384,13 @@ NTSTATUS	RTUSBMultiWrite(
 }
 
 
-NTSTATUS RTUSBSingleWrite(
+int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
 	IN	USHORT			Value,
 	IN	BOOLEAN			WriteHigh)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -422,12 +422,12 @@ NTSTATUS RTUSBSingleWrite(
 
 	========================================================================
 */
-NTSTATUS	RTUSBReadMACRegister(
+int	RTUSBReadMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUINT32			pValue)
 {
-	NTSTATUS	Status = 0;
+	int	Status = 0;
 	UINT32		localVal;
 
 	Status = RTUSB_VendorRequest(
@@ -465,13 +465,13 @@ NTSTATUS	RTUSBReadMACRegister(
 
 	========================================================================
 */
-NTSTATUS RTUSBWriteMACRegister(
+int RTUSBWriteMACRegister(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	IN UINT32 Value,
 	IN BOOLEAN bWriteHigh)
 {
-	NTSTATUS Status;
+	int Status;
 	UINT32 localVal;
 
 	localVal = Value;
@@ -568,7 +568,7 @@ int read_reg(
 
 	========================================================================
 */
-NTSTATUS	RTUSBReadBBPRegister(
+int	RTUSBReadBBPRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
 	IN	u8 *		pValue)
@@ -638,7 +638,7 @@ NTSTATUS	RTUSBReadBBPRegister(
 
 	========================================================================
 */
-NTSTATUS RTUSBWriteBBPRegister(
+int RTUSBWriteBBPRegister(
 	IN struct rtmp_adapter *pAd,
 	IN UCHAR Id,
 	IN UCHAR Value)
@@ -697,13 +697,13 @@ NTSTATUS RTUSBWriteBBPRegister(
 
 	========================================================================
 */
-NTSTATUS	RTUSBWriteRFRegister(
+int	RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			Value)
 {
 	RF_CSR_CFG0_STRUC PhyCsr4;
 	UINT			i = 0;
-	NTSTATUS		status;
+	int		status;
 
 	memset(&PhyCsr4, 0, sizeof(RF_CSR_CFG0_STRUC));
 
@@ -758,13 +758,13 @@ done:
 
 	========================================================================
 */
-NTSTATUS RTUSBReadEEPROM(
+int RTUSBReadEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	u8 *		pData,
 	IN	USHORT			length)
 {
-	NTSTATUS	Status = STATUS_SUCCESS;
+	int	Status = STATUS_SUCCESS;
 
 		Status = RTUSB_VendorRequest(
 			pAd,
@@ -794,13 +794,13 @@ NTSTATUS RTUSBReadEEPROM(
 
 	========================================================================
 */
-NTSTATUS RTUSBWriteEEPROM(
+int RTUSBWriteEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
 	IN	USHORT			length)
 {
-	NTSTATUS Status = STATUS_SUCCESS;
+	int Status = STATUS_SUCCESS;
 	USHORT Value;
 
 	Status = RTUSB_VendorRequest(
@@ -817,12 +817,12 @@ NTSTATUS RTUSBWriteEEPROM(
 }
 
 
-NTSTATUS RTUSBReadEEPROM16(
+int RTUSBReadEEPROM16(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			offset,
 	OUT	PUSHORT			pData)
 {
-	NTSTATUS status;
+	int status;
 	USHORT  localData;
 
 	status = RTUSBReadEEPROM(pAd, offset, (u8 *)(&localData), 2);
@@ -833,7 +833,7 @@ NTSTATUS RTUSBReadEEPROM16(
 
 }
 
-NTSTATUS RTUSBWriteEEPROM16(
+int RTUSBWriteEEPROM16(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT offset,
 	IN USHORT value)
@@ -888,10 +888,10 @@ void RTUSBPutToSleep(
 
 	========================================================================
 */
-NTSTATUS RTUSBWakeUp(
+int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd)
 {
-	NTSTATUS	Status;
+	int	Status;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
@@ -1028,7 +1028,7 @@ NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
 
 	========================================================================
 */
-NTSTATUS    RTUSB_VendorRequest(
+int    RTUSB_VendorRequest(
 	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			TransferFlags,
 	IN	UCHAR			RequestType,
@@ -1133,10 +1133,10 @@ NTSTATUS    RTUSB_VendorRequest(
 
 	========================================================================
 */
-NTSTATUS RTUSB_ResetDevice(
+int RTUSB_ResetDevice(
 	IN	struct rtmp_adapter *pAd)
 {
-	NTSTATUS		Status = TRUE;
+	int		Status = TRUE;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("--->USB_ResetDevice\n"));
 	/*RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS);*/
@@ -1144,7 +1144,7 @@ NTSTATUS RTUSB_ResetDevice(
 }
 
 
-NTSTATUS CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+int CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 
 #ifdef RALINK_ATE
@@ -1201,7 +1201,7 @@ NTSTATUS CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 }
 
 
-static NTSTATUS ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 
 	INT32 MACValue = 0;
@@ -1369,10 +1369,10 @@ static NTSTATUS ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQe
 
 
 /* All transfers must be aborted or cancelled before attempting to reset the pipe.*/
-static NTSTATUS ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UINT32 MACValue;
-	NTSTATUS ntStatus;
+	int ntStatus;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("CmdThread : CMDTHREAD_RESET_BULK_IN === >\n"));
 
@@ -1491,7 +1491,7 @@ static NTSTATUS ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQel
 }
 
 
-static NTSTATUS SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID	SetAsicWcid;
 	USHORT		offset;
@@ -1527,7 +1527,7 @@ static NTSTATUS SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQel
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS DelAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int DelAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_SET_ASIC_WCID SetAsicWcid;
 	SetAsicWcid = *((PRT_SET_ASIC_WCID)(CMDQelmt->buffer));
@@ -1540,7 +1540,7 @@ static NTSTATUS DelAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQel
         return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SetWcidSecInfoHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetWcidSecInfoHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_SEC_INFO pInfo;
 
@@ -1556,7 +1556,7 @@ static NTSTATUS SetWcidSecInfoHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMD
 }
 
 
-static NTSTATUS SetAsicWcidIVEIVHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetAsicWcidIVEIVHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_IVEIV_ENTRY pInfo;
 
@@ -1570,7 +1570,7 @@ static NTSTATUS SetAsicWcidIVEIVHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt C
 }
 
 
-static NTSTATUS SetAsicWcidAttrHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetAsicWcidAttrHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_WCID_ATTR_ENTRY pInfo;
 
@@ -1585,7 +1585,7 @@ static NTSTATUS SetAsicWcidAttrHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CM
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SETAsicSharedKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SETAsicSharedKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_SHARED_KEY pInfo;
 
@@ -1598,7 +1598,7 @@ static NTSTATUS SETAsicSharedKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt C
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS SetAsicPairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetAsicPairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_PAIRWISE_KEY pInfo;
 
@@ -1611,7 +1611,7 @@ static NTSTATUS SetAsicPairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt
 }
 
 #ifdef CONFIG_STA_SUPPORT
-static NTSTATUS SetPortSecuredHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetPortSecuredHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	STA_PORT_SECURED(pAd);
 	return NDIS_STATUS_SUCCESS;
@@ -1619,7 +1619,7 @@ static NTSTATUS SetPortSecuredHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMD
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static NTSTATUS RemovePairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int RemovePairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UCHAR Wcid = *((u8 *)(CMDQelmt->buffer));
 
@@ -1628,7 +1628,7 @@ static NTSTATUS RemovePairwiseKeyHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt 
 }
 
 
-static NTSTATUS SetClientMACEntryHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetClientMACEntryHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_SET_ASIC_WCID pInfo;
 
@@ -1638,7 +1638,7 @@ static NTSTATUS SetClientMACEntryHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt 
 }
 
 
-static NTSTATUS UpdateProtectHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int UpdateProtectHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	PRT_ASIC_PROTECT_INFO pAsicProtectInfo;
 
@@ -1655,7 +1655,7 @@ static NTSTATUS UpdateProtectHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQ
 
 
 #ifdef CONFIG_STA_SUPPORT
-static NTSTATUS SetPSMBitHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetPSMBitHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
@@ -1667,7 +1667,7 @@ static NTSTATUS SetPSMBitHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt
 }
 
 
-static NTSTATUS ForceWakeUpHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int ForceWakeUpHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		AsicForceWakeup(pAd, TRUE);
@@ -1676,7 +1676,7 @@ static NTSTATUS ForceWakeUpHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQel
 }
 
 
-static NTSTATUS ForceSleepAutoWakeupHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int ForceSleepAutoWakeupHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	USHORT  TbttNumToNextWakeUp;
 	USHORT  NextDtim = pAd->StaCfg.DtimPeriod;
@@ -1698,7 +1698,7 @@ static NTSTATUS ForceSleepAutoWakeupHdlr(IN struct rtmp_adapter *pAd, IN PCmdQEl
 }
 
 
-NTSTATUS QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+int QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	StaQuickResponeForRateUpExec(NULL, pAd, NULL, NULL);
 	return NDIS_STATUS_SUCCESS;
@@ -1709,7 +1709,7 @@ NTSTATUS QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 
 
 #ifdef LED_CONTROL_SUPPORT
-static NTSTATUS SetLEDStatusHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int SetLEDStatusHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	UCHAR LEDStatus = *((u8 *)(CMDQelmt->buffer));
 
@@ -1728,25 +1728,25 @@ static NTSTATUS SetLEDStatusHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQe
 
 #ifdef LINUX
 #ifdef RT_CFG80211_SUPPORT
-static NTSTATUS RegHintHdlr (IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int RegHintHdlr (IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CRDA_REG_HINT(pAd, CMDQelmt->buffer, CMDQelmt->bufferlength);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RegHint11DHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int RegHint11DHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CRDA_REG_HINT11D(pAd, CMDQelmt->buffer, CMDQelmt->bufferlength);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RT_Mac80211_ScanEnd(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int RT_Mac80211_ScanEnd(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_SCAN_END(pAd, FALSE);
 	return NDIS_STATUS_SUCCESS;
 }
 
-static NTSTATUS RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RT_CFG80211_CONN_RESULT_INFORM(pAd,
 								pAd->MlmeAux.Bssid,
@@ -1761,7 +1761,7 @@ static NTSTATUS RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, IN PCmd
 
 
 #ifdef STREAM_MODE_SUPPORT
-static NTSTATUS UpdateTXChainAddress(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int UpdateTXChainAddress(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	AsicUpdateTxChainAddress(pAd, CMDQelmt->buffer);
 	return NDIS_STATUS_SUCCESS;
@@ -1770,7 +1770,7 @@ static NTSTATUS UpdateTXChainAddress(IN struct rtmp_adapter *pAd, IN PCmdQElmt C
 
 extern MSG_EVENT_HANDLER msg_event_handler_tb[];
 
-static NTSTATUS CmdRspEventCallback(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
+static int CmdRspEventCallback(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
 	RXFCE_INFO_CMD *pFceInfo = CMDQelmt->buffer;
 
@@ -1781,7 +1781,7 @@ static NTSTATUS CmdRspEventCallback(IN struct rtmp_adapter *pAd, IN PCmdQElmt CM
 }
 
 
-typedef NTSTATUS (*CMDHdlr)(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt);
+typedef int (*CMDHdlr)(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt);
 
 static CMDHdlr CMDHdlrTable[] = {
 	ResetBulkOutHdlr,				/* CMDTHREAD_RESET_BULK_OUT*/
@@ -1898,7 +1898,7 @@ void CMDHandler(
 {
 	PCmdQElmt		cmdqelmt;
 	NDIS_STATUS		NdisStatus = NDIS_STATUS_SUCCESS;
-	NTSTATUS		ntStatus;
+	int		ntStatus;
 /*	unsigned long	IrqFlags;*/
 
 	while (pAd && pAd->CmdQ.size > 0)

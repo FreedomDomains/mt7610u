@@ -581,7 +581,7 @@ INT32 RtmpOsIsInInterrupt(void);
 
 /* OS USB */
 void *RtmpOsUsbUrbDataGet(void *pUrb);
-NTSTATUS RtmpOsUsbUrbStatusGet(void *pUrb);
+int RtmpOsUsbUrbStatusGet(void *pUrb);
 ULONG RtmpOsUsbUrbLenGet(void *pUrb);
 
 /* OS Atomic */
@@ -837,7 +837,7 @@ void RtmpOsUsbInitRxDesc(
 void *RtmpOsUsbContextGet(
 	IN	void 		*pUrb);
 
-NTSTATUS RtmpOsUsbStatusGet(
+int RtmpOsUsbStatusGet(
 	IN	void 		*pUrb);
 
 void RtmpOsUsbDmaMapping(

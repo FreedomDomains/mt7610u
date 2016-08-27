@@ -796,7 +796,7 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pU
 {
 	struct rtmp_adapter *	pAd;
 	PTX_CONTEXT			pNullContext;
-	NTSTATUS			Status;
+	int			Status;
 	struct os_cookie *		pObj;
 
 
@@ -897,7 +897,7 @@ USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t p
 {
 	PTX_CONTEXT			pMLMEContext;
 	struct rtmp_adapter *	pAd;
-	NTSTATUS			Status;
+	int			Status;
 	struct os_cookie *			pObj;
 	int					index;
 
@@ -975,7 +975,7 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB,
 {
 	struct rtmp_adapter *	pAd;
 	PTX_CONTEXT			pPsPollContext;
-	NTSTATUS			Status;
+	int			Status;
 	struct os_cookie *		pObj;
 
 

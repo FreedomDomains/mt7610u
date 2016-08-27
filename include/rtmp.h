@@ -7102,46 +7102,46 @@ void RtmpTimerQInit(
 
 #ifdef RTMP_MAC_USB
 
-NTSTATUS RTUSBMultiRead(
+int RTUSBMultiRead(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	u8 *		pData,
 	IN	USHORT			length);
 
-NTSTATUS RTUSBMultiWrite(
+int RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
 	IN	USHORT			length,
 	IN	BOOLEAN			bWriteHigh);
 
-NTSTATUS RTUSBMultiWrite_nBytes(
+int RTUSBMultiWrite_nBytes(
         IN      struct rtmp_adapter *  pAd,
         IN      USHORT                  Offset,
         IN      u8 *                 pData,
         IN      USHORT                  length,
         IN      USHORT                  batchLen);
 
-NTSTATUS RTUSBMultiWrite_OneByte(
+int RTUSBMultiWrite_OneByte(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData);
 
-NTSTATUS RTUSBReadBBPRegister(
+int RTUSBReadBBPRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
 	IN	u8 *		pValue);
 
-NTSTATUS RTUSBWriteBBPRegister(
+int RTUSBWriteBBPRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UCHAR			Id,
 	IN	UCHAR			Value);
 
-NTSTATUS RTUSBWriteRFRegister(
+int RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			Value);
 
-NTSTATUS RTUSB_VendorRequest(
+int RTUSB_VendorRequest(
 	IN	struct rtmp_adapter *pAd,
 	IN	UINT32			TransferFlags,
 	IN	UCHAR			ReservedBits,
@@ -7151,13 +7151,13 @@ NTSTATUS RTUSB_VendorRequest(
 	IN	void *		TransferBuffer,
 	IN	UINT32			TransferBufferLength);
 
-NTSTATUS RTUSBReadEEPROM(
+int RTUSBReadEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	u8 *		pData,
 	IN	USHORT			length);
 
-NTSTATUS RTUSBWriteEEPROM(
+int RTUSBWriteEEPROM(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
@@ -7166,7 +7166,7 @@ NTSTATUS RTUSBWriteEEPROM(
 void RTUSBPutToSleep(
 	IN	struct rtmp_adapter *pAd);
 
-NTSTATUS RTUSBWakeUp(
+int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd);
 
 NDIS_STATUS	RTUSBEnqueueCmdFromNdis(
@@ -7198,29 +7198,29 @@ void RTUSBBssBeaconInit(
 void RTUSBWatchDog(
 	IN struct rtmp_adapter*pAd);
 
-NTSTATUS RTUSBWriteMACRegister(
+int RTUSBWriteMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	UINT32			Value,
 	IN	BOOLEAN			bWriteHigh);
 
-NTSTATUS RTUSBReadMACRegister(
+int RTUSBReadMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUINT32			pValue);
 
-NTSTATUS RTUSBSingleWrite(
+int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
 	IN	USHORT			Value,
 	IN	BOOLEAN			bWriteHigh);
 
-NTSTATUS RTUSBFirmwareWrite(
+int RTUSBFirmwareWrite(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *	pFwImage,
 	IN ULONG		FwLen);
 
-NTSTATUS	RTUSBVenderReset(
+int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd);
 
 NDIS_STATUS RTUSBSetHardWareRegister(

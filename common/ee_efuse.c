@@ -108,7 +108,7 @@ static void eFusePhysicalWriteRegisters(
 	IN	USHORT Length,
 	OUT	USHORT* pData);
 
-static NTSTATUS eFuseWriteRegisters(
+static int eFuseWriteRegisters(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -357,13 +357,13 @@ void eFuseReadPhysical(
 
 ========================================================================
 */
-NTSTATUS eFuseRead(
+int eFuseRead(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	PUSHORT			pData,
 	IN	USHORT			Length)
 {
-	NTSTATUS Status = STATUS_SUCCESS;
+	int Status = STATUS_SUCCESS;
 	UCHAR	EFSROM_AOUT;
 	int	i;
 
@@ -523,7 +523,7 @@ static void eFusePhysicalWriteRegisters(
 
 ========================================================================
 */
-static NTSTATUS eFuseWriteRegisters(
+static int eFuseWriteRegisters(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -842,7 +842,7 @@ static void eFuseWritePhysical(
 
 ========================================================================
 */
-NTSTATUS eFuseWrite(
+int eFuseWrite(
    	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	PUSHORT			pData,

@@ -269,12 +269,12 @@ struct rtmp_adapter;
 
 
 #ifdef RTMP_USB_SUPPORT
-NTSTATUS RTUSBReadEEPROM16(
+int RTUSBReadEEPROM16(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT offset,
 	OUT	USHORT *pData);
 
-NTSTATUS RTUSBWriteEEPROM16(
+int RTUSBWriteEEPROM16(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT offset,
 	IN USHORT value);
@@ -298,8 +298,8 @@ int rtmp_ee_efuse_read16(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pVal);
 int rtmp_ee_efuse_write16(struct rtmp_adapter *pAd, USHORT Offset, USHORT data);
 
 
-NTSTATUS eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
-NTSTATUS eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
+int eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
+int eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 
 INT eFuse_init(struct rtmp_adapter *pAd);
 INT efuse_probe(struct rtmp_adapter *pAd);
