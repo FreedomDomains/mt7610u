@@ -47,8 +47,6 @@ ULONG RTDebugFunc = 0;
  * path so throughput should not be impacted
  */
 BOOLEAN FlgIsUtilInit = FALSE;
-OS_NDIS_SPIN_LOCK UtilSemLock;
-
 
 BOOLEAN RTMP_OS_Alloc_RscOnly(void *pRscSrc, UINT32 RscLen);
 BOOLEAN RTMP_OS_Remove_Rsc(LIST_HEADER *pRscList, void *pRscSrc);
@@ -69,7 +67,6 @@ Note:
 void RtmpUtilInit(void)
 {
 	if (FlgIsUtilInit == FALSE) {
-		OS_NdisAllocateSpinLock(&UtilSemLock);
 		FlgIsUtilInit = TRUE;
 	}
 }
