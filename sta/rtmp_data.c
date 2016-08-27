@@ -1795,10 +1795,9 @@ Note:
 ========================================================================
 */
 void STASendPackets(
-	IN NDIS_HANDLE MiniportAdapterContext,
+	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff *pPacket)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *) MiniportAdapterContext;
 	BOOLEAN allowToSend = FALSE;
 
 	do {

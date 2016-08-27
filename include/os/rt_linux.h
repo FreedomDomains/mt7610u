@@ -133,7 +133,6 @@ extern	const struct iw_handler_def rt28xx_iw_handler_def;
 typedef struct pci_dev 		* PPCI_DEV;
 typedef	dma_addr_t			NDIS_PHYSICAL_ADDRESS;
 typedef	dma_addr_t			* PNDIS_PHYSICAL_ADDRESS;
-typedef void				* NDIS_HANDLE;
 typedef char 				* PNDIS_BUFFER;
 
 typedef struct ifreq		NET_IOCTL;

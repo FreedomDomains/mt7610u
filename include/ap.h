@@ -66,7 +66,7 @@ void RTMP_BASetup(
 	IN u8 UserPriority);
 
 void APSendPackets(
-	IN	NDIS_HANDLE		MiniportAdapterContext,
+	IN	struct rtmp_adapter *  pAd,
 	IN	struct sk_buff **ppPacketArray,
 	IN	UINT			NumberOfPackets);
 

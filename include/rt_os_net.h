@@ -85,7 +85,7 @@ INT RTMP_COM_IoctlHandle(
 	IN	ULONG					Data);
 
 int	RTMPSendPackets(
-	IN	NDIS_HANDLE		MiniportAdapterContext,
+	IN	struct rtmp_adapter	*pAd,
 	IN	struct sk_buff 		*pPacket);
 
 int MBSS_PacketSend(

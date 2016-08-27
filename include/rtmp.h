@@ -3868,10 +3868,6 @@ static inline void ConvertMulticastIP2MAC(
 char *get_phymode_str(int phy_mode);
 char *get_bw_str(int bandwidth);
 
-
-BOOLEAN RTMPCheckForHang(
-	IN  NDIS_HANDLE MiniportAdapterContext);
-
 /*
 	Private routines in rtmp_init.c
 */
@@ -4261,11 +4257,11 @@ void RTMPHandleRxCoherentInterrupt(
 
 
 int STASendPacket(
-	IN  struct rtmp_adapter *  pAd,
-	IN  struct sk_buff *    pPacket);
+	IN  struct rtmp_adapter *pAd,
+	IN  struct sk_buff *pPacket);
 
 void STASendPackets(
-	IN  NDIS_HANDLE     MiniportAdapterContext,
+	IN  struct rtmp_adapter *pAd,
 	IN  struct sk_buff *pPacketArray);
 
 void RTMPDeQueuePacket(

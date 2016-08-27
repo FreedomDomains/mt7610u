@@ -332,12 +332,9 @@ void RTMPFreeAdapter(
 
 
 int	RTMPSendPackets(
-	IN NDIS_HANDLE dev_hnd,
+	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket)
 {
-	struct rtmp_adapter*pAd = (struct rtmp_adapter*)dev_hnd;
-
-
 	INC_COUNTER64(pAd->WlanCounters.TransmitCountFrmOs);
 
 	if (pPacket == NULL)
@@ -376,7 +373,7 @@ int	RTMPSendPackets(
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
-		STASendPackets((NDIS_HANDLE)pAd, pPacket);
+		STASendPackets(pAd, pPacket);
 	}
 
 #endif /* CONFIG_STA_SUPPORT */

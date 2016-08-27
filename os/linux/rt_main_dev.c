@@ -87,7 +87,7 @@ Note:
 */
 int MainVirtualIF_close(IN struct net_device *net_dev)
 {
-    void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -134,7 +134,7 @@ Note:
 */
 int MainVirtualIF_open(IN struct net_device *net_dev)
 {
-    void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -187,7 +187,7 @@ Note:
 int rt28xx_close(void *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
-    void *pAd = NULL;
+	struct rtmp_adapter*pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -225,7 +225,7 @@ Note:
 int rt28xx_open(void *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
-	void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	int retval = 0;
 	ULONG OpMode;
 
@@ -404,13 +404,13 @@ int rt28xx_packet_xmit(void *skbsrc)
 {
 	struct sk_buff *skb = (struct sk_buff *)skbsrc;
 	struct net_device *net_dev = skb->dev;
-	void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	struct sk_buff * pPacket = (struct sk_buff *) skb;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 
-	return RTMPSendPackets((NDIS_HANDLE)pAd, pPacket);
+	return RTMPSendPackets(pAd, pPacket);
 
 }
 
@@ -452,7 +452,7 @@ static int rt28xx_send_packets(
 /* This function will be called when query /proc */
 struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 {
-	void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	struct iw_statistics *pStats;
 	struct RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
 
@@ -493,7 +493,7 @@ INT rt28xx_ioctl(
 	INOUT struct ifreq	*rq,
 	IN INT cmd)
 {
-	void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	INT ret = 0;
 	ULONG OpMode;
 
@@ -540,7 +540,7 @@ INT rt28xx_ioctl(
 struct net_device_stats *RT28xx_get_ether_stats(
     IN  struct net_device *net_dev)
 {
-    void *pAd = NULL;
+	struct rtmp_adapter*pAd = NULL;
 	struct net_device_stats *pStats;
 
 	if (net_dev)
@@ -620,7 +620,7 @@ BOOLEAN RtmpPhyNetDevExit(
 int RtmpOSIRQRequest(IN struct net_device *pNetDev)
 {
 	ULONG infType;
-	void *pAd = NULL;
+	struct rtmp_adapter *pAd = NULL;
 	int retval = 0;
 
 	GET_PAD_FROM_NET_DEV(pAd, pNetDev);
