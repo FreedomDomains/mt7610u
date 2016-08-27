@@ -519,18 +519,18 @@ void RTMP_OS_Free_Rscs(
 
 /* OS Lock */
 BOOLEAN RtmpOsAllocateLock(
-	IN	NDIS_SPIN_LOCK			*pLock,
+	IN	spinlock_t			*pLock,
 	IN	LIST_HEADER				*pLockList);
 
 void RtmpOsFreeSpinLock(
-	IN	NDIS_SPIN_LOCK			*pLockOrg);
+	IN	spinlock_t			*pLockOrg);
 
 void RtmpOsSpinLockBh(
-	IN	NDIS_SPIN_LOCK			*pLockOrg);
+	IN	spinlock_t			*pLockOrg);
 
-void RtmpOsSpinUnLockBh(NDIS_SPIN_LOCK *pLockOrg);
-void RtmpOsIntLock(NDIS_SPIN_LOCK *pLockOrg, ULONG *pIrqFlags);
-void RtmpOsIntUnLock(NDIS_SPIN_LOCK *pLockOrg, ULONG IrqFlags);
+void RtmpOsSpinUnLockBh(spinlock_t *pLockOrg);
+void RtmpOsIntLock(spinlock_t *pLockOrg, ULONG *pIrqFlags);
+void RtmpOsIntUnLock(spinlock_t *pLockOrg, ULONG IrqFlags);
 
 /* OS PID */
 void RtmpOsGetPid(ULONG *pDst, ULONG PID);
@@ -810,7 +810,7 @@ void rausb_kill_urb(void *urb);
 
 void RtmpOsUsbEmptyUrbCheck(
 	IN	void 			**ppWait,
-	IN	NDIS_SPIN_LOCK		*pBulkInLock,
+	IN	spinlock_t		*pBulkInLock,
 	IN	UCHAR				*pPendingRx);
 
 
@@ -980,14 +980,14 @@ extern UINT32 RT_RateSize;
 #include "vrut_ubm.h"
 #endif /* PLATFORM_UBM_IPX8 */
 
-void OS_SPIN_LOCK_IRQSAVE(NDIS_SPIN_LOCK *lock, unsigned long *flags);
-void OS_SPIN_UNLOCK_IRQRESTORE(NDIS_SPIN_LOCK *lock, unsigned long *flags);
-void OS_SPIN_LOCK_IRQ(NDIS_SPIN_LOCK *lock);
-void OS_SPIN_UNLOCK_IRQ(NDIS_SPIN_LOCK *lock);
-void RtmpOsSpinLockIrqSave(NDIS_SPIN_LOCK *lock, unsigned long *flags);
-void RtmpOsSpinUnlockIrqRestore(NDIS_SPIN_LOCK *lock, unsigned long *flags);
-void RtmpOsSpinLockIrq(NDIS_SPIN_LOCK *lock);
-void RtmpOsSpinUnlockIrq(NDIS_SPIN_LOCK *lock);
+void OS_SPIN_LOCK_IRQSAVE(spinlock_t *lock, unsigned long *flags);
+void OS_SPIN_UNLOCK_IRQRESTORE(spinlock_t *lock, unsigned long *flags);
+void OS_SPIN_LOCK_IRQ(spinlock_t *lock);
+void OS_SPIN_UNLOCK_IRQ(spinlock_t *lock);
+void RtmpOsSpinLockIrqSave(spinlock_t *lock, unsigned long *flags);
+void RtmpOsSpinUnlockIrqRestore(spinlock_t *lock, unsigned long *flags);
+void RtmpOsSpinLockIrq(spinlock_t *lock);
+void RtmpOsSpinUnlockIrq(spinlock_t *lock);
 int OS_TEST_BIT(int bit, unsigned long *flags);
 void OS_SET_BIT(int bit, unsigned long *flags);
 void OS_CLEAR_BIT(int bit, unsigned long *flags);

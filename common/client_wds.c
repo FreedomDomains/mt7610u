@@ -35,7 +35,7 @@ void CliWds_ProxyTabInit(
 	INT idx;
 	ULONG i;
 
-	NdisAllocateSpinLock(pAd, &pAd->ApCfg.CliWdsTabLock);
+	spin_lock_init(pAd, &pAd->ApCfg.CliWdsTabLock);
 
 /*	pAd->ApCfg.pCliWdsEntryPool = kmalloc(sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE, GFP_ATOMIC);*/
 	os_alloc_mem(pAd, (UCHAR **)&(pAd->ApCfg.pCliWdsEntryPool), sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
@@ -63,8 +63,6 @@ void CliWds_ProxyTabDestory(
 {
 	INT idx;
 	PCLIWDS_PROXY_ENTRY pCliWdsEntry;
-
-	NdisFreeSpinLock(&pAd->ApCfg.CliWdsTabLock);
 
 	for (idx = 0; idx < CLIWDS_HASH_TAB_SIZE; idx++)
 	{

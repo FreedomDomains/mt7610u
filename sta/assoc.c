@@ -1894,7 +1894,7 @@ BOOLEAN StaAddMacTableEntry(
 	TxBFInit(pAd, pEntry, supportsETxBf);
 
 	RTMPInitTimer(pAd, &pEntry->eTxBfProbeTimer, GET_TIMER_FUNCTION(eTxBfProbeTimerExec), pEntry, FALSE);
-	NdisAllocateSpinLock(pAd, &pEntry->TxSndgLock);
+	spin_lock_init(pAd, &pEntry->TxSndgLock);
 #endif /* TXBF_SUPPORT */
 
 	MlmeRAInit(pAd, pEntry);

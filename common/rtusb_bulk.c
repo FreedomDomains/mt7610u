@@ -1417,7 +1417,7 @@ void RTUSBCancelPendingBulkOutIRP(
 	PTX_CONTEXT			pPsPollContext;
 	UINT				i, Idx;
 /*	unsigned int 		IrqFlags;*/
-/*	NDIS_SPIN_LOCK		*pLock;*/
+/*	spinlock_t		*pLock;*/
 /*	BOOLEAN				*pPending;*/
 
 

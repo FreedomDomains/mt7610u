@@ -168,30 +168,23 @@ void RTMPResetTxRxRingMemory(
 
 	for(i=0; i<6; i++)
 	{
-		NdisFreeSpinLock(&pAd->BulkOutLock[i]);
+		;
 	}
 
-	NdisFreeSpinLock(&pAd->BulkInLock);
-	NdisFreeSpinLock(&pAd->CmdRspLock);
-	NdisFreeSpinLock(&pAd->MLMEBulkOutLock);
-
-	NdisFreeSpinLock(&pAd->CmdQLock);
 #ifdef RALINK_ATE
-	NdisFreeSpinLock(&pAd->GenericLock);
 #endif /* RALINK_ATE */
 	/* Clear all pending bulk-out request flags.*/
 	RTUSB_CLEAR_BULK_FLAG(pAd, 0xffffffff);
 
 	for (i = 0; i < NUM_OF_TX_RING; i++)
 	{
-		NdisFreeSpinLock(&pAd->TxContextQueueLock[i]);
+		;
 	}
 
 /*
-	NdisFreeSpinLock(&pAd->MacTabLock);
 	for(i=0; i<MAX_LEN_OF_BA_REC_TABLE; i++)
 	{
-		NdisFreeSpinLock(&pAd->BATable.BARecEntry[i].RxReRingLock);
+		;
 	}
 */
 }
@@ -693,28 +686,28 @@ int RTMPInitTxRxRingMemory
 	int		Status;
 
 	/* Init the CmdQ and CmdQLock*/
-	NdisAllocateSpinLock(pAd, &pAd->CmdQLock);
+	spin_lock_init(&pAd->CmdQLock);
 	NdisAcquireSpinLock(&pAd->CmdQLock);
 	RTInitializeCmdQ(&pAd->CmdQ);
 	NdisReleaseSpinLock(&pAd->CmdQLock);
 
 
-	NdisAllocateSpinLock(pAd, &pAd->MLMEBulkOutLock);
-	NdisAllocateSpinLock(pAd, &pAd->BulkInLock);
-	NdisAllocateSpinLock(pAd, &pAd->CmdRspLock);
+	spin_lock_init(&pAd->MLMEBulkOutLock);
+	spin_lock_init(&pAd->BulkInLock);
+	spin_lock_init(&pAd->CmdRspLock);
 	for(num =0 ; num < 6; num++)
 	{
-		NdisAllocateSpinLock(pAd, &pAd->BulkOutLock[num]);
+		spin_lock_init(&pAd->BulkOutLock[num]);
 	}
 
 
 	for (num = 0; num < NUM_OF_TX_RING; num++)
 	{
-		NdisAllocateSpinLock(pAd, &pAd->TxContextQueueLock[num]);
+		spin_lock_init(&pAd->TxContextQueueLock[num]);
 	}
 
 #ifdef RALINK_ATE
-	NdisAllocateSpinLock(pAd, &pAd->GenericLock);
+	spin_lock_init(&pAd->GenericLock);
 #endif /* RALINK_ATE */
 
 	NICInitRecv(pAd);
@@ -1093,27 +1086,27 @@ int	RTMPAllocTxRxRingMemory(
 	do
 	{
 		/* Init the CmdQ and CmdQLock*/
-		NdisAllocateSpinLock(pAd, &pAd->CmdQLock);
+		spin_lock_init(pAd, &pAd->CmdQLock);
 		NdisAcquireSpinLock(&pAd->CmdQLock);
 		RTInitializeCmdQ(&pAd->CmdQ);
 		NdisReleaseSpinLock(&pAd->CmdQLock);
 
 
-		NdisAllocateSpinLock(pAd, &pAd->MLMEBulkOutLock);
-		NdisAllocateSpinLock(pAd, &pAd->BulkInLock);
-		NdisAllocateSpinLock(pAd, &pAd->CmdRspLock);
+		spin_lock_init(pAd, &pAd->MLMEBulkOutLock);
+		spin_lock_init(pAd, &pAd->BulkInLock);
+		spin_lock_init(pAd, &pAd->CmdRspLock);
 		for(num =0 ; num < 6; num++)
 		{
-			NdisAllocateSpinLock(pAd, &pAd->BulkOutLock[num]);
+			spin_lock_init(pAd, &pAd->BulkOutLock[num]);
 		}
 
 		for (num = 0; num < NUM_OF_TX_RING; num++)
 		{
-			NdisAllocateSpinLock(pAd, &pAd->TxContextQueueLock[num]);
+			spin_lock_init(pAd, &pAd->TxContextQueueLock[num]);
 		}
 
 #ifdef RALINK_ATE
-		NdisAllocateSpinLock(pAd, &pAd->GenericLock);
+		spin_lock_init(pAd, &pAd->GenericLock);
 #endif /* RALINK_ATE */
 
 
@@ -1255,16 +1248,10 @@ void RTMPFreeTxRxRingMemory(
 	/* Free spinlocks*/
 	for(i=0; i<6; i++)
 	{
-		NdisFreeSpinLock(&pAd->BulkOutLock[i]);
+		;
 	}
 
-	NdisFreeSpinLock(&pAd->BulkInLock);
-	NdisFreeSpinLock(&pAd->CmdRspLock);
-	NdisFreeSpinLock(&pAd->MLMEBulkOutLock);
-
-	NdisFreeSpinLock(&pAd->CmdQLock);
 #ifdef RALINK_ATE
-	NdisFreeSpinLock(&pAd->GenericLock);
 #endif /* RALINK_ATE */
 
 	/* Clear all pending bulk-out request flags.*/
@@ -1272,7 +1259,7 @@ void RTMPFreeTxRxRingMemory(
 
 	for (i = 0; i < NUM_OF_TX_RING; i++)
 	{
-		NdisFreeSpinLock(&pAd->TxContextQueueLock[i]);
+		;
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR, ("<--- RTMPFreeTxRxRingMemory\n"));

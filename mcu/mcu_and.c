@@ -651,9 +651,9 @@ static inline void andes_inc_error_count(struct MCU_CTRL *ctl, enum cmd_msg_erro
 	}
 }
 
-static NDIS_SPIN_LOCK *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
+static spinlock_t *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
 {
-	NDIS_SPIN_LOCK *lock = NULL;
+	spinlock_t *lock = NULL;
 
 	if (list == &ctl->txq)
 		lock = &ctl->txq_lock;
@@ -704,7 +704,7 @@ static void andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	unsigned long flags;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
@@ -726,7 +726,7 @@ static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	unsigned long flags;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
@@ -741,7 +741,7 @@ static u32 andes_queue_len(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	u32 qlen;
 	unsigned long flags;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 
 	lock = andes_get_spin_lock(ctl, list);
 
@@ -756,7 +756,7 @@ static int andes_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	unsigned long flags;
 	int is_empty;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 
 	lock = andes_get_spin_lock(ctl, list);
 
@@ -771,7 +771,7 @@ static void andes_queue_init(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 
 	unsigned long flags;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 
 	lock = andes_get_spin_lock(ctl, list);
 
@@ -791,7 +791,7 @@ static void _andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 static void andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 {
 	unsigned long flags;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
@@ -817,7 +817,7 @@ static struct cmd_msg *andes_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list
 {
 	unsigned long flags;
 	struct cmd_msg *msg;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 
 	lock = andes_get_spin_lock(ctl, list);
 
@@ -1125,7 +1125,7 @@ void andes_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	lock = andes_get_spin_lock(ctl, list);
@@ -1148,7 +1148,7 @@ void andes_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
-	NDIS_SPIN_LOCK *lock;
+	spinlock_t *lock;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	lock = andes_get_spin_lock(ctl, list);
@@ -1171,17 +1171,17 @@ void andes_ctrl_init(struct rtmp_adapter*ad)
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	ctl->cmd_seq = 0;
 	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, andes_cmd_msg_bh, (unsigned long)ad);
-	NdisAllocateSpinLock(ad, &ctl->txq_lock);
+	spin_lock_init(&ctl->txq_lock);
 	andes_queue_init(ctl, &ctl->txq);
-	NdisAllocateSpinLock(ad, &ctl->rxq_lock);
+	spin_lock_init(&ctl->rxq_lock);
 	andes_queue_init(ctl, &ctl->rxq);
-	NdisAllocateSpinLock(ad, &ctl->ackq_lock);
+	spin_lock_init(&ctl->ackq_lock);
 	andes_queue_init(ctl, &ctl->ackq);
-	NdisAllocateSpinLock(ad, &ctl->kickq_lock);
+	spin_lock_init(&ctl->kickq_lock);
 	andes_queue_init(ctl, &ctl->kickq);
-	NdisAllocateSpinLock(ad, &ctl->tx_doneq_lock);
+	spin_lock_init(&ctl->tx_doneq_lock);
 	andes_queue_init(ctl, &ctl->tx_doneq);
-	NdisAllocateSpinLock(ad, &ctl->rx_doneq_lock);
+	spin_lock_init(&ctl->rx_doneq_lock);
 	andes_queue_init(ctl, &ctl->rx_doneq);
 	ctl->tx_kickout_fail_count = 0;
 	ctl->tx_timeout_fail_count = 0;
@@ -1207,17 +1207,11 @@ void andes_ctrl_exit(struct rtmp_adapter*ad)
 	andes_usb_unlink_urb(ad, &ctl->rxq);
 	RTMP_OS_TASKLET_KILL(&ctl->cmd_msg_task);
 	andes_cleanup_cmd_msg(ad, &ctl->txq);
-	NdisFreeSpinLock(&ctl->txq_lock);
 	andes_cleanup_cmd_msg(ad, &ctl->ackq);
-	NdisFreeSpinLock(&ctl->ackq_lock);
 	andes_cleanup_cmd_msg(ad, &ctl->rxq);
-	NdisFreeSpinLock(&ctl->rxq_lock);
 	andes_cleanup_cmd_msg(ad, &ctl->kickq);
-	NdisFreeSpinLock(&ctl->kickq_lock);
 	andes_cleanup_cmd_msg(ad, &ctl->tx_doneq);
-	NdisFreeSpinLock(&ctl->tx_doneq_lock);
 	andes_cleanup_cmd_msg(ad, &ctl->rx_doneq);
-	NdisFreeSpinLock(&ctl->rx_doneq_lock);
 	DBGPRINT(RT_DEBUG_OFF, ("tx_kickout_fail_count = %ld\n", ctl->tx_kickout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));

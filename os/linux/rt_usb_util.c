@@ -182,7 +182,7 @@ EXPORT_SYMBOL(RTMP_Usb_AutoPM_Get_Interface);
 
 void RtmpOsUsbEmptyUrbCheck(
 	IN	void 			**ppWait,
-	IN	NDIS_SPIN_LOCK		*pBulkInLock,
+	IN	spinlock_t		*pBulkInLock,
 	IN	UCHAR				*pPendingRx)
 {
 	UINT32 i = 0;

@@ -497,7 +497,6 @@ err4:
 err3:
 	RtmpMgmtTaskExit(pAd);
 #ifdef RTMP_TIMER_TASK_SUPPORT
-	NdisFreeSpinLock(&pAd->TimerQLock);
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 err2:
 	MCU_CTRL_EXIT(pAd);
@@ -745,7 +744,6 @@ void RTMPDrvSTAClose(
 	RTMP_TimerListRelease(pAd);
 
 #ifdef RTMP_TIMER_TASK_SUPPORT
-	NdisFreeSpinLock(&pAd->TimerQLock);
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 
 #ifdef CONFIG_FPGA_MODE

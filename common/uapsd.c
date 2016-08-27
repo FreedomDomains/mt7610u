@@ -80,7 +80,7 @@ void UAPSD_Init(
 	IN	struct rtmp_adapter *	pAd)
 {
     /* allocate a lock resource for SMP environment */
-	NdisAllocateSpinLock(pAd, &pAd->UAPSDEOSPLock);
+	spin_lock_init(pAd, &pAd->UAPSDEOSPLock);
 
 #ifdef UAPSD_DEBUG
 	DBGPRINT(RT_DEBUG_TRACE, ("uapsd> allocate a spinlock!\n"));
@@ -120,9 +120,6 @@ Note:
 void UAPSD_Release(
     IN  struct rtmp_adapter *      pAd)
 {
-    /* free the lock resource for SMP environment */
-    NdisFreeSpinLock(&pAd->UAPSDEOSPLock);
-
 #ifdef UAPSD_DEBUG
 	DBGPRINT(RT_DEBUG_TRACE, ("uapsd> release a spinlock!\n"));
 #endif /* UAPSD_DEBUG */

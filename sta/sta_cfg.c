@@ -3983,7 +3983,7 @@ INT RTMP_STA_IoctlHandle(
 			pAd->StaCfg.OriDevType = Data;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
-	NdisAllocateSpinLock(pAd, &pAd->StaCtIf.Lock);
+	spin_lock_init(pAd, &pAd->StaCtIf.Lock);
 #endif /* CREDENTIAL_STORE */
 #endif /* CONFIG_STA_SUPPORT */
 

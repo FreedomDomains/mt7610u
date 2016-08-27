@@ -332,7 +332,7 @@ int	MeasureReqTabInit(
 {
 	int     Status = NDIS_STATUS_SUCCESS;
 
-	NdisAllocateSpinLock(pAd, &pAd->CommonCfg.MeasureReqTabLock);
+	spin_lock_init(&pAd->CommonCfg.MeasureReqTabLock);
 
 /*	pAd->CommonCfg.pMeasureReqTab = kmalloc(sizeof(MEASURE_REQ_TAB), GFP_ATOMIC);*/
 	os_alloc_mem(pAd, (UCHAR **)&(pAd->CommonCfg.pMeasureReqTab), sizeof(MEASURE_REQ_TAB));
@@ -350,8 +350,6 @@ int	MeasureReqTabInit(
 void MeasureReqTabExit(
 	IN struct rtmp_adapter *pAd)
 {
-	NdisFreeSpinLock(&pAd->CommonCfg.MeasureReqTabLock);
-
 	if (pAd->CommonCfg.pMeasureReqTab)
 /*		kfree(pAd->CommonCfg.pMeasureReqTab);*/
 		kfree(pAd->CommonCfg.pMeasureReqTab);
@@ -557,7 +555,7 @@ int	TpcReqTabInit(
 {
 	int     Status = NDIS_STATUS_SUCCESS;
 
-	NdisAllocateSpinLock(pAd, &pAd->CommonCfg.TpcReqTabLock);
+	spin_lock_init(&pAd->CommonCfg.TpcReqTabLock);
 
 /*	pAd->CommonCfg.pTpcReqTab = kmalloc(sizeof(TPC_REQ_TAB), GFP_ATOMIC);*/
 	os_alloc_mem(pAd, (UCHAR **)&(pAd->CommonCfg.pTpcReqTab), sizeof(TPC_REQ_TAB));
@@ -575,8 +573,6 @@ int	TpcReqTabInit(
 void TpcReqTabExit(
 	IN struct rtmp_adapter *pAd)
 {
-	NdisFreeSpinLock(&pAd->CommonCfg.TpcReqTabLock);
-
 	if (pAd->CommonCfg.pTpcReqTab)
 /*		kfree(pAd->CommonCfg.pTpcReqTab);*/
 		kfree(pAd->CommonCfg.pTpcReqTab);

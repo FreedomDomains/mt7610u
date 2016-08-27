@@ -177,7 +177,7 @@ int MlmeInit(
 			break;
 
 		pAd->Mlme.bRunning = FALSE;
-		NdisAllocateSpinLock(pAd, &pAd->Mlme.TaskLock);
+		spin_lock_init(&pAd->Mlme.TaskLock);
 
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -512,7 +512,6 @@ void MlmeHalt(
 	RTMPusecDelay(5000);    /*  5 msec to gurantee Ant Diversity timer canceled*/
 
 	MlmeQueueDestroy(&pAd->Mlme.Queue);
-	NdisFreeSpinLock(&pAd->Mlme.TaskLock);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== MlmeHalt\n"));
 }
@@ -2500,11 +2499,11 @@ void BATableInit(
 	Tab->numAsOriginator = 0;
 	Tab->numAsRecipient = 0;
 	Tab->numDoneOriginator = 0;
-	NdisAllocateSpinLock(pAd, &pAd->BATabLock);
+	spin_lock_init(&pAd->BATabLock);
 	for (i = 0; i < MAX_LEN_OF_BA_REC_TABLE; i++)
 	{
 		Tab->BARecEntry[i].REC_BA_Status = Recipient_NONE;
-		NdisAllocateSpinLock(pAd, &(Tab->BARecEntry[i].RxReRingLock));
+		spin_lock_init(&(Tab->BARecEntry[i].RxReRingLock));
 	}
 	for (i = 0; i < MAX_LEN_OF_BA_ORI_TABLE; i++)
 	{
@@ -2519,9 +2518,8 @@ void BATableExit(
 
 	for(i=0; i<MAX_LEN_OF_BA_REC_TABLE; i++)
 	{
-		NdisFreeSpinLock(&pAd->BATable.BARecEntry[i].RxReRingLock);
+		;
 	}
-	NdisFreeSpinLock(&pAd->BATabLock);
 }
 #endif /* DOT11_N_SUPPORT */
 
@@ -3892,7 +3890,7 @@ int MlmeQueueInit(
 {
 	INT i;
 
-	NdisAllocateSpinLock(pAd, &Queue->Lock);
+	spin_lock_init(&Queue->Lock);
 
 	Queue->Num	= 0;
 	Queue->Head = 0;
@@ -4238,7 +4236,6 @@ void MlmeQueueDestroy(
 	pQueue->Head = 0;
 	pQueue->Tail = 0;
 	NdisReleaseSpinLock(&(pQueue->Lock));
-	NdisFreeSpinLock(&(pQueue->Lock));
 }
 
 

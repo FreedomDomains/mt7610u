@@ -149,7 +149,7 @@ BOOLEAN TDLS_UAPSDP_Init(
 						(STATE_MACHINE_FUNC)TDLS_UAPSD_PeerTrafficRspAction);
 
 	/* init lock */
-	NdisAllocateSpinLock(pAd, &pAd->StaCfg.TdlsInfo.TDLSUapsdLock);
+	spin_lock_init(pAd, &pAd->StaCfg.TdlsInfo.TDLSUapsdLock);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("tdls uapsd> initialization ok!\n"));
 	return TRUE;
@@ -175,7 +175,6 @@ BOOLEAN TDLS_UAPSDP_Release(
 	IN	struct rtmp_adapter *			pAd)
 {
 	/* free lock */
-	NdisFreeSpinLock(&pAd->StaCfg.TdlsInfo.TDLSUapsdLock);
 
 	return TRUE;
 }

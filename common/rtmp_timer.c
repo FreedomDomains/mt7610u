@@ -288,7 +288,6 @@ void RtmpTimerQExit(struct rtmp_adapter*pAd)
 	pAd->TimerQ.status = RTMP_TASK_STAT_STOPED;
 /*#endif*/
 	RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
-/*	NdisFreeSpinLock(&pAd->TimerQLock); */
 }
 
 
@@ -298,7 +297,7 @@ void RtmpTimerQInit(struct rtmp_adapter*pAd)
 	RTMP_TIMER_TASK_ENTRY *pQNode, *pEntry;
 	unsigned long irqFlags;
 
-	NdisAllocateSpinLock(pAd, &pAd->TimerQLock);
+	spin_lock_init(&pAd->TimerQLock);
 
 	memset(&pAd->TimerQ, 0, sizeof(pAd->TimerQ));
 

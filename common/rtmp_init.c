@@ -120,7 +120,7 @@ RTMP_REG_PAIR	STAMACRegTable[] =	{
 	Or when the structure is cleared, we maybe get NULL for pAd and can not lock.
 	Maybe we can put pAd in RTMPSetTimer/ RTMPModTimer/ RTMPCancelTimer.
 */
-NDIS_SPIN_LOCK TimerSemLock;
+spinlock_t TimerSemLock;
 
 
 /*
@@ -204,15 +204,15 @@ int	RTMPAllocAdapterBlock(
 		}
 
 		/* Init spin locks*/
-		NdisAllocateSpinLock(pAd, &pAd->MgmtRingLock);
+		spin_lock_init(&pAd->MgmtRingLock);
 
 #if defined(RT3290) || defined(RT65xx)
 #endif /* defined(RT3290) || defined(RT65xx) */
 
 		for (index =0 ; index < NUM_OF_TX_RING; index++)
 		{
-			NdisAllocateSpinLock(pAd, &pAd->TxSwQueueLock[index]);
-			NdisAllocateSpinLock(pAd, &pAd->DeQueueLock[index]);
+			spin_lock_init(&pAd->TxSwQueueLock[index]);
+			spin_lock_init(&pAd->DeQueueLock[index]);
 			pAd->DeQueueRunning[index] = FALSE;
 		}
 
@@ -229,10 +229,10 @@ int	RTMPAllocAdapterBlock(
 		}
 #endif /* RESOURCE_PRE_ALLOC */
 
-		NdisAllocateSpinLock(pAd, &pAd->irq_lock);
+		spin_lock_init(&pAd->irq_lock);
 
 
-		NdisAllocateSpinLock(pAd, &TimerSemLock);
+		spin_lock_init(&TimerSemLock);
 
 
 
@@ -2333,9 +2333,6 @@ void UserCfgExit(
 #ifdef DOT11_N_SUPPORT
 	BATableExit(pAd);
 #endif /* DOT11_N_SUPPORT */
-
-
-	NdisFreeSpinLock(&pAd->MacTabLock);
 }
 
 /*
@@ -2757,7 +2754,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	/* initialize MAC table and allocate spin lock*/
 	memset(&pAd->MacTab, 0, sizeof(MAC_TABLE));
 	InitializeQueueHeader(&pAd->MacTab.McastPsQueue);
-	NdisAllocateSpinLock(pAd, &pAd->MacTabLock);
+	spin_lock_init(&pAd->MacTabLock);
 
 	/*RTMPInitTimer(pAd, &pAd->RECBATimer, RECBATimerTimeout, pAd, TRUE);*/
 	/*RTMPSetTimer(&pAd->RECBATimer, REORDER_EXEC_INTV);*/
@@ -3463,7 +3460,6 @@ BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
-		NdisFreeSpinLock(&pAd->StaCtIf.Lock);
 #endif /* CREDENTIAL_STORE */
 #endif /* CONFIG_STA_SUPPORT */
 

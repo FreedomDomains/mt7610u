@@ -252,19 +252,10 @@ struct os_lock  {
 	unsigned long  	flags;
 };
 
-typedef spinlock_t			OS_NDIS_SPIN_LOCK;
 
 /* */
 /*  spin_lock enhanced for Nested spin lock */
 /* */
-#define OS_NdisAllocateSpinLock(__lock)			\
-{                                       		\
-    spin_lock_init((spinlock_t *)(__lock));		\
-}
-
-#define OS_NdisFreeSpinLock(lock)				\
-	do{}while(0)
-
 
 #define OS_SEM_LOCK(__lock)						\
 {												\

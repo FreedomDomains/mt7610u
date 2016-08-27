@@ -285,7 +285,7 @@ BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num)
 	struct reordering_list *freelist;
 
 	/* allocate spinlock */
-	NdisAllocateSpinLock(pAd, &pAd->mpdu_blk_pool.lock);
+	spin_lock_init(&pAd->mpdu_blk_pool.lock);
 
 	/* initialize freelist */
 	freelist = &pAd->mpdu_blk_pool.freelist;

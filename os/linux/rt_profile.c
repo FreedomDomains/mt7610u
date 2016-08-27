@@ -272,7 +272,7 @@ err_free_sk_buff:
 #endif /* CONFIG_STA_SUPPORT */
 
 
-extern NDIS_SPIN_LOCK TimerSemLock;
+extern spinlock_t TimerSemLock;
 
 void RTMPFreeAdapter(
 	IN	void 	*pAdSrc)
@@ -286,30 +286,18 @@ void RTMPFreeAdapter(
 	if (pAd->BeaconBuf)
 		kfree(pAd->BeaconBuf);
 
-
-	NdisFreeSpinLock(&pAd->MgmtRingLock);
-
-
 #if defined(RT3290) || defined(RT65xx)
 #endif /* defined(RT3290) || defined(RT65xx) */
 
 	for (index =0 ; index < NUM_OF_TX_RING; index++)
 	{
-		NdisFreeSpinLock(&pAd->TxSwQueueLock[index]);
-		NdisFreeSpinLock(&pAd->DeQueueLock[index]);
 		pAd->DeQueueRunning[index] = FALSE;
 	}
 
-	NdisFreeSpinLock(&pAd->irq_lock);
-
-
-
 #ifdef UAPSD_SUPPORT
-	NdisFreeSpinLock(&pAd->UAPSDEOSPLock); /* OS_ABL_SUPPORT */
 #endif /* UAPSD_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
-	NdisFreeSpinLock(&pAd->mpdu_blk_pool.lock);
 #endif /* DOT11_N_SUPPORT */
 
 	if (pAd->iw_stats)
@@ -322,8 +310,6 @@ void RTMPFreeAdapter(
 		kfree(pAd->stats);
 		pAd->stats = NULL;
 	}
-
-	NdisFreeSpinLock(&TimerSemLock);
 
 #ifdef RALINK_ATE
 #ifdef RTMP_MAC_USB

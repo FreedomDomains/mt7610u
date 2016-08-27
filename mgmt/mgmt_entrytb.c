@@ -317,7 +317,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 
 #ifdef TXBF_SUPPORT
 			if (pAd->chipCap.FlgHwTxBfCap)
-				NdisAllocateSpinLock(pAd, &pEntry->TxSndgLock);
+				spin_lock_init(pAd, &pEntry->TxSndgLock);
 #endif /* TXBF_SUPPORT */
 
 			DBGPRINT(RT_DEBUG_TRACE, ("MacTableInsertEntry - allocate entry #%d, Total= %d\n",i, pAd->MacTab.Size));
@@ -491,7 +491,7 @@ BOOLEAN MacTableDeleteEntry(
 			pAd->MacTab.Size --;
 #ifdef TXBF_SUPPORT
 			if (pAd->chipCap.FlgHwTxBfCap)
-				NdisFreeSpinLock(&pEntry->TxSndgLock);
+				;
 #endif /* TXBF_SUPPORT */
 			DBGPRINT(RT_DEBUG_TRACE, ("MacTableDeleteEntry1 - Total= %d\n", pAd->MacTab.Size));
 		}
