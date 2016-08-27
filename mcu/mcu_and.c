@@ -90,10 +90,11 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 	u16 fw_ver, build_ver;
 	RTMP_OS_COMPLETION load_fw_done;
 	USB_DMA_CFG_STRUC UsbCfg;
+	u8 *fw_image = cap->FWImageName;
 
 	RtmpOsMsDelay(5);
 
-	if (!cap->FWImageName)
+	if (!fw_image)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:Please assign a fw image\n", __FUNCTION__));
 		return NDIS_STATUS_FAILURE;
@@ -137,15 +138,13 @@ loadfw_protect:
 	RtmpOsMsDelay(5);
 
 	/* Get FW information */
-	ilm_len = (*(cap->FWImageName + 3) << 24) | (*(cap->FWImageName + 2) << 16) |
-			 (*(cap->FWImageName + 1) << 8) | (*cap->FWImageName);
+	ilm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image))));;
 
-	dlm_len = (*(cap->FWImageName + 7) << 24) | (*(cap->FWImageName + 6) << 16) |
-			 (*(cap->FWImageName + 5) << 8) | (*(cap->FWImageName + 4));
+	dlm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image) + 4)));
 
-	fw_ver = (*(cap->FWImageName + 11) << 8) | (*(cap->FWImageName + 10));
+	fw_ver = le16_to_cpu(*((u16 *) (((u8 *) fw_image) + 10)));
 
-	build_ver = (*(cap->FWImageName + 9) << 8) | (*(cap->FWImageName + 8));
+	build_ver = le16_to_cpu(*((u16 *) (((u8 *) fw_image) +8)));
 
 	DBGPRINT(RT_DEBUG_OFF, ("fw version:%d.%d.%02d ", (fw_ver & 0xf000) >> 8,
 						(fw_ver & 0x0f00) >> 8, fw_ver & 0x00ff));
@@ -153,7 +152,7 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("build time:"));
 
 	for (loop = 0; loop < 16; loop++)
-		DBGPRINT(RT_DEBUG_OFF, ("%c", *(cap->FWImageName + 16 + loop)));
+		DBGPRINT(RT_DEBUG_OFF, ("%c", *(fw_image + 16 + loop)));
 
 	DBGPRINT(RT_DEBUG_OFF, ("\n"));
 
@@ -231,7 +230,7 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			memmove(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + cur_len, sent_len);
 
 			/* four zero bytes for end padding */
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
@@ -381,7 +380,7 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			memmove(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
 
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
