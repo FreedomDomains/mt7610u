@@ -333,13 +333,9 @@ void RTMPFreeAdapter(
 
 int	RTMPSendPackets(
 	IN NDIS_HANDLE dev_hnd,
-	IN struct sk_buff **ppPacketArray,
-	IN UINT NumberOfPackets,
-	IN u32 PktTotalLen,
-	IN RTMP_NET_ETH_CONVERT_DEV_SEARCH Func)
+	IN struct sk_buff * pPacket)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)dev_hnd;
-	struct sk_buff * pPacket = ppPacketArray[0];
 
 
 	INC_COUNTER64(pAd->WlanCounters.TransmitCountFrmOs);
@@ -349,19 +345,16 @@ int	RTMPSendPackets(
 
 	/* RT2870STA does this in RTMPSendPackets() */
 #ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-	{
+	if (ATE_ON(pAd)) {
 		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_RESOURCES);
 		return 0;
 	}
 #endif /* RALINK_ATE */
 
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 		/* Drop send request since we are in monitor mode */
-		if (MONITOR_ON(pAd))
-		{
+		if (MONITOR_ON(pAd)) {
 			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
 			return 0;
 		}
@@ -369,8 +362,7 @@ int	RTMPSendPackets(
 #endif /* CONFIG_STA_SUPPORT */
 
         /* EapolStart size is 18 */
-	if (PktTotalLen < 14)
-	{
+	if (pPacket->len < 14) {
 		/*printk("bad packet size: %d\n", pkt->len); */
 		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
 		return 0;
@@ -383,10 +375,8 @@ int	RTMPSendPackets(
 
 
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-
-		STASendPackets((NDIS_HANDLE)pAd, (struct sk_buff **) &pPacket, 1);
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
+		STASendPackets((NDIS_HANDLE)pAd, pPacket);
 	}
 
 #endif /* CONFIG_STA_SUPPORT */

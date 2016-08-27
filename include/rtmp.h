@@ -4266,8 +4266,7 @@ int STASendPacket(
 
 void STASendPackets(
 	IN  NDIS_HANDLE     MiniportAdapterContext,
-	IN  struct sk_buff **ppPacketArray,
-	IN  UINT            NumberOfPackets);
+	IN  struct sk_buff *pPacketArray);
 
 void RTMPDeQueuePacket(
 	IN struct rtmp_adapter*pAd,

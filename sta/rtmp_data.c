@@ -1796,67 +1796,59 @@ Note:
 */
 void STASendPackets(
 	IN NDIS_HANDLE MiniportAdapterContext,
-	IN struct sk_buff **ppPacketArray,
-	IN UINT NumberOfPackets)
+	IN struct sk_buff *pPacket)
 {
-	UINT Index;
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *) MiniportAdapterContext;
-	struct sk_buff * pPacket;
 	BOOLEAN allowToSend = FALSE;
 
+	do {
 
-	for (Index = 0; Index < NumberOfPackets; Index++) {
-		pPacket = ppPacketArray[Index];
-
-		do {
-
-			if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS)
-			    || RTMP_TEST_FLAG(pAd,
-					      fRTMP_ADAPTER_HALT_IN_PROGRESS)
-			    || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF)) {
-				/* Drop send request since hardware is in reset state */
-				break;
-			} else if (!INFRA_ON(pAd) && !ADHOC_ON(pAd)) {
-				/* Drop send request since there are no physical connection yet */
-				break;
-			} else {
-				/* Record that orignal packet source is from NDIS layer,so that */
-				/* later on driver knows how to release this NDIS PACKET */
-				if (INFRA_ON(pAd) && (0
+		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS)
+		    || RTMP_TEST_FLAG(pAd,
+				      fRTMP_ADAPTER_HALT_IN_PROGRESS)
+		    || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF)) {
+			/* Drop send request since hardware is in reset state */
+			break;
+		} else if (!INFRA_ON(pAd) && !ADHOC_ON(pAd)) {
+			/* Drop send request since there are no physical connection yet */
+			break;
+		} else {
+			/* Record that orignal packet source is from NDIS layer,so that */
+			/* later on driver knows how to release this NDIS PACKET */
+			if (INFRA_ON(pAd) && (0
 #ifdef QOS_DLS_SUPPORT
-				    || (pAd->CommonCfg.bDLSCapable)
+			    || (pAd->CommonCfg.bDLSCapable)
 #endif /* QOS_DLS_SUPPORT */
-				    )) {
-					MAC_TABLE_ENTRY *pEntry;
-					u8 *pSrcBufVA =
-					    GET_OS_PKT_DATAPTR(pPacket);
+			    )) {
+				MAC_TABLE_ENTRY *pEntry;
+				u8 *pSrcBufVA =
+				    GET_OS_PKT_DATAPTR(pPacket);
 
-					pEntry = MacTableLookup(pAd, pSrcBufVA);
+				pEntry = MacTableLookup(pAd, pSrcBufVA);
 
-					if (pEntry
-					    && (IS_ENTRY_DLS(pEntry)
-						)) {
-						RTMP_SET_PACKET_WCID(pPacket, pEntry->Aid);
-					} else {
-						RTMP_SET_PACKET_WCID(pPacket, 0);
-					}
+				if (pEntry
+				    && (IS_ENTRY_DLS(pEntry)
+					)) {
+					RTMP_SET_PACKET_WCID(pPacket, pEntry->Aid);
 				} else {
 					RTMP_SET_PACKET_WCID(pPacket, 0);
 				}
-
-				RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
-				NDIS_SET_PACKET_STATUS(pPacket, NDIS_STATUS_PENDING);
-				pAd->RalinkCounters.PendingNdisPacketCount++;
-
-				allowToSend = TRUE;
+			} else {
+				RTMP_SET_PACKET_WCID(pPacket, 0);
 			}
-		} while (FALSE);
 
-		if (allowToSend == TRUE)
-			STASendPacket(pAd, pPacket);
-		else
-			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
-	}
+			RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
+			NDIS_SET_PACKET_STATUS(pPacket, NDIS_STATUS_PENDING);
+			pAd->RalinkCounters.PendingNdisPacketCount++;
+
+			allowToSend = TRUE;
+		}
+	} while (FALSE);
+
+	if (allowToSend == TRUE)
+		STASendPacket(pAd, pPacket);
+	else
+		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
 
 	/* Dequeue outgoing frames from TxSwQueue[] and process it */
 	RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
