@@ -1714,9 +1714,6 @@ void AsicSetEdcaParm(
 		/*sync with window 20110524*/
 		Ac2Cfg.field.Aifsn = pEdcaParm->Aifsn[QID_AC_VI] + 1; /* 5.2.27 T6 Pass Tx VI+BE, but will impack 5.2.27/28 T7. Tx VI*/
 
-#ifdef INF_AMAZON_SE
-#endif /* INF_AMAZON_SE */
-
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
@@ -1806,8 +1803,6 @@ void AsicSetEdcaParm(
 #endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 		AifsnCsr.field.Aifsn2 = Ac2Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_VI];*/
-#ifdef INF_AMAZON_SE
-#endif /* INF_AMAZON_SE */
 
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)

@@ -332,16 +332,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxB
 	/* for rate adapation*/
 	pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
 
-#ifdef INF_AMAZON_SE
-	/*Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
-	if( RTMP_GET_PACKET_NOBULKOUT(pTxBlk->pPacket))
-	{
-		if(pTxWI->TxWIPHYMODE == MODE_CCK)
-			pTxWI->TxWIPacketId = 6;
-	}
-#endif /* INF_AMAZON_SE */
-
-
 #ifdef CONFIG_FPGA_MODE
 	if (pAd->fpga_ctl.fpga_on & 0x6)
 	{

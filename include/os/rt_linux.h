@@ -1030,14 +1030,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 	((((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+24]) & 0x00ff) << 8) \
 	| ((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+23]) & 0x00ff))
 
-#ifdef INF_AMAZON_SE
-/* [CB_OFF+28], 1B, Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
-#define RTMP_SET_PACKET_NOBULKOUT(_p, _morebit)			(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28] = _morebit)
-#define RTMP_GET_PACKET_NOBULKOUT(_p)					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28])
-#endif /* INF_AMAZON_SE */
-
-
-
 #define NAF_TYPE_CSO	1<<0
 #define NAF_TYPE_TSO	1<<1
 #define RTMP_GET_PKT_NAF_TYPE(_p)	((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+31]) & (NAF_TYPE_CSO | NAF_TYPE_TSO))
@@ -1090,11 +1082,7 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 
 typedef struct usb_device_id USB_DEVICE_ID;
 
-#ifdef INF_AMAZON_SE
-#define BULKAGGRE_SIZE				30
-#else
 #define BULKAGGRE_SIZE				60 /* 100 */
-#endif /* INF_AMAZON_SE */
 
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
 #define RTUSB_ALLOC_URB(iso)		usb_alloc_urb(iso, GFP_ATOMIC)

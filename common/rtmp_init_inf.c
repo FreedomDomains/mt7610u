@@ -520,9 +520,6 @@ err1:
 
 	/* shall not set priv to NULL here because the priv didn't been free yet.*/
 	/*net_dev->priv = 0;*/
-#ifdef INF_AMAZON_SE
-err0:
-#endif /* INF_AMAZON_SE */
 #ifdef ST
 err0:
 #endif /* ST */
