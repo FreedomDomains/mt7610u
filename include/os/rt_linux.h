@@ -620,8 +620,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define PCI_FREE_CONSISTENT(_pci_dev, _size, _virtual_addr, _physical_addr) \
 	pci_free_consistent(_pci_dev, _size, _virtual_addr, _physical_addr)
 
-#define DEV_ALLOC_SKB(_pAd, _Pkt, _length)	\
-	_Pkt = dev_alloc_skb(_length);
 
 
 /*#define PCI_MAP_SINGLE(_handle, _ptr, _size, _dir) (ULONG)0 */
