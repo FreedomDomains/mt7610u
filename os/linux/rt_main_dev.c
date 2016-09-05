@@ -443,7 +443,6 @@ static int rt28xx_send_packets(
 
 	memset((u8 *)&skb_p->cb[CB_OFF], 0, 15);
 	RTMP_SET_PACKET_NET_DEVICE_MBSSID(skb_p, MAIN_MBSSID);
-	MEM_DBG_PKT_ALLOC_INC(skb_p);
 
 	return rt28xx_packet_xmit(skb_p);
 }

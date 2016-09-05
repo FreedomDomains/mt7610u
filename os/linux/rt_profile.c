@@ -187,9 +187,6 @@ void announce_802_3_packet(
 	struct sk_buff * pRxPkt = pPacket;
 
 	ASSERT(pPacket);
-	MEM_DBG_PKT_FREE_INC(pPacket);
-
-
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */

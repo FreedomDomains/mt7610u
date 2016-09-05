@@ -271,8 +271,6 @@ struct sk_buff * RtmpOSNetPktAlloc(void *dummy, int size)
 	struct sk_buff *skb;
 	/* Add 2 more bytes for ip header alignment */
 	skb = dev_alloc_skb(size + 2);
-	if (skb != NULL)
-		MEM_DBG_PKT_ALLOC_INC(skb);
 
 	return ((struct sk_buff *) skb);
 }
@@ -289,7 +287,6 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 	}
 
 	if (pkt) {
-		MEM_DBG_PKT_ALLOC_INC(pkt);
 		RTMP_SET_PACKET_SOURCE(OSPKT_TO_RTPKT(pkt), PKTSRC_NDIS);
 	}
 
@@ -323,7 +320,6 @@ int RTMPAllocateNdisPacket(
 #endif
 		return NDIS_STATUS_FAILURE;
 	}
-	MEM_DBG_PKT_ALLOC_INC(pPacket);
 
 	/* Clone the frame content and update the length of packet */
 	if (HeaderLen > 0)
@@ -352,7 +348,6 @@ void RTMPFreeNdisPacket(
 	IN struct sk_buff * pPacket)
 {
 	dev_kfree_skb_any(RTPKT_TO_OSPKT(pPacket));
-	MEM_DBG_PKT_FREE_INC(pPacket);
 }
 
 
@@ -425,7 +420,6 @@ struct sk_buff * DuplicatePacket(
 
 	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
 	if (skb) {
-		MEM_DBG_PKT_ALLOC_INC(skb);
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 		pRetPacket = OSPKT_TO_RTPKT(skb);
 	}
@@ -448,7 +442,6 @@ struct sk_buff * duplicate_pkt(
 
 	if ((skb =
 	     __dev_alloc_skb(HdrLen + DataSize + 2, MEM_ALLOC_FLAG)) != NULL) {
-		MEM_DBG_PKT_ALLOC_INC(skb);
 
 		skb_reserve(skb, 2);
 		memmove(GET_OS_PKT_DATATAIL(skb), pHeader802_3, HdrLen);
@@ -476,14 +469,12 @@ struct sk_buff * duplicate_pkt_with_TKIP_MIC(
 		newskb = skb_copy_expand(skb, skb_headroom(skb), TKIP_TX_MIC_SIZE, GFP_ATOMIC);
 
 		dev_kfree_skb_any(skb);
-		MEM_DBG_PKT_FREE_INC(skb);
 
 		if (newskb == NULL) {
 			DBGPRINT(RT_DEBUG_ERROR, ("Extend Tx.MIC for packet failed!, dropping packet!\n"));
 			return NULL;
 		}
 		skb = newskb;
-		MEM_DBG_PKT_ALLOC_INC(skb);
 	}
 
 	return OSPKT_TO_RTPKT(skb);
@@ -524,7 +515,6 @@ BOOLEAN RTMPL2FrameTxAction(
 		return FALSE;
 	}
 
-	MEM_DBG_PKT_ALLOC_INC(skb);
 	/*get_netdev_from_bssid(pAd, apidx)); */
 	SET_OS_PKT_NETDEV(skb, pNetDev);
 
@@ -568,7 +558,6 @@ struct sk_buff * ExpandPacket(
 		newskb = skb_copy_expand(skb, head_len, tail_len, GFP_ATOMIC);
 
 		dev_kfree_skb_any(skb);
-		MEM_DBG_PKT_FREE_INC(skb);
 
 		if (newskb == NULL) {
 			DBGPRINT(RT_DEBUG_ERROR,
@@ -576,7 +565,6 @@ struct sk_buff * ExpandPacket(
 			return NULL;
 		}
 		skb = newskb;
-		MEM_DBG_PKT_ALLOC_INC(skb);
 	}
 
 	return OSPKT_TO_RTPKT(skb);
@@ -600,7 +588,6 @@ struct sk_buff * ClonePacket(
 
 	if (pClonedPkt) {
 		/* set the correct dataptr and data len */
-		MEM_DBG_PKT_ALLOC_INC(pClonedPkt);
 		pClonedPkt->dev = pRxPkt->dev;
 		pClonedPkt->data = pData;
 		pClonedPkt->len = DataSize;
@@ -715,9 +702,6 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	USHORT header_len = 0;
 	UCHAR temp_header[40] = {
 	0};
-
-	MEM_DBG_PKT_FREE_INC(pRxPacket);
-
 
 	pOSPkt = RTPKT_TO_OSPKT(pRxPacket);	/*pRxBlk->pRxPacket); */
 	pOSPkt->dev = pNetDev;	/*get_netdev_from_bssid(pAd, BSS0); */

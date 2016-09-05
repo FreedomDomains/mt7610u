@@ -170,12 +170,6 @@ Ndis802_11InfrastructureMax	/* Not a real value, defined as upper bound */
 } NDIS_802_11_NETWORK_INFRASTRUCTURE, *PNDIS_802_11_NETWORK_INFRASTRUCTURE;
 
 
-
-
-/* ======================== Memory ========================================== */
-#define MEM_DBG_PKT_ALLOC_INC(__pPacket)
-#define MEM_DBG_PKT_FREE_INC(__pPacket)
-
 /* value domain of 802.11 header FC.Tyte, which is b3..b2 of the 1st-byte of MAC header */
 #define BTYPE_MGMT                  0
 #define BTYPE_CNTL                  1
