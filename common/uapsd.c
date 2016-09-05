@@ -200,9 +200,7 @@ void UAPSD_SP_Close(
 							QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame))));
 #endif /* UAPSD_DEBUG */
 
-				RELEASE_NDIS_PACKET(pAd,
-									QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame),
-	                                NDIS_STATUS_FAILURE);
+				RTMPFreeNdisPacket(pAd,	QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 				pEntry->pUAPSDEOSPFrame = NULL;
 	        } /* End of if */
 
@@ -469,7 +467,7 @@ void UAPSD_PacketEnqueue(
 	/* check if current queued UAPSD packet number is too much */
 	if (pEntry == NULL)
 	{
-		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pPacket);
 		DBGPRINT(RT_DEBUG_TRACE, ("uapsd> pEntry == NULL!\n"));
 		return;
 	} /* End of if */
@@ -485,7 +483,7 @@ void UAPSD_PacketEnqueue(
 				RTMP_GET_PACKET_WCID(pPacket),
 				IdAc));
 
-		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pPacket);
 	}
 	else
 	{
@@ -612,9 +610,7 @@ void UAPSD_QueueMaintenance(
 
 			if (pEntry->pUAPSDEOSPFrame != NULL)
             {
-				RELEASE_NDIS_PACKET(pAd,
-								QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame),
-                                    NDIS_STATUS_FAILURE);
+				RTMPFreeNdisPacket(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 				pEntry->pUAPSDEOSPFrame = NULL;
             } /* End of if */
 
@@ -1907,9 +1903,7 @@ void UAPSD_UnTagFrame(
 					if (pEntry->pUAPSDEOSPFrame != NULL)
 		            {
 						/* should not be here */
-						RELEASE_NDIS_PACKET(pAd,
-								QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame),
-		                                    NDIS_STATUS_FAILURE);
+						RTMPFreeNdisPacket(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 						pEntry->pUAPSDEOSPFrame = NULL;
 		            } /* End of if */
 

@@ -437,7 +437,7 @@ static int rt28xx_send_packets(
 {
 	if (!(RTMP_OS_NETDEV_STATE_RUNNING(net_dev)))
 	{
-		RELEASE_NDIS_PACKET(NULL, (struct sk_buff *)skb_p, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(NULL, (struct sk_buff *)skb_p);
 		return 0;
 	}
 

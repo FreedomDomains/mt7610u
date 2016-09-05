@@ -266,7 +266,7 @@ void STA_MonPktSend(
 	return;
 
 err_free_sk_buff:
-	RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+	RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 	return;
 }
 #endif /* CONFIG_STA_SUPPORT */
@@ -343,7 +343,7 @@ int	RTMPSendPackets(
 	/* RT2870STA does this in RTMPSendPackets() */
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd)) {
-		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_RESOURCES);
+		RTMPFreeNdisPacket(pAd, pPacket);
 		return 0;
 	}
 #endif /* RALINK_ATE */
@@ -352,7 +352,7 @@ int	RTMPSendPackets(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 		/* Drop send request since we are in monitor mode */
 		if (MONITOR_ON(pAd)) {
-			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pPacket);
 			return 0;
 		}
 	}
@@ -361,7 +361,7 @@ int	RTMPSendPackets(
         /* EapolStart size is 18 */
 	if (pPacket->len < 14) {
 		/*printk("bad packet size: %d\n", pkt->len); */
-		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pPacket);
 		return 0;
 	}
 

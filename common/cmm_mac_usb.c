@@ -108,7 +108,7 @@ void RTMPResetTxRxRingMemory(
 		{
 			pEntry = RemoveHeadQueue(pQueue);
 			pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
-			RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pPacket);
 		}
 		 RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 	}
@@ -149,7 +149,7 @@ void RTMPResetTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RELEASE_NDIS_PACKET(pAd, pAd->MgmtRing.Cell[i].pNdisPacket, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 				pMLMEContext->TransferBuffer = NULL;
@@ -267,7 +267,7 @@ void RTMPFreeTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RELEASE_NDIS_PACKET(pAd, pAd->MgmtRing.Cell[i].pNdisPacket, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 				pMLMEContext->TransferBuffer = NULL;
@@ -291,7 +291,7 @@ void RTMPFreeTxRxRingMemory(
 	}
 
 	if (pAd->FragFrame.pFragPacket)
-		RELEASE_NDIS_PACKET(pAd, pAd->FragFrame.pFragPacket, NDIS_STATUS_SUCCESS);
+		RTMPFreeNdisPacket(pAd, pAd->FragFrame.pFragPacket);
 
 
 	DBGPRINT(RT_DEBUG_ERROR, ("<--- RTMPFreeTxRxRingMemory\n"));
@@ -1217,7 +1217,7 @@ void RTMPFreeTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RELEASE_NDIS_PACKET(pAd, pAd->MgmtRing.Cell[i].pNdisPacket, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 			pMLMEContext->TransferBuffer = NULL;
@@ -1242,7 +1242,7 @@ void RTMPFreeTxRxRingMemory(
 
 	/* Free fragement frame buffer*/
 	if (pAd->FragFrame.pFragPacket)
-		RELEASE_NDIS_PACKET(pAd, pAd->FragFrame.pFragPacket, NDIS_STATUS_SUCCESS);
+		RTMPFreeNdisPacket(pAd, pAd->FragFrame.pFragPacket);
 
 
 	/* Free spinlocks*/

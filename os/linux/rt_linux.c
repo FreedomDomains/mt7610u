@@ -922,7 +922,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	return;
 
       err_free_sk_buff:
-	RELEASE_NDIS_PACKET(NULL, pRxPacket, NDIS_STATUS_FAILURE);
+	RTMPFreeNdisPacket(NULL, pRxPacket);
 	return;
 
 }

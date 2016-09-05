@@ -258,7 +258,7 @@ void ba_reordering_resource_release(struct rtmp_adapter *pAd)
 			while ((mpdu_blk = ba_reordering_mpdu_dequeue(&pBAEntry->list)))
 			{
 				ASSERT(mpdu_blk->pPacket);
-				RELEASE_NDIS_PACKET(pAd, mpdu_blk->pPacket, NDIS_STATUS_FAILURE);
+				RTMPFreeNdisPacket(pAd, mpdu_blk->pPacket);
 				ba_mpdu_blk_free(pAd, mpdu_blk);
 			}
 		}
@@ -1656,7 +1656,7 @@ static void ba_enqueue_reordering_packet(
 		if (ba_reordering_mpdu_insertsorted(&pBAEntry->list, mpdu_blk) == FALSE)
 		{
 			/* had been already within reordering list don't indicate */
-			RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_SUCCESS);
+			RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 			ba_mpdu_blk_free(pAd, mpdu_blk);
 		}
 
@@ -1726,7 +1726,7 @@ static void ba_enqueue_reordering_packet_hdr_trns(
 		if (ba_reordering_mpdu_insertsorted(&pBAEntry->list, mpdu_blk) == FALSE)
 		{
 			/* had been already within reordering list don't indicate */
-			RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_SUCCESS);
+			RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 			ba_mpdu_blk_free(pAd, mpdu_blk);
 		}
 
@@ -1795,7 +1795,7 @@ void Indicate_AMPDU_Packet(
 		}
 
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -1817,7 +1817,7 @@ void Indicate_AMPDU_Packet(
 		/* impossible !!!*/
 		ASSERT(0);
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -1868,7 +1868,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 	}
 
 	/* III. Drop Old Received Packet*/
@@ -1877,7 +1877,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 	}
 
 	/* IV. Receive Sequence within Window Size*/
@@ -1939,7 +1939,7 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 		}
 
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -1961,7 +1961,7 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 		/* impossible !!!*/
 		ASSERT(0);
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -2011,7 +2011,7 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 	}
 
 	/* III. Drop Old Received Packet*/
@@ -2020,7 +2020,7 @@ void Indicate_AMPDU_Packet_Hdr_Trns(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 	}
 
 	/* IV. Receive Sequence within Window Size*/

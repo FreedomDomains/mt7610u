@@ -325,7 +325,7 @@ int MiniportMMRequest(
 			if (Status == NDIS_STATUS_SUCCESS)
 				retryCnt = 0;
 			else
-				RELEASE_NDIS_PACKET(pAd, pPacket, Status);
+				RTMPFreeNdisPacket(pAd, pPacket);
 		}
 		else
 		{
@@ -1440,7 +1440,7 @@ UINT deaggregate_AMSDU_announce(
 	}
 
 	/* finally release original rx packet*/
-	RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_SUCCESS);
+	RTMPFreeNdisPacket(pAd, pPacket);
 
 	return nMSDU;
 }
@@ -1827,7 +1827,7 @@ void Indicate_Legacy_Packet(
 	{
 
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxPacket);
 		return;
 	}
 
@@ -1904,7 +1904,7 @@ void Indicate_Legacy_Packet_Hdr_Trns(
 	{
 
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxPacket);
 		return;
 	}
 
@@ -2056,7 +2056,7 @@ void CmmRxRalinkFrameIndicate(
 	else
 	{
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -2085,7 +2085,7 @@ void CmmRxRalinkFrameIndicate(
 	if (!pPacket2)
 	{
 		/* release packet*/
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -2199,7 +2199,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 
 done:
 	/* always release rx fragmented packet*/
-	RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_FAILURE);
+	RTMPFreeNdisPacket(pAd, pRxPacket);
 
 	/* return defragmented packet if packet is reassembled completely*/
 	/* otherwise return NULL*/
@@ -2239,7 +2239,7 @@ void Indicate_EAPOL_Packet(
 	if (pRxBlk->pRxWI->RxWIWirelessCliID >= MAX_LEN_OF_MAC_TABLE)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: invalid wcid.\n"));
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -2247,7 +2247,7 @@ void Indicate_EAPOL_Packet(
 	if (pEntry == NULL)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: drop and release the invalid packet.\n"));
-		RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
+		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -2463,7 +2463,7 @@ INT ip_assembly_timeout(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, ULONG 
 			if (pBackupPktEntry == NULL)
 				break;
 			pBackupPkt = QUEUE_ENTRY_TO_PACKET(pBackupPktEntry);
-			RELEASE_NDIS_PACKET(pAd, pBackupPkt, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pBackupPkt);
 		}
 		pEntry->ip_id1[QueIdx] = -1;
 		pEntry->ip_id1_FragSize[QueIdx] - -1;
@@ -2483,7 +2483,7 @@ INT ip_assembly_timeout(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, ULONG 
 			if (pBackupPktEntry == NULL)
 				break;
 			pBackupPkt = QUEUE_ENTRY_TO_PACKET(pBackupPktEntry);
-			RELEASE_NDIS_PACKET(pAd, pBackupPkt, NDIS_STATUS_FAILURE);
+			RTMPFreeNdisPacket(pAd, pBackupPkt);
 		}
 
 		pEntry->ip_id2[QueIdx] = -1;
@@ -2572,7 +2572,7 @@ INT ip_assembly(
 					if (pBackupPktEntry == NULL)
 						break;
 					pBackupPkt = QUEUE_ENTRY_TO_PACKET(pBackupPktEntry);
-					RELEASE_NDIS_PACKET(pAd, pBackupPkt, NDIS_STATUS_FAILURE);
+					RTMPFreeNdisPacket(pAd, pBackupPkt);
 				}
 			}
 			goto go_original_path;
@@ -2622,7 +2622,7 @@ INT ip_assembly(
 							if (pBackupPktEntry == NULL)
 								break;
 							pBackupPkt = QUEUE_ENTRY_TO_PACKET(pBackupPktEntry);
-							RELEASE_NDIS_PACKET(pAd, pBackupPkt, NDIS_STATUS_FAILURE);
+							RTMPFreeNdisPacket(pAd, pBackupPkt);
 						}
 						return 0;
 					}
@@ -2653,7 +2653,7 @@ INT ip_assembly(
 				if ((Flags_frag_offset.field.flags_more_frag != 0)
 				    && (Flags_frag_offset.field.frag_offset != 0))
 				{
-					RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
+					RTMPFreeNdisPacket(pAd, pPacket);
 					return 0;
 				}
 				goto go_original_path;
@@ -2693,7 +2693,7 @@ void StopDmaRx(
 		if ((RxPending == 0) && (bReschedule == FALSE))
 			break;
 		else
-			RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_SUCCESS);
+			RTMPFreeNdisPacket(pAd, pRxPacket);
 	}
 
 	/*
