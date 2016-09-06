@@ -101,11 +101,7 @@ int MainVirtualIF_close(IN struct net_device *net_dev)
 	RTMPInfClose(pAd);
 
 
-#ifdef IFUP_IN_PROBE
-	;
-#else
 	VIRTUAL_IF_DOWN(pAd);
-#endif /* IFUP_IN_PROBE */
 
 	RT_MOD_DEC_USE_COUNT();
 
@@ -143,16 +139,8 @@ int MainVirtualIF_open(IN struct net_device *net_dev)
 		return 0; /* close ok */
 
 
-#ifdef IFUP_IN_PROBE
-	while (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
-	{
-		OS_WAIT(10);
-		DBGPRINT(RT_DEBUG_TRACE, ("Card not ready, NDIS_STATUS_SUCCESS!\n"));
-	}
-#else
 	if (VIRTUAL_IF_UP(pAd) != 0)
 		return -1;
-#endif /* IFUP_IN_PROBE */
 
 	/* increase MODULE use count */
 	RT_MOD_INC_USE_COUNT();

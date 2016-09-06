@@ -188,18 +188,6 @@ static int rtusb_probe (struct usb_interface *intf,
 	{
 		usb_put_dev(dev);
 	}
-#ifdef IFUP_IN_PROBE
-	else
-	{
-		if (VIRTUAL_IF_UP(pAd) != 0)
-		{
-			struct rtmp_adapter  = usb_get_intfdata(intf);
-			usb_set_intfdata(intf, NULL);
-			rt2870_disconnect(dev, pAd);
-			rv = -ENOMEM;
-		}
-	}
-#endif /* IFUP_IN_PROBE */
 	return rv;
 }
 
@@ -211,9 +199,6 @@ static void rtusb_disconnect(struct usb_interface *intf)
 
 
 	pAd = usb_get_intfdata(intf);
-#ifdef IFUP_IN_PROBE
-	VIRTUAL_IF_DOWN(pAd);
-#endif /* IFUP_IN_PROBE */
 	usb_set_intfdata(intf, NULL);
 
 	rt2870_disconnect(dev, pAd);
