@@ -1195,11 +1195,6 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 			}	\
 		}while(0)
 
-#define rtusb_urb_context  context
-#define rtusb_urb_status   status
-
-#define RTMP_OS_USB_CONTEXT_GET(__pURB)		__pURB->rtusb_urb_context
-#define RTMP_OS_USB_STATUS_GET(__pURB)		__pURB->rtusb_urb_status
 
 #define USB_CONTROL_MSG		usb_control_msg
 

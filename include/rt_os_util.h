@@ -832,12 +832,6 @@ void RtmpOsUsbInitRxDesc(
 	IN	void 		*pRxContext,
 	IN	dma_addr_t		TransferDma);
 
-void *RtmpOsUsbContextGet(
-	IN	void 		*pUrb);
-
-int RtmpOsUsbStatusGet(
-	IN	void 		*pUrb);
-
 void RtmpOsUsbDmaMapping(
 	IN	void 		*pUrb);
 #endif /* RTMP_MAC_USB */

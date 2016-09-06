@@ -272,21 +272,6 @@ void RtmpOsUsbInitRxDesc(
 						DmaAddr);
 }
 
-
-void *RtmpOsUsbContextGet(
-	IN	void 		*pUrb)
-{
-	return ((purbb_t)pUrb)->rtusb_urb_context;
-}
-
-
-int RtmpOsUsbStatusGet(
-	IN	void 		*pUrb)
-{
-	return ((purbb_t)pUrb)->rtusb_urb_status;
-}
-
-
 void RtmpOsUsbDmaMapping(
 	IN	void 		*pUrb)
 {
