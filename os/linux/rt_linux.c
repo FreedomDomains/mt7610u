@@ -287,7 +287,7 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 	}
 
 	if (pkt) {
-		RTMP_SET_PACKET_SOURCE(OSPKT_TO_RTPKT(pkt), PKTSRC_NDIS);
+		RTMP_SET_PACKET_SOURCE(pkt, PKTSRC_NDIS);
 	}
 
 	return (struct sk_buff *) pkt;
@@ -421,7 +421,7 @@ struct sk_buff * DuplicatePacket(
 	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
 	if (skb) {
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
-		pRetPacket = OSPKT_TO_RTPKT(skb);
+		pRetPacket = skb;
 	}
 
 	return pRetPacket;
@@ -449,7 +449,7 @@ struct sk_buff * duplicate_pkt(
 		memmove(GET_OS_PKT_DATATAIL(skb), pData, DataSize);
 		skb_put(skb, DataSize);
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
-		pPacket = OSPKT_TO_RTPKT(skb);
+		pPacket = skb;
 	}
 
 	return pPacket;
@@ -477,7 +477,7 @@ struct sk_buff * duplicate_pkt_with_TKIP_MIC(
 		skb = newskb;
 	}
 
-	return OSPKT_TO_RTPKT(skb);
+	return skb;
 
 
 }
@@ -567,7 +567,7 @@ struct sk_buff * ExpandPacket(
 		skb = newskb;
 	}
 
-	return OSPKT_TO_RTPKT(skb);
+	return skb;
 
 }
 

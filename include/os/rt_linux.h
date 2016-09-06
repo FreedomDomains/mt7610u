@@ -742,7 +742,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  *             os packet to rt packet
  */
 #define RTPKT_TO_OSPKT(_p)		((_p))
-#define OSPKT_TO_RTPKT(_p)		((_p))
 
 #define GET_OS_PKT_DATAPTR(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt)->data)
@@ -1069,7 +1068,7 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 {																		\
 	memcpy(skb_put(__pNetPkt, __Len), __pData, __Len);					\
 	GET_OS_PKT_NETDEV(__pNetPkt) = __pNetDev;							\
-	RTMP_SET_PACKET_SOURCE(OSPKT_TO_RTPKT(__pNetPkt), PKTSRC_NDIS);		\
+	RTMP_SET_PACKET_SOURCE((__pNetPkt), PKTSRC_NDIS);		\
 }
 
 typedef struct usb_device_id USB_DEVICE_ID;
