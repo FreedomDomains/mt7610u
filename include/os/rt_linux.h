@@ -741,8 +741,8 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  * 	- convert internal rt packet to os packet or
  *             os packet to rt packet
  */
-#define RTPKT_TO_OSPKT(_p)		((struct sk_buff *)(_p))
-#define OSPKT_TO_RTPKT(_p)		((struct sk_buff *)(_p))
+#define RTPKT_TO_OSPKT(_p)		((_p))
+#define OSPKT_TO_RTPKT(_p)		((_p))
 
 #define GET_OS_PKT_DATAPTR(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt)->data)

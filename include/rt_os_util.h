@@ -391,11 +391,9 @@ void RtmpOsSetPktNetDev(
 	IN	void 				*pPkt,
 	IN	void 				*pDev);
 
-struct net_device *RtmpOsPktNetDevGet(
-	IN	void 				*pPkt);
+struct net_device *RtmpOsPktNetDevGet(struct sk_buff *skb);
 
-char *RtmpOsGetNetDevName(
-	IN	void 				*pDev);
+char *RtmpOsGetNetDevName(struct net_device *pDev);
 
 void RtmpOsSetNetDevPriv(struct net_device *pDev, struct rtmp_adapter *pPriv);
 struct rtmp_adapter *RtmpOsGetNetDevPriv(struct net_device *pDev);

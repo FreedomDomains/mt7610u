@@ -186,9 +186,6 @@ void RtmpHandleRxPsPoll(
 				NumOfOldPsPkt = pAd->TxSwQueue[QID_AC_BE].Number;
 #endif /* UAPSD_SUPPORT */
 
-				pEntry = RemoveHeadQueue(&pMacEntry->PsQueue);
-				if ( pMacEntry->PsQueue.Number >=1 )
-					RTMP_SET_PACKET_MOREDATA(RTPKT_TO_OSPKT(pEntry), TRUE);
 				InsertTailQueueAc(pAd, pMacEntry, &pAd->TxSwQueue[QID_AC_BE], pEntry);
 
 #ifdef UAPSD_SUPPORT

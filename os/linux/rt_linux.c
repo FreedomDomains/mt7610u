@@ -1893,9 +1893,9 @@ Return Value:
 Note:
 ========================================================================
 */
-char *RtmpOsGetNetDevName(void *pDev)
+char *RtmpOsGetNetDevName(struct net_device *pDev)
 {
-	return ((struct net_device *) pDev)->name;
+	return pDev->name;
 }
 
 /*
@@ -1980,9 +1980,9 @@ Return Value:
 Note:
 ========================================================================
 */
-struct net_device *RtmpOsPktNetDevGet(void *pPkt)
+struct net_device *RtmpOsPktNetDevGet(struct sk_buff *skb)
 {
-	return GET_OS_PKT_NETDEV(pPkt);
+	return GET_OS_PKT_NETDEV(skb);
 }
 
 
