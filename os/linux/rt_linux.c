@@ -1966,26 +1966,6 @@ void RtmpOsTaskPidInit(RTMP_OS_PID *pPid)
 	*pPid = THREAD_PID_INIT_VALUE;
 }
 
-/*
-========================================================================
-Routine Description:
-	Get the network interface for the packet.
-
-Arguments:
-	pPkt			- the packet
-
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
-struct net_device *RtmpOsPktNetDevGet(struct sk_buff *skb)
-{
-	return skb->dev;
-}
-
-
 #ifdef IAPP_SUPPORT
 /* Layer 2 Update frame to switch/bridge */
 /* For any Layer2 devices, e.g., bridges, switches and other APs, the frame
