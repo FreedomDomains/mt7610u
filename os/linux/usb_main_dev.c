@@ -45,7 +45,6 @@ MODULE_DESCRIPTION("MT7610U 80211.ac usb driver");
 
 
 extern USB_DEVICE_ID rtusb_dev_id[];
-extern INT const rtusb_usb_id_len;
 
 static void rt2870_disconnect(
 	IN struct usb_device *dev,

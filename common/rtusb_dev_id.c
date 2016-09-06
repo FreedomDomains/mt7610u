@@ -59,5 +59,4 @@ USB_DEVICE_ID rtusb_dev_id[] = {
 	{ }/* Terminating entry */
 };
 
-INT const rtusb_usb_id_len = sizeof(rtusb_dev_id) / sizeof(USB_DEVICE_ID);
 MODULE_DEVICE_TABLE(usb, rtusb_dev_id);
