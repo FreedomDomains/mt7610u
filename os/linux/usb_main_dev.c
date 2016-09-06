@@ -44,7 +44,7 @@ MODULE_DESCRIPTION("MT7610U 80211.ac usb driver");
 #endif /* CONFIG_STA_SUPPORT */
 
 
-extern USB_DEVICE_ID rtusb_dev_id[];
+extern struct usb_device_id rtusb_dev_id[];
 
 static void rt2870_disconnect(
 	IN struct usb_device *dev,
@@ -53,7 +53,7 @@ static void rt2870_disconnect(
 static int rt2870_probe(
 	IN struct usb_interface *intf,
 	IN struct usb_device *usb_dev,
-	IN const USB_DEVICE_ID *dev_id,
+	IN const struct usb_device_id *dev_id,
 	IN void **ppAd);
 
 #ifndef PF_NOFREEZE
@@ -94,7 +94,7 @@ static int rt2870_resume(struct usb_interface *intf);
 #endif /* CONFIG_PM */
 
 static int rtusb_probe (struct usb_interface *intf,
-						const USB_DEVICE_ID *id);
+						const struct usb_device_id *id);
 static void rtusb_disconnect(struct usb_interface *intf);
 
 static BOOLEAN USBDevConfigInit(
@@ -174,7 +174,7 @@ static BOOLEAN USBDevConfigInit(
 
 
 static int rtusb_probe (struct usb_interface *intf,
-						const USB_DEVICE_ID *id)
+						const struct usb_device_id *id)
 {
 	struct rtmp_adapter  *pAd;
 	struct usb_device *dev;
@@ -416,7 +416,7 @@ static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 static int rt2870_probe(
 	IN struct usb_interface *intf,
 	IN struct usb_device *usb_dev,
-	IN const USB_DEVICE_ID *dev_id,
+	IN const struct usb_device_id *dev_id,
 	IN void **ppAd)
 {
 	struct  net_device		*net_dev = NULL;

@@ -1071,8 +1071,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 	RTMP_SET_PACKET_SOURCE((__pNetPkt), PKTSRC_NDIS);		\
 }
 
-typedef struct usb_device_id USB_DEVICE_ID;
-
 #define BULKAGGRE_SIZE				60 /* 100 */
 
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
