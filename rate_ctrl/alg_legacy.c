@@ -64,9 +64,6 @@ void MlmeDynamicTxRateSwitching(
 	CHAR					Rssi, TmpIdx = 0;
 	ULONG					TxRetransmit = 0, TxSuccess = 0, TxFailCount = 0;
 	RSSI_SAMPLE				*pRssi = &pAd->StaCfg.RssiSample;
-#ifdef RT3290
-	ULONG AccuTxTotalCnt = 0;
-#endif /* RT3290 */
 #ifdef AGS_SUPPORT
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
 #endif /* AGS_SUPPORT */
@@ -115,34 +112,6 @@ void MlmeDynamicTxRateSwitching(
 
 			if (TxTotalCnt)
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
-
-#ifdef RT3290
-			/*
-				If no traffic in the past 1-sec period, don't change TX rate,
-				but clear all bad history. because the bad history may affect the next
-				Chariot throughput test
-			*/
-			AccuTxTotalCnt = pAd->RalinkCounters.OneSecTxNoRetryOkCount +
-						 pAd->RalinkCounters.OneSecTxRetryOkCount +
-						 pAd->RalinkCounters.OneSecTxFailCount;
-
-			if (IS_RT3290(pAd) &&
-				((AccuTxTotalCnt > 150) || (pAd->AntennaDiversityState == 1)) &&
-				(pAd->CommonCfg.BBPCurrentBW == BW_40))
-			{
-				WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
-				RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-
-				if ((WlanFunCtrl.field.WLAN_EN == TRUE) &&
-					(WlanFunCtrl.field.PCIE_APP0_CLK_REQ == FALSE))
-				{
-					WlanFunCtrl.field.PCIE_APP0_CLK_REQ = TRUE;
-					RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-				}
-				// TODO: shiang, why RT3290 need to do AntSelection here??
-				MlmeAntSelection(pAd, AccuTxTotalCnt, TxErrorRatio, TxSuccess, pAd->StaCfg.RssiSample.AvgRssi0);
-			}
-#endif /* RT3290 */
 
 			DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,
 					("DRS:Aid=%d, TxSuccess=%ld, TxRetransmit=%ld, TxFailCount=%ld \n",
@@ -236,20 +205,6 @@ void MlmeDynamicTxRateSwitching(
 				RTMP_IO_WRITE32(pAd, TX_RTY_CFG, TxRtyCfg.word);
 			}
 
-#ifdef RT3290
-			// TODO: shiang, what's the purpose of "AntennaDiversityInfo.AntennaDiversityState"??
-			if (0) //IS_RT3290(pAd) &&  ((AccuTxTotalCnt > 150) || (pAd->AntennaDiversityInfo.AntennaDiversityState == 1)) && (pAd->CommonCfg.BBPCurrentBW == BW_40))
-			{
-				WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
-
-				RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-				if ((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == FALSE))
-				{
-					WlanFunCtrl.field.PCIE_APP0_CLK_REQ = TRUE;
-					RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-				}
-			}
-#endif /* RT3290 */
 		}
 
 		CurrRateIdx = pEntry->CurrTxRateIndex;

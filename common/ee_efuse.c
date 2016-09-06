@@ -147,10 +147,10 @@ UCHAR eFuseReadRegisters(
 	u32	data;
 	u32 efuse_ctrl_reg = EFUSE_CTRL;
 
-#if defined(RT3290) || defined(RT65xx)
-	if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+	if (IS_RT65XX(pAd))
 		efuse_ctrl_reg = EFUSE_CTRL_3290;
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif defined(RT65xx) */
 
 	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
@@ -193,11 +193,11 @@ UCHAR eFuseReadRegisters(
 	else
 	{
 		/*Step4. Read 16-byte of data from EFUSE_DATA0-3 (0x590-0x59C)*/
-#if defined(RT3290) || defined(RT65xx)
-		if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+		if (IS_RT65XX(pAd))
 			efuseDataOffset =  EFUSE_DATA0_3290 + (Offset & 0xC);
 		else
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif /* defined(RT65xx) */
 		efuseDataOffset =  EFUSE_DATA3 - (Offset & 0xC);
 		/*data hold 4 bytes data.*/
 		/*In RTMP_IO_READ32 will automatically execute 32-bytes swapping*/
@@ -249,10 +249,10 @@ void eFusePhysicalReadRegisters(
 	u32	data;
 	u32 efuse_ctrl_reg = EFUSE_CTRL;
 
-#if defined(RT3290) || defined(RT65xx)
-	if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+	if (IS_RT65XX(pAd))
 		efuse_ctrl_reg = EFUSE_CTRL_3290;
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif /* defined(RT65xx) */
 
 	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
@@ -291,11 +291,11 @@ void eFusePhysicalReadRegisters(
 	/*594:B A 9 8 */
 	/*598:7 6 5 4*/
 	/*59C:3 2 1 0*/
-#if defined(RT3290) || defined(RT65xx)
-	if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+	if (IS_RT65XX(pAd))
 		efuseDataOffset =  EFUSE_DATA0_3290 + (Offset & 0xC)  ;
 	else
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif /* defined(RT65xx) */
 	efuseDataOffset =  EFUSE_DATA3 - (Offset & 0xC)  ;
 
 	RTMP_IO_READ32(pAd, efuseDataOffset, &data);
@@ -400,14 +400,6 @@ static void eFusePhysicalWriteRegisters(
 	u32 efuse_ctrl_reg = EFUSE_CTRL;
 	USHORT efuse_data = EFUSE_DATA3;
 
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-	{
-		efuse_ctrl_reg = EFUSE_CTRL_3290;
-		efuse_data = EFUSE_DATA0_3290;
-	}
-#endif /* RT3290 */
-
 #ifdef RT65xx
 	if (IS_RT65XX(pAd))
 		efuse_data = EFUSE_DATA0;
@@ -447,11 +439,11 @@ static void eFusePhysicalWriteRegisters(
 	for(i=0; i< 4; i++)
 	{
 		RTMP_IO_READ32(pAd, efuseDataOffset, &eFuseDataBuffer[i]);
-#if defined(RT3290) || defined(RT65xx)
-		if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+		if (IS_RT65XX(pAd))
 			efuseDataOffset += 4;
 		else
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif /* defined(RT65xx) */
 			efuseDataOffset -= 4;
 	}
 
@@ -472,11 +464,11 @@ static void eFusePhysicalWriteRegisters(
 	for(i=0; i< 4; i++)
 	{
 		RTMP_IO_WRITE32(pAd, efuseDataOffset, eFuseDataBuffer[i]);
-#if defined(RT3290) || defined(RT65xx)
-		if (IS_RT3290(pAd) || IS_RT65XX(pAd))
+#if defined(RT65xx)
+		if (IS_RT65XX(pAd))
 			efuseDataOffset += 4;
 		else
-#endif /* defined(RT3290) || defined(RT65xx) */
+#endif /* defined(RT65xx) */
 			efuseDataOffset -= 4;
 	}
 
@@ -1226,11 +1218,6 @@ INT efuse_probe(struct rtmp_adapter*pAd)
 		ctrl_reg = EFUSE_CTRL_3290;
 	else
 #endif /* RT65xx */
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		ctrl_reg = EFUSE_CTRL_3290;
-	else
-#endif /* RT3290 */
 		ctrl_reg = EFUSE_CTRL;
 
 	RTMP_IO_READ32(pAd, ctrl_reg, &eFuseCtrl);

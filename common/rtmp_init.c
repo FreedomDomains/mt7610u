@@ -206,9 +206,6 @@ int	RTMPAllocAdapterBlock(
 		/* Init spin locks*/
 		spin_lock_init(&pAd->MgmtRingLock);
 
-#if defined(RT3290) || defined(RT65xx)
-#endif /* defined(RT3290) || defined(RT65xx) */
-
 		for (index =0 ; index < NUM_OF_TX_RING; index++)
 		{
 			spin_lock_init(&pAd->TxSwQueueLock[index]);
@@ -313,11 +310,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters\n"));
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		RT3290_eeprom_access_grant(pAd, TRUE);
-#endif /* RT3290 */
 
 	if (pAd->chipOps.eeinit)
 	{
@@ -424,11 +416,11 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->EEPROMDefaultValue[EEPROM_COUNTRY_REG_OFFSET] = value;
 	}
 
-#if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290)
+#if defined(BT_COEXISTENCE_SUPPORT)
 	RT28xx_EEPROM_READ16(pAd, EEPROM_NIC3_OFFSET, value);
 	pAd->EEPROMDefaultValue[EEPROM_NIC_CFG3_OFFSET] = value;
 	pAd->NicConfig3.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG3_OFFSET];
-#endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) */
+#endif /* defined(BT_COEXISTENCE_SUPPORT) */
 
 #ifndef RT65xx /* MT7650 EEPROM doesn't have those BBP setting @20121001 */
 	for(i = 0; i < 8; i++)
@@ -854,10 +846,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 
 
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		RT3290_eeprom_access_grant(pAd, FALSE);
-#endif /* RT3290 */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: pAd->Antenna.field.BoardType = %d, IS_MINI_CARD(pAd) = %d, IS_RT5390U(pAd) = %d\n",
 		__FUNCTION__,
@@ -1061,16 +1049,6 @@ void NICInitAsicFromEEPROM(
 			BOOLEAN radioOff = FALSE;
 			pAd->StaCfg.bHardwareRadio = TRUE;
 
-#ifdef RT3290
-			if (IS_RT3290(pAd))
-			{
-				// Read GPIO pin0 as Hardware controlled radio state
-				RTMP_IO_FORCE_READ32(pAd, WLAN_FUN_CTRL, &data);
-				if ((data & 0x100) == 0)
-					radioOff = TRUE;
-			}
-			else
-#endif /* RT3290 */
 			{
 				/* Read GPIO pin2 as Hardware controlled radio state*/
 				RTMP_IO_READ32(pAd, GPIO_CTRL_CFG, &data);
@@ -1102,10 +1080,10 @@ void NICInitAsicFromEEPROM(
 
 	}
 #ifdef PCIE_PS_SUPPORT
-#if defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) || defined(RT5592) || defined(RT3290)
+#if defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) || defined(RT5592)
 		if (IS_RT3090(pAd)|| IS_RT3572(pAd) || IS_RT3390(pAd)
 			|| IS_RT3593(pAd) || IS_RT5390(pAd) || IS_RT5392(pAd)
-			|| IS_RT5592(pAd) || IS_RT3290(pAd))
+			|| IS_RT5592(pAd))
 		{
 			RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 			if (pChipOps->AsicReverseRfFromSleepMode)
@@ -1115,7 +1093,7 @@ void NICInitAsicFromEEPROM(
 		/* Before stable, don't issue other MCU command to prevent from firmware error.*/
 		if ((((IS_RT3090(pAd)|| IS_RT3572(pAd) ||IS_RT3390(pAd)
 			|| IS_RT3593(pAd) || IS_RT5390(pAd) || IS_RT5392(pAd))
-			  && IS_VERSION_AFTER_F(pAd)) || IS_RT5592(pAd) || IS_RT3290(pAd))
+			  && IS_VERSION_AFTER_F(pAd)) || IS_RT5592(pAd))
 			&& (pAd->StaCfg.PSControl.field.rt30xxPowerMode == 3)
 			&& (pAd->StaCfg.PSControl.field.EnableNewPS == TRUE))
 		{
@@ -1616,17 +1594,6 @@ int	NICInitializeAsic(
 			RTMP_IO_WRITE32(pAd, TXOP_CTRL_CFG, 0x583f);
 	}
 #endif /* CONFIG_STA_SUPPORT */
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-	{
-		u32 coex_val;
-		//halt wlan tx when bt_rx_busy asserted
-		RTMP_IO_READ32(pAd, COEXCFG2, &coex_val);
-		coex_val |= 0x100;
-		RTMP_IO_WRITE32(pAd, COEXCFG2, coex_val);
-	}
-#endif /* RT3290 */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitializeAsic\n"));
 	return NDIS_STATUS_SUCCESS;

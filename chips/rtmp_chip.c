@@ -742,10 +742,6 @@ INT WaitForAsicReady(
 	u32 mac_val = 0, reg = MAC_CSR0;
 	int idx = 0;
 
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		reg = ASIC_VERSION;
-#endif /* RT3290 */
 	do
 	{
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
@@ -771,11 +767,6 @@ INT AsicGetMacVersion(
 	IN struct rtmp_adapter*pAd)
 {
 	u32 reg = MAC_CSR0;
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		reg = 0x0;
-#endif /* RT3290 */
 
 #ifdef RT65xx
 	RTMP_IO_READ32(pAd, ASIC_VERSION, &pAd->MacIcVersion);

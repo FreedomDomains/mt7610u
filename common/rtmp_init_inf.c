@@ -49,53 +49,6 @@ int rt28xx_init(void *pAdSrc)
 		RT65xx_WLAN_ChipOnOff(pAd, TRUE, FALSE);
 #endif /* RT65xx */
 
-#ifdef RT3290
-	DBGPRINT(RT_DEBUG_OFF, ("MACVersion=0x%x\n", pAd->MACVersion));
-	if (IS_RT3290(pAd))
-	{
-		u32 MacRegValue;
-		OSCCTL_STRUC osCtrl = {.word = 0};
-		CMB_CTRL_STRUC cmbCtrl = {.word = 0};
-		WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
-
-		RTMPEnableWlan(pAd, TRUE, TRUE);
-
-		RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-		if (WlanFunCtrl.field.WLAN_EN == TRUE)
-		{
-			WlanFunCtrl.field.PCIE_APP0_CLK_REQ = TRUE;
-			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-		}
-
-		//Enable ROSC_EN first then CAL_REQ
-		RTMP_IO_READ32(pAd, OSCCTL, &osCtrl.word);
-		osCtrl.field.ROSC_EN = TRUE; /* HW force */
-		RTMP_IO_WRITE32(pAd, OSCCTL, osCtrl.word);
-
-		osCtrl.field.ROSC_EN = TRUE; /* HW force */
-		osCtrl.field.CAL_REQ = TRUE;
-		osCtrl.field.REF_CYCLE = 0x27;
-		RTMP_IO_WRITE32(pAd, OSCCTL, osCtrl.word);
-
-		RTMP_IO_READ32(pAd, CMB_CTRL, &cmbCtrl.word);
-		pAd->CmbCtrl.word = cmbCtrl.word;
-
-		/* Overwrite default Coex Parameter */
-		RTMP_IO_READ32(pAd, COEXCFG0, &MacRegValue);
-		MacRegValue &= ~(0xFF000000);
-		MacRegValue |= 0x5E000000;
-		RTMP_IO_WRITE32(pAd, COEXCFG0, MacRegValue);
-	}
-
-	if (IS_RT3290LE(pAd))
-	{
-		PLL_CTRL_STRUC PllCtrl;
-		RTMP_IO_READ32(pAd, PLL_CTRL, &PllCtrl.word);
-		PllCtrl.field.VCO_FIXED_CURRENT_CONTROL = 0x1;
-		RTMP_IO_WRITE32(pAd, PLL_CTRL, PllCtrl.word);
-	}
-#endif /* RT3290 */
-
 #ifdef CONFIG_STA_SUPPORT
 #ifdef PCIE_PS_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -454,26 +407,6 @@ int rt28xx_init(void *pAdSrc)
 #endif /* TXBF_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
 
-
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-	{
-		WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
-		RTMP_MAC_PWRSV_EN(pAd, TRUE, TRUE);
-		//
-		// Too much time for reading efuse(enter/exit L1), and our device will hang up
-		// Enable L1
-		//
-		RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-		if (WlanFunCtrl.field.WLAN_EN == TRUE)
-		{
-			WlanFunCtrl.field.PCIE_APP0_CLK_REQ = FALSE;
-			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-		}
-	}
-#endif /* RT3290 */
-
 	DBGPRINT_S(Status, ("<==== rt28xx_init, Status=%x\n", Status));
 
 	return TRUE;
@@ -507,11 +440,6 @@ err2:
 #endif /* RESOURCE_PRE_ALLOC */
 
 err1:
-
-#ifdef RT3290
-	if (IS_RT3290(pAd))
-		RTMPEnableWlan(pAd, FALSE, FALSE);
-#endif /* RT3290 */
 
 #ifdef DOT11_N_SUPPORT
 	if(pAd->mpdu_blk_pool.mem)

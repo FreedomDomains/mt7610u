@@ -974,113 +974,6 @@ void STAMlmePeriodicExec(
 	*/
 	pAd->RalinkCounters.LastOneSecTotalTxCount = TxTotalCnt;
 
-#ifdef RT3290
-	// TODO: shiang, what's this and how about in AP mode??
-	// Need to enable PCIE_APP0_CLK_REQ for HT40 throughput
-	if (IS_RT3290(pAd) && (pAd->CommonCfg.BBPCurrentBW == BW_40))
-	{
-		if ((pAd->RalinkCounters.LastOneSecTotalTxCount + pAd->RalinkCounters.LastOneSecRxOkDataCnt) >= 2000)
-		{
-			WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
-			RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-
-			if ((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == FALSE))
-			{
-				WlanFunCtrl.field.PCIE_APP0_CLK_REQ = TRUE;
-				RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-			}
-		}
-		else if ((pAd->RalinkCounters.LastOneSecTotalTxCount + pAd->RalinkCounters.LastOneSecRxOkDataCnt) <= 500)
-		{
-			WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
-			RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-
-			if ((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == TRUE))
-			{
-				WlanFunCtrl.field.PCIE_APP0_CLK_REQ = FALSE;
-				RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-			}
-		}
-	}
-
-	//HWAntennaSwitch
-	if (IS_RT3290(pAd) &&
-		((pAd->NicConfig3.word != 0xFFFF) && (pAd->NicConfig3.field.CoexAnt == TRUE)) &&
-		((pAd->Mlme.OneSecPeriodicRound % 5) == 4))
-	{
-		WLAN_FUN_CTRL_STRUC	WlanFunCtrl = {.word = 0};
-		ULONG				MacRegValue;
-
-		DBGPRINT(RT_DEBUG_INFO, ("!!! BBP_R150 = %d, BT_EN = %d\n",pAd->BbpWriteLatch[BBP_R150], pAd->BtFunCtrl.field.BT_EN));
-
-		//Check BT_EN
-		if ((((pAd->WlanFunInfo.field.COEX_MODE&0x1E) == 0) || (pAd->BtFunCtrl.field.BT_EN == 0)) && (pAd->BbpWriteLatch[BBP_R150] != 0xc0))
-		{
-			if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE)
-				|| (RTMP_TEST_PSFLAG(pAd, fRTMP_PS_SET_PCI_CLK_OFF_COMMAND))
-				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
-				AsicForceWakeup(pAd, DOT11POWERSAVE);
-
-			//Enable RX antenna switch
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R150, 0xc0);
-			DBGPRINT(RT_DEBUG_TRACE, ("!!! EN BBP_R150 = %d\n",pAd->BbpWriteLatch[BBP_R150]));
-
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R151, 0xb0);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R152, 0x23);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R153, 0x34);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R154, 0x10);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R155, 0x3b);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R253, 0x05);
-
-			//Disable FIX_WL_ANT_SEL
-			RTMP_IO_READ32(pAd, COEXCFG0, &MacRegValue);
-			MacRegValue &= ~(0x00000004);
-			RTMP_IO_WRITE32(pAd, COEXCFG0, MacRegValue);
-
-			// Fixed to Main Antenna
-			RTMP_SEM_LOCK(&pAd->WlanEnLock);
-			RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-			if (WlanFunCtrl.field.WLAN_EN == TRUE)
-			{
-				if (WlanFunCtrl.field.INV_TR_SW0)
-				{
-					WlanFunCtrl.field.INV_TR_SW0 = 0;
-					RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-				}
-				DBGPRINT(RT_DEBUG_TRACE, ("AsicSetRxAnt, switch to main antenna\n"));
-				pAd->WlanFunCtrl.word = WlanFunCtrl.word;
-			}
-			RTMP_SEM_UNLOCK(&pAd->WlanEnLock);
-
-
-			//Disable SW antanna selection
-			pAd->NicConfig2.field.AntDiversity = FALSE;
-		}
-		else if(((pAd->WlanFunInfo.field.COEX_MODE&0x1E) != 0) && (pAd->BbpWriteLatch[BBP_R150] != 0x00))
-		{
-			if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE)
-				|| (RTMP_TEST_PSFLAG(pAd, fRTMP_PS_SET_PCI_CLK_OFF_COMMAND))
-				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
-				AsicForceWakeup(pAd, DOT11POWERSAVE);
-
-			//Disable RX antenna switch
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R150, 0x00);
-			DBGPRINT(RT_DEBUG_TRACE, ("!!! DISABLE BBP_R150 = %d\n",pAd->BbpWriteLatch[BBP_R150]));
-
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R151, 0x00);
-
-			//Enable FIX_WL_ANT_SEL
-			RTMP_IO_READ32(pAd, COEXCFG0, &MacRegValue);
-			MacRegValue |= 0x00000004;
-			RTMP_IO_WRITE32(pAd, COEXCFG0, MacRegValue);
-
-			//Enable SW antanna selection
-			pAd->NicConfig2.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG2_OFFSET];
-		}
-	}
-#endif /* RT3290 */
-
-
 		/* resume Improved Scanning*/
 		if ((pAd->StaCfg.bImprovedScan) &&
 			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)) &&
@@ -1155,9 +1048,6 @@ void STAMlmePeriodicExec(
 		if ((pAd->Antenna.field.TxPath == 1)&&
 		(pAd->StaActive.SupportedPhyInfo.bHtEnable == TRUE) &&
 			(pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE)
-#ifdef RT3290
-		    && (!IS_RT3290(pAd))
-#endif /* RT3290 */
 		)
 		{
 			EDCA_AC_CFG_STRUC	Ac0Cfg;
@@ -5049,10 +4939,6 @@ void AsicEvaluateRxAnt(
 	)
 		return;
 
-#ifdef RT3290
-	if (IS_RT3290(pAd) && (pAd->RalinkCounters.OneSecTransmittedByteCount >= 500))
-		return;
-#endif /* RT3290 */
 
 	{
 #ifdef CONFIG_STA_SUPPORT
@@ -5424,30 +5310,6 @@ void AsicStaBbpTuning(
 		RTMP_CHIP_ASIC_AGC_ADJUST(pAd, Rssi, R66);
 
 		// TODO: shiang,I didn't find AsicAGCAdjust for RT30xx, so I move following code from upper #if case.
-#ifdef RT3290
-		// TODO: shiang, what's the BbpWriteLatch[ ] ?????
-		if (IS_RT3290(pAd))
-		{
-			if (Rssi >= -36)
-			{
-				if (pAd->BbpWriteLatch[BBP_R77] != 0x27)
-				{
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R82, 0x52);
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R77, 0x27);
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, 0x1C);
-				}
-			}
-			else
-			{
-				if (pAd->BbpWriteLatch[BBP_R77] != 0x58)
-				{
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R82, 0x62);
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R77, 0x58);
-					RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, 0x12);
-				}
-			}
-		}
-#endif /* RT3290 */
 
 	}
 }

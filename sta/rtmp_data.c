@@ -384,15 +384,6 @@ void STAHandleRxDataFrame(
 			}
 		}
 
-#ifdef RT3290
-		// TODO: shiang, find out what's this??
-		if (pRxInfo->MyBss)
-		{
-			// TODO: shiang, I mark this line due to I still didn't know what's this yet
-			//pAd->Rssi[pAd->WlanFunCtrl.field.INV_TR_SW0] = pAd->StaCfg.RssiSample.AvgRssi0;
-		}
-#endif /* RT3290 */
-
 		pAd->RalinkCounters.RxCountSinceLastNULL++;
 #ifdef UAPSD_SUPPORT
 		if (pAd->StaCfg.UapsdInfo.bAPSDCapable
@@ -832,15 +823,6 @@ void STAHandleRxDataFrame_Hdr_Trns(
 				return;
 			}
 		}
-
-#ifdef RT3290
-		// TODO: shiang, find out what's this??
-		if (pRxInfo->MyBss)
-		{
-			// TODO: shiang, I makr this line due to I still didn't know what's this yet
-			//pAd->Rssi[pAd->WlanFunCtrl.field.INV_TR_SW0] = pAd->StaCfg.RssiSample.AvgRssi0;
-		}
-#endif /* RT3290 */
 
 		pAd->RalinkCounters.RxCountSinceLastNULL++;
 		if (pAd->StaCfg.UapsdInfo.bAPSDCapable
@@ -2067,9 +2049,6 @@ int STASendPacket(
 			 && pEntry->WepStatus != Ndis802_11Encryption2Enabled))
 		    &&
 		    (!(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)))
-#ifdef RT3290
-		    && (!(IS_RT3290(pAd) && pAd->WlanBTCoexInfo.ampduOff == TRUE))
-#endif /* RT3290 */
 		    )
 		{
 			BAOriSessionSetUp(pAd, pEntry, UserPriority, 0, 10,

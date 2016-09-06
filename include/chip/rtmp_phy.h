@@ -538,7 +538,7 @@ typedef union _BBP_R182_STRUC {
 } BBP_R182_STRUC, *PBBP_R182_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
-#if defined(RT5370) || defined(RT5390) || defined(RT3290) //for hw antenna diversity (PPAD)
+#if defined(RT5370) || defined(RT5390) //for hw antenna diversity (PPAD)
 	#define MAX_BBP_ID	255
 #elif defined(RT30xx)
 	/* edit by johnli, RF power sequence setup, add BBP R138 for ADC dynamic on/off control */

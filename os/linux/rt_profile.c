@@ -283,9 +283,6 @@ void RTMPFreeAdapter(
 	if (pAd->BeaconBuf)
 		kfree(pAd->BeaconBuf);
 
-#if defined(RT3290) || defined(RT65xx)
-#endif /* defined(RT3290) || defined(RT65xx) */
-
 	for (index =0 ; index < NUM_OF_TX_RING; index++)
 	{
 		pAd->DeQueueRunning[index] = FALSE;
