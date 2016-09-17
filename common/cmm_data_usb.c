@@ -1027,7 +1027,7 @@ if (0) {
 	RTMP_IRQ_LOCK(&pAd->MLMEBulkOutLock, IrqFlags);
 
 	pAd->MgmtRing.Cell[pAd->MgmtRing.TxCpuIdx].pNdisPacket = pPacket;
-	pMLMEContext->TransferBuffer = (PTX_BUFFER)(GET_OS_PKT_DATAPTR(pPacket));
+	pMLMEContext->TransferBuffer = pPacket->data;
 
 	/* Length in TxInfo should be 8 less than bulkout size.*/
 	pMLMEContext->BulkOutSize = BulkOutSize;

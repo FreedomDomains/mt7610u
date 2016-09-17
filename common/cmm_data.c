@@ -198,8 +198,8 @@ static void dumpTxBlk(TX_BLK *pTxBlk)
 		pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 		if (pPacket)
 		{
-			pBuf = GET_OS_PKT_DATAPTR(pPacket);
-			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (u32)(GET_OS_PKT_DATAPTR(pPacket)), GET_OS_PKT_LEN(pPacket)));
+			pBuf = pPacket->data;
+			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (u32)pPacket->data), GET_OS_PKT_LEN(pPacket)));
 			DBGPRINT(RT_DEBUG_TRACE,("\t\t"));
 			for (j =0 ; j < GET_OS_PKT_LEN(pPacket); j++)
 			{
@@ -812,7 +812,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		pTxBlk->pMacEntry = NULL;
 		{
 #ifdef MCAST_RATE_SPECIFIC
-			u8 *pDA = GET_OS_PKT_DATAPTR(pPacket);
+			u8 *pDA = pPacket->data;
 			if (((*pDA & 0x01) == 0x01) && (*pDA != 0xff))
 				pTxBlk->pTransmit = &pAd->CommonCfg.MCastPhyMode;
 			else
@@ -1455,7 +1455,7 @@ UINT BA_Reorder_AMSDU_Annnounce(
 	USHORT			DataSize;
 	UINT			nMSDU = 0;
 
-	pData = (u8 *) GET_OS_PKT_DATAPTR(pPacket);
+	pData = pPacket->data;
 	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
 
 	nMSDU = deaggregate_AMSDU_announce(pAd, pPacket, pData, DataSize, OpMode);
@@ -1546,7 +1546,7 @@ BOOLEAN RTMPCheckEtherType(
 					((VALID_WCID(pMacEntry->Aid) && CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_WMM_CAPABLE))
 						|| (pMacEntry->Aid == MCAST_WCID)));
 
-	pSrcBuf = GET_OS_PKT_DATAPTR(pPacket);
+	pSrcBuf = pPacket->data;;
 	pktLen = GET_OS_PKT_LEN(pPacket);
 
 	ASSERT(pSrcBuf);
@@ -2144,7 +2144,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 		if (pHeader->FC.MoreFrag)
 		{
 			ASSERT(pAd->FragFrame.pFragPacket);
-			pFragBuffer = GET_OS_PKT_DATAPTR(pAd->FragFrame.pFragPacket);
+			pFragBuffer = (pAd->FragFrame.pFragPacket)->data;
 			pAd->FragFrame.RxSize   = DataSize + HeaderRoom;
 			memmove(pFragBuffer,	 pHeader, pAd->FragFrame.RxSize);
 			pAd->FragFrame.Sequence = pHeader->Sequence;
@@ -2183,7 +2183,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 			goto done; /* give up this frame*/
 		}
 
-		pFragBuffer = GET_OS_PKT_DATAPTR(pAd->FragFrame.pFragPacket);
+		pFragBuffer = (pAd->FragFrame.pFragPacket)->data;
 
 		/* concatenate this fragment into the re-assembly buffer*/
 		memmove((pFragBuffer + pAd->FragFrame.RxSize), pData, DataSize);
@@ -2214,7 +2214,7 @@ done:
 			/* update RxBlk*/
 			pRetPacket = pAd->FragFrame.pFragPacket;
 			pAd->FragFrame.pFragPacket = pNewFragPacket;
-			pRxBlk->pHeader = (PHEADER_802_11) GET_OS_PKT_DATAPTR(pRetPacket);
+			pRxBlk->pHeader = (PHEADER_802_11) pRetPacket->data;
 			pRxBlk->pData = (UCHAR *)pRxBlk->pHeader + HeaderRoom;
 			pRxBlk->DataSize = pAd->FragFrame.RxSize - HeaderRoom;
 			pRxBlk->pRxPacket = pRetPacket;

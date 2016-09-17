@@ -1401,7 +1401,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 		pRxD = (RXD_STRUC *)(&RxBlk.hw_rx_info[0]);
 		pFceInfo = RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
-		pData = GET_OS_PKT_DATAPTR(pRxPacket);
+		pData = pRxPacket->data;
 		pRxWI = (RXWI_STRUC *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
@@ -1775,8 +1775,7 @@ void STASendPackets(
 #endif /* QOS_DLS_SUPPORT */
 			    )) {
 				MAC_TABLE_ENTRY *pEntry;
-				u8 *pSrcBufVA =
-				    GET_OS_PKT_DATAPTR(pPacket);
+				u8 *pSrcBufVA = pPacket->data;
 
 				pEntry = MacTableLookup(pAd, pSrcBufVA);
 
@@ -2238,7 +2237,7 @@ void STAFindCipherAlgorithm(
 	PCIPHER_KEY pKey = NULL;
 	PMAC_TABLE_ENTRY pMacEntry;
 
-	pSrcBufVA = GET_OS_PKT_DATAPTR(pTxBlk->pPacket);
+	pSrcBufVA = (pTxBlk->pPacket)->data;
 	pMacEntry = pTxBlk->pMacEntry;
 
 	{

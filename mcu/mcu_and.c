@@ -832,7 +832,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 {
 	struct sk_buff * net_pkt = rx_msg->net_pkt;
 	struct cmd_msg *msg, *msg_tmp;
-	RXFCE_INFO_CMD *rx_info = (RXFCE_INFO_CMD *)GET_OS_PKT_DATAPTR(net_pkt);
+	RXFCE_INFO_CMD *rx_info = net_pkt->data;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
@@ -848,7 +848,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 	if (rx_info->self_gen) {
 		/* if have callback function */
 		RTEnqueueInternalCmd(ad, CMDTHREAD_RESPONSE_EVENT_CALLBACK,
-								GET_OS_PKT_DATAPTR(net_pkt) + sizeof(*rx_info), rx_info->pkt_len);
+								net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
 	} else {
 		RTMP_SPIN_LOCK_IRQ(&ctl->ackq_lock);
 		DlListForEachSafe(msg, msg_tmp, &ctl->ackq, struct cmd_msg, list) {
@@ -857,7 +857,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 				RTMP_SPIN_UNLOCK_IRQ(&ctl->ackq_lock);
 
 				if ((msg->rsp_payload_len == rx_info->pkt_len) && (msg->rsp_payload_len != 0)) {
-					msg->rsp_handler(msg, GET_OS_PKT_DATAPTR(net_pkt) + sizeof(*rx_info), rx_info->pkt_len);
+					msg->rsp_handler(msg, net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
 				} else if ((msg->rsp_payload_len == 0) && (rx_info->pkt_len == 8)) {
 					DBGPRINT(RT_DEBUG_INFO, ("command response(ack) success\n"));
 				} else {
@@ -918,7 +918,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 
 		RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 							usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
-							GET_OS_PKT_DATAPTR(net_pkt), 512, usb_rx_cmd_msg_complete, net_pkt);
+							net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
 
 		andes_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
 
@@ -959,7 +959,7 @@ int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 
 	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 						usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
-						GET_OS_PKT_DATAPTR(net_pkt), 512, usb_rx_cmd_msg_complete, net_pkt);
+						net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
 
 	andes_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
 
@@ -1091,7 +1091,7 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 
 	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 						usb_sndbulkpipe(pObj->pUsb_Dev, pChipCap->CommandBulkOutAddr),
-						GET_OS_PKT_DATAPTR(net_pkt), GET_OS_PKT_LEN(net_pkt), usb_kick_out_cmd_msg_complete, net_pkt);
+						net_pkt->data, GET_OS_PKT_LEN(net_pkt), usb_kick_out_cmd_msg_complete, net_pkt);
 
 	if (msg->need_rsp)
 		andes_queue_tail_cmd_msg(&ctl->ackq, msg, wait_cmd_out_and_ack);

@@ -375,11 +375,11 @@ void RTMP_QueryPacketInfo(
 	OUT UINT *pSrcBufLen)
 {
 	info->BufferCount = 1;
-	info->pFirstBuffer = (PNDIS_BUFFER) GET_OS_PKT_DATAPTR(pPacket);
+	info->pFirstBuffer = pPacket->data;
 	info->PhysicalBufferCount = 1;
 	info->TotalPacketLength = GET_OS_PKT_LEN(pPacket);
 
-	*pSrcBufVA = GET_OS_PKT_DATAPTR(pPacket);
+	*pSrcBufVA = pPacket->data;
 	*pSrcBufLen = GET_OS_PKT_LEN(pPacket);
 
 #ifdef TX_PKT_SG
@@ -389,7 +389,7 @@ void RTMP_QueryPacketInfo(
 
 		info->BufferCount =  nr_frags + 1;
 		info->PhysicalBufferCount = info->BufferCount;
-		info->sg_list[0].data = (void *)GET_OS_PKT_DATAPTR(pPacket);
+		info->sg_list[0].data = pPacket->data;
 		info->sg_list[0].len = skb_headlen(skb);
 		for (i = 0; i < nr_frags; i++) {
 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
@@ -416,7 +416,7 @@ struct sk_buff * DuplicatePacket(
 	UCHAR *pData;
 
 	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
-	pData = (u8 *) GET_OS_PKT_DATAPTR(pPacket);
+	pData = pPacket->data;
 
 	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
 	if (skb) {
@@ -522,7 +522,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	skb_reserve(skb, 2);
 
 	/* Insert the frame content */
-	memmove(GET_OS_PKT_DATAPTR(skb), pData, data_len);
+	memmove(skb->data, pData, data_len);
 
 	/* End this frame */
 	skb_put(GET_OS_PKT_TYPE(skb), data_len);
@@ -608,7 +608,7 @@ void RtmpOsPktInit(
 	pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 
 	SET_OS_PKT_NETDEV(pRxPkt, pNetDev);
-	SET_OS_PKT_DATAPTR(pRxPkt, pData);
+	pRxPkt->data = pData;
 	SET_OS_PKT_LEN(pRxPkt, DataSize);
 	SET_OS_PKT_DATATAIL(pRxPkt, pData, DataSize);
 }
