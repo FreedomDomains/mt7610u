@@ -46,7 +46,7 @@ enum D_PORT {
 #include "rtmp_type.h"
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT{
+struct __attribute__ ((packed)) txinfo_nmac_pkt {
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 QSEL:2;
@@ -59,9 +59,9 @@ typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT{
 	u32 tx_burst:1;
 	u32 next_vld:1;
 	u32 pkt_len:16;
-}TXINFO_NMAC_PKT;
+};
 #else
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT {
+struct __attribute__ ((packed)) txinfo_nmac_pkt {
 	u32 pkt_len:16;
 	u32 next_vld:1;
 	u32 tx_burst:1;
@@ -74,7 +74,7 @@ typedef struct __attribute__ ((packed)) _TXINFO_NMAC_PKT {
 	u32 QSEL:2;
 	u32 d_port:3;
 	u32 info_type:2;
-}TXINFO_NMAC_PKT;
+};
 #endif /* RT_BIG_ENDIAN */
 
 #define TxInfoWIV			txinfo_nmac_pkt.wiv
@@ -105,7 +105,7 @@ typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
 
 
 typedef union __attribute__ ((packed)) _TXINFO_NMAC{
-	struct _TXINFO_NMAC_PKT txinfo_pkt;
+	struct txinfo_nmac_pkt txinfo_pkt;
 	struct _TXINFO_NMAC_CMD txinfo_cmd;
 }TXINFO_NMAC;
 

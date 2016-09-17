@@ -50,7 +50,7 @@
 
 #define TXINFO_SIZE			4
 typedef union __attribute__ ((packed)) _TXINFO_STRUC{
-	struct _TXINFO_NMAC_PKT txinfo_nmac_pkt;
+	struct txinfo_nmac_pkt txinfo_nmac_pkt;
 	struct _TXINFO_NMAC_CMD txinfo_nmac_cmd;
 	u32 word;
 }TXINFO_STRUC;

@@ -182,9 +182,9 @@ void rlt_usb_write_txinfo(
 	IN UCHAR NextValid,
 	IN UCHAR TxBurst)
 {
-	struct _TXINFO_NMAC_PKT *nmac_info;
+	struct txinfo_nmac_pkt *nmac_info;
 
-	nmac_info = (struct _TXINFO_NMAC_PKT *)pTxInfo;
+	nmac_info = (struct txinfo_nmac_pkt *)pTxInfo;
 	nmac_info->pkt_80211 = 1;
 	nmac_info->info_type = 0;
 	nmac_info->d_port = 0;
