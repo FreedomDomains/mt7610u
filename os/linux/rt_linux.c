@@ -516,7 +516,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	}
 
 	/*get_netdev_from_bssid(pAd, apidx)); */
-	SET_OS_PKT_NETDEV(skb, pNetDev);
+	skb->dev = pNetDev;
 
 	/* 16 byte align the IP header */
 	skb_reserve(skb, 2);
@@ -607,7 +607,7 @@ void RtmpOsPktInit(
 
 	pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
 
-	SET_OS_PKT_NETDEV(pRxPkt, pNetDev);
+	pRxPkt->len = pNetDev;
 	pRxPkt->data = pData;
 	pRxPkt->len = DataSize;
 	SET_OS_PKT_DATATAIL(pRxPkt, pData, DataSize);
@@ -1982,7 +1982,7 @@ Note:
 */
 struct net_device *RtmpOsPktNetDevGet(struct sk_buff *skb)
 {
-	return GET_OS_PKT_NETDEV(skb);
+	return skb->dev;
 }
 
 
@@ -2036,7 +2036,7 @@ struct sk_buff * RtmpOsPktIappMakeUp(
 	frame_body.XIDInfo[1] = 1;
 	frame_body.XIDInfo[2] = 1 << 1;
 
-	SET_OS_PKT_NETDEV(pNetBuf, pNetDev);
+	pNetBuf->len = pNetDev;
 	skb_reserve(pNetBuf, 2);
 	memcpy(skb_put(pNetBuf, size), &frame_body, size);
 	return pNetBuf;

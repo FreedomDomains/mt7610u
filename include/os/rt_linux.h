@@ -762,11 +762,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define GET_OS_PKT_END(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt)->end)
 
-#define GET_OS_PKT_NETDEV(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->dev)
-#define SET_OS_PKT_NETDEV(_pkt, _pNetDev)	\
-		(RTPKT_TO_OSPKT(_pkt)->dev) = (_pNetDev)
-
 #define GET_OS_PKT_TYPE(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt))
 
@@ -794,7 +789,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 {																			\
 	struct sk_buff * __pRxPkt;													\
 	__pRxPkt = RTPKT_TO_OSPKT(__pRxPacket);									\
-	SET_OS_PKT_NETDEV(__pRxPkt, __pNetDev);									\
+	__pRxPkt->len = __pNetDev;									\
 	__pRxPkt->data = __pData;									\
 	__pRxPkt->len = __DataSize;									\
 	SET_OS_PKT_DATATAIL(__pRxPkt, __pData, __DataSize);						\
@@ -1056,7 +1051,7 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 #define RTMP_USB_PKT_COPY(__pNetDev, __pNetPkt, __Len, __pData)			\
 {																		\
 	memcpy(skb_put(__pNetPkt, __Len), __pData, __Len);					\
-	GET_OS_PKT_NETDEV(__pNetPkt) = __pNetDev;							\
+	__pNetPkt->dev = __pNetDev;							\
 	RTMP_SET_PACKET_SOURCE((__pNetPkt), PKTSRC_NDIS);		\
 }
 
