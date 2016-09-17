@@ -70,6 +70,8 @@ static struct usb_device_id rtusb_dev_id[] = {
 	{ }/* Terminating entry */
 };
 
+MODULE_DEVICE_TABLE(usb, rtusb_dev_id);
+
 static void rt2870_disconnect(
 	IN struct usb_device *dev,
 	IN void *pAd);
