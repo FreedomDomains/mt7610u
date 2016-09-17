@@ -1508,7 +1508,7 @@ void AsicEnableIbssSync(
 	struct txwi_nmac 	localTxWI;
 
 	memmove((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
-	RTMPWIEndianChange(pAd, (u8 *)&localTxWI, TYPE_TXWI);
+	RTMPWIEndianChange(&localTxWI, sizeof(*localTxWI));
 	beaconLen = (USHORT) localTxWI.TxWIMPDUByteCnt;
 	}
 #endif /* RT_BIG_ENDIAN */

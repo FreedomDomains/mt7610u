@@ -3574,6 +3574,13 @@ typedef struct _TX_BLK_
 #define TX_BLK_CLEAR_FLAG(_pTxBlk, _flag)	(_pTxBlk->Flags &= ~(_flag))
 
 
+static inline void RTMPWIEndianChange(u8 *pData, int size)
+{
+	int i;
+
+	for(i=0; i < size/4 ; i++)
+			*(((u32 *)pData) +i) = SWAP32(*(((u32 *)pData)+i));
+}
 
 
 #ifdef RT_BIG_ENDIAN
@@ -3598,28 +3605,12 @@ typedef struct _TX_BLK_
 		Call this function when read or update descriptor
 	========================================================================
 */
-static inline void RTMPWIEndianChange(
-	IN	struct rtmp_adapter *pAd,
-	IN	u8 *		pData,
-	IN	ULONG			DescriptorType)
+static inline void RTMPWIEndianChange(u8 *pData, int size)
 {
-	int size;
 	int i;
-	u8 TXWISize = pAd->chipCap.TXWISize;
-	u8 RXWISize = pAd->chipCap.RXWISize;
 
-	size = ((DescriptorType == TYPE_TXWI) ? TXWISize : RXWISize);
-
-	if(DescriptorType == TYPE_TXWI)
-	{
-		*((u32 *)(pData)) = SWAP32(*((u32 *)(pData)));		/* Byte 0~3 */
-		*((u32 *)(pData + 4)) = SWAP32(*((u32 *)(pData+4)));	/* Byte 4~7 */
-	}
-	else
-	{
-		for(i=0; i < size/4 ; i++)
+	for(i=0; i < size/4 ; i++)
 			*(((u32 *)pData) +i) = SWAP32(*(((u32 *)pData)+i));
-	}
 }
 
 

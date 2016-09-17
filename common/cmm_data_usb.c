@@ -1097,7 +1097,7 @@ void RtmpUSBNullFrameKickOut(
 		RTMPWriteTxWI(pAd, pTxWI,  FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 0, BSSID_WCID, frameLen,
 			0, 0, (UCHAR)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_HTTXOP, FALSE, &pAd->CommonCfg.MlmeTransmit);
 #ifdef RT_BIG_ENDIAN
-		RTMPWIEndianChange(pAd, (u8 *)pTxWI, TYPE_TXWI);
+		RTMPWIEndianChange(pTxWI, sizeof(*pTxWI));
 #endif /* RT_BIG_ENDIAN */
 		memmove(&pWirelessPkt[TXWISize + TXINFO_SIZE + TSO_SIZE], pNullFrame, frameLen);
 #ifdef RT_BIG_ENDIAN
@@ -1221,7 +1221,7 @@ struct sk_buff * GetPacketFromRxRing(
 	pRxWI = (struct rxwi_nmac *)pData;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPWIEndianChange(pAd, pData, TYPE_RXWI);
+	RTMPWIEndianChange(pData, sizeof(struct rxwi_nmac));
 #endif /* RT_BIG_ENDIAN */
 	if (pRxWI->RxWIMPDUByteCnt > ThisFrameLen)
 	{
@@ -1230,7 +1230,7 @@ struct sk_buff * GetPacketFromRxRing(
 		goto label_null;
 	}
 #ifdef RT_BIG_ENDIAN
-	RTMPWIEndianChange(pAd, pData, TYPE_RXWI);
+	RTMPWIEndianChange(pData, sizeof(struct rxwi_nmac));
 #endif /* RT_BIG_ENDIAN */
 
 	/* allocate a rx packet*/

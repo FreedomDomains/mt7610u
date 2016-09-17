@@ -1421,7 +1421,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 
 #ifdef RT_BIG_ENDIAN
 		RTMPFrameEndianChange(pAd, (u8 *) pHeader, DIR_READ, TRUE);
-		RTMPWIEndianChange(pAd, (u8 *) pRxWI, TYPE_RXWI);
+		RTMPWIEndianChange(pRxWI, sizeof(*pRxWI));
 #endif
 
 #ifdef CONFIG_FPGA_MODE

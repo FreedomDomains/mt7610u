@@ -435,7 +435,7 @@ void RTUSBBulkOutDataPacket(
 #endif /* USB_BULK_BUF_ALIGMENT */
 #ifdef RT_BIG_ENDIAN
 		RTMPDescriptorEndianChange((u8 *)pTxInfo, TYPE_TXINFO);
-		RTMPWIEndianChange(pAd, (u8 *)pTxWI, TYPE_TXWI);
+		RTMPWIEndianChange(pTxWI, sizeof(*pTxWI));
 #endif /* RT_BIG_ENDIAN */
 
 	}while (TRUE);

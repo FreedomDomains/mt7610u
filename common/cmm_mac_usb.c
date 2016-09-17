@@ -1426,7 +1426,7 @@ void RT28xx_UpdateBeaconToAsic(
 	{
 		ptr = (u8 *)&pAd->BeaconTxWI;
 #ifdef RT_BIG_ENDIAN
-		RTMPWIEndianChange(pAd, ptr, TYPE_TXWI);
+		RTMPWIEndianChange(ptr, sizeof(struct txwi_nmac));
 #endif
 		if (memcmp(pBeaconSync->BeaconTxWI[bcn_idx], &pAd->BeaconTxWI, TXWISize) != 0)
 		{	/* If BeaconTxWI changed, we need to rewrite the TxWI for the Beacon frames.*/

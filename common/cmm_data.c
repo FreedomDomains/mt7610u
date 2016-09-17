@@ -629,7 +629,7 @@ int MlmeHardTransmitMgmtRing(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPWIEndianChange(pAd, (u8 *)pFirstTxWI, TYPE_TXWI);
+	RTMPWIEndianChange(pFirstTxWI,sizeof(*pFirstTxWI));
 #endif
 
 	/* Now do hardware-depened kick out.*/
