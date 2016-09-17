@@ -1396,7 +1396,7 @@ void RT28xx_UpdateBeaconToAsic(
 /*	USHORT			shortValue;*/
 	BOOLEAN			bBcnReq = FALSE;
 	UCHAR			bcn_idx = 0;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
 	if (pBeaconFrame == NULL)
@@ -1475,7 +1475,7 @@ void RTUSBBssBeaconStop(
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, offset;
 	BOOLEAN	Cancelled = TRUE;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	pBeaconSync = pAd->CommonCfg.pBeaconSync;
 	if (pBeaconSync && pBeaconSync->EnableBeacon)
@@ -1514,7 +1514,7 @@ void RTUSBBssBeaconStart(
 {
 	int apidx;
 	BEACON_SYNC_STRUCT	*pBeaconSync;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 /*	LARGE_INTEGER 	tsfTime, deltaTime;*/
 
 	pBeaconSync = pAd->CommonCfg.pBeaconSync;
@@ -1563,7 +1563,7 @@ void RTUSBBssBeaconInit(
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, j;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	os_alloc_mem(pAd, (u8 **)(&pAd->CommonCfg.pBeaconSync), sizeof(BEACON_SYNC_STRUCT));
 

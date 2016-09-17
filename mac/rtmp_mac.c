@@ -75,7 +75,7 @@ void RTMPWriteTxWI(
 {
 	PMAC_TABLE_ENTRY pMac = NULL;
 	struct txwi_nmac TxWI, *pTxWI;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	if (WCID < MAX_LEN_OF_MAC_TABLE)
 		pMac = &pAd->MacTab.Content[WCID];
@@ -189,7 +189,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 #ifdef DOT11_N_SUPPORT
 	UCHAR BASize;
 #endif /* DOT11_N_SUPPORT */
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
 	ASSERT(pTxWI);

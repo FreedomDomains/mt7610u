@@ -2325,7 +2325,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	UINT i;
 /*	EDCA_PARM DefaultEdcaParm;*/
     UINT key_index, bss_index;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> UserCfgInit\n"));
 

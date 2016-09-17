@@ -1500,7 +1500,7 @@ void AsicEnableIbssSync(
 	UINT i;
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 	u32 longptr;
 
 #ifdef RT_BIG_ENDIAN

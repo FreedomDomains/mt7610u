@@ -2436,7 +2436,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	BOOLEAN bDLSFrame = FALSE;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	/* MAKE A COMMON 802.11 HEADER */
 
@@ -2621,7 +2621,7 @@ static inline u8 *STA_Build_ARalink_Frame_Header(
 	struct sk_buff * pNextPacket;
 	u32 nextBufLen;
 	PQUEUE_ENTRY pQEntry;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -2676,7 +2676,7 @@ static inline u8 *STA_Build_AMSDU_Frame_Header(
 {
 	u8 *pHeaderBufPtr;
 	HEADER_802_11 *pHeader_802_11;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -2726,7 +2726,7 @@ void STA_AMPDU_Frame_Tx(
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	BOOLEAN			bHTCPlus;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
 	ASSERT(pTxBlk);
@@ -3364,7 +3364,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	USHORT FreeNumber = 0;
 	BOOLEAN bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	ASSERT(pTxBlk);
 
@@ -3765,7 +3765,7 @@ void STA_Fragment_Frame_Tx(
 	u8 *tmp_ptr = NULL;
 	u32 buf_offset = 0;
 #endif /* SOFT_ENCRYPT */
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	ASSERT(pTxBlk);
 

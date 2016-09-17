@@ -251,7 +251,7 @@ int MiniportMMRequest(
 	struct sk_buff * pPacket;
 	int Status = NDIS_STATUS_SUCCESS;
 	ULONG FreeNum;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 	UCHAR rtmpHwHdr[40];
 	BOOLEAN bUseDataQ = FALSE, FlgDataQForce = FALSE, FlgIsLocked = FALSE;
 	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize + TSO_SIZE;
@@ -410,7 +410,7 @@ int MlmeHardTransmitMgmtRing(
 	struct txwi_nmac *pFirstTxWI;
 	MAC_TABLE_ENTRY *pMacEntry = NULL;
 	UCHAR PID;
-	u8 TXWISize = pAd->chipCap.TXWISize;
+	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pSrcBufVA, &SrcBufLen);
