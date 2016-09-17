@@ -1935,7 +1935,7 @@ void PeerBeacon(
 		if (is_my_bssid)
 		{
 			struct rxwi_nmac RxWI;
-			u8 RXWISize = pAd->chipCap.RXWISize;
+			u8 RXWISize = sizeof(struct rxwi_nmac);
 
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3

@@ -1149,7 +1149,7 @@ struct sk_buff * GetPacketFromRxRing(
 	UCHAR *pData, *RXDMA;
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
 	struct rxwi_nmac *pRxWI;
-	u8 RXWISize = pAd->chipCap.RXWISize;
+	u8 RXWISize = sizeof(struct rxwi_nmac);
 	RXINFO_STRUC *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
 

@@ -622,7 +622,6 @@ struct rtmp_chip_cap {
 #endif /* SINGLE_SKU_V2 */
 
 	/* ---------------------------- packet ---------------------------------- */
-	u8 RXWISize;
 
 	/* ---------------------------- others ---------------------------------- */
 #ifdef RTMP_EFUSE_SUPPORT

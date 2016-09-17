@@ -1359,7 +1359,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	HEADER_802_11 *pHeader;
 	UCHAR *pData;
 	RX_BLK RxBlk;
-	u8 RXWISize = pAd->chipCap.RXWISize;
+	u8 RXWISize = sizeof(struct rxwi_nmac);
 	RXFCE_INFO *pFceInfo;
 	BOOLEAN bCmdRspPacket = FALSE;
 

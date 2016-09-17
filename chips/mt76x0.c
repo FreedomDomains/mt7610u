@@ -2639,7 +2639,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->ChipID = Value;
 
 	pChipCap->MaxNss = 1;
-	pChipCap->RXWISize = 28;
 
 	pChipCap->SnrFormula = SNR_FORMULA2;
 	pChipCap->FlgIsHwWapiSup = TRUE;
