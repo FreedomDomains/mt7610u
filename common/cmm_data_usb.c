@@ -1148,7 +1148,7 @@ struct sk_buff * GetPacketFromRxRing(
 	struct sk_buff * pNetPkt;
 	UCHAR *pData, *RXDMA;
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
-	RXWI_STRUC *pRxWI;
+	struct rxwi_nmac *pRxWI;
 	u8 RXWISize = pAd->chipCap.RXWISize;
 	RXINFO_STRUC *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
@@ -1218,7 +1218,7 @@ struct sk_buff * GetPacketFromRxRing(
 
 	pData += RXINFO_SIZE;
 
-	pRxWI = (RXWI_STRUC *)pData;
+	pRxWI = (struct rxwi_nmac *)pData;
 
 #ifdef RT_BIG_ENDIAN
 	RTMPWIEndianChange(pAd, pData, TYPE_RXWI);
@@ -1287,7 +1287,7 @@ label_null:
 int	RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
-	IN RXWI_STRUC *pRxWI,
+	IN struct rxwi_nmac *pRxWI,
 	IN RXINFO_STRUC *pRxInfo)
 {
 	PCIPHER_KEY pWpaKey;

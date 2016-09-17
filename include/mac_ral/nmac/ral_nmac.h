@@ -353,7 +353,7 @@ typedef struct __attribute__ ((packed)) _RXINFO_NMAC{
 	u32 null:1;
 	u32 data:1;
 	u32 ba:1;
-}RXINFO_NMAC;
+};
 #else
 typedef struct __attribute__ ((packed)) _RXINFO_NMAC{
 	u32 ba:1;
@@ -394,7 +394,7 @@ typedef struct __attribute__ ((packed)) _RXINFO_NMAC{
 	RXWI wireless information format.
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct __attribute__ ((packed)) _RXWI_NMAC{
+struct rxwi_nmac __attribute__ ((packed)) {
 	/* Word 0 */
 	u32 eof:1;
 	u32 rsv:1;
@@ -421,9 +421,9 @@ typedef	struct __attribute__ ((packed)) _RXWI_NMAC{
 
 	/* Word 3~6 */
 	u8 bbp_rxinfo[16];
-}	RXWI_NMAC;
+};
 #else
-typedef	struct __attribute__ ((packed)) _RXWI_NMAC {
+struct __attribute__ ((packed)) rxwi_nmac {
 	/* Word 0 */
 	u32 wcid:8;
 	u32 key_idx:2;
@@ -450,29 +450,29 @@ typedef	struct __attribute__ ((packed)) _RXWI_NMAC {
 
 	/* Word 3~6 */
 	u8 bbp_rxinfo[16];
-}	RXWI_NMAC;
+};
 #endif /* RT_BIG_ENDIAN */
 
 
-#define RxWIMPDUByteCnt	RXWI_N.MPDUtotalByteCnt
-#define RxWIWirelessCliID		RXWI_N.wcid
-#define RxWIKeyIndex		RXWI_N.key_idx
-#define RxWIMCS				RXWI_N.mcs
-#define RxWILDPC			RXWI_N.ldpc
-#define RxWIBW				RXWI_N.bw
-#define RxWIBSSID			RXWI_N.bss_idx
-#define RxWISGI				RXWI_N.sgi
-#define RxWIPhyMode		RXWI_N.phy_mode
-#define RxWISTBC			RXWI_N.stbc
-#define RxWITID				RXWI_N.tid
-#define RxWIRSSI0			RXWI_N.rssi[0]
-#define RxWIRSSI1			RXWI_N.rssi[1]
-#define RxWIRSSI2			RXWI_N.rssi[2]
-#define RxWIRSSI3			RXWI_N.rssi[3]
-#define RxWISNR0			RXWI_N.bbp_rxinfo[0]
-#define RxWISNR1			RXWI_N.bbp_rxinfo[1]
-#define RxWISNR2			RXWI_N.bbp_rxinfo[2]
-#define RxWIFOFFSET			RXWI_N.bbp_rxinfo[3]
+#define RxWIMPDUByteCnt			MPDUtotalByteCnt
+#define RxWIWirelessCliID		wcid
+#define RxWIKeyIndex			key_idx
+#define RxWIMCS				mcs
+#define RxWILDPC			ldpc
+#define RxWIBW				bw
+#define RxWIBSSID			bss_idx
+#define RxWISGI				sgi
+#define RxWIPhyMode			phy_mode
+#define RxWISTBC			stbc
+#define RxWITID				tid
+#define RxWIRSSI0			rssi[0]
+#define RxWIRSSI1			rssi[1]
+#define RxWIRSSI2			rssi[2]
+#define RxWIRSSI3			rssi[3]
+#define RxWISNR0			bbp_rxinfo[0]
+#define RxWISNR1			bbp_rxinfo[1]
+#define RxWISNR2			bbp_rxinfo[2]
+#define RxWIFOFFSET			bbp_rxinfo[3]
 
 
 typedef struct __attribute__ ((packed)) _HW_RATE_CTRL_STRUCT_{

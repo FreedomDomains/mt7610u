@@ -65,10 +65,6 @@ typedef union __attribute__ ((packed)) _TXINFO_STRUC{
 /*
 	RXWI wireless information format, in PBF. invisible in driver.
 */
-typedef	union __attribute__ ((packed)) _RXWI_STRUC {
-	struct _RXWI_NMAC RXWI_N;
-}RXWI_STRUC, *PRXWI_STRUC;
-
 
 #define RXINFO_SIZE			4
 #ifdef RT_BIG_ENDIAN
@@ -2354,9 +2350,9 @@ typedef	union _QOS_CSR1_STRUC {
 
 struct rtmp_adapter;
 
-INT get_pkt_phymode_by_rxwi(RXWI_STRUC *rxwi);
-INT get_pkt_rssi_by_rxwi(RXWI_STRUC *rxwi, INT size, CHAR *rssi);
-INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, UCHAR *snr);
+INT get_pkt_phymode_by_rxwi(struct rxwi_nmac *rxwi);
+INT get_pkt_rssi_by_rxwi(struct rxwi_nmac *rxwi, INT size, CHAR *rssi);
+INT get_pkt_snr_by_rxwi(struct rxwi_nmac *rxwi, INT size, UCHAR *snr);
 
 INT rtmp_mac_set_band(struct rtmp_adapter *pAd, int  band);
 INT rtmp_mac_set_ctrlch(struct rtmp_adapter *pAd, INT extch);

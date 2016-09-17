@@ -33,7 +33,7 @@ void STARxEAPOLFrameIndicate(
 	IN RX_BLK *pRxBlk,
 	IN UCHAR FromWhichBSSID)
 {
-	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	UCHAR *pTmpBuf;
 
 
@@ -340,7 +340,7 @@ void STAHandleRxDataFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
@@ -781,7 +781,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	RXFCE_INFO *pRxFceInfo = pRxBlk->pRxFceInfo;
 	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
@@ -1210,7 +1210,7 @@ void STAHandleRxMgmtFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	UCHAR MinSNR = 0;
@@ -1302,7 +1302,7 @@ void STAHandleRxControlFrame(
 	IN RX_BLK *pRxBlk)
 {
 #ifdef DOT11_N_SUPPORT
-	RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 #endif /* DOT11_N_SUPPORT */
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
@@ -1353,7 +1353,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	u32 RxProcessed, RxPending;
 	BOOLEAN bReschedule = FALSE;
 	RXD_STRUC *pRxD;
-	RXWI_STRUC *pRxWI;
+	struct rxwi_nmac *pRxWI;
 	RXINFO_STRUC *pRxInfo;
 	struct sk_buff * pRxPacket;
 	HEADER_802_11 *pHeader;
@@ -1402,7 +1402,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 		pFceInfo = RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
 		pData = pRxPacket->data;
-		pRxWI = (RXWI_STRUC *)pData;
+		pRxWI = (struct rxwi_nmac *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
 #ifndef HDR_TRANS_SUPPORT
@@ -1593,7 +1593,7 @@ BOOLEAN STAHandleRxDonePacket(
 	IN RX_BLK *pRxBlk)
 {
 	RXD_STRUC *pRxD;
-	RXWI_STRUC *pRxWI;
+	struct rxwi_nmac *pRxWI;
 	RXINFO_STRUC *pRxInfo;
 	PHEADER_802_11 pHeader;
 	BOOLEAN bReschedule = FALSE;

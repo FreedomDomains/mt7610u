@@ -124,7 +124,7 @@ void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI)
 }
 
 
-void dump_rxwi(struct rtmp_adapter*pAd, RXWI_STRUC *pRxWI)
+void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("RxWI Fields:\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tWCID=%d\n", pRxWI->RxWIWirelessCliID));
@@ -1713,7 +1713,7 @@ BOOLEAN RTMPCheckEtherType(
 void Update_Rssi_Sample(
 	IN struct rtmp_adapter*pAd,
 	IN RSSI_SAMPLE *pRssi,
-	IN RXWI_STRUC *pRxWI)
+	IN struct rxwi_nmac *pRxWI)
 {
 	CHAR rssi[3];
 	UCHAR snr[3];

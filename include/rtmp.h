@@ -3425,7 +3425,7 @@ typedef struct _RX_BLK_
 	UCHAR hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
 	RXINFO_STRUC *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
-	RXWI_STRUC *pRxWI;
+	struct rxwi_nmac *pRxWI;
 	PHEADER_802_11 pHeader;
 	struct sk_buff * pRxPacket;
 	UCHAR *pData;
@@ -6903,7 +6903,7 @@ void CmmRxRalinkFrameIndicate(
 void Update_Rssi_Sample(
 	IN struct rtmp_adapter*pAd,
 	IN RSSI_SAMPLE *pRssi,
-	IN RXWI_STRUC *pRxWI);
+	IN struct rxwi_nmac *pRxWI);
 
 struct sk_buff * GetPacketFromRxRing(
 	IN struct rtmp_adapter*pAd,
@@ -7353,7 +7353,7 @@ void RT28xxUsbAsicWOWDisable(
 int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
-	IN RXWI_STRUC *pRxWI,
+	IN struct rxwi_nmac *pRxWI,
 	IN RXINFO_STRUC *pRxInfo);
 
 
@@ -7858,7 +7858,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 #endif /* MAC_REPEATER_SUPPORT */
 
 void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI);
-void dump_rxwi(struct rtmp_adapter*pAd, RXWI_STRUC *pRxWI);
+void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI);
 void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo);
 void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo);
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo);
