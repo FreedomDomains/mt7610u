@@ -483,7 +483,7 @@ void MlmeHalt(
 
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 	{
-		RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+		struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
 #ifdef LED_CONTROL_SUPPORT
 		/* Set LED*/

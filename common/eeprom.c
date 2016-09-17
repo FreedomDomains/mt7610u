@@ -30,7 +30,7 @@
 
 INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 {
-	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
 #ifdef RTMP_FLASH_SUPPORT
 	pChipOps->eeinit = rtmp_nv_init;

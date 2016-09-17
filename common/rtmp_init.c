@@ -1085,7 +1085,7 @@ void NICInitAsicFromEEPROM(
 			|| IS_RT3593(pAd) || IS_RT5390(pAd) || IS_RT5392(pAd)
 			|| IS_RT5592(pAd))
 		{
-			RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+			struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 			if (pChipOps->AsicReverseRfFromSleepMode)
 				pChipOps->AsicReverseRfFromSleepMode(pAd, TRUE);
 		}
@@ -1108,7 +1108,7 @@ void NICInitAsicFromEEPROM(
 #ifdef RTMP_MAC_USB
 		if (IS_RT30xx(pAd)|| IS_RT3572(pAd))
 		{
-			RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+			struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 			if (pChipOps->AsicReverseRfFromSleepMode)
 				pChipOps->AsicReverseRfFromSleepMode(pAd, TRUE);
 		}
@@ -3280,7 +3280,7 @@ static INT RtmpChipOpsRegister(
 	IN struct rtmp_adapter*pAd,
 	IN INT			infType)
 {
-	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	int ret = 0;
 

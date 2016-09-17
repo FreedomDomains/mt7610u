@@ -777,7 +777,7 @@ typedef enum _CHIP_SPEC_ID
 #define CHIP_SPEC_ID_NUM 	CHIP_SPEC_RESV_FUNC
 
 
-struct _RTMP_CHIP_OP_ {
+struct rtmp_chip_ops {
 	/*  Calibration access related callback functions */
 	int (*eeinit)(struct rtmp_adapter *pAd);
 	int (*eeread)(struct rtmp_adapter *pAd, USHORT offset, PUSHORT pValue);

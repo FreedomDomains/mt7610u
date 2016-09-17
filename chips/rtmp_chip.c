@@ -804,7 +804,7 @@ Note:
 int RtmpChipOpsHook(void *pCB)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pCB;
-	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	u32 MacValue;
 	int ret = 0;

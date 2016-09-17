@@ -45,7 +45,7 @@ INT MCURandomWrite(struct rtmp_adapter *pAd, RTMP_REG_PAIR *RegPair, u32 Num)
 void ChipOpsMCUHook(struct rtmp_adapter *pAd, enum MCU_TYPE MCUType)
 {
 
-	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
+	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
 
 
