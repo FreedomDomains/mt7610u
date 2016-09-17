@@ -743,12 +743,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  */
 #define RTPKT_TO_OSPKT(_p)		((_p))
 
-#define GET_OS_PKT_LEN(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->len)
-#define SET_OS_PKT_LEN(_pkt, _len)	\
-		(RTPKT_TO_OSPKT(_pkt)->len) = (_len)
-
-
 #ifdef NET_SKBUFF_DATA_USES_OFFSET
 #define GET_OS_PKT_DATATAIL(_pkt) \
         (RTPKT_TO_OSPKT(_pkt)->head + (ULONG)RTPKT_TO_OSPKT(_pkt)->tail)
@@ -785,7 +779,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 #define OS_PKT_TAIL_ADJUST(_pkt, _removedTagLen)								\
 	SET_OS_PKT_DATATAIL(_pkt, GET_OS_PKT_DATATAIL(_pkt), (-_removedTagLen));	\
-	GET_OS_PKT_LEN(_pkt) -= _removedTagLen;
+	_pkt->len -= _removedTagLen;
 
 #define OS_PKT_HEAD_BUF_EXTEND(_pkt, _offset)								\
 	skb_push(RTPKT_TO_OSPKT(_pkt), _offset)
@@ -802,7 +796,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 	__pRxPkt = RTPKT_TO_OSPKT(__pRxPacket);									\
 	SET_OS_PKT_NETDEV(__pRxPkt, __pNetDev);									\
 	__pRxPkt->data = __pData;									\
-	SET_OS_PKT_LEN(__pRxPkt, __DataSize);									\
+	__pRxPkt->len = __DataSize;									\
 	SET_OS_PKT_DATATAIL(__pRxPkt, __pData, __DataSize);						\
 }
 

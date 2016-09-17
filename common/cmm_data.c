@@ -199,9 +199,9 @@ static void dumpTxBlk(TX_BLK *pTxBlk)
 		if (pPacket)
 		{
 			pBuf = pPacket->data;
-			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (u32)pPacket->data), GET_OS_PKT_LEN(pPacket)));
+			DBGPRINT(RT_DEBUG_TRACE,("\t\t[%d]:ptr=0x%x, Len=%d!\n", i, (u32)pPacket->data), pPacket->len));
 			DBGPRINT(RT_DEBUG_TRACE,("\t\t"));
-			for (j =0 ; j < GET_OS_PKT_LEN(pPacket); j++)
+			for (j =0 ; j < pPacket->len; j++)
 			{
 				DBGPRINT(RT_DEBUG_TRACE,("%02x ", (pBuf[j] & 0xff)));
 				if (j == 16)
@@ -945,11 +945,11 @@ BOOLEAN CanDoAggregateTransmit(
 		minLen += LENGTH_802_1Q; /* VLAN tag */
 	else if (RTMP_GET_PACKET_LLCSNAP(pPacket))
 		minLen += 8; /* SNAP hdr Len*/
-	if (minLen >= GET_OS_PKT_LEN(pPacket))
+	if (minLen >= pPacket->len)
 		return FALSE;
 
 	if ((pTxBlk->TxFrameType == TX_AMSDU_FRAME) &&
-		((pTxBlk->TotalFrameLen + GET_OS_PKT_LEN(pPacket))> (RX_BUFFER_AGGRESIZE - 100)))
+		((pTxBlk->TotalFrameLen + pPacket->len)> (RX_BUFFER_AGGRESIZE - 100)))
 	{	/* For AMSDU, allow the packets with total length < max-amsdu size*/
 		return FALSE;
 	}
@@ -1096,7 +1096,7 @@ void RTMPDeQueuePacket(
 			pEntry = RemoveHeadQueue(pQueue);
 			pTxBlk->TotalFrameNum++;
 			pTxBlk->TotalFragNum += RTMP_GET_PACKET_FRAGMENTS(pPacket);	/* The real fragment number maybe vary*/
-			pTxBlk->TotalFrameLen += GET_OS_PKT_LEN(pPacket);
+			pTxBlk->TotalFrameLen += pPacket->len;
 			pTxBlk->pPacket = pPacket;
 			InsertTailQueue(&pTxBlk->TxPacketList, PACKET_TO_QUEUE_ENTRY(pPacket));
 
@@ -1141,7 +1141,7 @@ void RTMPDeQueuePacket(
 
 					pTxBlk->TotalFrameNum++;
 					pTxBlk->TotalFragNum += RTMP_GET_PACKET_FRAGMENTS(pPacket);	/* The real fragment number maybe vary*/
-					pTxBlk->TotalFrameLen += GET_OS_PKT_LEN(pPacket);
+					pTxBlk->TotalFrameLen += pPacket->len;
 					InsertTailQueue(&pTxBlk->TxPacketList, PACKET_TO_QUEUE_ENTRY(pPacket));
 				}while(1);
 
@@ -1456,7 +1456,7 @@ UINT BA_Reorder_AMSDU_Annnounce(
 	UINT			nMSDU = 0;
 
 	pData = pPacket->data;
-	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
+	DataSize = pPacket->len;
 
 	nMSDU = deaggregate_AMSDU_announce(pAd, pPacket, pData, DataSize, OpMode);
 
@@ -1547,7 +1547,7 @@ BOOLEAN RTMPCheckEtherType(
 						|| (pMacEntry->Aid == MCAST_WCID)));
 
 	pSrcBuf = pPacket->data;;
-	pktLen = GET_OS_PKT_LEN(pPacket);
+	pktLen = pPacket->len;
 
 	ASSERT(pSrcBuf);
 

@@ -327,7 +327,7 @@ int RTMPAllocateNdisPacket(
 	if (DataLen > 0)
 		memmove(pPacket->data + HeaderLen, pData, DataLen);
 	skb_put(pPacket, HeaderLen + DataLen);
-/* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, GET_OS_PKT_LEN(pPacket));*/
+/* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, pPacket->len);*/
 
 	RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
 	*ppPacket = (struct sk_buff *)pPacket;
@@ -377,10 +377,10 @@ void RTMP_QueryPacketInfo(
 	info->BufferCount = 1;
 	info->pFirstBuffer = pPacket->data;
 	info->PhysicalBufferCount = 1;
-	info->TotalPacketLength = GET_OS_PKT_LEN(pPacket);
+	info->TotalPacketLength = pPacket->len;
 
 	*pSrcBufVA = pPacket->data;
-	*pSrcBufLen = GET_OS_PKT_LEN(pPacket);
+	*pSrcBufLen = pPacket->len;
 
 #ifdef TX_PKT_SG
 	if (RTMP_GET_PKT_SG(pPacket)) {
@@ -415,7 +415,7 @@ struct sk_buff * DuplicatePacket(
 	USHORT DataSize;
 	UCHAR *pData;
 
-	DataSize = (USHORT) GET_OS_PKT_LEN(pPacket);
+	DataSize = pPacket->len;
 	pData = pPacket->data;
 
 	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
@@ -609,7 +609,7 @@ void RtmpOsPktInit(
 
 	SET_OS_PKT_NETDEV(pRxPkt, pNetDev);
 	pRxPkt->data = pData;
-	SET_OS_PKT_LEN(pRxPkt, DataSize);
+	pRxPkt->len = DataSize;
 	SET_OS_PKT_DATATAIL(pRxPkt, pData, DataSize);
 }
 
