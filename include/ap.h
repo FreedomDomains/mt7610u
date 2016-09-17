@@ -93,7 +93,7 @@ void APRxEAPOLFrameIndicate(
 
 int APCheckRxError(
 	IN struct rtmp_adapter*pAd,
-	IN RXINFO_STRUC *pRxInfo,
+	IN struct rtmp_rxinfo *pRxInfo,
 	IN UCHAR Wcid);
 
 BOOLEAN APCheckClass2Class3Error(

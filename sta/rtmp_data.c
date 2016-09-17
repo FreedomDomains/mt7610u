@@ -341,7 +341,7 @@ void STAHandleRxDataFrame(
 	IN RX_BLK *pRxBlk)
 {
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
-	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
+	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN bFragment = FALSE;
@@ -783,7 +783,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 {
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	RXFCE_INFO *pRxFceInfo = pRxBlk->pRxFceInfo;
-	RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
+	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
 	BOOLEAN bFragment = FALSE;
@@ -1354,7 +1354,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	BOOLEAN bReschedule = FALSE;
 	RXD_STRUC *pRxD;
 	struct rxwi_nmac *pRxWI;
-	RXINFO_STRUC *pRxInfo;
+	struct rtmp_rxinfo *pRxInfo;
 	struct sk_buff * pRxPacket;
 	HEADER_802_11 *pHeader;
 	UCHAR *pData;
@@ -1594,7 +1594,7 @@ BOOLEAN STAHandleRxDonePacket(
 {
 	RXD_STRUC *pRxD;
 	struct rxwi_nmac *pRxWI;
-	RXINFO_STRUC *pRxInfo;
+	struct rtmp_rxinfo *pRxInfo;
 	PHEADER_802_11 pHeader;
 	BOOLEAN bReschedule = FALSE;
 	int Status;

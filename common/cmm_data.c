@@ -41,7 +41,7 @@ UCHAR MapUserPriorityToAccessCategory[8] = {QID_AC_BE, QID_AC_BK, QID_AC_BK, QID
 
 
 
-void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo)
+void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("RxInfo Fields:\n"));
 

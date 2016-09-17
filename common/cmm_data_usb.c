@@ -1150,7 +1150,7 @@ struct sk_buff * GetPacketFromRxRing(
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
 	struct rxwi_nmac *pRxWI;
 	u8 RXWISize = sizeof(struct rxwi_nmac);
-	RXINFO_STRUC *pRxInfo;
+	struct rtmp_rxinfo *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
 
 	*bCmdRspPacket = FALSE;
@@ -1187,7 +1187,7 @@ struct sk_buff * GetPacketFromRxRing(
 		goto label_null;
 	}
 
-	if ((ThisFrameLen + 8) > RxBufferLength)	/* 8 for (RXDMA_FIELD_SIZE + sizeof(RXINFO_STRUC))*/
+	if ((ThisFrameLen + 8) > RxBufferLength)	/* 8 for (RXDMA_FIELD_SIZE + sizeof(struct rtmp_rxinfo))*/
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("BIRIdx(%d):FrameLen(0x%lx) outranges. BulkInLen=0x%lx, remaining RxBufLen=0x%lx, ReadPos=0x%lx\n",
 						pAd->NextRxBulkInReadIndex, ThisFrameLen, pRxContext->BulkInOffset, RxBufferLength, pAd->ReadPosition));
@@ -1214,7 +1214,7 @@ struct sk_buff * GetPacketFromRxRing(
 		goto label_null;
 	}
 
-	pRxInfo = (RXINFO_STRUC *)pData;
+	pRxInfo = (struct rtmp_rxinfo *)pData;
 
 	pData += RXINFO_SIZE;
 
@@ -1252,11 +1252,11 @@ struct sk_buff * GetPacketFromRxRing(
 	pRxBlk->pRxFceInfo = (RXFCE_INFO *)&pRxBlk->hw_rx_info[0];
 
 	memmove(&pRxBlk->hw_rx_info[RXINFO_OFFSET], pRxInfo, RXINFO_SIZE);
-	pRxBlk->pRxInfo = (RXINFO_STRUC *)&pRxBlk->hw_rx_info[RXINFO_OFFSET];
+	pRxBlk->pRxInfo = (struct rtmp_rxinfo *)&pRxBlk->hw_rx_info[RXINFO_OFFSET];
 
 
 	/* update next packet read position.*/
-	pAd->ReadPosition += (ThisFrameLen + RXDMA_FIELD_SIZE + RXINFO_SIZE);	/* 8 for (RXDMA_FIELD_SIZE + sizeof(RXINFO_STRUC))*/
+	pAd->ReadPosition += (ThisFrameLen + RXDMA_FIELD_SIZE + RXINFO_SIZE);	/* 8 for (RXDMA_FIELD_SIZE + sizeof(struct rtmp_rxinfo))*/
 
 	return pNetPkt;
 
@@ -1288,7 +1288,7 @@ int	RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN struct rxwi_nmac *pRxWI,
-	IN RXINFO_STRUC *pRxInfo)
+	IN struct rtmp_rxinfo *pRxInfo)
 {
 	PCIPHER_KEY pWpaKey;
 	INT dBm;

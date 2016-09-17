@@ -62,7 +62,7 @@ typedef union __attribute__ ((packed)) _TXINFO_STRUC{
 
 #define RXINFO_SIZE			4
 #ifdef RT_BIG_ENDIAN
-typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
+struct __attribute__ ((packed)) rtmp_rxinfo {
 	u32		ip_sum_err:1;		/* IP checksum error */
 	u32		tcp_sum_err:1;	/* TCP checksum error */
 	u32		rsv:1;
@@ -92,9 +92,9 @@ typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
 	u32		NULLDATA:1;
 	u32		DATA:1;
 	u32		BA:1;
-}	RXINFO_STRUC, *PRXINFO_STRUC;
+};
 #else
-typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
+struct __attribute__ ((packed)) rtmp_rxinfo {
 	u32		BA:1;
 	u32		DATA:1;
 	u32		NULLDATA:1;
@@ -124,7 +124,7 @@ typedef	struct __attribute__ ((packed)) _RXINFO_STRUC {
 	u32      	rsv:1;
 	u32		tcp_sum_err:1;
 	u32		ip_sum_err:1;
-}RXINFO_STRUC, *PRXINFO_STRUC;
+};
 #endif
 
 #define TSO_SIZE		0

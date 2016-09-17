@@ -3423,7 +3423,7 @@ typedef struct _TSSI_INFO_{
 typedef struct _RX_BLK_
 {
 	UCHAR hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
-	RXINFO_STRUC *pRxInfo;
+	struct rtmp_rxinfo *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
 	struct rxwi_nmac *pRxWI;
 	PHEADER_802_11 pHeader;
@@ -7354,7 +7354,7 @@ int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN struct rxwi_nmac *pRxWI,
-	IN RXINFO_STRUC *pRxInfo);
+	struct rtmp_rxinfo *pRxInfo);
 
 
 /*////////////////////////////////////*/
@@ -7860,7 +7860,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 void dumpTxWI(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI);
 void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI);
 void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo);
-void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo);
+void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo);
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo);
 
 
