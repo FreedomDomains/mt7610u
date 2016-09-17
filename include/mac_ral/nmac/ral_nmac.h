@@ -126,7 +126,7 @@ typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _TXWI_NMAC {
+struct __attribute__ ((packed)) txwi_nmac {
 	/* Word 0 */
 	u32		PHYMODE:3;
 	u32		iTxBF:1;
@@ -171,9 +171,9 @@ typedef struct __attribute__ ((packed)) _TXWI_NMAC {
 	u32		TxPwrAdj:4;
 	u32		TxStreamMode:8;
 	u32		TxEAPId:8;
-}	TXWI_NMAC, *PTXWI_NMAC;
+};
 #else
-typedef	struct __attribute__ ((packed)) _TXWI_NMAC {
+struct __attribute__ ((packed)) txwi_nmac {
 	/* Word	0 */
 	/* ex: 00 03 00 40 means txop = 3, PHYMODE = 1 */
 	u32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
@@ -221,31 +221,31 @@ typedef	struct __attribute__ ((packed)) _TXWI_NMAC {
 	u32		TxPwrAdj:4;
 	u32		Rsv4:4;
 	u32		TxPktId:8;
-}	TXWI_NMAC, *PTXWI_NMAC;
+};
 #endif
 
-#define TxWITIM				TXWI_N.TIM
-#define TxWITxBfPTSca		TXWI_N.TXBF_PT_SCA
-#define TxWIMPDUByteCnt	TXWI_N.MPDUtotalByteCnt
-#define TxWIWirelessCliID		TXWI_N.wcid
-#define TxWIFRAG			TXWI_N.FRAG
-#define TxWICFACK			TXWI_N.CFACK
-#define TxWITS				TXWI_N.TS
-#define TxWIAMPDU			TXWI_N.AMPDU
-#define TxWIACK				TXWI_N.ACK
-#define TxWITXOP			TXWI_N.txop
-#define TxWINSEQ			TXWI_N.NSEQ
-#define TxWIBAWinSize		TXWI_N.BAWinSize
-#define TxWIShortGI			TXWI_N.ShortGI
-#define TxWISTBC			TXWI_N.STBC
-#define TxWIPacketId			TXWI_N.TxPktId
-#define TxWIBW				TXWI_N.BW
-#define TxWILDPC			TXWI_N.LDPC
-#define TxWIMCS				TXWI_N.MCS
-#define TxWIPHYMODE		TXWI_N.PHYMODE
-#define TxWIMIMOps			TXWI_N.MIMOps
-#define TxWIMpduDensity		TXWI_N.MpduDensity
-#define TxWILutEn			TXWI_N.lut_en
+#define TxWITIM				TIM
+#define TxWITxBfPTSca			TXBF_PT_SCA
+#define TxWIMPDUByteCnt			MPDUtotalByteCnt
+#define TxWIWirelessCliID		wcid
+#define TxWIFRAG			FRAG
+#define TxWICFACK			CFACK
+#define TxWITS				TS
+#define TxWIAMPDU			AMPDU
+#define TxWIACK				ACK
+#define TxWITXOP			txop
+#define TxWINSEQ			NSEQ
+#define TxWIBAWinSize			BAWinSize
+#define TxWIShortGI			ShortGI
+#define TxWISTBC			STBC
+#define TxWIPacketId			TxPktId
+#define TxWIBW				BW
+#define TxWILDPC			LDPC
+#define TxWIMCS				MCS
+#define TxWIPHYMODE			PHYMODE
+#define TxWIMIMOps			MIMOps
+#define TxWIMpduDensity			MpduDensity
+#define TxWILutEn			lut_en
 
 
 /*

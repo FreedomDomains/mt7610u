@@ -48,12 +48,6 @@
 #define FIFO_HCCA	1
 #define FIFO_EDCA	2
 
-typedef	union __attribute__ ((packed)) _TXWI_STRUC {
-	struct _TXWI_NMAC TXWI_N;
-	u32 word;
-}TXWI_STRUC;
-
-
 #define TXINFO_SIZE			4
 typedef union __attribute__ ((packed)) _TXINFO_STRUC{
 	struct _TXINFO_NMAC_PKT txinfo_nmac_pkt;

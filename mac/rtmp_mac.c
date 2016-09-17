@@ -56,7 +56,7 @@
 */
 void RTMPWriteTxWI(
 	IN struct rtmp_adapter*pAd,
-	IN TXWI_STRUC *pOutTxWI,
+	IN struct txwi_nmac *pOutTxWI,
 	IN BOOLEAN FRAG,
 	IN BOOLEAN CFACK,
 	IN BOOLEAN InsTimestamp,
@@ -74,7 +74,7 @@ void RTMPWriteTxWI(
 	IN HTTRANSMIT_SETTING *pTransmit)
 {
 	PMAC_TABLE_ENTRY pMac = NULL;
-	TXWI_STRUC TxWI, *pTxWI;
+	struct txwi_nmac TxWI, *pTxWI;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 
 	if (WCID < MAX_LEN_OF_MAC_TABLE)
@@ -182,7 +182,7 @@ void RTMPWriteTxWI(
 }
 
 
-void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
+void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
@@ -372,7 +372,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxB
 
 void RTMPWriteTxWI_Cache(
 	IN struct rtmp_adapter*pAd,
-	INOUT TXWI_STRUC *pTxWI,
+	INOUT struct txwi_nmac *pTxWI,
 	IN TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;

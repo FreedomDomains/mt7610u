@@ -1505,7 +1505,7 @@ void AsicEnableIbssSync(
 
 #ifdef RT_BIG_ENDIAN
 	{
-	TXWI_STRUC		localTxWI;
+	struct txwi_nmac 	localTxWI;
 
 	memmove((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
 	RTMPWIEndianChange(pAd, (u8 *)&localTxWI, TYPE_TXWI);
@@ -2644,7 +2644,7 @@ void AsicWOWSendNullFrame(
 	IN BOOLEAN bQosNull)
 {
 
-	TXWI_STRUC *TxWI;
+	struct txwi_nmac *TxWI;
 	u8 *NullFrame;
 	u8  packet_len;
 	u8 *ptr;
@@ -2655,7 +2655,7 @@ void AsicWOWSendNullFrame(
 
 
 	ComposeNullFrame(pAd);
-	TxWI = (TXWI_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
+	TxWI = (struct txwi_nmac *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
 	NullFrame = (u8 *)&pAd->NullFrame;
 	packet_len = TxWI->TxWIMPDUByteCnt;
 

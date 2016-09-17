@@ -2949,7 +2949,7 @@ struct rtmp_adapter {
 /*      802.11 related parameters                                                        */
 /*****************************************************************************************/
 	/* outgoing BEACON frame buffer and corresponding TXD */
-	TXWI_STRUC BeaconTxWI;
+	struct txwi_nmac BeaconTxWI;
 	u8 *BeaconBuf;
 	USHORT BeaconOffset[HW_BEACON_MAX_NUM];
 
@@ -3265,7 +3265,7 @@ struct rtmp_adapter {
 
 	UCHAR bloopBackTest;
 	BOOLEAN bHwTxLookupRate;
-	TXWI_STRUC NullTxWI;
+	struct txwi_nmac NullTxWI;
 	BOOLEAN TestMulMac;
 
 	struct MCU_CTRL MCUCtrl;
@@ -4303,7 +4303,7 @@ USHORT RTMPCalcDuration(
 
 void RTMPWriteTxWI(
 	IN struct rtmp_adapter*pAd,
-	IN TXWI_STRUC *pTxWI,
+	IN struct txwi_nmac *pTxWI,
 	IN BOOLEAN FRAG,
 	IN BOOLEAN CFACK,
 	IN BOOLEAN InsTimestamp,
@@ -4323,13 +4323,13 @@ void RTMPWriteTxWI(
 
 void RTMPWriteTxWI_Data(
 	IN struct rtmp_adapter*pAd,
-	INOUT TXWI_STRUC *pTxWI,
+	INOUT struct txwi_nmac *pTxWI,
 	IN TX_BLK *pTxBlk);
 
 
 void RTMPWriteTxWI_Cache(
 	IN struct rtmp_adapter*pAd,
-	INOUT TXWI_STRUC *pTxWI,
+	INOUT struct txwi_nmac *pTxWI,
 	IN TX_BLK *pTxBlk);
 
 void RTMPSuspendMsduTransmission(
@@ -7857,7 +7857,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  UCHAR			IfIdx);
 #endif /* MAC_REPEATER_SUPPORT */
 
-void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI);
+void dumpTxWI(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI);
 void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI);
 void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo);
 void dump_rxinfo(struct rtmp_adapter*pAd, RXINFO_STRUC *pRxInfo);

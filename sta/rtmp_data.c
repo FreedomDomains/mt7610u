@@ -3042,9 +3042,9 @@ void STA_AMPDU_Frame_Tx(
 #endif // TXBF_SUPPORT //
 		)
 		{
-			RTMPWriteTxWI_Cache(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Cache(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		} else {
-			RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 			memset((u8 *) (&pMacEntry->CachedBuf[0]), 0, sizeof (pMacEntry->CachedBuf));
 			memmove((u8 *) (&pMacEntry->CachedBuf[0]), (u8 *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), (pHeaderBufPtr -(u8 *) (&pTxBlk->HeaderBuf[TXINFO_SIZE])));
@@ -3175,11 +3175,11 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 		if ((pMacEntry->isCached))
 		{
 			RTMPWriteTxWI_Cache(pAd,
-					    (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]),
+					    (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]),
 					    pTxBlk);
 		} else {
 			RTMPWriteTxWI_Data(pAd,
-					   (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]),
+					   (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]),
 					   pTxBlk);
 
 			memset((u8 *) (&pMacEntry->CachedBuf[0]), 0,
@@ -3268,7 +3268,7 @@ void STA_AMSDU_Frame_Tx(
 			pHeaderBufPtr = STA_Build_AMSDU_Frame_Header(pAd, pTxBlk);
 
 			/* NOTE: TxWI->TxWIMPDUByteCnt will be updated after final frame was handled. */
-			RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		} else {
 			pHeaderBufPtr = &pTxBlk->HeaderBuf[0];
 			padding = ROUND_UP(LENGTH_AMSDU_SUBFRAMEHEAD + subFramePayloadLen, 4) -
@@ -3509,7 +3509,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	   use Wcid as Key Index
 	 */
 
-	RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+	RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 	HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
 
@@ -3594,7 +3594,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 	   use Wcid as Key Index
 	 */
 
-	RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+	RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 	pTxBlk->NeedTrans = TRUE;
 	HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
@@ -3667,7 +3667,7 @@ void STA_ARalink_Frame_Tx(
 			   It's ok write the TxWI here, because the TxWI->TxWIMPDUByteCnt
 			   will be updated after final frame was handled.
 			 */
-			RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 
 			/*
@@ -4025,7 +4025,7 @@ void STA_Fragment_Frame_Tx(
 		}
 #endif /* SOFT_ENCRYPT */
 
-		RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+		RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		HAL_WriteFragTxResource(pAd, pTxBlk, fragNum, &freeCnt);
 
 #ifdef DBG_CTRL_SUPPORT

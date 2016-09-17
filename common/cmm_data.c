@@ -97,7 +97,7 @@ void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo)
 static UCHAR *txwi_txop_str[]={"HT_TXOP", "PIFS", "SIFS", "BACKOFF", "Invalid"};
 #define TXWI_TXOP_STR(_x)	((_x) <= 3 ? txwi_txop_str[(_x)]: txwi_txop_str[4])
 
-void dumpTxWI(struct rtmp_adapter*pAd, TXWI_STRUC *pTxWI)
+void dumpTxWI(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("TxWI Fields:\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
@@ -407,7 +407,7 @@ int MlmeHardTransmitMgmtRing(
 	HEADER_802_11 *pHeader_802_11;
 	BOOLEAN bAckRequired, bInsertTimestamp;
 	UCHAR MlmeRate;
-	TXWI_STRUC *pFirstTxWI;
+	struct txwi_nmac *pFirstTxWI;
 	MAC_TABLE_ENTRY *pMacEntry = NULL;
 	UCHAR PID;
 	u8 TXWISize = pAd->chipCap.TXWISize;
@@ -433,7 +433,7 @@ int MlmeHardTransmitMgmtRing(
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	pFirstTxWI = (TXWI_STRUC *)(pSrcBufVA +  TXINFO_SIZE);
+	pFirstTxWI = (struct txwi_nmac *)(pSrcBufVA +  TXINFO_SIZE);
 	pHeader_802_11 = (PHEADER_802_11) (pSrcBufVA + TXINFO_SIZE + TSO_SIZE + TXWISize);
 
 	if (pHeader_802_11->Addr1[0] & 0x01)
