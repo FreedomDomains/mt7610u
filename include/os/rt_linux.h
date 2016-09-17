@@ -756,25 +756,8 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #endif
 
 
-#define GET_OS_PKT_HEAD(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->head)
-
-#define GET_OS_PKT_END(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->end)
-
 #define GET_OS_PKT_TYPE(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt))
-
-#define GET_OS_PKT_NEXT(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->next)
-
-
-#define OS_PKT_CLONED(_pkt)		skb_cloned(RTPKT_TO_OSPKT(_pkt))
-#define OS_PKT_COPY(_pkt)		skb_copy(RTPKT_TO_OSPKT(_pkt), GFP_ATOMIC)
-
-#define OS_PKT_TAIL_ADJUST(_pkt, _removedTagLen)								\
-	SET_OS_PKT_DATATAIL(_pkt, GET_OS_PKT_DATATAIL(_pkt), (-_removedTagLen));	\
-	_pkt->len -= _removedTagLen;
 
 #define OS_PKT_HEAD_BUF_EXTEND(_pkt, _offset)								\
 	skb_push(RTPKT_TO_OSPKT(_pkt), _offset)
@@ -794,10 +777,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 	__pRxPkt->len = __DataSize;									\
 	SET_OS_PKT_DATATAIL(__pRxPkt, __pData, __DataSize);						\
 }
-
-
-#define OS_PKT_CLONE(_pAd, _pkt, _src, _flag)		\
-	_src = skb_clone(RTPKT_TO_OSPKT(_pkt), _flag);
 
 #define get_unaligned32							get_unaligned
 #define get_unalignedlong						get_unaligned
