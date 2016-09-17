@@ -39,7 +39,7 @@ void usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
 static int usb_load_ivb(struct rtmp_adapter*ad)
 {
 	int Status = NDIS_STATUS_SUCCESS;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 
 
 	if (cap->load_iv) {
@@ -82,7 +82,7 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 	u32 mac_value, loop = 0;
 	u16 value;
 	int ret = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	USB_DMA_CFG_STRUC cfg;
 	u32 ilm_len = 0, dlm_len = 0;
 	u16 fw_ver, build_ver;
@@ -517,7 +517,7 @@ error0:
 static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int length)
 {
 	struct cmd_msg *msg = NULL;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 #ifdef RTMP_USB_SUPPORT
 	PURB urb = NULL;
@@ -885,7 +885,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
 	struct os_cookie *pObj = ad->OS_Cookie;
-	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;
+	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
 	unsigned long flags;
@@ -938,7 +938,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 
 int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 {
-	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;
+	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
@@ -1084,7 +1084,7 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	struct os_cookie *pObj = ad->OS_Cookie;
 	int ret = 0;
 	struct sk_buff * net_pkt = msg->net_pkt;
-	RTMP_CHIP_CAP *pChipCap = &ad->chipCap;
+	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
 	memset(OS_PKT_TAIL_BUF_EXTEND(net_pkt, 4), 0x00, 4);
@@ -1398,7 +1398,7 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 	struct cmd_msg *msg;
 	unsigned int var_len, offset_num, cur_len = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	BOOLEAN last_packet = FALSE;
 
@@ -1469,7 +1469,7 @@ int andes_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *data)
 	struct cmd_msg *msg;
 	unsigned int cur_len = 0, rsp_len, offset_num, receive_len;
 	u32 value, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 
 	if (!data)
@@ -1534,7 +1534,7 @@ int andes_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
 	u32 i, value, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 
 	if (!reg_pair)
@@ -1590,7 +1590,7 @@ int andes_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
 	u32 i, value, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 
 	if (!reg_pair)
@@ -1645,7 +1645,7 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 12, cur_len = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	BOOLEAN last_packet = FALSE;
 
@@ -1701,7 +1701,7 @@ int andes_rf_read_modify_write(struct rtmp_adapter*ad, RF_R_M_W_REG *reg_pair, u
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 12, cur_len = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	BOOLEAN last_packet = FALSE;
 
@@ -1769,7 +1769,7 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	BOOLEAN last_packet = FALSE;
 
@@ -1822,7 +1822,7 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	RTMP_CHIP_CAP *cap = &ad->chipCap;
+	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	BOOLEAN last_packet = FALSE;
 

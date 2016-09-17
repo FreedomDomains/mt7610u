@@ -1092,7 +1092,7 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 	IN char *			pAgcCompensate,
 	IN char *				pDeltaPowerByBbpR1)
 {
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	const TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTable;
 	TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTableEntry0 = NULL; /* Ant0 */
 	TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTableEntry1 = NULL; /* Ant1 */

@@ -61,7 +61,6 @@ struct _RTMP_RA_LEGACY_TB;
 struct rtmp_adapter;
 
 typedef struct _RTMP_CHIP_OP_ RTMP_CHIP_OP;
-typedef struct _RTMP_CHIP_CAP_ RTMP_CHIP_CAP;
 
 typedef struct _UAPSD_INFO {
 	BOOLEAN bAPSDCapable;
@@ -2658,7 +2657,7 @@ struct rtmp_adapter {
 	//BOOLEAN PollIdle;
 
 	RTMP_CHIP_OP chipOps;
-	RTMP_CHIP_CAP chipCap;
+	struct rtmp_chip_cap chipCap;
 
 #ifdef CONFIG_STA_SUPPORT
 	USHORT ThisTbttNumToNextWakeUp;

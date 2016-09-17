@@ -118,7 +118,7 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 		static UCHAR *decode_str[] = {"0", "20", "40", "20/40",
 									"80", "20/80", "40/80", "20/40/80"};
 		UCHAR tx_prim;
-		RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+		struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
 
 		RTMP_BBP_IO_READ32(pAd, CORE_R1, &core_r1);

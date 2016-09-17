@@ -2627,7 +2627,7 @@ Note:
 void MT76x0_Init(struct rtmp_adapter*pAd)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	u32 Value;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("-->%s():\n", __FUNCTION__));
@@ -2951,7 +2951,7 @@ void MT76x0_dynamic_vga_tuning(
 {
 
 
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	u32 reg_val = 0, init_vga = 0, rssi = 0;
 
 	rssi = pAd->StaCfg.RssiSample.AvgRssi0 - pAd->BbpRssiToDbmDelta;

@@ -537,7 +537,7 @@ struct RF_BANK_OFFSET {
 	3883:
 */
 
-struct _RTMP_CHIP_CAP_ {
+struct rtmp_chip_cap {
 	u32 ChipID;
 	/* register */
 	REG_PAIR *pRFRegTable;

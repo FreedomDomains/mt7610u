@@ -1235,7 +1235,7 @@ void dump_pdma_reg(struct rtmp_adapter*pAd)
 void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 {
 	int idx;
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
 
 	for (idx = 0; idx < pChipCap->BcnMaxHwNum; idx++)
@@ -1360,7 +1360,7 @@ int	NICInitializeAsic(
 	USB_DMA_CFG_STRUC UsbCfg;
 #endif /* RTMP_MAC_USB */
 
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitializeAsic\n"));
 
@@ -3281,7 +3281,7 @@ static INT RtmpChipOpsRegister(
 	IN INT			infType)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	int ret = 0;
 
 	memset(pChipOps, 0, sizeof(*pChipOps));
@@ -3306,7 +3306,7 @@ static INT RtmpChipOpsRegister(
 #ifdef RTMP_USB_SUPPORT
 BOOLEAN PairEP(struct rtmp_adapter*pAd, u8 EP)
 {
-	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
+	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	int i;
 	int found = 0;
 
