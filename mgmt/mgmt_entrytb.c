@@ -569,7 +569,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	PAPCLI_STRUCT pApCliEntry = NULL;
 
-	os_alloc_mem(NULL, &pEntry, sizeof(MAC_TABLE_ENTRY));
+	os_alloc_mem(&pEntry, sizeof(MAC_TABLE_ENTRY));
 
 	if (pEntry)
 	{

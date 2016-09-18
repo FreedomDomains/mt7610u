@@ -82,7 +82,7 @@ void BuildChannelList(
 
 		if (num > 0)
 		{
-			os_alloc_mem(NULL, (UCHAR **)&pChannelList, num * sizeof(UCHAR));
+			os_alloc_mem((UCHAR **)&pChannelList, num * sizeof(UCHAR));
 
 			if (!pChannelList)
 			{
@@ -90,7 +90,7 @@ void BuildChannelList(
 				return;
 			}
 
-			os_alloc_mem(NULL, (UCHAR **)&pChannelListFlag, num * sizeof(UCHAR));
+			os_alloc_mem((UCHAR **)&pChannelListFlag, num * sizeof(UCHAR));
 
 			if (!pChannelListFlag)
 			{
@@ -154,7 +154,7 @@ void BuildChannelList(
 		if (num > 0)
 		{
 			UCHAR RadarCh[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
-			os_alloc_mem(NULL, (UCHAR **)&pChannelList, num * sizeof(UCHAR));
+			os_alloc_mem((UCHAR **)&pChannelList, num * sizeof(UCHAR));
 
 			if (!pChannelList)
 			{
@@ -162,7 +162,7 @@ void BuildChannelList(
 				return;
 			}
 
-			os_alloc_mem(NULL, (UCHAR **)&pChannelListFlag, num * sizeof(UCHAR));
+			os_alloc_mem((UCHAR **)&pChannelListFlag, num * sizeof(UCHAR));
 
 			if (!pChannelListFlag)
 			{

@@ -382,7 +382,7 @@ INT RTMPGetKeyParameter(
 
 
 	keyLen = strlen(key);
-	os_alloc_mem(NULL, (u8 **)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
+	os_alloc_mem((u8 **)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
 	if (pMemBuf == NULL)
 		return (FALSE);
 
@@ -486,12 +486,12 @@ INT RTMPGetKeyParameterWithOffset(
 	if (*end_offset >= MAX_INI_BUFFER_SIZE)
 		return (FALSE);
 
-	os_alloc_mem(NULL, (u8 **)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem((u8 **)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
 
 	if(temp_buf1 == NULL)
         return (FALSE);
 
-	os_alloc_mem(NULL, (u8 **)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem((u8 **)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
 	if(temp_buf2 == NULL)
 	{
 		kfree((u8 *)temp_buf1);
@@ -1548,7 +1548,7 @@ int	RTMPSetProfileParameters(
 	INT						i = 0, retval;
 
 /*	tmpbuf = kmalloc(MAX_PARAM_BUFFER_SIZE, MEM_ALLOC_FLAG);*/
-	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem((UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
 	if(tmpbuf == NULL)
 		return NDIS_STATUS_FAILURE;
 
@@ -2334,7 +2334,7 @@ int	RTMPSetSingleSKUParameters(
 	DlListInit(&pAd->SingleSkuPwrList);
 
 	/* init*/
-	os_alloc_mem(NULL, (UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
+	os_alloc_mem((UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
 	if (buffer == NULL)
 		return FALSE;
 
@@ -2372,7 +2372,7 @@ int	RTMPSetSingleSKUParameters(
 
 				CH_POWER *pwr = NULL;
 
-				os_alloc_mem(NULL, (UCHAR **)&pwr, sizeof(*pwr));
+				os_alloc_mem((UCHAR **)&pwr, sizeof(*pwr));
 				memset(pwr, 0, sizeof(*pwr));
 
 				token= rstrtok(readline +2 ," ");

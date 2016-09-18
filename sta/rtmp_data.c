@@ -3958,7 +3958,7 @@ void STA_Fragment_Frame_Tx(
 #ifdef SOFT_ENCRYPT
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
 		/* store the outgoing frame for calculating MIC per fragmented frame */
-		os_alloc_mem(pAd, (u8 **) & tmp_ptr, pTxBlk->SrcBufLen);
+		os_alloc_mem((u8 **) & tmp_ptr, pTxBlk->SrcBufLen);
 		if (tmp_ptr == NULL) {
 			DBGPRINT(RT_DEBUG_ERROR,
 				 ("!!!%s : no memory for SW MIC calculation !!!\n",

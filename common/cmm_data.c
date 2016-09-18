@@ -1382,7 +1382,7 @@ UINT deaggregate_AMSDU_announce(
 			/* avoid local heap overflow, use dyanamic allocation */
 			MLME_QUEUE_ELEM *Elem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
 
-			os_alloc_mem(pAd, (UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
+			os_alloc_mem((UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
 			if (Elem != NULL)
 			{
 				memmove(Elem->Msg+(LENGTH_802_11 + LENGTH_802_1_H), pPayload, PayloadSize);
@@ -2380,7 +2380,7 @@ void RtmpEnqueueNullFrame(
 	ULONG		   Length;
 
 	/* since TxRate may change, we have to change Duration each time */
-	NState = os_alloc_mem(pAd, (u8 **)&pFrame, MGMT_DMA_BUFFER_SIZE);
+	NState = os_alloc_mem((u8 **)&pFrame, MGMT_DMA_BUFFER_SIZE);
 	pNullFr = (PHEADER_802_11) pFrame;
     Length = sizeof(HEADER_802_11);
 

@@ -66,10 +66,7 @@ void RtmpOsGetSystemUpTime(
 u32 RtmpOsTickUnitGet(void);
 
 /* OS Memory */
-int os_alloc_mem(
-	IN	void 				*pReserved,
-	OUT	UCHAR					**mem,
-	IN	ULONG					size);
+int os_alloc_mem(UCHAR **mem, ULONG size);
 
 int os_alloc_mem_suspend(
 	IN	void 				*pReserved,

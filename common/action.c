@@ -110,7 +110,7 @@ void MlmeADDBAAction(
 	if(MlmeAddBAReqSanity(pAd, Elem->Msg, Elem->MsgLen, Addr) &&
 		VALID_WCID(pInfo->Wcid))
 	{
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory*/
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory*/
 		if(NStatus != NDIS_STATUS_SUCCESS)
 		{
 			DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeADDBAAction() allocate memory failed \n"));
@@ -213,14 +213,14 @@ void MlmeDELBAAction(
 	if(MlmeDelBAReqSanity(pAd, Elem->Msg, Elem->MsgLen) &&
 		VALID_WCID(pInfo->Wcid))
 	{
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
 		if(NStatus != NDIS_STATUS_SUCCESS)
 		{
 			DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeDELBAAction() allocate memory failed 1. \n"));
 			return;
 		}
 
-		NStatus = os_alloc_mem(pAd, &pOutBuffer2, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
+		NStatus = os_alloc_mem(&pOutBuffer2, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
 		if(NStatus != NDIS_STATUS_SUCCESS)
 		{
 			kfree(pOutBuffer);
@@ -513,7 +513,7 @@ void Send2040CoexistAction(
 	UCHAR			HtLen = 1;
 
 	IntolerantChaRepLen = 0;
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
 	if(NStatus != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("ACT - Send2040CoexistAction() allocate memory failed \n"));
@@ -807,7 +807,7 @@ static void respond_ht_information_exchange_action(
 
 
 	/* 2. Always send back ADDBA Response */
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
 
 	if (NStatus != NDIS_STATUS_SUCCESS)
 	{
@@ -998,7 +998,7 @@ void SendRefreshBAR(
 
 			ASSERT(pBAEntry->Wcid < MAX_LEN_OF_MAC_TABLE);
 
-			NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
+			NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
 			if(NStatus != NDIS_STATUS_SUCCESS)
 			{
 				DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));

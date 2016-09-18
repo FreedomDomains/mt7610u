@@ -591,7 +591,7 @@ int	RTMPAllocTxRxRingMemory(
 
 		/* Allocate MGMT ring descriptor's memory*/
 		pAd->MgmtDescRing.AllocSize = MGMT_RING_SIZE * sizeof(TX_CONTEXT);
-		os_alloc_mem(pAd, (u8 **)(&pAd->MgmtDescRing.AllocVa), pAd->MgmtDescRing.AllocSize);
+		os_alloc_mem((u8 **)(&pAd->MgmtDescRing.AllocVa), pAd->MgmtDescRing.AllocSize);
 		if (pAd->MgmtDescRing.AllocVa == NULL)
 		{
 			DBGPRINT_ERR(("Failed to allocate a big buffer for MgmtDescRing!\n"));
@@ -906,7 +906,7 @@ int	NICInitTransmit(
 
 		/* Allocate MGMT ring descriptor's memory*/
 		pAd->MgmtDescRing.AllocSize = MGMT_RING_SIZE * sizeof(TX_CONTEXT);
-		os_alloc_mem(pAd, (u8 **)(&pAd->MgmtDescRing.AllocVa), pAd->MgmtDescRing.AllocSize);
+		os_alloc_mem((u8 **)(&pAd->MgmtDescRing.AllocVa), pAd->MgmtDescRing.AllocSize);
 		if (pAd->MgmtDescRing.AllocVa == NULL)
 		{
 			DBGPRINT_ERR(("Failed to allocate a big buffer for MgmtDescRing!\n"));
@@ -1565,7 +1565,7 @@ void RTUSBBssBeaconInit(
 	int i, j;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
-	os_alloc_mem(pAd, (u8 **)(&pAd->CommonCfg.pBeaconSync), sizeof(BEACON_SYNC_STRUCT));
+	os_alloc_mem((u8 **)(&pAd->CommonCfg.pBeaconSync), sizeof(BEACON_SYNC_STRUCT));
 
 	if (pAd->CommonCfg.pBeaconSync)
 	{
@@ -1576,7 +1576,7 @@ void RTUSBBssBeaconInit(
 			memset(pBeaconSync->BeaconBuf[i], 0, HW_BEACON_OFFSET);
 			pBeaconSync->CapabilityInfoLocationInBeacon[i] = 0;
 			pBeaconSync->TimIELocationInBeacon[i] = 0;
-			os_alloc_mem(pAd, &pBeaconSync->BeaconTxWI[i], TXWISize);
+			os_alloc_mem(&pBeaconSync->BeaconTxWI[i], TXWISize);
 			if (pBeaconSync->BeaconTxWI[i])
 				memset(pBeaconSync->BeaconTxWI[i], 0, TXWISize);
 			else
@@ -1781,7 +1781,7 @@ void RT28xxUsbMlmeRadioOFF(
 			MLME_DISASSOC_REQ_STRUCT DisReq;
 			MLME_QUEUE_ELEM *pMsgElem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
 
-			os_alloc_mem(pAd, (UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
+			os_alloc_mem((UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
 			if (pMsgElem)
 			{
 				ether_addr_copy(&DisReq.Addr, pAd->CommonCfg.Bssid);

@@ -456,7 +456,7 @@ BOOLEAN PeerWpaMessageSanity(
 
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&KEYDATA, MAX_LEN_OF_RSNIE);
+	os_alloc_mem((UCHAR **)&KEYDATA, MAX_LEN_OF_RSNIE);
 	if (KEYDATA == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -682,7 +682,7 @@ void WPAStart4WayHS(
 	GenRandom(pAd, (UCHAR *)pBssid, pEntry->ANonce);
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -819,7 +819,7 @@ void PeerPairMsg1Action(
 	pEntry->WpaState = AS_PTKINIT_NEGOTIATING;
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -936,7 +936,7 @@ void PeerPairMsg2Action(
     do
     {
 		/* Allocate memory for input*/
-		os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+		os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 		if (mpool == NULL)
 	    {
 	        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1059,7 +1059,7 @@ void PeerPairMsg3Action(
 	}
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1236,7 +1236,7 @@ void WPAStart2WayGroupHS(
 
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1346,7 +1346,7 @@ void PeerGroupMsg1Action(
 	memmove(pEntry->R_Counter, pGroup->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate memory for output*/
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1452,7 +1452,7 @@ void MlmeDeAuthAction(
     if (pEntry)
     {
         /* Send out a Deauthentication request frame*/
-        NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
+        NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
         if (NStatus != NDIS_STATUS_SUCCESS)
             return;
 
@@ -1677,7 +1677,7 @@ void PRF(
 	INT		total_len;
 
 	/* Allocate memory for input*/
-	os_alloc_mem(NULL, (u8 **)&input, 1024);
+	os_alloc_mem((u8 **)&input, 1024);
 
     if (input == NULL)
     {
@@ -1812,7 +1812,7 @@ void KDF(
 	INT		total_len;
 	UINT	len_in_bits = (len << 3);
 
-	os_alloc_mem(NULL, (u8 **)&input, 1024);
+	os_alloc_mem((u8 **)&input, 1024);
 
 	if (input == NULL)
 	{
@@ -3274,7 +3274,7 @@ void ConstructEapolKeyData(
 		return;
 
 	/* allocate memory pool*/
-	os_alloc_mem(NULL, (u8 **)&mpool, 1500);
+	os_alloc_mem((u8 **)&mpool, 1500);
 
     if (mpool == NULL)
 		return;
@@ -3433,7 +3433,7 @@ void CalculateMIC(
 	UCHAR	digest[80];
 
 	/* allocate memory for MIC calculation*/
-	os_alloc_mem(NULL, (u8 **)&OutBuffer, 512);
+	os_alloc_mem((u8 **)&OutBuffer, 512);
 
     if (OutBuffer == NULL)
     {

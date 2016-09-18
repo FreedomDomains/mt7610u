@@ -314,7 +314,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 	UCHAR			CtrlChannel = 0;
 
 
-	os_alloc_mem(NULL, &pPeerWscIe, 512);
+	os_alloc_mem(&pPeerWscIe, 512);
     /* Add for 3 necessary EID field check*/
     Sanity = 0;
 
@@ -896,7 +896,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 
 
 
-	os_alloc_mem(NULL, &pPeerWscIe, 512);
+	os_alloc_mem(&pPeerWscIe, 512);
 	Sanity = 0;		/* Add for 3 necessary EID field check*/
 
 	ie_list->AironetCellPowerLimit = 0xFF;  /* Default of AironetCellPowerLimit is 0xFF*/

@@ -299,7 +299,7 @@ void MlmeAssocReqAction(
 		ether_addr_copy(pAd->MlmeAux.Bssid, ApAddr);
 
 		/* Get an unused nonpaged memory */
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 		if (NStatus != NDIS_STATUS_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("ASSOC - MlmeAssocReqAction() allocate memory failed \n"));
@@ -724,7 +724,7 @@ void MlmeReassocReqAction(
 
 		RTMPCancelTimer(&pAd->MlmeAux.ReassocTimer, &TimerCancelled);
 
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 		if (NStatus != NDIS_STATUS_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("ASSOC - MlmeReassocReqAction() allocate memory failed \n"));
@@ -972,7 +972,7 @@ void MlmeDisassocReqAction(
 	/* skip sanity check */
 	pDisassocReq = (PMLME_DISASSOC_REQ_STRUCT) (Elem->Msg);
 
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("ASSOC - MlmeDisassocReqAction() allocate memory failed\n"));
@@ -1065,7 +1065,7 @@ void PeerAssocRspAction(
 	IE_LISTS *ie_list = NULL;
 
 
-	os_alloc_mem(pAd, (UCHAR **)&ie_list, sizeof(IE_LISTS));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(IE_LISTS));
 	if (ie_list == NULL) {
 		DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
 		return;
@@ -1211,7 +1211,7 @@ void PeerReassocRspAction(
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;
 	IE_LISTS *ie_list = NULL;
 
-	os_alloc_mem(pAd, (UCHAR **)&ie_list, sizeof(IE_LISTS));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(IE_LISTS));
 	if (ie_list == NULL) {
 		DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
 		return;
@@ -1705,7 +1705,7 @@ void Cls3errAction(
 	int NStatus;
 	USHORT Reason = REASON_CLS3ERR;
 
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS)
 		return;
 

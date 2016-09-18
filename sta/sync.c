@@ -244,7 +244,7 @@ void MlmeForceJoinReqAction(
 		/*
 	    send probe request
 	*/
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 	if (NStatus == NDIS_STATUS_SUCCESS)
 	{
 		if (pAd->MlmeAux.Channel <= 14)
@@ -734,7 +734,7 @@ void MlmeJoinReqAction(
 		/*
 		    send probe request
 		*/
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
 		if (NStatus == NDIS_STATUS_SUCCESS)
 		{
 			if (pAd->MlmeAux.Channel <= 14)
@@ -843,7 +843,7 @@ void MlmeStartReqAction(
 
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&VarIE, MAX_VIE_LEN);
+	os_alloc_mem((UCHAR **)&VarIE, MAX_VIE_LEN);
 	if (VarIE == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -977,13 +977,13 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 	BOOLEAN sanity_new, sanity_old;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&Ssid, MAX_LEN_OF_SSID);
+	os_alloc_mem((UCHAR **)&Ssid, MAX_LEN_OF_SSID);
 	if (Ssid == NULL)
 		goto LabelErr;
-	os_alloc_mem(NULL, (UCHAR **)&pHtCapability, sizeof(HT_CAPABILITY_IE));
+	os_alloc_mem((UCHAR **)&pHtCapability, sizeof(HT_CAPABILITY_IE));
 	if (pHtCapability == NULL)
 		goto LabelErr;
-	os_alloc_mem(NULL, (UCHAR **)&pAddHtInfo, sizeof(ADD_HT_INFO_IE));
+	os_alloc_mem((UCHAR **)&pAddHtInfo, sizeof(ADD_HT_INFO_IE));
 	if (pAddHtInfo == NULL)
 		goto LabelErr;
 
@@ -996,7 +996,7 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 
 	memset(Ssid, 0, MAX_LEN_OF_SSID);
 
-	os_alloc_mem(NULL, (UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
 	if (ie_list == NULL)
 		goto LabelErr;
 	memset(ie_list, 0, sizeof(BCN_IE_LIST));
@@ -1275,7 +1275,7 @@ void PeerBeaconAtScanAction(
 
 
 
-	os_alloc_mem(NULL, (UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
 	if (!ie_list) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s():Alloc ie_list failed!\n", __FUNCTION__));
 		return;
@@ -1283,7 +1283,7 @@ void PeerBeaconAtScanAction(
 	memset((UCHAR *)ie_list, 0, sizeof(BCN_IE_LIST));
 
 	/* Init Variable IE structure */
-	os_alloc_mem(NULL, (UCHAR **)&VarIE, MAX_VIE_LEN);
+	os_alloc_mem((UCHAR **)&VarIE, MAX_VIE_LEN);
 	if (VarIE == NULL)
 		goto LabelErr;
 	pVIE = (PNDIS_802_11_VARIABLE_IEs) VarIE;
@@ -1426,12 +1426,12 @@ void PeerBeaconAtJoinAction(
 
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
 	if (ie_list == NULL)
 		goto LabelErr;
 	memset(ie_list, 0, sizeof(BCN_IE_LIST));
 
-	os_alloc_mem(NULL, (UCHAR **)&VarIE, MAX_VIE_LEN);
+	os_alloc_mem((UCHAR **)&VarIE, MAX_VIE_LEN);
 	if (VarIE == NULL)
 		goto LabelErr;
 	/* Init Variable IE structure */
@@ -1793,12 +1793,12 @@ void PeerBeacon(
 		return;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
+	os_alloc_mem((UCHAR **)&ie_list, sizeof(BCN_IE_LIST));
 	if (ie_list == NULL)
 		goto LabelErr;
 	memset(ie_list, 0, sizeof(BCN_IE_LIST));
 
-	os_alloc_mem(NULL, (UCHAR **)&VarIE, MAX_VIE_LEN);
+	os_alloc_mem((UCHAR **)&VarIE, MAX_VIE_LEN);
 	if (VarIE == NULL)
 		goto LabelErr;
 	/* Init Variable IE structure */
@@ -2085,7 +2085,7 @@ void PeerBeacon(
 					BOOLEAN result;
 					IE_LISTS *ielist;
 
-					os_alloc_mem(NULL, (UCHAR **)&ielist, sizeof(IE_LISTS));
+					os_alloc_mem((UCHAR **)&ielist, sizeof(IE_LISTS));
 					if (!ielist)
 						goto LabelOK;
 					memset((UCHAR *)ielist, 0, sizeof(IE_LISTS));
@@ -2503,7 +2503,7 @@ void PeerProbeReqAction(
 		if ((SsidLen == 0) || SSID_EQUAL(Ssid, SsidLen, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen))
 		{
 			/* allocate and send out ProbeRsp frame */
-			NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
+			NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
 			if (NStatus != NDIS_STATUS_SUCCESS)
 				return;
 
@@ -2775,7 +2775,7 @@ void EnqueueProbeRequest(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("force out a ProbeRequest ...\n"));
 
-	NState = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
+	NState = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory */
 	if (NState == NDIS_STATUS_SUCCESS)
 	{
 		MgtMacHeaderInit(pAd, &Hdr80211, SUBTYPE_PROBE_REQ, 0, BROADCAST_ADDR,

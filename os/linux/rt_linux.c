@@ -176,10 +176,7 @@ ULONG RTMPMsecsToJiffies(u32 m)
 
 /* pAd MUST allow to be NULL */
 
-int os_alloc_mem(
-	IN void *pReserved,
-	OUT UCHAR **mem,
-	IN ULONG size)
+int os_alloc_mem(UCHAR **mem, ULONG size)
 {
 	*mem = (u8 *) kmalloc(size, GFP_ATOMIC);
 	if (*mem) {
@@ -1605,7 +1602,7 @@ void RtmpDrvAllMacPrint(
 	STRING *msg;
 	u32 macAddr = 0, macValue = 0;
 
-	os_alloc_mem(NULL, (UCHAR **)&msg, 1024);
+	os_alloc_mem((UCHAR **)&msg, 1024);
 	if (!msg)
 		return;
 
@@ -1656,7 +1653,7 @@ void RtmpDrvAllE2PPrint(
 	USHORT eepAddr = 0;
 	USHORT eepValue;
 
-	os_alloc_mem(NULL, (UCHAR **)&msg, 1024);
+	os_alloc_mem((UCHAR **)&msg, 1024);
 	if (!msg)
 		return;
 
@@ -1923,12 +1920,12 @@ BOOLEAN RtmpOsStatsAlloc(
 	IN void **ppStats,
 	IN void **ppIwStats)
 {
-	os_alloc_mem(NULL, (UCHAR **) ppStats, sizeof (struct net_device_stats));
+	os_alloc_mem((UCHAR **) ppStats, sizeof (struct net_device_stats));
 	if ((*ppStats) == NULL)
 		return FALSE;
 	memset((UCHAR *) *ppStats, 0, sizeof (struct net_device_stats));
 
-	os_alloc_mem(NULL, (UCHAR **) ppIwStats, sizeof (struct iw_statistics));
+	os_alloc_mem((UCHAR **) ppIwStats, sizeof (struct iw_statistics));
 	if ((*ppIwStats) == NULL) {
 		kfree(*ppStats);
 		return FALSE;
@@ -2885,7 +2882,7 @@ void RtmpOsSetNetDevPriv(struct net_device *pDev, struct rtmp_adapter *pPriv)
 	pDevInfo = (struct dev_priv_info *) netdev_priv(pDev);
 	if (pDevInfo == NULL)
 	{
-		os_alloc_mem(NULL, (UCHAR **)&pDevInfo, sizeof(*pDevInfo));
+		os_alloc_mem((UCHAR **)&pDevInfo, sizeof(*pDevInfo));
 		if (pDevInfo == NULL)
 			return;
 	}

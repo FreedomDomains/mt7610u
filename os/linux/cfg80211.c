@@ -1605,7 +1605,7 @@ BOOLEAN CFG80211_Register(
 
 
 	/* allocate MAC80211 structure */
-	os_alloc_mem(NULL, (UCHAR **)&pCfg80211_CB, sizeof(CFG80211_CB));
+	os_alloc_mem((UCHAR **)&pCfg80211_CB, sizeof(CFG80211_CB));
 	if (pCfg80211_CB == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("80211> Allocate MAC80211 CB fail!\n"));

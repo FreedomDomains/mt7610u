@@ -151,7 +151,7 @@
 
 #define WPA_OS_MALLOC(_p, _s)		\
 {									\
-	os_alloc_mem(NULL, (u8 **)&_p, _s);		\
+	os_alloc_mem((u8 **)&_p, _s);		\
 }
 
 #define WPA_OS_FREE(_p)		\

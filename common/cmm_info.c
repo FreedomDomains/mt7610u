@@ -713,7 +713,7 @@ INT Set_ChannelListAdd_Proc(
 		UCHAR CountryCode[3] = {0};
 		if (pAd->CommonCfg.pChDesp == NULL)
 		{
-			os_alloc_mem(pAd,  &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
+			os_alloc_mem( &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
 			pChDesp = (PCH_DESP) pAd->CommonCfg.pChDesp;
 			if (pChDesp)
 			{
@@ -864,7 +864,7 @@ INT Set_ChannelListDel_Proc(
 
 	if (pAd->CommonCfg.pChDesp == NULL)
 	{
-		os_alloc_mem(pAd,  &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
+		os_alloc_mem( &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
 		if (pAd->CommonCfg.pChDesp)
 		{
 			pChDesp = (PCH_DESP) pAd->CommonCfg.pChDesp;
@@ -1896,7 +1896,7 @@ void RTMPIoctlGetMacTable(
 	char *msg;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&pMacTab, sizeof(RT_802_11_MAC_TABLE));
+	os_alloc_mem((UCHAR **)&pMacTab, sizeof(RT_802_11_MAC_TABLE));
 	if (pMacTab == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -1944,7 +1944,7 @@ void RTMPIoctlGetMacTable(
 
 
 /*	msg = kmalloc(sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN), MEM_ALLOC_FLAG);*/
-	os_alloc_mem(NULL, (UCHAR **)&msg, sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN));
+	os_alloc_mem((UCHAR **)&msg, sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN));
 	if (msg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s():Alloc memory failed\n", __FUNCTION__));

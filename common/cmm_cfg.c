@@ -209,7 +209,7 @@ UCHAR *wmode_2_str(UCHAR wmode)
 	INT idx, pos, max_len;
 
 	max_len = WMODE_COMP * 3;
-	if (os_alloc_mem(NULL, &str, max_len) == NDIS_STATUS_SUCCESS)
+	if (os_alloc_mem(&str, max_len) == NDIS_STATUS_SUCCESS)
 	{
 		memset(str, 0, max_len);
 		pos = 0;
@@ -717,7 +717,7 @@ INT RTMP_COM_IoctlHandle(
 			{
 				MLME_DISASSOC_REQ_STRUCT	DisReq;
 				MLME_QUEUE_ELEM *MsgElem;/* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-				os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
+				os_alloc_mem((UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 				if (MsgElem)
 				{
 					ether_addr_copy(DisReq.Addr, pAd->CommonCfg.Bssid);

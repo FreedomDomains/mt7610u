@@ -1608,7 +1608,7 @@ void RTMPIoctlMAC(
 
 
 
-	os_alloc_mem(NULL, (UCHAR **)&msg, sizeof(STRING)*1024);
+	os_alloc_mem((UCHAR **)&msg, sizeof(STRING)*1024);
 	if (!msg)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -1616,7 +1616,7 @@ void RTMPIoctlMAC(
 	}
 	memset(msg, 0x00, 1024);
 
-	os_alloc_mem(NULL, (UCHAR **)&arg, sizeof(STRING)*255);
+	os_alloc_mem((UCHAR **)&arg, sizeof(STRING)*255);
 	if (arg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -1764,7 +1764,7 @@ next:
 
 		ASSERT((AddrEnd >= AddrStart));
 		/* *2 for safe */
-		os_alloc_mem(NULL, (UCHAR **)&pBufMac, (AddrEnd - AddrStart)*2);
+		os_alloc_mem((UCHAR **)&pBufMac, (AddrEnd - AddrStart)*2);
 		if (pBufMac != NULL)
 		{
 			pBuf = pBufMac;
@@ -2277,7 +2277,7 @@ RtmpIoctl_rt_ioctl_giwscan(
 	if (pIoctlScan->BssNr == 0)
 		return NDIS_STATUS_SUCCESS;
 
-	os_alloc_mem(NULL, (UCHAR **)&(pIoctlScan->pBssTable),
+	os_alloc_mem((UCHAR **)&(pIoctlScan->pBssTable),
 				pAd->ScanTab.BssNr * sizeof(RT_CMD_STA_IOCTL_BSS_TABLE));
 	if (pIoctlScan->pBssTable == NULL)
 	{
@@ -2356,7 +2356,7 @@ RtmpIoctl_rt_ioctl_siwessid(
 
 		/* Includes null character. */
 /*				pSsidString = kmalloc(MAX_LEN_OF_SSID+1, MEM_ALLOC_FLAG); */
-		os_alloc_mem(NULL, (UCHAR **)&pSsidString, MAX_LEN_OF_SSID+1);
+		os_alloc_mem((UCHAR **)&pSsidString, MAX_LEN_OF_SSID+1);
 		if (pSsidString)
 		{
 			memset(pSsidString, 0, MAX_LEN_OF_SSID+1);
@@ -2832,7 +2832,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
+	os_alloc_mem((UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
 	if (pMsgElem == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -3461,7 +3461,7 @@ RtmpIoctl_rt_ioctl_siwgenie(
 				pAd->StaCfg.pWpaAssocIe = NULL;
 			}
 /*			pAd->StaCfg.pWpaAssocIe = kmalloc(wrqu->data.length, MEM_ALLOC_FLAG); */
-			os_alloc_mem(NULL, (UCHAR **)&pAd->StaCfg.pWpaAssocIe, length);
+			os_alloc_mem((UCHAR **)&pAd->StaCfg.pWpaAssocIe, length);
 			if (pAd->StaCfg.pWpaAssocIe)
 			{
 				pAd->StaCfg.WpaAssocIeLen = length;

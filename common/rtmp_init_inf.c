@@ -735,7 +735,7 @@ void RTMPInfClose(
 			MLME_DISASSOC_REQ_STRUCT	DisReq;
 			MLME_QUEUE_ELEM *MsgElem;/* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
 
-			os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
+			os_alloc_mem((UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 			if (MsgElem)
 			{
 			ether_addr_copy(DisReq.Addr, pAd->CommonCfg.Bssid);
@@ -847,7 +847,7 @@ static void	WriteConfToDatFile(
 		{
 			fileLen += rv;
 		}
-		os_alloc_mem(NULL, (UCHAR **)&cfgData, fileLen);
+		os_alloc_mem((UCHAR **)&cfgData, fileLen);
 		if (cfgData == NULL)
 		{
 			RtmpOSFileClose(file_r);
@@ -875,7 +875,7 @@ static void	WriteConfToDatFile(
 		offset = (char *) rtstrstr((char *) cfgData, "Default\n");
 		offset += strlen("Default\n");
 		RtmpOSFileWrite(file_w, (char *)cfgData, (int)(offset-cfgData));
-		os_alloc_mem(NULL, (UCHAR **)&pTempStr, 512);
+		os_alloc_mem((UCHAR **)&pTempStr, 512);
 		if (!pTempStr)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("pTempStr kmalloc fail. (512)\n"));

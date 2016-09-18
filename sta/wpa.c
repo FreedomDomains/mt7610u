@@ -153,7 +153,7 @@ void WpaMicFailureReportFrame(
 	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
-	os_alloc_mem(NULL, (u8 **)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -199,7 +199,7 @@ void WpaMicFailureReportFrame(
 	*((USHORT *)&pPacket->KeyDesc.KeyInfo) = cpu2le16(*((USHORT *)&pPacket->KeyDesc.KeyInfo));
 
 
-	os_alloc_mem(pAd, (u8 **)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* allocate memory */
+	os_alloc_mem((u8 **)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* allocate memory */
 	if(pOutBuffer == NULL)
 	{
 		kfree(mpool);

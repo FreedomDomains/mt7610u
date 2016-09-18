@@ -38,7 +38,7 @@ void CliWds_ProxyTabInit(
 	spin_lock_init(pAd, &pAd->ApCfg.CliWdsTabLock);
 
 /*	pAd->ApCfg.pCliWdsEntryPool = kmalloc(sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE, GFP_ATOMIC);*/
-	os_alloc_mem(pAd, (UCHAR **)&(pAd->ApCfg.pCliWdsEntryPool), sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
+	os_alloc_mem((UCHAR **)&(pAd->ApCfg.pCliWdsEntryPool), sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);
 	if (pAd->ApCfg.pCliWdsEntryPool)
 	{
 		memset(pAd->ApCfg.pCliWdsEntryPool, 0, sizeof(CLIWDS_PROXY_ENTRY) * CLIWDS_POOL_SIZE);

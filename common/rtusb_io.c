@@ -938,14 +938,14 @@ int	RTUSBEnqueueCmdFromNdis(
 	else
 		return (NDIS_STATUS_RESOURCES);
 
-	status = os_alloc_mem(pAd, (u8 **)(&cmdqelmt), sizeof(CmdQElmt));
+	status = os_alloc_mem((u8 **)(&cmdqelmt), sizeof(CmdQElmt));
 	if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt == NULL))
 		return (NDIS_STATUS_RESOURCES);
 
 		cmdqelmt->buffer = NULL;
 		if (pInformationBuffer != NULL)
 		{
-			status = os_alloc_mem(pAd, (u8 **)&cmdqelmt->buffer, InformationBufferLength);
+			status = os_alloc_mem((u8 **)&cmdqelmt->buffer, InformationBufferLength);
 			if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt->buffer == NULL))
 			{
 /*				kfree(cmdqelmt);*/

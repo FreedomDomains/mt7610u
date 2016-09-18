@@ -130,7 +130,7 @@ int	RTMPReadParametersHook(
 #endif /*HOSTAPD_SUPPORT */
 
 /*	buffer = kmalloc(MAX_INI_BUFFER_SIZE, MEM_ALLOC_FLAG); */
-	os_alloc_mem(pAd, (UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
+	os_alloc_mem((UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
 	if(buffer == NULL)
 		return NDIS_STATUS_FAILURE;
 	memset(buffer, 0x00, MAX_INI_BUFFER_SIZE);

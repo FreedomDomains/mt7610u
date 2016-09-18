@@ -164,7 +164,7 @@ void PeerAuthRspAtSeq2Action(
 	UCHAR len_challengeText = CIPHER_TEXT_LEN;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	os_alloc_mem((UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -172,7 +172,7 @@ void PeerAuthRspAtSeq2Action(
 		return;
 	}
 
-	os_alloc_mem(NULL, (UCHAR **) & CyperChlgText, CIPHER_TEXT_LEN + 8 + 8);
+	os_alloc_mem((UCHAR **) & CyperChlgText, CIPHER_TEXT_LEN + 8 + 8);
 	if (CyperChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: CyperChlgText Allocate memory fail!!!\n",
@@ -206,7 +206,7 @@ void PeerAuthRspAtSeq2Action(
 
 					/* Get an unused nonpaged memory */
 					NStatus =
-					    os_alloc_mem(pAd, &pOutBuffer,
+					    os_alloc_mem(&pOutBuffer,
 							 MGMT_DMA_BUFFER_SIZE);
 					if (NStatus != NDIS_STATUS_SUCCESS) {
 						DBGPRINT(RT_DEBUG_TRACE,
@@ -322,7 +322,7 @@ void PeerAuthRspAtSeq4Action(
 	BOOLEAN TimerCancelled;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	os_alloc_mem((UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -378,7 +378,7 @@ void MlmeDeauthReqAction(
 
 	pInfo = (MLME_DEAUTH_REQ_STRUCT *) Elem->Msg;
 
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("AUTH - MlmeDeauthReqAction() allocate memory fail\n"));
@@ -471,7 +471,7 @@ void Cls2errAction(
 	ULONG FrameLen = 0;
 	USHORT Reason = REASON_CLS2ERR;
 
-	NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS)
 		return;
 
@@ -526,7 +526,7 @@ BOOLEAN AUTH_ReqSend(
 		Seq = SeqNo;
 		Status = MLME_SUCCESS;
 
-		NStatus = os_alloc_mem(pAd, &pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
+		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
 		if (NStatus != NDIS_STATUS_SUCCESS) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("%s - MlmeAuthReqAction(Alg:%d) allocate memory failed\n",
