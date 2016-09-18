@@ -271,10 +271,8 @@ err_free_sk_buff:
 
 extern spinlock_t TimerSemLock;
 
-void RTMPFreeAdapter(
-	IN	void 	*pAdSrc)
+void RTMPFreeAdapter(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	struct os_cookie *os_cookie;
 	int index;
 
@@ -283,8 +281,7 @@ void RTMPFreeAdapter(
 	if (pAd->BeaconBuf)
 		kfree(pAd->BeaconBuf);
 
-	for (index =0 ; index < NUM_OF_TX_RING; index++)
-	{
+	for (index =0 ; index < NUM_OF_TX_RING; index++) {
 		pAd->DeQueueRunning[index] = FALSE;
 	}
 
@@ -299,8 +296,7 @@ void RTMPFreeAdapter(
 		kfree(pAd->iw_stats);
 		pAd->iw_stats = NULL;
 	}
-	if (pAd->stats)
-	{
+	if (pAd->stats) {
 		kfree(pAd->stats);
 		pAd->stats = NULL;
 	}

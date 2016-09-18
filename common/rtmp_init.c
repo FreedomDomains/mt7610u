@@ -142,9 +142,7 @@ spinlock_t TimerSemLock;
 
 	========================================================================
 */
-int	RTMPAllocAdapterBlock(
-	IN  void *handle,
-	OUT	void **ppAdapter)
+int RTMPAllocAdapterBlock(void *handle, struct rtmp_adapter **ppAdapter)
 {
 	struct rtmp_adapter *pAd = NULL;
 	int		Status;
@@ -158,13 +156,11 @@ int	RTMPAllocAdapterBlock(
 
 	*ppAdapter = NULL;
 
-	do
-	{
+	do {
 		/* Allocate struct rtmp_adaptermemory block*/
 /*		pBeaconBuf = kmalloc(MAX_BEACON_SIZE, MEM_ALLOC_FLAG);*/
 		os_alloc_mem(NULL, (UCHAR **)&pBeaconBuf, MAX_BEACON_SIZE);
-		if (pBeaconBuf == NULL)
-		{
+		if (pBeaconBuf == NULL) {
 			Status = NDIS_STATUS_FAILURE;
 			DBGPRINT_ERR(("Failed to allocate memory - BeaconBuf!\n"));
 			break;
@@ -172,13 +168,10 @@ int	RTMPAllocAdapterBlock(
 		memset(pBeaconBuf, 0, MAX_BEACON_SIZE);
 
 		Status = AdapterBlockAllocateMemory(handle, (void **)&pAd, sizeof(struct rtmp_adapter));
-		if (Status != NDIS_STATUS_SUCCESS)
-		{
+		if (Status != NDIS_STATUS_SUCCESS) {
 			DBGPRINT_ERR(("Failed to allocate memory - ADAPTER\n"));
 			break;
-		}
-		else
-		{
+		} else 	{
 			/* init resource list (must be after pAd allocation) */
 			initList(&pAd->RscTimerMemList);
 			initList(&pAd->RscTaskMemList);
@@ -191,14 +184,13 @@ int	RTMPAllocAdapterBlock(
 
 			pAd->OS_Cookie = handle;
 #ifdef WORKQUEUE_BH
-			((struct os_cookie *)(handle))->pAd_va = (u32)pAd;
+			handle->pAd_va = pAd;
 #endif /* WORKQUEUE_BH */
 		}
 		pAd->BeaconBuf = pBeaconBuf;
 		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (u32)sizeof(struct rtmp_adapter)));
 
-		if (RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE)
-		{
+		if (RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE) {
 			Status = NDIS_STATUS_FAILURE;
 			break;
 		}
@@ -206,8 +198,7 @@ int	RTMPAllocAdapterBlock(
 		/* Init spin locks*/
 		spin_lock_init(&pAd->MgmtRingLock);
 
-		for (index =0 ; index < NUM_OF_TX_RING; index++)
-		{
+		for (index =0 ; index < NUM_OF_TX_RING; index++) {
 			spin_lock_init(&pAd->TxSwQueueLock[index]);
 			spin_lock_init(&pAd->DeQueueLock[index]);
 			pAd->DeQueueRunning[index] = FALSE;
@@ -219,8 +210,7 @@ int	RTMPAllocAdapterBlock(
 			leave the initialization job to RTMPInitTxRxRingMemory() which called in rt28xx_init().
 		*/
 		Status = RTMPAllocTxRxRingMemory(pAd);
-		if (Status != NDIS_STATUS_SUCCESS)
-		{
+		if (Status != NDIS_STATUS_SUCCESS) {
 			DBGPRINT_ERR(("Failed to allocate memory - TxRxRing\n"));
 			break;
 		}
@@ -244,14 +234,12 @@ int	RTMPAllocAdapterBlock(
 		/* assign function pointers*/
 	} while (FALSE);
 
-	if ((Status != NDIS_STATUS_SUCCESS) && (pBeaconBuf))
-	{
+	if ((Status != NDIS_STATUS_SUCCESS) && (pBeaconBuf)) {
 		kfree(pBeaconBuf);
 		pAd->BeaconBuf = NULL;
 	}
 
-	if ((Status != NDIS_STATUS_SUCCESS) && (pAd != NULL))
-	{
+	if ((Status != NDIS_STATUS_SUCCESS) && (pAd != NULL)) {
 		if (pAd->stats != NULL)
 			kfree(pAd->stats);
 
@@ -266,8 +254,7 @@ int	RTMPAllocAdapterBlock(
 	/*
 		Init ProbeRespIE Table
 	*/
-	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++)
-	{
+	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++) 	{
 		if (os_alloc_mem(pAd,&pAd->ProbeRespIE[index].pIe, MAX_VIE_LEN) == NDIS_STATUS_SUCCESS)
 			memset(pAd->ProbeRespIE[index].pIe, 0, MAX_VIE_LEN);
 		else
@@ -3346,9 +3333,8 @@ BOOLEAN PairEP(struct rtmp_adapter*pAd, u8 EP)
 }
 #endif /* RTMP_USB_SUPPORT */
 
-INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
+INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 {
-	struct rtmp_adapter*pAd = (struct rtmp_adapter *)pAdSrc;
 	u8 i;
 	int ret = 0;
 
@@ -3371,8 +3357,7 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 	RTMP_SEM_EVENT_INIT(&(pAd->wlan_en_atomic), &pAd->RscSemMemList);
 	RTMP_SEM_EVENT_INIT(&(pAd->mcu_atomic), &pAd->RscSemMemList);
 	os_alloc_mem(pAd, (u8 **)&pAd->UsbVendorReqBuf, MAX_PARAM_BUFFER_SIZE - 1);
-	if (pAd->UsbVendorReqBuf == NULL)
-	{
+	if (pAd->UsbVendorReqBuf == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate vendor request temp buffer failed!\n"));
 		return FALSE;
 	}
@@ -3391,14 +3376,12 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 		return FALSE;
 
 #ifdef RTMP_MAC_USB
-	for (i = 0; i < 6; i++)
-	{
+	for (i = 0; i < 6; i++) {
 		if (!PairEP(pAd, pAd->BulkOutEpAddr[i]))
 			DBGPRINT(RT_DEBUG_ERROR, ("Invalid bulk out ep(%x)\n", pAd->BulkOutEpAddr[i]));
 	}
 
-	for (i = 0; i < 2; i++)
-	{
+	for (i = 0; i < 2; i++) {
 		if (!PairEP(pAd, pAd->BulkInEpAddr[i]))
 			DBGPRINT(RT_DEBUG_ERROR, ("Invalid bulk in ep(%x)\n", pAd->BulkInEpAddr[i]));
 	}
@@ -3420,9 +3403,8 @@ INT RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 }
 
 
-BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
+BOOLEAN RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	INT index;
 
 #ifdef CONFIG_STA_SUPPORT
@@ -3431,8 +3413,7 @@ BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RT65xx
-	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1))
-	{
+	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1)) {
 		RT65xx_WLAN_ChipOnOff(pAd, FALSE, FALSE);
 	}
 #endif /* RT65xx */
@@ -3452,8 +3433,7 @@ BOOLEAN RtmpRaDevCtrlExit(IN void *pAdSrc)
 	/*
 		Free ProbeRespIE Table
 	*/
-	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++)
-	{
+	for (index = 0; index < MAX_LEN_OF_BSS_TABLE; index++) {
 		if (pAd->ProbeRespIE[index].pIe)
 			kfree(pAd->ProbeRespIE[index].pIe);
 	}

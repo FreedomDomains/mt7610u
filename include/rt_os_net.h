@@ -70,11 +70,11 @@ void RtmpNetOpsSet(void *pNetOpsOrg);
 
 /* ========================================================================== */
 
-int RTMPAllocAdapterBlock(void *handle, void **ppAdapter);
-void RTMPFreeAdapter(void *pAd);
-BOOLEAN RtmpRaDevCtrlExit(void *pAd);
-INT RtmpRaDevCtrlInit(void *pAd, RTMP_INF_TYPE infType);
-void RTMPHandleInterrupt(void *pAd);
+int RTMPAllocAdapterBlock(void *handle, struct rtmp_adapter **ppAdapter);
+void RTMPFreeAdapter(struct rtmp_adapter *pAd);
+BOOLEAN RtmpRaDevCtrlExit(struct rtmp_adapter *pAd);
+INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType);
+void RTMPHandleInterrupt(struct rtmp_adapter *pAd);
 
 INT RTMP_COM_IoctlHandle(
 	IN	void 				*pAd,
