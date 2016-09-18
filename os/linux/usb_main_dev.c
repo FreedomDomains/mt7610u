@@ -80,7 +80,7 @@ static int rt2870_probe(
 	IN struct usb_interface *intf,
 	IN struct usb_device *usb_dev,
 	IN const struct usb_device_id *dev_id,
-	IN void **ppAd);
+	IN struct rtmp_adapter  **ppAd);
 
 #ifndef PF_NOFREEZE
 #define PF_NOFREEZE  0
@@ -439,18 +439,15 @@ static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 }
 
 
-static int rt2870_probe(
-	IN struct usb_interface *intf,
-	IN struct usb_device *usb_dev,
-	IN const struct usb_device_id *dev_id,
-	IN void **ppAd)
+static int rt2870_probe(struct usb_interface *intf, struct usb_device *usb_dev,
+			const struct usb_device_id *dev_id, struct rtmp_adapter  **ppAd)
 {
-	struct  net_device		*net_dev = NULL;
-	void       				*pAd = (void *) NULL;
-	INT                 	status, rv;
-	void *				handle;
+	struct  net_device *net_dev = NULL;
+	struct rtmp_adapter  *pAd = NULL;
+	INT               	status, rv;
+	struct os_cookie *handle;
 	RTMP_OS_NETDEV_OP_HOOK	netDevHook;
-	ULONG					OpMode;
+	ULONG 	OpMode;
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 /*	INT 		pm_usage_cnt; */
@@ -458,23 +455,19 @@ static int rt2870_probe(
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 
-
-
 	DBGPRINT(RT_DEBUG_TRACE, ("===>rt2870_probe()!\n"));
 
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
         res = usb_autopm_get_interface(intf);
-	if (res)
-	{
-			DBGPRINT(RT_DEBUG_ERROR, ("rt2870_probe autopm_resume fail ------\n"));
-		     return -EIO;
+	if (res) {
+		DBGPRINT(RT_DEBUG_ERROR, ("rt2870_probe autopm_resume fail ------\n"));
+		return -EIO;
 	}
 
 	atomic_set(&intf->pm_usage_cnt, 1);
-	 printk(" rt2870_probe ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
-
+	printk(" rt2870_probe ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
@@ -485,28 +478,24 @@ static int rt2870_probe(
 	/* Allocate struct rtmp_adapteradapter structure */
 /*	handle = kmalloc(sizeof(struct os_cookie), GFP_KERNEL); */
 	os_alloc_mem(NULL, (UCHAR **)&handle, sizeof(struct os_cookie));
-	if (handle == NULL)
-	{
+	if (handle == NULL) {
 		printk("rt2870_probe(): Allocate memory for os handle failed!\n");
 		return -ENOMEM;
 	}
 	memset(handle, 0, sizeof(struct os_cookie));
 
-	((struct os_cookie *)handle)->pUsb_Dev = usb_dev;
+	handle->pUsb_Dev = usb_dev;
 
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	((struct os_cookie *)handle)->intf = intf;
+	handle->intf = intf;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
-
-
 
 	/* set/get operators to/from DRIVER module */
 
 	rv = RTMPAllocAdapterBlock(handle, &pAd);
-	if (rv != NDIS_STATUS_SUCCESS)
-	{
+	if (rv != NDIS_STATUS_SUCCESS) {
 /*		kfree(handle); */
 		kfree(handle);
 		goto err_out;
@@ -585,5 +574,3 @@ err_out:
 	return -1;
 
 }
-
-
