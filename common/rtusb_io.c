@@ -938,28 +938,28 @@ int	RTUSBEnqueueCmdFromNdis(
 	else
 		return (NDIS_STATUS_RESOURCES);
 
-	status = os_alloc_mem((u8 **)(&cmdqelmt), sizeof(CmdQElmt));
-	if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt == NULL))
+	cmdqelmt = kmalloc(sizeof(CmdQElmt), GFP_ATOMIC);
+	if (cmdqelmt == NULL)
 		return (NDIS_STATUS_RESOURCES);
 
-		cmdqelmt->buffer = NULL;
-		if (pInformationBuffer != NULL)
+	cmdqelmt->buffer = NULL;
+	if (pInformationBuffer != NULL)
+	{
+		cmdqelmt->buffer = kmalloc(InformationBufferLength, GFP_ATOMIC);
+		if (cmdqelmt->buffer == NULL)
 		{
-			status = os_alloc_mem((u8 **)&cmdqelmt->buffer, InformationBufferLength);
-			if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt->buffer == NULL))
-			{
 /*				kfree(cmdqelmt);*/
-				kfree(cmdqelmt);
-				return (NDIS_STATUS_RESOURCES);
-			}
-			else
-			{
-				memmove(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
-				cmdqelmt->bufferlength = InformationBufferLength;
-			}
+			kfree(cmdqelmt);
+			return (NDIS_STATUS_RESOURCES);
 		}
 		else
-			cmdqelmt->bufferlength = 0;
+		{
+			memmove(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
+			cmdqelmt->bufferlength = InformationBufferLength;
+		}
+	}
+	else
+		cmdqelmt->bufferlength = 0;
 
 	cmdqelmt->command = Oid;
 	cmdqelmt->CmdFromNdis = TRUE;

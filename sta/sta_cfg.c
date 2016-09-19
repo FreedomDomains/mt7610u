@@ -1608,7 +1608,7 @@ void RTMPIoctlMAC(
 
 
 
-	os_alloc_mem((UCHAR **)&msg, sizeof(STRING)*1024);
+	msg = kmalloc(sizeof(STRING)*1024, GFP_ATOMIC);
 	if (!msg)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -1616,7 +1616,7 @@ void RTMPIoctlMAC(
 	}
 	memset(msg, 0x00, 1024);
 
-	os_alloc_mem((UCHAR **)&arg, sizeof(STRING)*255);
+	arg = kmalloc(sizeof(STRING)*255, GFP_ATOMIC);
 	if (arg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -1764,7 +1764,7 @@ next:
 
 		ASSERT((AddrEnd >= AddrStart));
 		/* *2 for safe */
-		os_alloc_mem((UCHAR **)&pBufMac, (AddrEnd - AddrStart)*2);
+		pBufMac = kmalloc((AddrEnd - AddrStart)*2, GFP_ATOMIC);
 		if (pBufMac != NULL)
 		{
 			pBuf = pBufMac;
@@ -2277,8 +2277,8 @@ RtmpIoctl_rt_ioctl_giwscan(
 	if (pIoctlScan->BssNr == 0)
 		return NDIS_STATUS_SUCCESS;
 
-	os_alloc_mem((UCHAR **)&(pIoctlScan->pBssTable),
-				pAd->ScanTab.BssNr * sizeof(RT_CMD_STA_IOCTL_BSS_TABLE));
+	pIoctlScan->pBssTable =
+		kmalloc(pAd->ScanTab.BssNr * sizeof(RT_CMD_STA_IOCTL_BSS_TABLE), GFP_ATOMIC);
 	if (pIoctlScan->pBssTable == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate memory fail!\n"));
@@ -2356,7 +2356,7 @@ RtmpIoctl_rt_ioctl_siwessid(
 
 		/* Includes null character. */
 /*				pSsidString = kmalloc(MAX_LEN_OF_SSID+1, MEM_ALLOC_FLAG); */
-		os_alloc_mem((UCHAR **)&pSsidString, MAX_LEN_OF_SSID+1);
+		pSsidString = kmalloc(MAX_LEN_OF_SSID+1, GFP_ATOMIC);
 		if (pSsidString)
 		{
 			memset(pSsidString, 0, MAX_LEN_OF_SSID+1);
@@ -2832,7 +2832,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **)&pMsgElem, sizeof(MLME_QUEUE_ELEM));
+	pMsgElem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 	if (pMsgElem == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -3461,7 +3461,7 @@ RtmpIoctl_rt_ioctl_siwgenie(
 				pAd->StaCfg.pWpaAssocIe = NULL;
 			}
 /*			pAd->StaCfg.pWpaAssocIe = kmalloc(wrqu->data.length, MEM_ALLOC_FLAG); */
-			os_alloc_mem((UCHAR **)&pAd->StaCfg.pWpaAssocIe, length);
+			pAd->StaCfg.pWpaAssocIe = kmalloc(length, GFP_ATOMIC);
 			if (pAd->StaCfg.pWpaAssocIe)
 			{
 				pAd->StaCfg.WpaAssocIeLen = length;

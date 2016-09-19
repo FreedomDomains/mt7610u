@@ -922,8 +922,8 @@ static int TDLS_UAPSD_TrafficIndSend(
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
 
 	/* allocate resources */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
-	if (NStatus	!= NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if (!pOutBuffer)
 		goto LabelExit;
 
 	FrameLen = TDLS_UAPSD_TrafficIndBuild(pAd, pPeerMac,
@@ -1013,14 +1013,13 @@ static int TDLS_UAPSD_TrafficRspSend(
 						pAd->CurrentAddress, TDLS_ETHERTYPE);
 
 	/* allocate buffer for transmitting message */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
-	if (NStatus	!= NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if (!pOutBuffer)
 		goto LabelExit;
 
 	/* build the frame */
-	MakeOutgoingFrame(pOutBuffer,		&TempLen,
-						1,				&RemoteFrameType,
-						END_OF_ARGS);
+	MakeOutgoingFrame(pOutBuffer, &TempLen, 1,
+			&RemoteFrameType, END_OF_ARGS);
 	FrameLen = FrameLen + TempLen;
 
 	TDLS_UAPSD_TrafficRspBuild(pAd, pOutBuffer, &FrameLen, pTDLS, PeerToken);
@@ -1448,13 +1447,12 @@ static void TDLS_UAPSD_CmdSimSetupReqSend(
 	TDLS_UAPSD_CmdUtilMacGet(&pArgv, PeerMac);
 
 	/* allocate buffer for transmitting message */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
-	if (NStatus	!= NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if (!pOutBuffer)
 		return;
 
-	os_alloc_mem((UCHAR **)&pElem, sizeof(MLME_QUEUE_ELEM));
-	if (pElem == NULL)
-	{
+	pElem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
+	if (!pElem) {
 		kfree(pOutBuffer);
 		return;
 	}
@@ -1630,8 +1628,8 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 	TDLS_UAPSD_CmdUtilMacGet(&pArgv, PeerMac);
 
 	/* allocate resources */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
-	if (NStatus	!= NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if (!pOutBuffer)
 		goto LabelExit;
 
 	/* make up a virtual traffic indication frame */
@@ -1648,9 +1646,9 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 
 	/* build the frame */
 	/* fill remote frame type */
-	MakeOutgoingFrame(pOutBuffer,		&TempLen,
-						1,				&RemoteFrameType,
-						END_OF_ARGS);
+	MakeOutgoingFrame(pOutBuffer, &TempLen, 1, &RemoteFrameType,
+			END_OF_ARGS);
+
 	FrameLen = TempLen;
 
 	/* fill action code */
@@ -1674,8 +1672,8 @@ static void TDLS_UAPSD_CmdSimTrafficIndRcv(
 		goto LabelExit;
 
 	/* allocate resources */
-	os_alloc_mem((UCHAR **)&pElem, sizeof(MLME_QUEUE_ELEM));
-	if (pElem == NULL)
+	pElem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
+	if (pElem)
 		goto LabelExit;
 
 	/* copy the indication frame */

@@ -295,7 +295,7 @@ BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num)
 	DBGPRINT(RT_DEBUG_TRACE, ("Allocate %d memory for BA reordering\n", (u32)(num*sizeof(struct reordering_mpdu))));
 
 	/* allocate number of mpdu_blk memory */
-	os_alloc_mem((u8 **)&mem, (num*sizeof(struct reordering_mpdu)));
+	mem = kmalloc(num*sizeof(struct reordering_mpdu), GFP_ATOMIC);
 
 	pAd->mpdu_blk_pool.mem = mem;
 
@@ -589,7 +589,6 @@ void BAOriSessionAdd(
 	UCHAR         TID;
 	USHORT        Idx;
 	u8 *         pOutBuffer2 = NULL;
-	int     NStatus;
 	ULONG           FrameLen;
 	FRAME_BAR       FrameBar;
 	UCHAR			MaxPeerBufSize;
@@ -629,8 +628,8 @@ void BAOriSessionAdd(
 					pBAEntry->BAWinSize, pBAEntry->ORIBATimer.TimerValue));
 
 		/* SEND BAR */
-		NStatus = os_alloc_mem(&pOutBuffer2, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-		if (NStatus != NDIS_STATUS_SUCCESS)
+		pOutBuffer2 = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+		if (!pOutBuffer2)
 		{
 			DBGPRINT(RT_DEBUG_TRACE,("BA - BAOriSessionAdd() allocate memory failed \n"));
 			return;
@@ -918,7 +917,7 @@ void BAOriSessionTearDown(
 			/* force send specified TID DelBA*/
 			MLME_DELBA_REQ_STRUCT   DelbaReq;
 			MLME_QUEUE_ELEM *Elem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-			os_alloc_mem((UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
+			Elem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 			if (Elem != NULL)
 			{
 				memset(&DelbaReq, 0, sizeof(DelbaReq));
@@ -953,7 +952,7 @@ void BAOriSessionTearDown(
 	{
 		MLME_DELBA_REQ_STRUCT   DelbaReq;
 		MLME_QUEUE_ELEM *Elem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-		os_alloc_mem((UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
+		Elem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 		if (Elem != NULL)
 		{
 			memset(&DelbaReq, 0, sizeof(DelbaReq));
@@ -1025,7 +1024,7 @@ void BARecSessionTearDown(
 		if (bPassive == FALSE)
 		{
 			MLME_QUEUE_ELEM *Elem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-			os_alloc_mem((UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
+			Elem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 			if (Elem != NULL)
 			{
 				memset(&DelbaReq, 0, sizeof(DelbaReq));
@@ -1224,7 +1223,6 @@ void PeerAddBAReqAction(
 	UCHAR   pAddr[6];
 	FRAME_ADDBA_RSP ADDframe;
 	u8 *        pOutBuffer = NULL;
-	int     NStatus;
 	PFRAME_ADDBA_REQ  pAddreqFrame = NULL;
 	/*UCHAR		BufSize;*/
 	ULONG       FrameLen;
@@ -1265,8 +1263,8 @@ void PeerAddBAReqAction(
 
 	pAddreqFrame = (PFRAME_ADDBA_REQ)(&Elem->Msg[0]);
 	/* 2. Always send back ADDBA Response */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
-	if (NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	 /*Get an unused nonpaged memory*/
+	if (!pOutBuffer)
 	{
 		DBGPRINT(RT_DEBUG_TRACE,("ACTION - PeerBAAction() allocate memory failed \n"));
 		return;
@@ -1472,12 +1470,11 @@ void SendPSMPAction(
 				   IN UCHAR				Psmp)
 {
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	FRAME_PSMP_ACTION Frame;
 	ULONG FrameLen;
 
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
-	if (NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	 /*Get an unused nonpaged memory*/
+	if (!pOutBuffer)
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));
 		return;

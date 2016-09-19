@@ -98,7 +98,6 @@ void MlmeADDBAAction(
 	MLME_ADDBA_REQ_STRUCT *pInfo;
 	UCHAR           Addr[6];
 	u8 *        pOutBuffer = NULL;
-	int     NStatus;
 	ULONG		Idx;
 	FRAME_ADDBA_REQ  Frame;
 	ULONG		FrameLen;
@@ -108,11 +107,9 @@ void MlmeADDBAAction(
 	memset(&Frame, 0, sizeof(FRAME_ADDBA_REQ));
 
 	if(MlmeAddBAReqSanity(pAd, Elem->Msg, Elem->MsgLen, Addr) &&
-		VALID_WCID(pInfo->Wcid))
-	{
-		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* Get an unused nonpaged memory*/
-		if(NStatus != NDIS_STATUS_SUCCESS)
-		{
+		VALID_WCID(pInfo->Wcid)) {
+		pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /* Get an unused nonpaged memory*/
+		if(!pOutBuffer) {
 			DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeADDBAAction() allocate memory failed \n"));
 			return;
 		}
@@ -199,7 +196,6 @@ void MlmeDELBAAction(
 	MLME_DELBA_REQ_STRUCT *pInfo;
 	u8 *        pOutBuffer = NULL;
 	u8 *	   pOutBuffer2 = NULL;
-	int     NStatus;
 	ULONG		Idx;
 	FRAME_DELBA_REQ  Frame;
 	ULONG		FrameLen;
@@ -213,15 +209,15 @@ void MlmeDELBAAction(
 	if(MlmeDelBAReqSanity(pAd, Elem->Msg, Elem->MsgLen) &&
 		VALID_WCID(pInfo->Wcid))
 	{
-		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-		if(NStatus != NDIS_STATUS_SUCCESS)
+		pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+		if(!pOutBuffer)
 		{
 			DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeDELBAAction() allocate memory failed 1. \n"));
 			return;
 		}
 
-		NStatus = os_alloc_mem(&pOutBuffer2, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-		if(NStatus != NDIS_STATUS_SUCCESS)
+		pOutBuffer2 = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+		if(!pOutBuffer2)
 		{
 			kfree(pOutBuffer);
 			DBGPRINT(RT_DEBUG_ERROR, ("BA - MlmeDELBAAction() allocate memory failed 2. \n"));
@@ -506,15 +502,14 @@ void Send2040CoexistAction(
 	IN	BOOLEAN	bAddIntolerantCha)
 {
 	u8 *		pOutBuffer = NULL;
-	int 	NStatus;
 	FRAME_ACTION_HDR	Frame;
 	ULONG			FrameLen;
 	u32			IntolerantChaRepLen;
 	UCHAR			HtLen = 1;
 
 	IntolerantChaRepLen = 0;
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-	if(NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+	if(!pOutBuffer)
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("ACT - Send2040CoexistAction() allocate memory failed \n"));
 		return;
@@ -800,16 +795,15 @@ static void respond_ht_information_exchange_action(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	u8 *		pOutBuffer = NULL;
-	int		NStatus;
 	ULONG			FrameLen;
 	FRAME_HT_INFO	HTINFOframe, *pFrame;
 	UCHAR   		*pAddr;
 
 
 	/* 2. Always send back ADDBA Response */
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	 /*Get an unused nonpaged memory*/
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	 /*Get an unused nonpaged memory*/
 
-	if (NStatus != NDIS_STATUS_SUCCESS)
+	if (!pOutBuffer)
 	{
 		DBGPRINT(RT_DEBUG_TRACE,("ACTION - respond_ht_information_exchange_action() allocate memory failed \n"));
 		return;
@@ -976,7 +970,6 @@ void SendRefreshBAR(
 {
 	FRAME_BAR		FrameBar;
 	ULONG			FrameLen;
-	int 	NStatus;
 	u8 *		pOutBuffer = NULL;
 	USHORT			Sequence;
 	UCHAR			i, TID;
@@ -998,8 +991,8 @@ void SendRefreshBAR(
 
 			ASSERT(pBAEntry->Wcid < MAX_LEN_OF_MAC_TABLE);
 
-			NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-			if(NStatus != NDIS_STATUS_SUCCESS)
+			pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+			if(!pOutBuffer)
 			{
 				DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));
 				return;

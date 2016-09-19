@@ -532,7 +532,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int 
 
 	OS_PKT_RESERVE(net_pkt, cap->cmd_header_len);
 
-	os_alloc_mem((u8 **)&msg, sizeof(*msg));
+	msg = kmalloc(sizeof(*msg), GFP_ATOMIC);
 
 	if (!msg) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate cmd msg\n"));

@@ -1376,15 +1376,13 @@ UINT deaggregate_AMSDU_announce(
         CONVERT_TO_802_3(Header802_3, pDA, pSA, pPayload, PayloadSize, pRemovedLLCSNAP);
 
 #ifdef CONFIG_STA_SUPPORT
-		if ((Header802_3[12] == 0x88) && (Header802_3[13] == 0x8E)
-			)
+		if ((Header802_3[12] == 0x88) && (Header802_3[13] == 0x8E))
 		{
 			/* avoid local heap overflow, use dyanamic allocation */
 			MLME_QUEUE_ELEM *Elem; /* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
 
-			os_alloc_mem((UCHAR **)&Elem, sizeof(MLME_QUEUE_ELEM));
-			if (Elem != NULL)
-			{
+			Elem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
+			if (Elem != NULL) {
 				memmove(Elem->Msg+(LENGTH_802_11 + LENGTH_802_1_H), pPayload, PayloadSize);
 				Elem->MsgLen = LENGTH_802_11 + LENGTH_802_1_H + PayloadSize;
 				/*WpaEAPOLKeyAction(pAd, Elem);*/
@@ -2374,18 +2372,16 @@ void RtmpEnqueueNullFrame(
     IN BOOLEAN       bEOSP,
     IN UCHAR         OldUP)
 {
-	int    NState;
 	PHEADER_802_11 pNullFr;
 	u8 *pFrame;
 	ULONG		   Length;
 
 	/* since TxRate may change, we have to change Duration each time */
-	NState = os_alloc_mem((u8 **)&pFrame, MGMT_DMA_BUFFER_SIZE);
+	pFrame = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
 	pNullFr = (PHEADER_802_11) pFrame;
-    Length = sizeof(HEADER_802_11);
+	Length = sizeof(HEADER_802_11);
 
-	if (NState == NDIS_STATUS_SUCCESS)
-	{
+	if (pFrame) {
 
 		pNullFr->FC.Type = BTYPE_DATA;
 		pNullFr->FC.FrDs = 1;

@@ -318,10 +318,10 @@ int rt_ioctl_giwrange(struct net_device *dev,
 						&ChannelListNum, 0, RT_DEV_PRIV_FLAGS_GET(dev));
 	range->num_channels = ChannelListNum;
 
-	os_alloc_mem((UCHAR **)&pChannel, sizeof(UCHAR)*ChannelListNum);
+	pChannel = kmalloc(sizeof(UCHAR)*ChannelListNum, GFP_ATOMIC);
 	if (pChannel == NULL)
 		return -ENOMEM;
-	os_alloc_mem((UCHAR **)&pFreq, sizeof(u32)*ChannelListNum);
+	pFreq = kmalloc(sizeof(u32)*ChannelListNum, GFP_ATOMIC);
 	if (pFreq == NULL)
 	{
 		kfree(pChannel);
@@ -514,14 +514,14 @@ int rt_ioctl_iwaplist(struct net_device *dev,
 	}
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **)&(pBssList->pList), sizeof(RT_CMD_STA_IOCTL_BSS_LIST) * IW_MAX_AP);
+	pBssList->pList = kmalloc(sizeof(RT_CMD_STA_IOCTL_BSS_LIST) * IW_MAX_AP, GFP_ATOMIC);
 	if (pBssList->pList == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
 		return 0;
 	}
 
-	os_alloc_mem((UCHAR **)&addr, sizeof(struct sockaddr) * IW_MAX_AP);
+	addr = kmalloc(sizeof(struct sockaddr) * IW_MAX_AP, GFP_ATOMIC);
 	if (addr == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));

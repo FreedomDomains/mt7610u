@@ -477,7 +477,7 @@ static int rt2870_probe(struct usb_interface *intf, struct usb_device *usb_dev,
 /*RtmpDevInit============================================= */
 	/* Allocate struct rtmp_adapteradapter structure */
 /*	handle = kmalloc(sizeof(struct os_cookie), GFP_KERNEL); */
-	os_alloc_mem((UCHAR **)&handle, sizeof(struct os_cookie));
+	handle = kmalloc(sizeof(struct os_cookie), GFP_ATOMIC);
 	if (handle == NULL) {
 		printk("rt2870_probe(): Allocate memory for os handle failed!\n");
 		return -ENOMEM;

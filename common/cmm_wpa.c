@@ -456,7 +456,7 @@ BOOLEAN PeerWpaMessageSanity(
 
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **)&KEYDATA, MAX_LEN_OF_RSNIE);
+	KEYDATA = kmalloc(MAX_LEN_OF_RSNIE, GFP_ATOMIC);
 	if (KEYDATA == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -682,12 +682,11 @@ void WPAStart4WayHS(
 	GenRandom(pAd, (UCHAR *)pBssid, pEntry->ANonce);
 
 	/* Allocate memory for output*/
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
 	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
@@ -819,12 +818,11 @@ void PeerPairMsg1Action(
 	pEntry->WpaState = AS_PTKINIT_NEGOTIATING;
 
 	/* Allocate memory for output*/
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
 	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
@@ -936,7 +934,7 @@ void PeerPairMsg2Action(
     do
     {
 		/* Allocate memory for input*/
-		os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
+		mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
 		if (mpool == NULL)
 	    {
 	        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -1059,12 +1057,11 @@ void PeerPairMsg3Action(
 	}
 
 	/* Allocate memory for output*/
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
 	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
@@ -1236,12 +1233,11 @@ void WPAStart2WayGroupHS(
 
 
 	/* Allocate memory for output*/
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
 	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
@@ -1346,12 +1342,11 @@ void PeerGroupMsg1Action(
 	memmove(pEntry->R_Counter, pGroup->KeyDesc.ReplayCounter, LEN_KEY_DESC_REPLAY);
 
 	/* Allocate memory for output*/
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pEapolFrame = (PEAPOL_PACKET)mpool;
 	memset(pEapolFrame, 0, TX_EAPOL_BUFFER);
@@ -1447,13 +1442,12 @@ void MlmeDeAuthAction(
     u8 *         pOutBuffer = NULL;
     ULONG           FrameLen = 0;
     HEADER_802_11   DeAuthHdr;
-    int     NStatus;
 
     if (pEntry)
     {
         /* Send out a Deauthentication request frame*/
-        NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);
-        if (NStatus != NDIS_STATUS_SUCCESS)
+        pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+        if (pOutBuffer == NULL)
             return;
 
         DBGPRINT(RT_DEBUG_TRACE, ("Send DEAUTH frame with ReasonCode(%d) to %02x:%02x:%02x:%02x:%02x:%02x \n",Reason, PRINT_MAC(pEntry->Addr)));
@@ -1677,13 +1671,13 @@ void PRF(
 	INT		total_len;
 
 	/* Allocate memory for input*/
-	os_alloc_mem((u8 **)&input, 1024);
+	/* ULLI : need check return value ? */
+	input = kmalloc(1024, GFP_ATOMIC);
 
-    if (input == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!PRF: no memory!!!\n"));
-        return;
-    }
+	if (input == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!PRF: no memory!!!\n"));
+		return;
+	}
 
 	/* Generate concatenation input*/
 	memmove(input, prefix, prefix_len);
@@ -1812,7 +1806,7 @@ void KDF(
 	INT		total_len;
 	UINT	len_in_bits = (len << 3);
 
-	os_alloc_mem((u8 **)&input, 1024);
+	input = kmalloc(1024, GFP_ATOMIC);
 
 	if (input == NULL)
 	{
@@ -3274,7 +3268,7 @@ void ConstructEapolKeyData(
 		return;
 
 	/* allocate memory pool*/
-	os_alloc_mem((u8 **)&mpool, 1500);
+	mpool = kmalloc(1500, GFP_ATOMIC);
 
     if (mpool == NULL)
 		return;
@@ -3433,7 +3427,7 @@ void CalculateMIC(
 	UCHAR	digest[80];
 
 	/* allocate memory for MIC calculation*/
-	os_alloc_mem((u8 **)&OutBuffer, 512);
+	OutBuffer = kmalloc(512, GFP_ATOMIC);
 
     if (OutBuffer == NULL)
     {

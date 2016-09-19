@@ -157,14 +157,13 @@ void PeerAuthRspAtSeq2Action(
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status2;
 	UCHAR ChallengeIe = IE_CHALLENGE_TEXT;
 	UCHAR len_challengeText = CIPHER_TEXT_LEN;
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	ChlgText = kmalloc(CIPHER_TEXT_LEN, GFP_ATOMIC);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -172,7 +171,7 @@ void PeerAuthRspAtSeq2Action(
 		return;
 	}
 
-	os_alloc_mem((UCHAR **) & CyperChlgText, CIPHER_TEXT_LEN + 8 + 8);
+	CyperChlgText = kmalloc(CIPHER_TEXT_LEN + 8 + 8, GFP_ATOMIC);
 	if (CyperChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: CyperChlgText Allocate memory fail!!!\n",
@@ -205,10 +204,9 @@ void PeerAuthRspAtSeq2Action(
 					RemoteStatus = MLME_SUCCESS;
 
 					/* Get an unused nonpaged memory */
-					NStatus =
-					    os_alloc_mem(&pOutBuffer,
-							 MGMT_DMA_BUFFER_SIZE);
-					if (NStatus != NDIS_STATUS_SUCCESS) {
+					pOutBuffer =
+					    kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+					if (pOutBuffer == NULL) {
 						DBGPRINT(RT_DEBUG_TRACE,
 							 ("AUTH - PeerAuthRspAtSeq2Action() allocate memory fail\n"));
 						pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
@@ -322,7 +320,7 @@ void PeerAuthRspAtSeq4Action(
 	BOOLEAN TimerCancelled;
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	ChlgText = kmalloc(CIPHER_TEXT_LEN, GFP_ATOMIC);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -372,14 +370,13 @@ void MlmeDeauthReqAction(
 	MLME_DEAUTH_REQ_STRUCT *pInfo;
 	HEADER_802_11 DeauthHdr;
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Status;
 
 	pInfo = (MLME_DEAUTH_REQ_STRUCT *) Elem->Msg;
 
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
-	if (NStatus != NDIS_STATUS_SUCCESS) {
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	/*Get an unused nonpaged memory */
+	if (pOutBuffer == NULL) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("AUTH - MlmeDeauthReqAction() allocate memory fail\n"));
 		pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
@@ -467,12 +464,11 @@ void Cls2errAction(
 {
 	HEADER_802_11 DeauthHdr;
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen = 0;
 	USHORT Reason = REASON_CLS2ERR;
 
-	NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
-	if (NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	/*Get an unused nonpaged memory */
+	if (pOutBuffer == NULL)
 		return;
 
 	DBGPRINT(RT_DEBUG_TRACE,
@@ -502,7 +498,6 @@ BOOLEAN AUTH_ReqSend(
 	ULONG Timeout;
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
-	int NStatus;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0, tmp = 0;
 
@@ -526,8 +521,8 @@ BOOLEAN AUTH_ReqSend(
 		Seq = SeqNo;
 		Status = MLME_SUCCESS;
 
-		NStatus = os_alloc_mem(&pOutBuffer, MGMT_DMA_BUFFER_SIZE);	/*Get an unused nonpaged memory */
-		if (NStatus != NDIS_STATUS_SUCCESS) {
+		pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);	/*Get an unused nonpaged memory */
+		if (pOutBuffer == NULL) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("%s - MlmeAuthReqAction(Alg:%d) allocate memory failed\n",
 				  pSMName, Alg));

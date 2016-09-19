@@ -845,7 +845,7 @@ int eFuseWrite(
 	PUSHORT OddWriteByteBuf = NULL;
 
 /*	OddWriteByteBuf=(PUSHORT)kmalloc(sizeof(USHORT)*2, MEM_ALLOC_FLAG);*/
-	os_alloc_mem((UCHAR **)&OddWriteByteBuf, sizeof(USHORT)*2);
+	OddWriteByteBuf = kmalloc(sizeof(USHORT)*2, GFP_ATOMIC);
 	/* The input value=3070 will be stored as following*/
 	/* Little-endian		S	|	S	Big-endian*/
 	/* addr			1	0	|	0	1	*/

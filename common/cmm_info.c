@@ -711,12 +711,11 @@ INT Set_ChannelListAdd_Proc(
 		UCHAR EntryIdx;
 		PCH_DESP pChDesp = NULL;
 		UCHAR CountryCode[3] = {0};
-		if (pAd->CommonCfg.pChDesp == NULL)
-		{
-			os_alloc_mem( &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
+		if (pAd->CommonCfg.pChDesp == NULL) {
+			pAd->CommonCfg.pChDesp =
+				kmalloc(MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP), GFP_ATOMIC);
 			pChDesp = (PCH_DESP) pAd->CommonCfg.pChDesp;
-			if (pChDesp)
-			{
+			if (pChDesp) {
 				for (EntryIdx= 0; pChRegion->pChDesp[EntryIdx].FirstChannel != 0; EntryIdx++)
 				{
 					if (EntryIdx == (MAX_PRECONFIG_DESP_ENTRY_SIZE-2)) /* Keep an NULL entry in the end of table*/
@@ -862,11 +861,10 @@ INT Set_ChannelListDel_Proc(
 		}
 	}
 
-	if (pAd->CommonCfg.pChDesp == NULL)
-	{
-		os_alloc_mem( &pAd->CommonCfg.pChDesp, MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP));
-		if (pAd->CommonCfg.pChDesp)
-		{
+	if (pAd->CommonCfg.pChDesp == NULL) {
+		pAd->CommonCfg.pChDesp =
+			kmalloc(MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP), GFP_ATOMIC);
+		if (pAd->CommonCfg.pChDesp) {
 			pChDesp = (PCH_DESP) pAd->CommonCfg.pChDesp;
 			for (EntryIdx= 0; pChRegion->pChDesp[EntryIdx].FirstChannel != 0; EntryIdx++)
 			{
@@ -1896,9 +1894,8 @@ void RTMPIoctlGetMacTable(
 	char *msg;
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **)&pMacTab, sizeof(RT_802_11_MAC_TABLE));
-	if (pMacTab == NULL)
-	{
+	pMacTab = kmalloc(sizeof(RT_802_11_MAC_TABLE), GFP_ATOMIC);
+	if (!pMacTab) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
 		return;
 	}
@@ -1944,9 +1941,8 @@ void RTMPIoctlGetMacTable(
 
 
 /*	msg = kmalloc(sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN), MEM_ALLOC_FLAG);*/
-	os_alloc_mem((UCHAR **)&msg, sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN));
-	if (msg == NULL)
-	{
+	msg = kmalloc(sizeof(CHAR)*(MAX_LEN_OF_MAC_TABLE*MAC_LINE_LEN), GFP_ATOMIC);
+	if (!msg) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s():Alloc memory failed\n", __FUNCTION__));
 		goto LabelOK;
 	}

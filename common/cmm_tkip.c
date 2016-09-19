@@ -870,7 +870,7 @@ void TKIP_GTK_KEY_WRAP(
 
 
 	/* allocate memory */
-	os_alloc_mem((UCHAR **)&pARC4_CTX, sizeof(ARC4_CTX_STRUC));
+	pARC4_CTX = kmalloc(sizeof(ARC4_CTX_STRUC), GFP_ATOMIC);
 	if (pARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));

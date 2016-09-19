@@ -335,7 +335,8 @@ int	MeasureReqTabInit(
 	spin_lock_init(&pAd->CommonCfg.MeasureReqTabLock);
 
 /*	pAd->CommonCfg.pMeasureReqTab = kmalloc(sizeof(MEASURE_REQ_TAB), GFP_ATOMIC);*/
-	os_alloc_mem((UCHAR **)&(pAd->CommonCfg.pMeasureReqTab), sizeof(MEASURE_REQ_TAB));
+	pAd->CommonCfg.pMeasureReqTab =
+		kmalloc(sizeof(MEASURE_REQ_TAB), GFP_ATOMIC);
 	if (pAd->CommonCfg.pMeasureReqTab)
 		memset(pAd->CommonCfg.pMeasureReqTab, 0, sizeof(MEASURE_REQ_TAB));
 	else
@@ -558,7 +559,7 @@ int	TpcReqTabInit(
 	spin_lock_init(&pAd->CommonCfg.TpcReqTabLock);
 
 /*	pAd->CommonCfg.pTpcReqTab = kmalloc(sizeof(TPC_REQ_TAB), GFP_ATOMIC);*/
-	os_alloc_mem((UCHAR **)&(pAd->CommonCfg.pTpcReqTab), sizeof(TPC_REQ_TAB));
+	pAd->CommonCfg.pTpcReqTab = kmalloc(sizeof(TPC_REQ_TAB), GFP_ATOMIC);
 	if (pAd->CommonCfg.pTpcReqTab)
 		memset(pAd->CommonCfg.pTpcReqTab, 0, sizeof(TPC_REQ_TAB));
 	else
@@ -1152,7 +1153,6 @@ void EnqueueMeasurementRep(
 	IN u8 * pReportInfo)
 {
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen;
 	HEADER_802_11 ActHdr;
 	MEASURE_REPORT_INFO MeasureRepIE;
@@ -1161,8 +1161,8 @@ void EnqueueMeasurementRep(
 	MgtMacHeaderInit(pAd, &ActHdr, SUBTYPE_ACTION, 0, pDA,
 						pAd->CurrentAddress);
 
-	NStatus = os_alloc_mem((void *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-	if(NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+	if(pOutBuffer == NULL)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
 		return;
@@ -1206,7 +1206,6 @@ void EnqueueTPCReq(
 	IN UCHAR DialogToken)
 {
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen;
 
 	HEADER_802_11 ActHdr;
@@ -1215,8 +1214,8 @@ void EnqueueTPCReq(
 	MgtMacHeaderInit(pAd, &ActHdr, SUBTYPE_ACTION, 0, pDA,
 						pAd->CurrentAddress);
 
-	NStatus = os_alloc_mem((void *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-	if(NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+	if(pOutBuffer == NULL)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
 		return;
@@ -1258,7 +1257,6 @@ void EnqueueTPCRep(
 	IN u8 LinkMargin)
 {
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen;
 
 	HEADER_802_11 ActHdr;
@@ -1267,8 +1265,8 @@ void EnqueueTPCRep(
 	MgtMacHeaderInit(pAd, &ActHdr, SUBTYPE_ACTION, 0, pDA,
 						pAd->CurrentAddress);
 
-	NStatus = os_alloc_mem((void *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-	if(NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+	if(pOutBuffer == NULL)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
 		return;
@@ -1844,7 +1842,7 @@ static void PeerMeasureReportAction(
 /*	if (pAd->CommonCfg.bIEEE80211H != TRUE)*/
 /*		return;*/
 
-	os_alloc_mem((UCHAR **)&pMeasureReportInfo, sizeof(MEASURE_RPI_REPORT));
+	pMeasureReportInfo = kmalloc(sizeof(MEASURE_RPI_REPORT), GFP_ATOMIC);
 /*	if ((pMeasureReportInfo = kmalloc(sizeof(MEASURE_RPI_REPORT), GFP_ATOMIC)) == NULL)*/
 	if (pMeasureReportInfo == NULL)
 	{
@@ -2068,11 +2066,10 @@ INT Set_MeasureReq_Proc(
 
 	HEADER_802_11 ActHdr;
 	u8 *pOutBuffer = NULL;
-	int NStatus;
 	ULONG FrameLen;
 
-	NStatus = os_alloc_mem((void *)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /*Get an unused nonpaged memory*/
-	if(NStatus != NDIS_STATUS_SUCCESS)
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
+	if(pOutBuffer != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
 		goto END_OF_MEASURE_REQ;

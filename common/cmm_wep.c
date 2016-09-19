@@ -158,7 +158,7 @@ void RTMPInitWepEngine(
 	u8 *seed = NULL;
 	u8	seed_len;
 
-	os_alloc_mem((UCHAR **)&seed, sizeof(UCHAR)*16);
+	seed = kmalloc(sizeof(UCHAR)*16, GFP_ATOMIC);
 	if (seed == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: seed Allocate memory fail!!!\n", __FUNCTION__));
@@ -234,7 +234,7 @@ BOOLEAN	RTMPSoftEncryptWEP(
 	ARC4_CTX_STRUC *ARC4_CTX = NULL;
 	UINT 	FCSCRC32;
 
-	os_alloc_mem((UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+	ARC4_CTX = kmalloc(sizeof(ARC4_CTX_STRUC), GFP_ATOMIC);
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));
@@ -305,7 +305,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
 	UINT			trailfcs;
 	UINT    		crc32;
 
-	os_alloc_mem((UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+	ARC4_CTX = kmalloc(sizeof(ARC4_CTX_STRUC), GFP_ATOMIC);
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));

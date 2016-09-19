@@ -142,23 +142,22 @@ void WpaMicFailureReportFrame(
 	UCHAR				*mpool;
 	PEAPOL_PACKET       pPacket;
 	UCHAR               Mic[16];
-    BOOLEAN             bUnicast;
+	BOOLEAN             bUnicast;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WpaMicFailureReportFrame ----->\n"));
 
-    bUnicast = (Elem->Msg[0] == 1 ? TRUE:FALSE);
+	bUnicast = (Elem->Msg[0] == 1 ? TRUE:FALSE);
 	pAd->Sequence = ((pAd->Sequence) + 1) & (MAX_SEQ_NUMBER);
 
 	/* init 802.3 header and Fill Packet */
 	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);
 
 	/* Allocate memory for output */
-	os_alloc_mem((u8 **)&mpool, TX_EAPOL_BUFFER);
-	if (mpool == NULL)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
-        return;
-    }
+	mpool = kmalloc(TX_EAPOL_BUFFER, GFP_ATOMIC);
+	if (mpool == NULL) {
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
+		return;
+	}
 
 	pPacket = (PEAPOL_PACKET)mpool;
 	memset(pPacket, 0, TX_EAPOL_BUFFER);
@@ -168,8 +167,8 @@ void WpaMicFailureReportFrame(
 
 	pPacket->KeyDesc.Type = WPA1_KEY_DESC;
 
-    /* Request field presented */
-    pPacket->KeyDesc.KeyInfo.Request = 1;
+	/* Request field presented */
+	pPacket->KeyDesc.KeyInfo.Request = 1;
 
 	if(pAd->StaCfg.WepStatus  == Ndis802_11Encryption3Enabled)
 	{
@@ -180,7 +179,7 @@ void WpaMicFailureReportFrame(
 		pPacket->KeyDesc.KeyInfo.KeyDescVer = 1;
 	}
 
-    pPacket->KeyDesc.KeyInfo.KeyType = (bUnicast ? PAIRWISEKEY : GROUPKEY);
+	pPacket->KeyDesc.KeyInfo.KeyType = (bUnicast ? PAIRWISEKEY : GROUPKEY);
 
 	/* KeyMic field presented */
 	pPacket->KeyDesc.KeyInfo.KeyMic  = 1;
@@ -199,9 +198,8 @@ void WpaMicFailureReportFrame(
 	*((USHORT *)&pPacket->KeyDesc.KeyInfo) = cpu2le16(*((USHORT *)&pPacket->KeyDesc.KeyInfo));
 
 
-	os_alloc_mem((u8 **)&pOutBuffer, MGMT_DMA_BUFFER_SIZE);  /* allocate memory */
-	if(pOutBuffer == NULL)
-	{
+	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if(pOutBuffer == NULL) {
 		kfree(mpool);
 		return;
 	}

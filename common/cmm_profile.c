@@ -382,8 +382,8 @@ INT RTMPGetKeyParameter(
 
 
 	keyLen = strlen(key);
-	os_alloc_mem((u8 **)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
-	if (pMemBuf == NULL)
+	pMemBuf = kmalloc(MAX_PARAM_BUFFER_SIZE  * 2, GFP_ATOMIC);
+	if (!pMemBuf)
 		return (FALSE);
 
 	memset(pMemBuf, 0, MAX_PARAM_BUFFER_SIZE * 2);
@@ -392,8 +392,7 @@ INT RTMPGetKeyParameter(
 
 
 	/*find section*/
-	if((offset = RTMPFindSection(buffer)) == NULL)
-	{
+	if((offset = RTMPFindSection(buffer)) == NULL) {
 		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
@@ -403,8 +402,7 @@ INT RTMPGetKeyParameter(
 	strcat(temp_buf1, "=");
 
 	/*search key*/
-	if((start_ptr=rtstrstr(offset, temp_buf1)) == NULL)
-	{
+	if((start_ptr=rtstrstr(offset, temp_buf1)) == NULL) {
 		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
@@ -413,8 +411,7 @@ INT RTMPGetKeyParameter(
 	if((end_ptr = rtstrstr(start_ptr, "\n"))==NULL)
 		end_ptr = start_ptr+strlen(start_ptr);
 
-	if (end_ptr<start_ptr)
-	{
+	if (end_ptr<start_ptr) {
 		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
@@ -422,15 +419,13 @@ INT RTMPGetKeyParameter(
 	memmove(temp_buf2, start_ptr, end_ptr-start_ptr);
 	temp_buf2[end_ptr-start_ptr]='\0';
 
-	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL)
-	{
+	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL) {
 		kfree((u8 *)pMemBuf);
 		return (FALSE);
 	}
 	ptr = (start_ptr +1);
 	/*trim special characters, i.e.,  TAB or space*/
-	while(*start_ptr != 0x00)
-	{
+	while(*start_ptr != 0x00) {
 		if( ((*ptr == ' ') && bTrimSpace) || (*ptr == '\t') )
 			ptr++;
 		else
@@ -486,28 +481,25 @@ INT RTMPGetKeyParameterWithOffset(
 	if (*end_offset >= MAX_INI_BUFFER_SIZE)
 		return (FALSE);
 
-	os_alloc_mem((u8 **)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
+	temp_buf1 = kmalloc(MAX_PARAM_BUFFER_SIZE, GFP_ATOMIC);
 
-	if(temp_buf1 == NULL)
-        return (FALSE);
+	if(!temp_buf1)
+		return (FALSE);
 
-	os_alloc_mem((u8 **)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
-	if(temp_buf2 == NULL)
-	{
-		kfree((u8 *)temp_buf1);
+	temp_buf2 = kmalloc(MAX_PARAM_BUFFER_SIZE, GFP_ATOMIC);
+	if(temp_buf2 == NULL) {
+		kfree(temp_buf1);
         return (FALSE);
 	}
 
-    /*find section		*/
-	if(*end_offset == 0)
-    {
-		if ((offset = RTMPFindSection(buffer)) == NULL)
-		{
+	/*find section		*/
+	if(*end_offset == 0) {
+		if ((offset = RTMPFindSection(buffer)) == NULL) {
 			kfree((u8 *)temp_buf1);
-	    	kfree((u8 *)temp_buf2);
-    	    return (FALSE);
+			kfree((u8 *)temp_buf2);
+			return (FALSE);
 		}
-    }
+	}
 	else
 		offset = buffer + (*end_offset);
 
@@ -1548,12 +1540,11 @@ int	RTMPSetProfileParameters(
 	INT						i = 0, retval;
 
 /*	tmpbuf = kmalloc(MAX_PARAM_BUFFER_SIZE, MEM_ALLOC_FLAG);*/
-	os_alloc_mem((UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
-	if(tmpbuf == NULL)
+	tmpbuf = kmalloc(MAX_PARAM_BUFFER_SIZE, GFP_ATOMIC);
+	if(!tmpbuf)
 		return NDIS_STATUS_FAILURE;
 
-	do
-	{
+	do {
 		/* set file parameter to portcfg*/
 		if (RTMPGetKeyParameter("MacAddress", tmpbuf, 25, pBuffer, TRUE))
 		{
@@ -2334,8 +2325,8 @@ int	RTMPSetSingleSKUParameters(
 	DlListInit(&pAd->SingleSkuPwrList);
 
 	/* init*/
-	os_alloc_mem((UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
-	if (buffer == NULL)
+	buffer = kmalloc(MAX_INI_BUFFER_SIZE, GFP_ATOMIC);
+	if (!buffer)
 		return FALSE;
 
 	RtmpOSFSInfoChange(&osFSInfo, TRUE);
@@ -2352,13 +2343,10 @@ int	RTMPSetSingleSKUParameters(
 	/* card information file exists so reading the card information */
 	memset(buffer, 0, MAX_INI_BUFFER_SIZE);
 	retval = RtmpOSFileRead(srcf, buffer, MAX_INI_BUFFER_SIZE);
-	if (retval < 0)
-	{
+	if (retval < 0) {
 		/* read fail */
 		DBGPRINT(RT_DEBUG_TRACE,("--> Read %s error %d\n", SINGLE_SKU_TABLE_FILE_NAME, -retval));
-	}
-	else
-	{
+	} else {
 
 		for ( readline = ptr = buffer, index=0; (ptr = strchr(readline, '\n')) != NULL; readline = ptr + 1, index++ )
 		{
@@ -2372,7 +2360,10 @@ int	RTMPSetSingleSKUParameters(
 
 				CH_POWER *pwr = NULL;
 
-				os_alloc_mem((UCHAR **)&pwr, sizeof(*pwr));
+				/* ULLI : need check return value ? */
+
+				pwr = kmalloc(sizeof(*pwr), GFP_ATOMIC);
+
 				memset(pwr, 0, sizeof(*pwr));
 
 				token= rstrtok(readline +2 ," ");

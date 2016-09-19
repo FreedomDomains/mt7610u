@@ -154,8 +154,8 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 	USHORT Status;
 #endif /* CONFIG_STA_SUPPORT */
 
-
-	if (os_alloc_mem(&frm_buf, MGMT_DMA_BUFFER_SIZE) != NDIS_STATUS_SUCCESS)
+	frm_buf = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);
+	if (!frm_buf)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("SYNC - ScanNextChannel() allocate memory fail\n"));
 #ifdef CONFIG_STA_SUPPORT

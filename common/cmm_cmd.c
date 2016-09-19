@@ -111,27 +111,21 @@ int RTEnqueueInternalCmd(
 	PCmdQElmt	cmdqelmt = NULL;
 
 
-	status = os_alloc_mem((u8 **)&cmdqelmt, sizeof(CmdQElmt));
-	if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt == NULL))
+	cmdqelmt = kmalloc(sizeof(CmdQElmt), GFP_ATOMIC);
+	if (!cmdqelmt)
 		return (NDIS_STATUS_RESOURCES);
 	memset(cmdqelmt, 0, sizeof(CmdQElmt));
 
-	if(InformationBufferLength > 0)
-	{
-		status = os_alloc_mem((u8 **)&cmdqelmt->buffer, InformationBufferLength);
-		if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt->buffer == NULL))
-		{
+	if(InformationBufferLength > 0) {
+		cmdqelmt->buffer = kmalloc(InformationBufferLength, GFP_ATOMIC);
+		if (!cmdqelmt->buffer) 	{
 			kfree(cmdqelmt);
 			return (NDIS_STATUS_RESOURCES);
-		}
-		else
-		{
+		} else {
 			memmove(cmdqelmt->buffer, pInformationBuffer, InformationBufferLength);
 			cmdqelmt->bufferlength = InformationBufferLength;
 		}
-	}
-	else
-	{
+	} else {
 		cmdqelmt->buffer = NULL;
 		cmdqelmt->bufferlength = 0;
 	}
@@ -139,28 +133,23 @@ int RTEnqueueInternalCmd(
 	cmdqelmt->command = Oid;
 	cmdqelmt->CmdFromNdis = FALSE;
 
-	if (cmdqelmt != NULL)
-	{
+	if (cmdqelmt != NULL) {
 		NdisAcquireSpinLock(&pAd->CmdQLock);
-		if (pAd->CmdQ.CmdQState & RTMP_TASK_CAN_DO_INSERT)
-		{
+		if (pAd->CmdQ.CmdQState & RTMP_TASK_CAN_DO_INSERT) {
 			EnqueueCmd((&pAd->CmdQ), cmdqelmt);
 			status = NDIS_STATUS_SUCCESS;
-		}
-		else
-		{
+		} else {
 			status = NDIS_STATUS_FAILURE;
 		}
 		NdisReleaseSpinLock(&pAd->CmdQLock);
 
-		if (status == NDIS_STATUS_FAILURE)
-		{
+		if (status == NDIS_STATUS_FAILURE) {
 			if (cmdqelmt->buffer)
 				kfree(cmdqelmt->buffer);
 			kfree(cmdqelmt);
-		}
-		else
+		} else {
 			RTCMDUp(&pAd->cmdQTask);
+		}
 	}
 	return(NDIS_STATUS_SUCCESS);
 }
