@@ -70,9 +70,8 @@ static const u32 CipherSuites[] = {
 /*
 	The driver's regulatory notification callback.
 */
-static INT32 CFG80211_RegNotifier(
-	IN struct wiphy					*pWiphy,
-	IN struct regulatory_request	*pRequest);
+static void CFG80211_RegNotifier(struct wiphy *pWiphy,
+	struct regulatory_request *pRequest);
 
 
 
@@ -1662,9 +1661,8 @@ Return Value:
 Note:
 ========================================================================
 */
-static INT32 CFG80211_RegNotifier(
-	IN struct wiphy					*pWiphy,
-	IN struct regulatory_request	*pRequest)
+static void CFG80211_RegNotifier(struct wiphy *pWiphy,
+	struct regulatory_request *pRequest)
 {
 	struct rtmp_adapter  *pAd;
 	ULONG *pPriv;
