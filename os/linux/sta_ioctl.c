@@ -596,7 +596,7 @@ int rt_ioctl_giwscan(struct net_device *dev,
 {
 	void *pAd = NULL;
 	int i=0, status = 0;
-	char *current_ev = extra, previous_ev = extra;
+	char *current_ev = extra, *previous_ev = extra;
 	char *end_buf;
 	char *current_val;
 	STRING custom[MAX_CUSTOM_LEN] = {0};
