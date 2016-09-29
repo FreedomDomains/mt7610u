@@ -475,10 +475,10 @@ Note:
 	TX_POWER_FIXED: fix TX power to the dbm parameter
 ========================================================================
 */
-static int CFG80211_OpsTxPwrSet(
-	IN struct wiphy						*pWiphy,
-	IN enum nl80211_tx_power_setting	Type,
-	IN int								dBm)
+static int CFG80211_OpsTxPwrSet(struct wiphy *pWiphy,
+	struct wireless_dev *wdev,
+	enum nl80211_tx_power_setting Type,
+	int dBm)
 {
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	return -EOPNOTSUPP;
@@ -502,9 +502,9 @@ Return Value:
 Note:
 ========================================================================
 */
-static int CFG80211_OpsTxPwrGet(
-	IN struct wiphy						*pWiphy,
-	IN int								*pdBm)
+static int CFG80211_OpsTxPwrGet(struct wiphy *pWiphy,
+	struct wireless_dev *wdev,
+	int *pdBm)
 {
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	return -EOPNOTSUPP;
@@ -558,11 +558,10 @@ Return Value:
 Note:
 ========================================================================
 */
-static int CFG80211_OpsStaGet(
-	IN struct wiphy						*pWiphy,
-	IN struct net_device				*pNdev,
-	IN u8							*pMac,
-	IN struct station_info				*pSinfo)
+static int CFG80211_OpsStaGet(struct wiphy *pWiphy,
+	struct net_device *pNdev,
+	const u8 *pMac,
+	struct station_info *pSinfo)
 {
 	struct rtmp_adapter  *pAd;
 	CMD_RTPRIV_IOCTL_80211_STA StaInfo;
