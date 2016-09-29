@@ -7850,7 +7850,7 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 
 void dumpTxWI(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI);
 void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI);
-void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo);
+void dump_txinfo(struct rtmp_adapter*pAd, struct txinfo_nmac_pkt *pTxInfo);
 void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo);
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo);
 

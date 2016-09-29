@@ -154,12 +154,12 @@ static UCHAR *txinfo_que_str[]={"MGMT", "HCCA", "EDCA_1", "EDCA_2", "Invalid"};
 #define TXINFO_DPORT_STR(_x)	((_x) <= 6 ? txinfo_d_port_str[_x]: txinfo_d_port_str[7])
 #define TXINFO_QUE_STR(_x)		((_x) <= 3 ? txinfo_que_str[_x]: txinfo_que_str[4])
 
-void dump_txinfo(struct rtmp_adapter*pAd, TXINFO_STRUC *pTxInfo)
+void dump_txinfo(struct rtmp_adapter*pAd, struct txinfo_nmac_pkt *pTxInfo)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("TxInfo Fields:\n"));
 
 	{
-		struct txinfo_nmac_pkt *pkt_txinfo = (struct _TXINFO_NMAC_PKT *)pTxInfo;
+		struct txinfo_nmac_pkt *pkt_txinfo = pTxInfo;
 
 		DBGPRINT(RT_DEBUG_OFF, ("\tInfo_Type=%d(%s)\n", pkt_txinfo->info_type, TXINFO_TYPE_STR(pkt_txinfo->info_type)));
 		DBGPRINT(RT_DEBUG_OFF, ("\td_port=%d(%s)\n", pkt_txinfo->d_port, TXINFO_DPORT_STR(pkt_txinfo->d_port)));
