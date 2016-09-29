@@ -1033,13 +1033,13 @@ void ActHeaderInit(
     IN u8 *Addr2,
     IN u8 *Addr3)
 {
-    memset(pHdr80211, 0, sizeof(HEADER_802_11));
-    pHdr80211->FC.Type = BTYPE_MGMT;
-    pHdr80211->FC.SubType = SUBTYPE_ACTION;
-
-    ether_addr_copy(pHdr80211->Addr1, Addr1);
-	ether_addr_copy(pHdr80211->Addr2, Addr2);
-    ether_addr_copy(pHdr80211->Addr3, Addr3);
+	memset(pHdr80211, 0, sizeof(HEADER_802_11));
+	pHdr80211->FC.Type = BTYPE_MGMT;
+	pHdr80211->FC.SubType = SUBTYPE_ACTION;
+	
+	memcpy(pHdr80211->Addr1, Addr1, ETH_ALEN);
+	memcpy(pHdr80211->Addr2, Addr2, ETH_ALEN);
+	memcpy(pHdr80211->Addr3, Addr3, ETH_ALEN);
 }
 
 void BarHeaderInit(
@@ -1060,8 +1060,8 @@ void BarHeaderInit(
 
 	pCntlBar->Duration = 16 + RTMPCalcDuration(pAd, RATE_1, sizeof(FRAME_BA));
 
-	ether_addr_copy(pCntlBar->Addr1, pDA);
-	ether_addr_copy(pCntlBar->Addr2, pSA);
+	memcpy(pCntlBar->Addr1, pDA, ETH_ALEN);
+	memcpy(pCntlBar->Addr2, pSA, ETH_ALEN);
 }
 
 

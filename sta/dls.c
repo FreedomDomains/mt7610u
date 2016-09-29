@@ -2043,7 +2043,7 @@ INT Set_DlsAddEntry_Proc(
 
 		memset(&Dls, 0, sizeof (RT_802_11_DLS));
 		Dls.TimeOut = Timeout;
-		ether_addr_copy(Dls.MacAddr, mac);
+		memcpy(Dls.MacAddr, mac, ETH_ALEN);
 		Dls.Valid = 1;
 
 		MlmeEnqueue(pAd,
@@ -2082,7 +2082,7 @@ INT Set_DlsTearDownEntry_Proc(
 	DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x", PRINT_MAC(macAddr)));
 
 	memset(&Dls, 0, sizeof (RT_802_11_DLS));
-	ether_addr_copy(Dls.MacAddr, macAddr);
+	memcpy(Dls.MacAddr, macAddr, ETH_ALEN);
 	Dls.Valid = 0;
 
 	MlmeEnqueue(pAd,

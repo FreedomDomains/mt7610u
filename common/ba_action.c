@@ -923,7 +923,7 @@ void BAOriSessionTearDown(
 				memset(&DelbaReq, 0, sizeof(DelbaReq));
 				memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
-				ether_addr_copy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
+				memcpy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr, ETH_ALEN);
 				DelbaReq.Wcid = Wcid;
 				DelbaReq.TID = TID;
 				DelbaReq.Initiator = ORIGINATOR;
@@ -958,7 +958,7 @@ void BAOriSessionTearDown(
 			memset(&DelbaReq, 0, sizeof(DelbaReq));
 			memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
-			ether_addr_copy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
+			memcpy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr, ETH_ALEN);
 			DelbaReq.Wcid = Wcid;
 			DelbaReq.TID = pBAEntry->TID;
 			DelbaReq.Initiator = ORIGINATOR;
@@ -1030,7 +1030,7 @@ void BARecSessionTearDown(
 				memset(&DelbaReq, 0, sizeof(DelbaReq));
 				memset(Elem, 0, sizeof(MLME_QUEUE_ELEM));
 
-				ether_addr_copy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr);
+				memcpy(DelbaReq.Addr, pAd->MacTab.Content[Wcid].Addr, ETH_ALEN);
 				DelbaReq.Wcid = Wcid;
 				DelbaReq.TID = TID;
 				DelbaReq.Initiator = RECIPIENT;
@@ -1150,7 +1150,7 @@ void BAOriSessionSetupTimeout(
 #endif /* CONFIG_STA_SUPPORT */
 
 		memset(&AddbaReq, 0, sizeof(AddbaReq));
-		ether_addr_copy(AddbaReq.pAddr, pEntry->Addr);
+		memcpy(AddbaReq.pAddr, pEntry->Addr, ETH_ALEN);
 		AddbaReq.Wcid = (UCHAR)(pEntry->Aid);
 		AddbaReq.TID = pBAEntry->TID;
 		AddbaReq.BaBufSize = pAd->CommonCfg.BACapability.field.RxBAWinLimit;

@@ -1912,7 +1912,7 @@ void RTMPIoctlGetMacTable(
 
 
 			pDst->ApIdx = (UCHAR)pEntry->apidx;
-			ether_addr_copy(pDst->Addr, &pEntry->Addr);
+			memcpy(pDst->Addr, &pEntry->Addr, ETH_ALEN);
 			pDst->Aid = (UCHAR)pEntry->Aid;
 			pDst->Psm = pEntry->PsMode;
 #ifdef DOT11_N_SUPPORT

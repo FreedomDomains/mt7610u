@@ -738,7 +738,7 @@ void RTMPInfClose(
 			MsgElem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 			if (MsgElem)
 			{
-			ether_addr_copy(DisReq.Addr, pAd->CommonCfg.Bssid);
+			memcpy(DisReq.Addr, pAd->CommonCfg.Bssid, ETH_ALEN);
 			DisReq.Reason =  REASON_DEAUTH_STA_LEAVING;
 
 			MsgElem->Machine = ASSOC_STATE_MACHINE;

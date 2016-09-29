@@ -281,7 +281,7 @@ void PeerAuthRspAtSeq2Action(
 				}
 			} else {
 				pAd->StaCfg.AuthFailReason = Status;
-				ether_addr_copy(pAd->StaCfg.AuthFailSta, Addr2);
+				memcpy(pAd->StaCfg.AuthFailSta, Addr2, ETH_ALEN);
 				pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
 				MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE,
 					    MT2_AUTH_CONF, 2, &Status, 0);
@@ -339,7 +339,7 @@ void PeerAuthRspAtSeq4Action(
 
 			if (Status != MLME_SUCCESS) {
 				pAd->StaCfg.AuthFailReason = Status;
-				ether_addr_copy(pAd->StaCfg.AuthFailSta, Addr2);
+				memcpy(pAd->StaCfg.AuthFailSta, Addr2, ETH_ALEN);
 			}
 
 			pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
@@ -397,7 +397,7 @@ void MlmeDeauthReqAction(
 	kfree(pOutBuffer);
 
 	pAd->StaCfg.DeauthReason = pInfo->Reason;
-	ether_addr_copy(pAd->StaCfg.DeauthSta, pInfo->Addr);
+	memcpy(pAd->StaCfg.DeauthSta, pInfo->Addr, ETH_ALEN);
 	pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
 	Status = MLME_SUCCESS;
 	MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_DEAUTH_CONF, 2, &Status,
@@ -481,7 +481,7 @@ void Cls2errAction(
 	kfree(pOutBuffer);
 
 	pAd->StaCfg.DeauthReason = Reason;
-	ether_addr_copy(pAd->StaCfg.DeauthSta, pAddr);
+	memcpy(pAd->StaCfg.DeauthSta, pAddr, ETH_ALEN);
 }
 
 BOOLEAN AUTH_ReqSend(
@@ -516,7 +516,7 @@ BOOLEAN AUTH_ReqSend(
 		/* reset timer */
 		RTMPCancelTimer(pAuthTimer, &TimerCancelled);
 
-		ether_addr_copy(pAd->MlmeAux.Bssid, Addr);
+		memcpy(pAd->MlmeAux.Bssid, Addr, ETH_ALEN);
 		pAd->MlmeAux.Alg = Alg;
 		Seq = SeqNo;
 		Status = MLME_SUCCESS;

@@ -108,7 +108,7 @@ BOOLEAN PeerAssocRspSanity(
 	*pNewExtChannelOffset = 0xff;
 	*pHtCapabilityLen = 0;
 	*pAddHtInfoLen = 0;
-	ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
+	memcpy(pAddr2, pFrame->Hdr.Addr2, ETH_ALEN);
 	Ptr = (char *) pFrame->Octet;
 	Length += LENGTH_802_11;
 

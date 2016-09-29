@@ -2622,7 +2622,7 @@ void BssEntrySet(
 	IN USHORT LengthVIE,
 	IN PNDIS_802_11_VARIABLE_IEs pVIE)
 {
-	ether_addr_copy(pBss->Bssid, ie_list->Bssid);
+	memcpy(pBss->Bssid, ie_list->Bssid, ETH_ALEN);
 	/* Default Hidden SSID to be TRUE, it will be turned to FALSE after coping SSID*/
 	pBss->Hidden = 1;
 	if (ie_list->SsidLen > 0)
@@ -3691,12 +3691,12 @@ void MgtMacHeaderInit(
 /*	if (SubType == SUBTYPE_ACK)	 sample, no use, it will conflict with ACTION frame sub type*/
 /*		pHdr80211->FC.Type = BTYPE_CNTL;*/
 	pHdr80211->FC.ToDs = ToDs;
-	ether_addr_copy(pHdr80211->Addr1, pDA);
+	memcpy(pHdr80211->Addr1, pDA, ETH_ALEN);
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		ether_addr_copy(pHdr80211->Addr2, pAd->CurrentAddress);
+		memcpy(pHdr80211->Addr2, pAd->CurrentAddress, ETH_ALEN);
 #endif /* CONFIG_STA_SUPPORT */
-	ether_addr_copy(pHdr80211->Addr3, pBssid);
+	memcpy(pHdr80211->Addr3, pBssid, ETH_ALEN);
 }
 
 /* ===========================================================================================*/

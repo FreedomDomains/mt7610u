@@ -60,7 +60,7 @@ UCHAR CipherSuiteWpaNoneAesLen =
 	memset((_pAd)->CommonCfg.Ssid, 0, MAX_LEN_OF_SSID); 							\
 	(_pAd)->CommonCfg.SsidLen = (_pAd)->MlmeAux.SsidLen;                                \
 	memmove((_pAd)->CommonCfg.Ssid, (_pAd)->MlmeAux.Ssid, (_pAd)->MlmeAux.SsidLen); \
-	ether_addr_copy((_pAd)->CommonCfg.Bssid, (_pAd)->MlmeAux.Bssid);                      \
+	memcpy((_pAd)->CommonCfg.Bssid, (_pAd)->MlmeAux.Bssid, ETH_ALEN);                      \
 	(_pAd)->CommonCfg.Channel = (_pAd)->MlmeAux.Channel;                                \
 	(_pAd)->CommonCfg.CentralChannel = (_pAd)->MlmeAux.CentralChannel;                  \
 	(_pAd)->StaActive.Aid = (_pAd)->MlmeAux.Aid;                                        \
@@ -77,9 +77,9 @@ UCHAR CipherSuiteWpaNoneAesLen =
 	memmove(&(_pAd)->CommonCfg.APEdcaParm, &(_pAd)->MlmeAux.APEdcaParm, sizeof(EDCA_PARM));\
 	memmove(&(_pAd)->CommonCfg.APQosCapability, &(_pAd)->MlmeAux.APQosCapability, sizeof(QOS_CAPABILITY_PARM));\
 	memmove(&(_pAd)->CommonCfg.APQbssLoad, &(_pAd)->MlmeAux.APQbssLoad, sizeof(QBSS_LOAD_PARM));\
-	ether_addr_copy((_pAd)->MacTab.Content[BSSID_WCID].Addr, (_pAd)->MlmeAux.Bssid);      \
+	memcpy((_pAd)->MacTab.Content[BSSID_WCID].Addr, (_pAd)->MlmeAux.Bssid, ETH_ALEN);      \
 	(_pAd)->MacTab.Content[BSSID_WCID].PairwiseKey.CipherAlg = (_pAd)->StaCfg.PairCipher;\
-	ether_addr_copy((_pAd)->MacTab.Content[BSSID_WCID].PairwiseKey.BssId, (_pAd)->MlmeAux.Bssid);\
+	memcpy((_pAd)->MacTab.Content[BSSID_WCID].PairwiseKey.BssId, (_pAd)->MlmeAux.Bssid, ETH_ALEN);\
 	(_pAd)->MacTab.Content[BSSID_WCID].RateLen = (_pAd)->StaActive.SupRateLen + (_pAd)->StaActive.ExtRateLen;\
 }
 
@@ -632,7 +632,7 @@ void CntlOidRTBssidProc(
 #endif /* RALINK_ATE */
 
 	/* record user desired settings */
-	ether_addr_copy(pAd->MlmeAux.Bssid, pOidBssid);
+	memcpy(pAd->MlmeAux.Bssid, pOidBssid, ETH_ALEN);
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
 
 	/*save connect info*/
@@ -2013,7 +2013,7 @@ void LinkUp(
 	   Need to check this COPY. This COPY is from Windows Driver.
 	 */
 
-	ether_addr_copy(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid);
+	memcpy(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid, ETH_ALEN);
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("!!!pAd->bNextDisableRxBA= %d \n",
 		  pAd->CommonCfg.IOTestParm.bNextDisableRxBA));
@@ -2228,7 +2228,7 @@ void LinkDown(
 		pAd->CommonCfg.LastSsidLen = pAd->CommonCfg.SsidLen;
 		memmove(pAd->CommonCfg.LastSsid, pAd->CommonCfg.Ssid,
 			       pAd->CommonCfg.LastSsidLen);
-		ether_addr_copy(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid);
+		memcpy(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid, ETH_ALEN);
 		if (pAd->MlmeAux.CurrReqIsFromNdis == TRUE) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("NDIS_STATUS_MEDIA_DISCONNECT Event A!\n"));
@@ -2720,7 +2720,7 @@ void AuthParmFill(
 	IN u8 *pAddr,
 	IN USHORT Alg)
 {
-	ether_addr_copy(AuthReq->Addr, pAddr);
+	memcpy(AuthReq->Addr, pAddr, ETH_ALEN);
 	AuthReq->Alg = Alg;
 	AuthReq->Timeout = AUTH_TIMEOUT;
 }

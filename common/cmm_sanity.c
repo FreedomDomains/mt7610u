@@ -171,7 +171,7 @@ BOOLEAN PeerAddBAReqActionSanity(
 	pAddFrame->TimeOutValue = cpu2le16(pAddFrame->TimeOutValue);
 	pAddFrame->BaStartSeq.word = cpu2le16(pAddFrame->BaStartSeq.word);
 
-	ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
+	memcpy(pAddr2, pFrame->Hdr.Addr2, ETH_ALEN);
 
 	if (pAddFrame->BaParm.BAPolicy != IMMED_BA)
 	{
@@ -350,8 +350,8 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     SubType = (UCHAR)pFrame->Hdr.FC.SubType;
 
     /* get Addr2 and BSSID from header*/
-    ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
-    ether_addr_copy(pBssid, pFrame->Hdr.Addr3);
+    memcpy(pAddr2, pFrame->Hdr.Addr2, ETH_ALEN);
+    memcpy(pBssid, pFrame->Hdr.Addr3, ETH_ALEN);
 
     Ptr = pFrame->Octet;
     Length += LENGTH_802_11;
@@ -911,9 +911,9 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 	SubType = (UCHAR)pFrame->Hdr.FC.SubType;
 
     /* get Addr2 and BSSID from header*/
-	ether_addr_copy(&ie_list->Addr1[0], pFrame->Hdr.Addr1);
-	ether_addr_copy(&ie_list->Addr2[0], pFrame->Hdr.Addr2);
-	ether_addr_copy(&ie_list->Bssid[0], pFrame->Hdr.Addr3);
+	memcpy(&ie_list->Addr1[0], pFrame->Hdr.Addr1, ETH_ALEN);
+	memcpy(&ie_list->Addr2[0], pFrame->Hdr.Addr2, ETH_ALEN);
+	memcpy(&ie_list->Bssid[0], pFrame->Hdr.Addr3, ETH_ALEN);
 
     Ptr = pFrame->Octet;
     Length += LENGTH_802_11;
@@ -1585,14 +1585,14 @@ BOOLEAN PeerDeauthSanity(
     OUT u8 *pAddr3,
     OUT USHORT *pReason)
 {
-    PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
+	PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
-	ether_addr_copy(pAddr1, pFrame->Hdr.Addr1);
-    ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
-	ether_addr_copy(pAddr3, pFrame->Hdr.Addr3);
-    memmove(pReason, &pFrame->Octet[0], 2);
+	memcpy(pAddr1, pFrame->Hdr.Addr1, ETH_ALEN);
+	memcpy(pAddr2, pFrame->Hdr.Addr2, ETH_ALEN);
+	memcpy(pAddr3, pFrame->Hdr.Addr3, ETH_ALEN);
+	memmove(pReason, &pFrame->Octet[0], 2);
 
-    return TRUE;
+	return TRUE;
 }
 
 /*
@@ -1618,7 +1618,7 @@ BOOLEAN PeerAuthSanity(
 {
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
-    ether_addr_copy(pAddr,   pFrame->Hdr.Addr2);
+    memcpy(pAddr,   pFrame->Hdr.Addr2, ETH_ALEN);
     memmove(pAlg,    &pFrame->Octet[0], 2);
     memmove(pSeq,    &pFrame->Octet[2], 2);
     memmove(pStatus, &pFrame->Octet[4], 2);
@@ -1678,7 +1678,7 @@ BOOLEAN MlmeAuthReqSanity(
     MLME_AUTH_REQ_STRUCT *pInfo;
 
     pInfo  = (MLME_AUTH_REQ_STRUCT *)Msg;
-    ether_addr_copy(pAddr, pInfo->Addr);
+    memcpy(pAddr, pInfo->Addr, ETH_ALEN);
     *pTimeout = pInfo->Timeout;
     *pAlg = pInfo->Alg;
 
@@ -1721,7 +1721,7 @@ BOOLEAN MlmeAssocReqSanity(
 
     pInfo = (MLME_ASSOC_REQ_STRUCT *)Msg;
     *pTimeout = pInfo->Timeout;                             /* timeout*/
-    ether_addr_copy(pApAddr, pInfo->Addr);                   /* AP address*/
+    memcpy(pApAddr, pInfo->Addr, ETH_ALEN);                   /* AP address*/
     *pCapabilityInfo = pInfo->CapabilityInfo;               /* capability info*/
     *pListenIntv = pInfo->ListenIntv;
 
@@ -1748,7 +1748,7 @@ BOOLEAN PeerDisassocSanity(
 {
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
-    ether_addr_copy(pAddr2, pFrame->Hdr.Addr2);
+    memcpy(pAddr2, pFrame->Hdr.Addr2, ETH_ALEN);
     memmove(pReason, &pFrame->Octet[0], 2);
 
     return TRUE;
@@ -2169,7 +2169,7 @@ BOOLEAN PeerProbeReqSanity(
     /* to prevent caller from using garbage output value*/
     *SsidLen = 0;
 
-    ether_addr_copy(pAddr2, &Fr->Hdr.Addr2);
+    memcpy(pAddr2, &Fr->Hdr.Addr2, ETH_ALEN);
 
     if (Fr->Octet[0] != IE_SSID || Fr->Octet[1] > MAX_LEN_OF_SSID)
     {

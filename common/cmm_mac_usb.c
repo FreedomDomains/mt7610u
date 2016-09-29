@@ -1782,7 +1782,7 @@ void RT28xxUsbMlmeRadioOFF(
 
 			pMsgElem = kmalloc(sizeof(MLME_QUEUE_ELEM), GFP_ATOMIC);
 			if (pMsgElem) {
-				ether_addr_copy(&DisReq.Addr, pAd->CommonCfg.Bssid);
+				memcpy(&DisReq.Addr, pAd->CommonCfg.Bssid, ETH_ALEN);
 				DisReq.Reason =  REASON_DISASSOC_STA_LEAVING;
 
 				pMsgElem->Machine = ASSOC_STATE_MACHINE;

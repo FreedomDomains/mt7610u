@@ -264,7 +264,7 @@ void MlmeForceJoinReqAction(
 
 		if ((pAd->MlmeAux.BssType == BSS_INFRA)  && (!MAC_ADDR_EQUAL(ZERO_MAC_ADDR, pAd->StaCfg.ConnectinfoBssid)))
 		{
-			ether_addr_copy(pAd->MlmeAux.Bssid, pAd->StaCfg.ConnectinfoBssid);
+			memcpy(pAd->MlmeAux.Bssid, pAd->StaCfg.ConnectinfoBssid, ETH_ALEN);
 			MgtMacHeaderInit(pAd, &Hdr80211, SUBTYPE_PROBE_REQ, 0, pAd->MlmeAux.Bssid,
 								pAd->MlmeAux.Bssid);
 		}
@@ -664,7 +664,7 @@ void MlmeJoinReqAction(
 	pBss = &pAd->MlmeAux.SsidBssTab.BssEntry[pInfo->BssIdx];
 
 	/* record the desired SSID & BSSID we're waiting for */
-	ether_addr_copy(pAd->MlmeAux.Bssid, pBss->Bssid);
+	memcpy(pAd->MlmeAux.Bssid, pBss->Bssid, ETH_ALEN);
 
 	/* If AP's SSID is not hidden, it is OK for updating ssid to MlmeAux again. */
 	if (pBss->Hidden == 0)
@@ -1908,7 +1908,7 @@ void PeerBeacon(
 					DBGPRINT(RT_DEBUG_TRACE, ("SYNC - merge to the IBSS with bigger BSSID=%02x:%02x:%02x:%02x:%02x:%02x\n",
 						PRINT_MAC(ie_list->Bssid)));
 					AsicDisableSync(pAd);
-					ether_addr_copy(pAd->CommonCfg.Bssid, ie_list->Bssid);
+					memcpy(pAd->CommonCfg.Bssid, ie_list->Bssid, ETH_ALEN);
 					AsicSetBssid(pAd, pAd->CommonCfg.Bssid);
 					MakeIbssBeacon(pAd);        /* re-build BEACON frame */
 					AsicEnableIbssSync(pAd);    /* copy BEACON frame to on-chip memory */
