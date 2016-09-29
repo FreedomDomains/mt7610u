@@ -701,7 +701,8 @@ endif
 endif
 #endif // MT76x0 //
 
-
+EXTRA_CFLAGS += -Wno-unused-label
+EXTRA_CFLAGS += -Wno-unused
 
 MAKE = make
 
