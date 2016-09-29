@@ -129,12 +129,11 @@ static int CFG80211_OpsChannelSet(
 	CFG80211_CB *p80211CB;
 	CMD_RTPRIV_IOCTL_80211_CHAN ChanInfo;
 	u32 ChanId;
-
+	struct net_device *dev = NULL;
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
 
-	struct net_device *dev = NULL;
 	RTMP_DRIVER_NET_DEV_GET(pAd, &dev);
 
 	/* get channel number */
@@ -315,12 +314,11 @@ static int CFG80211_OpsScan(
 	struct iw_scan_req IwReq;
 	union iwreq_data Wreq;
 #endif /* WPA_SUPPLICANT_SUPPORT */
-
+	struct net_device *pNdev = NULL;
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
 
-	struct net_device *pNdev = NULL;
 	RTMP_DRIVER_NET_DEV_GET(pAd, &pNdev);
 
 	/* sanity check */
