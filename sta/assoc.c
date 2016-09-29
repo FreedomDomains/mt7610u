@@ -1153,9 +1153,9 @@ void PeerAssocRspAction(
 						     Elem->MsgLen - 6 - sizeof (HEADER_802_11));*/
 
 				// THIS IS WHAT MAKES WPA2 WORK WITH SUPPLICANT ON NL80211
-				DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - %s() connect inform\n", __FUNCTION__));
-
 				PFRAME_802_11 pFrame =  (PFRAME_802_11) (Elem->Msg);
+
+				DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - %s() connect inform\n", __FUNCTION__));
 				RT_CFG80211_CONN_RESULT_INFORM(pAd, pAd->MlmeAux.Bssid,
                                 pAd->StaCfg.ReqVarIEs, pAd->StaCfg.ReqVarIELen,
 								&pFrame->Octet[6],
@@ -1438,13 +1438,11 @@ void AssocPostProc(
 		/* Store appropriate RSN_IE for WPA SM negotiation later */
 		if ((pAd->StaCfg.AuthMode >= Ndis802_11AuthModeWPA)
 		    && (pAd->ScanTab.BssEntry[Idx].VarIELen != 0)) {
-
-			DBGPRINT_ERR(("Storing RSS_IE for WPA SM negotiation later\n"));
-
 			u8 *pVIE;
 			USHORT len;
 			PEID_STRUCT pEid;
 
+			DBGPRINT_ERR(("Storing RSS_IE for WPA SM negotiation later\n"));
 			pVIE = pAd->ScanTab.BssEntry[Idx].VarIEs;
 			len = pAd->ScanTab.BssEntry[Idx].VarIELen;
 
