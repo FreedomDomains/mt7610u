@@ -5,6 +5,9 @@ Only STA Mode is supported, no AP.
 
 Monitor mode is not tested.
 
+<u>At least v4.0 is needed to compile this module</u>  
+sorry people with older kernels, the code is removed.
+
 Currently tested on X86_64 platform(s) **only**,  
 cross compile possible, but not fully tested.  
 
