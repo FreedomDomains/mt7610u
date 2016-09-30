@@ -385,9 +385,8 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_CHAN {
 #define RT_CMD_80211_FILTER_OTHER_BSS	0x08
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_IBSS {
-
 	u32 BeaconInterval;
-	u8 *pSsid;
+	u8 Ssid[ETH_ALEN];
 } CMD_RTPRIV_IOCTL_80211_IBSS;
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_STA {
@@ -448,11 +447,11 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_CONNECT {
 	u8 PairwiseEncrypType;
 	u8 GroupwiseEncrypType;
 
-	u8 *pKey;
+	u8 *Key;
 	u32 KeyLen;
 	u8 KeyIdx;
 
-	u8 *pSsid;
+	u8 Ssid[ETH_ALEN];
 	u32 SsidLen;
 
 
@@ -844,8 +843,8 @@ typedef struct __RT_CMD_STA_IOCTL_PMA_SA {
 #define RT_CMD_STA_IOCTL_PMA_SA_REMOVE					0x02
 #define RT_CMD_STA_IOCTL_PMA_SA_ADD						0x03
 	IN u32 Cmd;
-	IN u8 *pBssid;
-	IN u8 *pPmkid;
+	IN u8 Bssid[ETH_ALEN];
+	IN u8 Pmkid[IW_PMKID_LEN];
 } RT_CMD_STA_IOCTL_PMA_SA;
 
 #endif /* __RTMP_CMD_H__ */

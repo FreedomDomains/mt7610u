@@ -411,7 +411,7 @@ static int CFG80211_OpsIbssJoin(
 	/* init */
 	memset(&IbssInfo, 0, sizeof(IbssInfo));
 	IbssInfo.BeaconInterval = pParams->beacon_interval;
-	IbssInfo.pSsid = pParams->ssid;
+	memcpy(IbssInfo.Ssid, pParams->ssid, ETH_ALEN);
 
 	/* ibss join */
 	RTMP_DRIVER_80211_IBSS_JOIN(pAd, &IbssInfo);
@@ -1082,9 +1082,9 @@ static int CFG80211_OpsConnect(
 	ConnInfo.pSsid = pSme->ssid;
 	ConnInfo.SsidLen = pSme->ssid_len;*/
 
-	ConnInfo.pKey = (u8 *)(pSme->key);
+	memcpy(ConnInfo.Key, pSme->key, pSme->key_len);
 	ConnInfo.KeyLen = pSme->key_len;
-	ConnInfo.pSsid = pSme->ssid;
+	memcpy(ConnInfo.Ssid, pSme->ssid, pSme->ssid_len);
 	ConnInfo.SsidLen = pSme->ssid_len;
 	ConnInfo.KeyIdx = pSme->key_idx;
 	/* YF@20120328: Reset to default */
@@ -1283,8 +1283,8 @@ static int CFG80211_OpsPmksaSet(
 	/* End of if */
 
 	pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_ADD;
-	pIoctlPmaSa->pBssid = (u8 *)pPmksa->bssid;
-	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
+	memcpy(pIoctlPmaSa->Bssid, pPmksa->bssid, ETH_ALEN);
+	memcpy(pIoctlPmaSa->Pmkid, pPmksa->pmkid, IW_PMKID_LEN);
 
 	RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
 #endif /* CONFIG_STA_SUPPORT */
@@ -1328,8 +1328,8 @@ static int CFG80211_OpsPmksaDel(
 	/* End of if */
 
 	pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_REMOVE;
-	pIoctlPmaSa->pBssid = (u8 *)pPmksa->bssid;
-	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
+	memcpy(pIoctlPmaSa->Bssid, pPmksa->bssid, ETH_ALEN);;
+	memcpy(pIoctlPmaSa->Pmkid, pPmksa->pmkid, IW_PMKID_LEN);
 
 	RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
 #endif /* CONFIG_STA_SUPPORT */

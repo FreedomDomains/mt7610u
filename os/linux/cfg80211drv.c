@@ -400,7 +400,7 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
 	pAd->StaCfg.bAutoReconnect = TRUE;
 
 	pAd->CommonCfg.BeaconPeriod = pIbssInfo->BeaconInterval;
-	Set_SSID_Proc(pAd, (char *)pIbssInfo->pSsid);
+	Set_SSID_Proc(pAd, pIbssInfo->Ssid);
 #endif /* CONFIG_STA_SUPPORT */
 	return TRUE;
 }
@@ -601,7 +601,7 @@ BOOLEAN CFG80211DRV_Connect(
 	}
 
 	memset(&SSID, 0, sizeof(SSID));
-	memcpy(SSID, pConnInfo->pSsid, SSIDLen);
+	memcpy(SSID, pConnInfo->Ssid, SSIDLen);
 
 	if (pConnInfo->bWpsConnection)
 	{
@@ -747,13 +747,12 @@ BOOLEAN CFG80211DRV_Connect(
 		}
 	}*/
 
-	CFG80211DBG(RT_DEBUG_TRACE, ("80211> Key = %s\n", pConnInfo->pKey));
+	CFG80211DBG(RT_DEBUG_TRACE, ("80211> Key = %s\n", pConnInfo->Key));
 
 	/* set channel: STATION will auto-scan */
 
 	/* set WEP key */
-	if (pConnInfo->pKey &&
-		((pConnInfo->GroupwiseEncrypType | pConnInfo->PairwiseEncrypType) &
+	if (((pConnInfo->GroupwiseEncrypType | pConnInfo->PairwiseEncrypType) &
 												RT_CMD_80211_CONN_ENCRYPT_WEP))
 	{
 		u8 KeyBuf[50];
@@ -769,7 +768,7 @@ BOOLEAN CFG80211DRV_Connect(
 		if (pConnInfo->KeyLen >= sizeof(KeyBuf))
 			return FALSE;
 
-		memcpy(KeyBuf, pConnInfo->pKey, pConnInfo->KeyLen);
+		memcpy(KeyBuf, pConnInfo->Key, pConnInfo->KeyLen);
 		KeyBuf[pConnInfo->KeyLen] = 0x00;
 
 		CFG80211DBG(RT_DEBUG_ERROR,

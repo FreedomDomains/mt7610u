@@ -3585,7 +3585,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (memcmp(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
+		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
 		        {
 		        	memset(pAd->StaCfg.SavedPMK[CachedIdx].BSSID, 0, MAC_ADDR_LEN);
 					memset(pAd->StaCfg.SavedPMK[CachedIdx].PMKID, 0, 16);
@@ -3605,7 +3605,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (memcmp(pIoctlPmaSa->pBssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
+		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
 			        break;
 	        }
 
@@ -3613,18 +3613,18 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 	        if (CachedIdx < PMKID_NO)
 	        {
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
-				memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, MAC_ADDR_LEN);
+			memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->Pmkid, IW_PMKID_LEN);
 		        pAd->StaCfg.SavedPMKNum++;
 	        }
 	        /* Not found, replace the last one */
 	        else
 	        {
 		        /* Randomly replace one */
-		        CachedIdx = (pIoctlPmaSa->pBssid[5] % PMKID_NO);
+		        CachedIdx = (pIoctlPmaSa->Bssid[5] % PMKID_NO);
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
-				memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, MAC_ADDR_LEN);
+			memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->Pmkid, IW_PMKID_LEN);
 	        }
 
 			DBGPRINT(RT_DEBUG_TRACE ,("rt_ioctl_siwpmksa - IW_PMKSA_ADD\n"));

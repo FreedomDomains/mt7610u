@@ -1791,8 +1791,8 @@ int rt_ioctl_siwpmksa(struct net_device *dev,
 		pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_ADD;
 	else
 		pIoctlPmaSa->Cmd = 0;
-	pIoctlPmaSa->pBssid = (u8 *)pPmksa->bssid.sa_data;
-	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
+	memcpy(pIoctlPmaSa->Bssid, pPmksa->bssid.sa_data, ETH_ALEN);
+	memcpy(pIoctlPmaSa->Pmkid, pPmksa->pmkid, IW_PMKID_LEN);;
 
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWPMKSA, 0,
 						pIoctlPmaSa, 0, RT_DEV_PRIV_FLAGS_GET(dev));
