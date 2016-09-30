@@ -30,7 +30,7 @@
 #include "rt_config.h"
 #include "wfd_cmm.h"
 
-UCHAR WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
+u8 WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
 
 INT Set_WfdEnable_Proc(
     IN  struct rtmp_adapter *	pAd,
@@ -102,7 +102,7 @@ INT Set_WfdDeviceType_Proc(
     IN  struct rtmp_adapter *	pAd,
     IN  char *		arg)
 {
-	UCHAR DeviceType;
+	u8 DeviceType;
 
 	DeviceType = simple_strtol(arg, 0, 10);
 
@@ -126,7 +126,7 @@ INT Set_WfdCouple_Proc(
     IN  struct rtmp_adapter *	pAd,
     IN  char *		arg)
 {
-	UCHAR coupled;
+	u8 coupled;
 
 	if (simple_strtol(arg, 0, 10) == 0)
 		coupled = WFD_COUPLED_NOT_SUPPORT;
@@ -270,7 +270,7 @@ INT Set_PeerRtspPort_Proc(
 
 	MAC_TABLE_ENTRY *pEntry;
 	USHORT RtspPort = WFD_RTSP_DEFAULT_PORT;
-	UCHAR P2pIdx = P2P_NOT_FOUND;
+	u8 P2pIdx = P2P_NOT_FOUND;
 	PRT_P2P_CONFIG pP2PCtrl = &pAd->P2pCfg;
 	INT i;
 
@@ -314,7 +314,7 @@ void WfdMakeWfdIE(
 	OUT	PULONG			pIeLen)
 {
 	PRT_WFD_CONFIG	pWFDCtrl = &pAd->StaCfg.WfdCfg;
-	UCHAR			WfdIEFixed[6] = {0xdd, 0x0c, 0x50, 0x6f, 0x9a, 0x0a};	 /* Length will be modified later */
+	u8 		WfdIEFixed[6] = {0xdd, 0x0c, 0x50, 0x6f, 0x9a, 0x0a};	 /* Length will be modified later */
 	u8 *		pData, pBuf;
 	ULONG			TempLen;
 	ULONG			Len = 0;
@@ -357,7 +357,7 @@ void WfdMakeWfdIE(
 
 ULONG InsertWfdSubelmtTlv(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR			SubId,
+	IN u8 		SubId,
 	IN u8 *		pInBuffer,
 	IN u8 *		pOutBuffer,
 	IN UINT				Action)
@@ -408,7 +408,7 @@ ULONG InsertWfdSubelmtTlv(
 		}
 		case SUBID_WFD_ASSOCIATED_BSSID:
 		{
-			UCHAR AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+			u8 AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 			if ((Action == ACTION_GAS_INITIAL_REQ) || (Action == ACTION_GAS_INITIAL_RSP))
 			{
@@ -528,7 +528,7 @@ ULONG InsertWfdSubelmtTlv(
 		case SUBID_WFD_SESSION_INFO:
 		{
 			INT i = 0, NumOfDev = 0;
-			UCHAR P2pIdx = P2P_NOT_FOUND;
+			u8 P2pIdx = P2P_NOT_FOUND;
 			PRT_P2P_TABLE Tab = &pAd->P2pTable;
 
 			if (P2P_GO_ON(pAd)
@@ -599,7 +599,7 @@ ULONG InsertWfdSubelmtTlv(
 		}
 		case SUBID_WFD_ALTERNATE_MAC_ADDR:
 		{
-			UCHAR AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+			u8 AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 			if (memcmp(AllZero, pAd->CurrentAddress, MAC_ADDR_LEN) != 0)
 			{
@@ -636,7 +636,7 @@ void WfdParseSubElmt(
 	ULONG		AccuIeLen = 0;
 	ULONG		Length = 0;
 	ULONG		AttriLen;
-	UCHAR		offset;
+	u8 	offset;
 	BOOLEAN		bTdlsEntry = FALSE;
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s ----->\n", __FUNCTION__));
@@ -769,7 +769,7 @@ void WfdParseSubElmt(
 				if (Length >= AccuWfdIELen)
 					break;
 
-				pWfdEid = (PP2PEID_STRUCT)((UCHAR*)pWfdEid + 3 + AttriLen);
+				pWfdEid = (PP2PEID_STRUCT)((u8 *)pWfdEid + 3 + AttriLen);
 				AttriLen = pWfdEid->Len[1] + (pWfdEid->Len[0] << 8);
 			}
 
@@ -781,7 +781,7 @@ void WfdParseSubElmt(
 		/* Forward buffer to next pEid */
 		if (RTMPEqualMemory(&pEid->Octet[0], WIFIDISPLAY_OUI, 4))
 		{
-			pEid = (PEID_STRUCT)((UCHAR*)pEid + pEid->Len + 2);
+			pEid = (PEID_STRUCT)((u8 *)pEid + pEid->Len + 2);
 		}
 
 		/*

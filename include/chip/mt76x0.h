@@ -152,10 +152,10 @@ enum PA_TYPE {
 };
 
 typedef struct _RT6590_RF_SWITCH_ITEM {
-	UCHAR Bank;
-	UCHAR Register;
+	u8 Bank;
+	u8 Register;
 	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
-	UCHAR Value;
+	u8 Value;
 } MT76x0_RF_SWITCH_ITEM, *PMT76x0_RF_SWITCH_ITEM;
 
 typedef struct _MT76x0_BBP_Table {
@@ -165,7 +165,7 @@ typedef struct _MT76x0_BBP_Table {
 
 typedef struct _MT76x0_RATE_PWR_ITEM {
 	CHAR MCS_Power;
-	UCHAR RF_PA_Mode;
+	u8 RF_PA_Mode;
 } MT76x0_RATE_PWR_ITEM, *PMT76x0_RATE_PWR_ITEM;
 
 typedef struct _MT76x0_RATE_PWR_TABLE {
@@ -207,11 +207,11 @@ void MT76x0_dynamic_vga_tuning(
 
 void MT76x0_VCO_CalibrationMode3(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel);
+	IN u8 Channel);
 
 void MT76x0_Calibration(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel,
+	IN u8 Channel,
 	IN BOOLEAN bPowerOn,
 	IN BOOLEAN bDoTSSI,
 	IN BOOLEAN bFullCal);
@@ -255,13 +255,13 @@ void MT76x0_MakeUpRatePwrTable(
 	IN struct rtmp_adapter *pAd);
 
 #ifdef SINGLE_SKU_V2
-UCHAR MT76x0_GetSkuChannelBasePwr(
+u8 MT76x0_GetSkuChannelBasePwr(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR channel);
+	IN u8 channel);
 
-UCHAR MT76x0_UpdateSkuPwr(
+u8 MT76x0_UpdateSkuPwr(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR channel);
+	IN u8 channel);
 #endif /* SINGLE_SKU_V2 */
 
 #endif /* __MT76x0_H__ */

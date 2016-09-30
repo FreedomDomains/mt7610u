@@ -63,13 +63,13 @@ void RTMPWriteTxWI(
 	IN BOOLEAN AMPDU,
 	IN BOOLEAN Ack,
 	IN BOOLEAN NSeq,		/* HW new a sequence.*/
-	IN UCHAR BASize,
-	IN UCHAR WCID,
+	IN u8 BASize,
+	IN u8 WCID,
 	IN ULONG Length,
-	IN UCHAR PID,
-	IN UCHAR TID,
-	IN UCHAR TxRate,
-	IN UCHAR Txopmode,
+	IN u8 PID,
+	IN u8 TID,
+	IN u8 TxRate,
+	IN u8 Txopmode,
 	IN BOOLEAN CfAck,
 	IN HTTRANSMIT_SETTING *pTransmit)
 {
@@ -187,7 +187,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
 #ifdef DOT11_N_SUPPORT
-	UCHAR BASize;
+	u8 BASize;
 #endif /* DOT11_N_SUPPORT */
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
@@ -243,7 +243,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	BASize = pAd->CommonCfg.TxBASize;
 	if((pTxBlk->TxFrameType == TX_AMPDU_FRAME) && (pMacEntry))
 	{
-		UCHAR RABAOriIdx = pTxBlk->pMacEntry->BAOriWcidArray[pTxBlk->UserPriority];
+		u8 RABAOriIdx = pTxBlk->pMacEntry->BAOriWcidArray[pTxBlk->UserPriority];
 
 		BASize = pAd->BATable.BAOriEntry[RABAOriIdx].BAWinSize;
 	}

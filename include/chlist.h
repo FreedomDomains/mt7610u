@@ -33,13 +33,13 @@
 
 
 typedef struct _CH_DESC {
-	UCHAR FirstChannel;
-	UCHAR NumOfCh;
-	UCHAR ChannelProp;
+	u8 FirstChannel;
+	u8 NumOfCh;
+	u8 ChannelProp;
 }CH_DESC, *PCH_DESC;
 
 typedef struct _COUNTRY_REGION_CH_DESC {
-	UCHAR RegionIndex;
+	u8 RegionIndex;
 	PCH_DESC pChDesc;
 }COUNTRY_REGION_CH_DESC, *PCOUNTRY_REGION_CH_DESC;
 
@@ -49,16 +49,16 @@ typedef struct _COUNTRY_REGION_CH_DESC {
 #define BOTH			2
 
 typedef struct _CH_DESP {
-	UCHAR FirstChannel;
-	UCHAR NumOfCh;
+	u8 FirstChannel;
+	u8 NumOfCh;
 	CHAR MaxTxPwr;			/* dBm */
-	UCHAR Geography;			/* 0:out door, 1:in door, 2:both */
+	u8 Geography;			/* 0:out door, 1:in door, 2:both */
 	BOOLEAN DfsReq;			/* Dfs require, 0: No, 1: yes. */
 } CH_DESP, *PCH_DESP;
 
 typedef struct _CH_REGION {
-	UCHAR CountReg[3];
-	UCHAR DfsType;			/* 0: CE, 1: FCC, 2: JAP, 3:JAP_W53, JAP_W56 */
+	u8 CountReg[3];
+	u8 DfsType;			/* 0: CE, 1: FCC, 2: JAP, 3:JAP_W53, JAP_W56 */
 	CH_DESP *pChDesp;
 } CH_REGION, *PCH_REGION;
 
@@ -75,13 +75,13 @@ extern CH_REGION ChRegion[];
 
 typedef struct _CH_POWER_{
 	DL_LIST		List;
-	UCHAR		channel;
-	UCHAR		num;
-	UCHAR		PwrCCK[SINGLE_SKU_TABLE_CCK_LENGTH];
-	UCHAR		PwrOFDM[SINGLE_SKU_TABLE_OFDM_LENGTH];
-	UCHAR		PwrHT20[SINGLE_SKU_TABLE_HT_LENGTH];
-	UCHAR		PwrHT40[SINGLE_SKU_TABLE_HT_LENGTH];
-	UCHAR		PwrVHT80[SINGLE_SKU_TABLE_VHT_LENGTH];
+	u8 	channel;
+	u8 	num;
+	u8 	PwrCCK[SINGLE_SKU_TABLE_CCK_LENGTH];
+	u8 	PwrOFDM[SINGLE_SKU_TABLE_OFDM_LENGTH];
+	u8 	PwrHT20[SINGLE_SKU_TABLE_HT_LENGTH];
+	u8 	PwrHT40[SINGLE_SKU_TABLE_HT_LENGTH];
+	u8 	PwrVHT80[SINGLE_SKU_TABLE_VHT_LENGTH];
 }CH_POWER;
 #endif /* SINGLE_SKU_V2 */
 
@@ -115,8 +115,8 @@ void BuildBeaconChList(
 
 #ifdef DOT11_N_SUPPORT
 void N_ChannelCheck(struct rtmp_adapter*pAd);
-UCHAR N_SetCenCh(struct rtmp_adapter*pAd, UCHAR channel);
-BOOLEAN N_ChannelGroupCheck(struct rtmp_adapter*pAd, UCHAR channel);
+u8 N_SetCenCh(struct rtmp_adapter*pAd, u8 channel);
+BOOLEAN N_ChannelGroupCheck(struct rtmp_adapter*pAd, u8 channel);
 
 #endif /* DOT11_N_SUPPORT */
 
@@ -125,24 +125,24 @@ u8 GetCuntryMaxTxPwr(
 	IN u8 channel);
 
 void RTMP_MapChannelID2KHZ(
-	IN UCHAR Ch,
+	IN u8 Ch,
 	OUT u32 *pFreq);
 
 void RTMP_MapKHZ2ChannelID(
 	IN ULONG Freq,
 	OUT INT *pCh);
 
-UCHAR GetChannel_5GHZ(
+u8 GetChannel_5GHZ(
 	IN PCH_DESC pChDesc,
-	IN UCHAR index);
+	IN u8 index);
 
-UCHAR GetChannel_2GHZ(
+u8 GetChannel_2GHZ(
 	IN PCH_DESC pChDesc,
-	IN UCHAR index);
+	IN u8 index);
 
-UCHAR GetChannelFlag(
+u8 GetChannelFlag(
 	IN PCH_DESC pChDesc,
-	IN UCHAR index);
+	IN u8 index);
 
 UINT16 TotalChNum(
 	IN PCH_DESC pChDesc);

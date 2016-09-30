@@ -41,7 +41,7 @@
 							(sizeof(Cfg80211_Chan)-CFG80211_NUM_OF_CHAN_2GHZ)
 
 /* all available channels */
-static const UCHAR Cfg80211_Chan[] = {
+static const u8 Cfg80211_Chan[] = {
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 
 	/* 802.11 UNI / HyperLan 2 */
@@ -1283,7 +1283,7 @@ static int CFG80211_OpsPmksaSet(
 	/* End of if */
 
 	pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_ADD;
-	pIoctlPmaSa->pBssid = (UCHAR *)pPmksa->bssid;
+	pIoctlPmaSa->pBssid = (u8 *)pPmksa->bssid;
 	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
 
 	RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
@@ -1328,7 +1328,7 @@ static int CFG80211_OpsPmksaDel(
 	/* End of if */
 
 	pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_REMOVE;
-	pIoctlPmaSa->pBssid = (UCHAR *)pPmksa->bssid;
+	pIoctlPmaSa->pBssid = (u8 *)pPmksa->bssid;
 	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
 
 	RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);

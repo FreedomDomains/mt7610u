@@ -55,7 +55,7 @@ int bin2h(char *infname, char *outfname, char *fw_name)
     fputs("\n",outfile);
     fputs("\n",outfile);
 
-	fprintf(outfile, "UCHAR %s[] = {\n", fw_name);
+	fprintf(outfile, "u8 %s[] = {\n", fw_name);
 
     while(1) {
 		char cc[3];

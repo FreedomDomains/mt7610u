@@ -30,7 +30,7 @@
 
 #include "chip/chip_id.h"
 
-typedef void *(*RTMP_NET_ETH_CONVERT_DEV_SEARCH)(void *net_dev, UCHAR *pData);
+typedef void *(*RTMP_NET_ETH_CONVERT_DEV_SEARCH)(void *net_dev, u8 *pData);
 typedef int (*RTMP_NET_PACKET_TRANSMIT)(void *pPacket);
 
 /* ========================================================================== */

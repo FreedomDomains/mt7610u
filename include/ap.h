@@ -78,23 +78,23 @@ int APInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
-	IN UCHAR QueIdx);
+	IN u8 QueIdx);
 
 int APHardTransmit(
 	IN	struct rtmp_adapter *pAd,
 	IN	TX_BLK			*pTxBlk,
-	IN	UCHAR			QueIdx);
+	IN	u8 		QueIdx);
 
 void APRxEAPOLFrameIndicate(
 	IN	struct rtmp_adapter *pAd,
 	IN	MAC_TABLE_ENTRY	*pEntry,
 	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID);
+	IN	u8 		FromWhichBSSID);
 
 int APCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN struct rtmp_rxinfo *pRxInfo,
-	IN UCHAR Wcid);
+	IN u8 Wcid);
 
 BOOLEAN APCheckClass2Class3Error(
     IN  struct rtmp_adapter *  pAd,
@@ -133,7 +133,7 @@ void MbssKickOutStas(
 void APMlmeKickOutSta(
     IN struct rtmp_adapter *pAd,
 	IN u8 *pStaAddr,
-	IN UCHAR Wcid,
+	IN u8 Wcid,
 	IN USHORT Reason);
 
 
@@ -146,9 +146,9 @@ void  APCls3errAction(
 /*
 void RTMPAddClientSec(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR	BssIdx,
-	IN UCHAR		 KeyIdx,
-	IN UCHAR		 CipherAlg,
+	IN	u8 BssIdx,
+	IN u8 	 KeyIdx,
+	IN u8 	 CipherAlg,
 	IN u8 *	 pKey,
 	IN u8 *	 pTxMic,
 	IN u8 *	 pRxMic,
@@ -229,14 +229,14 @@ void APScanCnclAction(
 void ApSiteSurvey(
 	IN	struct rtmp_adapter * 		pAd,
 	IN	PNDIS_802_11_SSID	pSsid,
-	IN	UCHAR				ScanType,
+	IN	u8 			ScanType,
 	IN	BOOLEAN				ChannelSel);
 
 void SupportRate(
 	IN u8 *SupRate,
-	IN UCHAR SupRateLen,
+	IN u8 SupRateLen,
 	IN u8 *ExtRate,
-	IN UCHAR ExtRateLen,
+	IN u8 ExtRateLen,
 	OUT u8 **Rates,
 	OUT u8 *RatesLen,
 	OUT u8 *pMaxSupportRate);
@@ -324,14 +324,14 @@ MAC_TABLE_ENTRY *APSsPsInquiry(
     IN  u8 *         pAddr,
     OUT SST             *Sst,
     OUT USHORT          *Aid,
-    OUT UCHAR           *PsMode,
-    OUT UCHAR           *Rate);
+    OUT u8           *PsMode,
+    OUT u8           *Rate);
 
 BOOLEAN APPsIndicate(
     IN  struct rtmp_adapter *  pAd,
     IN  u8 *         pAddr,
 	IN ULONG Wcid,
-    IN  UCHAR           Psm);
+    IN  u8           Psm);
 
 #ifdef DOT11_N_SUPPORT
 void APUpdateOperationMode(
@@ -344,21 +344,21 @@ void APUpdateCapabilityAndErpIe(
 BOOLEAN ApCheckAccessControlList(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *       pAddr,
-	IN UCHAR         Apidx);
+	IN u8         Apidx);
 
 void ApUpdateAccessControlList(
     IN struct rtmp_adapter *pAd,
-    IN UCHAR         Apidx);
+    IN u8         Apidx);
 
 void ApEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *       pAddr,
-	IN UCHAR         TxRate,
-	IN UCHAR         PID,
-	IN UCHAR         apidx,
+	IN u8         TxRate,
+	IN u8         PID,
+	IN u8         apidx,
     IN BOOLEAN       bQosNull,
     IN BOOLEAN       bEOSP,
-    IN UCHAR         OldUP);
+    IN u8         OldUP);
 
 /* ap_sanity.c */
 

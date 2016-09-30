@@ -129,7 +129,7 @@ void CarrierDetectionPeriodicStateCtrl(
 void RTMPHandleRadarInterrupt(struct rtmp_adapter * pAd)
 {
 	u32 value, delta;
-	UCHAR bbp=0;
+	u8 bbp=0;
 	PCARRIER_DETECTION_STRUCT pCarrierDetect = &pAd->CommonCfg.CarrierDetect;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPHandleRadarInterrupt()\n"));
@@ -627,7 +627,7 @@ static void ToneRadarProgram(struct rtmp_adapter *pAd)
 */
 void ToneRadarProgram_v1(struct rtmp_adapter *pAd, ULONG threshold)
 {
-	UCHAR bbp;
+	u8 bbp;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("ToneRadarProgram v1\n"));
 	/* programe delta delay & division bit*/
@@ -669,7 +669,7 @@ void ToneRadarProgram_v1(struct rtmp_adapter *pAd, ULONG threshold)
 */
 void ToneRadarProgram_v2(struct rtmp_adapter *pAd, ULONG threshold)
 {
-	UCHAR bbp;
+	u8 bbp;
 
 	/* programe delta delay & division bit*/
 	DBGPRINT(RT_DEBUG_TRACE, ("ToneRadarProgram v2\n"));
@@ -710,7 +710,7 @@ void ToneRadarProgram_v2(struct rtmp_adapter *pAd, ULONG threshold)
 */
 void ToneRadarProgram_v3(struct rtmp_adapter *pAd, ULONG threshold)
 {
-	UCHAR bbp;
+	u8 bbp;
 
 	/*
 		Carrier Sense (Tone Radar) BBP initialization

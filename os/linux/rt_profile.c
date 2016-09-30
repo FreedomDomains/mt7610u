@@ -181,7 +181,7 @@ void tbtt_tasklet(unsigned long data)
 void announce_802_3_packet(
 	IN void *pAdSrc,
 	IN struct sk_buff * pPacket,
-	IN UCHAR OpMode)
+	IN u8 OpMode)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
 	struct sk_buff * pRxPkt = pPacket;
@@ -209,9 +209,9 @@ void STA_MonPktSend(
 	PHEADER_802_11 pHeader;
 	USHORT DataSize;
 	u32 MaxRssi;
-	UCHAR L2PAD, PHYMODE, BW, ShortGI, MCS, AMPDU, STBC, RSSI1;
-	UCHAR BssMonitorFlag11n, Channel, CentralChannel;
-	UCHAR *pData, *pDevName;
+	u8 L2PAD, PHYMODE, BW, ShortGI, MCS, AMPDU, STBC, RSSI1;
+	u8 BssMonitorFlag11n, Channel, CentralChannel;
+	u8 *pData, *pDevName;
 
 
 	/* sanity check */
@@ -251,7 +251,7 @@ void STA_MonPktSend(
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 	BssMonitorFlag11n = (pAd->StaCfg.BssMonitorFlag & MONITOR_FLAG_11N_SNIFFER);
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
-	pDevName = (UCHAR *)RtmpOsGetNetDevName(pAd->net_dev);
+	pDevName = (u8 *)RtmpOsGetNetDevName(pAd->net_dev);
 	Channel = pAd->CommonCfg.Channel;
 	CentralChannel = pAd->CommonCfg.CentralChannel;
 
@@ -375,7 +375,7 @@ done:
 
 struct net_device *get_netdev_from_bssid(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR			FromWhichBSSID)
+	IN	u8 		FromWhichBSSID)
 {
 	struct net_device *dev_p = NULL;
 

@@ -230,16 +230,16 @@ typedef struct _NewDFSMPeriod {
 
 typedef struct _NewDFSParam {
 	BOOLEAN valid;
-	UCHAR mode;
+	u8 mode;
 	USHORT avgLen;
 	USHORT ELow;
 	USHORT EHigh;
 	USHORT WLow;
 	USHORT WHigh;
-	UCHAR EpsilonW;
+	u8 EpsilonW;
 	ULONG TLow;
 	ULONG THigh;
-	UCHAR EpsilonT;
+	u8 EpsilonT;
 	ULONG BLow;
 	ULONG BHigh;
 } NewDFSParam, *pNewDFSParam;
@@ -247,12 +247,12 @@ typedef struct _NewDFSParam {
 typedef struct _DFS_PROGRAM_PARAM{
 	NewDFSParam NewDFSTableEntry[NEW_DFS_MAX_CHANNEL*4];
 	USHORT ChEnable;	/* Enabled Dfs channels (bit wise)*/
-	UCHAR DeltaDelay;
+	u8 DeltaDelay;
 	/* Support after dfs_func >= 2 */
-	UCHAR Symmetric_Round;
-	UCHAR VGA_Mask;
-	UCHAR Packet_End_Mask;
-	UCHAR Rx_PE_Mask;
+	u8 Symmetric_Round;
+	u8 VGA_Mask;
+	u8 Packet_End_Mask;
+	u8 Rx_PE_Mask;
 	ULONG RadarEventExpire[NEW_DFS_MAX_CHANNEL];
 }DFS_PROGRAM_PARAM, *PDFS_PROGRAM_PARAM;
 
@@ -288,8 +288,8 @@ typedef struct _DFS_EVENT{
 
 typedef struct _DFS_SW_DETECT_PARAM{
 	NewDFSDebugPort FCC_5[NEW_DFS_FCC_5_ENT_NUM];
-	UCHAR fcc_5_idx;
-	UCHAR fcc_5_last_idx;
+	u8 fcc_5_idx;
+	u8 fcc_5_last_idx;
 	USHORT fcc_5_threshold; /* to check the width of long pulse radar */
 	USHORT dfs_width_diff_ch1_Shift;
 	USHORT dfs_width_diff_ch2_Shift;
@@ -298,8 +298,8 @@ typedef struct _DFS_SW_DETECT_PARAM{
 	USHORT dfs_width_diff;
 	USHORT dfs_width_ch0_err_L;
 	USHORT dfs_width_ch0_err_H;
-	UCHAR dfs_check_loop;
-	UCHAR dfs_declare_thres;
+	u8 dfs_check_loop;
+	u8 dfs_declare_thres;
 	ULONG dfs_w_counter;
 	DFS_EVENT PreDfsEvent;		/* previous radar event */
 	UINT32 EvtDropAdjTime;		/* timing threshold for adjacent event */
@@ -311,20 +311,20 @@ typedef struct _DFS_SW_DETECT_PARAM{
 	USHORT dfs_w_last_idx[NEW_DFS_MAX_CHANNEL];
 	NewDFSDebugPort DFS_W[NEW_DFS_MAX_CHANNEL][NEW_DFS_DBG_PORT_ENT_NUM];
 	NewDFSMPeriod DFS_T[NEW_DFS_MAX_CHANNEL][NEW_DFS_MPERIOD_ENT_NUM];	/* period table */
-	/*UCHAR	ce_sw_id_check;*/
+	/*u8 ce_sw_id_check;*/
 	/*USHORT	ce_sw_t_diff;*/
 	/*ULONG fcc_5_counter;*/
 	/* CE Staggered radar / weather radar */
 #ifdef DFS_DEBUG
 	/* Roger debug */
-	UCHAR DebugPort[384];
-	UCHAR DebugPortPrint;	/* 0 = stop, 1 = log req, 2 = loging, 3 = log done */
+	u8 DebugPort[384];
+	u8 DebugPortPrint;	/* 0 = stop, 1 = log req, 2 = loging, 3 = log done */
 	ULONG TotalEntries[4];
 	ULONG T_Matched_2;
 	ULONG T_Matched_3;
 	ULONG T_Matched_4;
 	ULONG T_Matched_5;
-	UCHAR BBP127Repeat;
+	u8 BBP127Repeat;
 	ULONG CounterStored[5];
 	ULONG CounterStored2[5];
 	ULONG CounterStored3;
@@ -337,7 +337,7 @@ typedef struct _DFS_SW_DETECT_PARAM{
   *	structure for radar detection and channel switch
   **************************************************************************/
 typedef struct _RADAR_DETECT_STRUCT {
-	UCHAR	DFSAPRestart;
+	u8 DFSAPRestart;
 	ULONG MCURadarRegion;
 	CHAR  AvgRssiReq;
 	ULONG DfsLowerLimit;
@@ -345,8 +345,8 @@ typedef struct _RADAR_DETECT_STRUCT {
 	ULONG upperlimit;
 	ULONG lowerlimit;
 	ULONG TimeStamp; /*unit: 1us*/
-	UCHAR ChirpCheck; /* anounce on second detection of chirp radar */
-	UCHAR bChannelSwitchInProgress; /* RDMode could cover this*/
+	u8 ChirpCheck; /* anounce on second detection of chirp radar */
+	u8 bChannelSwitchInProgress; /* RDMode could cover this*/
 	BOOLEAN bDfsSwDisable; /* disable sotfwre check */
 	BOOLEAN bDfsInit;		/* to indicate if dfs regs has been initialized */
 	USHORT PollTime;
@@ -360,48 +360,48 @@ typedef struct _RADAR_DETECT_STRUCT {
 	BOOLEAN use_tasklet;
 	DFS_VERSION dfs_func;
 	BOOLEAN DFSWatchDogIsRunning;
-	UCHAR radarDeclared;
+	u8 radarDeclared;
 	BOOLEAN SymRoundFromCfg;
 	BOOLEAN SymRoundCfgValid;
 	ULONG idle_time;
 	ULONG busy_time;
-	UCHAR ch_busy;
+	u8 ch_busy;
 	CHAR	ch_busy_countdown;
-	UCHAR	busy_channel;
-	UCHAR ch_busy_idle_ratio;
+	u8 busy_channel;
+	u8 ch_busy_idle_ratio;
 	BOOLEAN BusyIdleFromCfg;
 	BOOLEAN BusyIdleCfgValid;
-	UCHAR print_ch_busy_sta;
+	u8 print_ch_busy_sta;
 	ULONG ch_busy_sta[CH_BUSY_SAMPLE];
 	ULONG ch_idle_sta[CH_BUSY_SAMPLE];
-	UCHAR ch_busy_sta_index;
+	u8 ch_busy_sta_index;
 	INT		ch_busy_sum;
 	INT		ch_idle_sum;
-	UCHAR fdf_num;
+	u8 fdf_num;
 	USHORT ch_busy_threshold[MAX_FDF_NUMBER];
 	INT		rssi_threshold[MAX_FDF_NUMBER];
-	UCHAR McuRadarDebug;
+	u8 McuRadarDebug;
 	USHORT McuRadarTick;
 	ULONG RadarTimeStampHigh;
 	ULONG RadarTimeStampLow;
-	UCHAR EnabledChMask;				/* Bit-wise mask for enabled DFS channels */
+	u8 EnabledChMask;				/* Bit-wise mask for enabled DFS channels */
 	DFS_PROGRAM_PARAM DfsProgramParam;
 	DFS_SW_DETECT_PARAM DfsSwParam;
 } RADAR_DETECT_STRUCT, *PRADAR_DETECT_STRUCT;
 
 typedef struct _NewDFSProgParam
 {
-	UCHAR channel;
-	UCHAR mode;			/* reg 0x10, Detection Mode[2:0]*/
+	u8 channel;
+	u8 mode;			/* reg 0x10, Detection Mode[2:0]*/
 	USHORT avgLen;		/* reg 0x11~0x12, M[7:0] & M[8]*/
 	USHORT ELow;		/* reg 0x13~0x14, Energy Low[7:0] & Energy Low[11:8]*/
 	USHORT EHigh;		/* reg 0x15~0x16, Energy High[7:0] & Energy High[11:8]*/
 	USHORT WLow;		/* reg 0x28~0x29, Width Low[7:0] & Width Low[11:8]*/
 	USHORT WHigh;		/* reg 0x2a~0x2b, Width High[7:0] & Width High[11:8]*/
-	UCHAR EpsilonW;		/* reg 0x2c, Width Delta[7:0], (Width Measurement Uncertainty) */
+	u8 EpsilonW;		/* reg 0x2c, Width Delta[7:0], (Width Measurement Uncertainty) */
 	ULONG TLow;			/* reg 0x17~0x1a, Period Low[7:0] & Period Low[15:8] & Period Low[23:16] & Period Low[31:24]*/
 	ULONG THigh;		/* reg 0x1b~0x1e, Period High[7:0] & Period High[15:8] & Period High[23:16] & Period High[31:24]*/
-	UCHAR EpsilonT;		/* reg 0x27, Period Delt[7:0], (Period Measurement Uncertainty) */
+	u8 EpsilonT;		/* reg 0x27, Period Delt[7:0], (Period Measurement Uncertainty) */
 	ULONG BLow;			/* reg 0x1f~0x22, Burst Low[7:0] & Burst Low[15:8] & Burst Low[23:16] & Burst Low[31:24]*/
 	ULONG BHigh;		/* reg 0x23~0x26, Burst High[7:0] & Burst High[15:8] & Burst High[23:16] & Burst High[31:24]		*/
 }NewDFSProgParam, *pNewDFSProgParam;

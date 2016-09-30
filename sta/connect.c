@@ -27,7 +27,7 @@
 
 #include "rt_config.h"
 
-UCHAR CipherSuiteWpaNoneTkip[] = {
+u8 CipherSuiteWpaNoneTkip[] = {
 	0x00, 0x50, 0xf2, 0x01,	/* oui */
 	0x01, 0x00,		/* Version */
 	0x00, 0x50, 0xf2, 0x02,	/* Multicast */
@@ -36,10 +36,10 @@ UCHAR CipherSuiteWpaNoneTkip[] = {
 	0x01, 0x00,		/* number of authentication method */
 	0x00, 0x50, 0xf2, 0x00	/* authentication */
 };
-UCHAR CipherSuiteWpaNoneTkipLen =
-    (sizeof (CipherSuiteWpaNoneTkip) / sizeof (UCHAR));
+u8 CipherSuiteWpaNoneTkipLen =
+    (sizeof (CipherSuiteWpaNoneTkip) / sizeof (u8));
 
-UCHAR CipherSuiteWpaNoneAes[] = {
+u8 CipherSuiteWpaNoneAes[] = {
 	0x00, 0x50, 0xf2, 0x01,	/* oui */
 	0x01, 0x00,		/* Version */
 	0x00, 0x50, 0xf2, 0x04,	/* Multicast */
@@ -48,8 +48,8 @@ UCHAR CipherSuiteWpaNoneAes[] = {
 	0x01, 0x00,		/* number of authentication method */
 	0x00, 0x50, 0xf2, 0x00	/* authentication */
 };
-UCHAR CipherSuiteWpaNoneAesLen =
-    (sizeof (CipherSuiteWpaNoneAes) / sizeof (UCHAR));
+u8 CipherSuiteWpaNoneAesLen =
+    (sizeof (CipherSuiteWpaNoneAes) / sizeof (u8));
 
 /* The following MACRO is called after 1. starting an new IBSS, 2. succesfully JOIN an IBSS, */
 /* or 3. succesfully ASSOCIATE to a BSS, 4. successfully RE_ASSOCIATE to a BSS */
@@ -404,7 +404,7 @@ void CntlOidSsidProc(
 	/* Step 1. record the desired user settings to MlmeAux */
 	memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 	memmove(pAd->MlmeAux.Ssid, pOidSsid->Ssid, pOidSsid->SsidLength);
-	pAd->MlmeAux.SsidLen = (UCHAR) pOidSsid->SsidLength;
+	pAd->MlmeAux.SsidLen = (u8) pOidSsid->SsidLength;
 	if (pAd->StaCfg.BssType == BSS_INFRA)
 		memset(pAd->MlmeAux.Bssid, 0, MAC_ADDR_LEN);
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
@@ -1462,12 +1462,12 @@ void AdhocTurnOnQos(
 */
 void LinkUp(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR BssType)
+	IN u8 BssType)
 {
 	ULONG Now;
 	u32 Data;
 	BOOLEAN Cancelled;
-	UCHAR idx = 0;
+	u8 idx = 0;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 
 	/* Init ChannelQuality to prevent DEAD_CQI at initial LinkUp */
@@ -1625,7 +1625,7 @@ void LinkUp(
 		/* Fill in Shared Key Table(offset: 0x6c00) and Shared Key Mode(offset: 0x7000) */
 
 		if (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) {
-			UCHAR CipherAlg;
+			u8 CipherAlg;
 
 			for (idx = 0; idx < SHARE_KEY_NUM; idx++) {
 				CipherAlg = pAd->SharedKey[BSS0][idx].CipherAlg;
@@ -1771,7 +1771,7 @@ void LinkUp(
 		if (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled)
 #endif /* WPA_SUPPLICANT_SUPPORT */
 		{
-			UCHAR CipherAlg;
+			u8 CipherAlg;
 
 			for (idx = 0; idx < SHARE_KEY_NUM; idx++) {
 				CipherAlg = pAd->SharedKey[BSS0][idx].CipherAlg;
@@ -1883,7 +1883,7 @@ void LinkUp(
 
 	/* Set asic auto fall back */
 	{
-		UCHAR TableSize = 0;
+		u8 TableSize = 0;
 
 		MlmeSelectTxRateTable(pAd, pEntry,
 				      &pEntry->pTable, &TableSize,
@@ -1906,7 +1906,7 @@ void LinkUp(
 #endif /* DOT11_N_SUPPORT */
 		/* If the legacy mode is set, overwrite the transmit setting of this entry. */
 		if (pEntry->HTPhyMode.field.MODE <= MODE_OFDM)
-			RTMPUpdateLegacyTxSetting((UCHAR) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
+			RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
 	} else
 		pEntry->bAutoTxRateSwitch = TRUE;
 	NdisReleaseSpinLock(&pAd->MacTabLock);
@@ -2124,7 +2124,7 @@ void LinkDown(
 	IN struct rtmp_adapter *pAd,
 	IN BOOLEAN IsReqFromAP)
 {
-	UCHAR i;
+	u8 i;
 
 	/* Do nothing if monitor mode is on */
 	if (MONITOR_ON(pAd))
@@ -2602,7 +2602,7 @@ void IterateOnBssTab2(
 		pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_REASSOC;
 	} else {
 		/* no more BSS */
-		UCHAR rf_channel = 0, rf_bw;
+		u8 rf_channel = 0, rf_bw;
 		INT ext_ch;
 
 #ifdef DOT11_N_SUPPORT
@@ -2654,9 +2654,9 @@ void ScanParmFill(
 	IN struct rtmp_adapter *pAd,
 	IN OUT MLME_SCAN_REQ_STRUCT *ScanReq,
 	IN STRING Ssid[],
-	IN UCHAR SsidLen,
-	IN UCHAR BssType,
-	IN UCHAR ScanType)
+	IN u8 SsidLen,
+	IN u8 BssType,
+	IN u8 ScanType)
 {
 	memset(ScanReq->Ssid, 0, MAX_LEN_OF_SSID);
 	ScanReq->SsidLen = SsidLen;
@@ -2697,7 +2697,7 @@ void StartParmFill(
 	IN struct rtmp_adapter *pAd,
 	IN OUT MLME_START_REQ_STRUCT *StartReq,
 	IN CHAR Ssid[],
-	IN UCHAR SsidLen)
+	IN u8 SsidLen)
 {
 	ASSERT(SsidLen <= MAX_LEN_OF_SSID);
 	if (SsidLen > MAX_LEN_OF_SSID)
@@ -2758,19 +2758,19 @@ void MlmeCntlConfirm(
 ULONG MakeIbssBeacon(
 	IN struct rtmp_adapter *pAd)
 {
-	UCHAR DsLen = 1, IbssLen = 2;
-	UCHAR LocalErpIe[3] = { IE_ERP, 1, 0x04 };
+	u8 DsLen = 1, IbssLen = 2;
+	u8 LocalErpIe[3] = { IE_ERP, 1, 0x04 };
 	HEADER_802_11 BcnHdr;
 	USHORT CapabilityInfo;
 	LARGE_INTEGER FakeTimestamp;
 	ULONG FrameLen = 0;
 	struct txwi_nmac *pTxWI = &pAd->BeaconTxWI;
-	UCHAR *pBeaconFrame = pAd->BeaconBuf;
+	u8 *pBeaconFrame = pAd->BeaconBuf;
 	BOOLEAN Privacy;
-	UCHAR SupRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR SupRateLen = 0;
-	UCHAR ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR ExtRateLen = 0;
+	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 SupRateLen = 0;
+	u8 ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 ExtRateLen = 0;
 
 	if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B)
 	    && (pAd->CommonCfg.Channel <= 14)) {
@@ -2868,7 +2868,7 @@ ULONG MakeIbssBeacon(
 	/* Modify by Eddy, support WPA2PSK in Adhoc mode */
 	if ((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
 	    ) {
-		UCHAR RSNIe = IE_WPA;
+		u8 RSNIe = IE_WPA;
 		ULONG tmp;
 
 		RTMPMakeRSNIE(pAd, pAd->StaCfg.AuthMode, pAd->StaCfg.WepStatus,
@@ -2886,7 +2886,7 @@ ULONG MakeIbssBeacon(
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode)
 	    && (pAd->StaCfg.bAdhocN == TRUE)) {
 		ULONG TmpLen;
-		UCHAR HtLen, HtLen1;
+		u8 HtLen, HtLen1;
 
 #ifdef RT_BIG_ENDIAN
 		HT_CAPABILITY_IE HtCapabilityTmp;
@@ -2962,7 +2962,7 @@ ULONG MakeIbssBeacon(
 
 void InitChannelRelatedValue(struct rtmp_adapter*pAd)
 {
-	UCHAR rf_channel, rf_bw;
+	u8 rf_channel, rf_bw;
 	INT ext_ch;
 
 
@@ -3007,10 +3007,10 @@ void MaintainBssTable(
 	IN struct rtmp_adapter *pAd,
 	IN OUT BSS_TABLE *Tab,
 	IN ULONG MaxRxTimeDiff,
-	IN UCHAR MaxSameRxTimeCount)
+	IN u8 MaxSameRxTimeCount)
 {
-	UCHAR	i, j;
-	UCHAR	total_bssNr = Tab->BssNr;
+	u8 i, j;
+	u8 total_bssNr = Tab->BssNr;
 	BOOLEAN	bDelEntry = FALSE;
 	ULONG	now_time = 0;
 
@@ -3039,7 +3039,7 @@ void MaintainBssTable(
 
 		if (bDelEntry)
 		{
-			UCHAR *pOldAddr = NULL;
+			u8 *pOldAddr = NULL;
 
 			for (j = i; j < total_bssNr - 1; j++)
 			{
@@ -3070,13 +3070,13 @@ void MaintainBssTable(
 
 void AdjustChannelRelatedValue(
 	IN struct rtmp_adapter *pAd,
-	OUT UCHAR *pBwFallBack,
+	OUT u8 *pBwFallBack,
 	IN USHORT ifIndex,
 	IN BOOLEAN BandWidth,
-	IN UCHAR PriCh,
-	IN UCHAR ExtraCh)
+	IN u8 PriCh,
+	IN u8 ExtraCh)
 {
-	UCHAR rf_channel, rf_bw = BW_20;
+	u8 rf_channel, rf_bw = BW_20;
 	INT ext_ch;
 
 	// TODO: shiang-6590, this function need to revise to make sure two purpose can achieved!

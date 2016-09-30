@@ -113,11 +113,11 @@ void ral_wlan_chip_onoff(
 void dump_bw_info(struct rtmp_adapter*pAd)
 {
 		u32 core_r1, agc_r0, be_r0, band_cfg;
-		static UCHAR *bw_str[]={"20", "10", "40", "80"};
-		UCHAR bw, prim_ch_idx, decode_cap;
-		static UCHAR *decode_str[] = {"0", "20", "40", "20/40",
+		static u8 *bw_str[]={"20", "10", "40", "80"};
+		u8 bw, prim_ch_idx, decode_cap;
+		static u8 *decode_str[] = {"0", "20", "40", "20/40",
 									"80", "20/80", "40/80", "20/40/80"};
-		UCHAR tx_prim;
+		u8 tx_prim;
 		struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
 
@@ -151,7 +151,7 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 
 
 #ifdef RTMP_USB_SUPPORT
-void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 ret;
 
@@ -196,7 +196,7 @@ void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, UCHAR Stage)
 }
 
 
-void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 MACValue = 0;
 	u32 rx_filter_flag;
@@ -287,7 +287,7 @@ void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, UCHAR Stage)
 
 void RT65xxDisableTxRx(
 	struct rtmp_adapter*pAd,
-	UCHAR Level)
+	u8 Level)
 {
 	u32 MacReg = 0;
 	u32 MTxCycle;

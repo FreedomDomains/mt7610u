@@ -42,7 +42,7 @@ INT get_pkt_rssi_by_rxwi(struct rxwi_nmac *rxwi, INT size, CHAR *rssi)
 }
 
 
-INT get_pkt_snr_by_rxwi(struct rxwi_nmac *rxwi, INT size, UCHAR *snr)
+INT get_pkt_snr_by_rxwi(struct rxwi_nmac *rxwi, INT size, u8 *snr)
 {
 	// TODO: shiang-6590, fix me for SNR info of RXWI!!
 	if (size < 3)

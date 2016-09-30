@@ -33,34 +33,34 @@ struct _MAC_TABLE_ENTRY;
 
 
 typedef struct _RTMP_TX_RATE {
-	UCHAR mode;
-	UCHAR bw;
-	UCHAR mcs;
-	UCHAR nss;
-	UCHAR sgi;
-	UCHAR stbc;
+	u8 mode;
+	u8 bw;
+	u8 mcs;
+	u8 nss;
+	u8 sgi;
+	u8 stbc;
 }RTMP_TX_RATE;
 
 
 typedef struct _RTMP_RA_LEGACY_TB
 {
-	UCHAR   ItemNo;
+	u8   ItemNo;
 #ifdef RT_BIG_ENDIAN
-	UCHAR	Rsv2:1;
-	UCHAR	Mode:3;
-	UCHAR	BW:2;
-	UCHAR	ShortGI:1;
-	UCHAR	STBC:1;
+	u8 Rsv2:1;
+	u8 Mode:3;
+	u8 BW:2;
+	u8 ShortGI:1;
+	u8 STBC:1;
 #else
-	UCHAR	STBC:1;
-	UCHAR	ShortGI:1;
-	UCHAR	BW:2;
-	UCHAR	Mode:3;
-	UCHAR	Rsv2:1;
+	u8 STBC:1;
+	u8 ShortGI:1;
+	u8 BW:2;
+	u8 Mode:3;
+	u8 Rsv2:1;
 #endif
-	UCHAR   CurrMCS;
-	UCHAR   TrainUp;
-	UCHAR   TrainDown;
+	u8   CurrMCS;
+	u8   TrainUp;
+	u8   TrainDown;
 } RTMP_RA_LEGACY_TB;
 
 #define PTX_RA_LEGACY_ENTRY(pTable, idx)	((RTMP_RA_LEGACY_TB *)&(pTable[(idx+1)*5]))
@@ -69,28 +69,28 @@ typedef struct _RTMP_RA_LEGACY_TB
 #ifdef NEW_RATE_ADAPT_SUPPORT
 typedef struct  _RTMP_RA_GRP_TB
 {
-	UCHAR   ItemNo;
+	u8   ItemNo;
 #ifdef RT_BIG_ENDIAN
-	UCHAR	Rsv2:1;
-	UCHAR	Mode:3;
-	UCHAR	BW:2;
-	UCHAR	ShortGI:1;
-	UCHAR	STBC:1;
+	u8 Rsv2:1;
+	u8 Mode:3;
+	u8 BW:2;
+	u8 ShortGI:1;
+	u8 STBC:1;
 #else
-	UCHAR	STBC:1;
-	UCHAR	ShortGI:1;
-	UCHAR	BW:2;
-	UCHAR	Mode:3;
-	UCHAR	Rsv2:1;
+	u8 STBC:1;
+	u8 ShortGI:1;
+	u8 BW:2;
+	u8 Mode:3;
+	u8 Rsv2:1;
 #endif
-	UCHAR   CurrMCS;
-	UCHAR   TrainUp;
-	UCHAR   TrainDown;
-	UCHAR	downMcs;
-	UCHAR	upMcs3;
-	UCHAR	upMcs2;
-	UCHAR	upMcs1;
-	UCHAR	dataRate;
+	u8   CurrMCS;
+	u8   TrainUp;
+	u8   TrainDown;
+	u8 downMcs;
+	u8 upMcs3;
+	u8 upMcs2;
+	u8 upMcs1;
+	u8 dataRate;
 } RTMP_RA_GRP_TB;
 
 #define PTX_RA_GRP_ENTRY(pTable, idx)	((RTMP_RA_GRP_TB *)&(pTable[(idx+1)*10]))
@@ -114,33 +114,33 @@ typedef enum {
 }RA_LOG_TYPE;
 
 
-extern UCHAR RateSwitchTable11B[];
-extern UCHAR RateSwitchTable11G[];
-extern UCHAR RateSwitchTable11BG[];
+extern u8 RateSwitchTable11B[];
+extern u8 RateSwitchTable11G[];
+extern u8 RateSwitchTable11BG[];
 
 #ifdef DOT11_N_SUPPORT
-extern UCHAR RateSwitchTable11BGN1S[];
-extern UCHAR RateSwitchTable11BGN2S[];
-extern UCHAR RateSwitchTable11BGN2SForABand[];
-extern UCHAR RateSwitchTable11N1S[];
-extern UCHAR RateSwitchTable11N1SForABand[];
-extern UCHAR RateSwitchTable11N2S[];
-extern UCHAR RateSwitchTable11N2SForABand[];
-extern UCHAR RateSwitchTable11BGN3S[];
-extern UCHAR RateSwitchTable11BGN3SForABand[];
+extern u8 RateSwitchTable11BGN1S[];
+extern u8 RateSwitchTable11BGN2S[];
+extern u8 RateSwitchTable11BGN2SForABand[];
+extern u8 RateSwitchTable11N1S[];
+extern u8 RateSwitchTable11N1SForABand[];
+extern u8 RateSwitchTable11N2S[];
+extern u8 RateSwitchTable11N2SForABand[];
+extern u8 RateSwitchTable11BGN3S[];
+extern u8 RateSwitchTable11BGN3SForABand[];
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
-extern UCHAR RateSwitchTableAdapt11N1S[];
-extern UCHAR RateSwitchTableAdapt11N2S[];
-extern UCHAR RateSwitchTableAdapt11N3S[];
+extern u8 RateSwitchTableAdapt11N1S[];
+extern u8 RateSwitchTableAdapt11N2S[];
+extern u8 RateSwitchTableAdapt11N3S[];
 
 #define PER_THRD_ADJ			1
 
 /* ADAPT_RATE_TABLE - true if pTable is one of the Adaptive Rate Switch tables */
 #ifdef DOT11_VHT_AC
-extern UCHAR RateTableVht1S[];
-extern UCHAR RateTableVht1S_MCS7[];
-extern UCHAR RateTableVht2S[];
+extern u8 RateTableVht1S[];
+extern u8 RateTableVht1S_MCS7[];
+extern u8 RateTableVht2S[];
 
 #define ADAPT_RATE_TABLE(pTable)	((pTable)==RateSwitchTableAdapt11N1S ||\
 									(pTable)==RateSwitchTableAdapt11N2S ||\
@@ -160,10 +160,10 @@ extern UCHAR RateTableVht2S[];
 /* FUNCTION */
 void MlmeGetSupportedMcs(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR *pTable,
+	IN u8 *pTable,
 	OUT CHAR mcs[]);
 
-UCHAR MlmeSelectTxRate(
+u8 MlmeSelectTxRate(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
 	IN CHAR mcs[],
@@ -172,11 +172,11 @@ UCHAR MlmeSelectTxRate(
 
 void MlmeClearTxQuality(struct _MAC_TABLE_ENTRY *pEntry);
 void MlmeClearAllTxQuality(struct _MAC_TABLE_ENTRY *pEntry);
-void MlmeDecTxQuality(struct _MAC_TABLE_ENTRY *pEntry, UCHAR rateIndex);
-USHORT MlmeGetTxQuality(struct _MAC_TABLE_ENTRY *pEntry, UCHAR rateIndex);
+void MlmeDecTxQuality(struct _MAC_TABLE_ENTRY *pEntry, u8 rateIndex);
+USHORT MlmeGetTxQuality(struct _MAC_TABLE_ENTRY *pEntry, u8 rateIndex);
 void MlmeSetTxQuality(
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR rateIndex,
+	IN u8 rateIndex,
 	IN USHORT txQuality);
 
 
@@ -184,9 +184,9 @@ void MlmeSetTxQuality(
 void MlmeOldRateAdapt(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR			CurrRateIdx,
-	IN UCHAR			UpRateIdx,
-	IN UCHAR			DownRateIdx,
+	IN u8 		CurrRateIdx,
+	IN u8 		UpRateIdx,
+	IN u8 		DownRateIdx,
 	IN ULONG			TrainUp,
 	IN ULONG			TrainDown,
 	IN ULONG			TxErrorRatio);
@@ -200,39 +200,39 @@ void MlmeCheckRDG(
 
 void RTMPSetSupportMCS(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR OpMode,
+	IN u8 OpMode,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR SupRate[],
-	IN UCHAR SupRateLen,
-	IN UCHAR ExtRate[],
-	IN UCHAR ExtRateLen,
+	IN u8 SupRate[],
+	IN u8 SupRateLen,
+	IN u8 ExtRate[],
+	IN u8 ExtRateLen,
 #ifdef DOT11_VHT_AC
-	IN UCHAR vht_cap_len,
+	IN u8 vht_cap_len,
 	IN VHT_CAP_IE *vht_cap,
 #endif /* DOT11_VHT_AC */
 	IN HT_CAPABILITY_IE *pHtCapability,
-	IN UCHAR HtCapabilityLen);
+	IN u8 HtCapabilityLen);
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 void MlmeSetMcsGroup(struct rtmp_adapter *pAd, struct _MAC_TABLE_ENTRY *pEnt);
 
-UCHAR MlmeSelectUpRate(
+u8 MlmeSelectUpRate(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
 	IN RTMP_RA_GRP_TB *pCurrTxRate);
 
-UCHAR MlmeSelectDownRate(
+u8 MlmeSelectDownRate(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR			CurrRateIdx);
+	IN u8 		CurrRateIdx);
 
 void MlmeGetSupportedMcsAdapt(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR	mcs23GI,
+	IN u8 mcs23GI,
 	OUT CHAR 	mcs[]);
 
-UCHAR MlmeSelectTxRateAdapt(
+u8 MlmeSelectTxRateAdapt(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
 	IN CHAR		mcs[],
@@ -249,8 +249,8 @@ BOOLEAN MlmeRAHybridRule(
 void MlmeNewRateAdapt(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR			UpRateIdx,
-	IN UCHAR			DownRateIdx,
+	IN u8 		UpRateIdx,
+	IN u8 		DownRateIdx,
 	IN ULONG			TrainUp,
 	IN ULONG			TrainDown,
 	IN ULONG			TxErrorRatio);
@@ -329,9 +329,9 @@ void MlmeRALog(
 void MlmeSelectTxRateTable(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR **ppTable,
-	IN UCHAR *pTableSize,
-	IN UCHAR *pInitTxRateIdx);
+	IN u8 **ppTable,
+	IN u8 *pTableSize,
+	IN u8 *pInitTxRateIdx);
 
 /* normal rate switch */
 #define RTMP_DRS_ALG_INIT(__pAd, __Alg)										\

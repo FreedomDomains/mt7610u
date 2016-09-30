@@ -43,7 +43,7 @@ void rtmp_set_vht(struct rtmp_adapter*pAd, RT_PHY_INFO *phy_info)
 
 INT SetCommonVHT(struct rtmp_adapter*pAd)
 {
-	UCHAR cent_ch = 0;
+	u8 cent_ch = 0;
 
 	if (!WMODE_CAP_AC(pAd->CommonCfg.PhyMode))
 	{

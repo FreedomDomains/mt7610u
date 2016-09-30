@@ -391,7 +391,7 @@ UINT16 TotalChNum(PCH_DESC pChDesc)
 	return TotalChNum;
 }
 
-UCHAR GetChannel_5GHZ(PCH_DESC pChDesc, UCHAR index)
+u8 GetChannel_5GHZ(PCH_DESC pChDesc, u8 index)
 {
 	while (pChDesc->FirstChannel)
 	{
@@ -407,7 +407,7 @@ UCHAR GetChannel_5GHZ(PCH_DESC pChDesc, UCHAR index)
 	return 0;
 }
 
-UCHAR GetChannel_2GHZ(PCH_DESC pChDesc, UCHAR index)
+u8 GetChannel_2GHZ(PCH_DESC pChDesc, u8 index)
 {
 
 	while (pChDesc->FirstChannel)
@@ -424,7 +424,7 @@ UCHAR GetChannel_2GHZ(PCH_DESC pChDesc, UCHAR index)
 	return 0;
 }
 
-UCHAR GetChannelFlag(PCH_DESC pChDesc, UCHAR index)
+u8 GetChannelFlag(PCH_DESC pChDesc, u8 index)
 {
 
 	while (pChDesc->FirstChannel)
@@ -1620,7 +1620,7 @@ static PCH_REGION GetChRegion(
 }
 
 static void ChBandCheck(
-	IN UCHAR PhyMode,
+	IN u8 PhyMode,
 	OUT u8 *pChType)
 {
 	*pChType = 0;
@@ -1633,15 +1633,15 @@ static void ChBandCheck(
 		*pChType = BAND_24G;
 }
 
-static UCHAR FillChList(
+static u8 FillChList(
 	IN struct rtmp_adapter *pAd,
 	IN PCH_DESP pChDesp,
-	IN UCHAR Offset,
-	IN UCHAR increment,
-	IN UCHAR regulatoryDomain)
+	IN u8 Offset,
+	IN u8 increment,
+	IN u8 regulatoryDomain)
 {
 	INT i, j, l;
-	UCHAR channel;
+	u8 channel;
 
 	j = Offset;
 	for (i = 0; i < pChDesp->NumOfCh; i++)
@@ -1703,14 +1703,14 @@ static UCHAR FillChList(
 static inline void CreateChList(
 	IN struct rtmp_adapter *pAd,
 	IN PCH_REGION pChRegion,
-	IN UCHAR Geography)
+	IN u8 Geography)
 {
 	INT i;
-	UCHAR offset = 0;
+	u8 offset = 0;
 	PCH_DESP pChDesp;
-	UCHAR ChType;
-	UCHAR increment;
-	UCHAR regulatoryDomain;
+	u8 ChType;
+	u8 increment;
+	u8 regulatoryDomain;
 
 	if (pChRegion == NULL)
 		return;
@@ -1774,7 +1774,7 @@ void BuildBeaconChList(
 	ULONG TmpLen;
 	PCH_REGION pChRegion;
 	PCH_DESP pChDesp;
-	UCHAR ChType;
+	u8 ChType;
 
 	pChRegion = GetChRegion(pAd->CommonCfg.CountryCode);
 
@@ -1822,7 +1822,7 @@ void BuildBeaconChList(
 #ifdef DOT11_N_SUPPORT
 static BOOLEAN IsValidChannel(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR channel)
+	IN u8 channel)
 
 {
 	INT i;
@@ -1839,9 +1839,9 @@ static BOOLEAN IsValidChannel(
 		return TRUE;
 }
 
-static UCHAR GetExtCh(
-	IN UCHAR Channel,
-	IN UCHAR Direction)
+static u8 GetExtCh(
+	IN u8 Channel,
+	IN u8 Direction)
 {
 	CHAR ExtCh;
 
@@ -1855,7 +1855,7 @@ static UCHAR GetExtCh(
 
 BOOLEAN N_ChannelGroupCheck(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel)
+	IN u8 Channel)
 {
 	BOOLEAN	RetVal = FALSE;
 
@@ -1876,7 +1876,7 @@ BOOLEAN N_ChannelGroupCheck(
 	{
 		do
 		{
-			UCHAR ExtCh;
+			u8 ExtCh;
 
 			if (Channel == 14)
 			{
@@ -1903,8 +1903,8 @@ BOOLEAN N_ChannelGroupCheck(
 void N_ChannelCheck(struct rtmp_adapter*pAd)
 {
 	INT idx;
-	UCHAR Channel = pAd->CommonCfg.Channel;
-	static const UCHAR wfa_ht_ch_ext[] = {
+	u8 Channel = pAd->CommonCfg.Channel;
+	static const u8 wfa_ht_ch_ext[] = {
 			36, EXTCHA_ABOVE, 40, EXTCHA_BELOW,
 			44, EXTCHA_ABOVE, 48, EXTCHA_BELOW,
 			52, EXTCHA_ABOVE, 56, EXTCHA_BELOW,
@@ -1938,8 +1938,8 @@ void N_ChannelCheck(struct rtmp_adapter*pAd)
 		{
 			do
 			{
-				UCHAR ExtCh;
-				UCHAR Dir = pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
+				u8 ExtCh;
+				u8 Dir = pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
 				ExtCh = GetExtCh(Channel, Dir);
 				if (IsValidChannel(pAd, ExtCh))
 					break;
@@ -1964,7 +1964,7 @@ void N_ChannelCheck(struct rtmp_adapter*pAd)
 }
 
 
-UCHAR N_SetCenCh(struct rtmp_adapter*pAd, UCHAR prim_ch)
+u8 N_SetCenCh(struct rtmp_adapter*pAd, u8 prim_ch)
 {
 	if (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
 	{
@@ -2036,7 +2036,7 @@ u8 GetCuntryMaxTxPwr(
 
 /* for OS_ABL */
 void RTMP_MapChannelID2KHZ(
-	IN UCHAR Ch,
+	IN u8 Ch,
 	OUT u32 *pFreq)
 {
 	int chIdx;

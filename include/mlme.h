@@ -269,52 +269,52 @@ typedef struct __attribute__ ((packed)){
 /*  HT Capability INFO field in HT Cap IE . */
 typedef struct __attribute__ ((packed)) _HT_CAP_PARM{
 #ifdef RT_BIG_ENDIAN
-	UCHAR	rsv:3;/*momi power safe */
-	UCHAR	MpduDensity:3;
-	UCHAR	MaxRAmpduFactor:2;
+	u8 rsv:3;/*momi power safe */
+	u8 MpduDensity:3;
+	u8 MaxRAmpduFactor:2;
 #else
-	UCHAR	MaxRAmpduFactor:2;
-	UCHAR	MpduDensity:3;
-	UCHAR	rsv:3;/*momi power safe */
+	u8 MaxRAmpduFactor:2;
+	u8 MpduDensity:3;
+	u8 rsv:3;/*momi power safe */
 #endif /* RT_BIG_ENDIAN */
 } HT_CAP_PARM, *PHT_CAP_PARM;
 
 
 typedef struct __attribute__ ((packed)) _HT_MCS_SET_TX_SUBFIELD{
 #ifdef RT_BIG_ENDIAN
-	UCHAR	TxMCSSetDefined:1;
-	UCHAR	TxRxNotEqual:1;
-	UCHAR	TxMaxStream:2;
-	UCHAR	TxUnqualModulation:1;
-	UCHAR	rsv:3;
+	u8 TxMCSSetDefined:1;
+	u8 TxRxNotEqual:1;
+	u8 TxMaxStream:2;
+	u8 TxUnqualModulation:1;
+	u8 rsv:3;
 #else
-	UCHAR	rsv:3;
-	UCHAR	TxUnqualModulation:1;
-	UCHAR	TxMaxStream:2;
-	UCHAR	TxRxNotEqual:1;
-	UCHAR	TxMCSSetDefined:1;
+	u8 rsv:3;
+	u8 TxUnqualModulation:1;
+	u8 TxMaxStream:2;
+	u8 TxRxNotEqual:1;
+	u8 TxMCSSetDefined:1;
 #endif /* RT_BIG_ENDIAN */
 }HT_MCS_SET_TX_SUBFIELD, *PHT_MCS_SET_TX_SUBFIELD;
 
 
 /*  HT Capability INFO field in HT Cap IE . */
 typedef struct __attribute__ ((packed)) _HT_MCS_SET{
-	UCHAR	MCSSet[10];
-	UCHAR	SupRate[2];  /* unit : 1Mbps */
+	u8 MCSSet[10];
+	u8 SupRate[2];  /* unit : 1Mbps */
 #ifdef RT_BIG_ENDIAN
-	UCHAR	rsv:3;
-	UCHAR	MpduDensity:1;
-	UCHAR	TxStream:2;
-	UCHAR	TxRxNotEqual:1;
-	UCHAR	TxMCSSetDefined:1;
+	u8 rsv:3;
+	u8 MpduDensity:1;
+	u8 TxStream:2;
+	u8 TxRxNotEqual:1;
+	u8 TxMCSSetDefined:1;
 #else
-	UCHAR	TxMCSSetDefined:1;
-	UCHAR	TxRxNotEqual:1;
-	UCHAR	TxStream:2;
-	UCHAR	MpduDensity:1;
-	UCHAR	rsv:3;
+	u8 TxMCSSetDefined:1;
+	u8 TxRxNotEqual:1;
+	u8 TxStream:2;
+	u8 MpduDensity:1;
+	u8 rsv:3;
 #endif /* RT_BIG_ENDIAN */
-	UCHAR	rsv3[3];
+	u8 rsv3[3];
 } HT_MCS_SET, *PHT_MCS_SET;
 
 /*  HT Capability INFO field in HT Cap IE . */
@@ -394,23 +394,23 @@ typedef struct __attribute__ ((packed)) _HT_BF_CAP{
 /*  HT antenna selection field in HT Cap IE . */
 typedef struct __attribute__ ((packed)) _HT_AS_CAP{
 #ifdef RT_BIG_ENDIAN
-	UCHAR	rsv:1;
-	UCHAR	TxSoundPPDU:1;
-	UCHAR	RxASel:1;
-	UCHAR	AntIndFbk:1;
-	UCHAR	ExpCSIFbk:1;
-	UCHAR	AntIndFbkTxASEL:1;
-	UCHAR	ExpCSIFbkTxASEL:1;
-	UCHAR	AntSelect:1;
+	u8 rsv:1;
+	u8 TxSoundPPDU:1;
+	u8 RxASel:1;
+	u8 AntIndFbk:1;
+	u8 ExpCSIFbk:1;
+	u8 AntIndFbkTxASEL:1;
+	u8 ExpCSIFbkTxASEL:1;
+	u8 AntSelect:1;
 #else
-	UCHAR	AntSelect:1;
-	UCHAR	ExpCSIFbkTxASEL:1;
-	UCHAR	AntIndFbkTxASEL:1;
-	UCHAR	ExpCSIFbk:1;
-	UCHAR	AntIndFbk:1;
-	UCHAR	RxASel:1;
-	UCHAR	TxSoundPPDU:1;
-	UCHAR	rsv:1;
+	u8 AntSelect:1;
+	u8 ExpCSIFbkTxASEL:1;
+	u8 AntIndFbkTxASEL:1;
+	u8 ExpCSIFbk:1;
+	u8 AntIndFbk:1;
+	u8 RxASel:1;
+	u8 TxSoundPPDU:1;
+	u8 rsv:1;
 #endif /* RT_BIG_ENDIAN */
 } HT_AS_CAP, *PHT_AS_CAP;
 
@@ -421,7 +421,7 @@ typedef struct __attribute__ ((packed)) _HT_CAPABILITY_IE{
 	HT_CAP_INFO		HtCapInfo;
 	HT_CAP_PARM		HtCapParm;
 /*	HT_MCS_SET		HtMCSSet; */
-	UCHAR			MCSSet[16];
+	u8 		MCSSet[16];
 	EXT_HT_CAP_INFO	ExtHtCapInfo;
 	HT_BF_CAP		TxBFCap;	/* beamforming cap. rt2860c not support beamforming. */
 	HT_AS_CAP		ASCap;	/*antenna selection. */
@@ -456,29 +456,29 @@ typedef struct __attribute__ ((packed)) _OVERLAP_BSS_SCAN_IE{
 typedef union __attribute__ ((packed)) _BSS_2040_COEXIST_IE{
  struct __attribute__ ((packed)) {
 #ifdef RT_BIG_ENDIAN
-	UCHAR	rsv:3;
- 	UCHAR	ObssScanExempGrant:1;
-	UCHAR	ObssScanExempReq:1;
-	UCHAR	BSS20WidthReq:1;
-	UCHAR	Intolerant40:1;
-	UCHAR	InfoReq:1;
+	u8 rsv:3;
+ 	u8 ObssScanExempGrant:1;
+	u8 ObssScanExempReq:1;
+	u8 BSS20WidthReq:1;
+	u8 Intolerant40:1;
+	u8 InfoReq:1;
 #else
-	UCHAR	InfoReq:1;
-	UCHAR	Intolerant40:1;			/* Inter-BSS. set 1 when prohibits a receiving BSS from operating as a 20/40 Mhz BSS. */
-	UCHAR	BSS20WidthReq:1;		/* Intra-BSS set 1 when prohibits a receiving AP from operating its BSS as a 20/40MHz BSS. */
-	UCHAR	ObssScanExempReq:1;
-	UCHAR	ObssScanExempGrant:1;
-	UCHAR	rsv:3;
+	u8 InfoReq:1;
+	u8 Intolerant40:1;			/* Inter-BSS. set 1 when prohibits a receiving BSS from operating as a 20/40 Mhz BSS. */
+	u8 BSS20WidthReq:1;		/* Intra-BSS set 1 when prohibits a receiving AP from operating its BSS as a 20/40MHz BSS. */
+	u8 ObssScanExempReq:1;
+	u8 ObssScanExempGrant:1;
+	u8 rsv:3;
 #endif /* RT_BIG_ENDIAN */
     } field;
- UCHAR   word;
+ u8   word;
 } BSS_2040_COEXIST_IE, *PBSS_2040_COEXIST_IE;
 
 
 typedef struct  _TRIGGER_EVENTA{
 	BOOLEAN			bValid;
-	UCHAR	BSSID[6];
-	UCHAR	RegClass;	/* Regulatory Class */
+	u8 BSSID[6];
+	u8 RegClass;	/* Regulatory Class */
 	USHORT	Channel;
 } TRIGGER_EVENTA, *PTRIGGER_EVENTA;
 
@@ -487,7 +487,7 @@ typedef struct  _TRIGGER_EVENTA{
 /* If one Event A delete or created, or if Event B is detected or not detected, STA should send 2040BSSCoexistence to AP. */
 #define MAX_TRIGGER_EVENT		64
 typedef struct  _TRIGGER_EVENT_TAB{
-	UCHAR	EventANo;
+	u8 EventANo;
 	TRIGGER_EVENTA	EventA[MAX_TRIGGER_EVENT];
 	ULONG			EventBCountDown;	/* Count down counter for Event B. */
 } TRIGGER_EVENT_TAB, *PTRIGGER_EVENT_TAB;
@@ -540,32 +540,32 @@ typedef struct __attribute__ ((packed)) _EXT_CAP_INFO_ELEMENT{
 
 /* 802.11n 7.3.2.61 */
 typedef struct __attribute__ ((packed)) _BSS_2040_COEXIST_ELEMENT{
-	UCHAR					ElementID;		/* ID = IE_2040_BSS_COEXIST = 72 */
-	UCHAR					Len;
+	u8 				ElementID;		/* ID = IE_2040_BSS_COEXIST = 72 */
+	u8 				Len;
 	BSS_2040_COEXIST_IE		BssCoexistIe;
 }BSS_2040_COEXIST_ELEMENT, *PBSS_2040_COEXIST_ELEMENT;
 
 
 /*802.11n 7.3.2.59 */
 typedef struct __attribute__ ((packed)) _BSS_2040_INTOLERANT_CH_REPORT{
-	UCHAR				ElementID;		/* ID = IE_2040_BSS_INTOLERANT_REPORT = 73 */
-	UCHAR				Len;
-	UCHAR				RegulatoryClass;
-	UCHAR				ChList[0];
+	u8 			ElementID;		/* ID = IE_2040_BSS_INTOLERANT_REPORT = 73 */
+	u8 			Len;
+	u8 			RegulatoryClass;
+	u8 			ChList[0];
 }BSS_2040_INTOLERANT_CH_REPORT, *PBSS_2040_INTOLERANT_CH_REPORT;
 
 
 /* The structure for channel switch annoucement IE. This is in 802.11n D3.03 */
 typedef struct __attribute__ ((packed)) _CHA_SWITCH_ANNOUNCE_IE{
-	UCHAR			SwitchMode;	/*channel switch mode */
-	UCHAR			NewChannel;	/* */
-	UCHAR			SwitchCount;	/* */
+	u8 		SwitchMode;	/*channel switch mode */
+	u8 		NewChannel;	/* */
+	u8 		SwitchCount;	/* */
 } CHA_SWITCH_ANNOUNCE_IE, *PCHA_SWITCH_ANNOUNCE_IE;
 
 
 /* The structure for channel switch annoucement IE. This is in 802.11n D3.03 */
 typedef struct __attribute__ ((packed)) _SEC_CHA_OFFSET_IE{
-	UCHAR			SecondaryChannelOffset;	 /* 1: Secondary above, 3: Secondary below, 0: no Secondary */
+	u8 		SecondaryChannelOffset;	 /* 1: Secondary above, 3: Secondary below, 0: no Secondary */
 } SEC_CHA_OFFSET_IE, *PSEC_CHA_OFFSET_IE;
 
 
@@ -574,10 +574,10 @@ typedef struct _RT_PHY_INFO{
 	BOOLEAN		bHtEnable;	 /* If we should use ht rate. */
 	BOOLEAN		bPreNHt;	 /* If we should use ht rate. */
 	/*Substract from HT Capability IE */
-	UCHAR		MCSSet[16];
+	u8 	MCSSet[16];
 #ifdef DOT11_VHT_AC
 	BOOLEAN 	bVhtEnable;
-	UCHAR 		vht_bw;
+	u8 		vht_bw;
 	VHT_MCS_SET vht_mcs_set;
 #endif /* DOT11_VHT_AC */
 } RT_PHY_INFO;
@@ -632,15 +632,15 @@ typedef struct {
 
 	/*Substract from Addiont HT INFO IE */
 #ifdef RT_BIG_ENDIAN
-	UCHAR	RecomWidth:1;
-	UCHAR	ExtChanOffset:2;	/* Please not the difference with following 	UCHAR	NewExtChannelOffset; from 802.11n */
-	UCHAR	MpduDensity:3;
-	UCHAR	MaxRAmpduFactor:2;
+	u8 RecomWidth:1;
+	u8 ExtChanOffset:2;	/* Please not the difference with following 	u8 NewExtChannelOffset; from 802.11n */
+	u8 MpduDensity:3;
+	u8 MaxRAmpduFactor:2;
 #else
-	UCHAR	MaxRAmpduFactor:2;
-	UCHAR	MpduDensity:3;
-	UCHAR	ExtChanOffset:2;	/* Please not the difference with following 	UCHAR	NewExtChannelOffset; from 802.11n */
-	UCHAR	RecomWidth:1;
+	u8 MaxRAmpduFactor:2;
+	u8 MpduDensity:3;
+	u8 ExtChanOffset:2;	/* Please not the difference with following 	u8 NewExtChannelOffset; from 802.11n */
+	u8 RecomWidth:1;
 #endif
 
 #ifdef RT_BIG_ENDIAN
@@ -658,26 +658,26 @@ typedef struct {
 #endif
 
 	/* New Extension Channel Offset IE */
-	UCHAR	NewExtChannelOffset;
+	u8 NewExtChannelOffset;
 	/* Extension Capability IE = 127 */
-	UCHAR	BSSCoexist2040;
+	u8 BSSCoexist2040;
 } RT_HT_CAPABILITY, *PRT_HT_CAPABILITY;
 
 
 /*   field in Addtional HT Information IE . */
 typedef struct __attribute__ ((packed)) _ADD_HTINFO{
 #ifdef RT_BIG_ENDIAN
-	UCHAR	SerInterGranu:3;
-	UCHAR	S_PSMPSup:1;
-	UCHAR	RifsMode:1;
-	UCHAR	RecomWidth:1;
-	UCHAR	ExtChanOffset:2;
+	u8 SerInterGranu:3;
+	u8 S_PSMPSup:1;
+	u8 RifsMode:1;
+	u8 RecomWidth:1;
+	u8 ExtChanOffset:2;
 #else
-	UCHAR	ExtChanOffset:2;
-	UCHAR	RecomWidth:1;
-	UCHAR	RifsMode:1;
-	UCHAR	S_PSMPSup:1;	 /*Indicate support for scheduled PSMP */
-	UCHAR	SerInterGranu:3;	 /*service interval granularity */
+	u8 ExtChanOffset:2;
+	u8 RecomWidth:1;
+	u8 RifsMode:1;
+	u8 S_PSMPSup:1;	 /*Indicate support for scheduled PSMP */
+	u8 SerInterGranu:3;	 /*service interval granularity */
 #endif
 } ADD_HTINFO, *PADD_HTINFO;
 
@@ -724,33 +724,33 @@ typedef struct __attribute__ ((packed)) _ADD_HTINFO3{
 
 #define SIZE_ADD_HT_INFO_IE		22
 typedef struct  __attribute__ ((packed)) _ADD_HT_INFO_IE{
-	UCHAR				ControlChan;
+	u8 			ControlChan;
 	ADD_HTINFO			AddHtInfo;
 	ADD_HTINFO2			AddHtInfo2;
 	ADD_HTINFO3			AddHtInfo3;
-	UCHAR				MCSSet[16];		/* Basic MCS set */
+	u8 			MCSSet[16];		/* Basic MCS set */
 } ADD_HT_INFO_IE, *PADD_HT_INFO_IE;
 
 typedef struct  __attribute__ ((packed)) _NEW_EXT_CHAN_IE{
-	UCHAR				NewExtChanOffset;
+	u8 			NewExtChanOffset;
 } NEW_EXT_CHAN_IE, *PNEW_EXT_CHAN_IE;
 
 typedef struct __attribute__ ((packed)) _FRAME_802_11 {
     HEADER_802_11   Hdr;
-    UCHAR            Octet[1];
+    u8            Octet[1];
 } FRAME_802_11, *PFRAME_802_11;
 
 /* QoSNull embedding of management action. When HT Control MA field set to 1. */
 typedef struct __attribute__ ((packed)) _MA_BODY {
-    UCHAR            Category;
-    UCHAR            Action;
-    UCHAR            Octet[1];
+    u8            Category;
+    u8            Action;
+    u8            Octet[1];
 } MA_BODY, *PMA_BODY;
 
 typedef	struct __attribute__ ((packed)) _HEADER_802_3	{
-    UCHAR           DAAddr1[MAC_ADDR_LEN];
-    UCHAR           SAAddr2[MAC_ADDR_LEN];
-    UCHAR           Octet[2];
+    u8           DAAddr1[MAC_ADDR_LEN];
+    u8           SAAddr2[MAC_ADDR_LEN];
+    u8           Octet[2];
 } HEADER_802_3, *PHEADER_802_3;
 
 
@@ -869,8 +869,8 @@ typedef struct {
 typedef struct __attribute__ ((packed)) _FRAME_BA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	UCHAR           Addr1[MAC_ADDR_LEN];
-	UCHAR           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[MAC_ADDR_LEN];
+	u8           Addr2[MAC_ADDR_LEN];
 	BAR_CONTROL  BARControl;
 	BASEQ_CONTROL 	 BAStartingSeq;
 }   FRAME_BA_REQ, *PFRAME_BA_REQ;
@@ -878,8 +878,8 @@ typedef struct __attribute__ ((packed)) _FRAME_BA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_MTBA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	UCHAR           Addr1[MAC_ADDR_LEN];
-	UCHAR           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[MAC_ADDR_LEN];
+	u8           Addr2[MAC_ADDR_LEN];
 	MTBAR_CONTROL  MTBARControl;
 	PER_TID_INFO	PerTIDInfo;
 	BASEQ_CONTROL 	 BAStartingSeq;
@@ -889,47 +889,47 @@ typedef struct __attribute__ ((packed)) _FRAME_MTBA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_MTBA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	UCHAR           Addr1[MAC_ADDR_LEN];
-	UCHAR           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[MAC_ADDR_LEN];
+	u8           Addr2[MAC_ADDR_LEN];
 	BA_CONTROL  BAControl;
 	BASEQ_CONTROL 	 BAStartingSeq;
-	UCHAR		BitMap[8];
+	u8 	BitMap[8];
 }   FRAME_MTBA, *PFRAME_MTBA;
 
 typedef struct __attribute__ ((packed)) _FRAME_PSMP_ACTION {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
-	UCHAR	Psmp;	/* 7.3.1.25 */
+	u8 Category;
+	u8 Action;
+	u8 Psmp;	/* 7.3.1.25 */
 }   FRAME_PSMP_ACTION, *PFRAME_PSMP_ACTION;
 
 typedef struct __attribute__ ((packed)) _FRAME_ACTION_HDR {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
+	u8 Category;
+	u8 Action;
 }   FRAME_ACTION_HDR, *PFRAME_ACTION_HDR;
 
 /*Action Frame */
 /*Action Frame  Category:Spectrum,  Action:Channel Switch. 7.3.2.20 */
 typedef struct __attribute__ ((packed)) _CHAN_SWITCH_ANNOUNCE {
-	UCHAR					ElementID;	/* ID = IE_CHANNEL_SWITCH_ANNOUNCEMENT = 37 */
-	UCHAR					Len;
+	u8 				ElementID;	/* ID = IE_CHANNEL_SWITCH_ANNOUNCEMENT = 37 */
+	u8 				Len;
 	CHA_SWITCH_ANNOUNCE_IE	CSAnnounceIe;
 }   CHAN_SWITCH_ANNOUNCE, *PCHAN_SWITCH_ANNOUNCE;
 
 
 /*802.11n : 7.3.2.20a */
 typedef struct __attribute__ ((packed)) _SECOND_CHAN_OFFSET {
-	UCHAR				ElementID;		/* ID = IE_SECONDARY_CH_OFFSET = 62 */
-	UCHAR				Len;
+	u8 			ElementID;		/* ID = IE_SECONDARY_CH_OFFSET = 62 */
+	u8 			Len;
 	SEC_CHA_OFFSET_IE	SecChOffsetIe;
 }   SECOND_CHAN_OFFSET, *PSECOND_CHAN_OFFSET;
 
 
 typedef struct __attribute__ ((packed)) _FRAME_SPETRUM_CS {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
+	u8 Category;
+	u8 Action;
 	CHAN_SWITCH_ANNOUNCE	CSAnnounce;
 	SECOND_CHAN_OFFSET		SecondChannel;
 }   FRAME_SPETRUM_CS, *PFRAME_SPETRUM_CS;
@@ -937,9 +937,9 @@ typedef struct __attribute__ ((packed)) _FRAME_SPETRUM_CS {
 
 typedef struct __attribute__ ((packed)) _FRAME_ADDBA_REQ {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
-	UCHAR	Token;	/* 1 */
+	u8 Category;
+	u8 Action;
+	u8 Token;	/* 1 */
 	BA_PARM		BaParm;	      /*  2 - 10 */
 	USHORT		TimeOutValue;	/* 0 - 0 */
 	BASEQ_CONTROL	BaStartSeq; /* 0-0 */
@@ -947,9 +947,9 @@ typedef struct __attribute__ ((packed)) _FRAME_ADDBA_REQ {
 
 typedef struct __attribute__ ((packed)) _FRAME_ADDBA_RSP {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
-	UCHAR	Token;
+	u8 Category;
+	u8 Action;
+	u8 Token;
 	USHORT	StatusCode;
 	BA_PARM		BaParm; /*0 - 2 */
 	USHORT		TimeOutValue;
@@ -957,8 +957,8 @@ typedef struct __attribute__ ((packed)) _FRAME_ADDBA_RSP {
 
 typedef struct __attribute__ ((packed)) _FRAME_DELBA_REQ {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
+	u8 Category;
+	u8 Action;
 	DELBA_PARM		DelbaParm;
 	USHORT	ReasonCode;
 }   FRAME_DELBA_REQ, *PFRAME_DELBA_REQ;
@@ -968,8 +968,8 @@ typedef struct __attribute__ ((packed)) _FRAME_DELBA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_BAR {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	UCHAR           Addr1[MAC_ADDR_LEN];
-	UCHAR           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[MAC_ADDR_LEN];
+	u8           Addr2[MAC_ADDR_LEN];
 	BAR_CONTROL		BarControl;
 	BASEQ_CONTROL	StartingSeq;
 }   FRAME_BAR, *PFRAME_BAR;
@@ -978,31 +978,31 @@ typedef struct __attribute__ ((packed)) _FRAME_BAR {
 typedef struct __attribute__ ((packed)) _FRAME_BA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	UCHAR           Addr1[MAC_ADDR_LEN];
-	UCHAR           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[MAC_ADDR_LEN];
+	u8           Addr2[MAC_ADDR_LEN];
 	BAR_CONTROL		BarControl;
 	BASEQ_CONTROL	StartingSeq;
-	UCHAR		bitmask[8];
+	u8 	bitmask[8];
 }   FRAME_BA, *PFRAME_BA;
 
 
 /* Radio Measuement Request Frame Format */
 typedef struct __attribute__ ((packed)) _FRAME_RM_REQ_ACTION {
 	HEADER_802_11   Hdr;
-	UCHAR	Category;
-	UCHAR	Action;
-	UCHAR	Token;
+	u8 Category;
+	u8 Action;
+	u8 Token;
 	USHORT	Repetition;
-	UCHAR   data[0];
+	u8   data[0];
 }   FRAME_RM_REQ_ACTION, *PFRAME_RM_REQ_ACTION;
 
 typedef struct __attribute__ ((packed)) _HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE{
-	UCHAR		ID;
-	UCHAR		Length;
-	UCHAR		ChannelSwitchMode;
-	UCHAR		NewRegClass;
-	UCHAR		NewChannelNum;
-	UCHAR		ChannelSwitchCount;
+	u8 	ID;
+	u8 	Length;
+	u8 	ChannelSwitchMode;
+	u8 	NewRegClass;
+	u8 	NewChannelNum;
+	u8 	ChannelSwitchCount;
 } HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE, *PHT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE;
 
 
@@ -1021,8 +1021,8 @@ typedef struct __attribute__ ((packed)) _HT_EXT_CHANNEL_SWITCH_ANNOUNCEMENT_IE{
 /* */
 typedef struct __attribute__ ((packed)) _CF_PARM{
     BOOLEAN     bValid;         /* 1: variable contains valid value */
-    UCHAR       CfpCount;
-    UCHAR       CfpPeriod;
+    u8       CfpCount;
+    u8       CfpPeriod;
     USHORT      CfpMaxDuration;
     USHORT      CfpDurRemaining;
 } CF_PARM, *PCF_PARM;
@@ -1045,10 +1045,10 @@ typedef struct {
     BOOLEAN     bTxopRequest;
     BOOLEAN     bAPSDCapable;
 /*  BOOLEAN     bMoreDataAck; */
-    UCHAR       EdcaUpdateCount;
-    UCHAR       Aifsn[4];       /* 0:AC_BK, 1:AC_BE, 2:AC_VI, 3:AC_VO */
-    UCHAR       Cwmin[4];
-    UCHAR       Cwmax[4];
+    u8       EdcaUpdateCount;
+    u8       Aifsn[4];       /* 0:AC_BK, 1:AC_BE, 2:AC_VI, 3:AC_VO */
+    u8       Cwmin[4];
+    u8       Cwmax[4];
     USHORT      Txop[4];      /* in unit of 32-us */
     BOOLEAN     bACM[4];      /* 1: Admission Control of AC_BK is mandattory */
 } EDCA_PARM, *PEDCA_PARM;
@@ -1057,50 +1057,50 @@ typedef struct {
 typedef struct {
     BOOLEAN     bValid;                     /* 1: variable contains valid value */
     USHORT      StaNum;
-    UCHAR       ChannelUtilization;
+    u8       ChannelUtilization;
     USHORT      RemainingAdmissionControl;  /* in unit of 32-us */
 } QBSS_LOAD_PARM, *PQBSS_LOAD_PARM;
 
 /* QBSS Info field in QSTA's assoc req */
 typedef struct __attribute__ ((packed)) _QBSS_STA_INFO_PARM{
 #ifdef RT_BIG_ENDIAN
-	UCHAR		Rsv2:1;
-	UCHAR		MaxSPLength:2;
-	UCHAR		Rsv1:1;
-	UCHAR		UAPSD_AC_BE:1;
-	UCHAR		UAPSD_AC_BK:1;
-	UCHAR		UAPSD_AC_VI:1;
-	UCHAR		UAPSD_AC_VO:1;
+	u8 	Rsv2:1;
+	u8 	MaxSPLength:2;
+	u8 	Rsv1:1;
+	u8 	UAPSD_AC_BE:1;
+	u8 	UAPSD_AC_BK:1;
+	u8 	UAPSD_AC_VI:1;
+	u8 	UAPSD_AC_VO:1;
 #else
-    UCHAR		UAPSD_AC_VO:1;
-	UCHAR		UAPSD_AC_VI:1;
-	UCHAR		UAPSD_AC_BK:1;
-	UCHAR		UAPSD_AC_BE:1;
-	UCHAR		Rsv1:1;
-	UCHAR		MaxSPLength:2;
-	UCHAR		Rsv2:1;
+    u8 	UAPSD_AC_VO:1;
+	u8 	UAPSD_AC_VI:1;
+	u8 	UAPSD_AC_BK:1;
+	u8 	UAPSD_AC_BE:1;
+	u8 	Rsv1:1;
+	u8 	MaxSPLength:2;
+	u8 	Rsv2:1;
 #endif /* RT_BIG_ENDIAN */
 } QBSS_STA_INFO_PARM, *PQBSS_STA_INFO_PARM;
 
 typedef struct {
 	QBSS_STA_INFO_PARM	QosInfo;
-	UCHAR	Rsv;
-	UCHAR	Q_AC_BE[4];
-	UCHAR	Q_AC_BK[4];
-	UCHAR	Q_AC_VI[4];
-	UCHAR	Q_AC_VO[4];
+	u8 Rsv;
+	u8 Q_AC_BE[4];
+	u8 Q_AC_BK[4];
+	u8 Q_AC_VI[4];
+	u8 Q_AC_VO[4];
 } QBSS_STA_EDCA_PARM, *PQBSS_STA_EDCA_PARM;
 
 /* QBSS Info field in QAP's Beacon/ProbeRsp */
 typedef struct __attribute__ ((packed)) _QBSS_AP_INFO_PARM{
 #ifdef RT_BIG_ENDIAN
-	UCHAR		UAPSD:1;
-	UCHAR		Rsv:3;
-    UCHAR		ParamSetCount:4;
+	u8 	UAPSD:1;
+	u8 	Rsv:3;
+    u8 	ParamSetCount:4;
 #else
-    UCHAR		ParamSetCount:4;
-	UCHAR		Rsv:3;
-	UCHAR		UAPSD:1;
+    u8 	ParamSetCount:4;
+	u8 	Rsv:3;
+	u8 	UAPSD:1;
 #endif /* RT_BIG_ENDIAN */
 } QBSS_AP_INFO_PARM, *PQBSS_AP_INFO_PARM;
 
@@ -1112,48 +1112,48 @@ typedef struct {
     BOOLEAN     bQueueRequest;
     BOOLEAN     bTxopRequest;
 /*  BOOLEAN     bMoreDataAck; */
-    UCHAR       EdcaUpdateCount;
+    u8       EdcaUpdateCount;
 } QOS_CAPABILITY_PARM, *PQOS_CAPABILITY_PARM;
 
 #ifdef CONFIG_STA_SUPPORT
 typedef struct {
-    UCHAR       IELen;
-    UCHAR       IE[MAX_CUSTOM_LEN];
+    u8       IELen;
+    u8       IE[MAX_CUSTOM_LEN];
 } WPA_IE_;
 #endif /* CONFIG_STA_SUPPORT */
 
 
 typedef struct {
-    UCHAR   Bssid[MAC_ADDR_LEN];
-    UCHAR   Channel;
-	UCHAR   CentralChannel;	/*Store the wide-band central channel for 40MHz.  .used in 40MHz AP. Or this is the same as Channel. */
-    UCHAR   BssType;
+    u8   Bssid[MAC_ADDR_LEN];
+    u8   Channel;
+	u8   CentralChannel;	/*Store the wide-band central channel for 40MHz.  .used in 40MHz AP. Or this is the same as Channel. */
+    u8   BssType;
     USHORT  AtimWin;
     USHORT  BeaconPeriod;
 
-    UCHAR   SupRate[MAX_LEN_OF_SUPPORTED_RATES];
-    UCHAR   SupRateLen;
-    UCHAR   ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
-    UCHAR   ExtRateLen;
+    u8   SupRate[MAX_LEN_OF_SUPPORTED_RATES];
+    u8   SupRateLen;
+    u8   ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
+    u8   ExtRateLen;
 	HT_CAPABILITY_IE HtCapability;
-	UCHAR			HtCapabilityLen;
+	u8 		HtCapabilityLen;
 	ADD_HT_INFO_IE AddHtInfo;	/* AP might use this additional ht info IE */
-	UCHAR			AddHtInfoLen;
+	u8 		AddHtInfoLen;
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;	/* this is the extened capibility IE appreed in MGMT frames. Doesn't need to update once set in Init. */
-	UCHAR			NewExtChanOffset;
+	u8 		NewExtChanOffset;
 	CHAR    Rssi;
 
 #ifdef DOT11_VHT_AC
-	UCHAR vht_cap_len;
-	UCHAR vht_op_len;
+	u8 vht_cap_len;
+	u8 vht_op_len;
 	VHT_CAP_IE vht_cap_ie;
 	VHT_OP_IE vht_op_ie;
 #endif /* DOT11_VHT_AC */
 
 
 	CHAR	MinSNR;
-    UCHAR   Privacy;			/* Indicate security function ON/OFF. Don't mess up with auth mode. */
-	UCHAR	Hidden;
+    u8   Privacy;			/* Indicate security function ON/OFF. Don't mess up with auth mode. */
+	u8 Hidden;
 
     USHORT  DtimPeriod;
     USHORT  CapabilityInfo;
@@ -1162,10 +1162,10 @@ typedef struct {
     USHORT  CfpPeriod;
     USHORT  CfpMaxDuration;
     USHORT  CfpDurRemaining;
-    UCHAR   SsidLen;
+    u8   SsidLen;
     CHAR    Ssid[MAX_LEN_OF_SSID];
 
-	UCHAR	SameRxTimeCount;
+	u8 SameRxTimeCount;
 	ULONG   LastBeaconRxTimeA; /* OS's timestamp */
     ULONG   LastBeaconRxTime; /* OS's timestamp */
 
@@ -1181,16 +1181,16 @@ typedef struct {
 	NDIS_802_11_AUTHENTICATION_MODE	AuthMode;
 	NDIS_802_11_WEP_STATUS	WepStatus;				/* Unicast Encryption Algorithm extract from VAR_IE */
 	USHORT					VarIELen;				/* Length of next VIE include EID & Length */
-	UCHAR					VarIEs[MAX_VIE_LEN];
+	u8 				VarIEs[MAX_VIE_LEN];
 	USHORT					VarIeFromProbeRspLen;
-	UCHAR					*pVarIeFromProbRsp;
+	u8 				*pVarIeFromProbRsp;
 
 	/* CCX Ckip information */
-    UCHAR   CkipFlag;
+    u8   CkipFlag;
 
 	/* CCX 2 TSF */
-	UCHAR	PTSF[4];		/* Parent TSF */
-	UCHAR	TTSF[8];		/* Target TSF */
+	u8 PTSF[4];		/* Parent TSF */
+	u8 TTSF[8];		/* Target TSF */
 
     /* 802.11e d9, and WMM */
 	EDCA_PARM           EdcaParm;
@@ -1205,36 +1205,36 @@ typedef struct {
 	WPA_IE_ 	WpsIE;
 
 #ifdef EXT_BUILD_CHANNEL_LIST
-	UCHAR		CountryString[3];
+	u8 	CountryString[3];
 	BOOLEAN		bHasCountryIE;
 #endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
-	UCHAR   MacAddr[MAC_ADDR_LEN];
+	u8   MacAddr[MAC_ADDR_LEN];
 	ULONG ClientStatusFlags;
 } BSS_ENTRY, *PBSS_ENTRY;
 
 typedef struct {
-    UCHAR           BssNr;
-    UCHAR           BssOverlapNr;
+    u8           BssNr;
+    u8           BssOverlapNr;
     BSS_ENTRY       BssEntry[MAX_LEN_OF_BSS_TABLE];
 } BSS_TABLE, *PBSS_TABLE;
 
 
 typedef struct _MLME_QUEUE_ELEM {
-	UCHAR             Msg[MGMT_DMA_BUFFER_SIZE];	/* move here to fix alignment issue for ARM CPU */
+	u8             Msg[MGMT_DMA_BUFFER_SIZE];	/* move here to fix alignment issue for ARM CPU */
     ULONG             Machine;
     ULONG             MsgType;
     ULONG             MsgLen;
     LARGE_INTEGER     TimeStamp;
-    UCHAR             Rssi0;
-    UCHAR             Rssi1;
-    UCHAR             Rssi2;
-    UCHAR             Signal;
-    UCHAR             Channel;
-    UCHAR             Wcid;
+    u8             Rssi0;
+    u8             Rssi1;
+    u8             Rssi2;
+    u8             Signal;
+    u8             Channel;
+    u8             Wcid;
     BOOLEAN           Occupied;
-	UCHAR			  OpMode;
+	u8 		  OpMode;
 	ULONG             Priv;
 } MLME_QUEUE_ELEM, *PMLME_QUEUE_ELEM;
 
@@ -1264,16 +1264,16 @@ typedef struct _STATE_MACHINE {
 /* separate this under-trial settings away from pAd->StaActive so that once */
 /* this new attempt failed, driver can auto-recover back to the active settings. */
 typedef struct _MLME_AUX {
-	UCHAR               BssType;
-	UCHAR               Ssid[MAX_LEN_OF_SSID];
-	UCHAR               SsidLen;
-	UCHAR               Bssid[MAC_ADDR_LEN];
-	UCHAR			AutoReconnectSsid[MAX_LEN_OF_SSID];
-	UCHAR			AutoReconnectSsidLen;
+	u8               BssType;
+	u8               Ssid[MAX_LEN_OF_SSID];
+	u8               SsidLen;
+	u8               Bssid[MAC_ADDR_LEN];
+	u8 		AutoReconnectSsid[MAX_LEN_OF_SSID];
+	u8 		AutoReconnectSsidLen;
 	USHORT			Alg;
-	UCHAR			ScanType;
-	UCHAR			Channel;
-	UCHAR               CentralChannel;
+	u8 		ScanType;
+	u8 		Channel;
+	u8               CentralChannel;
 	USHORT              Aid;
 	USHORT              CapabilityInfo;
 	USHORT              BeaconPeriod;
@@ -1283,20 +1283,20 @@ typedef struct _MLME_AUX {
 
 	/* Copy supported rate from desired AP's beacon. We are trying to match */
 	/* AP's supported and extended rate settings. */
-	UCHAR		        SupRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR		        ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR		        SupRateLen;
-	UCHAR		        ExtRateLen;
+	u8 	        SupRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 	        ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 	        SupRateLen;
+	u8 	        ExtRateLen;
 	HT_CAPABILITY_IE		HtCapability;
-	UCHAR		        	HtCapabilityLen;
+	u8 	        	HtCapabilityLen;
 	ADD_HT_INFO_IE		AddHtInfo;	/* AP might use this additional ht info IE */
 	EXT_CAP_INFO_ELEMENT ExtCapInfo; /* this is the extened capibility IE appreed in MGMT frames. Doesn't need to update once set in Init. */
-	UCHAR			NewExtChannelOffset;
+	u8 		NewExtChannelOffset;
 	/*RT_HT_CAPABILITY	SupportedHtPhy; */
 
 #ifdef DOT11_VHT_AC
-	UCHAR vht_cap_len;
-	UCHAR vht_op_len;
+	u8 vht_cap_len;
+	u8 vht_op_len;
 	VHT_CAP_IE vht_cap;
 	VHT_OP_IE vht_op;
 #endif /* DOT11_VHT_AC */
@@ -1326,44 +1326,44 @@ typedef struct _MLME_AUX {
 } MLME_AUX, *PMLME_AUX;
 
 typedef struct _MLME_ADDBA_REQ_STRUCT{
-	UCHAR   Wcid;	/* */
-	UCHAR   pAddr[MAC_ADDR_LEN];
-	UCHAR   BaBufSize;
+	u8   Wcid;	/* */
+	u8   pAddr[MAC_ADDR_LEN];
+	u8   BaBufSize;
 	USHORT	TimeOutValue;
-	UCHAR   TID;
-	UCHAR   Token;
+	u8   TID;
+	u8   Token;
 	USHORT	BaStartSeq;
 } MLME_ADDBA_REQ_STRUCT, *PMLME_ADDBA_REQ_STRUCT;
 
 
 typedef struct _MLME_DELBA_REQ_STRUCT{
-	UCHAR   Wcid;	/* */
-	UCHAR     Addr[MAC_ADDR_LEN];
-	UCHAR   TID;
-	UCHAR	Initiator;
+	u8   Wcid;	/* */
+	u8     Addr[MAC_ADDR_LEN];
+	u8   TID;
+	u8 Initiator;
 } MLME_DELBA_REQ_STRUCT, *PMLME_DELBA_REQ_STRUCT;
 
 /* assoc struct is equal to reassoc */
 typedef struct _MLME_ASSOC_REQ_STRUCT{
-    UCHAR     Addr[MAC_ADDR_LEN];
+    u8     Addr[MAC_ADDR_LEN];
     USHORT    CapabilityInfo;
     USHORT    ListenIntv;
     ULONG     Timeout;
 } MLME_ASSOC_REQ_STRUCT, *PMLME_ASSOC_REQ_STRUCT, MLME_REASSOC_REQ_STRUCT, *PMLME_REASSOC_REQ_STRUCT;
 
 typedef struct _MLME_DISASSOC_REQ_STRUCT{
-    UCHAR     Addr[MAC_ADDR_LEN];
+    u8     Addr[MAC_ADDR_LEN];
     USHORT    Reason;
 } MLME_DISASSOC_REQ_STRUCT, *PMLME_DISASSOC_REQ_STRUCT;
 
 typedef struct _MLME_AUTH_REQ_STRUCT {
-    UCHAR        Addr[MAC_ADDR_LEN];
+    u8        Addr[MAC_ADDR_LEN];
     USHORT       Alg;
     ULONG        Timeout;
 } MLME_AUTH_REQ_STRUCT, *PMLME_AUTH_REQ_STRUCT;
 
 typedef struct _MLME_DEAUTH_REQ_STRUCT {
-    UCHAR        Addr[MAC_ADDR_LEN];
+    u8        Addr[MAC_ADDR_LEN];
     USHORT       Reason;
 } MLME_DEAUTH_REQ_STRUCT, *PMLME_DEAUTH_REQ_STRUCT;
 
@@ -1372,16 +1372,16 @@ typedef struct {
 } MLME_JOIN_REQ_STRUCT;
 
 typedef struct _MLME_SCAN_REQ_STRUCT {
-    UCHAR      Bssid[MAC_ADDR_LEN];
-    UCHAR      BssType;
-    UCHAR      ScanType;
-    UCHAR      SsidLen;
+    u8      Bssid[MAC_ADDR_LEN];
+    u8      BssType;
+    u8      ScanType;
+    u8      SsidLen;
     CHAR       Ssid[MAX_LEN_OF_SSID];
 } MLME_SCAN_REQ_STRUCT, *PMLME_SCAN_REQ_STRUCT;
 
 typedef struct _MLME_START_REQ_STRUCT {
     CHAR        Ssid[MAX_LEN_OF_SSID];
-    UCHAR       SsidLen;
+    u8       SsidLen;
 } MLME_START_REQ_STRUCT, *PMLME_START_REQ_STRUCT;
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1391,7 +1391,7 @@ typedef struct _RT_802_11_DLS {
 	USHORT						TimeOut;		/* Use to time out while slience, unit: second , set by UI */
 	USHORT						CountDownTimer;	/* Use to time out while slience,unit: second , used by driver only */
 	NDIS_802_11_MAC_ADDRESS		MacAddr;		/* set by UI */
-	UCHAR						Status;			/* 0: none , 1: wait STAkey, 2: finish DLS setup , set by driver only */
+	u8 					Status;			/* 0: none , 1: wait STAkey, 2: finish DLS setup , set by driver only */
 	BOOLEAN						Valid;			/* 1: valid , 0: invalid , set by UI, use to setup or tear down DLS link */
 	RALINK_TIMER_STRUCT			Timer;			/* Use to time out while handshake */
 	USHORT						Sequence;
@@ -1408,9 +1408,9 @@ typedef struct _MLME_DLS_REQ_STRUCT {
 #endif /* CONFIG_STA_SUPPORT */
 
 typedef struct __attribute__ ((packed)) _EID_STRUCT{
-    UCHAR   Eid;
-    UCHAR   Len;
-    UCHAR   Octet[1];
+    u8   Eid;
+    u8   Len;
+    u8   Octet[1];
 } EID_STRUCT,*PEID_STRUCT, BEACON_EID_STRUCT, *PBEACON_EID_STRUCT;
 
 
@@ -1448,53 +1448,53 @@ typedef enum _AuthState {
 
 
 typedef struct _IE_lists {
-	UCHAR Addr2[MAC_ADDR_LEN];
-	UCHAR ApAddr[MAC_ADDR_LEN];
+	u8 Addr2[MAC_ADDR_LEN];
+	u8 ApAddr[MAC_ADDR_LEN];
 	USHORT CapabilityInfo;
 	USHORT ListenInterval;
-	UCHAR SsidLen;
-	UCHAR Ssid[MAX_LEN_OF_SSID];
-	UCHAR SupportedRatesLen;
-	UCHAR SupportedRates[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR RSN_IE[MAX_LEN_OF_RSNIE];
-	UCHAR RSNIE_Len;
+	u8 SsidLen;
+	u8 Ssid[MAX_LEN_OF_SSID];
+	u8 SupportedRatesLen;
+	u8 SupportedRates[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 RSN_IE[MAX_LEN_OF_RSNIE];
+	u8 RSNIE_Len;
 	BOOLEAN bWmmCapable;
 	ULONG RalinkIe;
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;
-	UCHAR ht_cap_len;
+	u8 ht_cap_len;
 	HT_CAPABILITY_IE HTCapability;
 #ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap;
 	VHT_OP_IE vht_op;
-	UCHAR vht_cap_len;
-	UCHAR vht_op_len;
+	u8 vht_cap_len;
+	u8 vht_op_len;
 #endif /* DOT11_VHT_AC */
 }IE_LISTS;
 
 
 typedef struct _bcn_ie_list {
-	UCHAR Addr1[MAC_ADDR_LEN];
-	UCHAR Addr2[MAC_ADDR_LEN];
-	UCHAR Bssid[MAC_ADDR_LEN];
+	u8 Addr1[MAC_ADDR_LEN];
+	u8 Addr2[MAC_ADDR_LEN];
+	u8 Bssid[MAC_ADDR_LEN];
 	CHAR Ssid[MAX_LEN_OF_SSID];
-	UCHAR SsidLen;
-	UCHAR BssType;
+	u8 SsidLen;
+	u8 BssType;
 	USHORT BeaconPeriod;
-	UCHAR Channel;
-	UCHAR NewChannel;
+	u8 Channel;
+	u8 NewChannel;
 	USHORT AtimWin;
 	USHORT CapabilityInfo;
-	UCHAR Erp;
-	UCHAR DtimCount;
-	UCHAR DtimPeriod;
-	UCHAR BcastFlag;
-	UCHAR MessageToMe;
-	UCHAR SupRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR SupRateLen;
-	UCHAR ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
-	UCHAR ExtRateLen;
-	UCHAR CkipFlag;
-	UCHAR AironetCellPowerLimit;
+	u8 Erp;
+	u8 DtimCount;
+	u8 DtimPeriod;
+	u8 BcastFlag;
+	u8 MessageToMe;
+	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 SupRateLen;
+	u8 ExtRate[MAX_LEN_OF_SUPPORTED_RATES];
+	u8 ExtRateLen;
+	u8 CkipFlag;
+	u8 AironetCellPowerLimit;
 	LARGE_INTEGER TimeStamp;
 	CF_PARM CfParm;
 	EDCA_PARM EdcaParm;
@@ -1502,17 +1502,17 @@ typedef struct _bcn_ie_list {
 	QOS_CAPABILITY_PARM QosCapability;
 	ULONG RalinkIe;
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;
-	UCHAR HtCapabilityLen;
-	UCHAR PreNHtCapabilityLen;
+	u8 HtCapabilityLen;
+	u8 PreNHtCapabilityLen;
 	HT_CAPABILITY_IE HtCapability;
-	UCHAR AddHtInfoLen;
+	u8 AddHtInfoLen;
 	ADD_HT_INFO_IE AddHtInfo;
-	UCHAR NewExtChannelOffset;
+	u8 NewExtChannelOffset;
 #ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap_ie;
 	VHT_OP_IE vht_op_ie;
-	UCHAR vht_cap_len;
-	UCHAR vht_op_len;
+	u8 vht_cap_len;
+	u8 vht_op_len;
 #endif /* DOT11_VHT_AC */
 }BCN_IE_LIST;
 

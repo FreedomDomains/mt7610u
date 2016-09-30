@@ -97,7 +97,7 @@ INT Set_SSID_Proc(
 		if ((pAd->StaCfg.WpaPassPhraseLen >= 8) &&
 			(pAd->StaCfg.WpaPassPhraseLen <= 64))
 		{
-			UCHAR keyMaterial[40];
+			u8 keyMaterial[40];
 
 			memset(pAd->StaCfg.PMK, 0, 32);
 			if (pAd->StaCfg.WpaPassPhraseLen == 64)
@@ -114,10 +114,10 @@ INT Set_SSID_Proc(
 		/* Record the desired user settings to MlmeAux */
 		memset(pAd->MlmeAux.Ssid, 0, MAX_LEN_OF_SSID);
 		memmove(pAd->MlmeAux.Ssid, Ssid.Ssid, Ssid.SsidLength);
-		pAd->MlmeAux.SsidLen = (UCHAR)Ssid.SsidLength;
+		pAd->MlmeAux.SsidLen = (u8)Ssid.SsidLength;
 
 		memmove(pAd->MlmeAux.AutoReconnectSsid, Ssid.Ssid, Ssid.SsidLength);
-		pAd->MlmeAux.AutoReconnectSsidLen = (UCHAR)Ssid.SsidLength;
+		pAd->MlmeAux.AutoReconnectSsidLen = (u8)Ssid.SsidLength;
 
         pAd->MlmeAux.CurrReqIsFromNdis = TRUE;
         pAd->StaCfg.bSkipAutoScanConn = FALSE;
@@ -275,7 +275,7 @@ INT Set_NetworkType_Proc(
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	{
 		BCN_TIME_CFG_STRUC csr;
-		UCHAR rf_channel, rf_bw;
+		u8 rf_channel, rf_bw;
 		INT ext_ch;
 
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
@@ -489,7 +489,7 @@ INT Set_DefaultKeyID_Proc(
 
     KeyIdx = simple_strtol(arg, 0, 10);
     if((KeyIdx >= 1 ) && (KeyIdx <= 4))
-        pAdapter->StaCfg.DefaultKeyId = (UCHAR) (KeyIdx - 1 );
+        pAdapter->StaCfg.DefaultKeyId = (u8) (KeyIdx - 1 );
     else
         return FALSE;  /*Invalid argument */
 
@@ -506,7 +506,7 @@ INT Set_Wep_Key_Proc(
     IN  INT             KeyId)
 {
     int    i;
-    UCHAR  CipherAlg = CIPHER_WEP64;
+    u8  CipherAlg = CIPHER_WEP64;
 	struct wifi_dev *wdev = &pAdapter->StaCfg.wdev;
 
     if (wdev->AuthMode >= Ndis802_11AuthModeWPA)
@@ -591,7 +591,7 @@ INT Set_Key1_Proc(
 {
     int                                 KeyLen;
     int                                 i;
-    UCHAR                               CipherAlg=CIPHER_WEP64;
+    u8                               CipherAlg=CIPHER_WEP64;
 
     if (pAdapter->StaCfg.AuthMode >= Ndis802_11AuthModeWPA)
         return TRUE;    /* do nothing */
@@ -669,7 +669,7 @@ INT Set_Key2_Proc(
 {
     int                                 KeyLen;
     int                                 i;
-    UCHAR                               CipherAlg=CIPHER_WEP64;
+    u8                               CipherAlg=CIPHER_WEP64;
 
     if (pAdapter->StaCfg.AuthMode >= Ndis802_11AuthModeWPA)
         return TRUE;    /* do nothing */
@@ -745,7 +745,7 @@ INT Set_Key3_Proc(
 {
     int                                 KeyLen;
     int                                 i;
-    UCHAR                               CipherAlg=CIPHER_WEP64;
+    u8                               CipherAlg=CIPHER_WEP64;
 
     if (pAdapter->StaCfg.AuthMode >= Ndis802_11AuthModeWPA)
         return TRUE;    /* do nothing */
@@ -821,7 +821,7 @@ INT Set_Key4_Proc(
 {
     int                                 KeyLen;
     int                                 i;
-    UCHAR                               CipherAlg=CIPHER_WEP64;
+    u8                               CipherAlg=CIPHER_WEP64;
 
     if (pAdapter->StaCfg.AuthMode >= Ndis802_11AuthModeWPA)
         return TRUE;    /* do nothing */
@@ -1330,7 +1330,7 @@ void RTMPAddKey(
 	}
 	else	/* dynamic WEP from wpa_supplicant */
 	{
-		UCHAR	CipherAlg;
+		u8 CipherAlg;
     	u8 *Key;
 
 		if(pKey->KeyLength == 32)
@@ -1350,7 +1350,7 @@ void RTMPAddKey(
 					DBGPRINT(RT_DEBUG_TRACE, ("RTMPAddKey: Set Pair-wise Key\n"));
 
 					/* set key material and key length */
- 					pEntry->PairwiseKey.KeyLen = (UCHAR)pKey->KeyLength;
+ 					pEntry->PairwiseKey.KeyLen = (u8)pKey->KeyLength;
 					memmove(pEntry->PairwiseKey.Key, &pKey->KeyMaterial, pKey->KeyLength);
 
 					/* set Cipher type */
@@ -1362,7 +1362,7 @@ void RTMPAddKey(
 					/* Add Pair-wise key to Asic */
 					AsicAddPairwiseKeyEntry(
 						pAd,
-						(UCHAR)pEntry->Aid,
+						(u8)pEntry->Aid,
                 		&pEntry->PairwiseKey);
 
 					/* update WCID attribute table and IVEIV table for this entry */
@@ -1377,10 +1377,10 @@ void RTMPAddKey(
 			else
             {
 				/* Default key for tx (shared key) */
-				pAd->StaCfg.DefaultKeyId = (UCHAR) KeyIdx;
+				pAd->StaCfg.DefaultKeyId = (u8) KeyIdx;
 
 				/* set key material and key length */
-				pAd->SharedKey[BSS0][KeyIdx].KeyLen = (UCHAR) pKey->KeyLength;
+				pAd->SharedKey[BSS0][KeyIdx].KeyLen = (u8) pKey->KeyLength;
 				memmove(pAd->SharedKey[BSS0][KeyIdx].Key, &pKey->KeyMaterial, pKey->KeyLength);
 
 				/* Set Ciper type */
@@ -1415,7 +1415,7 @@ end:
 void StaSiteSurvey(
 	IN	struct rtmp_adapter * 		pAd,
 	IN	PNDIS_802_11_SSID	pSsid,
-	IN	UCHAR				ScanType)
+	IN	u8 			ScanType)
 {
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 	{
@@ -1601,7 +1601,7 @@ void RTMPIoctlMAC(
 	STRING *msg = NULL;
 	STRING *arg = NULL;
 	u32 macAddr = 0, macValue = 0;
-	UCHAR temp[16];
+	u8 temp[16];
 	STRING temp2[16];
 	INT Status;
 	BOOLEAN bIsPrintAllMAC = FALSE;
@@ -1932,7 +1932,7 @@ RtmpIoctl_rt_ioctl_giwfreq(
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
-	UCHAR ch;
+	u8 ch;
 	ULONG	m = 2412000;
 
 		ch = pAd->CommonCfg.Channel;
@@ -2042,7 +2042,7 @@ RtmpIoctl_rt_ioctl_siwap(
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
-	UCHAR *pBssid = (UCHAR *)pData;
+	u8 *pBssid = (u8 *)pData;
 
 
 	if (pAd->Mlme.CntlMachine.CurrState != CNTL_IDLE)
@@ -3115,9 +3115,9 @@ Note:
 void fnSetCipherKey(
     IN  struct rtmp_adapter *  pAd,
     IN  INT             keyIdx,
-    IN  UCHAR           CipherAlg,
+    IN  u8           CipherAlg,
     IN  BOOLEAN         bGTK,
-    IN  UCHAR			*pKey)
+    IN  u8 		*pKey)
 {
     memset(&pAd->SharedKey[BSS0][keyIdx], 0, sizeof(CIPHER_KEY));
     pAd->SharedKey[BSS0][keyIdx].KeyLen = LEN_TK;
@@ -3144,14 +3144,14 @@ void fnSetCipherKey(
 			/* Add Pair-wise key to Asic */
 		    	AsicAddPairwiseKeyEntry(
 		        pAd,
-		        (UCHAR)pEntry->Aid,
+		        (u8)pEntry->Aid,
 		        &pEntry->PairwiseKey);
 
 			RTMPSetWcidSecurityInfo(pAd,
 									BSS0,
 									0,
 									pEntry->PairwiseKey.CipherAlg,
-									(UCHAR)pEntry->Aid,
+									(u8)pEntry->Aid,
 									PAIRWISEKEYTABLE);
 	}
 	else
@@ -3199,7 +3199,7 @@ RtmpIoctl_rt_ioctl_siwencodeext(
 	    AsicRemovePairwiseKeyEntry(pAd, BSSID_WCID);
         pAd->SharedKey[BSS0][keyIdx].KeyLen = 0;
 		pAd->SharedKey[BSS0][keyIdx].CipherAlg = CIPHER_NONE;
-		AsicRemoveSharedKeyEntry(pAd, 0, (UCHAR)keyIdx);
+		AsicRemoveSharedKeyEntry(pAd, 0, (u8)keyIdx);
         memset(&pAd->SharedKey[BSS0][keyIdx], 0, sizeof(CIPHER_KEY));
         DBGPRINT(RT_DEBUG_TRACE, ("%s::Remove all keys!\n", __FUNCTION__));
     }
@@ -3530,7 +3530,7 @@ RtmpIoctl_rt_ioctl_giwgenie(
 /* #endif */ /* SIOCSIWGENIE */
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 	{
-		UCHAR RSNIe = IE_WPA;
+		u8 RSNIe = IE_WPA;
 
 		if (IoctlRsnIe->length < (pAd->StaCfg.RSNIE_Len + 2)) /* ID, Len */
 			return NDIS_STATUS_FAILURE;
@@ -3748,25 +3748,25 @@ RtmpIoctl_rt_ioctl_giwrate(
 #ifdef DOT11_VHT_AC
        if (ht_setting.field.MODE >= MODE_VHT) {
                if (ht_setting.field.BW == 0 /* 20Mhz */) {
-                       rate_index = 112 + ((UCHAR)ht_setting.field.ShortGI * 29) + ((UCHAR)ht_setting.field.MCS);
+                       rate_index = 112 + ((u8)ht_setting.field.ShortGI * 29) + ((u8)ht_setting.field.MCS);
                } else if (ht_setting.field.BW == 1 /* 40Mhz */) {
-                       rate_index = 121 + ((UCHAR)ht_setting.field.ShortGI * 29) + ((UCHAR)ht_setting.field.MCS);
+                       rate_index = 121 + ((u8)ht_setting.field.ShortGI * 29) + ((u8)ht_setting.field.MCS);
                } else if (ht_setting.field.BW == 2 /* 80Mhz */) {
-                       rate_index = 131 + ((UCHAR)ht_setting.field.ShortGI * 29) + ((UCHAR)ht_setting.field.MCS);
+                       rate_index = 131 + ((u8)ht_setting.field.ShortGI * 29) + ((u8)ht_setting.field.MCS);
                }
        } else
 #endif /* DOT11_VHT_AC */
 
 #ifdef DOT11_N_SUPPORT
     if ((ht_setting.field.MODE >= MODE_HTMIX) && (ht_setting.field.MODE < MODE_VHT)) {
-		/* rate_index = 12 + ((UCHAR)ht_setting.field.BW *16) + ((UCHAR)ht_setting.field.ShortGI *32) + ((UCHAR)ht_setting.field.MCS); */
-		rate_index = 16 + ((UCHAR)ht_setting.field.BW *24) + ((UCHAR)ht_setting.field.ShortGI *48) + ((UCHAR)ht_setting.field.MCS);
+		/* rate_index = 12 + ((u8)ht_setting.field.BW *16) + ((u8)ht_setting.field.ShortGI *32) + ((u8)ht_setting.field.MCS); */
+		rate_index = 16 + ((u8)ht_setting.field.BW *24) + ((u8)ht_setting.field.ShortGI *48) + ((u8)ht_setting.field.MCS);
     } else
 #endif /* DOT11_N_SUPPORT */
     if (ht_setting.field.MODE == MODE_OFDM)
-    	rate_index = (UCHAR)(ht_setting.field.MCS) + 4;
+    	rate_index = (u8)(ht_setting.field.MCS) + 4;
     else if (ht_setting.field.MODE == MODE_CCK)
-    	rate_index = (UCHAR)(ht_setting.field.MCS);
+    	rate_index = (u8)(ht_setting.field.MCS);
 
     if (rate_index < 0)
         rate_index = 0;

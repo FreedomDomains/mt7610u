@@ -302,8 +302,8 @@ struct ieee80211req_wpaie {
 struct hostapd_wpa_psk {
 	struct hostapd_wpa_psk *next;
 	int group;
-	UCHAR psk[32];
-	UCHAR addr[6];
+	u8 psk[32];
+	u8 addr[6];
 };
 
 #endif /*HOSTAPD_SUPPORT */
@@ -361,7 +361,7 @@ typedef enum _NDIS_802_11_STATUS_TYPE {
 	Ndis802_11StatusTypeMax	/* not a real type, defined as an upper bound */
 } NDIS_802_11_STATUS_TYPE, *PNDIS_802_11_STATUS_TYPE;
 
-typedef UCHAR NDIS_802_11_MAC_ADDRESS[6];
+typedef u8 NDIS_802_11_MAC_ADDRESS[6];
 
 typedef struct _NDIS_802_11_STATUS_INDICATION {
 	NDIS_802_11_STATUS_TYPE StatusType;
@@ -498,37 +498,37 @@ typedef ULONGLONG NDIS_802_11_KEY_RSC;
 typedef struct __attribute__ ((packed)) _RADIUS_SRV_INFO {
 	u32 radius_ip;
 	u32 radius_port;
-	UCHAR radius_key[64];
-	UCHAR radius_key_len;
+	u8 radius_key[64];
+	u8 radius_key_len;
 } RADIUS_SRV_INFO, *PRADIUS_SRV_INFO;
 
 typedef struct __attribute__ ((packed)) _DOT1X_BSS_INFO {
-	UCHAR radius_srv_num;
+	u8 radius_srv_num;
 	RADIUS_SRV_INFO radius_srv_info[MAX_RADIUS_SRV_NUM];
-	UCHAR ieee8021xWEP;	/* dynamic WEP */
-	UCHAR key_index;
-	UCHAR key_length;	/* length of key in bytes */
-	UCHAR key_material[13];
-	UCHAR nasId[IFNAMSIZ];
-	UCHAR nasId_len;
+	u8 ieee8021xWEP;	/* dynamic WEP */
+	u8 key_index;
+	u8 key_length;	/* length of key in bytes */
+	u8 key_material[13];
+	u8 nasId[IFNAMSIZ];
+	u8 nasId_len;
 } DOT1X_BSS_INFO, *PDOT1X_BSS_INFO;
 
 typedef struct __attribute__ ((packed)) _DOT1X_CMM_CONF {
 	u32 Length;		/* Length of this structure */
-	UCHAR mbss_num;		/* indicate multiple BSS number */
+	u8 mbss_num;		/* indicate multiple BSS number */
 	u32 own_ip_addr;
 	u32 retry_interval;
 	u32 session_timeout_interval;
 	u32 quiet_interval;
-	UCHAR EAPifname[8][IFNAMSIZ];
-	UCHAR EAPifname_len[8];
-	UCHAR PreAuthifname[8][IFNAMSIZ];
-	UCHAR PreAuthifname_len[8];
+	u8 EAPifname[8][IFNAMSIZ];
+	u8 EAPifname_len[8];
+	u8 PreAuthifname[8][IFNAMSIZ];
+	u8 PreAuthifname_len[8];
 	DOT1X_BSS_INFO Dot1xBssInfo[8];
 } DOT1X_CMM_CONF, *PDOT1X_CMM_CONF;
 
 typedef struct __attribute__ ((packed)) _DOT1X_IDLE_TIMEOUT {
-	UCHAR StaAddr[6];
+	u8 StaAddr[6];
 	u32 idle_timeout;
 } DOT1X_IDLE_TIMEOUT, *PDOT1X_IDLE_TIMEOUT;
 #endif /* DOT1X_SUPPORT */
@@ -543,7 +543,7 @@ typedef struct _NDIS_APCLI_802_11_KEY
     UINT           KeyLength;
     NDIS_802_11_MAC_ADDRESS BSSID;
     NDIS_802_11_KEY_RSC KeyRSC;
-    UCHAR           KeyMaterial[1];
+    u8           KeyMaterial[1];
 } NDIS_APCLI_802_11_KEY, *PNDIS_APCLI_802_11_KEY;
 #endif/* APCLI_WPA_SUPPLICANT_SUPPORT */
 #endif /* APCLI_SUPPORT */
@@ -556,13 +556,13 @@ typedef struct _NDIS_802_11_KEY {
 	UINT KeyLength;		/* length of key in bytes */
 	NDIS_802_11_MAC_ADDRESS BSSID;
 	NDIS_802_11_KEY_RSC KeyRSC;
-	UCHAR KeyMaterial[1];	/* variable length depending on above field */
+	u8 KeyMaterial[1];	/* variable length depending on above field */
 } NDIS_802_11_KEY, *PNDIS_802_11_KEY;
 
 typedef struct _NDIS_802_11_PASSPHRASE {
 	UINT KeyLength;		/* length of key in bytes */
 	NDIS_802_11_MAC_ADDRESS BSSID;
-	UCHAR KeyMaterial[1];	/* variable length depending on above field */
+	u8 KeyMaterial[1];	/* variable length depending on above field */
 } NDIS_802_11_PASSPHRASE, *PNDIS_802_11_PASSPHRASE;
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -577,7 +577,7 @@ typedef struct _NDIS_802_11_WEP {
 	UINT KeyIndex;		/* 0 is the per-client key, 1-N are the */
 	/* global keys */
 	UINT KeyLength;		/* length of key in bytes */
-	UCHAR KeyMaterial[1];	/* variable length depending on above field */
+	u8 KeyMaterial[1];	/* variable length depending on above field */
 } NDIS_802_11_WEP, *PNDIS_802_11_WEP;
 
 
@@ -596,19 +596,19 @@ typedef enum _NDIS_802_11_AUTHENTICATION_MODE {
 	Ndis802_11AuthModeMax	/* Not a real mode, defined as upper bound */
 } NDIS_802_11_AUTHENTICATION_MODE, *PNDIS_802_11_AUTHENTICATION_MODE;
 
-typedef UCHAR NDIS_802_11_RATES[NDIS_802_11_LENGTH_RATES];	/* Set of 8 data rates */
-typedef UCHAR NDIS_802_11_RATES_EX[NDIS_802_11_LENGTH_RATES_EX];	/* Set of 16 data rates */
+typedef u8 NDIS_802_11_RATES[NDIS_802_11_LENGTH_RATES];	/* Set of 8 data rates */
+typedef u8 NDIS_802_11_RATES_EX[NDIS_802_11_LENGTH_RATES_EX];	/* Set of 16 data rates */
 
 typedef struct __attribute__ ((packed)) _NDIS_802_11_SSID {
 	UINT SsidLength;	/* length of SSID field below, in bytes; */
 	/* this can be zero. */
-	UCHAR Ssid[NDIS_802_11_LENGTH_SSID];	/* SSID information field */
+	u8 Ssid[NDIS_802_11_LENGTH_SSID];	/* SSID information field */
 } NDIS_802_11_SSID, *PNDIS_802_11_SSID;
 
 typedef struct __attribute__ ((packed)) _NDIS_WLAN_BSSID {
 	ULONG Length;		/* Length of this structure */
 	NDIS_802_11_MAC_ADDRESS MacAddress;	/* BSSID */
-	UCHAR Reserved[2];
+	u8 Reserved[2];
 	NDIS_802_11_SSID Ssid;	/* SSID */
 	ULONG Privacy;		/* WEP encryption requirement */
 	NDIS_802_11_RSSI Rssi;	/* receive signal strength in dBm */
@@ -626,7 +626,7 @@ typedef struct __attribute__ ((packed)) _NDIS_802_11_BSSID_LIST {
 typedef struct {
 	BOOLEAN bValid;		/* 1: variable contains valid value */
 	USHORT StaNum;
-	UCHAR ChannelUtilization;
+	u8 ChannelUtilization;
 	USHORT RemainingAdmissionControl;	/* in unit of 32-us */
 } QBSS_LOAD_UI, *PQBSS_LOAD_UI;
 
@@ -634,7 +634,7 @@ typedef struct {
 typedef struct __attribute__ ((packed)) _NDIS_WLAN_BSSID_EX {
 	ULONG Length;		/* Length of this structure */
 	NDIS_802_11_MAC_ADDRESS MacAddress;	/* BSSID */
-	UCHAR WpsAP; /* 0x00: not support WPS, 0x01: support normal WPS, 0x02: support Ralink auto WPS, 0x04: support Samsung WAC */
+	u8 WpsAP; /* 0x00: not support WPS, 0x01: support normal WPS, 0x02: support Ralink auto WPS, 0x04: support Samsung WAC */
 	CHAR MinSNR;
 	NDIS_802_11_SSID Ssid;	/* SSID */
 	UINT Privacy;		/* WEP encryption requirement */
@@ -645,7 +645,7 @@ typedef struct __attribute__ ((packed)) _NDIS_WLAN_BSSID_EX {
 	NDIS_802_11_NETWORK_INFRASTRUCTURE InfrastructureMode;
 	NDIS_802_11_RATES_EX SupportedRates;
 	ULONG IELength;
-	UCHAR IEs[1];
+	u8 IEs[1];
 
 } NDIS_WLAN_BSSID_EX, *PNDIS_WLAN_BSSID_EX;
 
@@ -655,15 +655,15 @@ typedef struct __attribute__ ((packed)) _NDIS_802_11_BSSID_LIST_EX {
 } NDIS_802_11_BSSID_LIST_EX, *PNDIS_802_11_BSSID_LIST_EX;
 
 typedef struct __attribute__ ((packed)) _NDIS_802_11_FIXED_IEs {
-	UCHAR Timestamp[8];
+	u8 Timestamp[8];
 	USHORT BeaconInterval;
 	USHORT Capabilities;
 } NDIS_802_11_FIXED_IEs, *PNDIS_802_11_FIXED_IEs;
 
 typedef struct _NDIS_802_11_VARIABLE_IEs {
-	UCHAR ElementID;
-	UCHAR Length;		/* Number of bytes in data field */
-	UCHAR data[1];
+	u8 ElementID;
+	u8 Length;		/* Number of bytes in data field */
+	u8 data[1];
 } NDIS_802_11_VARIABLE_IEs, *PNDIS_802_11_VARIABLE_IEs;
 
 typedef ULONG NDIS_802_11_FRAGMENTATION_THRESHOLD;
@@ -783,7 +783,7 @@ typedef enum _NDIS_802_11_MEDIA_STREAM_MODE {
 } NDIS_802_11_MEDIA_STREAM_MODE, *PNDIS_802_11_MEDIA_STREAM_MODE;
 
 /* PMKID Structures */
-typedef UCHAR NDIS_802_11_PMKID_VALUE[16];
+typedef u8 NDIS_802_11_PMKID_VALUE[16];
 
 #if defined(CONFIG_STA_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
 typedef struct _BSSID_INFO {
@@ -1011,11 +1011,11 @@ typedef union _MACHTTRANSMIT_SETTING {
 } MACHTTRANSMIT_SETTING, *PMACHTTRANSMIT_SETTING;
 
 typedef struct _RT_802_11_MAC_ENTRY {
-	UCHAR ApIdx;
-	UCHAR Addr[MAC_ADDR_LENGTH];
-	UCHAR Aid;
-	UCHAR Psm;		/* 0:PWR_ACTIVE, 1:PWR_SAVE */
-	UCHAR MimoPs;		/* 0:MMPS_STATIC, 1:MMPS_DYNAMIC, 3:MMPS_Enabled */
+	u8 ApIdx;
+	u8 Addr[MAC_ADDR_LENGTH];
+	u8 Aid;
+	u8 Psm;		/* 0:PWR_ACTIVE, 1:PWR_SAVE */
+	u8 MimoPs;		/* 0:MMPS_STATIC, 1:MMPS_DYNAMIC, 3:MMPS_Enabled */
 	CHAR AvgRssi0;
 	CHAR AvgRssi1;
 	CHAR AvgRssi2;
@@ -1085,18 +1085,18 @@ typedef struct _RT_802_11_STA_CONFIG {
 /*  For OID Query or Set about BA structure */
 /* */
 typedef struct _OID_BACAP_STRUC {
-	UCHAR RxBAWinLimit;
-	UCHAR TxBAWinLimit;
-	UCHAR Policy;		/* 0: DELAY_BA 1:IMMED_BA  (//BA Policy subfiled value in ADDBA frame)   2:BA-not use. other value invalid */
-	UCHAR MpduDensity;	/* 0: DELAY_BA 1:IMMED_BA  (//BA Policy subfiled value in ADDBA frame)   2:BA-not use. other value invalid */
-	UCHAR AmsduEnable;	/*Enable AMSDU transmisstion */
-	UCHAR AmsduSize;	/* 0:3839, 1:7935 bytes. UINT  MSDUSizeToBytes[]        = { 3839, 7935}; */
-	UCHAR MMPSmode;		/* MIMO power save more, 0:static, 1:dynamic, 2:rsv, 3:mimo enable */
+	u8 RxBAWinLimit;
+	u8 TxBAWinLimit;
+	u8 Policy;		/* 0: DELAY_BA 1:IMMED_BA  (//BA Policy subfiled value in ADDBA frame)   2:BA-not use. other value invalid */
+	u8 MpduDensity;	/* 0: DELAY_BA 1:IMMED_BA  (//BA Policy subfiled value in ADDBA frame)   2:BA-not use. other value invalid */
+	u8 AmsduEnable;	/*Enable AMSDU transmisstion */
+	u8 AmsduSize;	/* 0:3839, 1:7935 bytes. UINT  MSDUSizeToBytes[]        = { 3839, 7935}; */
+	u8 MMPSmode;		/* MIMO power save more, 0:static, 1:dynamic, 2:rsv, 3:mimo enable */
 	BOOLEAN AutoBA;		/* Auto BA will automatically */
 } OID_BACAP_STRUC, *POID_BACAP_STRUC;
 
 typedef struct _RT_802_11_ACL_ENTRY {
-	UCHAR Addr[MAC_ADDR_LENGTH];
+	u8 Addr[MAC_ADDR_LENGTH];
 	USHORT Rsv;
 } RT_802_11_ACL_ENTRY, *PRT_802_11_ACL_ENTRY;
 
@@ -1110,14 +1110,14 @@ typedef struct _RT_802_11_WDS {
 	ULONG Num;
 	NDIS_802_11_MAC_ADDRESS Entry[24 /*MAX_NUM_OF_WDS_LINK */ ];
 	ULONG KeyLength;
-	UCHAR KeyMaterial[32];
+	u8 KeyMaterial[32];
 } RT_802_11_WDS, *PRT_802_11_WDS;
 
 typedef struct _RT_802_11_TX_RATES_ {
-	UCHAR SupRateLen;
-	UCHAR SupRate[MAX_LENGTH_OF_SUPPORT_RATES];
-	UCHAR ExtRateLen;
-	UCHAR ExtRate[MAX_LENGTH_OF_SUPPORT_RATES];
+	u8 SupRateLen;
+	u8 SupRate[MAX_LENGTH_OF_SUPPORT_RATES];
+	u8 ExtRateLen;
+	u8 ExtRate[MAX_LENGTH_OF_SUPPORT_RATES];
 } RT_802_11_TX_RATES, *PRT_802_11_TX_RATES;
 
 /* Definition of extra information code */
@@ -1140,14 +1140,14 @@ typedef struct _RT_802_11_TX_RATES_ {
 /* This is OID setting structure. So only GF or MM as Mode. This is valid when our wirelss mode has 802.11n in use. */
 typedef struct {
 	RT_802_11_PHY_MODE PhyMode;	/* */
-	UCHAR TransmitNo;
-	UCHAR HtMode;		/*HTMODE_GF or HTMODE_MM */
-	UCHAR ExtOffset;	/*extension channel above or below */
-	UCHAR MCS;
-	UCHAR BW;
-	UCHAR STBC;
-	UCHAR SHORTGI;
-	UCHAR rsv;
+	u8 TransmitNo;
+	u8 HtMode;		/*HTMODE_GF or HTMODE_MM */
+	u8 ExtOffset;	/*extension channel above or below */
+	u8 MCS;
+	u8 BW;
+	u8 STBC;
+	u8 SHORTGI;
+	u8 rsv;
 } OID_SET_HT_PHYMODE, *POID_SET_HT_PHYMODE;
 
 #ifdef NINTENDO_AP
@@ -1163,19 +1163,19 @@ typedef struct {
 #define NINTENDO_WEPKEY_LN 13
 
 typedef struct _NINTENDO_SSID {
-	UCHAR NINTENDOFixChar[NINTENDO_SSID_NAME_LN];
-	UCHAR zero1;
-	UCHAR registe;
-	UCHAR ID;
-	UCHAR zero2;
-	UCHAR NICKname[NINTENDO_SSID_NICKNAME_LN];
+	u8 NINTENDOFixChar[NINTENDO_SSID_NAME_LN];
+	u8 zero1;
+	u8 registe;
+	u8 ID;
+	u8 zero2;
+	u8 NICKname[NINTENDO_SSID_NICKNAME_LN];
 } RT_NINTENDO_SSID, *PRT_NINTENDO_SSID;
 
 typedef struct _NINTENDO_ENTRY {
-	UCHAR NICKname[NINTENDO_SSID_NICKNAME_LN];
-	UCHAR DS_Addr[ETH_LENGTH_OF_ADDRESS];
-	UCHAR registe;
-	UCHAR UserSpaceAck;
+	u8 NICKname[NINTENDO_SSID_NICKNAME_LN];
+	u8 DS_Addr[ETH_LENGTH_OF_ADDRESS];
+	u8 registe;
+	u8 UserSpaceAck;
 } RT_NINTENDO_ENTRY, *PRT_NINTENDO_ENTRY;
 
 /*RTPRIV_IOCTL_NINTENDO_GET_TABLE */
@@ -1187,16 +1187,16 @@ typedef struct _NINTENDO_TABLE {
 
 /*RTPRIV_IOCTL_NINTENDO_SEED_WEPKEY */
 typedef struct _NINTENDO_SEED_WEPKEY {
-	UCHAR seed[NINTENDO_SSID_NICKNAME_LN];
-	UCHAR wepkey[16];	/*use 13 for 104 bits wep key */
+	u8 seed[NINTENDO_SSID_NICKNAME_LN];
+	u8 wepkey[16];	/*use 13 for 104 bits wep key */
 } RT_NINTENDO_SEED_WEPKEY, *PRT_NINTENDO_SEED_WEPKEY;
 #endif /* NINTENDO_AP */
 
 #ifdef LLTD_SUPPORT
 typedef struct _RT_LLTD_ASSOICATION_ENTRY {
-	UCHAR Addr[ETH_LENGTH_OF_ADDRESS];
+	u8 Addr[ETH_LENGTH_OF_ADDRESS];
 	unsigned short MOR;	/* maximum operational rate */
-	UCHAR phyMode;
+	u8 phyMode;
 } RT_LLTD_ASSOICATION_ENTRY, *PRT_LLTD_ASSOICATION_ENTRY;
 
 typedef struct _RT_LLTD_ASSOICATION_TABLE {
@@ -1213,13 +1213,13 @@ typedef struct _RT_802_11_DLS_UI {
 	USHORT TimeOut;		/* unit: second , set by UI */
 	USHORT CountDownTimer;	/* unit: second , used by driver only */
 	NDIS_802_11_MAC_ADDRESS MacAddr;	/* set by UI */
-	UCHAR Status;		/* 0: none , 1: wait STAkey, 2: finish DLS setup , set by driver only */
+	u8 Status;		/* 0: none , 1: wait STAkey, 2: finish DLS setup , set by driver only */
 	BOOLEAN Valid;		/* 1: valid , 0: invalid , set by UI, use to setup or tear down DLS link */
 } RT_802_11_DLS_UI, *PRT_802_11_DLS_UI;
 
 typedef struct _RT_802_11_DLS_INFO {
 	RT_802_11_DLS_UI Entry[MAX_NUMBER_OF_DLS_ENTRY];
-	UCHAR num;
+	u8 num;
 } RT_802_11_DLS_INFO, *PRT_802_11_DLS_INFO;
 
 typedef enum _RT_802_11_DLS_MODE {
@@ -1246,8 +1246,8 @@ typedef enum _RT_802_11_D_CLIENT_MODE {
 #endif /* CONFIG_STA_SUPPORT */
 
 typedef struct _RT_CHANNEL_LIST_INFO {
-	UCHAR ChannelList[MAX_NUM_OF_CHS];	/* list all supported channels for site survey */
-	UCHAR ChannelListNum;	/* number of channel in ChannelList[] */
+	u8 ChannelList[MAX_NUM_OF_CHS];	/* list all supported channels for site survey */
+	u8 ChannelListNum;	/* number of channel in ChannelList[] */
 } RT_CHANNEL_LIST_INFO, *PRT_CHANNEL_LIST_INFO;
 
 
@@ -1256,12 +1256,12 @@ typedef struct _WSC_CREDENTIAL {
 	NDIS_802_11_SSID SSID;	/* mandatory */
 	USHORT AuthType;	/* mandatory, 1: open, 2: wpa-psk, 4: shared, 8:wpa, 0x10: wpa2, 0x20: wpa2-psk */
 	USHORT EncrType;	/* mandatory, 1: none, 2: wep, 4: tkip, 8: aes */
-	UCHAR Key[64];		/* mandatory, Maximum 64 byte */
+	u8 Key[64];		/* mandatory, Maximum 64 byte */
 	USHORT KeyLength;
-	UCHAR MacAddr[MAC_ADDR_LENGTH];	/* mandatory, AP MAC address */
-	UCHAR KeyIndex;		/* optional, default is 1 */
-	UCHAR bFromUPnP;	/* TRUE: This credential is from external UPnP registrar */
-	UCHAR Rsvd[2];		/* Make alignment */
+	u8 MacAddr[MAC_ADDR_LENGTH];	/* mandatory, AP MAC address */
+	u8 KeyIndex;		/* optional, default is 1 */
+	u8 bFromUPnP;	/* TRUE: This credential is from external UPnP registrar */
+	u8 Rsvd[2];		/* Make alignment */
 } WSC_CREDENTIAL, *PWSC_CREDENTIAL;
 
 /* WSC configured profiles */

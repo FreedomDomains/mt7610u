@@ -178,7 +178,7 @@ ULONG RTMPMsecsToJiffies(u32 m)
 
 int os_alloc_mem_suspend(
 	IN void *pReserved,
-	OUT UCHAR **mem,
+	OUT u8 **mem,
 	IN ULONG size)
 {
 	*mem = (u8 *) kmalloc(size, GFP_KERNEL);
@@ -220,7 +220,7 @@ extern int ra_mtd_read_nm(char *name, loff_t from, size_t len, u_char *buf);
 #endif /* CONFIG_RALINK_FLASH_API */
 
 void RtmpFlashRead(
-	UCHAR *p,
+	u8 *p,
 	ULONG a,
 	ULONG b)
 {
@@ -236,7 +236,7 @@ void RtmpFlashRead(
 }
 
 void RtmpFlashWrite(
-	UCHAR * p,
+	u8 * p,
 	ULONG a,
 	ULONG b)
 {
@@ -288,9 +288,9 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 int RTMPAllocateNdisPacket(
 	IN void *pReserved,
 	OUT struct sk_buff * *ppPacket,
-	IN UCHAR *pHeader,
+	IN u8 *pHeader,
 	IN UINT HeaderLen,
-	IN UCHAR *pData,
+	IN u8 *pData,
 	IN UINT DataLen)
 {
 	struct sk_buff *pPacket;
@@ -344,7 +344,7 @@ void RTMPFreeNdisPacket(
  */
 int Sniff2BytesFromNdisBuffer(
 	IN PNDIS_BUFFER pFirstBuffer,
-	IN UCHAR DesiredOffset,
+	IN u8 DesiredOffset,
 	OUT u8 *pByte0,
 	OUT u8 *pByte1)
 {
@@ -358,7 +358,7 @@ int Sniff2BytesFromNdisBuffer(
 void RTMP_QueryPacketInfo(
 	IN struct sk_buff * pPacket,
 	OUT PACKET_INFO *info,
-	OUT UCHAR **pSrcBufVA,
+	OUT u8 **pSrcBufVA,
 	OUT UINT *pSrcBufLen)
 {
 	info->BufferCount = 1;
@@ -395,12 +395,12 @@ void RTMP_QueryPacketInfo(
 struct sk_buff * DuplicatePacket(
 	IN struct net_device *pNetDev,
 	IN struct sk_buff * pPacket,
-	IN UCHAR FromWhichBSSID)
+	IN u8 FromWhichBSSID)
 {
 	struct sk_buff *skb;
 	struct sk_buff * pRetPacket = NULL;
 	USHORT DataSize;
-	UCHAR *pData;
+	u8 *pData;
 
 	DataSize = pPacket->len;
 	pData = pPacket->data;
@@ -422,7 +422,7 @@ struct sk_buff * duplicate_pkt(
 	IN UINT HdrLen,
 	IN u8 *pData,
 	IN ULONG DataSize,
-	IN UCHAR FromWhichBSSID)
+	IN u8 FromWhichBSSID)
 {
 	struct sk_buff *skb;
 	struct sk_buff * pPacket = NULL;
@@ -489,10 +489,10 @@ BOOLEAN RTMPL2FrameTxAction(
 	IN void * pCtrlBkPtr,
 	IN struct net_device *pNetDev,
 	IN RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
-	IN UCHAR apidx,
+	IN u8 apidx,
 	IN u8 *pData,
 	IN u32 data_len,
-	IN	UCHAR			OpMode)
+	IN	u8 		OpMode)
 {
 	struct sk_buff *skb = dev_alloc_skb(data_len + 2);
 
@@ -587,7 +587,7 @@ struct sk_buff * ClonePacket(
 void RtmpOsPktInit(
 	IN struct sk_buff * pNetPkt,
 	IN struct net_device *pNetDev,
-	IN UCHAR *pData,
+	IN u8 *pData,
 	IN USHORT DataSize)
 {
 	struct sk_buff * pRxPkt;
@@ -603,15 +603,15 @@ void RtmpOsPktInit(
 
 void wlan_802_11_to_802_3_packet(
 	IN struct net_device *pNetDev,
-	IN UCHAR OpMode,
+	IN u8 OpMode,
 	IN USHORT VLAN_VID,
 	IN USHORT VLAN_Priority,
 	IN struct sk_buff * pRxPacket,
-	IN UCHAR *pData,
+	IN u8 *pData,
 	IN ULONG DataSize,
 	IN u8 *pHeader802_3,
-	IN UCHAR FromWhichBSSID,
-	IN UCHAR *TPID)
+	IN u8 FromWhichBSSID,
+	IN u8 *TPID)
 {
 	struct sk_buff *pOSPkt;
 
@@ -664,20 +664,20 @@ u32 RT_RateSize = sizeof (ralinkrate);
 void send_monitor_packets(IN struct net_device *pNetDev,
 			  IN struct sk_buff * pRxPacket,
 			  IN PHEADER_802_11 pHeader,
-			  IN UCHAR * pData,
+			  IN u8 * pData,
 			  IN USHORT DataSize,
-			  IN UCHAR L2PAD,
-			  IN UCHAR PHYMODE,
-			  IN UCHAR BW,
-			  IN UCHAR ShortGI,
-			  IN UCHAR MCS,
-			  IN UCHAR AMPDU,
-			  IN UCHAR STBC,
-			  IN UCHAR RSSI1,
-			  IN UCHAR BssMonitorFlag11n,
-			  IN UCHAR * pDevName,
-			  IN UCHAR Channel,
-			  IN UCHAR CentralChannel,
+			  IN u8 L2PAD,
+			  IN u8 PHYMODE,
+			  IN u8 BW,
+			  IN u8 ShortGI,
+			  IN u8 MCS,
+			  IN u8 AMPDU,
+			  IN u8 STBC,
+			  IN u8 RSSI1,
+			  IN u8 BssMonitorFlag11n,
+			  IN u8 * pDevName,
+			  IN u8 Channel,
+			  IN u8 CentralChannel,
 			  IN u32 MaxRssi) {
 	struct sk_buff *pOSPkt;
 	wlan_ng_prism2_header *ph;
@@ -687,7 +687,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	int rate_index = 0;
 	USHORT header_len = 0;
-	UCHAR temp_header[40] = {
+	u8 temp_header[40] = {
 	0};
 
 	pOSPkt = RTPKT_TO_OSPKT(pRxPacket);	/*pRxBlk->pRxPacket); */
@@ -797,13 +797,13 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 
 #ifdef DOT11_N_SUPPORT
 		if (PHYMODE >= MODE_HTMIX) {
-			rate_index = 12 + ((UCHAR) BW * 24) + ((UCHAR) ShortGI * 48) + ((UCHAR) MCS);
+			rate_index = 12 + ((u8) BW * 24) + ((u8) ShortGI * 48) + ((u8) MCS);
 		} else
 #endif /* DOT11_N_SUPPORT */
 		if (PHYMODE == MODE_OFDM)
-			rate_index = (UCHAR) (MCS) + 4;
+			rate_index = (u8) (MCS) + 4;
 		else
-			rate_index = (UCHAR) (MCS);
+			rate_index = (u8) (MCS);
 
 		if (rate_index < 0)
 			rate_index = 0;
@@ -855,7 +855,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 		if (STBC)
 			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_STBC;
 
-		ph_11n33->signal_level = (UCHAR) RSSI1;
+		ph_11n33->signal_level = (u8) RSSI1;
 
 		/* data_rate is the rate index in the wireshark rate table */
 		if (PHYMODE >= MODE_HTMIX) {
@@ -866,22 +866,22 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 					ph_11n33->data_rate = 4;
 			} else if (MCS > 15)
 				ph_11n33->data_rate =
-				    (16 * 4 + ((UCHAR) BW * 16) +
-				     ((UCHAR) ShortGI * 32) + ((UCHAR) MCS));
+				    (16 * 4 + ((u8) BW * 16) +
+				     ((u8) ShortGI * 32) + ((u8) MCS));
 			else
 				ph_11n33->data_rate =
-				    16 + ((UCHAR) BW * 16) +
-				    ((UCHAR) ShortGI * 32) + ((UCHAR) MCS);
+				    16 + ((u8) BW * 16) +
+				    ((u8) ShortGI * 32) + ((u8) MCS);
 		} else if (PHYMODE == MODE_OFDM)
-			ph_11n33->data_rate = (UCHAR) (MCS) + 4;
+			ph_11n33->data_rate = (u8) (MCS) + 4;
 		else
-			ph_11n33->data_rate = (UCHAR) (MCS);
+			ph_11n33->data_rate = (u8) (MCS);
 
 		/*channel field */
-		ph_11n33->channel = (UCHAR) Channel;
+		ph_11n33->channel = (u8) Channel;
 
 		memmove(skb_put(pOSPkt, sizeof (ETHEREAL_RADIO)),
-			       (UCHAR *) ph_11n33, sizeof (ETHEREAL_RADIO));
+			       (u8 *) ph_11n33, sizeof (ETHEREAL_RADIO));
 	}
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
@@ -1225,7 +1225,7 @@ int RtmpOSWrielessEventSendExt(
 }
 
 int RtmpOSNetDevAddrSet(
-	IN UCHAR OpMode,
+	IN u8 OpMode,
 	IN struct net_device *pNetDev,
 	IN u8 *pMacAddr,
 	IN u8 *dev_name)
@@ -1425,7 +1425,7 @@ static struct ethtool_ops RALINK_Ethtool_Ops = {
 
 
 int RtmpOSNetDevAttach(
-	IN UCHAR OpMode,
+	IN u8 OpMode,
 	IN struct net_device *pNetDev,
 	IN RTMP_OS_NETDEV_OP_HOOK *pDevOpHook)
 {
@@ -1913,14 +1913,14 @@ BOOLEAN RtmpOsStatsAlloc(
 	*ppStats = kmalloc(sizeof (struct net_device_stats), GFP_ATOMIC);
 	if ((*ppStats) == NULL)
 		return FALSE;
-	memset((UCHAR *) *ppStats, 0, sizeof (struct net_device_stats));
+	memset((u8 *) *ppStats, 0, sizeof (struct net_device_stats));
 
 	*ppIwStats = kmalloc(sizeof (struct iw_statistics), GFP_ATOMIC);
 	if ((*ppIwStats) == NULL) {
 		kfree(*ppStats);
 		return FALSE;
 	}
-	memset((UCHAR *)* ppIwStats, 0, sizeof (struct iw_statistics));
+	memset((u8 *)* ppIwStats, 0, sizeof (struct iw_statistics));
 
 	return TRUE;
 }
@@ -1960,14 +1960,14 @@ void RtmpOsTaskPidInit(RTMP_OS_PID *pPid)
    location of the STA */
 typedef struct __attribute__ ((packed)) _RT_IAPP_L2_UPDATE_FRAME {
 
-	UCHAR DA[ETH_ALEN];	/* broadcast MAC address */
-	UCHAR SA[ETH_ALEN];	/* the MAC address of the STA that has just associated
+	u8 DA[ETH_ALEN];	/* broadcast MAC address */
+	u8 SA[ETH_ALEN];	/* the MAC address of the STA that has just associated
 				   or reassociated */
 	USHORT Len;		/* 8 octets */
-	UCHAR DSAP;		/* null */
-	UCHAR SSAP;		/* null */
-	UCHAR Control;		/* reference to IEEE Std 802.2 */
-	UCHAR XIDInfo[3];	/* reference to IEEE Std 802.2 */
+	u8 DSAP;		/* null */
+	u8 SSAP;		/* null */
+	u8 Control;		/* reference to IEEE Std 802.2 */
+	u8 XIDInfo[3];	/* reference to IEEE Std 802.2 */
 } RT_IAPP_L2_UPDATE_FRAME, *PRT_IAPP_L2_UPDATE_FRAME;
 
 
@@ -2013,7 +2013,7 @@ struct sk_buff * RtmpOsPktIappMakeUp(
 
 #ifdef RT_CFG80211_SUPPORT
 /* all available channels */
-UCHAR Cfg80211_Chan[] = {
+u8 Cfg80211_Chan[] = {
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 
 	/* 802.11 UNI / HyperLan 2 */
@@ -2487,7 +2487,7 @@ Note:
 */
 void CFG80211OS_RegHint(
 	IN void *pCB,
-	IN UCHAR *pCountryIe,
+	IN u8 *pCountryIe,
 	IN ULONG CountryIeLen)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
@@ -2528,7 +2528,7 @@ Note:
 */
 void CFG80211OS_RegHint11D(
 	IN void *pCB,
-	IN UCHAR *pCountryIe,
+	IN u8 *pCountryIe,
 	IN ULONG CountryIeLen)
 {
 	/* no regulatory_hint_11d() in 2.6.32 */
@@ -2650,8 +2650,8 @@ Note:
 BOOLEAN CFG80211OS_ChanInfoInit(
 	IN void 					*pCB,
 	IN u32					InfoIndex,
-	IN UCHAR					ChanId,
-	IN UCHAR					MaxTxPwr,
+	IN u8 				ChanId,
+	IN u8 				MaxTxPwr,
 	IN BOOLEAN					FlgIsNMode,
 	IN BOOLEAN					FlgIsBW20M)
 {
@@ -2699,7 +2699,7 @@ Note:
 void CFG80211OS_Scaning(
 	IN void 					*pCB,
 	IN u32					ChanId,
-	IN UCHAR					*pFrame,
+	IN u8 				*pFrame,
 	IN u32					FrameLen,
 	IN INT32					RSSI,
 	IN BOOLEAN					FlgIsNMode,
@@ -2791,12 +2791,12 @@ Note:
 */
 void CFG80211OS_ConnectResultInform(
 	IN void *pCB,
-	IN UCHAR *pBSSID,
-	IN UCHAR *pReqIe,
+	IN u8 *pBSSID,
+	IN u8 *pReqIe,
 	IN u32 ReqIeLen,
-	IN UCHAR *pRspIe,
+	IN u8 *pRspIe,
 	IN u32 RspIeLen,
-	IN UCHAR FlgIsSuccess)
+	IN u8 FlgIsSuccess)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 

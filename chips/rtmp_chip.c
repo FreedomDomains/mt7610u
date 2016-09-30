@@ -78,7 +78,7 @@ FREQUENCY_ITEM FreqItems3020_Xtal20M[] =
 	{14,   0xF0,	 2,  0x18},
 };
 
-UCHAR	NUM_OF_3020_CHNL = (sizeof(RtmpFreqItems3020) / sizeof(FREQUENCY_ITEM));
+u8 NUM_OF_3020_CHNL = (sizeof(RtmpFreqItems3020) / sizeof(FREQUENCY_ITEM));
 
 FREQUENCY_ITEM *FreqItems3020 = RtmpFreqItems3020;
 
@@ -162,7 +162,7 @@ RTMP_RF_REGS RF2850RegTable[] = {
 
 		/* still lack of MMAC(Japan) ch 34,38,42,46*/
 };
-UCHAR	NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
+u8 NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
 #endif /* defined(RT28xx) || defined(RT2883) */
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
@@ -419,7 +419,7 @@ void RtmpChipWriteHighMemory(
 		case 2:
 		{
 			UINT16 ShortVal = (UINT16)Value;
-			RTUSBMultiWrite(pAd, Offset, (UCHAR *) &ShortVal, 2, TRUE);
+			RTUSBMultiWrite(pAd, Offset, (u8 *) &ShortVal, 2, TRUE);
 			break;
 		}
 		case 4:
@@ -473,7 +473,7 @@ void RtmpChipWriteMemory(
 
 static void RxSensitivityTuning(struct rtmp_adapter*pAd)
 {
-	UCHAR R66 = 0x26 + GET_LNA_GAIN(pAd);
+	u8 R66 = 0x26 + GET_LNA_GAIN(pAd);
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -490,12 +490,12 @@ static void RxSensitivityTuning(struct rtmp_adapter*pAd)
 
 
 #ifdef CONFIG_STA_SUPPORT
-static UCHAR ChipAGCAdjust(
+static u8 ChipAGCAdjust(
 	IN struct rtmp_adapter *	pAd,
 	IN CHAR					Rssi,
-	IN UCHAR				OrigR66Value)
+	IN u8 			OrigR66Value)
 {
-	UCHAR R66 = OrigR66Value;
+	u8 R66 = OrigR66Value;
 	CHAR lanGain = GET_LNA_GAIN(pAd);
 
 	if (pAd->LatchRfRegs.Channel <= 14)
@@ -526,8 +526,8 @@ static UCHAR ChipAGCAdjust(
 
 static void ChipBBPAdjust(struct rtmp_adapter*pAd)
 {
-	UCHAR rf_bw, ext_ch;
-	UCHAR bbp_val;
+	u8 rf_bw, ext_ch;
+	u8 bbp_val;
 
 
 #ifdef DOT11_N_SUPPORT
@@ -589,16 +589,16 @@ static void ChipBBPAdjust(struct rtmp_adapter*pAd)
 
 static void Default_ChipSwitchChannel(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel,
+	IN u8 Channel,
 	IN enum SWITCH_CHANNEL_STAGE Stage)
 {
 	DBGPRINT(RT_DEBUG_ERROR, ("%s(): dummy channel switch function!\n", __FUNCTION__));
 }
 
 
-static void Default_ChipAGCInit(struct rtmp_adapter*pAd, UCHAR BandWidth)
+static void Default_ChipAGCInit(struct rtmp_adapter*pAd, u8 BandWidth)
 {
-	UCHAR R66 = 0x30, lan_gain;
+	u8 R66 = 0x30, lan_gain;
 
 	lan_gain = GET_LNA_GAIN(pAd);
 	if (pAd->LatchRfRegs.Channel <= 14)
@@ -611,10 +611,10 @@ static void Default_ChipAGCInit(struct rtmp_adapter*pAd, UCHAR BandWidth)
 	{	//A band
 		{
 			if (BandWidth == BW_20)
-				R66 = (UCHAR)(0x32 + (lan_gain * 5) / 3);
+				R66 = (u8)(0x32 + (lan_gain * 5) / 3);
 #ifdef DOT11_N_SUPPORT
 			else
-				R66 = (UCHAR)(0x3A + (lan_gain * 5) / 3);
+				R66 = (u8)(0x3A + (lan_gain * 5) / 3);
 #endif // DOT11_N_SUPPORT //
 		}
 	}

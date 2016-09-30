@@ -220,14 +220,14 @@ int rt28xx_init(void *pAdSrc)
 #ifdef DOT11_N_SUPPORT
    	/*Init Ba Capability parameters.*/
 /*	RT28XX_BA_INIT(pAd);*/
-	pAd->CommonCfg.DesiredHtPhy.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
+	pAd->CommonCfg.DesiredHtPhy.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
 	pAd->CommonCfg.DesiredHtPhy.AmsduEnable = (USHORT)pAd->CommonCfg.BACapability.field.AmsduEnable;
 	pAd->CommonCfg.DesiredHtPhy.AmsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
 	pAd->CommonCfg.DesiredHtPhy.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
 	/* UPdata to HT IE*/
 	pAd->CommonCfg.HtCapability.HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
 	pAd->CommonCfg.HtCapability.HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
-	pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
+	pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
 #endif /* DOT11_N_SUPPORT */
 
 	/* after reading Registry, we now know if in AP mode or STA mode*/
@@ -699,7 +699,7 @@ void RTMPInfClose(
 		/* send DLS-TEAR_DOWN message, */
 		if (pAd->CommonCfg.bDLSCapable)
 		{
-			UCHAR i;
+			u8 i;
 
 			/* tear down local dls table entry*/
 			for (i=0; i<MAX_NUM_OF_INIT_DLS_ENTRY; i++)
@@ -847,7 +847,7 @@ static void	WriteConfToDatFile(
 		{
 			fileLen += rv;
 		}
-		kmalloc((UCHAR **)&cfgData, fileLen);
+		kmalloc((u8 **)&cfgData, fileLen);
 		if (cfgData == NULL)
 		{
 			RtmpOSFileClose(file_r);
@@ -875,7 +875,7 @@ static void	WriteConfToDatFile(
 		offset = (char *) rtstrstr((char *) cfgData, "Default\n");
 		offset += strlen("Default\n");
 		RtmpOSFileWrite(file_w, (char *)cfgData, (int)(offset-cfgData));
-		kmalloc((UCHAR **)&pTempStr, 512);
+		kmalloc((u8 **)&pTempStr, 512);
 		if (!pTempStr)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("pTempStr kmalloc fail. (512)\n"));

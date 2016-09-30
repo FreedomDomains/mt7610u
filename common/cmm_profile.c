@@ -564,7 +564,7 @@ INT RTMPGetKeyParameterWithOffset(
 inline void RTMPSetSTADefKeyId(struct rtmp_adapter*pAd, ULONG KeyIdx)
 {
 	if((KeyIdx >= 1 ) && (KeyIdx <= 4))
-		pAd->StaCfg.DefaultKeyId = (UCHAR) (KeyIdx - 1);
+		pAd->StaCfg.DefaultKeyId = (u8) (KeyIdx - 1);
 	else
 		pAd->StaCfg.DefaultKeyId = 0;
 }
@@ -576,7 +576,7 @@ static int rtmp_parse_key_buffer_from_file(IN  struct rtmp_adapter *pAd,IN  char
 	char *	keybuff;
 	/*INT			i = BSSIdx, idx = KeyIdx, retVal;*/
 	ULONG		KeyLen;
-	/*UCHAR		CipherAlg = CIPHER_WEP64;*/
+	/*u8 	CipherAlg = CIPHER_WEP64;*/
 	CIPHER_KEY	*pSharedKey;
 
 	keybuff = buffer;
@@ -704,7 +704,7 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char
 	{
 		for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
 		{
-			pAd->CommonCfg.AckPolicy[i] = (UCHAR)simple_strtol(macptr, 0, 10);
+			pAd->CommonCfg.AckPolicy[i] = (u8)simple_strtol(macptr, 0, 10);
 
 			DBGPRINT(RT_DEBUG_TRACE, ("AckPolicy[%d]=%d\n", i, pAd->CommonCfg.AckPolicy[i]));
 		}
@@ -854,7 +854,7 @@ static void VHTParametersHook(
 void demo_mode_cfg(struct rtmp_adapter*pAd)
 {
 	int IdBss, i;
-	UCHAR cfg_mode;
+	u8 cfg_mode;
 
 	pAd->CommonCfg.Channel = 40;
 	for (i = 0; i < pAd->ApCfg.BssidNum; i++)
@@ -1350,7 +1350,7 @@ static void HTParametersHook(
 #ifdef CONFIG_STA_SUPPORT
 void RTMPSetSTASSID(struct rtmp_adapter*pAd, char *SSID)
 {
-	pAd->CommonCfg.SsidLen = (UCHAR) strlen(SSID);
+	pAd->CommonCfg.SsidLen = (u8) strlen(SSID);
 	memset(pAd->CommonCfg.Ssid, 0, NDIS_802_11_LENGTH_SSID);
 	memmove(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
 	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
@@ -1569,7 +1569,7 @@ int	RTMPSetProfileParameters(
 		/*EfuseBufferMode*/
 		if(RTMPGetKeyParameter("EfuseBufferMode", tmpbuf, 25, pBuffer, TRUE))
 		{
-			pAd->bEEPROMFile = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			pAd->bEEPROMFile = (u8) simple_strtol(tmpbuf, 0, 10);
 			DBGPRINT(RT_DEBUG_TRACE, ("EfuseBufferMode=%d\n", pAd->bUseEfuse));
 		}
 #endif /* RTMP_EFUSE_SUPPORT */
@@ -1585,7 +1585,7 @@ int	RTMPSetProfileParameters(
 		/*ChannelGeography*/
 		if(RTMPGetKeyParameter("ChannelGeography", tmpbuf, 25, pBuffer, TRUE))
 		{
-			UCHAR Geography = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			u8 Geography = (u8) simple_strtol(tmpbuf, 0, 10);
 			if (Geography <= BOTH)
 			{
 				pAd->CommonCfg.Geography = Geography;
@@ -1644,7 +1644,7 @@ int	RTMPSetProfileParameters(
 		/*Channel*/
 		if(RTMPGetKeyParameter("Channel", tmpbuf, 10, pBuffer, TRUE))
 		{
-			pAd->CommonCfg.Channel = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			pAd->CommonCfg.Channel = (u8) simple_strtol(tmpbuf, 0, 10);
 			DBGPRINT(RT_DEBUG_TRACE, ("Channel=%d\n", pAd->CommonCfg.Channel));
 		}
 
@@ -1652,7 +1652,7 @@ int	RTMPSetProfileParameters(
 		/*Note: BssidNum must be put before WirelessMode in dat file*/
 		if(RTMPGetKeyParameter("WirelessMode", tmpbuf, 32, pBuffer, TRUE))
 		{
-			UCHAR cfg_mode;
+			u8 cfg_mode;
 			for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
 			{
 				cfg_mode = simple_strtol(macptr, 0, 10);
@@ -2259,14 +2259,14 @@ int	RTMPSetProfileParameters(
 #ifdef SINGLE_SKU
 				if(RTMPGetKeyParameter("AntGain", tmpbuf, 10, pBuffer, TRUE))
 				{
-					UCHAR AntGain = simple_strtol(tmpbuf, 0, 10);
+					u8 AntGain = simple_strtol(tmpbuf, 0, 10);
 					pAd->CommonCfg.AntGain= AntGain;
 
 					DBGPRINT(RT_DEBUG_TRACE, ("AntGain=%d\n", pAd->CommonCfg.AntGain));
 				}
 				if(RTMPGetKeyParameter("BandedgeDelta", tmpbuf, 10, pBuffer, TRUE))
 				{
-					UCHAR Bandedge = simple_strtol(tmpbuf, 0, 10);
+					u8 Bandedge = simple_strtol(tmpbuf, 0, 10);
 					pAd->CommonCfg.BandedgeDelta = Bandedge;
 
 					DBGPRINT(RT_DEBUG_TRACE, ("BandedgeDelta=%d\n", pAd->CommonCfg.BandedgeDelta));

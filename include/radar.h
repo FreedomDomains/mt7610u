@@ -37,10 +37,10 @@
 /* 802.11H */
 typedef struct _DOT11_H {
 	/* 802.11H and DFS related params */
-	UCHAR CSCount;		/*Channel switch counter */
-	UCHAR CSPeriod; 	/*Channel switch period (beacon count) */
+	u8 CSCount;		/*Channel switch counter */
+	u8 CSPeriod; 	/*Channel switch period (beacon count) */
 	USHORT RDCount; 	/*Radar detection counter, if RDCount >  ChMovingTime, start to send beacons*/
-	UCHAR RDMode;		/*Radar Detection mode */
+	u8 RDMode;		/*Radar Detection mode */
 	USHORT ChMovingTime;
 	BOOLEAN bDFSIndoor;
 	ULONG InServiceMonitorCount;	/* unit: sec */
@@ -48,7 +48,7 @@ typedef struct _DOT11_H {
 
 BOOLEAN RadarChannelCheck(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR			Ch);
+	IN u8 		Ch);
 
 ULONG JapRadarType(
 	IN struct rtmp_adapter *pAd);

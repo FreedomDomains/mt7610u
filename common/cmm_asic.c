@@ -34,7 +34,7 @@ void AsicUpdateAutoFallBackTable(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pRateTable)
 {
-	UCHAR					i;
+	u8 				i;
 	HT_FBK_CFG0_STRUC		HtCfg0;
 	HT_FBK_CFG1_STRUC		HtCfg1;
 	LG_FBK_CFG0_STRUC		LgCfg0;
@@ -320,7 +320,7 @@ typedef enum _PROT_REG_IDX_{
 void AsicUpdateProtect(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT OperationMode,
-	IN UCHAR SetMask,
+	IN u8 SetMask,
 	IN BOOLEAN bDisableBGProtect,
 	IN BOOLEAN bNonGFExist)
 {
@@ -773,10 +773,10 @@ void AsicBBPAdjust(struct rtmp_adapter*pAd)
  */
 void AsicSwitchChannel(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR Channel,
+	IN u8 Channel,
 	IN BOOLEAN bScan)
 {
-	UCHAR bw;
+	u8 bw;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
@@ -850,7 +850,7 @@ void AsicSwitchChannel(
  */
 void AsicLockChannel(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel)
+	IN u8 Channel)
 {
 }
 
@@ -875,10 +875,10 @@ void InitLookupTable(
 	int band_nums = 1;
 	const int Offset = 7;
 	EEPROM_WORD_STRUC WordStruct = {{0}};
-	UCHAR PlusStepNum[IEEE80211_BAND_NUMS][8] = {{0, 1, 3, 2, 3, 3, 3, 2}, {0, 1, 3, 2, 3, 3, 3, 2}};
-	UCHAR MinusStepNum[IEEE80211_BAND_NUMS][8] = {{1, 1, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 0, 1}};
-	UCHAR Step[IEEE80211_BAND_NUMS] = {10, 10};
-	UCHAR RFValue = 0, BbpValue = 0;
+	u8 PlusStepNum[IEEE80211_BAND_NUMS][8] = {{0, 1, 3, 2, 3, 3, 3, 2}, {0, 1, 3, 2, 3, 3, 3, 2}};
+	u8 MinusStepNum[IEEE80211_BAND_NUMS][8] = {{1, 1, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 0, 1}};
+	u8 Step[IEEE80211_BAND_NUMS] = {10, 10};
+	u8 RFValue = 0, BbpValue = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==> InitLookupTable\n"));
 
@@ -1099,7 +1099,7 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 	BBP_R49_STRUC	BbpR49;
 	BOOLEAN			bAutoTxAgc = FALSE;
 	char *		pTxAgcCompensate = NULL;
-	UCHAR 			RFValue = 0;
+	u8 			RFValue = 0;
 	CHAR			TuningTableUpperBound = 0, TuningTableIndex0 = 0, TuningTableIndex1 = 0;
 	INT 				CurrentTemp = 0;
 	INT RefTemp;
@@ -1143,7 +1143,7 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 		{
 			u32 bbp_val;
 			RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
-			CurrentTemp = (UCHAR)(bbp_val & 0xff);
+			CurrentTemp = (u8)(bbp_val & 0xff);
 		}
 		else
 #endif /* RT65xx */
@@ -1957,8 +1957,8 @@ void 	AsicSetSlotTime(
 */
 void AsicAddSharedKeyEntry(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR		 	BssIndex,
-	IN UCHAR		 	KeyIdx,
+	IN u8 	 	BssIndex,
+	IN u8 	 	KeyIdx,
 	IN PCIPHER_KEY		pCipherKey)
 {
 	ULONG offset; /*, csr0;*/
@@ -1968,7 +1968,7 @@ void AsicAddSharedKeyEntry(
 	u8 *	pKey = pCipherKey->Key;
 	u8 *	pTxMic = pCipherKey->TxMic;
 	u8 *	pRxMic = pCipherKey->RxMic;
-	UCHAR		CipherAlg = pCipherKey->CipherAlg;
+	u8 	CipherAlg = pCipherKey->CipherAlg;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AsicAddSharedKeyEntry BssIndex=%d, KeyIdx=%d\n", BssIndex,KeyIdx));
 /*============================================================================================*/
@@ -2057,8 +2057,8 @@ void AsicAddSharedKeyEntry(
 /*	IRQL = DISPATCH_LEVEL*/
 void AsicRemoveSharedKeyEntry(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR		 BssIndex,
-	IN UCHAR		 KeyIdx)
+	IN u8 	 BssIndex,
+	IN u8 	 KeyIdx)
 {
 	/*ULONG SecCsr0;*/
 	SHAREDKEY_MODE_STRUC csr1;
@@ -2161,9 +2161,9 @@ void AsicUpdateRxWCIDTable(
 */
 void AsicUpdateWcidAttributeEntry(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR			BssIdx,
-	IN 	UCHAR		 	KeyIdx,
-	IN 	UCHAR		 	CipherAlg,
+	IN	u8 		BssIdx,
+	IN 	u8 	 	KeyIdx,
+	IN 	u8 	 	CipherAlg,
 	IN	u8			Wcid,
 	IN	u8			KeyTabFlag)
 {
@@ -2212,12 +2212,12 @@ void AsicUpdateWcidAttributeEntry(
 
 	==========================================================================
  */
-void AsicDelWcidTab(struct rtmp_adapter*pAd, UCHAR wcid_idx)
+void AsicDelWcidTab(struct rtmp_adapter*pAd, u8 wcid_idx)
 {
 	u32 offset;
-	UCHAR cnt, cnt_s, cnt_e;
+	u8 cnt, cnt_s, cnt_e;
 #ifdef MCS_LUT_SUPPORT
-	UCHAR mcs_tb_offset = 0;
+	u8 mcs_tb_offset = 0;
 #endif /* MCS_LUT_SUPPORT */
 
 
@@ -2261,7 +2261,7 @@ void AsicDelWcidTab(struct rtmp_adapter*pAd, UCHAR wcid_idx)
 */
 void AsicAddPairwiseKeyEntry(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR			WCID,
+	IN u8 		WCID,
 	IN PCIPHER_KEY		pCipherKey)
 {
 	INT i;
@@ -2269,7 +2269,7 @@ void AsicAddPairwiseKeyEntry(
 	u8 *	 pKey = pCipherKey->Key;
 	u8 *	 pTxMic = pCipherKey->TxMic;
 	u8 *	 pRxMic = pCipherKey->RxMic;
-	UCHAR		CipherAlg = pCipherKey->CipherAlg;
+	u8 	CipherAlg = pCipherKey->CipherAlg;
 
 	/* EKEY*/
 	offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
@@ -2323,7 +2323,7 @@ void AsicAddPairwiseKeyEntry(
 */
 void AsicRemovePairwiseKeyEntry(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR		 Wcid)
+	IN u8 	 Wcid)
 {
 	/* Set the specific WCID attribute entry as OPEN-NONE */
 	AsicUpdateWcidAttributeEntry(pAd,
@@ -2338,10 +2338,10 @@ void AsicRemovePairwiseKeyEntry(
 
 BOOLEAN AsicSendCommandToMcu(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR Command,
-	IN UCHAR Token,
-	IN UCHAR Arg0,
-	IN UCHAR Arg1,
+	IN u8 Command,
+	IN u8 Token,
+	IN u8 Arg0,
+	IN u8 Arg1,
 	IN BOOLEAN in_atomic)
 {
 #ifdef RT65xx
@@ -2359,10 +2359,10 @@ BOOLEAN AsicSendCommandToMcu(
 
 BOOLEAN AsicSendCommandToMcuBBP(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR		 Command,
-	IN UCHAR		 Token,
-	IN UCHAR		 Arg0,
-	IN UCHAR		 Arg1,
+	IN u8 	 Command,
+	IN u8 	 Token,
+	IN u8 	 Arg0,
+	IN u8 	 Arg1,
 	IN BOOLEAN		FlgIsNeedLocked)
 {
 #ifdef RT65xx
@@ -2391,7 +2391,7 @@ BOOLEAN AsicSendCommandToMcuBBP(
  */
 void AsicSetRxAnt(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR			Ant)
+	IN u8 		Ant)
 {
 	if (pAd->chipOps.SetRxAnt)
 		pAd->chipOps.SetRxAnt(pAd, Ant);
@@ -2400,7 +2400,7 @@ void AsicSetRxAnt(
 
 void AsicTurnOffRFClk(
 	IN struct rtmp_adapter *pAd,
-	IN	UCHAR		Channel)
+	IN	u8 	Channel)
 {
 	if (pAd->chipOps.AsicRfTurnOff)
 	{
@@ -2411,7 +2411,7 @@ void AsicTurnOffRFClk(
 #if defined(RT28xx) || defined(RT2880) || defined(RT2883)
 		/* RF R2 bit 18 = 0*/
 		u32			R1 = 0, R2 = 0, R3 = 0;
-		UCHAR			index;
+		u8 		index;
 		RTMP_RF_REGS	*RFRegTable;
 
 		RFRegTable = RF2850RegTable;
@@ -2548,7 +2548,7 @@ void RtmpStreamModeInit(
 	IN struct rtmp_adapter*pAd)
 {
 	int chainIdx;
-	UCHAR *pMacAddr;
+	u8 *pMacAddr;
 
 	if (pAd->chipCap.FlgHwStreamMode == FALSE)
 		return;
@@ -2640,7 +2640,7 @@ void AsicLoadWOWFirmware(
  * the null frame includes TxWI and 802.11 header 						*/
 void AsicWOWSendNullFrame(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR TxRate,
+	IN u8 TxRate,
 	IN BOOLEAN bQosNull)
 {
 
@@ -2792,7 +2792,7 @@ INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 #endif /* DOT11_N_SUPPORT */
 
 
-INT AsicSetChannel(struct rtmp_adapter*pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BOOLEAN bScan)
+INT AsicSetChannel(struct rtmp_adapter*pAd, u8 ch, u8 bw, u8 ext_ch, BOOLEAN bScan)
 {
 	rtmp_bbp_set_bw(pAd, bw);
 
@@ -2823,7 +2823,7 @@ INT AsicSetChannel(struct rtmp_adapter*pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BO
 void AsicSetApCliBssid(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pBssid,
-	IN UCHAR index)
+	IN u8 index)
 {
 	u32		  Addr4 = 0;
 

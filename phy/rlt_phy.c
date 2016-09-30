@@ -78,7 +78,7 @@ INT rtmp_bbp_get_temp(struct rtmp_adapter *pAd, CHAR *temp_val)
 INT 	rtmp_bbp_tx_comp_init(struct rtmp_adapter*pAd, INT adc_insel, INT tssi_mode)
 {
 	u32 bbp_val;
-	UCHAR rf_val;
+	u8 rf_val;
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
 	RTMP_BBP_IO_READ32(pAd, CORE_R34, &bbp_val);
@@ -148,7 +148,7 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 }
 
 
-static UCHAR vht_prim_ch_val[] = {
+static u8 vht_prim_ch_val[] = {
 	42, 36, 0,
 	42, 40, 1,
 	42, 44, 2,
@@ -284,7 +284,7 @@ INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower)
 
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX chain)
 {
-	UCHAR idx, val;
+	u8 idx, val;
 	u32 bbp_val, bbp_reg = AGC1_R8;
 
 
@@ -317,9 +317,9 @@ INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX chain)
 }
 
 
-INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, UCHAR agc, RX_CHAIN_IDX chain)
+INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 {
-	UCHAR idx = 0;
+	u8 idx = 0;
 	u32 bbp_val, bbp_reg = AGC1_R8;
 
 	if (((pAd->MACVersion & 0xf0000000) < 0x28830000) ||
@@ -352,7 +352,7 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, UCHAR agc, RX_CHAIN_IDX chain)
 }
 
 
-INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, UCHAR Channel)
+INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, u8 Channel)
 {
 	u32 bbp_val = 0, org_val = 0;
 
@@ -374,17 +374,17 @@ INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, UCHAR Channel)
 }
 
 
-UCHAR rtmp_bbp_get_random_seed(struct rtmp_adapter*pAd)
+u8 rtmp_bbp_get_random_seed(struct rtmp_adapter*pAd)
 {
 	u32 value, value2;
-	UCHAR seed;
+	u8 seed;
 
 	RTMP_BBP_IO_READ32(pAd, AGC1_R16, &value);
-	seed = (UCHAR)((value & 0xff) ^ ((value & 0xff00) >> 8)^
+	seed = (u8)((value & 0xff) ^ ((value & 0xff00) >> 8)^
 					((value & 0xff0000) >> 16));
 	RTMP_BBP_IO_READ32(pAd, RXO_R9, &value2);
 
-	return (UCHAR)(seed ^ (value2 & 0xff)^ ((value2 & 0xff00) >> 8));
+	return (u8)(seed ^ (value2 & 0xff)^ ((value2 & 0xff00) >> 8));
 }
 
 

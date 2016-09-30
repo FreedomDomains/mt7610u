@@ -99,11 +99,11 @@ MAC_TABLE_ENTRY *MacTableLookup(
 MAC_TABLE_ENTRY *MacTableInsertEntry(
 	IN  struct rtmp_adapter *  pAd,
 	IN  u8 *		pAddr,
-	IN	UCHAR			apidx,
-	IN	UCHAR			OpMode,
+	IN	u8 		apidx,
+	IN	u8 		OpMode,
 	IN BOOLEAN	CleanAll)
 {
-	UCHAR HashIdx;
+	u8 HashIdx;
 	int i, FirstWcid;
 	MAC_TABLE_ENTRY *pEntry = NULL, *pCurrEntry;
 /*	USHORT	offset;*/
@@ -308,7 +308,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			pAd->MacTab.Size ++;
 
 			/* Set the security mode of this entry as OPEN-NONE in ASIC */
-			RTMP_REMOVE_PAIRWISE_KEY_ENTRY(pAd, (UCHAR)i);
+			RTMP_REMOVE_PAIRWISE_KEY_ENTRY(pAd, (u8)i);
 
 			/* Add this entry into ASIC RX WCID search table */
 			RTMP_STA_ENTRY_ADD(pAd, pEntry);
@@ -365,7 +365,7 @@ BOOLEAN MacTableDeleteEntry(
 	MAC_TABLE_ENTRY *pEntry, *pPrevEntry, *pProbeEntry;
 	BOOLEAN Cancelled;
 	/*USHORT	offset;	 unused variable*/
-	/*UCHAR	j;			 unused variable*/
+	/*u8 j;			 unused variable*/
 
 	if (wcid >= MAX_LEN_OF_MAC_TABLE)
 		return FALSE;
@@ -564,7 +564,7 @@ void MacTableReset(
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  struct rtmp_adapter *  pAd,
 	IN  u8 *		pAddr,
-	IN  UCHAR			IfIdx)
+	IN  u8 		IfIdx)
 {
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	PAPCLI_STRUCT pApCliEntry = NULL;

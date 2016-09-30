@@ -28,7 +28,7 @@
 #include "rt_config.h"
 #include "action.h"
 
-extern UCHAR  ZeroSsid[32];
+extern u8  ZeroSsid[32];
 
 
 static void ReservedAction(
@@ -96,7 +96,7 @@ void MlmeADDBAAction(
 
 {
 	MLME_ADDBA_REQ_STRUCT *pInfo;
-	UCHAR           Addr[6];
+	u8           Addr[6];
 	u8 *        pOutBuffer = NULL;
 	ULONG		Idx;
 	FRAME_ADDBA_REQ  Frame;
@@ -311,7 +311,7 @@ void PeerDLSAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
+	u8 Action = Elem->Msg[LENGTH_802_11+1];
 
 	switch(Action)
 	{
@@ -346,7 +346,7 @@ void PeerBAAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
+	u8 Action = Elem->Msg[LENGTH_802_11+1];
 
 	switch(Action)
 	{
@@ -402,11 +402,11 @@ ULONG BuildIntolerantChannelRep(
 {
 	ULONG			FrameLen = 0;
 	ULONG			ReadOffset = 0;
-	UCHAR			i, j, k, idx = 0;
-	/*UCHAR			LastRegClass = 0xff;*/
-	UCHAR			ChannelList[MAX_TRIGGER_EVENT];
-	UCHAR			TmpRegClass;
-	UCHAR			RegClassArray[7] = {0, 11,12, 32, 33, 54,55}; /* Those regulatory class has channel in 2.4GHz. See Annex J.*/
+	u8 		i, j, k, idx = 0;
+	/*u8 		LastRegClass = 0xff;*/
+	u8 		ChannelList[MAX_TRIGGER_EVENT];
+	u8 		TmpRegClass;
+	u8 		RegClassArray[7] = {0, 11,12, 32, 33, 54,55}; /* Those regulatory class has channel in 2.4GHz. See Annex J.*/
 
 
 	memset(ChannelList, 0, MAX_TRIGGER_EVENT);
@@ -426,12 +426,12 @@ ULONG BuildIntolerantChannelRep(
 				{
 					for (j = 0;j < idx;j++)
 					{
-						if (ChannelList[j] == (UCHAR)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel)
+						if (ChannelList[j] == (u8)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel)
 							break;
 					}
 					if ((j == idx))
 					{
-						ChannelList[idx] = (UCHAR)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel;
+						ChannelList[idx] = (u8)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel;
 						idx++;
 					}
 					pAd->CommonCfg.TriggerEventTab.EventA[i].bValid = FALSE;
@@ -471,7 +471,7 @@ ULONG BuildIntolerantChannelRep(
  */
 void Update2040CoexistFrameAndNotify(
 	IN	struct rtmp_adapter *pAd,
-	IN    UCHAR  Wcid,
+	IN    u8  Wcid,
 	IN	BOOLEAN	bAddIntolerantCha)
 {
 	BSS_2040_COEXIST_IE		OldValue;
@@ -498,14 +498,14 @@ Description : Send 20/40 BSS Coexistence Action frame If one trigger event is tr
 */
 void Send2040CoexistAction(
 	IN	struct rtmp_adapter *pAd,
-	IN    UCHAR  Wcid,
+	IN    u8  Wcid,
 	IN	BOOLEAN	bAddIntolerantCha)
 {
 	u8 *		pOutBuffer = NULL;
 	FRAME_ACTION_HDR	Frame;
 	ULONG			FrameLen;
 	u32			IntolerantChaRepLen;
-	UCHAR			HtLen = 1;
+	u8 		HtLen = 1;
 
 	IntolerantChaRepLen = 0;
 	pOutBuffer = kmalloc(MGMT_DMA_BUFFER_SIZE, GFP_ATOMIC);  /*Get an unused nonpaged memory*/
@@ -611,11 +611,11 @@ void UpdateBssScanParm(
 
 BOOLEAN ChannelSwitchSanityCheck(
 	IN	struct rtmp_adapter *pAd,
-	IN    UCHAR  Wcid,
-	IN    UCHAR  NewChannel,
-	IN    UCHAR  Secondary)
+	IN    u8  Wcid,
+	IN    u8  NewChannel,
+	IN    u8  Secondary)
 {
-	UCHAR		i;
+	u8 	i;
 
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
 		return FALSE;
@@ -644,11 +644,11 @@ BOOLEAN ChannelSwitchSanityCheck(
 
 void ChannelSwitchAction(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Wcid,
-	IN UCHAR NewChannel,
-	IN UCHAR Secondary)
+	IN u8 Wcid,
+	IN u8 NewChannel,
+	IN u8 Secondary)
 {
-	UCHAR rf_channel = 0, rf_bw;
+	u8 rf_channel = 0, rf_bw;
 
 
 	DBGPRINT(RT_DEBUG_TRACE,("%s(): NewChannel=%d, Secondary=%d\n",
@@ -699,7 +699,7 @@ void PeerPublicAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
+	u8 Action = Elem->Msg[LENGTH_802_11+1];
 	if ((Elem->Wcid >= MAX_LEN_OF_MAC_TABLE)
 		)
 		return;
@@ -711,7 +711,7 @@ void PeerPublicAction(
 #ifdef DOT11N_DRAFT3
 		case ACTION_BSS_2040_COEXIST:	/* Format defined in IEEE 7.4.7a.1 in 11n Draf3.03*/
 			{
-				/*UCHAR	BssCoexist;*/
+				/*u8 BssCoexist;*/
 				BSS_2040_COEXIST_ELEMENT		*pCoexistInfo;
 				BSS_2040_COEXIST_IE 			*pBssCoexistIe;
 				BSS_2040_INTOLERANT_CH_REPORT	*pIntolerantReport = NULL;
@@ -770,7 +770,7 @@ static void ReservedAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR Category;
+	u8 Category;
 
 	if (Elem->MsgLen <= LENGTH_802_11)
 	{
@@ -797,7 +797,7 @@ static void respond_ht_information_exchange_action(
 	u8 *		pOutBuffer = NULL;
 	ULONG			FrameLen;
 	FRAME_HT_INFO	HTINFOframe, *pFrame;
-	UCHAR   		*pAddr;
+	u8   		*pAddr;
 
 
 	/* 2. Always send back ADDBA Response */
@@ -846,7 +846,7 @@ void PeerHTAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR Action = Elem->Msg[LENGTH_802_11+1];
+	u8 Action = Elem->Msg[LENGTH_802_11+1];
 	MAC_TABLE_ENTRY *pEntry;
 
 	if (Elem->Wcid >= MAX_LEN_OF_MAC_TABLE)
@@ -941,7 +941,7 @@ void ORIBATimerTimeout(
 /*	int 	NStatus;*/
 /*	u8 *		pOutBuffer = NULL;*/
 /*	USHORT			Sequence;*/
-	UCHAR			TID;
+	u8 		TID;
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -972,7 +972,7 @@ void SendRefreshBAR(
 	ULONG			FrameLen;
 	u8 *		pOutBuffer = NULL;
 	USHORT			Sequence;
-	UCHAR			i, TID;
+	u8 		i, TID;
 	USHORT			idx;
 	BA_ORI_ENTRY	*pBAEntry;
 
@@ -1036,7 +1036,7 @@ void ActHeaderInit(
 	memset(pHdr80211, 0, sizeof(HEADER_802_11));
 	pHdr80211->FC.Type = BTYPE_MGMT;
 	pHdr80211->FC.SubType = SUBTYPE_ACTION;
-	
+
 	memcpy(pHdr80211->Addr1, Addr1, ETH_ALEN);
 	memcpy(pHdr80211->Addr2, Addr2, ETH_ALEN);
 	memcpy(pHdr80211->Addr3, Addr3, ETH_ALEN);

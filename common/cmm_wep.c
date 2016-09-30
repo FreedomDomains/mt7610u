@@ -151,14 +151,14 @@ UINT	RTMP_CALC_FCS32(
 void RTMPInitWepEngine(
 	IN	u8 *		pIv,
 	IN	u8 *		pKey,
-	IN	UCHAR			KeyLen,
+	IN	u8 		KeyLen,
 	OUT	ARC4_CTX_STRUC  *pARC4_CTX)
 {
-/*	UCHAR   seed[16];*/
+/*	u8   seed[16];*/
 	u8 *seed = NULL;
 	u8	seed_len;
 
-	seed = kmalloc(sizeof(UCHAR)*16, GFP_ATOMIC);
+	seed = kmalloc(sizeof(u8)*16, GFP_ATOMIC);
 	if (seed == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: seed Allocate memory fail!!!\n", __FUNCTION__));
@@ -196,8 +196,8 @@ void RTMPInitWepEngine(
 */
 void RTMPConstructWEPIVHdr(
 	IN	u8 			key_idx,
-	IN	UCHAR			*pn,
-	OUT	UCHAR			*iv_hdr)
+	IN	u8 		*pn,
+	OUT	u8 		*iv_hdr)
 {
 	memset(iv_hdr, 0, LEN_WEP_IV_HDR);
 

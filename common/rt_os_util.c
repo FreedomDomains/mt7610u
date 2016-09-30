@@ -72,25 +72,25 @@ void RtmpDrvMaxRateGet(
 #ifdef DOT11_VHT_AC
        if (MODE >= MODE_VHT) {
                if (BW == 0 /* 20Mhz */) {
-                       rate_index = 112 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 112 + ((u8)ShortGI * 29) + ((u8)MCS);
                } else if (BW == 1 /* 40Mhz */) {
-                       rate_index = 121 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 121 + ((u8)ShortGI * 29) + ((u8)MCS);
                } else if (BW == 2 /* 80Mhz */) {
-                       rate_index = 131 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 131 + ((u8)ShortGI * 29) + ((u8)MCS);
                }
        } else
 #endif /* DOT11_VHT_AC */
 
 #ifdef DOT11_N_SUPPORT
 	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
-		/* rate_index = 16 + ((UCHAR)pHtPhyMode->field.BW *16) + ((UCHAR)pHtPhyMode->field.ShortGI *32) + ((UCHAR)pHtPhyMode->field.MCS); */
-		rate_index = 16 + ((UCHAR)BW *24) + ((UCHAR)ShortGI *48) + ((UCHAR)MCS);
+		/* rate_index = 16 + ((u8)pHtPhyMode->field.BW *16) + ((u8)pHtPhyMode->field.ShortGI *32) + ((u8)pHtPhyMode->field.MCS); */
+		rate_index = 16 + ((u8)BW *24) + ((u8)ShortGI *48) + ((u8)MCS);
 	} else
 #endif /* DOT11_N_SUPPORT */
 		if (MODE == MODE_OFDM)
-			rate_index = (UCHAR)(MCS) + 4;
+			rate_index = (u8)(MCS) + 4;
 		else
-			rate_index = (UCHAR)(MCS);
+			rate_index = (u8)(MCS);
 
 	if (rate_index < 0)
 		rate_index = 0;
@@ -153,7 +153,7 @@ void WpaSendMicFailureToWpaSupplicant(
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 int wext_notify_event_assoc(
 	IN struct net_device *pNetDev,
-	IN UCHAR *ReqVarIEs,
+	IN u8 *ReqVarIEs,
 	IN u32 ReqVarIELen)
 {
 	char custom[IW_CUSTOM_MAX] = {0};
@@ -162,7 +162,7 @@ int wext_notify_event_assoc(
 	{
 		memmove(custom, ReqVarIEs, ReqVarIELen);
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_ASSOC_REQ_IE, -1, NULL,
-								(UCHAR *)custom, ReqVarIELen);
+								(u8 *)custom, ReqVarIELen);
 	}
 	else
 	    DBGPRINT(RT_DEBUG_TRACE, ("pAd->StaCfg.ReqVarIELen > MAX_CUSTOM_LEN\n"));
@@ -177,7 +177,7 @@ int wext_notify_event_assoc(
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 void SendAssocIEsToWpaSupplicant(
 	IN struct net_device *pNetDev,
-	IN UCHAR *ReqVarIEs,
+	IN u8 *ReqVarIEs,
 	IN u32 ReqVarIELen)
 {
 	STRING custom[IW_CUSTOM_MAX] = {0};

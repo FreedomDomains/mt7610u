@@ -146,21 +146,21 @@ void PeerAuthRspAtSeq2Action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
-	UCHAR Addr2[MAC_ADDR_LEN];
+	u8 Addr2[MAC_ADDR_LEN];
 	USHORT Seq, Status, RemoteStatus, Alg;
-	UCHAR iv_hdr[4];
-/*    UCHAR         ChlgText[CIPHER_TEXT_LEN]; */
-	UCHAR *ChlgText = NULL;
-/*    UCHAR         CyperChlgText[CIPHER_TEXT_LEN + 8 + 8]; */
-	UCHAR *CyperChlgText = NULL;
+	u8 iv_hdr[4];
+/*    u8         ChlgText[CIPHER_TEXT_LEN]; */
+	u8 *ChlgText = NULL;
+/*    u8         CyperChlgText[CIPHER_TEXT_LEN + 8 + 8]; */
+	u8 *CyperChlgText = NULL;
 	ULONG c_len = 0;
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	USHORT Status2;
-	UCHAR ChallengeIe = IE_CHALLENGE_TEXT;
-	UCHAR len_challengeText = CIPHER_TEXT_LEN;
+	u8 ChallengeIe = IE_CHALLENGE_TEXT;
+	u8 len_challengeText = CIPHER_TEXT_LEN;
 
 	/* allocate memory */
 	ChlgText = kmalloc(CIPHER_TEXT_LEN, GFP_ATOMIC);
@@ -313,7 +313,7 @@ void PeerAuthRspAtSeq4Action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR Addr2[MAC_ADDR_LEN];
+	u8 Addr2[MAC_ADDR_LEN];
 	USHORT Alg, Seq, Status;
 /*    CHAR          ChlgText[CIPHER_TEXT_LEN]; */
 	CHAR *ChlgText = NULL;
@@ -494,7 +494,7 @@ BOOLEAN AUTH_ReqSend(
 	IN ULONG ElementLen)
 {
 	USHORT Alg, Seq, Status;
-	UCHAR Addr[6];
+	u8 Addr[6];
 	ULONG Timeout;
 	HEADER_802_11 AuthHdr;
 	BOOLEAN TimerCancelled;

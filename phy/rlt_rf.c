@@ -31,9 +31,9 @@
 
 int rlt_rf_write(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR bank,
-	IN UCHAR regID,
-	IN UCHAR value)
+	IN u8 bank,
+	IN u8 regID,
+	IN u8 value)
 {
 	int	 ret = 0;
 
@@ -117,9 +117,9 @@ done:
 */
 int rlt_rf_read(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR bank,
-	IN UCHAR regID,
-	IN UCHAR *pValue)
+	IN u8 bank,
+	IN u8 regID,
+	IN u8 *pValue)
 {
 	int	 ret = 0;
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
@@ -179,7 +179,7 @@ int rlt_rf_read(
 				(rfcsr.field.RF_CSR_REG_ID == regID) &&
 				(rfcsr.field.RF_CSR_REG_BANK == bank))
 			{
-				*pValue = (UCHAR)(rfcsr.field.RF_CSR_DATA);
+				*pValue = (u8)(rfcsr.field.RF_CSR_DATA);
 				break;
 			}
 		}

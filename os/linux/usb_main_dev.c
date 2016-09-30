@@ -275,7 +275,7 @@ static int rt2870_suspend(
 	DBGPRINT(RT_DEBUG_TRACE, ("===> rt2870_suspend()\n"));
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	UCHAR Flag;
+	u8 Flag;
 	DBGPRINT(RT_DEBUG_ERROR, ("autosuspend===> rt2870_suspend()\n"));
 #ifdef WOW_SUPPORT
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_STATUS(pAd, &Flag);
@@ -322,7 +322,7 @@ static int rt2870_resume(
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 	INT 		pm_usage_cnt;
-	UCHAR Flag;
+	u8 Flag;
 
 	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
 

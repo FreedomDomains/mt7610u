@@ -30,7 +30,7 @@
 #include	"rt_config.h"
 
 
-int RTUSBFreeDescriptorRelease(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
+int RTUSBFreeDescriptorRelease(struct rtmp_adapter*pAd, u8 BulkOutPipeId)
 {
 	HT_TX_CONTEXT *pHTTXContext;
 	unsigned long IrqFlags;
@@ -66,7 +66,7 @@ int RTUSBFreeDescriptorRelease(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
 */
 int	RTUSBFreeDescRequest(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR BulkOutPipeId,
+	IN u8 BulkOutPipeId,
 	IN u32 req_cnt)
 {
 	int	 Status = NDIS_STATUS_FAILURE;
@@ -116,7 +116,7 @@ int	RTUSBFreeDescRequest(
 }
 
 
-BOOLEAN	RTUSBNeedQueueBackForAgg(struct rtmp_adapter*pAd, UCHAR BulkOutPipeId)
+BOOLEAN	RTUSBNeedQueueBackForAgg(struct rtmp_adapter*pAd, u8 BulkOutPipeId)
 {
 	HT_TX_CONTEXT *pHTTXContext;
 	BOOLEAN needQueBack = FALSE;
@@ -178,9 +178,9 @@ void rlt_usb_write_txinfo(
 	IN TXINFO_STRUC *pTxInfo,
 	IN USHORT USBDMApktLen,
 	IN BOOLEAN bWiv,
-	IN UCHAR QueueSel,
-	IN UCHAR NextValid,
-	IN UCHAR TxBurst)
+	IN u8 QueueSel,
+	IN u8 NextValid,
+	IN u8 TxBurst)
 {
 	struct txinfo_nmac_pkt *nmac_info;
 
@@ -220,7 +220,7 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 	TXINFO_STRUC *pTxInfo;
 	struct txwi_nmac *pTxWI;
 	u8 TXWISize = sizeof(struct txwi_nmac);
-	UCHAR *buf;
+	u8 *buf;
 	USHORT data_len;
 
 
@@ -243,7 +243,7 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 						EpToQueue[MGMTPIPEIDX], FALSE, FALSE);
 	RTMPWriteTxWI(pAd, pTxWI, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 0,
 		      BSSID_WCID, data_len, 0, 0,
-		      (UCHAR) pAd->CommonCfg.MlmeTransmit.field.MCS,
+		      (u8) pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, FALSE, &pAd->CommonCfg.MlmeTransmit);
 	memmove((void *)&buf[TXWISize + TXINFO_SIZE + TSO_SIZE], (void *)&pAd->PsPollFrame, data_len);
 	/* Append 4 extra zero bytes. */
@@ -257,7 +257,7 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 {
 	TXINFO_STRUC *pTxInfo;
 	struct txwi_nmac *pTxWI;
-	UCHAR *buf;
+	u8 *buf;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 	USHORT data_len = sizeof(pAd->NullFrame);;
 
@@ -278,7 +278,7 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 			EpToQueue[MGMTPIPEIDX], FALSE, FALSE);
 	RTMPWriteTxWI(pAd, pTxWI, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 0,
 		      BSSID_WCID, data_len, 0, 0,
-		      (UCHAR)pAd->CommonCfg.MlmeTransmit.field.MCS,
+		      (u8)pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, FALSE, &pAd->CommonCfg.MlmeTransmit);
 	memmove((void *)&buf[TXWISize + TXINFO_SIZE], (void *)&pAd->NullFrame, data_len);
 	pAd->NullContext.BulkOutSize = TXINFO_SIZE + TXWISize + TSO_SIZE + data_len + 4;
@@ -293,7 +293,7 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 */
 static inline int RtmpUSBCanDoWrite(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR QueIdx,
+	IN u8 QueIdx,
 	IN HT_TX_CONTEXT *pHTTXContext)
 {
 	int	canWrite = NDIS_STATUS_RESOURCES;
@@ -358,7 +358,7 @@ USHORT RtmpUSB_WriteSubTxResource(
 USHORT	RtmpUSB_WriteFragTxResource(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
-	IN UCHAR fragNum,
+	IN u8 fragNum,
 	OUT	USHORT *freeCnt)
 {
 	HT_TX_CONTEXT	*pHTTXContext;
@@ -367,7 +367,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 	TXINFO_STRUC	*pTxInfo;
 	struct txwi_nmac 	*pTxWI;
 	u8 *		pWirelessPacket = NULL;
-	UCHAR			QueIdx;
+	u8 		QueIdx;
 	int		Status;
 	unsigned long	IrqFlags;
 	u32			USBDMApktLen = 0, DMAHdrLen, padding;
@@ -556,8 +556,8 @@ USHORT RtmpUSB_WriteSingleTxResource(
 	u32 fillOffset;
 	TXINFO_STRUC *pTxInfo;
 	struct txwi_nmac *pTxWI;
-	UCHAR *pWirelessPacket, *buf;
-	UCHAR QueIdx;
+	u8 *pWirelessPacket, *buf;
+	u8 QueIdx;
 	unsigned long	IrqFlags;
 	int Status;
 	u32 hdr_copy_len, hdr_len, dma_len = 0, padding;
@@ -715,7 +715,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 USHORT RtmpUSB_WriteMultiTxResource(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
-	IN UCHAR frmNum,
+	IN u8 frmNum,
 	OUT USHORT *freeCnt)
 {
 	HT_TX_CONTEXT *pHTTXContext;
@@ -723,8 +723,8 @@ USHORT RtmpUSB_WriteMultiTxResource(
 	u32 fillOffset;
 	TXINFO_STRUC *pTxInfo;
 	struct txwi_nmac *pTxWI;
-	UCHAR *pWirelessPacket = NULL;
-	UCHAR QueIdx;
+	u8 *pWirelessPacket = NULL;
+	u8 QueIdx;
 	int Status;
 	unsigned long IrqFlags;
 	u8 TXWISize = sizeof(struct txwi_nmac);
@@ -851,7 +851,7 @@ void RtmpUSB_FinalWriteTxResource(
 	IN USHORT totalMPDUSize,
 	IN USHORT TxIdx)
 {
-	UCHAR			QueIdx;
+	u8 		QueIdx;
 	HT_TX_CONTEXT	*pHTTXContext;
 	u32			fillOffset;
 	TXINFO_STRUC	*pTxInfo;
@@ -949,7 +949,7 @@ void RtmpUSB_FinalWriteTxResource(
 
 void RtmpUSBDataLastTxIdx(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR QueIdx,
+	IN u8 QueIdx,
 	IN USHORT TxIdx)
 {
 	/* DO nothing for USB.*/
@@ -967,7 +967,7 @@ void RtmpUSBDataLastTxIdx(
 void RtmpUSBDataKickOut(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
-	IN UCHAR QueIdx)
+	IN u8 QueIdx)
 {
 	RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << QueIdx));
 	RTUSBKickBulkOut(pAd);
@@ -981,14 +981,14 @@ void RtmpUSBDataKickOut(
  */
 int RtmpUSBMgmtKickOut(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR QueIdx,
+	IN u8 QueIdx,
 	IN struct sk_buff * pPacket,
-	IN UCHAR *pSrcBufVA,
+	IN u8 *pSrcBufVA,
 	IN UINT SrcBufLen)
 {
 	TXINFO_STRUC *pTxInfo;
 	ULONG BulkOutSize;
-	UCHAR padLen;
+	u8 padLen;
 	u8 *pDest;
 	ULONG SwIdx = pAd->MgmtRing.TxCpuIdx;
 	TX_CONTEXT *pMLMEContext = (PTX_CONTEXT)pAd->MgmtRing.Cell[SwIdx].AllocVa;
@@ -1071,8 +1071,8 @@ if (0) {
 
 void RtmpUSBNullFrameKickOut(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR QueIdx,
-	IN UCHAR *pNullFrame,
+	IN u8 QueIdx,
+	IN u8 *pNullFrame,
 	IN u32 frameLen)
 {
 	if (pAd->NullContext.InUse == FALSE)
@@ -1080,7 +1080,7 @@ void RtmpUSBNullFrameKickOut(
 		PTX_CONTEXT pNullContext;
 		TXINFO_STRUC *pTxInfo;
 		struct txwi_nmac *pTxWI;
-		UCHAR *pWirelessPkt;
+		u8 *pWirelessPkt;
 		u8 TXWISize = sizeof(struct txwi_nmac);
 
 		pNullContext = &(pAd->NullContext);
@@ -1095,7 +1095,7 @@ void RtmpUSBNullFrameKickOut(
 		pTxInfo->TxInfoQSEL = FIFO_EDCA;
 		pTxWI = (struct txwi_nmac *)&pWirelessPkt[TXINFO_SIZE];
 		RTMPWriteTxWI(pAd, pTxWI,  FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 0, BSSID_WCID, frameLen,
-			0, 0, (UCHAR)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_HTTXOP, FALSE, &pAd->CommonCfg.MlmeTransmit);
+			0, 0, (u8)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_HTTXOP, FALSE, &pAd->CommonCfg.MlmeTransmit);
 #ifdef RT_BIG_ENDIAN
 		RTMPWIEndianChange(pTxWI, sizeof(*pTxWI));
 #endif /* RT_BIG_ENDIAN */
@@ -1146,7 +1146,7 @@ struct sk_buff * GetPacketFromRxRing(
 {
 	RX_CONTEXT *pRxContext;
 	struct sk_buff * pNetPkt;
-	UCHAR *pData, *RXDMA;
+	u8 *pData, *RXDMA;
 	ULONG ThisFrameLen, RxBufferLength, valid_len;
 	struct rxwi_nmac *pRxWI;
 	u8 RXWISize = sizeof(struct rxwi_nmac);

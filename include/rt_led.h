@@ -78,14 +78,14 @@
 typedef union  _MCU_LEDCS_STRUC {
 	struct	{
 #ifdef RT_BIG_ENDIAN
-		UCHAR		Polarity:1;
-		UCHAR		LedMode:7;
+		u8 	Polarity:1;
+		u8 	LedMode:7;
 #else
-		UCHAR		LedMode:7;
-		UCHAR		Polarity:1;
+		u8 	LedMode:7;
+		u8 	Polarity:1;
 #endif /* RT_BIG_ENDIAN */
 	} field;
-	UCHAR				word;
+	u8 			word;
 } MCU_LEDCS_STRUC, *PMCU_LEDCS_STRUC;
 
 void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd);
@@ -94,12 +94,12 @@ void RTMPExitLEDMode(IN struct rtmp_adapter*pAd);
 
 void RTMPSetLEDStatus(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR			Status);
+	IN u8 		Status);
 
 #ifdef RTMP_MAC_USB
 #define RTMPSetLED(pAd, Status)	\
 do{								\
-	UCHAR LEDStatus;			\
+	u8 LEDStatus;			\
 	LEDStatus = Status;			\
 	if (Status == LED_RADIO_OFF)\
 		RTMPSetLEDStatus(pAd, Status);\
@@ -122,10 +122,10 @@ typedef struct _LED_CONTROL
 	USHORT				LedAGCfg;	/* LED A/G Configuration EEPROM 0x3c */
 	USHORT				LedACTCfg;	/* LED ACT Configuration EEPROM 0x3e */
 	USHORT				LedPolarity;/* LED A/G/ACT polarity EEPROM 0x40 */
-	UCHAR				LedIndicatorStrength;
-	UCHAR				RssiSingalstrengthOffet;
+	u8 			LedIndicatorStrength;
+	u8 			RssiSingalstrengthOffet;
 	BOOLEAN				bLedOnScanning;
-	UCHAR				LedStatus;
+	u8 			LedStatus;
 }LED_CONTROL, *PLED_CONTROL;
 
 void RTMPStartLEDMode(IN struct rtmp_adapter*pAd);

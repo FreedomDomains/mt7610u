@@ -106,16 +106,16 @@ typedef struct __attribute__ ((packed)) _AC_PARAM_RECORD{
 typedef struct __attribute__ ((packed)) _PSPOLL_FRAME {
 	FRAME_CONTROL FC;
 	USHORT Aid;
-	UCHAR Bssid[MAC_ADDR_LEN];
-	UCHAR Ta[MAC_ADDR_LEN];
+	u8 Bssid[MAC_ADDR_LEN];
+	u8 Ta[MAC_ADDR_LEN];
 } PSPOLL_FRAME, *PPSPOLL_FRAME;
 
 
 typedef struct __attribute__ ((packed)) _RTS_FRAME {
 	FRAME_CONTROL FC;
 	USHORT Duration;
-	UCHAR Addr1[MAC_ADDR_LEN];
-	UCHAR Addr2[MAC_ADDR_LEN];
+	u8 Addr1[MAC_ADDR_LEN];
+	u8 Addr2[MAC_ADDR_LEN];
 } RTS_FRAME, *PRTS_FRAME;
 
 #endif /* __DOT11_BASE_H__ */

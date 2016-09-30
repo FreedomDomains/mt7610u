@@ -29,7 +29,7 @@
 
 
 #ifdef SCAN_SUPPORT
-static INT scan_ch_restore(struct rtmp_adapter*pAd, UCHAR OpMode)
+static INT scan_ch_restore(struct rtmp_adapter*pAd, u8 OpMode)
 {
 #ifdef CONFIG_STA_SUPPORT
 	USHORT Status;
@@ -144,12 +144,12 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, UCHAR OpMode)
 
 
 
-static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
+static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 {
-	UCHAR *frm_buf = NULL;
+	u8 *frm_buf = NULL;
 	HEADER_802_11 Hdr80211;
 	ULONG FrameLen = 0;
-	UCHAR SsidLen = 0;
+	u8 SsidLen = 0;
 #ifdef CONFIG_STA_SUPPORT
 	USHORT Status;
 #endif /* CONFIG_STA_SUPPORT */
@@ -220,8 +220,8 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode))
 	{
 		ULONG	Tmp;
-		UCHAR	HtLen;
-		UCHAR	BROADCOM[4] = {0x0, 0x90, 0x4c, 0x33};
+		u8 HtLen;
+		u8 BROADCOM[4] = {0x0, 0x90, 0x4c, 0x33};
 #ifdef RT_BIG_ENDIAN
 		HT_CAPABILITY_IE HtCapabilityTmp;
 #endif
@@ -311,7 +311,7 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
 #ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 		(pAd->MlmeAux.Channel > 14)) {
-		FrameLen += build_vht_ies(pAd, (UCHAR *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
+		FrameLen += build_vht_ies(pAd, (u8 *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
 	}
 #endif /* DOT11_VHT_AC */
 
@@ -369,14 +369,14 @@ static INT scan_active(struct rtmp_adapter*pAd, UCHAR OpMode, UCHAR ScanType)
  */
 void ScanNextChannel(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR OpMode)
+	IN u8 OpMode)
 {
-	UCHAR ScanType = pAd->MlmeAux.ScanType;
+	u8 ScanType = pAd->MlmeAux.ScanType;
 	UINT ScanTimeIn5gChannel = SHORT_CHANNEL_TIME;
 	BOOLEAN ScanPending = FALSE;
 	RALINK_TIMER_STRUCT *sc_timer;
 	UINT stay_time = 0;
-	UCHAR ImprovedScan_MaxScanChannelCnt;
+	u8 ImprovedScan_MaxScanChannelCnt;
 
 
 #ifdef RALINK_ATE

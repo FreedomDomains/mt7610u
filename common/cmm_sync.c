@@ -28,7 +28,7 @@
 #include "rt_config.h"
 
 /*BaSizeArray follows the 802.11n definition as MaxRxFactor.  2^(13+factor) bytes. When factor =0, it's about Ba buffer size =8.*/
-UCHAR BaSizeArray[4] = {8,16,32,64};
+u8 BaSizeArray[4] = {8,16,32,64};
 
 
 extern COUNTRY_REGION_CH_DESC Country_Region_ChDesc_2GHZ[];
@@ -51,7 +51,7 @@ extern UINT16 const Country_Region_GroupNum_5GHZ;
 void BuildChannelList(
 	IN struct rtmp_adapter *pAd)
 {
-	UCHAR i, j, index=0, num=0;
+	u8 i, j, index=0, num=0;
 	PCH_DESC pChDesc = NULL;
 	BOOLEAN bRegionFound = FALSE;
 	u8 *pChannelList;
@@ -82,7 +82,7 @@ void BuildChannelList(
 
 		if (num > 0)
 		{
-			pChannelList = kmalloc(num * sizeof(UCHAR), GFP_ATOMIC);
+			pChannelList = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
 			if (!pChannelList)
 			{
@@ -90,7 +90,7 @@ void BuildChannelList(
 				return;
 			}
 
-			pChannelListFlag = kmalloc(num * sizeof(UCHAR), GFP_ATOMIC);
+			pChannelListFlag = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
 			if (!pChannelListFlag)
 			{
@@ -153,8 +153,8 @@ void BuildChannelList(
 
 		if (num > 0)
 		{
-			UCHAR RadarCh[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
-			pChannelList = kmalloc(num * sizeof(UCHAR), GFP_ATOMIC);
+			u8 RadarCh[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
+			pChannelList = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
 			if (!pChannelList)
 			{
@@ -162,7 +162,7 @@ void BuildChannelList(
 				return;
 			}
 
-			pChannelListFlag = kmalloc(num * sizeof(UCHAR), GFP_ATOMIC);
+			pChannelListFlag = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
 			if (!pChannelListFlag)
 			{
@@ -248,7 +248,7 @@ void BuildChannelList(
 
 	==========================================================================
  */
-UCHAR FirstChannel(
+u8 FirstChannel(
 	IN struct rtmp_adapter *pAd)
 {
 	return pAd->ChannelList[0].Channel;
@@ -265,12 +265,12 @@ UCHAR FirstChannel(
 		return 0 if no more next channel
 	==========================================================================
  */
-UCHAR NextChannel(
+u8 NextChannel(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR channel)
+	IN u8 channel)
 {
 	int i;
-	UCHAR next_channel = 0;
+	u8 next_channel = 0;
 
 	for (i = 0; i < (pAd->ChannelListNum - 1); i++)
 	{
@@ -321,7 +321,7 @@ UCHAR NextChannel(
  */
 void ChangeToCellPowerLimit(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR         AironetCellPowerLimit)
+	IN u8         AironetCellPowerLimit)
 {
 	/*
 		valud 0xFF means that hasn't found power limit information
@@ -349,9 +349,9 @@ void ChangeToCellPowerLimit(
 }
 
 
-CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, UCHAR rssi_idx)
+CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, u8 rssi_idx)
 {
-	UCHAR	RssiOffset, LNAGain;
+	u8 RssiOffset, LNAGain;
 
 	/* Rssi equals to zero or rssi_idx larger than 3 should be an invalid value*/
 	if (Rssi == 0 || rssi_idx >= 3)
@@ -377,7 +377,7 @@ CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, UCHAR rssi_idx)
 }
 
 
-CHAR ConvertToSnr(struct rtmp_adapter*pAd, UCHAR Snr)
+CHAR ConvertToSnr(struct rtmp_adapter*pAd, u8 Snr)
 {
 	if (pAd->chipCap.SnrFormula == SNR_FORMULA2)
 		return (Snr * 3 + 8) >> 4;

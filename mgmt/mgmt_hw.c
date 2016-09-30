@@ -47,7 +47,7 @@ INT dev_adjust_radio(struct rtmp_adapter*pAd)
 
 	if (hw_cfg->cent_ch != new_cfg.cent_ch)
 	{
-		UCHAR ext_ch = EXTCHA_NONE;
+		u8 ext_ch = EXTCHA_NONE;
 
 		rtmp_bbp_set_ctrlch(pAd, ext_ch);
 		rtmp_mac_set_ctrlch(pAd, ext_ch);

@@ -34,7 +34,7 @@
 /*#define UAPSD_DEBUG */
 
 /* used to enable or disable UAPSD power save queue maintain mechanism */
-UCHAR gUAPSD_FlgNotQueueMaintain;
+u8 gUAPSD_FlgNotQueueMaintain;
 
 #ifdef UAPSD_DEBUG
 u32 gUAPSD_SP_CloseAbnormalNum;
@@ -43,7 +43,7 @@ u32 gUAPSD_SP_CloseAbnormalNum;
 #ifdef UAPSD_TIMING_RECORD_FUNC
 /* all unit: us */
 
-UCHAR  gUAPSD_TimingFlag;
+u8  gUAPSD_TimingFlag;
 u32 gUAPSD_TimingIndexUapsd;
 u32 gUAPSD_TimingLoopIndex;
 
@@ -278,7 +278,7 @@ void UAPSD_AllPacketDeliver(
 {
 	QUEUE_HEADER *pQueApsd;
 	PQUEUE_ENTRY pQueEntry;
-	UCHAR QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
+	u8 QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
                                          QID_AC_VI, QID_AC_VO };
 	INT32 IdAc, QueId; /* must be signed, can not be unsigned */
 
@@ -355,11 +355,11 @@ Note:
 void UAPSD_AssocParse(
 	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
-	IN	UCHAR				*pElm,
+	IN	u8 			*pElm,
 	IN	BOOLEAN				FlgApsdCapable)
 {
 	PQBSS_STA_INFO_PARM  pQosInfo;
-	UCHAR UAPSD[4];
+	u8 UAPSD[4];
 	u32 IdApsd;
 
 
@@ -667,7 +667,7 @@ Note:
 void UAPSD_SP_AUE_Handle(
 	IN struct rtmp_adapter	*pAd,
     IN MAC_TABLE_ENTRY	*pEntry,
-	IN UCHAR			FlgSuccess)
+	IN u8 		FlgSuccess)
 {
 #ifdef UAPSD_SP_ACCURATE
 	USHORT QueId;
@@ -1107,7 +1107,7 @@ BOOLEAN UAPSD_PsPollHandle(
 		=> AC priority = VO > VI > BE > BK
 	*/
 	u32	AcPriority[WMM_NUM_OF_AC] = { 1, 0, 2, 3 };
-	UCHAR	QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
+	u8 QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
                                             QID_AC_VI, QID_AC_VO };
 	BOOLEAN	FlgQueEmpty;
 	INT32	IdAc; /* must be signed, can not use unsigned */
@@ -1297,7 +1297,7 @@ Note:
 void UAPSD_TriggerFrameHandle(
 	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
-	IN	UCHAR				UpOfFrame)
+	IN	u8 			UpOfFrame)
 {
 	QUEUE_HEADER	*pAcPsQue;
 	QUEUE_HEADER	*pAcSwQue, *pLastAcSwQue;
@@ -1314,7 +1314,7 @@ void UAPSD_TriggerFrameHandle(
 	u32	AcPriority[WMM_NUM_OF_AC] = { 1, 0, 2, 3 };
 	/* 0: deliver all U-APSD packets */
 	u32	SpLenMap[WMM_NUM_OF_AC] = { 0, 2, 4, 6 };
-	UCHAR	QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
+	u8 QueIdList[WMM_NUM_OF_AC] = { QID_AC_BE, QID_AC_BK,
                                             QID_AC_VI, QID_AC_VO };
 	BOOLEAN	FlgQueEmpty;
 	BOOLEAN	FlgNullSnd;
@@ -1794,11 +1794,11 @@ Note:
 void UAPSD_TagFrame(
 	IN	struct rtmp_adapter	*pAd,
 	IN	NDIS_PACKET			*pPkt,
-	IN	UCHAR				Wcid,
+	IN	u8 			Wcid,
 	IN	u32				PktOffset)
 {
 	MAC_TABLE_ENTRY *pEntry;
-	UCHAR AcQueId;
+	u8 AcQueId;
 
 
 	if ((Wcid == MCAST_WCID) || (Wcid >= MAX_LEN_OF_MAC_TABLE))
@@ -1848,7 +1848,7 @@ Note:
 */
 void UAPSD_UnTagFrame(
 	IN	struct rtmp_adapter*pAd,
-	IN	UCHAR			AcQueId,
+	IN	u8 		AcQueId,
 	IN	u32			bulkStartPos,
 	IN	u32			bulkEnPos)
 {

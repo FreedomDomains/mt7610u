@@ -72,12 +72,12 @@ INT LED_Array[16][12]={
 */
 void RTMPSetLEDStatus(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR			Status)
+	IN u8 		Status)
 {
 	/*ULONG			data; */
-	UCHAR			LinkStatus = 0;
-	UCHAR			LedMode;
-	UCHAR			MCUCmd = 0;
+	u8 		LinkStatus = 0;
+	u8 		LedMode;
+	u8 		MCUCmd = 0;
 	BOOLEAN 		bIgnored = FALSE;
 	INT LED_CMD = -1;
 
@@ -204,7 +204,7 @@ void RTMPSetSignalLED(
 	IN struct rtmp_adapter *	pAd,
 	IN NDIS_802_11_RSSI Dbm)
 {
-	UCHAR		nLed = 0;
+	u8 	nLed = 0;
 
 
 #ifdef RTMP_MAC_USB
@@ -296,9 +296,9 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 #endif /* RTMP_MAC_USB */
 	}
 
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (UCHAR)pLedCntl->LedAGCfg, (UCHAR)(pLedCntl->LedAGCfg >> 8), FALSE);
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (UCHAR)pLedCntl->LedACTCfg, (UCHAR)(pLedCntl->LedACTCfg >> 8), FALSE);
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (UCHAR)pLedCntl->LedPolarity, (UCHAR)(pLedCntl->LedPolarity >> 8), FALSE);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (u8)pLedCntl->LedAGCfg, (u8)(pLedCntl->LedAGCfg >> 8), FALSE);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (u8)pLedCntl->LedACTCfg, (u8)(pLedCntl->LedACTCfg >> 8), FALSE);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (u8)pLedCntl->LedPolarity, (u8)(pLedCntl->LedPolarity >> 8), FALSE);
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, 0, pLedCntl->MCULedCntl.field.Polarity, FALSE);
 
 	pAd->LedCntl.LedIndicatorStrength = 0xFF;

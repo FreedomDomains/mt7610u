@@ -60,7 +60,7 @@ INT ht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILI
 }
 
 
-INT set_ht_fixed_mcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, UCHAR fixed_mcs, UCHAR mcs_bound)
+INT set_ht_fixed_mcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, u8 fixed_mcs, u8 mcs_bound)
 {
 	if (fixed_mcs == 32)
 	{
@@ -81,10 +81,10 @@ INT set_ht_fixed_mcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, UCHAR fix
 }
 
 
-INT get_ht_max_mcs(struct rtmp_adapter*pAd, UCHAR *desire_mcs, UCHAR *cap_mcs)
+INT get_ht_max_mcs(struct rtmp_adapter*pAd, u8 *desire_mcs, u8 *cap_mcs)
 {
 	INT i, j;
-	UCHAR bitmask;
+	u8 bitmask;
 
 
 	for (i=23; i>=0; i--)
@@ -105,7 +105,7 @@ INT get_ht_max_mcs(struct rtmp_adapter*pAd, UCHAR *desire_mcs, UCHAR *cap_mcs)
 }
 
 
-INT get_ht_cent_ch(struct rtmp_adapter*pAd, UCHAR *rf_bw, UCHAR *ext_ch)
+INT get_ht_cent_ch(struct rtmp_adapter*pAd, u8 *rf_bw, u8 *ext_ch)
 {
 	if ((pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth  == BW_40) &&
 		(pAd->CommonCfg.RegTransmitSetting.field.EXTCHA == EXTCHA_ABOVE)
@@ -133,12 +133,12 @@ INT get_ht_cent_ch(struct rtmp_adapter*pAd, UCHAR *rf_bw, UCHAR *ext_ch)
 }
 
 
-UCHAR get_cent_ch_by_htinfo(
+u8 get_cent_ch_by_htinfo(
 	struct rtmp_adapter*pAd,
 	ADD_HT_INFO_IE *ht_op,
 	HT_CAPABILITY_IE *ht_cap)
 {
-	UCHAR cent_ch;
+	u8 cent_ch;
 
 	if ((ht_op->ControlChan > 2)&&
 		(ht_op->AddHtInfo.ExtChanOffset == EXTCHA_BELOW) &&
@@ -170,7 +170,7 @@ void RTMPSetHT(
 	IN struct rtmp_adapter*pAd,
 	IN OID_SET_HT_PHYMODE *pHTPhyMode)
 {
-	UCHAR RxStream = pAd->CommonCfg.RxStream;
+	u8 RxStream = pAd->CommonCfg.RxStream;
 	INT bw;
 	RT_HT_CAPABILITY *rt_ht_cap = &pAd->CommonCfg.DesiredHtPhy;
 	HT_CAPABILITY_IE *ht_cap= &pAd->CommonCfg.HtCapability;
@@ -214,13 +214,13 @@ void RTMPSetHT(
 
 	/* Mimo power save, A-MSDU size, */
 	rt_ht_cap->AmsduEnable = (USHORT)pAd->CommonCfg.BACapability.field.AmsduEnable;
-	rt_ht_cap->AmsduSize = (UCHAR)pAd->CommonCfg.BACapability.field.AmsduSize;
-	rt_ht_cap->MimoPs = (UCHAR)pAd->CommonCfg.BACapability.field.MMPSmode;
-	rt_ht_cap->MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
+	rt_ht_cap->AmsduSize = (u8)pAd->CommonCfg.BACapability.field.AmsduSize;
+	rt_ht_cap->MimoPs = (u8)pAd->CommonCfg.BACapability.field.MMPSmode;
+	rt_ht_cap->MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
 
 	ht_cap->HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
 	ht_cap->HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
-	ht_cap->HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
+	ht_cap->HtCapParm.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : AMsduSize = %d, MimoPs = %d, MpduDensity = %d, MaxRAmpduFactor = %d\n",
 													rt_ht_cap->AmsduSize,
@@ -420,12 +420,12 @@ void RTMPSetHT(
 */
 void RTMPSetIndividualHT(
 	IN struct rtmp_adapter*pAd,
-	IN UCHAR apidx)
+	IN u8 apidx)
 {
 	RT_PHY_INFO *pDesired_ht_phy = NULL;
-	UCHAR TxStream = pAd->CommonCfg.TxStream;
-	UCHAR DesiredMcs = MCS_AUTO;
-	UCHAR encrypt_mode = Ndis802_11EncryptionDisabled;
+	u8 TxStream = pAd->CommonCfg.TxStream;
+	u8 DesiredMcs = MCS_AUTO;
+	u8 encrypt_mode = Ndis802_11EncryptionDisabled;
 
 	do
 	{
@@ -598,13 +598,13 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 #endif /* DOT11_VHT_AC */
 
 	SetHT.PhyMode = (RT_802_11_PHY_MODE)pAd->CommonCfg.PhyMode;
-	SetHT.TransmitNo = ((UCHAR)pAd->Antenna.field.TxPath);
-	SetHT.HtMode = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.HTMODE;
-	SetHT.ExtOffset = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
+	SetHT.TransmitNo = ((u8)pAd->Antenna.field.TxPath);
+	SetHT.HtMode = (u8)pAd->CommonCfg.RegTransmitSetting.field.HTMODE;
+	SetHT.ExtOffset = (u8)pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
 	SetHT.MCS = MCS_AUTO;
-	SetHT.BW = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.BW;
-	SetHT.STBC = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.STBC;
-	SetHT.SHORTGI = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.ShortGI;
+	SetHT.BW = (u8)pAd->CommonCfg.RegTransmitSetting.field.BW;
+	SetHT.STBC = (u8)pAd->CommonCfg.RegTransmitSetting.field.STBC;
+	SetHT.SHORTGI = (u8)pAd->CommonCfg.RegTransmitSetting.field.ShortGI;
 
 	RTMPSetHT(pAd, &SetHT);
 
@@ -635,7 +635,7 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 */
 void RTMPUpdateHTIE(
 	IN RT_HT_CAPABILITY	*pRtHt,
-	IN UCHAR *pMcsSet,
+	IN u8 *pMcsSet,
 	OUT HT_CAPABILITY_IE *pHtCapability,
 	OUT ADD_HT_INFO_IE *pAddHtInfo)
 {

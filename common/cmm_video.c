@@ -137,7 +137,7 @@ u32 GetAsicDefaultRetry(
 	return RetryLimit;
 }
 
-UCHAR GetAsicDefaultTxBA(
+u8 GetAsicDefaultTxBA(
 	IN struct rtmp_adapter *pAd)
 {
         return pAd->CommonCfg.TxBASize;
@@ -149,7 +149,7 @@ u32 GetAsicVideoRetry(
 	return pAd->VideoTurbine.TxRetryLimit;
 }
 
-UCHAR GetAsicVideoTxBA(
+u8 GetAsicVideoTxBA(
 	IN struct rtmp_adapter *pAd)
 {
 	return pAd->VideoTurbine.TxBASize;

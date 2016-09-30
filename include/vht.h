@@ -35,11 +35,11 @@ struct _RT_PHY_INFO;
 void dump_vht_cap(struct rtmp_adapter *pAd, VHT_CAP_IE *vht_ie);
 void dump_vht_op(struct rtmp_adapter *pAd, VHT_OP_IE *vht_ie);
 
-INT build_vht_ies(struct rtmp_adapter *pAd, UCHAR *buf, UCHAR frm);
-INT build_vht_cap_ie(struct rtmp_adapter*pAd, UCHAR *buf);
+INT build_vht_ies(struct rtmp_adapter *pAd, u8 *buf, u8 frm);
+INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf);
 
-UCHAR vht_prim_ch_idx(UCHAR vht_cent_ch, UCHAR prim_ch);
-UCHAR vht_cent_ch_freq(struct rtmp_adapter *pAd, UCHAR prim_ch);
+u8 vht_prim_ch_idx(u8 vht_cent_ch, u8 prim_ch);
+u8 vht_cent_ch_freq(struct rtmp_adapter *pAd, u8 prim_ch);
 INT vht_mode_adjust(struct rtmp_adapter *pAd, MAC_TABLE_ENTRY *pEntry, VHT_CAP_IE *cap, VHT_OP_IE *op);
 INT SetCommonVHT(struct rtmp_adapter *pAd);
 void rtmp_set_vht(struct rtmp_adapter *pAd, struct _RT_PHY_INFO *phy_info);

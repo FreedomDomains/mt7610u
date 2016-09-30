@@ -45,13 +45,13 @@
 /* structure to store Simple Config Attributes Info */
 typedef struct __attribute__ ((packed)) _WSC_LV_INFO {
     USHORT  ValueLen;
-    UCHAR   Value[512];
+    u8   Value[512];
 } WSC_LV_INFO;
 
 typedef struct __attribute__ ((packed)) _WSC_IE_HEADER {
-	UCHAR elemId;
-	UCHAR length;
-	UCHAR oui[4];
+	u8 elemId;
+	u8 length;
+	u8 oui[4];
 } WSC_IE_HEADER;
 
 /* WSC IE structure */
@@ -59,24 +59,24 @@ typedef	struct __attribute__ ((packed)) _WSC_IE
 {
 	USHORT	Type;
 	USHORT	Length;
-	UCHAR	Data[1];	/* variable length data */
+	u8 Data[1];	/* variable length data */
 }	WSC_IE, *PWSC_IE;
 
 /* WSC fixed information within EAP */
 typedef	struct __attribute__ ((packed)) _WSC_FRAME
 {
-	UCHAR	SMI[3];
+	u8 SMI[3];
 	UINT	VendorType;
-	UCHAR	OpCode;
-	UCHAR	Flags;
+	u8 OpCode;
+	u8 Flags;
 }	WSC_FRAME, *PWSC_FRAME;
 
 /* EAP frame format */
 typedef	struct __attribute__ ((packed)) _EAP_FRAME	{
-	UCHAR	Code;						/* 1 = Request, 2 = Response */
-	UCHAR	Id;
+	u8 Code;						/* 1 = Request, 2 = Response */
+	u8 Id;
 	USHORT	Length;
-	UCHAR	Type;						/* 1 = Identity, 0xfe = reserved, used by WSC */
+	u8 Type;						/* 1 = Identity, 0xfe = reserved, used by WSC */
 }	EAP_FRAME, *PEAP_FRAME;
 
 static inline BOOLEAN WscCheckWSCHeader(

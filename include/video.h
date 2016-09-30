@@ -31,9 +31,9 @@ extern AP_VIDEO_STRUCT GLOBAL_AP_VIDEO_CONFIG;
 void VideoModeUpdate(IN struct rtmp_adapter *pAd);
 void VideoModeDynamicTune(IN struct rtmp_adapter *pAd);
 UINT32 GetAsicDefaultRetry(IN struct rtmp_adapter *pAd);
-UCHAR GetAsicDefaultTxBA(IN struct rtmp_adapter *pAd);
+u8 GetAsicDefaultTxBA(IN struct rtmp_adapter *pAd);
 UINT32 GetAsicVideoRetry(IN struct rtmp_adapter *pAd);
-UCHAR GetAsicVideoTxBA(IN struct rtmp_adapter *pAd);
+u8 GetAsicVideoTxBA(IN struct rtmp_adapter *pAd);
 void VideoConfigInit(IN struct rtmp_adapter *pAd);
 #endif /* VIDEO_TURBINE_SUPPORT */
 

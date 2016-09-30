@@ -542,14 +542,14 @@ struct rtmp_chip_cap {
 	/* register */
 	REG_PAIR *pRFRegTable;
 	REG_PAIR *pBBPRegTable;
-	UCHAR bbpRegTbSize;
+	u8 bbpRegTbSize;
 
 	u32 MaxNumOfRfId;
 	u32 MaxNumOfBbpId;
 
 #define RF_REG_WT_METHOD_NONE			0
 #define RF_REG_WT_METHOD_STEP_ON		1
-	UCHAR RfReg17WtMethod;
+	u8 RfReg17WtMethod;
 
 	/* beacon */
 	BOOLEAN FlgIsSupSpecBcnBuf;	/* SPECIFIC_BCN_BUF_SUPPORT */
@@ -631,10 +631,10 @@ struct rtmp_chip_cap {
 #endif /* RTMP_EFUSE_SUPPORT */
 
 #ifdef RTMP_FLASH_SUPPORT
-	UCHAR *eebuf;
+	u8 *eebuf;
 #endif /* RTMP_FLASH_SUPPORT */
 #ifdef CARRIER_DETECTION_SUPPORT
-	UCHAR carrier_func;
+	u8 carrier_func;
 #endif /* CARRIER_DETECTION_SUPPORT */
 #ifdef DFS_SUPPORT
 	u8 DfsEngineNum;
@@ -668,7 +668,7 @@ struct rtmp_chip_cap {
 	u32 CCAThresholdB;
 	ULONG CCARecordCnt; /* unit: second */
 	ULONG CCAAvg[CCA_AVG_MAX_COUNT];
-	UCHAR CCAAvgIdx;
+	u8 CCAAvgIdx;
 	void *pWeakestEntry;
 	/* 2nd CCA Detection -- */
 
@@ -708,10 +708,10 @@ struct rtmp_chip_cap {
 #endif
 
 	enum MCU_TYPE MCUType;
-	UCHAR *FWImageName;
-	UCHAR *MACRegisterVer;
-	UCHAR *BBPRegisterVer;
-	UCHAR *RFRegisterVer;
+	u8 *FWImageName;
+	u8 *MACRegisterVer;
+	u8 *BBPRegisterVer;
+	u8 *RFRegisterVer;
 
 #ifdef MT76x0
 	BOOLEAN bDoTemperatureSensor;
@@ -719,28 +719,28 @@ struct rtmp_chip_cap {
 	SHORT LastTemperatureforVCO;
 	SHORT LastTemperatureforCal;
 	SHORT NowTemperature;
-	UCHAR a_band_mid_ch;
-	UCHAR a_band_high_ch;
-	UCHAR ext_pa_current_setting;
+	u8 a_band_mid_ch;
+	u8 a_band_high_ch;
+	u8 ext_pa_current_setting;
 	MT76x0_RATE_PWR_Table rate_pwr_table;
-	UCHAR delta_tw_pwr_bw40_5G;
-	UCHAR delta_tw_pwr_bw40_2G;
-	UCHAR delta_tw_pwr_bw80;
+	u8 delta_tw_pwr_bw40_5G;
+	u8 delta_tw_pwr_bw40_2G;
+	u8 delta_tw_pwr_bw80;
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
 	BOOLEAN bInternalTxALC; /* Internal Tx ALC */
-	UCHAR tssi_info_1;
-	UCHAR tssi_info_2;
-	UCHAR tssi_info_3;
-	UCHAR tssi_2G_target_power;
-	UCHAR tssi_5G_target_power;
-	UCHAR efuse_2G_54M_tx_power;
-	UCHAR efuse_5G_54M_tx_power;
+	u8 tssi_info_1;
+	u8 tssi_info_2;
+	u8 tssi_info_3;
+	u8 tssi_2G_target_power;
+	u8 tssi_5G_target_power;
+	u8 efuse_2G_54M_tx_power;
+	u8 efuse_5G_54M_tx_power;
 	MT76x0_TSSI_Table tssi_table;
 	CHAR tssi_slope_2G;
 	CHAR tssi_offset_2G;
-	UCHAR tssi_slope_5G[8];
+	u8 tssi_slope_5G[8];
 	CHAR tssi_offset_5G[8];
-	UCHAR tssi_5G_channel_boundary[7];
+	u8 tssi_5G_channel_boundary[7];
 	CHAR tssi_current_DC;
 	INT tssi_pre_delta_pwr;
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
@@ -784,9 +784,9 @@ struct rtmp_chip_ops {
 	/* MCU related callback functions */
 	int (*loadFirmware)(struct rtmp_adapter *pAd);
 	int (*eraseFirmware)(struct rtmp_adapter *pAd);
-	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, UCHAR cmd, UCHAR token, UCHAR arg0, UCHAR arg1); */
+	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, u8 cmd, u8 token, u8 arg0, u8 arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, u8 cmd, u8 token, u8 arg0, u8 arg1); */
 #ifdef CONFIG_ANDES_SUPPORT
-	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, UCHAR QueIdx, UCHAR cmd, UCHAR *pData, USHORT DataLen, BOOLEAN FlgIsNeedLocked);
+	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, BOOLEAN FlgIsNeedLocked);
 #endif
 
 	void (*AsicRfInit)(struct rtmp_adapter *pAd);
@@ -815,14 +815,14 @@ struct rtmp_chip_ops {
 	void (*ChipBBPAdjust)(IN struct rtmp_adapter *pAd);
 
 	/* AGC */
-	void (*ChipAGCInit)(struct rtmp_adapter *pAd, UCHAR bw);
-	UCHAR (*ChipAGCAdjust)(struct rtmp_adapter *pAd, CHAR Rssi, UCHAR OrigR66Value);
+	void (*ChipAGCInit)(struct rtmp_adapter *pAd, u8 bw);
+	u8 (*ChipAGCAdjust)(struct rtmp_adapter *pAd, CHAR Rssi, u8 OrigR66Value);
 
 	/* Channel */
-	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, UCHAR ch, enum SWITCH_CHANNEL_STAGE Stage);
+	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, enum SWITCH_CHANNEL_STAGE Stage);
 
 	/* IQ Calibration */
-	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, UCHAR Channel);
+	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 
 	/* TX ALC */
 	u32 (*TSSIRatio)(INT32 delta_power);
@@ -845,7 +845,7 @@ struct rtmp_chip_ops {
 
 	/* Antenna */
 	void (*AsicAntennaDefaultReset)(struct rtmp_adapter *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
-	void (*SetRxAnt)(struct rtmp_adapter *pAd, UCHAR Ant);
+	void (*SetRxAnt)(struct rtmp_adapter *pAd, u8 Ant);
 
 	/* EEPROM */
 	void (*NICInitAsicFromEEPROM)(IN struct rtmp_adapter *pAd);
@@ -886,9 +886,9 @@ struct rtmp_chip_ops {
 
 	int (*RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
-	void (*DisableTxRx)(struct rtmp_adapter *ad, UCHAR Level);
+	void (*DisableTxRx)(struct rtmp_adapter *ad, u8 Level);
 
-	void (*AsicRadioOn)(struct rtmp_adapter *ad, UCHAR Stage);
+	void (*AsicRadioOn)(struct rtmp_adapter *ad, u8 Stage);
 
 	void (*AsicRadioOff)(struct rtmp_adapter *ad, u8 Stage);
 
@@ -1210,16 +1210,16 @@ void NetDevNickNameInit(IN struct rtmp_adapter *pAd);
 /* global variable */
 extern FREQUENCY_ITEM RtmpFreqItems3020[];
 extern FREQUENCY_ITEM FreqItems3020_Xtal20M[];
-extern UCHAR NUM_OF_3020_CHNL;
+extern u8 NUM_OF_3020_CHNL;
 extern FREQUENCY_ITEM *FreqItems3020;
 extern RTMP_RF_REGS RF2850RegTable[];
-extern UCHAR NUM_OF_2850_CHNL;
+extern u8 NUM_OF_2850_CHNL;
 
 BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
 INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, BOOLEAN enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
 
-void StopDmaTx(struct rtmp_adapter *pAd, UCHAR Level);
-void StopDmaRx(struct rtmp_adapter *pAd, UCHAR Level);
+void StopDmaTx(struct rtmp_adapter *pAd, u8 Level);
+void StopDmaRx(struct rtmp_adapter *pAd, u8 Level);
 
 #endif /* __RTMP_CHIP_H__ */

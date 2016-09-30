@@ -50,7 +50,7 @@ INT get_pkt_rssi_by_rxwi(RXWI_STRUC *rxwi, INT size, CHAR *rssi)
 }
 
 
-INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, UCHAR *snr)
+INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, u8 *snr)
 {
 	switch (size) {
 		case 3:

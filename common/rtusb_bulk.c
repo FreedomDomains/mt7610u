@@ -30,13 +30,13 @@
 
 #include	"rt_config.h"
 /* Match total 6 bulkout endpoint to corresponding queue.*/
-UCHAR	EpToQueue[6]={FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_MGMT};
+u8 EpToQueue[6]={FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_MGMT};
 
 
 void RTUSBInitTxDesc(
 	IN	struct rtmp_adapter *pAd,
 	IN	PTX_CONTEXT		pTxContext,
-	IN	UCHAR			BulkOutPipeId,
+	IN	u8 		BulkOutPipeId,
 	IN	usb_complete_t	Func)
 {
 	PURB				pUrb;
@@ -81,7 +81,7 @@ void RTUSBInitTxDesc(
 void RTUSBInitHTTxDesc(
 	IN	struct rtmp_adapter *pAd,
 	IN	PHT_TX_CONTEXT	pTxContext,
-	IN	UCHAR			BulkOutPipeId,
+	IN	u8 		BulkOutPipeId,
 	IN	ULONG			BulkOutSize,
 	IN	usb_complete_t	Func)
 {
@@ -163,8 +163,8 @@ void RTUSBInitRxDesc(
 
 void RTUSBBulkOutDataPacket(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR			BulkOutPipeId,
-	IN	UCHAR			Index)
+	IN	u8 		BulkOutPipeId,
+	IN	u8 		Index)
 {
 
 	PHT_TX_CONTEXT	pHTTXContext;
@@ -180,7 +180,7 @@ void RTUSBBulkOutDataPacket(
 	BOOLEAN			bLasAlignmentsectiontRound = FALSE;
 #else
 	BOOLEAN			bTxQLastRound = FALSE;
-	UCHAR			allzero[4]= {0x0,0x0,0x0,0x0};
+	u8 		allzero[4]= {0x0,0x0,0x0,0x0};
 #endif /* USB_BULK_BUF_ALIGMENT */
 
 
@@ -547,7 +547,7 @@ USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t p
 	PHT_TX_CONTEXT	pHTTXContext;
 	struct rtmp_adapter *pAd;
 	struct os_cookie *		pObj;
-	UCHAR			BulkOutPipeId;
+	u8 		BulkOutPipeId;
 
 
 	pHTTXContext	= pURB->context;
@@ -695,7 +695,7 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pU
 */
 void RTUSBBulkOutMLMEPacket(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR			Index)
+	IN	u8 		Index)
 {
 	PTX_CONTEXT		pMLMEContext;
 	PURB			pUrb;
@@ -1154,7 +1154,7 @@ void RTUSBKickBulkOut(
 void RTUSBCleanUpDataBulkOutQueue(
 	IN	struct rtmp_adapter *pAd)
 {
-	UCHAR			Idx;
+	u8 		Idx;
 	PHT_TX_CONTEXT	pTxContext;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->CleanUpDataBulkOutQueue\n"));

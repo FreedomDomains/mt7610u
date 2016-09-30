@@ -625,9 +625,9 @@ BOOLEAN is_inband_cmd_processing(struct rtmp_adapter*ad)
 	return ret;
 }
 
-UCHAR get_cmd_rsp_num(struct rtmp_adapter*ad)
+u8 get_cmd_rsp_num(struct rtmp_adapter*ad)
 {
-	UCHAR Num = 0;
+	u8 Num = 0;
 
 	return Num;
 }
@@ -673,7 +673,7 @@ static spinlock_t *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
 	return lock;
 }
 
-static inline UCHAR andes_get_cmd_msg_seq(struct rtmp_adapter*ad)
+static inline u8 andes_get_cmd_msg_seq(struct rtmp_adapter*ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;

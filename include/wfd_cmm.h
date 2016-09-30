@@ -132,11 +132,11 @@ typedef	struct __attribute__ ((packed)) _WFD_DEVICE_INFO
 typedef	struct __attribute__ ((packed)) _WFD_COUPLED_SINK_INFO
 {
 #ifndef RT_BIG_ENDIAN
-	UCHAR CoupledStat:2;
-	UCHAR Rsvd:6;
+	u8 CoupledStat:2;
+	u8 Rsvd:6;
 #else
-	UCHAR Rsvd:6;
-	UCHAR CoupledStat:2;
+	u8 Rsvd:6;
+	u8 CoupledStat:2;
 #endif
 }	WFD_COUPLED_SINK_INFO, *PWFD_COUPLED_SINK_INFO;
 
@@ -144,70 +144,70 @@ typedef	struct __attribute__ ((packed)) _WFD_COUPLED_SINK_INFO
 typedef	struct __attribute__ ((packed)) _WFD_SESSION_INFO
 {
 #ifndef RT_BIG_ENDIAN
-	UCHAR 					Length;
-	UCHAR 					DeviceAddr[MAC_ADDR_LEN];
-	UCHAR 					Bssid[MAC_ADDR_LEN];
+	u8 					Length;
+	u8 					DeviceAddr[MAC_ADDR_LEN];
+	u8 					Bssid[MAC_ADDR_LEN];
 	WFD_DEVICE_INFO 		WfdDevInfo;
 	USHORT					MaxThroughput;
 	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;
-	UCHAR 					CoupledPeerAddr[MAC_ADDR_LEN];
+	u8 					CoupledPeerAddr[MAC_ADDR_LEN];
 #else
-	UCHAR 					CoupledPeerAddr[MAC_ADDR_LEN];
+	u8 					CoupledPeerAddr[MAC_ADDR_LEN];
 	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;
 	USHORT					MaxThroughput;
 	WFD_DEVICE_INFO 		WfdDevInfo;
-	UCHAR 					Bssid[MAC_ADDR_LEN];
-	UCHAR 					DeviceAddr[MAC_ADDR_LEN];
-	UCHAR 					Length;
+	u8 					Bssid[MAC_ADDR_LEN];
+	u8 					DeviceAddr[MAC_ADDR_LEN];
+	u8 					Length;
 #endif
 }	WFD_SESSION_INFO, *PWFD_SESSION_INFO;
 
 typedef struct _WFD_SERV_DISC_QUERY_INFO
 {
 	BOOLEAN	bWfd_device_info_ie;
-	UCHAR	wfd_device_info_ie[SUBID_WFD_DEVICE_INFO_LEN];
+	u8 wfd_device_info_ie[SUBID_WFD_DEVICE_INFO_LEN];
 	BOOLEAN bWfd_associate_bssid_ie;
-	UCHAR	wfd_associate_bssid_ie[SUBID_WFD_ASSOCIATED_BSSID_LEN];
+	u8 wfd_associate_bssid_ie[SUBID_WFD_ASSOCIATED_BSSID_LEN];
 	BOOLEAN bWfd_audio_format_ie;
-	UCHAR	wfd_audio_format_ie[SUBID_WFD_AUDIO_FORMATS_LEN];
+	u8 wfd_audio_format_ie[SUBID_WFD_AUDIO_FORMATS_LEN];
 	BOOLEAN bWfd_video_format_ie;
-	UCHAR	wfd_video_format_ie[SUBID_WFD_VIDEO_FORMATS_LEN];
+	u8 wfd_video_format_ie[SUBID_WFD_VIDEO_FORMATS_LEN];
 	BOOLEAN bWfd_3d_video_format_ie;
-	UCHAR	wfd_3d_video_format_ie[SUBID_WFD_3D_VIDEO_FORMATS_LEN];
+	u8 wfd_3d_video_format_ie[SUBID_WFD_3D_VIDEO_FORMATS_LEN];
 	BOOLEAN bWfd_content_proctection;
-	UCHAR	wfd_content_proctection[SUBID_WFD_CONTENT_PROTECTION_LEN];
+	u8 wfd_content_proctection[SUBID_WFD_CONTENT_PROTECTION_LEN];
 	BOOLEAN bWfd_couple_sink_info_ie;
-	UCHAR	wfd_couple_sink_info_ie[SUBID_WFD_COUPLED_SINK_INFO_LEN];
+	u8 wfd_couple_sink_info_ie[SUBID_WFD_COUPLED_SINK_INFO_LEN];
 	BOOLEAN bWfd_extent_capability_ie;
-	UCHAR	wfd_extent_capability_ie[SUBID_WFD_EXTENDED_CAP_LEN];
+	u8 wfd_extent_capability_ie[SUBID_WFD_EXTENDED_CAP_LEN];
 	BOOLEAN bWfd_local_ip_ie;
-	UCHAR	wfd_local_ip_ie[SUBID_WFD_LOCAL_IP_ADDR_LEN];
+	u8 wfd_local_ip_ie[SUBID_WFD_LOCAL_IP_ADDR_LEN];
 	BOOLEAN bWfd_session_info_ie;
-	UCHAR	wfd_session_info_ie[120];
+	u8 wfd_session_info_ie[120];
 	BOOLEAN bWfd_alternate_mac_addr_ie;
-	UCHAR	wfd_alternate_mac_addr_ie[SUBID_WFD_ALTERNATE_MAC_ADDR_LEN];
+	u8 wfd_alternate_mac_addr_ie[SUBID_WFD_ALTERNATE_MAC_ADDR_LEN];
 } WFD_SERV_DISC_QUERY_INFO, *PWFD_SERV_DISC_QUERY_INFO;
 
 /* Store for WFD Entry Configuration */
 typedef struct _WFD_ENTRY_INFO
 {
-	UCHAR 	bWfdClient;
-	UCHAR	wfd_devive_type;
-	UCHAR	source_coupled;
-	UCHAR	sink_coupled;
-	UCHAR	session_avail;
-	UCHAR	wfd_service_discovery;
-	UCHAR	wfd_PC;
-	UCHAR	wfd_CP;
-	UCHAR	wfd_time_sync;
-	UCHAR	sink_audio_unsupport;
-	UCHAR	source_audio_only;
-	UCHAR	tdls_persistent_group;
+	u8 	bWfdClient;
+	u8 wfd_devive_type;
+	u8 source_coupled;
+	u8 sink_coupled;
+	u8 session_avail;
+	u8 wfd_service_discovery;
+	u8 wfd_PC;
+	u8 wfd_CP;
+	u8 wfd_time_sync;
+	u8 sink_audio_unsupport;
+	u8 source_audio_only;
+	u8 tdls_persistent_group;
 	USHORT	rtsp_port;
 	USHORT	max_throughput;
-	UCHAR	assoc_addr[MAC_ADDR_LEN];
+	u8 assoc_addr[MAC_ADDR_LEN];
 	WFD_COUPLED_SINK_INFO	coupled_sink_status;
-	UCHAR   	coupled_peer_addr[MAC_ADDR_LEN];
+	u8   	coupled_peer_addr[MAC_ADDR_LEN];
 	/* Service Discovery */
 	WFD_SERV_DISC_QUERY_INFO	wfd_serv_disc_query_info;
 } WFD_ENTRY_INFO, *PWFD_ENTRY_INFO;
@@ -220,21 +220,21 @@ typedef struct _RT_WFD_CONFIG
 	BOOLEAN bSuppInsertWfdIe;		/* Insert WFD IE to management frames from wpa_supplicant */
 	BOOLEAN bSuppGoOn;				/* wpa_supplicant P2P GO is on */
 #endif /* RT_CFG80211_SUPPORT */
-	UCHAR  	DeviceType;
-	UCHAR  	SourceCoupled;
-	UCHAR  	SinkCoupled;
-	UCHAR  	SessionAvail;
-	UCHAR  	WSD;
-	UCHAR  	PC;
-	UCHAR  	CP;                     /* WFD Content Protection capability */
-	UCHAR  	TimeSync;
+	u8  	DeviceType;
+	u8  	SourceCoupled;
+	u8  	SinkCoupled;
+	u8  	SessionAvail;
+	u8  	WSD;
+	u8  	PC;
+	u8  	CP;                     /* WFD Content Protection capability */
+	u8  	TimeSync;
 	USHORT 	RtspPort;				/* Deafult WFD_RTSP_DEFAULT_PORT */
 	USHORT	MaxThroughput;			/* Maximum average throughput capability */
-	UCHAR	Bssid[MAC_ADDR_LEN];
-	UCHAR	IPv4Addr[4];
-	UCHAR  	TdlsSecurity;
-	UCHAR  	PeerSessionAvail;
-	UCHAR  	PeerPC;
+	u8 Bssid[MAC_ADDR_LEN];
+	u8 IPv4Addr[4];
+	u8  	TdlsSecurity;
+	u8  	PeerSessionAvail;
+	u8  	PeerPC;
 	WFD_COUPLED_SINK_INFO	CoupledSinkStatus;
 	/* Service Discovery */
 	u32	WfdSerDiscCapable;

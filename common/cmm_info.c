@@ -179,9 +179,9 @@ INT	Set_Channel_Proc(
 	IN	char *		arg)
 {
  	INT		success = TRUE;
-	UCHAR	Channel;
+	u8 Channel;
 
-	Channel = (UCHAR) simple_strtol(arg, 0, 10);
+	Channel = (u8) simple_strtol(arg, 0, 10);
 
 	/* check if this channel is valid*/
 	if (ChannelSanity(pAd, Channel) == TRUE)
@@ -195,7 +195,7 @@ INT	Set_Channel_Proc(
 
 			if (MONITOR_ON(pAd))
 			{
-				UCHAR rf_channel;
+				u8 rf_channel;
 
 #ifdef DOT11_N_SUPPORT
 				N_ChannelCheck(pAd);
@@ -576,7 +576,7 @@ INT Set_ExtCountryCode_Proc(
 	}
 
 	{
-		UCHAR CountryCode[3] = {0};
+		u8 CountryCode[3] = {0};
 		memmove(CountryCode, pAd->CommonCfg.CountryCode, 2);
 		DBGPRINT(RT_DEBUG_TRACE, ("Set_CountryCode_Proc::(bCountryFlag=%d, CountryCode=%s)\n",
 							pAd->CommonCfg.bCountryFlag,
@@ -596,7 +596,7 @@ INT Set_ExtDfsType_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR	*pDfsType = &pAd->CommonCfg.DfsType;
+	u8 *pDfsType = &pAd->CommonCfg.DfsType;
 	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) == NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s can only be used when interface is down.\n", __FUNCTION__));
@@ -658,7 +658,7 @@ INT Set_ChannelListAdd_Proc(
 
 	/* Parsing the arg, IN:arg; OUT:inChRegion */
 	{
-		UCHAR strBuff[64], count = 0;
+		u8 strBuff[64], count = 0;
 		u8 *pStart, *pEnd, *tempIdx, *tempBuff[5];
 
 		if (strlen(arg) <64)
@@ -686,9 +686,9 @@ INT Set_ChannelListAdd_Proc(
 				}
 				else
 				{
-					inChDesp.FirstChannel = (UCHAR) simple_strtol(tempBuff[0], 0, 10);
-					inChDesp.NumOfCh = (UCHAR) simple_strtol(tempBuff[1], 0, 10);
-					inChDesp.MaxTxPwr = (UCHAR) simple_strtol(tempBuff[2], 0, 10);
+					inChDesp.FirstChannel = (u8) simple_strtol(tempBuff[0], 0, 10);
+					inChDesp.NumOfCh = (u8) simple_strtol(tempBuff[1], 0, 10);
+					inChDesp.MaxTxPwr = (u8) simple_strtol(tempBuff[2], 0, 10);
 					inChDesp.Geography = (!strcmp(tempBuff[3], "BOTH") ? BOTH: (!strcmp(tempBuff[3], "IDOR") ? IDOR : ODOR));
 					inChDesp.DfsReq= (!strcmp(tempBuff[4], "TRUE") ? TRUE : FALSE);
 				}
@@ -708,9 +708,9 @@ INT Set_ChannelListAdd_Proc(
 
 	/* Add entry to Channel List*/
 	{
-		UCHAR EntryIdx;
+		u8 EntryIdx;
 		PCH_DESP pChDesp = NULL;
-		UCHAR CountryCode[3] = {0};
+		u8 CountryCode[3] = {0};
 		if (pAd->CommonCfg.pChDesp == NULL) {
 			pAd->CommonCfg.pChDesp =
 				kmalloc(MAX_PRECONFIG_DESP_ENTRY_SIZE*sizeof(CH_DESP), GFP_ATOMIC);
@@ -765,7 +765,7 @@ INT Set_ChannelListShow_Proc(
 	IN	char *		arg)
 {
 	PCH_REGION	pChRegion = NULL;
-	UCHAR		EntryIdx, CountryCode[3]={0};
+	u8 	EntryIdx, CountryCode[3]={0};
 
 	/* Get Channel Region (CountryCode)*/
 	{
@@ -832,7 +832,7 @@ INT Set_ChannelListDel_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR EntryIdx, TargetIdx, NumOfEntry;
+	u8 EntryIdx, TargetIdx, NumOfEntry;
 	PCH_REGION	pChRegion = NULL;
 	PCH_DESP pChDesp = NULL;
 	TargetIdx = simple_strtol(arg, 0, 10);
@@ -1002,7 +1002,7 @@ INT	Set_ResetStatCounter_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	/*UCHAR           i;*/
+	/*u8           i;*/
 	/*MAC_TABLE_ENTRY *pEntry;*/
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==>Set_ResetStatCounter_Proc\n"));
@@ -1030,9 +1030,9 @@ INT	Set_ResetStatCounter_Proc(
 
 BOOLEAN RTMPCheckStrPrintAble(
     IN  CHAR *pInPutStr,
-    IN  UCHAR strLen)
+    IN  u8 strLen)
 {
-    UCHAR i=0;
+    u8 i=0;
 
     for (i=0; i<strLen; i++)
     {
@@ -1230,7 +1230,7 @@ int RTMPWPARemoveKeyProc(
 	INT 		i;
 #ifdef APCLI_SUPPORT
 #ifdef APCLI_WPA_SUPPLICANT_SUPPORT
-	UCHAR ifIndex;
+	u8 ifIndex;
 	BOOLEAN apcliEn=FALSE;
 	INT 		idx, BssIdx;
 	struct os_cookie *pObj = pAd->OS_Cookie;
@@ -1271,7 +1271,7 @@ int RTMPWPARemoveKeyProc(
 					DBGPRINT(RT_DEBUG_TRACE,("APCLI RTMPWPARemoveKeyProc(KeyIdx=%d)\n", i));
 					pAd->ApCfg.ApCliTab[ifIndex].SharedKey[i].KeyLen = 0;
 					pAd->ApCfg.ApCliTab[ifIndex].SharedKey[i].CipherAlg = CIPHER_NONE;
-					AsicRemoveSharedKeyEntry(pAd, BssIdx, (UCHAR)i);
+					AsicRemoveSharedKeyEntry(pAd, BssIdx, (u8)i);
 					Status = NDIS_STATUS_SUCCESS;
 					break;
 				}
@@ -1286,7 +1286,7 @@ int RTMPWPARemoveKeyProc(
 					DBGPRINT(RT_DEBUG_TRACE,("RTMPWPARemoveKeyProc(KeyIdx=%d)\n", i));
 					pAd->SharedKey[BSS0][i].KeyLen = 0;
 					pAd->SharedKey[BSS0][i].CipherAlg = CIPHER_NONE;
-					AsicRemoveSharedKeyEntry(pAd, BSS0, (UCHAR)i);
+					AsicRemoveSharedKeyEntry(pAd, BSS0, (u8)i);
 					Status = NDIS_STATUS_SUCCESS;
 					break;
 				}
@@ -1302,7 +1302,7 @@ int RTMPWPARemoveKeyProc(
 		DBGPRINT(RT_DEBUG_TRACE,("RTMPWPARemoveKeyProc(KeyIdx=%ld)\n", KeyIdx));
 		pAd->SharedKey[BSS0][KeyIdx].KeyLen = 0;
 		pAd->SharedKey[BSS0][KeyIdx].CipherAlg = CIPHER_NONE;
-		AsicRemoveSharedKeyEntry(pAd, BSS0, (UCHAR)KeyIdx);
+		AsicRemoveSharedKeyEntry(pAd, BSS0, (u8)KeyIdx);
 		Status = NDIS_STATUS_SUCCESS;
 	}
 
@@ -1334,7 +1334,7 @@ void RTMPWPARemoveAllKeys(
 	IN	struct rtmp_adapter *pAd)
 {
 
-	UCHAR 	i;
+	u8 	i;
 
 	DBGPRINT(RT_DEBUG_TRACE,("RTMPWPARemoveAllKeys(AuthMode=%d, WepStatus=%d)\n", pAd->StaCfg.AuthMode, pAd->StaCfg.WepStatus));
 	/*
@@ -1393,7 +1393,7 @@ void RTMPSetPhyMode(
 	INT i;
 	/* the selected phymode must be supported by the RF IC encoded in E2PROM*/
 
-	pAd->CommonCfg.PhyMode = (UCHAR)phymode;
+	pAd->CommonCfg.PhyMode = (u8)phymode;
 
 	DBGPRINT(RT_DEBUG_TRACE,("RTMPSetPhyMode : PhyMode=%d, channel=%d \n", pAd->CommonCfg.PhyMode, pAd->CommonCfg.Channel));
 #ifdef EXT_BUILD_CHANNEL_LIST
@@ -1535,14 +1535,14 @@ void RTMPSetPhyMode(
 */
 void RTMPAddWcidAttributeEntry(
 	IN	struct rtmp_adapter *pAd,
-	IN	UCHAR			BssIdx,
-	IN 	UCHAR		 	KeyIdx,
-	IN 	UCHAR		 	CipherAlg,
+	IN	u8 		BssIdx,
+	IN 	u8 	 	KeyIdx,
+	IN 	u8 	 	CipherAlg,
 	IN 	MAC_TABLE_ENTRY *pEntry)
 {
 	u32		WCIDAttri = 0;
 	USHORT		offset;
-	UCHAR		IVEIV = 0;
+	u8 	IVEIV = 0;
 	USHORT		Wcid = 0;
 
 	{
@@ -1721,7 +1721,7 @@ void RTMPCommSiteSurveyData(
 		INT idx = 0;
 		sprintf(Ssid, "0x");
 		for (idx = 0; (idx < 14) && (idx < pBss->SsidLen); idx++)
-			sprintf(Ssid + 2 + (idx*2), "%02X", (UCHAR)pBss->Ssid[idx]);
+			sprintf(Ssid + 2 + (idx*2), "%02X", (u8)pBss->Ssid[idx]);
 	}
 		sprintf(msg+strlen(msg),"%-33s", Ssid);
 
@@ -1911,9 +1911,9 @@ void RTMPIoctlGetMacTable(
 			pDst = &pMacTab->Entry[pMacTab->Num];
 
 
-			pDst->ApIdx = (UCHAR)pEntry->apidx;
+			pDst->ApIdx = (u8)pEntry->apidx;
 			memcpy(pDst->Addr, &pEntry->Addr, ETH_ALEN);
-			pDst->Aid = (UCHAR)pEntry->Aid;
+			pDst->Aid = (u8)pEntry->Aid;
 			pDst->Psm = pEntry->PsMode;
 #ifdef DOT11_N_SUPPORT
 			pDst->MimoPs = pEntry->MmpsMode;
@@ -1995,7 +1995,7 @@ INT	Set_BASetup_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-    UCHAR mac[6], tid;
+    u8 mac[6], tid;
 	char *token;
 	STRING sepValue[] = ":", DASH = '-';
 	INT i;
@@ -2014,7 +2014,7 @@ INT	Set_BASetup_Proc(
 	token = strchr(arg, DASH);
 	if ((token != NULL) && (strlen(token)>1))
 	{
-		tid = (UCHAR) simple_strtol((token+1), 0, 10);
+		tid = (u8) simple_strtol((token+1), 0, 10);
 		/* tid is 0 ~ 7; Or kernel will crash in BAOriSessionSetUp() */
 		if (tid > (NUM_OF_TID-1))
 			return FALSE;
@@ -2076,7 +2076,7 @@ INT	Set_BAOriTearDown_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-    UCHAR mac[6], tid;
+    u8 mac[6], tid;
 	char *token;
 	STRING sepValue[] = ":", DASH = '-';
 	INT i;
@@ -2130,7 +2130,7 @@ INT	Set_BARecTearDown_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-    UCHAR mac[6], tid;
+    u8 mac[6], tid;
 	char *token;
 	STRING sepValue[] = ":", DASH = '-';
 	INT i;
@@ -2294,7 +2294,7 @@ INT	Set_HtTxBASize_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR Size;
+	u8 Size;
 
 	Size = simple_strtol(arg, 0, 10);
 
@@ -2589,7 +2589,7 @@ INT	Set_SendPSMPAction_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-    UCHAR mac[6], mode;
+    u8 mac[6], mode;
 	char *token;
 	STRING sepValue[] = ":", DASH = '-';
 	INT i;
@@ -2729,7 +2729,7 @@ INT Set_HT_BssCoex_Proc(
 	IN	struct rtmp_adapter *	pAd,
 	IN	char *			pParam)
 {
-	UCHAR bBssCoexEnable = simple_strtol(pParam, 0, 10);
+	u8 bBssCoexEnable = simple_strtol(pParam, 0, 10);
 
 	pAd->CommonCfg.bBssCoexEnable = ((bBssCoexEnable == 1) ? TRUE: FALSE);
 
@@ -2760,7 +2760,7 @@ INT	Set_VhtBw_Proc(
 	IN char *arg)
 {
 	ULONG vht_cw;
-	UCHAR cent_ch;
+	u8 cent_ch;
 	vht_cw = simple_strtol(arg, 0, 10);
 
 
@@ -2866,9 +2866,9 @@ INT	Set_FixedTxMode_Proc(struct rtmp_adapter*pAd, char *arg)
 
 typedef
 struct {
-	UCHAR type;					/* type of data*/
+	u8 type;					/* type of data*/
 	ULONG timestamp;			/* sec/usec timestamp from gettimeofday*/
-	UCHAR data[DBQ_DATA_LENGTH];	/* data*/
+	u8 data[DBQ_DATA_LENGTH];	/* data*/
 } DBQUEUE_ENTRY;
 
 /* Type field definitions */
@@ -2902,7 +2902,7 @@ void dbQueueInit(void)
 }
 
 /* dbQueueEnqueue - enqueue data*/
-void dbQueueEnqueue(UCHAR type, UCHAR *data)
+void dbQueueEnqueue(u8 type, u8 *data)
 {
 	DBQUEUE_ENTRY *oldTail;
 	struct timeval tval;
@@ -2929,7 +2929,7 @@ void dbQueueEnqueue(UCHAR type, UCHAR *data)
 	memcpy(oldTail->data, data, DBQ_DATA_LENGTH);
 }
 
-void dbQueueEnqueueTxFrame(UCHAR *pTxWI, UCHAR *pHeader_802_11)
+void dbQueueEnqueueTxFrame(u8 *pTxWI, u8 *pHeader_802_11)
 {
 	dbQueueEnqueue(DBQ_TYPE_TXWI, pTxWI);
 
@@ -2944,7 +2944,7 @@ void dbQueueEnqueueTxFrame(UCHAR *pTxWI, UCHAR *pHeader_802_11)
 	}
 }
 
-void dbQueueEnqueueRxFrame(UCHAR *pRxWI, UCHAR *pHeader_802_11, ULONG flags)
+void dbQueueEnqueueRxFrame(u8 *pRxWI, u8 *pHeader_802_11, ULONG flags)
 {
 	/* Ignore Beacons if disabled */
 	if ((flags & DBF_DBQ_NO_BCN) && (pHeader_802_11[0] & 0xfc)==0x80)
@@ -2958,7 +2958,7 @@ void dbQueueEnqueueRxFrame(UCHAR *pRxWI, UCHAR *pHeader_802_11, ULONG flags)
 	}
 
 	/* 802.11 Header */
-	dbQueueEnqueue(DBQ_TYPE_RXHDR, (UCHAR *)pHeader_802_11);
+	dbQueueEnqueue(DBQ_TYPE_RXHDR, (u8 *)pHeader_802_11);
 
 #ifdef DBQ_INCLUDE_HTC
 	/* Qos+HT Control field */
@@ -3068,9 +3068,9 @@ static void dbQueueDump(
 		case 0x72:	/* Tx 802.11 header, MSB to LSB, translate type/subtype*/
 		case 0x7b:	/* Rx*/
 			{
-			UCHAR tCode;
+			u8 tCode;
 			struct _typeTableEntry {
-				UCHAR code;	/* Type/subtype*/
+				u8 code;	/* Type/subtype*/
 				CHAR  str[4];
 			} *pTab;
 			static struct _typeTableEntry typeTable[] = {
@@ -3340,7 +3340,7 @@ INT Set_LongRetryLimit_Proc(
 	IN	char *		arg)
 {
 	TX_RTY_CFG_STRUC	tx_rty_cfg;
-	UCHAR				LongRetryLimit = (UCHAR)simple_strtol(arg, 0, 10);
+	u8 			LongRetryLimit = (u8)simple_strtol(arg, 0, 10);
 
 	RTMP_IO_READ32(pAdapter, TX_RTY_CFG, &tx_rty_cfg.word);
 	tx_rty_cfg.field.LongRtyLimit = LongRetryLimit;
@@ -3354,7 +3354,7 @@ INT Set_ShortRetryLimit_Proc(
 	IN	char *		arg)
 {
 	TX_RTY_CFG_STRUC	tx_rty_cfg;
-	UCHAR				ShortRetryLimit = (UCHAR)simple_strtol(arg, 0, 10);
+	u8 			ShortRetryLimit = (u8)simple_strtol(arg, 0, 10);
 
 	RTMP_IO_READ32(pAdapter, TX_RTY_CFG, &tx_rty_cfg.word);
 	tx_rty_cfg.field.ShortRtyLimit = ShortRetryLimit;
@@ -3428,7 +3428,7 @@ INT	Show_SSID_Proc(
 	OUT	char *		pBuf,
 	IN	ULONG			BufLen)
 {
-	UCHAR	ssid_str[33];
+	u8 ssid_str[33];
 
 
 	memset(&ssid_str[0], 0, 33);
@@ -3898,7 +3898,7 @@ INT	Show_DefaultKeyID_Proc(
 	OUT	char *		pBuf,
 	IN	ULONG			BufLen)
 {
-	UCHAR DefaultKeyId = 0;
+	u8 DefaultKeyId = 0;
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -3916,7 +3916,7 @@ INT	Show_WepKey_Proc(
 	OUT	char *		pBuf,
 	IN	ULONG			BufLen)
 {
-	UCHAR   Key[16] = {0}, KeyLength = 0;
+	u8   Key[16] = {0}, KeyLength = 0;
 	INT		index = BSS0;
 
 	KeyLength = pAd->SharedKey[index][KeyIdx].KeyLen;
@@ -3977,7 +3977,7 @@ INT	Show_PMK_Proc(
 	IN	ULONG			BufLen)
 {
 	INT 	idx;
-	UCHAR	PMK[32] = {0};
+	u8 PMK[32] = {0};
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -4110,7 +4110,7 @@ INT Show_MacTable_Proc(struct rtmp_adapter*pAd, char **arg)
 
 INT show_devinfo_proc(struct rtmp_adapter*pAd, char *arg)
 {
-	UCHAR *pstr;
+	u8 *pstr;
 
 
 	DBGPRINT(RT_DEBUG_OFF, ("Device MAC\n"));
@@ -4190,7 +4190,7 @@ INT	Show_ModuleTxpower_Proc(
 
  	INT i=0;
  	struct os_cookie *pObj;
- 	UCHAR ifIndex;
+ 	u8 ifIndex;
 	BOOLEAN bConnect=FALSE;
 
  	pObj = pAd->OS_Cookie;
@@ -4260,15 +4260,15 @@ void  getRate(HTTRANSMIT_SETTING HTSetting, ULONG* fLastTxRxRate)
 #ifdef DOT11_N_SUPPORT
     if (HTSetting.field.MODE >= MODE_HTMIX)
     {
-/*    	rate_index = 12 + ((UCHAR)ht_setting.field.BW *16) + ((UCHAR)ht_setting.field.ShortGI *32) + ((UCHAR)ht_setting.field.MCS);*/
-    	rate_index = 12 + ((UCHAR)HTSetting.field.BW *24) + ((UCHAR)HTSetting.field.ShortGI *48) + ((UCHAR)HTSetting.field.MCS);
+/*    	rate_index = 12 + ((u8)ht_setting.field.BW *16) + ((u8)ht_setting.field.ShortGI *32) + ((u8)ht_setting.field.MCS);*/
+    	rate_index = 12 + ((u8)HTSetting.field.BW *24) + ((u8)HTSetting.field.ShortGI *48) + ((u8)HTSetting.field.MCS);
     }
     else
 #endif /* DOT11_N_SUPPORT */
     if (HTSetting.field.MODE == MODE_OFDM)
-    	rate_index = (UCHAR)(HTSetting.field.MCS) + 4;
+    	rate_index = (u8)(HTSetting.field.MCS) + 4;
     else if (HTSetting.field.MODE == MODE_CCK)
-    	rate_index = (UCHAR)(HTSetting.field.MCS);
+    	rate_index = (u8)(HTSetting.field.MCS);
 
     if (rate_index < 0)
         rate_index = 0;
@@ -4594,8 +4594,8 @@ INT	Set_InvTxBfTag_Proc(
     IN  char *        arg)
 {
 	int profileNum;
-	UCHAR row[EXP_MAX_BYTES];
-	UCHAR r163Value = 0;
+	u8 row[EXP_MAX_BYTES];
+	u8 r163Value = 0;
 
 	/* Disable Profile Updates during access */
 	RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R163, &r163Value);
@@ -4817,7 +4817,7 @@ INT	Set_ITxBfLnaCal_Proc(
 	IN	struct rtmp_adapter *pAd,
     IN  char *        arg)
 {
-	UCHAR channel = pAd->CommonCfg.Channel;
+	u8 channel = pAd->CommonCfg.Channel;
 	int calFunction;
 
 #ifdef RALINK_ATE
@@ -4843,7 +4843,7 @@ INT	Set_ITxBfCal_Proc(
 	int calFunction = simple_strtol(arg, 0, 10);
 	int calParams[2];
 	int ret;
-	UCHAR channel = pAd->CommonCfg.Channel;
+	u8 channel = pAd->CommonCfg.Channel;
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -4866,8 +4866,8 @@ INT	Set_ITxBfCal_Proc(
 				("ITxBfCal Result = [0x%02x 0x%02x]\n", calParams[0], calParams[1]));
 
 #ifdef RALINK_ATE
-	pAd->ate.calParams[0] = (UCHAR)calParams[0];
-	pAd->ate.calParams[1] = (UCHAR)calParams[1];
+	pAd->ate.calParams[0] = (u8)calParams[0];
+	pAd->ate.calParams[1] = (u8)calParams[1];
 
 	/* Double check */
 	DBGPRINT((calFunction==0? RT_DEBUG_OFF: RT_DEBUG_WARN),
@@ -4876,9 +4876,9 @@ INT	Set_ITxBfCal_Proc(
 
 	/* Update BBP R176 and EEPROM for Ant 0 and 2 */
 	if (calFunction == 1) {
-		UCHAR r27Value = 0, r173Value = 0;
+		u8 r27Value = 0, r173Value = 0;
 		ITXBF_PHASE_PARAMS phaseParams;
-		UCHAR divPhase[2] = {0}, phaseValues[2] = {0};
+		u8 divPhase[2] = {0}, phaseValues[2] = {0};
 
 		/* Read R173 to see if Phase compensation is already enabled */
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R173, &r173Value);
@@ -4979,7 +4979,7 @@ INT	Set_ETxBfEnCond_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR i, enableETxBf;
+	u8 i, enableETxBf;
 	MAC_TABLE_ENTRY		*pEntry;
 	u8	byteValue;
 
@@ -5009,11 +5009,11 @@ INT	Set_ETxBfEnCond_Proc(
 	{
 		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 		byteValue |= 0x40;
-		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R39, (u8)byteValue);
 
 		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 		byteValue |= 0x20;
-		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R49, (u8)byteValue);
 	}
 	else
 	{
@@ -5022,11 +5022,11 @@ INT	Set_ETxBfEnCond_Proc(
 		{
 			RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 			byteValue &= (~0x40);
-			RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
+			RT30xxWriteRFRegister(pAd, RF_R39, (u8)byteValue);
 
 			RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 			byteValue &= (~0x20);
-			RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
+			RT30xxWriteRFRegister(pAd, RF_R49, (u8)byteValue);
 		}
 	}
 
@@ -5038,7 +5038,7 @@ INT	Set_NoSndgCntThrd_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR i;
+	u8 i;
 	for (i=0; i<MAX_LEN_OF_MAC_TABLE; i++){
 		pAd->MacTab.Content[i].noSndgCntThrd = simple_strtol(arg, 0, 10);
 	}
@@ -5049,7 +5049,7 @@ INT	Set_NdpSndgStreams_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR i;
+	u8 i;
 	for (i=0; i<MAX_LEN_OF_MAC_TABLE; i++){
 		pAd->MacTab.Content[i].ndpSndgStreams = simple_strtol(arg, 0, 10);
 	}
@@ -5061,7 +5061,7 @@ INT	Set_Trigger_Sounding_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR			macAddr[MAC_ADDR_LEN];
+	u8 		macAddr[MAC_ADDR_LEN];
 	CHAR			*value;
 	INT				i;
 	MAC_TABLE_ENTRY *pEntry = NULL;
@@ -5098,8 +5098,8 @@ INT	Set_ITxBfEn_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	UCHAR i;
-	UCHAR enableITxBF;
+	u8 i;
+	u8 enableITxBF;
 	BOOLEAN bCalibrated;
 	u8 byteValue;
 
@@ -5129,11 +5129,11 @@ INT	Set_ITxBfEn_Proc(
 	{
 		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 		byteValue |= 0x40;
-		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R39, (u8)byteValue);
 
 		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 		byteValue |= 0x20;
-		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R49, (u8)byteValue);
 	}
 
 	/* If enabling ITxBF then set LNA compensation, do a Divider Calibration and update BBP registers */
@@ -5148,11 +5148,11 @@ INT	Set_ITxBfEn_Proc(
 		{
 		RT30xxReadRFRegister(pAd, RF_R39, (u8 *)&byteValue);
 			byteValue &= (~0x40);
-		RT30xxWriteRFRegister(pAd, RF_R39, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R39, (u8)byteValue);
 
 		RT30xxReadRFRegister(pAd, RF_R49, (u8 *)&byteValue);
 			byteValue &= (~0x20);
-		RT30xxWriteRFRegister(pAd, RF_R49, (UCHAR)byteValue);
+		RT30xxWriteRFRegister(pAd, RF_R49, (u8)byteValue);
 	}
 
 		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R173, 0);
@@ -5175,7 +5175,7 @@ INT	Set_ITxBfEn_Proc(
 void assoc_ht_info_debugshow(
 	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
-	IN UCHAR ht_cap_len,
+	IN u8 ht_cap_len,
 	IN HT_CAPABILITY_IE *pHTCapability)
 {
 	HT_CAP_INFO			*pHTCap;
@@ -5531,7 +5531,7 @@ INT set_cap_type(struct rtmp_adapter*pAd, char *arg)
 
 INT set_cap_support(struct rtmp_adapter*pAd, char *arg)
 {
-	UCHAR cap_support;	/* 0: no cap mode; 1: cap mode enable */
+	u8 cap_support;	/* 0: no cap mode; 1: cap mode enable */
 
 	cap_support = simple_strtol(arg, 0, 10);
 	pAd->cap_support = (cap_support == 1 ?  TRUE : FALSE);
@@ -5547,7 +5547,7 @@ INT set_cap_support(struct rtmp_adapter*pAd, char *arg)
 
 INT set_tr_stop(struct rtmp_adapter*pAd, char *arg)
 {
-	UCHAR stop;
+	u8 stop;
 
 	stop = simple_strtol(arg, 0, 10);
 	pAd->fpga_ctl.fpga_tr_stop = (stop <= 4 ? stop : 0);
@@ -5577,7 +5577,7 @@ INT set_data_phy_mode(struct rtmp_adapter*pAd, char *arg)
 
 INT set_data_bw(struct rtmp_adapter*pAd, char *arg)
 {
-	pAd->fpga_ctl.tx_data_bw = (UCHAR)simple_strtol(arg, 0, 10);
+	pAd->fpga_ctl.tx_data_bw = (u8)simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): tx_data_bw=%d\n", __FUNCTION__, pAd->fpga_ctl.tx_data_bw));
 
 	return TRUE;
@@ -5586,7 +5586,7 @@ INT set_data_bw(struct rtmp_adapter*pAd, char *arg)
 
 INT set_data_mcs(struct rtmp_adapter*pAd, char *arg)
 {
-	UCHAR mcs = (UCHAR)simple_strtol(arg, 0, 10);
+	u8 mcs = (u8)simple_strtol(arg, 0, 10);
 
 	pAd->fpga_ctl.tx_data_mcs = mcs;
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): tx_data_mcs=%d\n", __FUNCTION__, pAd->fpga_ctl.tx_data_mcs));
@@ -5596,7 +5596,7 @@ INT set_data_mcs(struct rtmp_adapter*pAd, char *arg)
 
 INT set_data_ldpc(struct rtmp_adapter*pAd, char *arg)
 {
-	pAd->fpga_ctl.tx_data_ldpc = (UCHAR)simple_strtol(arg, 0, 10);
+	pAd->fpga_ctl.tx_data_ldpc = (u8)simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): tx_data_ldpc=%d\n", __FUNCTION__, pAd->fpga_ctl.tx_data_ldpc));
 
 	return TRUE;
@@ -5604,7 +5604,7 @@ INT set_data_ldpc(struct rtmp_adapter*pAd, char *arg)
 
 INT set_data_gi(struct rtmp_adapter*pAd, char *arg)
 {
-	pAd->fpga_ctl.tx_data_gi = (UCHAR)simple_strtol(arg, 0, 10);
+	pAd->fpga_ctl.tx_data_gi = (u8)simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): tx_data_gi=%d\n", __FUNCTION__, pAd->fpga_ctl.tx_data_gi));
 
 	return TRUE;
@@ -5613,7 +5613,7 @@ INT set_data_gi(struct rtmp_adapter*pAd, char *arg)
 
 INT set_data_basize(struct rtmp_adapter*pAd, char *arg)
 {
-	pAd->fpga_ctl.data_basize = (UCHAR)simple_strtol(arg, 0, 10);
+	pAd->fpga_ctl.data_basize = (u8)simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): data_basize=%d\n", __FUNCTION__, pAd->fpga_ctl.data_basize));
 
 	return TRUE;
@@ -5725,7 +5725,7 @@ INT set_force_ip_assemble(struct rtmp_adapter*pAd, char *arg)
 INT set_rf(struct rtmp_adapter*pAd, char *arg)
 {
 	INT bank_id = 0, rf_id = 0, rv = 0;
-	UCHAR rf_val = 0;
+	u8 rf_val = 0;
 
 	if (arg)
 	{
@@ -5733,7 +5733,7 @@ INT set_rf(struct rtmp_adapter*pAd, char *arg)
 		DBGPRINT(RT_DEBUG_TRACE, ("%s():rv = %d, bank_id = %d, rf_id = %d, rf_val = 0x%02x\n", __FUNCTION__, rv, bank_id, rf_id, rf_val));
 		if (rv == 3)
 		{
-			rlt_rf_write(pAd, (UCHAR)bank_id, (UCHAR)rf_id, (UCHAR)rf_val);
+			rlt_rf_write(pAd, (u8)bank_id, (u8)rf_id, (u8)rf_val);
 
 			rlt_rf_read(pAd, bank_id, rf_id, &rf_val);
 			DBGPRINT(RT_DEBUG_TRACE, ("%s():%d %03d 0x%02X\n", __FUNCTION__, bank_id, rf_id, rf_val));

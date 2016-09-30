@@ -29,12 +29,12 @@
 #define __AGS_H__
 
 
-extern UCHAR AGS1x1HTRateTable[];
-extern UCHAR AGS2x2HTRateTable[];
-extern UCHAR AGS3x3HTRateTable[];
+extern u8 AGS1x1HTRateTable[];
+extern u8 AGS2x2HTRateTable[];
+extern u8 AGS3x3HTRateTable[];
 #ifdef DOT11_VHT_AC
-extern UCHAR Ags1x1VhtRateTable[];
-extern UCHAR Ags2x2VhtRateTable[];
+extern u8 Ags1x1VhtRateTable[];
+extern u8 Ags2x2VhtRateTable[];
 #endif /* DOT11_VHT_AC */
 
 #define AGS_TX_QUALITY_WORST_BOUND       8
@@ -44,31 +44,31 @@ extern UCHAR Ags2x2VhtRateTable[];
 #define SIZE_OF_AGS_RATE_TABLE_ENTRY	9
 
 typedef struct _RTMP_RA_AGS_TB {
-	UCHAR	ItemNo;
+	u8 ItemNo;
 
-	UCHAR	STBC:1;
-	UCHAR	ShortGI:1;
-	UCHAR	BW:2;
-	UCHAR	Mode:3;
-	UCHAR	Rsv1:1;
+	u8 STBC:1;
+	u8 ShortGI:1;
+	u8 BW:2;
+	u8 Mode:3;
+	u8 Rsv1:1;
 
-	UCHAR Nss:2; // NSS_XXX (VHT only)
-	UCHAR rsv2:6; // Reserved
+	u8 Nss:2; // NSS_XXX (VHT only)
+	u8 rsv2:6; // Reserved
 
-	UCHAR	CurrMCS;
-	UCHAR	TrainUp;
-	UCHAR	TrainDown;
-	UCHAR	downMcs;
-	UCHAR	upMcs3;
-	UCHAR	upMcs2;
-	UCHAR	upMcs1;
+	u8 CurrMCS;
+	u8 TrainUp;
+	u8 TrainDown;
+	u8 downMcs;
+	u8 upMcs3;
+	u8 upMcs2;
+	u8 upMcs1;
 }RTMP_RA_AGS_TB;
 
 
 /* AGS control */
 typedef struct _AGS_CONTROL {
-	UCHAR MCSGroup; /* The MCS group under testing */
-	UCHAR lastRateIdx;
+	u8 MCSGroup; /* The MCS group under testing */
+	u8 lastRateIdx;
 } AGS_CONTROL,*PAGS_CONTROL;
 
 

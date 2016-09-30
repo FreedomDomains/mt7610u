@@ -101,7 +101,7 @@ void EnqueueMeasurementRep(
 void EnqueueTPCReq(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pDA,
-	IN UCHAR DialogToken);
+	IN u8 DialogToken);
 
 /*
 	==========================================================================

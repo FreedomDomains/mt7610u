@@ -320,7 +320,7 @@ Note:
 int	NICInitRecv(
 	IN	struct rtmp_adapter *pAd)
 {
-	UCHAR				i;
+	u8 			i;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitRecv\n"));
@@ -378,7 +378,7 @@ Note:
 int	NICInitTransmit(
 	IN	struct rtmp_adapter *pAd)
 {
-	UCHAR			i, acidx;
+	u8 		i, acidx;
 	int     Status = NDIS_STATUS_SUCCESS;
 	PTX_CONTEXT		pNullContext   = &(pAd->NullContext);
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
@@ -744,7 +744,7 @@ Note:
 int	NICInitRecv(
 	IN	struct rtmp_adapter *pAd)
 {
-	UCHAR				i;
+	u8 			i;
 	int			Status = NDIS_STATUS_SUCCESS;
 	struct os_cookie *		pObj = pAd->OS_Cookie;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
@@ -840,7 +840,7 @@ Note:
 int	NICInitTransmit(
 	IN	struct rtmp_adapter *pAd)
 {
-	UCHAR			i, acidx;
+	u8 		i, acidx;
 	int     Status = NDIS_STATUS_SUCCESS;
 	PTX_CONTEXT		pNullContext   = &(pAd->NullContext);
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
@@ -1388,13 +1388,13 @@ void RT28xx_UpdateBeaconToAsic(
 	IN ULONG			UpdatePos)
 {
 	u8 *       	pBeaconFrame = NULL;
-	UCHAR  			*ptr;
+	u8  			*ptr;
 	UINT  			i, padding;
 	BEACON_SYNC_STRUCT	*pBeaconSync = pAd->CommonCfg.pBeaconSync;
 	u32			longValue;
 /*	USHORT			shortValue;*/
 	BOOLEAN			bBcnReq = FALSE;
-	UCHAR			bcn_idx = 0;
+	u8 		bcn_idx = 0;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
@@ -1531,8 +1531,8 @@ void RTUSBBssBeaconStart(
 
 		for(apidx=0; apidx<NumOfBcn; apidx++)
 		{
-			UCHAR CapabilityInfoLocationInBeacon = 0;
-			UCHAR TimIELocationInBeacon = 0;
+			u8 CapabilityInfoLocationInBeacon = 0;
+			u8 TimIELocationInBeacon = 0;
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
@@ -1831,7 +1831,7 @@ void RT28xxUsbMlmeRadioOFF(
 
 BOOLEAN AsicCheckCommandOk(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR		 Command)
+	IN u8 	 Command)
 {
 	u32	CmdStatus, CID, i;
 	u32	ThisCIDMask = 0;

@@ -65,7 +65,7 @@ void RadarDetectPeriodic(
 */
 BOOLEAN RadarChannelCheck(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR			Ch)
+	IN u8 		Ch)
 {
 	INT 	i;
 	BOOLEAN result = FALSE;
@@ -86,7 +86,7 @@ ULONG JapRadarType(
 	IN struct rtmp_adapter *pAd)
 {
 	ULONG		i;
-	const UCHAR	Channel[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
+	const u8 Channel[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
 
 	if (pAd->CommonCfg.RDDurRegion != JAP)
 	{

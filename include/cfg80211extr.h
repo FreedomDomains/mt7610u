@@ -154,12 +154,12 @@ void CFG80211DRV_PmkidConfig(
 
 void CFG80211_RegHint(
 	IN void 					*pAdCB,
-	IN UCHAR					*pCountryIe,
+	IN u8 				*pCountryIe,
 	IN ULONG					CountryIeLen);
 
 void CFG80211_RegHint11D(
 	IN void 					*pAdCB,
-	IN UCHAR					*pCountryIe,
+	IN u8 				*pCountryIe,
 	IN ULONG					CountryIeLen);
 
 void CFG80211_ScanEnd(
@@ -168,12 +168,12 @@ void CFG80211_ScanEnd(
 
 void CFG80211_ConnectResultInform(
 	IN void 					*pAdCB,
-	IN UCHAR					*pBSSID,
-	IN UCHAR					*pReqIe,
+	IN u8 				*pBSSID,
+	IN u8 				*pReqIe,
 	IN u32					ReqIeLen,
-	IN UCHAR					*pRspIe,
+	IN u8 				*pRspIe,
 	IN u32					RspIeLen,
-	IN UCHAR					FlgIsSuccess);
+	IN u8 				FlgIsSuccess);
 
 BOOLEAN CFG80211_SupBandReInit(
 	IN void 					*pAdCB);
@@ -181,13 +181,13 @@ BOOLEAN CFG80211_SupBandReInit(
 void CFG80211_RegRuleApply(
 	IN void 					*pAdCB,
 	IN void 					*pWiphy,
-	IN UCHAR					*pAlpha2);
+	IN u8 				*pAlpha2);
 
 void CFG80211_Scaning(
 	IN void 					*pAdCB,
 	IN u32					BssIdx,
 	IN u32					ChanId,
-	IN UCHAR					*pFrame,
+	IN u8 				*pFrame,
 	IN u32					FrameLen,
 	IN INT32					RSSI);
 
@@ -204,7 +204,7 @@ void CFG80211_UnRegister(
 #ifdef RT_P2P_SPECIFIC_WIRELESS_EVENT
 INT CFG80211_SendWirelessEvent(
 	IN void                                         *pAdCB,
-	IN UCHAR 					*pMacAddr);
+	IN u8 					*pMacAddr);
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
 #endif /* RT_CFG80211_SUPPORT */

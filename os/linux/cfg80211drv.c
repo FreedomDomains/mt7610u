@@ -181,7 +181,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	u8 ChannelType;
 	STRING ChStr[5] = { 0 };
 #ifdef DOT11_N_SUPPORT
-	UCHAR BW_Old;
+	u8 BW_Old;
 	BOOLEAN FlgIsChanged;
 #endif /* DOT11_N_SUPPORT */
 
@@ -575,7 +575,7 @@ BOOLEAN CFG80211DRV_Connect(
 #ifdef CONFIG_STA_SUPPORT
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
 	CMD_RTPRIV_IOCTL_80211_CONNECT *pConnInfo;
-	UCHAR SSID[NDIS_802_11_LENGTH_SSID + 1]; /* Add One for SSID_Len == 32 */
+	u8 SSID[NDIS_802_11_LENGTH_SSID + 1]; /* Add One for SSID_Len == 32 */
 	u32 SSIDLen;
 	RT_CMD_STA_IOCTL_SECURITY_ADV IoctlWpa;
 
@@ -706,7 +706,7 @@ BOOLEAN CFG80211DRV_Connect(
 		((pConnInfo->GroupwiseEncrypType | pConnInfo->PairwiseEncrypType) &
 												RT_CMD_80211_CONN_ENCRYPT_WEP))
 	{
-		UCHAR KeyBuf[50];
+		u8 KeyBuf[50];
 
 		// reset AuthMode and EncrypType
 		Set_AuthMode_Proc(pAd, "SHARED");
@@ -756,7 +756,7 @@ BOOLEAN CFG80211DRV_Connect(
 		((pConnInfo->GroupwiseEncrypType | pConnInfo->PairwiseEncrypType) &
 												RT_CMD_80211_CONN_ENCRYPT_WEP))
 	{
-		UCHAR KeyBuf[50];
+		u8 KeyBuf[50];
 
 		/* reset AuthMode and EncrypType */
 		Set_EncrypType_Proc(pAd, "WEP");
@@ -824,7 +824,7 @@ void CFG80211DRV_RegNotify(
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_START_UP))
 	{
 		/* interface is up */
-		CFG80211_RegRuleApply(pAd, pRegInfo->pWiphy, (UCHAR *)pRegInfo->Alpha2);
+		CFG80211_RegRuleApply(pAd, pRegInfo->pWiphy, (u8 *)pRegInfo->Alpha2);
 	}
 	else
 	{
@@ -892,7 +892,7 @@ void CFG80211_BeaconCountryRegionParse(
 	IN UINT16					LenVIE)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
-	UCHAR *pElement = (UCHAR *)pVIE;
+	u8 *pElement = (u8 *)pVIE;
 	u32 LenEmt;
 
 
@@ -939,7 +939,7 @@ Note:
 */
 void CFG80211_RegHint(
 	IN void 					*pAdCB,
-	IN UCHAR					*pCountryIe,
+	IN u8 				*pCountryIe,
 	IN ULONG					CountryIeLen)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
@@ -968,7 +968,7 @@ Note:
 */
 void CFG80211_RegHint11D(
 	IN void 					*pAdCB,
-	IN UCHAR					*pCountryIe,
+	IN u8 				*pCountryIe,
 	IN ULONG					CountryIeLen)
 {
 	/* no regulatory_hint_11d() in 2.6.32 */
@@ -1002,7 +1002,7 @@ Note:
 void CFG80211_RegRuleApply(
 	IN void 					*pAdCB,
 	IN void 					*pWiphy,
-	IN UCHAR					*pAlpha2)
+	IN u8 				*pAlpha2)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 	void *pBand24G, *pBand5G;
@@ -1190,7 +1190,7 @@ void CFG80211_Scaning(
 	IN void 						*pAdCB,
 	IN u32						BssIdx,
 	IN u32						ChanId,
-	IN UCHAR						*pFrame,
+	IN u8 					*pFrame,
 	IN u32						FrameLen,
 	IN INT32						RSSI)
 {
@@ -1312,12 +1312,12 @@ Note:
 */
 void CFG80211_ConnectResultInform(
 	IN void 					*pAdCB,
-	IN UCHAR					*pBSSID,
-	IN UCHAR					*pReqIe,
+	IN u8 				*pBSSID,
+	IN u8 				*pReqIe,
 	IN u32					ReqIeLen,
-	IN UCHAR					*pRspIe,
+	IN u8 				*pRspIe,
 	IN u32					RspIeLen,
-	IN UCHAR					FlgIsSuccess)
+	IN u8 				FlgIsSuccess)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 
@@ -1373,7 +1373,7 @@ BOOLEAN CFG80211_SupBandReInit(
 #ifdef RT_P2P_SPECIFIC_WIRELESS_EVENT
 INT CFG80211_SendWirelessEvent(
 	IN void                                         *pAdCB,
-	IN UCHAR 					*pMacAddr)
+	IN u8 					*pMacAddr)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 

@@ -183,7 +183,7 @@ EXPORT_SYMBOL(RTMP_Usb_AutoPM_Get_Interface);
 void RtmpOsUsbEmptyUrbCheck(
 	IN	void 			**ppWait,
 	IN	spinlock_t		*pBulkInLock,
-	IN	UCHAR				*pPendingRx)
+	IN	u8 			*pPendingRx)
 {
 	u32 i = 0;
 	DECLARE_WAIT_QUEUE_HEAD(unlink_wakeup);
@@ -249,7 +249,7 @@ void RtmpOsUsbInitRxDesc(
 	IN	void 		*pUrbSrc,
 	IN	void 		*pUsb_Dev,
 	IN	UINT			BulkInEpAddr,
-	IN	UCHAR			*pTransferBuffer,
+	IN	u8 		*pTransferBuffer,
 	IN	u32			BufSize,
 	IN	USB_COMPLETE_HANDLER	Func,
 	IN	void 		*pRxContext,

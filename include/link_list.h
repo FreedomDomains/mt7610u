@@ -37,7 +37,7 @@ typedef struct _LIST_HEADR
 {
 	PLIST_ENTRY pHead;
 	PLIST_ENTRY pTail;
-	UCHAR size;
+	u8 size;
 } LIST_HEADER, *PLIST_HEADER;
 
 static inline void initList(

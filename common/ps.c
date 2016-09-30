@@ -48,7 +48,7 @@ int RtmpInsertPsQueue(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff * pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
-	IN UCHAR QueIdx)
+	IN u8 QueIdx)
 {
 	ULONG IrqFlags;
 #ifdef UAPSD_SUPPORT
@@ -293,10 +293,10 @@ BOOLEAN RtmpPsIndicate(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pAddr,
 	IN ULONG Wcid,
-	IN UCHAR Psm)
+	IN u8 Psm)
 {
 	MAC_TABLE_ENTRY *pEntry;
-    UCHAR old_psmode;
+    u8 old_psmode;
 
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
 	{

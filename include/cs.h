@@ -71,9 +71,9 @@ typedef struct CARRIER_DETECTION_s {
 	ULONG Debug;
 	ULONG OneSecIntCount;
 	u8 CarrierGoneThreshold;
-	UCHAR VGA_Mask;
-	UCHAR Packet_End_Mask;
-	UCHAR Rx_PE_Mask;
+	u8 VGA_Mask;
+	u8 Packet_End_Mask;
+	u8 Rx_PE_Mask;
 } CARRIER_DETECTION_STRUCT, *PCARRIER_DETECTION_STRUCT;
 
 #ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT

@@ -1203,7 +1203,7 @@ void EnqueueMeasurementRep(
 void EnqueueTPCReq(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pDA,
-	IN UCHAR DialogToken)
+	IN u8 DialogToken)
 {
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen;
@@ -1333,7 +1333,7 @@ void NotifyChSwAnnToPeerAPs(
 
 static void StartDFSProcedure(
 	IN struct rtmp_adapter *pAd,
-	IN UCHAR Channel,
+	IN u8 Channel,
 	IN u8 ChSwMode)
 {
 	/* start DFS procedure*/
@@ -1389,7 +1389,7 @@ static BOOLEAN PeerChSwAnnSanity(
 		return result;
 
 	eid_ptr = (PEID_STRUCT)pFramePtr;
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
+	while (((u8 *)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1404,7 +1404,7 @@ static BOOLEAN PeerChSwAnnSanity(
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((u8 *)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1454,7 +1454,7 @@ static BOOLEAN PeerMeasureReqSanity(
 	MsgLen -= 1;
 
 	eid_ptr = (PEID_STRUCT)pFramePtr;
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
+	while (((u8 *)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1475,7 +1475,7 @@ static BOOLEAN PeerMeasureReqSanity(
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((u8 *)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1544,7 +1544,7 @@ static BOOLEAN PeerMeasureReportSanity(
 	MsgLen -= 1;
 
 	eid_ptr = (PEID_STRUCT)pFramePtr;
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
+	while (((u8 *)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1587,7 +1587,7 @@ static BOOLEAN PeerMeasureReportSanity(
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((u8 *)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1631,7 +1631,7 @@ static BOOLEAN PeerTpcReqSanity(
 	MsgLen -= 1;
 
 	eid_ptr = (PEID_STRUCT)pFramePtr;
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
+	while (((u8 *)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1642,7 +1642,7 @@ static BOOLEAN PeerTpcReqSanity(
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((u8 *)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1688,7 +1688,7 @@ static BOOLEAN PeerTpcRepSanity(
 	MsgLen -= 1;
 
 	eid_ptr = (PEID_STRUCT)pFramePtr;
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
+	while (((u8 *)eid_ptr + eid_ptr->Len + 1) < ((u8 *)pFramePtr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1701,7 +1701,7 @@ static BOOLEAN PeerTpcRepSanity(
 			default:
 				break;
 		}
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((u8 *)eid_ptr + 2 + eid_ptr->Len);
 	}
 
 	return result;
@@ -1725,7 +1725,7 @@ static void PeerChSwAnnAction(
 	CH_SW_ANN_INFO ChSwAnnInfo;
 	PFRAME_802_11 pFr = (PFRAME_802_11)Elem->Msg;
 #ifdef CONFIG_STA_SUPPORT
-	UCHAR index = 0, Channel = 0, NewChannel = 0;
+	u8 index = 0, Channel = 0, NewChannel = 0;
 	ULONG Bssidx = 0;
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -1980,7 +1980,7 @@ void PeerSpectrumAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 
-	UCHAR	Action = Elem->Msg[LENGTH_802_11+1];
+	u8 Action = Elem->Msg[LENGTH_802_11+1];
 
 	if (pAd->CommonCfg.bIEEE80211H != TRUE)
 		return;

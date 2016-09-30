@@ -89,7 +89,7 @@ typedef	union	_EFUSE_CTRL_STRUC {
 }	EFUSE_CTRL_STRUC, *PEFUSE_CTRL_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
-static UCHAR eFuseReadRegisters(
+static u8 eFuseReadRegisters(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -135,7 +135,7 @@ static void eFuseWritePhysical(
 
 ========================================================================
 */
-UCHAR eFuseReadRegisters(
+u8 eFuseReadRegisters(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
@@ -220,7 +220,7 @@ UCHAR eFuseReadRegisters(
 		memmove(pData, &data, Length);
 	}
 
-	return (UCHAR) eFuseCtrlStruc.field.EFSROM_AOUT;
+	return (u8) eFuseCtrlStruc.field.EFSROM_AOUT;
 
 }
 
@@ -364,7 +364,7 @@ int eFuseRead(
 	IN	USHORT			Length)
 {
 	int Status = STATUS_SUCCESS;
-	UCHAR	EFSROM_AOUT;
+	u8 EFSROM_AOUT;
 	int	i;
 
 	for(i=0; i<Length; i+=2)
@@ -524,7 +524,7 @@ static int eFuseWriteRegisters(
 	USHORT	i, Loop=0, StartBlock=0, EndBlock=0;
 	USHORT	eFuseData;
 	USHORT	LogicalAddress, BlkNum = 0xffff;
-	UCHAR	EFSROM_AOUT;
+	u8 EFSROM_AOUT;
 
 	USHORT addr,tmpaddr, InBuf[3], tmpOffset;
 	USHORT buffer[8];

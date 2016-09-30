@@ -308,27 +308,27 @@ typedef enum{
 typedef union _BBP_R47_STRUC {
 	struct
 	{
-		UCHAR	Adc6On:1;
-		UCHAR	Reserved:2;
-		UCHAR	TssiMode:2;
-		UCHAR	TssiUpdateReq:1;
-		UCHAR	TssiReportSel:2;
+		u8 Adc6On:1;
+		u8 Reserved:2;
+		u8 TssiMode:2;
+		u8 TssiUpdateReq:1;
+		u8 TssiReportSel:2;
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R47_STRUC, *PBBP_R47_STRUC;
 #else
 typedef union _BBP_R47_STRUC {
 	struct
 	{
-		UCHAR	TssiReportSel:2;
-		UCHAR	TssiUpdateReq:1;
-		UCHAR	TssiMode:2;
-		UCHAR	Reserved:2;
-		UCHAR	Adc6On:1;
+		u8 TssiReportSel:2;
+		u8 TssiUpdateReq:1;
+		u8 TssiMode:2;
+		u8 Reserved:2;
+		u8 Adc6On:1;
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R47_STRUC, *PBBP_R47_STRUC;
 #endif
 
@@ -339,25 +339,25 @@ typedef union _BBP_R47_STRUC {
 typedef union _BBP_R49_STRUC {
 	struct
 	{
-		UCHAR	adc5_in_sel:1; /* 0: TSSI (from the external components, old version), 1: PSI (internal components, new version - RT3390) */
-		UCHAR	bypassTSSIAverage:1; /* 0: the average TSSI (the average of the 16 samples), 1: the current TSSI */
-		UCHAR	Reserved:1; /* Reserved field */
-		UCHAR	TSSI:5; /* TSSI value */
+		u8 adc5_in_sel:1; /* 0: TSSI (from the external components, old version), 1: PSI (internal components, new version - RT3390) */
+		u8 bypassTSSIAverage:1; /* 0: the average TSSI (the average of the 16 samples), 1: the current TSSI */
+		u8 Reserved:1; /* Reserved field */
+		u8 TSSI:5; /* TSSI value */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R49_STRUC, *PBBP_R49_STRUC;
 #else
 typedef union _BBP_R49_STRUC {
 	struct
 	{
-		UCHAR	TSSI:5; /* TSSI value */
-		UCHAR	Reserved:1; /* Reserved field */
-		UCHAR	bypassTSSIAverage:1; /* 0: the average TSSI (the average of the 16 samples), 1: the current TSSI */
-		UCHAR	adc5_in_sel:1; /* 0: TSSI (from the external components, old version), 1: PSI (internal components, new version - RT3390) */
+		u8 TSSI:5; /* TSSI value */
+		u8 Reserved:1; /* Reserved field */
+		u8 bypassTSSIAverage:1; /* 0: the average TSSI (the average of the 16 samples), 1: the current TSSI */
+		u8 adc5_in_sel:1; /* 0: TSSI (from the external components, old version), 1: PSI (internal components, new version - RT3390) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R49_STRUC, *PBBP_R49_STRUC;
 #endif
 
@@ -368,27 +368,27 @@ typedef union _BBP_R49_STRUC {
 typedef union _BBP_R105_STRUC {
 	struct
 	{
-		UCHAR	Reserve1:4; /* Reserved field */
-		UCHAR	EnableSIGRemodulation:1; /* Enable the channel estimation updates based on remodulation of L-SIG and HT-SIG symbols. */
-		UCHAR	MLDFor2Stream:1; /* Apply Maximum Likelihood Detection (MLD) for 2 stream case (reserved field if single RX) */
-		UCHAR	IndependentFeedForwardCompensation:1; /* Apply independent feed-forward compensation for independent stream. */
-		UCHAR	DetectSIGOnPrimaryChannelOnly:1; /* Under 40 MHz band, detect SIG on primary channel only. */
+		u8 Reserve1:4; /* Reserved field */
+		u8 EnableSIGRemodulation:1; /* Enable the channel estimation updates based on remodulation of L-SIG and HT-SIG symbols. */
+		u8 MLDFor2Stream:1; /* Apply Maximum Likelihood Detection (MLD) for 2 stream case (reserved field if single RX) */
+		u8 IndependentFeedForwardCompensation:1; /* Apply independent feed-forward compensation for independent stream. */
+		u8 DetectSIGOnPrimaryChannelOnly:1; /* Under 40 MHz band, detect SIG on primary channel only. */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R105_STRUC, *PBBP_R105_STRUC;
 #else
 typedef union _BBP_R105_STRUC {
 	struct
 	{
-		UCHAR	DetectSIGOnPrimaryChannelOnly:1; /* Under 40 MHz band, detect SIG on primary channel only. */
-		UCHAR	IndependentFeedForwardCompensation:1; /* Apply independent feed-forward compensation for independent stream. */
-		UCHAR	MLDFor2Stream:1; /* Apply Maximum Likelihood Detection (MLD) for 2 stream case (reserved field if single RX) */
-		UCHAR	EnableSIGRemodulation:1; /* Enable the channel estimation updates based on remodulation of L-SIG and HT-SIG symbols. */
-		UCHAR	Reserve1:4; /* Reserved field */
+		u8 DetectSIGOnPrimaryChannelOnly:1; /* Under 40 MHz band, detect SIG on primary channel only. */
+		u8 IndependentFeedForwardCompensation:1; /* Apply independent feed-forward compensation for independent stream. */
+		u8 MLDFor2Stream:1; /* Apply Maximum Likelihood Detection (MLD) for 2 stream case (reserved field if single RX) */
+		u8 EnableSIGRemodulation:1; /* Enable the channel estimation updates based on remodulation of L-SIG and HT-SIG symbols. */
+		u8 Reserve1:4; /* Reserved field */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R105_STRUC, *PBBP_R105_STRUC;
 #endif
 
@@ -399,23 +399,23 @@ typedef union _BBP_R105_STRUC {
 typedef union _BBP_R106_STRUC {
 	struct
 	{
-		UCHAR	EnableLowPowerFSD:1; /* enable/disable the low power FSD */
-		UCHAR	ShortGI_Offset40:4; /* Delay GI remover when the short GI is detected in 40MHz band (40M sampling rate) */
-		UCHAR	ShortGI_Offset20:3; /* Delay GI remover when the short GI is detected in 20MHz band (20M sampling rate) */
+		u8 EnableLowPowerFSD:1; /* enable/disable the low power FSD */
+		u8 ShortGI_Offset40:4; /* Delay GI remover when the short GI is detected in 40MHz band (40M sampling rate) */
+		u8 ShortGI_Offset20:3; /* Delay GI remover when the short GI is detected in 20MHz band (20M sampling rate) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R106_STRUC, *PBBP_R106_STRUC;
 #else
 typedef union _BBP_R106_STRUC {
 	struct
 	{
-		UCHAR	ShortGI_Offset20:3; /* Delay GI remover when the short GI is detected in 20MHz band (20M sampling rate) */
-		UCHAR	ShortGI_Offset40:4; /* Delay GI remover when the short GI is detected in 40MHz band (40M sampling rate) */
-		UCHAR	EnableLowPowerFSD:1; /* enable/disable the low power FSD */
+		u8 ShortGI_Offset20:3; /* Delay GI remover when the short GI is detected in 20MHz band (20M sampling rate) */
+		u8 ShortGI_Offset40:4; /* Delay GI remover when the short GI is detected in 40MHz band (40M sampling rate) */
+		u8 EnableLowPowerFSD:1; /* enable/disable the low power FSD */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R106_STRUC, *PBBP_R106_STRUC;
 #endif
 
@@ -426,21 +426,21 @@ typedef union _BBP_R106_STRUC {
 typedef union _BBP_R109_STRUC {
 	struct
 	{
-		UCHAR	Tx1PowerCtrl:4; /* Tx1 power control in 0.1dB step (valid: 0~10) */
-		UCHAR	Tx0PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
+		u8 Tx1PowerCtrl:4; /* Tx1 power control in 0.1dB step (valid: 0~10) */
+		u8 Tx0PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R109_STRUC, *PBBP_R109_STRUC;
 #else
 typedef union _BBP_R109_STRUC {
 	struct
 	{
-		UCHAR	Tx0PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
-		UCHAR	Tx1PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
+		u8 Tx0PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
+		u8 Tx1PowerCtrl:4; /* Tx0 power control in 0.1dB step (valid: 0~10) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R109_STRUC, *PBBP_R109_STRUC;
 #endif
 
@@ -451,21 +451,21 @@ typedef union _BBP_R109_STRUC {
 typedef union _BBP_R110_STRUC {
 	struct
 	{
-		UCHAR	Tx2PowerCtrl:4; /* Tx2 power control in 0.1dB step (valid: 0~10) */
-		UCHAR	AllTxPowerCtrl:4; /* All transmitters' fine power control in 0.1dB (valid: 0~10) */
+		u8 Tx2PowerCtrl:4; /* Tx2 power control in 0.1dB step (valid: 0~10) */
+		u8 AllTxPowerCtrl:4; /* All transmitters' fine power control in 0.1dB (valid: 0~10) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R110_STRUC, *PBBP_R110_STRUC;
 #else
 typedef union _BBP_R110_STRUC {
 	struct
 	{
-		UCHAR	AllTxPowerCtrl:4; /* All transmitters' fine power control in 0.1dB (valid: 0~10) */
-		UCHAR	Tx2PowerCtrl:4; /* Tx2 power control in 0.1dB step (valid: 0~10) */
+		u8 AllTxPowerCtrl:4; /* All transmitters' fine power control in 0.1dB (valid: 0~10) */
+		u8 Tx2PowerCtrl:4; /* Tx2 power control in 0.1dB step (valid: 0~10) */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R110_STRUC, *PBBP_R110_STRUC;
 #endif
 
@@ -476,19 +476,19 @@ typedef union _BBP_R110_STRUC {
 typedef union _BBP_R179_STRUC {
 	struct
 	{
-		UCHAR	DataIndex1:8; /* Data index #1 */
+		u8 DataIndex1:8; /* Data index #1 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R179_STRUC, *PBBP_R179_STRUC;
 #else
 typedef union _BBP_R179_STRUC {
 	struct
 	{
-		UCHAR	DataIndex1:8; /* Data index #1 */
+		u8 DataIndex1:8; /* Data index #1 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R179_STRUC, *PBBP_R179_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
@@ -499,19 +499,19 @@ typedef union _BBP_R179_STRUC {
 typedef union _BBP_R180_STRUC {
 	struct
 	{
-		UCHAR	DataIndex2:8; /* Data index #2 */
+		u8 DataIndex2:8; /* Data index #2 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R180_STRUC, *PBBP_R180_STRUC;
 #else
 typedef union _BBP_R180_STRUC {
 	struct
 	{
-		UCHAR	DataIndex2:8; /* Data index #2 */
+		u8 DataIndex2:8; /* Data index #2 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R180_STRUC, *PBBP_R180_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
@@ -522,19 +522,19 @@ typedef union _BBP_R180_STRUC {
 typedef union _BBP_R182_STRUC {
 	struct
 	{
-		UCHAR	DataArray:8; /* Data array indexed by BBP R179 and R180 */
+		u8 DataArray:8; /* Data array indexed by BBP R179 and R180 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R182_STRUC, *PBBP_R182_STRUC;
 #else
 typedef union _BBP_R182_STRUC {
 	struct
 	{
-		UCHAR	DataArray:8; /* Data array indexed by BBP R179 and R180 */
+		u8 DataArray:8; /* Data array indexed by BBP R179 and R180 */
 	} field;
 
-	UCHAR		byte;
+	u8 	byte;
 } BBP_R182_STRUC, *PBBP_R182_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
@@ -634,10 +634,10 @@ INT rtmp_bbp_tx_comp_init(struct rtmp_adapter *pAd, INT adc_insel, INT tssi_mode
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);
 INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower);
 INT rtmp_bbp_is_ready(struct rtmp_adapter *pAd);
-INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, UCHAR agc, RX_CHAIN_IDX idx);
+INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX idx);
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx);
-INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter *pAd, UCHAR Channel);
-UCHAR rtmp_bbp_get_random_seed(struct rtmp_adapter *pAd);
+INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter *pAd, u8 Channel);
+u8 rtmp_bbp_get_random_seed(struct rtmp_adapter *pAd);
 
 int NICInitBBP(struct rtmp_adapter *pAd);
 

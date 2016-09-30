@@ -83,7 +83,7 @@ void WfdMakeWfdIE(
 
 ULONG InsertWfdSubelmtTlv(
 	IN struct rtmp_adapter *	pAd,
-	IN UCHAR			SubId,
+	IN u8 		SubId,
 	IN u8 *		pInBuffer,
 	IN u8 *		pOutBuffer,
 	IN UINT				Action);

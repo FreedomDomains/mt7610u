@@ -76,10 +76,10 @@ BUILD_TIMER_FUNCTION(BARecSessionIdleTimeout);
 void BA_MaxWinSizeReasign(
 	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY  *pEntryPeer,
-	OUT UCHAR			*pWinSize)
+	OUT u8 		*pWinSize)
 {
-	UCHAR MaxSize;
-	UCHAR MaxPeerRxSize;
+	u8 MaxSize;
+	u8 MaxPeerRxSize;
 
 
 	if (CLIENT_STATUS_TEST_FLAG(pEntryPeer, fCLIENT_STATUS_RALINK_CHIPSET))
@@ -501,7 +501,7 @@ void ba_flush_reordering_timeout_mpdus(
 void BAOriSessionSetUp(
 					  IN struct rtmp_adapter *   pAd,
 					  IN MAC_TABLE_ENTRY  *pEntry,
-					  IN UCHAR            TID,
+					  IN u8            TID,
 					  IN USHORT           TimeOut,
 					  IN ULONG            DelayTime,
 					  IN BOOLEAN          isForced)
@@ -586,12 +586,12 @@ void BAOriSessionAdd(
 {
 	BA_ORI_ENTRY  *pBAEntry = NULL;
 	BOOLEAN       Cancelled;
-	UCHAR         TID;
+	u8         TID;
 	USHORT        Idx;
 	u8 *         pOutBuffer2 = NULL;
 	ULONG           FrameLen;
 	FRAME_BAR       FrameBar;
-	UCHAR			MaxPeerBufSize;
+	u8 		MaxPeerBufSize;
 
 	TID = pFrame->BaParm.TID;
 	Idx = pEntry->BAOriWcidArray[TID];
@@ -602,7 +602,7 @@ void BAOriSessionAdd(
 	/* Start fill in parameters.*/
 	if ((Idx !=0) && (pBAEntry->TID == TID) && (pBAEntry->ORI_BA_Status == Originator_WaitRes))
 	{
-		MaxPeerBufSize = (UCHAR)pFrame->BaParm.BufSize;
+		MaxPeerBufSize = (u8)pFrame->BaParm.BufSize;
 
 		if (MaxPeerBufSize > 0)
 			MaxPeerBufSize -= 1;
@@ -664,8 +664,8 @@ BOOLEAN BARecSessionAdd(
 	BOOLEAN                 Status = TRUE;
 	BOOLEAN                 Cancelled;
 	USHORT                  Idx;
-	UCHAR                   TID;
-	UCHAR                   BAWinSize;
+	u8                   TID;
+	u8                   BAWinSize;
 	/*u32                  Value;*/
 	/*UINT                    offset;*/
 
@@ -675,7 +675,7 @@ BOOLEAN BARecSessionAdd(
 	/* find TID*/
 	TID = pFrame->BaParm.TID;
 
-	BAWinSize = min(((UCHAR)pFrame->BaParm.BufSize), (UCHAR)pAd->CommonCfg.BACapability.field.RxBAWinLimit);
+	BAWinSize = min(((u8)pFrame->BaParm.BufSize), (u8)pAd->CommonCfg.BACapability.field.RxBAWinLimit);
 
 	/* Intel patch*/
 	if (BAWinSize == 0)
@@ -893,8 +893,8 @@ void BATableFreeRecEntry(
 
 void BAOriSessionTearDown(
 						 IN OUT  struct rtmp_adapter *  pAd,
-						 IN      UCHAR           Wcid,
-						 IN      UCHAR           TID,
+						 IN      u8           Wcid,
+						 IN      u8           TID,
 						 IN      BOOLEAN         bPassive,
 						 IN      BOOLEAN         bForceSend)
 {
@@ -985,8 +985,8 @@ void BAOriSessionTearDown(
 
 void BARecSessionTearDown(
 						 IN OUT  struct rtmp_adapter *  pAd,
-						 IN      UCHAR           Wcid,
-						 IN      UCHAR           TID,
+						 IN      u8           Wcid,
+						 IN      u8           TID,
 						 IN      BOOLEAN         bPassive)
 {
 	ULONG           Idx = 0;
@@ -1073,7 +1073,7 @@ void BARecSessionTearDown(
 
 void BASessionTearDownALL(
 						 IN OUT  struct rtmp_adapter *pAd,
-						 IN      UCHAR Wcid)
+						 IN      u8 Wcid)
 {
 	int i;
 
@@ -1151,7 +1151,7 @@ void BAOriSessionSetupTimeout(
 
 		memset(&AddbaReq, 0, sizeof(AddbaReq));
 		memcpy(AddbaReq.pAddr, pEntry->Addr, ETH_ALEN);
-		AddbaReq.Wcid = (UCHAR)(pEntry->Aid);
+		AddbaReq.Wcid = (u8)(pEntry->Aid);
 		AddbaReq.TID = pBAEntry->TID;
 		AddbaReq.BaBufSize = pAd->CommonCfg.BACapability.field.RxBAWinLimit;
 		AddbaReq.TimeOutValue = 0;
@@ -1219,12 +1219,12 @@ void PeerAddBAReqAction(
 {
 	/*	7.4.4.1*/
 	/*ULONG	Idx;*/
-	UCHAR   Status = 1;
-	UCHAR   pAddr[6];
+	u8   Status = 1;
+	u8   pAddr[6];
 	FRAME_ADDBA_RSP ADDframe;
 	u8 *        pOutBuffer = NULL;
 	PFRAME_ADDBA_REQ  pAddreqFrame = NULL;
-	/*UCHAR		BufSize;*/
+	/*u8 	BufSize;*/
 	ULONG       FrameLen;
 	PULONG      ptemp;
 	PMAC_TABLE_ENTRY	pMacEntry;
@@ -1293,7 +1293,7 @@ void PeerAddBAReqAction(
 	ADDframe.BaParm.BAPolicy = IMMED_BA;
 	ADDframe.BaParm.AMSDUSupported = 0;
 	ADDframe.BaParm.TID = pAddreqFrame->BaParm.TID;
-	ADDframe.BaParm.BufSize = min(((UCHAR)pAddreqFrame->BaParm.BufSize), (UCHAR)pAd->CommonCfg.BACapability.field.RxBAWinLimit);
+	ADDframe.BaParm.BufSize = min(((u8)pAddreqFrame->BaParm.BufSize), (u8)pAd->CommonCfg.BACapability.field.RxBAWinLimit);
 	if (ADDframe.BaParm.BufSize == 0)
 	{
 		ADDframe.BaParm.BufSize = 64;
@@ -1331,7 +1331,7 @@ void PeerAddBARspAction(
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
-	/*UCHAR		Idx, i;*/
+	/*u8 	Idx, i;*/
 	/*u8 *	   pOutBuffer = NULL;*/
 	PFRAME_ADDBA_RSP    pFrame = NULL;
 	/*PBA_ORI_ENTRY		pBAEntry;*/
@@ -1375,7 +1375,7 @@ void PeerDelBAAction(
 	IN MLME_QUEUE_ELEM *Elem)
 
 {
-	/*UCHAR				Idx;*/
+	/*u8 			Idx;*/
 	/*u8 *			pOutBuffer = NULL;*/
 	PFRAME_DELBA_REQ    pDelFrame = NULL;
 
@@ -1410,10 +1410,10 @@ BOOLEAN CntlEnqueueForRecv(
 	PBA_REC_ENTRY pBAEntry;
 	/*BOOLEAN 	Result;*/
 	ULONG   Idx;
-	/*UCHAR	NumRxPkt;*/
-	UCHAR	TID;/*, i;*/
+	/*u8 NumRxPkt;*/
+	u8 TID;/*, i;*/
 
-	TID = (UCHAR)pFrame->BARControl.TID;
+	TID = (u8)pFrame->BARControl.TID;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): BAR-Wcid(%ld), Tid (%d)\n", __FUNCTION__, Wcid, TID));
 	/* Do nothing if the driver is starting halt state.*/
@@ -1466,8 +1466,8 @@ Description : Send PSMP Action frame If PSMP mode switches.
 */
 void SendPSMPAction(
 				   IN struct rtmp_adapter *	pAd,
-				   IN UCHAR				Wcid,
-				   IN UCHAR				Psmp)
+				   IN u8 			Wcid,
+				   IN u8 			Psmp)
 {
 	u8 *pOutBuffer = NULL;
 	FRAME_PSMP_ACTION Frame;
@@ -1511,24 +1511,24 @@ void SendPSMPAction(
 #define RADIO_MEASUREMENT_REQUEST_ACTION	0
 
 typedef struct __attribute__ ((packed)) _BEACON_REQUEST {
-	UCHAR	RegulatoryClass;
-	UCHAR	ChannelNumber;
+	u8 RegulatoryClass;
+	u8 ChannelNumber;
 	USHORT	RandomInterval;
 	USHORT	MeasurementDuration;
-	UCHAR	MeasurementMode;
-	UCHAR   BSSID[MAC_ADDR_LEN];
-	UCHAR	ReportingCondition;
-	UCHAR	Threshold;
-	UCHAR   SSIDIE[2];			/* 2 byte*/
+	u8 MeasurementMode;
+	u8   BSSID[MAC_ADDR_LEN];
+	u8 ReportingCondition;
+	u8 Threshold;
+	u8   SSIDIE[2];			/* 2 byte*/
 } BEACON_REQUEST;
 
 typedef struct __attribute__ ((packed)) _MEASUREMENT_REQ
 {
-	UCHAR	ID;
-	UCHAR	Length;
-	UCHAR	Token;
-	UCHAR	RequestMode;
-	UCHAR	Type;
+	u8 ID;
+	u8 Length;
+	u8 Token;
+	u8 RequestMode;
+	u8 Type;
 } MEASUREMENT_REQ;
 
 
@@ -1536,10 +1536,10 @@ typedef struct __attribute__ ((packed)) _MEASUREMENT_REQ
 void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
-	IN  UCHAR			FromWhichBSSID)
+	IN  u8 		FromWhichBSSID)
 {
 	struct sk_buff *	pRxPkt;
-	UCHAR			Header802_3[LENGTH_802_3];
+	u8 		Header802_3[LENGTH_802_3];
 
 /*
 	1. get 802.3 Header
@@ -1570,7 +1570,7 @@ void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
 #ifdef LINUX
-			UCHAR *data_p;
+			u8 *data_p;
 			data_p = OS_PKT_HEAD_BUF_EXTEND(pRxPkt, LENGTH_802_3);
 			memmove(data_p, Header802_3, LENGTH_802_3);
 #endif
@@ -1621,7 +1621,7 @@ static void ba_enqueue_reordering_packet(
 	IN	struct rtmp_adapter *pAd,
 	IN	PBA_REC_ENTRY	pBAEntry,
 	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID)
+	IN	u8 		FromWhichBSSID)
 {
 	struct reordering_mpdu *mpdu_blk;
 	UINT16	Sequence = (UINT16) pRxBlk->pHeader->Sequence;
@@ -1683,7 +1683,7 @@ static void ba_enqueue_reordering_packet_hdr_trns(
 	IN	struct rtmp_adapter *pAd,
 	IN	PBA_REC_ENTRY	pBAEntry,
 	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID)
+	IN	u8 		FromWhichBSSID)
 {
 	struct reordering_mpdu *mpdu_blk;
 	UINT16	Sequence = (UINT16) pRxBlk->pHeader->Sequence;
@@ -1771,14 +1771,14 @@ static void ba_enqueue_reordering_packet_hdr_trns(
 void Indicate_AMPDU_Packet(
 	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID)
+	IN	u8 		FromWhichBSSID)
 {
 	USHORT Idx;
 	PBA_REC_ENTRY pBAEntry = NULL;
 	UINT16 Sequence = pRxBlk->pHeader->Sequence;
 	ULONG Now32;
-	UCHAR Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
-	UCHAR TID = pRxBlk->pRxWI->RxWITID;
+	u8 Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
+	u8 TID = pRxBlk->pRxWI->RxWITID;
 
 
 	if (!RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU) &&  (pRxBlk->DataSize > MAX_RX_PKT_LEN))
@@ -1915,14 +1915,14 @@ void Indicate_AMPDU_Packet(
 void Indicate_AMPDU_Packet_Hdr_Trns(
 	IN	struct rtmp_adapter *pAd,
 	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID)
+	IN	u8 		FromWhichBSSID)
 {
 	USHORT Idx;
 	PBA_REC_ENTRY pBAEntry = NULL;
 	UINT16 Sequence = pRxBlk->pHeader->Sequence;
 	ULONG Now32;
-	UCHAR Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
-	UCHAR TID = pRxBlk->pRxWI->RxWITID;
+	u8 Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
+	u8 TID = pRxBlk->pRxWI->RxWITID;
 
 
 	if (!RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU) &&  (pRxBlk->TransDataSize > 1514))
@@ -2060,9 +2060,9 @@ void BaReOrderingBufferMaintain(
     IN struct rtmp_adapter *pAd)
 {
     ULONG Now32;
-    UCHAR Wcid;
+    u8 Wcid;
     USHORT Idx;
-    UCHAR TID;
+    u8 TID;
     PBA_REC_ENTRY pBAEntry = NULL;
     PMAC_TABLE_ENTRY pEntry = NULL;
 
