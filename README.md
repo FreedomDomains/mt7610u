@@ -1,4 +1,4 @@
-<u>**MT7610U for Linux**</u>
+i<u>**MT7610U for Linux**</u>
 
 Driver for 802.11ac USB Adapter with MT7610U chipset  
 Only STA Mode is supported, no AP.  
@@ -35,6 +35,7 @@ i.e STA, AP, RSSI, LED handling stuff
 
 **BUGS**  
 - can't unload driver, must disconnect device(s) first  
+- remove stupid endianess with device descriptors  
   
 
 **TODO**, in order of no appearance ;-)  
