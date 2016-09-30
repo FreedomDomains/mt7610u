@@ -479,12 +479,12 @@ BOOLEAN MacTableDeleteEntry(
 
 
 //   			memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
-//			memset(pEntry->Addr, 0, MAC_ADDR_LEN);
+//			memset(pEntry->Addr, 0, ETH_ALEN);
 //			/* invalidate the entry */
 //			SET_ENTRY_NONE(pEntry);
 
 //                      memset(pEntry, 0, sizeof(MAC_TABLE_ENTRY));
-                        memset(pEntry->Addr, 0, MAC_ADDR_LEN);
+                        memset(pEntry->Addr, 0, ETH_ALEN);
                         /* invalidate the entry */
                         SET_ENTRY_NONE(pEntry);
 

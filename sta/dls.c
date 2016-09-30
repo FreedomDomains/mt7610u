@@ -197,7 +197,7 @@ void PeerDlsReqAction(
 	u8 Action = ACTION_DLS_RESPONSE;
 	ULONG tmp;
 	USHORT CapabilityInfo;
-	u8 DA[MAC_ADDR_LEN], SA[MAC_ADDR_LEN];
+	u8 DA[ETH_ALEN], SA[ETH_ALEN];
 	USHORT DLSTimeOut;
 	SHORT i;
 	ULONG Timeout;
@@ -288,7 +288,7 @@ void PeerDlsReqAction(
 					pAd->StaCfg.DLSEntry[i].Valid = TRUE;
 					pAd->StaCfg.DLSEntry[i].TimeOut = DLSTimeOut;
 					pAd->StaCfg.DLSEntry[i].CountDownTimer = DLSTimeOut;
-					memmove(pAd->StaCfg.DLSEntry[i].MacAddr, SA, MAC_ADDR_LEN);
+					memmove(pAd->StaCfg.DLSEntry[i].MacAddr, SA, ETH_ALEN);
 					if (HtCapabilityLen != 0)
 						pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
 					else
@@ -487,7 +487,7 @@ void PeerDlsRspAction(
 	IN MLME_QUEUE_ELEM *Elem)
 {
 	USHORT CapabilityInfo;
-	u8 DA[MAC_ADDR_LEN], SA[MAC_ADDR_LEN];
+	u8 DA[ETH_ALEN], SA[ETH_ALEN];
 	USHORT StatusCode;
 	SHORT i;
 	BOOLEAN TimerCancelled;
@@ -907,7 +907,7 @@ void PeerDlsTearDownAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	u8 DA[MAC_ADDR_LEN], SA[MAC_ADDR_LEN];
+	u8 DA[ETH_ALEN], SA[ETH_ALEN];
 	USHORT ReasonCode;
 	UINT i;
 	BOOLEAN TimerCancelled;
@@ -1523,7 +1523,7 @@ int RTMPSendSTAKeyRequest(
 
 	pPacket->ProVer = EAPOL_VER;
 	pPacket->ProType = EAPOLKey;
-	pPacket->Body_Len[1] = sizeof (KEY_DESCRIPTER) + 6 + MAC_ADDR_LEN;	/* data field contain KDE andPeer MAC address */
+	pPacket->Body_Len[1] = sizeof (KEY_DESCRIPTER) + 6 + ETH_ALEN;	/* data field contain KDE andPeer MAC address */
 
 	/* STAKey Message is as EAPOL-Key(1,1,0,0,G/0,0,0, MIC, 0,Peer MAC KDE) */
 	if ((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA)
@@ -1554,7 +1554,7 @@ int RTMPSendSTAKeyRequest(
 	pPacket->KeyDesc.KeyData[3] = 0x0C;
 	pPacket->KeyDesc.KeyData[4] = 0x43;
 	pPacket->KeyDesc.KeyData[5] = 0x03;
-	memmove(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
+	memmove(&pPacket->KeyDesc.KeyData[6], pDA, ETH_ALEN);
 
 	memmove(pPacket->KeyDesc.ReplayCounter,
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
@@ -1660,7 +1660,7 @@ int RTMPSendSTAKeyHandShake(
 
 	pPacket->ProVer = EAPOL_VER;
 	pPacket->ProType = EAPOLKey;
-	pPacket->Body_Len[1] = sizeof (KEY_DESCRIPTER) + 6 + MAC_ADDR_LEN;	/* data field contain KDE and Peer MAC address */
+	pPacket->Body_Len[1] = sizeof (KEY_DESCRIPTER) + 6 + ETH_ALEN;	/* data field contain KDE and Peer MAC address */
 
 	/* STAKey Message is as EAPOL-Key(1,1,0,0,G/0,0,0, MIC, 0,Peer MAC KDE) */
 	if ((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA)
@@ -1690,7 +1690,7 @@ int RTMPSendSTAKeyHandShake(
 	pPacket->KeyDesc.KeyData[3] = 0x0C;
 	pPacket->KeyDesc.KeyData[4] = 0x43;
 	pPacket->KeyDesc.KeyData[5] = 0x03;
-	memmove(&pPacket->KeyDesc.KeyData[6], pDA, MAC_ADDR_LEN);
+	memmove(&pPacket->KeyDesc.KeyData[6], pDA, ETH_ALEN);
 
 	memmove(pPacket->KeyDesc.ReplayCounter,
 		       pAd->StaCfg.DlsReplayCounter, LEN_KEY_DESC_REPLAY);
@@ -2012,7 +2012,7 @@ INT Set_DlsAddEntry_Proc(
 	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
-	u8 mac[MAC_ADDR_LEN];
+	u8 mac[ETH_ALEN];
 	USHORT Timeout;
 	char *token;
 	STRING sepValue[] = ":", DASH = '-';
@@ -2062,7 +2062,7 @@ INT Set_DlsTearDownEntry_Proc(
 	IN struct rtmp_adapter *pAd,
 	IN char *arg)
 {
-	u8 macAddr[MAC_ADDR_LEN];
+	u8 macAddr[ETH_ALEN];
 	char *value;
 	INT i;
 	RT_802_11_DLS Dls;

@@ -108,9 +108,9 @@ void PeerDeauthAction(
 	IN struct rtmp_adapter *pAd,
 	IN PMLME_QUEUE_ELEM Elem)
 {
-	u8 Addr1[MAC_ADDR_LEN];
-	u8 Addr2[MAC_ADDR_LEN];
-	u8 Addr3[MAC_ADDR_LEN];
+	u8 Addr1[ETH_ALEN];
+	u8 Addr2[ETH_ALEN];
+	u8 Addr3[ETH_ALEN];
 	USHORT Reason;
 	BOOLEAN bDoIterate = FALSE;
 

@@ -2495,11 +2495,11 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 				wifi_hdr->FC.ToDs = 1;
 #ifdef CLIENT_WDS
 				if (!MAC_ADDR_EQUAL
-				    ((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
+				    ((pTxBlk->pSrcBufHeader + ETH_ALEN),
 				     pAd->CurrentAddress)) {
 					wifi_hdr->FC.FrDs = 1;
-					memcpy(&wifi_hdr->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN, ETH_ALEN);	/* ADDR4 = SA */
-					pTxBlk->MpduHeaderLen += MAC_ADDR_LEN;
+					memcpy(&wifi_hdr->Octet[0], pTxBlk->pSrcBufHeader + ETH_ALEN, ETH_ALEN);	/* ADDR4 = SA */
+					pTxBlk->MpduHeaderLen += ETH_ALEN;
 				}
 #endif /* CLIENT_WDS */
 			}
@@ -2510,7 +2510,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 #ifdef XLINK_SUPPORT
 			if (pAd->StaCfg.PSPXlink)
 				/* copy the SA of ether frames to address 2 of 802.11 frame */
-				memcpy(wifi_hdr->Addr2, pTxBlk->pSrcBufHeader + MAC_ADDR_LEN, ETH_ALEN);
+				memcpy(wifi_hdr->Addr2, pTxBlk->pSrcBufHeader + ETH_ALEN, ETH_ALEN);
 			else
 #endif /* XLINK_SUPPORT */
 				memcpy(wifi_hdr->Addr2, pAd->CurrentAddress, ETH_ALEN);
@@ -2589,11 +2589,11 @@ void STABuildCache802_11Header(
 				      pTxBlk->pSrcBufHeader, ETH_ALEN);
 #ifdef CLIENT_WDS
 			if (!MAC_ADDR_EQUAL
-			    ((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
+			    ((pTxBlk->pSrcBufHeader + ETH_ALEN),
 			     pAd->CurrentAddress)) {
 				pHeader80211->FC.FrDs = 1;
-				memcpy(&pHeader80211->Octet[0], pTxBlk->pSrcBufHeader + MAC_ADDR_LEN, ETH_ALEN);	/* ADDR4 = SA */
-				pTxBlk->MpduHeaderLen += MAC_ADDR_LEN;
+				memcpy(&pHeader80211->Octet[0], pTxBlk->pSrcBufHeader + ETH_ALEN, ETH_ALEN);	/* ADDR4 = SA */
+				pTxBlk->MpduHeaderLen += ETH_ALEN;
 			}
 #endif /* CLIENT_WDS */
 		}
@@ -4191,7 +4191,7 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 #endif /* XLINK_SUPPORT */
 #ifdef CLIENT_WDS
 	if (!MAC_ADDR_EQUAL		/* 4 MAC Addresses */
-			((pTxBlk->pSrcBufHeader + MAC_ADDR_LEN),
+			((pTxBlk->pSrcBufHeader + ETH_ALEN),
 			pAd->CurrentAddress))
 		bDoHdrTrans = FALSE;
 	else

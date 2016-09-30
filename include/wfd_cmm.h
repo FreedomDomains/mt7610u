@@ -145,19 +145,19 @@ typedef	struct __attribute__ ((packed)) _WFD_SESSION_INFO
 {
 #ifndef RT_BIG_ENDIAN
 	u8 					Length;
-	u8 					DeviceAddr[MAC_ADDR_LEN];
-	u8 					Bssid[MAC_ADDR_LEN];
+	u8 					DeviceAddr[ETH_ALEN];
+	u8 					Bssid[ETH_ALEN];
 	WFD_DEVICE_INFO 		WfdDevInfo;
 	USHORT					MaxThroughput;
 	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;
-	u8 					CoupledPeerAddr[MAC_ADDR_LEN];
+	u8 					CoupledPeerAddr[ETH_ALEN];
 #else
-	u8 					CoupledPeerAddr[MAC_ADDR_LEN];
+	u8 					CoupledPeerAddr[ETH_ALEN];
 	WFD_COUPLED_SINK_INFO 	CoupledSinkInfo;
 	USHORT					MaxThroughput;
 	WFD_DEVICE_INFO 		WfdDevInfo;
-	u8 					Bssid[MAC_ADDR_LEN];
-	u8 					DeviceAddr[MAC_ADDR_LEN];
+	u8 					Bssid[ETH_ALEN];
+	u8 					DeviceAddr[ETH_ALEN];
 	u8 					Length;
 #endif
 }	WFD_SESSION_INFO, *PWFD_SESSION_INFO;
@@ -205,9 +205,9 @@ typedef struct _WFD_ENTRY_INFO
 	u8 tdls_persistent_group;
 	USHORT	rtsp_port;
 	USHORT	max_throughput;
-	u8 assoc_addr[MAC_ADDR_LEN];
+	u8 assoc_addr[ETH_ALEN];
 	WFD_COUPLED_SINK_INFO	coupled_sink_status;
-	u8   	coupled_peer_addr[MAC_ADDR_LEN];
+	u8   	coupled_peer_addr[ETH_ALEN];
 	/* Service Discovery */
 	WFD_SERV_DISC_QUERY_INFO	wfd_serv_disc_query_info;
 } WFD_ENTRY_INFO, *PWFD_ENTRY_INFO;
@@ -230,7 +230,7 @@ typedef struct _RT_WFD_CONFIG
 	u8  	TimeSync;
 	USHORT 	RtspPort;				/* Deafult WFD_RTSP_DEFAULT_PORT */
 	USHORT	MaxThroughput;			/* Maximum average throughput capability */
-	u8 Bssid[MAC_ADDR_LEN];
+	u8 Bssid[ETH_ALEN];
 	u8 IPv4Addr[4];
 	u8  	TdlsSecurity;
 	u8  	PeerSessionAvail;

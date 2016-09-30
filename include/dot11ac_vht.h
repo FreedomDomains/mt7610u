@@ -466,8 +466,8 @@ typedef struct  __attribute__ ((packed)) _VHT_CONTROL{
 typedef struct __attribute__ ((packed)) _NDPA_PKT{
 	USHORT frm_ctrl;
 	USHORT duration;
-	u8 ra[MAC_ADDR_LEN];
-	u8 ta[MAC_ADDR_LEN];
+	u8 ra[ETH_ALEN];
+	u8 ta[ETH_ALEN];
 	u8 snd_seq;
 }DNPA_PKT;
 

@@ -1516,7 +1516,7 @@ typedef struct __attribute__ ((packed)) _BEACON_REQUEST {
 	USHORT	RandomInterval;
 	USHORT	MeasurementDuration;
 	u8 MeasurementMode;
-	u8   BSSID[MAC_ADDR_LEN];
+	u8   BSSID[ETH_ALEN];
 	u8 ReportingCondition;
 	u8 Threshold;
 	u8   SSIDIE[2];			/* 2 byte*/

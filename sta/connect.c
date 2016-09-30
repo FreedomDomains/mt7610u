@@ -406,7 +406,7 @@ void CntlOidSsidProc(
 	memmove(pAd->MlmeAux.Ssid, pOidSsid->Ssid, pOidSsid->SsidLength);
 	pAd->MlmeAux.SsidLen = (u8) pOidSsid->SsidLength;
 	if (pAd->StaCfg.BssType == BSS_INFRA)
-		memset(pAd->MlmeAux.Bssid, 0, MAC_ADDR_LEN);
+		memset(pAd->MlmeAux.Bssid, 0, ETH_ALEN);
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
 
 	pAd->StaCfg.bAutoConnectByBssid = FALSE;
@@ -636,8 +636,8 @@ void CntlOidRTBssidProc(
 	pAd->MlmeAux.BssType = pAd->StaCfg.BssType;
 
 	/*save connect info*/
-	memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
-	memmove(pAd->StaCfg.ConnectinfoBssid, pOidBssid, MAC_ADDR_LEN);
+	memset(pAd->StaCfg.ConnectinfoBssid, 0, ETH_ALEN);
+	memmove(pAd->StaCfg.ConnectinfoBssid, pOidBssid, ETH_ALEN);
 	DBGPRINT(RT_DEBUG_TRACE, ("ANDROID IOCTL::SIOCSIWAP %02x:%02x:%02x:%02x:%02x:%02x\n",
 		pAd->StaCfg.ConnectinfoBssid[0], pAd->StaCfg.ConnectinfoBssid[1], pAd->StaCfg.ConnectinfoBssid[2],
 		pAd->StaCfg.ConnectinfoBssid[3], pAd->StaCfg.ConnectinfoBssid[4], pAd->StaCfg.ConnectinfoBssid[5]));
@@ -2004,7 +2004,7 @@ void LinkUp(
 	 */
 	if ((pAd->StaCfg.BssType == BSS_INFRA) &&
 	    (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) &&
-	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) != 0) &&
+	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, ETH_ALEN) != 0) &&
 	     (pAd->StaCfg.bLostAp == TRUE)) {
 		pAd->StaCfg.bLostAp = FALSE;
 	}
@@ -2077,7 +2077,7 @@ void LinkUp(
 	 */
 	if ((pAd->StaCfg.BssType == BSS_INFRA) &&
 	    (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) &&
-	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) == 0)
+	    (memcmp(pAd->CommonCfg.Bssid, pAd->CommonCfg.LastBssid, ETH_ALEN) == 0)
 	    && (pAd->StaCfg.bLostAp == TRUE)) {
 		WpaSendEapolStart(pAd, pAd->CommonCfg.Bssid);
 		pAd->StaCfg.bLostAp = FALSE;
@@ -2454,7 +2454,7 @@ void LinkDown(
 	pAd->StaCfg.RssiSample.AvgRssi2	= -127;
 
 	memset(pAd->StaCfg.ConnectinfoSsid, 0, MAX_LEN_OF_SSID);
-	memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
+	memset(pAd->StaCfg.ConnectinfoBssid, 0, ETH_ALEN);
 	pAd->StaCfg.ConnectinfoSsidLen  = 0;
 	pAd->StaCfg.ConnectinfoBssType  = 1;
 	pAd->StaCfg.ConnectinfoChannel = 0;

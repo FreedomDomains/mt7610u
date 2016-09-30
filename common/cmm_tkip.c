@@ -386,9 +386,9 @@ void RTMPInitMICEngine(
 	/* Init MIC value calculation*/
 	RTMPTkipSetMICKey(&pAd->PrivateInfo.Tx, pMICKey);
 	/* DA*/
-	RTMPTkipAppend(&pAd->PrivateInfo.Tx, pDA, MAC_ADDR_LEN);
+	RTMPTkipAppend(&pAd->PrivateInfo.Tx, pDA, ETH_ALEN);
 	/* SA*/
-	RTMPTkipAppend(&pAd->PrivateInfo.Tx, pSA, MAC_ADDR_LEN);
+	RTMPTkipAppend(&pAd->PrivateInfo.Tx, pSA, ETH_ALEN);
 	/* Priority + 3 bytes of 0*/
 	RTMPTkipAppend(&pAd->PrivateInfo.Tx, (u8 *)&Priority, 4);
 }
@@ -432,9 +432,9 @@ BOOLEAN	RTMPTkipCompareMICValue(
 	/* Init MIC value calculation*/
 	RTMPTkipSetMICKey(&pAd->PrivateInfo.Rx, pMICKey);
 	/* DA*/
-	RTMPTkipAppend(&pAd->PrivateInfo.Rx, pDA, MAC_ADDR_LEN);
+	RTMPTkipAppend(&pAd->PrivateInfo.Rx, pDA, ETH_ALEN);
 	/* SA*/
-	RTMPTkipAppend(&pAd->PrivateInfo.Rx, pSA, MAC_ADDR_LEN);
+	RTMPTkipAppend(&pAd->PrivateInfo.Rx, pSA, ETH_ALEN);
 	/* Priority + 3 bytes of 0*/
 	RTMPTkipAppend(&pAd->PrivateInfo.Rx, (u8 *)&Priority, 4);
 
@@ -699,9 +699,9 @@ BOOLEAN RTMPSoftDecryptTKIP(
     u8			to_ds;
 	u8			a4_exists;
 	u8			qc_exists;
-	u8 		TA[MAC_ADDR_LEN];
-	u8 		DA[MAC_ADDR_LEN];
-	u8 		SA[MAC_ADDR_LEN];
+	u8 		TA[ETH_ALEN];
+	u8 		DA[ETH_ALEN];
+	u8 		SA[ETH_ALEN];
 	u8 		RC4Key[16];
 	UINT			p1k[5]; /*for mix_key;*/
 	ULONG			pnl;/* Least significant 16 bits of PN */
@@ -747,27 +747,27 @@ BOOLEAN RTMPSoftDecryptTKIP(
 	/* Assign DA, SA and TA for TKIP calculation */
 	if (to_ds == 0 && from_ds == 1)
 	{
-		memmove(DA, pFrame->Addr1, MAC_ADDR_LEN);
-		memmove(TA, pFrame->Addr2, MAC_ADDR_LEN);  /*BSSID		*/
-		memmove(SA, pFrame->Addr3, MAC_ADDR_LEN);
+		memmove(DA, pFrame->Addr1, ETH_ALEN);
+		memmove(TA, pFrame->Addr2, ETH_ALEN);  /*BSSID		*/
+		memmove(SA, pFrame->Addr3, ETH_ALEN);
 	}
 	else if (to_ds == 0 && from_ds == 0 )
 	{
-		memmove(DA, pFrame->Addr1, MAC_ADDR_LEN);
-		memmove(TA, pFrame->Addr2, MAC_ADDR_LEN);
-		memmove(SA, pFrame->Addr2, MAC_ADDR_LEN);
+		memmove(DA, pFrame->Addr1, ETH_ALEN);
+		memmove(TA, pFrame->Addr2, ETH_ALEN);
+		memmove(SA, pFrame->Addr2, ETH_ALEN);
 	}
 	else if (to_ds == 1 && from_ds == 0)
 	{
-		memmove(SA, pFrame->Addr2, MAC_ADDR_LEN);
-		memmove(TA, pFrame->Addr2, MAC_ADDR_LEN);
-		memmove(DA, pFrame->Addr3, MAC_ADDR_LEN);
+		memmove(SA, pFrame->Addr2, ETH_ALEN);
+		memmove(TA, pFrame->Addr2, ETH_ALEN);
+		memmove(DA, pFrame->Addr3, ETH_ALEN);
 	}
 	else if (to_ds == 1 && from_ds == 1)
 	{
-		memmove(TA, pFrame->Addr2, MAC_ADDR_LEN);
-		memmove(DA, pFrame->Addr3, MAC_ADDR_LEN);
-		memmove(SA, pFrame->Octet, MAC_ADDR_LEN);
+		memmove(TA, pFrame->Addr2, ETH_ALEN);
+		memmove(DA, pFrame->Addr3, ETH_ALEN);
+		memmove(SA, pFrame->Octet, ETH_ALEN);
 	}
 
 	pnl = (*(pData)) << 8 | (*(pData + 2));

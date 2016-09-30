@@ -1370,7 +1370,7 @@ UINT deaggregate_AMSDU_announce(
 
 		pPayload = pData + LENGTH_802_3;
 		pDA = pData;
-		pSA = pData + MAC_ADDR_LEN;
+		pSA = pData + ETH_ALEN;
 
 		/* convert to 802.3 header*/
         CONVERT_TO_802_3(Header802_3, pDA, pSA, pPayload, PayloadSize, pRemovedLLCSNAP);

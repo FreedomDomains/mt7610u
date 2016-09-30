@@ -748,8 +748,8 @@ typedef struct __attribute__ ((packed)) _MA_BODY {
 } MA_BODY, *PMA_BODY;
 
 typedef	struct __attribute__ ((packed)) _HEADER_802_3	{
-    u8           DAAddr1[MAC_ADDR_LEN];
-    u8           SAAddr2[MAC_ADDR_LEN];
+    u8           DAAddr1[ETH_ALEN];
+    u8           SAAddr2[ETH_ALEN];
     u8           Octet[2];
 } HEADER_802_3, *PHEADER_802_3;
 
@@ -869,8 +869,8 @@ typedef struct {
 typedef struct __attribute__ ((packed)) _FRAME_BA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	u8           Addr1[MAC_ADDR_LEN];
-	u8           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[ETH_ALEN];
+	u8           Addr2[ETH_ALEN];
 	BAR_CONTROL  BARControl;
 	BASEQ_CONTROL 	 BAStartingSeq;
 }   FRAME_BA_REQ, *PFRAME_BA_REQ;
@@ -878,8 +878,8 @@ typedef struct __attribute__ ((packed)) _FRAME_BA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_MTBA_REQ {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	u8           Addr1[MAC_ADDR_LEN];
-	u8           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[ETH_ALEN];
+	u8           Addr2[ETH_ALEN];
 	MTBAR_CONTROL  MTBARControl;
 	PER_TID_INFO	PerTIDInfo;
 	BASEQ_CONTROL 	 BAStartingSeq;
@@ -889,8 +889,8 @@ typedef struct __attribute__ ((packed)) _FRAME_MTBA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_MTBA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	u8           Addr1[MAC_ADDR_LEN];
-	u8           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[ETH_ALEN];
+	u8           Addr2[ETH_ALEN];
 	BA_CONTROL  BAControl;
 	BASEQ_CONTROL 	 BAStartingSeq;
 	u8 	BitMap[8];
@@ -968,8 +968,8 @@ typedef struct __attribute__ ((packed)) _FRAME_DELBA_REQ {
 typedef struct __attribute__ ((packed)) _FRAME_BAR {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	u8           Addr1[MAC_ADDR_LEN];
-	u8           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[ETH_ALEN];
+	u8           Addr2[ETH_ALEN];
 	BAR_CONTROL		BarControl;
 	BASEQ_CONTROL	StartingSeq;
 }   FRAME_BAR, *PFRAME_BAR;
@@ -978,8 +978,8 @@ typedef struct __attribute__ ((packed)) _FRAME_BAR {
 typedef struct __attribute__ ((packed)) _FRAME_BA {
 	FRAME_CONTROL   FC;
 	USHORT          Duration;
-	u8           Addr1[MAC_ADDR_LEN];
-	u8           Addr2[MAC_ADDR_LEN];
+	u8           Addr1[ETH_ALEN];
+	u8           Addr2[ETH_ALEN];
 	BAR_CONTROL		BarControl;
 	BASEQ_CONTROL	StartingSeq;
 	u8 	bitmask[8];
@@ -1124,7 +1124,7 @@ typedef struct {
 
 
 typedef struct {
-    u8   Bssid[MAC_ADDR_LEN];
+    u8   Bssid[ETH_ALEN];
     u8   Channel;
 	u8   CentralChannel;	/*Store the wide-band central channel for 40MHz.  .used in 40MHz AP. Or this is the same as Channel. */
     u8   BssType;
@@ -1210,7 +1210,7 @@ typedef struct {
 #endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
-	u8   MacAddr[MAC_ADDR_LEN];
+	u8   MacAddr[ETH_ALEN];
 	ULONG ClientStatusFlags;
 } BSS_ENTRY, *PBSS_ENTRY;
 
@@ -1267,7 +1267,7 @@ typedef struct _MLME_AUX {
 	u8               BssType;
 	u8               Ssid[MAX_LEN_OF_SSID];
 	u8               SsidLen;
-	u8               Bssid[MAC_ADDR_LEN];
+	u8               Bssid[ETH_ALEN];
 	u8 		AutoReconnectSsid[MAX_LEN_OF_SSID];
 	u8 		AutoReconnectSsidLen;
 	USHORT			Alg;
@@ -1327,7 +1327,7 @@ typedef struct _MLME_AUX {
 
 typedef struct _MLME_ADDBA_REQ_STRUCT{
 	u8   Wcid;	/* */
-	u8   pAddr[MAC_ADDR_LEN];
+	u8   pAddr[ETH_ALEN];
 	u8   BaBufSize;
 	USHORT	TimeOutValue;
 	u8   TID;
@@ -1338,32 +1338,32 @@ typedef struct _MLME_ADDBA_REQ_STRUCT{
 
 typedef struct _MLME_DELBA_REQ_STRUCT{
 	u8   Wcid;	/* */
-	u8     Addr[MAC_ADDR_LEN];
+	u8     Addr[ETH_ALEN];
 	u8   TID;
 	u8 Initiator;
 } MLME_DELBA_REQ_STRUCT, *PMLME_DELBA_REQ_STRUCT;
 
 /* assoc struct is equal to reassoc */
 typedef struct _MLME_ASSOC_REQ_STRUCT{
-    u8     Addr[MAC_ADDR_LEN];
+    u8     Addr[ETH_ALEN];
     USHORT    CapabilityInfo;
     USHORT    ListenIntv;
     ULONG     Timeout;
 } MLME_ASSOC_REQ_STRUCT, *PMLME_ASSOC_REQ_STRUCT, MLME_REASSOC_REQ_STRUCT, *PMLME_REASSOC_REQ_STRUCT;
 
 typedef struct _MLME_DISASSOC_REQ_STRUCT{
-    u8     Addr[MAC_ADDR_LEN];
+    u8     Addr[ETH_ALEN];
     USHORT    Reason;
 } MLME_DISASSOC_REQ_STRUCT, *PMLME_DISASSOC_REQ_STRUCT;
 
 typedef struct _MLME_AUTH_REQ_STRUCT {
-    u8        Addr[MAC_ADDR_LEN];
+    u8        Addr[ETH_ALEN];
     USHORT       Alg;
     ULONG        Timeout;
 } MLME_AUTH_REQ_STRUCT, *PMLME_AUTH_REQ_STRUCT;
 
 typedef struct _MLME_DEAUTH_REQ_STRUCT {
-    u8        Addr[MAC_ADDR_LEN];
+    u8        Addr[ETH_ALEN];
     USHORT       Reason;
 } MLME_DEAUTH_REQ_STRUCT, *PMLME_DEAUTH_REQ_STRUCT;
 
@@ -1372,7 +1372,7 @@ typedef struct {
 } MLME_JOIN_REQ_STRUCT;
 
 typedef struct _MLME_SCAN_REQ_STRUCT {
-    u8      Bssid[MAC_ADDR_LEN];
+    u8      Bssid[ETH_ALEN];
     u8      BssType;
     u8      ScanType;
     u8      SsidLen;
@@ -1448,8 +1448,8 @@ typedef enum _AuthState {
 
 
 typedef struct _IE_lists {
-	u8 Addr2[MAC_ADDR_LEN];
-	u8 ApAddr[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
+	u8 ApAddr[ETH_ALEN];
 	USHORT CapabilityInfo;
 	USHORT ListenInterval;
 	u8 SsidLen;
@@ -1473,9 +1473,9 @@ typedef struct _IE_lists {
 
 
 typedef struct _bcn_ie_list {
-	u8 Addr1[MAC_ADDR_LEN];
-	u8 Addr2[MAC_ADDR_LEN];
-	u8 Bssid[MAC_ADDR_LEN];
+	u8 Addr1[ETH_ALEN];
+	u8 Addr2[ETH_ALEN];
+	u8 Bssid[ETH_ALEN];
 	CHAR Ssid[MAX_LEN_OF_SSID];
 	u8 SsidLen;
 	u8 BssType;

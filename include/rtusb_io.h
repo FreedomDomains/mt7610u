@@ -93,7 +93,7 @@ typedef struct _RT_SET_ASIC_WCID {
 	ULONG WCID;		/* mechanism for rekeying: 0:disable, 1: time-based, 2: packet-based */
 	ULONG SetTid;		/* time-based: seconds, packet-based: kilo-packets */
 	ULONG DeleteTid;	/* time-based: seconds, packet-based: kilo-packets */
-	u8 Addr[MAC_ADDR_LEN];	/* avoid in interrupt when write key */
+	u8 Addr[ETH_ALEN];	/* avoid in interrupt when write key */
 } RT_SET_ASIC_WCID, *PRT_SET_ASIC_WCID;
 
 typedef struct _RT_ASIC_WCID_SEC_INFO {

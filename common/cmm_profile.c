@@ -1929,10 +1929,10 @@ int	RTMPSetProfileParameters(
 				}
 			}
 
-			if (memcmp(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], MAC_ADDR_LEN) == 0)
+			if (memcmp(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], ETH_ALEN) == 0)
 			{
 				/* set default broadcast mac to entry 0 if user not set it */
-				memmove(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, MAC_ADDR_LEN);
+				memmove(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, ETH_ALEN);
 			}
 		}
 #endif /* STREAM_MODE_SUPPORT */

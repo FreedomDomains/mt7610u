@@ -119,8 +119,8 @@ typedef struct _UAPSD_INFO {
 extern unsigned char CISCO_OUI[];
 extern u8 BaSizeArray[4];
 
-extern u8 BROADCAST_ADDR[MAC_ADDR_LEN];
-extern u8 ZERO_MAC_ADDR[MAC_ADDR_LEN];
+extern u8 BROADCAST_ADDR[ETH_ALEN];
+extern u8 ZERO_MAC_ADDR[ETH_ALEN];
 extern ULONG BIT32[32];
 extern char *CipherName[];
 extern u8 RxwiMCSToOfdmRate[12];
@@ -443,9 +443,9 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 
 #define MAKE_802_3_HEADER(_p, _pMac1, _pMac2, _pType)                   \
 {                                                                       \
-    memmove(_p, _pMac1, MAC_ADDR_LEN);                           \
-    memmove((_p + MAC_ADDR_LEN), _pMac2, MAC_ADDR_LEN);          \
-    memmove((_p + MAC_ADDR_LEN * 2), _pType, LENGTH_802_3_TYPE); \
+    memmove(_p, _pMac1, ETH_ALEN);                           \
+    memmove((_p + ETH_ALEN), _pMac2, ETH_ALEN);          \
+    memmove((_p + ETH_ALEN * 2), _pType, LENGTH_802_3_TYPE); \
 }
 
 /*
@@ -506,7 +506,7 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 }
 #endif /* RTMP_MAC_USB */
 
-#define MAC_ADDR_EQUAL(pAddr1,pAddr2)           (memcmp(pAddr1, pAddr2, MAC_ADDR_LEN) == 0)
+#define MAC_ADDR_EQUAL(pAddr1,pAddr2)           (memcmp(pAddr1, pAddr2, ETH_ALEN) == 0)
 #define SSID_EQUAL(ssid1, len1, ssid2, len2)    ((len1==len2) && (memcmp(ssid1, ssid2, len1) == 0))
 
 
@@ -748,7 +748,7 @@ typedef
 typedef struct _STREAM_MODE_ENTRY_{
 #define STREAM_MODE_STATIC		1
 	USHORT flag;
-	u8 macAddr[MAC_ADDR_LEN];
+	u8 macAddr[ETH_ALEN];
 }STREAM_MODE_ENTRY;
 #endif /* STREAM_MODE_SUPPORT */
 
@@ -788,7 +788,7 @@ typedef enum _RT_802_11_CIPHER_SUITE_TYPE {
 #endif /* RTMP_MAC_USB */
 
 typedef struct {
-	u8 Addr[MAC_ADDR_LEN];
+	u8 Addr[ETH_ALEN];
 	u8 ErrorCode[2];	/*00 01-Invalid authentication type */
 	/*00 02-Authentication timeout */
 	/*00 03-Challenge from AP failed */
@@ -1086,7 +1086,7 @@ typedef struct {
 
 /*For QureyBATableOID use; */
 typedef struct __attribute__ ((packed)) _OID_BA_REC_ENTRY {
-	u8 MACAddr[MAC_ADDR_LEN];
+	u8 MACAddr[ETH_ALEN];
 	u8 BaBitmap;		/* if (BaBitmap&(1<<TID)), this session with{MACAddr, TID}exists, so read BufSize[TID] for BufferSize */
 	u8 rsv;
 	u8 BufSize[8];
@@ -1095,7 +1095,7 @@ typedef struct __attribute__ ((packed)) _OID_BA_REC_ENTRY {
 
 /*For QureyBATableOID use; */
 typedef struct __attribute__ ((packed)) _OID_BA_ORI_ENTRY {
-	u8 MACAddr[MAC_ADDR_LEN];
+	u8 MACAddr[ETH_ALEN];
 	u8 BaBitmap;		/* if (BaBitmap&(1<<TID)), this session with{MACAddr, TID}exists, so read BufSize[TID] for BufferSize, read ORI_BA_Status[TID] for status */
 	u8 rsv;
 	u8 BufSize[8];
@@ -1144,7 +1144,7 @@ typedef union _BACAP_STRUC {
 
 typedef struct {
 	BOOLEAN IsRecipient;
-	u8 MACAddr[MAC_ADDR_LEN];
+	u8 MACAddr[ETH_ALEN];
 	u8 TID;
 	u8 nMSDU;
 	USHORT TimeOut;
@@ -1339,9 +1339,9 @@ struct common_config {
 	u8 SsidLen;		/* the actual ssid length in used */
 	u8 LastSsidLen;	/* the actual ssid length in used */
 	CHAR LastSsid[MAX_LEN_OF_SSID];	/* NOT NULL-terminated */
-	u8 LastBssid[MAC_ADDR_LEN];
+	u8 LastBssid[ETH_ALEN];
 
-	u8 Bssid[MAC_ADDR_LEN];
+	u8 Bssid[ETH_ALEN];
 	USHORT BeaconPeriod;
 	u8 Channel;
 	u8 CentralChannel;	/* Central Channel when using 40MHz is indicating. not real channel. */
@@ -1597,7 +1597,7 @@ struct common_config {
 #define		STREAM_MODE_STA_NUM		4
 
 	u8 StreamMode; /* 0=disabled, 1=enable for 1SS, 2=enable for 2SS, 3=enable for 1,2SS */
-	u8 StreamModeMac[STREAM_MODE_STA_NUM][MAC_ADDR_LEN];
+	u8 StreamModeMac[STREAM_MODE_STA_NUM][ETH_ALEN];
 	UINT16	StreamModeMCS;	/* Bit map for enabling Stream Mode based on MCS */
 #endif /* STREAM_MODE_SUPPORT */
 
@@ -1724,11 +1724,11 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* MIB:ieee802dot11.dot11smt(1).dot11StationConfigTable(1) */
 	USHORT Psm;		/* power management mode   (PWR_ACTIVE|PWR_SAVE) */
 	USHORT DisassocReason;
-	u8 DisassocSta[MAC_ADDR_LEN];
+	u8 DisassocSta[ETH_ALEN];
 	USHORT DeauthReason;
-	u8 DeauthSta[MAC_ADDR_LEN];
+	u8 DeauthSta[ETH_ALEN];
 	USHORT AuthFailReason;
-	u8 AuthFailSta[MAC_ADDR_LEN];
+	u8 AuthFailSta[ETH_ALEN];
 
 	NDIS_802_11_PRIVACY_FILTER PrivacyFilter;	/* PrivacyFilter enum for 802.1X */
 	NDIS_802_11_AUTHENTICATION_MODE AuthMode;	/* This should match to whatever microsoft defined */
@@ -1905,7 +1905,7 @@ typedef struct _STA_ADMIN_CONFIG {
 
 /*connectinfo  for tmp store connect info from UI*/
 	BOOLEAN Connectinfoflag;
-	u8   ConnectinfoBssid[MAC_ADDR_LEN];
+	u8   ConnectinfoBssid[ETH_ALEN];
 	u8   ConnectinfoChannel;
 	u8   ConnectinfoSsidLen;
 	CHAR    ConnectinfoSsid[MAX_LEN_OF_SSID];
@@ -2029,10 +2029,10 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 NegotiatedAKM[LEN_OUI_SUITE];	/* It indicate the negotiated AKM suite */
 
 
-	u8 Addr[MAC_ADDR_LEN];
-	u8 HdrAddr1[MAC_ADDR_LEN];
-	u8 HdrAddr2[MAC_ADDR_LEN];
-	u8 HdrAddr3[MAC_ADDR_LEN];
+	u8 Addr[ETH_ALEN];
+	u8 HdrAddr1[ETH_ALEN];
+	u8 HdrAddr2[ETH_ALEN];
+	u8 HdrAddr3[ETH_ALEN];
 	u8 PsMode;
 	u8 FlgPsModeIsWakeForAWhile; /* wake up for a while until a condition */
 	u8 VirtualTimeout; /* peer power save virtual timeout */
@@ -3014,8 +3014,8 @@ struct rtmp_adapter {
 
 	/* configuration: read from Registry & E2PROM */
 	BOOLEAN bLocalAdminMAC;	/* Use user changed MAC */
-	u8 PermanentAddress[MAC_ADDR_LEN];	/* Factory default MAC address */
-	u8 CurrentAddress[MAC_ADDR_LEN];	/* User changed MAC address */
+	u8 PermanentAddress[ETH_ALEN];	/* Factory default MAC address */
+	u8 CurrentAddress[ETH_ALEN];	/* User changed MAC address */
 
 	/* ------------------------------------------------------ */
 	/* common configuration to both OPMODE_STA and OPMODE_AP */

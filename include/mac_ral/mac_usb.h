@@ -410,7 +410,7 @@ typedef struct _CMD_RSP_CONTEXT
 	RT_SET_ASIC_WCID Info;									\
 																\
 	Info.WCID = pEntry->Aid;									\
-	memmove(Info.Addr, pEntry->Addr, MAC_ADDR_LEN);		\
+	memmove(Info.Addr, pEntry->Addr, ETH_ALEN);		\
 																\
 	RTEnqueueInternalCmd(pAd, CMDTHREAD_SET_CLIENT_MAC_ENTRY, 	\
 							&Info, sizeof(RT_SET_ASIC_WCID));	\

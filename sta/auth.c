@@ -146,7 +146,7 @@ void PeerAuthRspAtSeq2Action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM * Elem)
 {
-	u8 Addr2[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
 	USHORT Seq, Status, RemoteStatus, Alg;
 	u8 iv_hdr[4];
 /*    u8         ChlgText[CIPHER_TEXT_LEN]; */
@@ -313,7 +313,7 @@ void PeerAuthRspAtSeq4Action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	u8 Addr2[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
 	USHORT Alg, Seq, Status;
 /*    CHAR          ChlgText[CIPHER_TEXT_LEN]; */
 	CHAR *ChlgText = NULL;

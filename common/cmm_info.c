@@ -5061,7 +5061,7 @@ INT	Set_Trigger_Sounding_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
 {
-	u8 		macAddr[MAC_ADDR_LEN];
+	u8 		macAddr[ETH_ALEN];
 	CHAR			*value;
 	INT				i;
 	MAC_TABLE_ENTRY *pEntry = NULL;

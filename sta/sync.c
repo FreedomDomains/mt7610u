@@ -944,7 +944,7 @@ void MlmeStartReqAction(
 void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 {
 	/* Parameters used for old sanity function */
-	u8 Bssid[MAC_ADDR_LEN], Addr2[MAC_ADDR_LEN];
+	u8 Bssid[ETH_ALEN], Addr2[ETH_ALEN];
 	u8 *Ssid = NULL;
 	u8 SsidLen=0, DtimCount, DtimPeriod, BcastFlag, MessageToMe, NewChannel, Channel = 0, BssType;
 	CF_PARM CfParm = {0};
@@ -1053,13 +1053,13 @@ void rtmp_dbg_sanity_diff(struct rtmp_adapter*pAd, MLME_QUEUE_ELEM *Elem)
 		}
 		else
 		{
-			if (memcmp(&ie_list->Addr2[0], &Addr2[0], MAC_ADDR_LEN) != 0)
+			if (memcmp(&ie_list->Addr2[0], &Addr2[0], ETH_ALEN) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("Add2 mismatch!Old=%02x:%02x:%02x:%02x:%02x:%02x!New=%02x:%02x:%02x:%02x:%02x:%02x!\n",
 									PRINT_MAC(Addr2), PRINT_MAC(ie_list->Addr2)));
 			}
 
-			if (memcmp(&ie_list->Bssid[0], &Bssid[0], MAC_ADDR_LEN) != 0)
+			if (memcmp(&ie_list->Bssid[0], &Bssid[0], ETH_ALEN) != 0)
 			{
 				DBGPRINT(RT_DEBUG_ERROR, ("Bssid mismatch!Old=%02x:%02x:%02x:%02x:%02x:%02x!New=%02x:%02x:%02x:%02x:%02x:%02x!\n",
 									PRINT_MAC(Bssid), PRINT_MAC(ie_list->Bssid)));
@@ -1361,7 +1361,7 @@ void PeerBeaconAtScanAction(
 			if (pBssEntry->MinSNR == 0)
 				pBssEntry->MinSNR = -5;
 
-			memmove(pBssEntry->MacAddr, &ie_list->Addr2[0], MAC_ADDR_LEN);
+			memmove(pBssEntry->MacAddr, &ie_list->Addr2[0], ETH_ALEN);
 
 			if ((pFrame->Hdr.FC.SubType == SUBTYPE_PROBE_RSP) && (LenVIE != 0))
 			{
@@ -1508,7 +1508,7 @@ void PeerBeaconAtJoinAction(
 						if (pAd->ScanTab.BssEntry[Idx].MinSNR == 0)
 							pAd->ScanTab.BssEntry[Idx].MinSNR = -5;
 
-						memmove(pAd->ScanTab.BssEntry[Idx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+						memmove(pAd->ScanTab.BssEntry[Idx].MacAddr, ie_list->Addr2, ETH_ALEN);
 					}
 				}
 				else
@@ -1857,7 +1857,7 @@ void PeerBeacon(
 				memmove(&pBssEntry->TTSF[4], &Elem->TimeStamp.u.LowPart, 4);
 				pBssEntry->Rssi = RealRssi;
 
-				memmove(pBssEntry->MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+				memmove(pBssEntry->MacAddr, ie_list->Addr2, ETH_ALEN);
 
 
 			}
@@ -1881,7 +1881,7 @@ void PeerBeacon(
 			if (pAd->ScanTab.BssEntry[Bssidx].MinSNR == 0)
 				pAd->ScanTab.BssEntry[Bssidx].MinSNR = -5;
 
-			memmove(pAd->ScanTab.BssEntry[Bssidx].MacAddr, ie_list->Addr2, MAC_ADDR_LEN);
+			memmove(pAd->ScanTab.BssEntry[Bssidx].MacAddr, ie_list->Addr2, ETH_ALEN);
 
 
 
@@ -2475,7 +2475,7 @@ void PeerProbeReqAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	u8         Addr2[MAC_ADDR_LEN];
+	u8         Addr2[ETH_ALEN];
 	CHAR          Ssid[MAX_LEN_OF_SSID];
 	u8         SsidLen;
 #ifdef DOT11_N_SUPPORT

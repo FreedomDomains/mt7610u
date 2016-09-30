@@ -1873,8 +1873,8 @@ void RTMPDerivePMKID(
 
 	/* Concatenate the text for PMKID calculation*/
 	memmove(&text_buf[0], "PMK Name", 8);
-	memmove(&text_buf[8], pAaddr, MAC_ADDR_LEN);
-	memmove(&text_buf[14], pSpaddr, MAC_ADDR_LEN);
+	memmove(&text_buf[8], pAaddr, ETH_ALEN);
+	memmove(&text_buf[14], pSpaddr, ETH_ALEN);
 	text_len = 20;
 
 	{
@@ -1947,7 +1947,7 @@ void WpaDerivePTK(
 
 	/* store the larger mac address for backward compatible of */
 	/* ralink proprietary STA-key issue		*/
-	memmove(temp, &concatenation[CurrPos], MAC_ADDR_LEN);
+	memmove(temp, &concatenation[CurrPos], ETH_ALEN);
 	CurrPos += 6;
 
 	/* Get smaller Nonce*/
@@ -2052,7 +2052,7 @@ void GenRandom(
 	{
 		/* copy the local MAC address*/
 		memcpy(local, macAddr, ETH_ALEN);
-		curr =	MAC_ADDR_LEN;
+		curr =	ETH_ALEN;
 
 		/* concatenate the current time*/
 		NdisGetSystemUpTime(&CurrentTime);

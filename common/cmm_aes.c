@@ -684,8 +684,8 @@ void RTMPConstructCCMPAAD(
 	len = 2;
 
 	/* Append Addr 1, 2 & 3 */
-	memmove(&aad_hdr[len], pHdr + 4, 3 * MAC_ADDR_LEN);
-	len += (3 * MAC_ADDR_LEN);
+	memmove(&aad_hdr[len], pHdr + 4, 3 * ETH_ALEN);
+	len += (3 * ETH_ALEN);
 
 	/*  SC -
 		MPDU Sequence Control field, with the Sequence Number
@@ -699,8 +699,8 @@ void RTMPConstructCCMPAAD(
 	/* Append the Addr4 field if present. */
 	if (a4_exists)
 	{
-		memmove(&aad_hdr[len], pHdr + 24, MAC_ADDR_LEN);
-		len += MAC_ADDR_LEN;
+		memmove(&aad_hdr[len], pHdr + 24, ETH_ALEN);
+		len += ETH_ALEN;
 	}
 
 	/*  QC -
@@ -764,8 +764,8 @@ void RTMPConstructCCMPNonce(
 	n_offset += 1;
 
 	/* Fill in MPDU Address A2 field */
-	memmove(&nonce_hdr[n_offset], pHdr + 10, MAC_ADDR_LEN);
-	n_offset += MAC_ADDR_LEN;
+	memmove(&nonce_hdr[n_offset], pHdr + 10, ETH_ALEN);
+	n_offset += ETH_ALEN;
 
 	/* Fill in the PN. The PN field occupies octets 7¡V12.
 		The octets of PN shall be ordered so that PN0 is at octet index 12

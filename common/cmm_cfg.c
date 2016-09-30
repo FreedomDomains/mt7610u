@@ -80,15 +80,15 @@ UINT GenerateWpsPinCode(
     IN  BOOLEAN         bFromApcli,
 	IN	u8 		apidx)
 {
-	u8 macAddr[MAC_ADDR_LEN];
+	u8 macAddr[ETH_ALEN];
 	UINT 	iPin;
 	UINT	checksum;
 
-	memset(macAddr, 0, MAC_ADDR_LEN);
+	memset(macAddr, 0, ETH_ALEN);
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		memmove(&macAddr[0], pAd->CurrentAddress, MAC_ADDR_LEN);
+		memmove(&macAddr[0], pAd->CurrentAddress, ETH_ALEN);
 #endif /* CONFIG_STA_SUPPORT */
 
 	iPin = macAddr[3] * 256 * 256 + macAddr[4] * 256 + macAddr[5];
@@ -529,7 +529,7 @@ INT	RT_CfgSetMacAddress(
 		return FALSE;
 	}
 
-	for (i = 0; i < MAC_ADDR_LEN; i++)
+	for (i = 0; i < ETH_ALEN; i++)
 	{
 		AtoH(arg, &pAd->CurrentAddress[i], 1);
 		arg = arg + 3;
@@ -617,7 +617,7 @@ INT RTMP_COM_IoctlHandle(
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	struct os_cookie *pObj = pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
-	u8 PermanentAddress[MAC_ADDR_LEN];
+	u8 PermanentAddress[ETH_ALEN];
 	USHORT Addr01, Addr23, Addr45;
 
 

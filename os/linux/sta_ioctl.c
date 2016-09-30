@@ -410,7 +410,7 @@ int rt_ioctl_siwap(struct net_device *dev,
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
 					(void *)(ap_addr->sa_data), 0, RT_DEV_PRIV_FLAGS_GET(dev));
 
-    memcpy(Bssid, ap_addr->sa_data, MAC_ADDR_LEN);
+    memcpy(Bssid, ap_addr->sa_data, ETH_ALEN);
 
     DBGPRINT(RT_DEBUG_TRACE, ("IOCTL::SIOCSIWAP %02x:%02x:%02x:%02x:%02x:%02x\n",
         Bssid[0], Bssid[1], Bssid[2], Bssid[3], Bssid[4], Bssid[5]));
@@ -539,7 +539,7 @@ int rt_ioctl_iwaplist(struct net_device *dev,
 			break;
 		addr[i].sa_family = ARPHRD_ETHER;
 		pList = (pBssList->pList) + i;
-		memcpy(addr[i].sa_data, pList->Bssid, MAC_ADDR_LEN);
+		memcpy(addr[i].sa_data, pList->Bssid, ETH_ALEN);
 		set_quality(pAd, &qual[i], pList); /*&pAd->ScanTab.BssEntry[i]); */
 	}
 	data->length = i;

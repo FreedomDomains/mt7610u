@@ -541,7 +541,7 @@ void MlmeAssocReqAction(
 					   In this case, driver doesn't need to send PMKID to AP and WpaSupplicant.
 					 */
 					if ((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2)
-					    && (memcmp(pAd->MlmeAux.Bssid, pAd->CommonCfg.LastBssid, MAC_ADDR_LEN) == 0)) {
+					    && (memcmp(pAd->MlmeAux.Bssid, pAd->CommonCfg.LastBssid, ETH_ALEN) == 0)) {
 						FoundPMK = FALSE;
 					}
 #endif /* WPA_SUPPLICANT_SUPPORT */
@@ -742,7 +742,7 @@ void MlmeReassocReqAction(
 							ApAddr);
 		MakeOutgoingFrame(pOutBuffer, &FrameLen, sizeof (HEADER_802_11),
 				  &ReassocHdr, 2, &CapabilityInfo, 2,
-				  &ListenIntv, MAC_ADDR_LEN, ApAddr, 1, &SsidIe,
+				  &ListenIntv, ETH_ALEN, ApAddr, 1, &SsidIe,
 				  1, &pAd->MlmeAux.SsidLen,
 				  pAd->MlmeAux.SsidLen, pAd->MlmeAux.Ssid, 1,
 				  &SupRateIe, 1, &pAd->MlmeAux.SupRateLen,
@@ -1048,7 +1048,7 @@ void PeerAssocRspAction(
 	USHORT CapabilityInfo, Status, Aid;
 	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES], SupRateLen;
 	u8 ExtRate[MAX_LEN_OF_SUPPORTED_RATES], ExtRateLen;
-	u8 Addr2[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
 	BOOLEAN TimerCancelled;
 	u8 CkipFlag;
 	EDCA_PARM EdcaParm;
@@ -1196,7 +1196,7 @@ void PeerReassocRspAction(
 	USHORT Aid;
 	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES], SupRateLen;
 	u8 ExtRate[MAX_LEN_OF_SUPPORTED_RATES], ExtRateLen;
-	u8 Addr2[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
 	u8 CkipFlag;
 	BOOLEAN TimerCancelled;
 	EDCA_PARM EdcaParm;
@@ -1510,7 +1510,7 @@ void PeerDisassocAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	u8 Addr2[MAC_ADDR_LEN];
+	u8 Addr2[ETH_ALEN];
 	USHORT Reason;
 
 	DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - PeerDisassocAction()\n"));
@@ -1935,7 +1935,7 @@ BOOLEAN StaAddMacTableEntry(
 			}
 			pCurrEntry->pNext = pEntry;
 		}
-		memmove(pEntry->Addr, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
+		memmove(pEntry->Addr, pAd->MlmeAux.Bssid, ETH_ALEN);
 		pEntry->Aid = BSSID_WCID;
 		pEntry->pAd = pAd;
 		SET_ENTRY_CLIENT(pEntry);

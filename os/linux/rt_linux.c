@@ -1181,7 +1181,7 @@ int RtmpOSWrielessEventSend(
 		wrqu.data.flags = flags;
 
 	if (pSrcMac)
-		memcpy(wrqu.ap_addr.sa_data, pSrcMac, MAC_ADDR_LEN);
+		memcpy(wrqu.ap_addr.sa_data, pSrcMac, ETH_ALEN);
 
 	if ((pData != NULL) && (dataLen > 0))
 		wrqu.data.length = dataLen;
@@ -1213,7 +1213,7 @@ int RtmpOSWrielessEventSendExt(
 		wrqu.data.flags = flags;
 
 	if (pSrcMac)
-		memcpy(wrqu.ap_addr.sa_data, pSrcMac, MAC_ADDR_LEN);
+		memcpy(wrqu.ap_addr.sa_data, pSrcMac, ETH_ALEN);
 
 	if ((pData != NULL) && (dataLen > 0))
 		wrqu.data.length = dataLen;
@@ -1469,7 +1469,7 @@ int RtmpOSNetDevAttach(
 
 		/* copy the net device mac address to the net_device structure. */
 		memmove(pNetDev->dev_addr, &pDevOpHook->devAddr[0],
-			       MAC_ADDR_LEN);
+			       ETH_ALEN);
 
 		rtnl_locked = pDevOpHook->needProtcted;
 

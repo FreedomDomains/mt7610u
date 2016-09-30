@@ -63,8 +63,8 @@ ULONG BasicRateMask[12]				= {0xfffff001 /* 1-Mbps */, 0xfffff003 /* 2 Mbps */, 
 									  0xfffff01f /* 6 */	 , 0xfffff03f /* 9 */	  , 0xfffff07f /* 12 */ , 0xfffff0ff /* 18 */,
 									  0xfffff1ff /* 24 */	 , 0xfffff3ff /* 36 */	  , 0xfffff7ff /* 48 */ , 0xffffffff /* 54 */};
 
-u8 BROADCAST_ADDR[MAC_ADDR_LEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-u8 ZERO_MAC_ADDR[MAC_ADDR_LEN]  = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+u8 BROADCAST_ADDR[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+u8 ZERO_MAC_ADDR[ETH_ALEN]  = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 /* e.g. RssiSafeLevelForTxRate[RATE_36]" means if the current RSSI is greater than*/
 /*		this value, then it's quaranteed capable of operating in 36 mbps TX rate in*/
@@ -1419,7 +1419,7 @@ void MlmeAutoReconnectLastSSID(
 		MlmeEnqueue(pAd,
 			 MLME_CNTL_STATE_MACHINE,
 			 OID_802_11_BSSID,
-			 MAC_ADDR_LEN,
+			 ETH_ALEN,
 			 pAd->MlmeAux.Bssid, 0);
 
 		pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
@@ -3653,7 +3653,7 @@ void MacAddrRandomBssid(
 {
 	INT i;
 
-	for (i = 0; i < MAC_ADDR_LEN; i++)
+	for (i = 0; i < ETH_ALEN; i++)
 	{
 		pAddr[i] = RandomByte(pAd);
 	}

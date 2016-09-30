@@ -2099,11 +2099,11 @@ RtmpIoctl_rt_ioctl_giwap(
 	IN	ULONG					Data)
 {
 	if (INFRA_ON(pAd) || ADHOC_ON(pAd))
-		memmove(pData, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+		memmove(pData, pAd->CommonCfg.Bssid, ETH_ALEN);
 #ifdef WPA_SUPPLICANT_SUPPORT
 	/* Add for RT2870 */
 	else if (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
-		memmove(pData, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
+		memmove(pData, pAd->MlmeAux.Bssid, ETH_ALEN);
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	else
 		return NDIS_STATUS_FAILURE;
@@ -2214,7 +2214,7 @@ static void set_quality(
 	IN	RT_CMD_STA_IOCTL_BSS	*pSignal,
 	IN	PBSS_ENTRY				pBssEntry)
 {
-	memcpy(pSignal->Bssid, pBssEntry->Bssid, MAC_ADDR_LEN);
+	memcpy(pSignal->Bssid, pBssEntry->Bssid, ETH_ALEN);
 
 	/* Normalize Rssi */
 	if (pBssEntry->Rssi >= -50)
@@ -2857,7 +2857,7 @@ RtmpIoctl_rt_ioctl_siwmlme(
 		case RT_CMD_STA_IOCTL_IW_MLME_DISASSOC:
 			DBGPRINT(RT_DEBUG_TRACE, ("====> %s - IW_MLME_DISASSOC\n", __FUNCTION__));
 			memset(pAd->StaCfg.ConnectinfoSsid, 0, MAX_LEN_OF_SSID);
-			memset(pAd->StaCfg.ConnectinfoBssid, 0, MAC_ADDR_LEN);
+			memset(pAd->StaCfg.ConnectinfoBssid, 0, ETH_ALEN);
 			pAd->StaCfg.ConnectinfoSsidLen  = 0;
 			pAd->StaCfg.ConnectinfoBssType  = 1;
 			pAd->StaCfg.ConnectinfoChannel = 0;
@@ -3585,13 +3585,13 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
+		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, ETH_ALEN) == 0)
 		        {
-		        	memset(pAd->StaCfg.SavedPMK[CachedIdx].BSSID, 0, MAC_ADDR_LEN);
+		        	memset(pAd->StaCfg.SavedPMK[CachedIdx].BSSID, 0, ETH_ALEN);
 					memset(pAd->StaCfg.SavedPMK[CachedIdx].PMKID, 0, 16);
 					for (idx = CachedIdx; idx < (pAd->StaCfg.SavedPMKNum - 1); idx++)
 					{
-						memmove(&pAd->StaCfg.SavedPMK[idx].BSSID[0], &pAd->StaCfg.SavedPMK[idx+1].BSSID[0], MAC_ADDR_LEN);
+						memmove(&pAd->StaCfg.SavedPMK[idx].BSSID[0], &pAd->StaCfg.SavedPMK[idx+1].BSSID[0], ETH_ALEN);
 						memmove(&pAd->StaCfg.SavedPMK[idx].PMKID[0], &pAd->StaCfg.SavedPMK[idx+1].PMKID[0], 16);
 					}
 					pAd->StaCfg.SavedPMKNum--;
@@ -3605,7 +3605,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 			for (CachedIdx = 0; CachedIdx < pAd->StaCfg.SavedPMKNum; CachedIdx++)
 			{
 		        /* compare the BSSID */
-		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, MAC_ADDR_LEN) == 0)
+		        if (memcmp(pIoctlPmaSa->Bssid, pAd->StaCfg.SavedPMK[CachedIdx].BSSID, ETH_ALEN) == 0)
 			        break;
 	        }
 
@@ -3613,7 +3613,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 	        if (CachedIdx < PMKID_NO)
 	        {
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, MAC_ADDR_LEN);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, ETH_ALEN);
 			memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->Pmkid, IW_PMKID_LEN);
 		        pAd->StaCfg.SavedPMKNum++;
 	        }
@@ -3623,7 +3623,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
 		        /* Randomly replace one */
 		        CachedIdx = (pIoctlPmaSa->Bssid[5] % PMKID_NO);
 		        DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
-		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, MAC_ADDR_LEN);
+		        memmove(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->Bssid, ETH_ALEN);
 			memmove(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->Pmkid, IW_PMKID_LEN);
 	        }
 

@@ -408,7 +408,7 @@ ULONG InsertWfdSubelmtTlv(
 		}
 		case SUBID_WFD_ASSOCIATED_BSSID:
 		{
-			u8 AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+			u8 AllZero[ETH_ALEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 			if ((Action == ACTION_GAS_INITIAL_REQ) || (Action == ACTION_GAS_INITIAL_RSP))
 			{
@@ -416,20 +416,20 @@ ULONG InsertWfdSubelmtTlv(
 				tmpValue = cpu2be16(EidLen);
 				memmove(pDest, &tmpValue, 2);
 				Length = EidLen + 3;
-				if (memcmp(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) != 0 &&
+				if (memcmp(AllZero, pAd->CommonCfg.Bssid, ETH_ALEN) != 0 &&
 					(Action == ACTION_GAS_INITIAL_RSP))
 				{
-					memmove(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+					memmove(pDest + 2, pAd->CommonCfg.Bssid, ETH_ALEN);
 				}
 			}
 			else
 			{
-				if (memcmp(AllZero, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) != 0)
+				if (memcmp(AllZero, pAd->CommonCfg.Bssid, ETH_ALEN) != 0)
 				{
 					EidLen = SUBID_WFD_ASSOCIATED_BSSID_LEN;
 					tmpValue = cpu2be16(EidLen);
 					memmove(pDest, &tmpValue, 2);
-					memmove(pDest + 2, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
+					memmove(pDest + 2, pAd->CommonCfg.Bssid, ETH_ALEN);
 					Length = EidLen + 3;
 				}
 			}
@@ -565,8 +565,8 @@ ULONG InsertWfdSubelmtTlv(
 						memset(&SessionInfo, 0, sizeof(WFD_SESSION_INFO));
 
 						SessionInfo.Length = 23;
-						memmove(&SessionInfo.DeviceAddr[0], &pAd->P2pTable.Client[P2pIdx].addr[0], MAC_ADDR_LEN);
-						memmove(&SessionInfo.Bssid[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.assoc_addr[0], MAC_ADDR_LEN);
+						memmove(&SessionInfo.DeviceAddr[0], &pAd->P2pTable.Client[P2pIdx].addr[0], ETH_ALEN);
+						memmove(&SessionInfo.Bssid[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.assoc_addr[0], ETH_ALEN);
 						/*  Below is the WFD Device Information */
 						SessionInfo.WfdDevInfo.DeviceType = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.wfd_devive_type;
 						SessionInfo.WfdDevInfo.SourceCoupled = pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.source_coupled;
@@ -582,7 +582,7 @@ ULONG InsertWfdSubelmtTlv(
 							So far we cannot know the address of coupled devices,
 						   	the coupled address will be filled "0" until WiFi Display spec. is ready for this part.
 						*/
-						memmove(&SessionInfo.CoupledPeerAddr[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_peer_addr[0], MAC_ADDR_LEN);
+						memmove(&SessionInfo.CoupledPeerAddr[0], &pAd->P2pTable.Client[P2pIdx].WfdEntryInfo.coupled_peer_addr[0], ETH_ALEN);
 						memmove(pDest, &SessionInfo, sizeof(WFD_SESSION_INFO));
 
 						for (j = 0; j < 24; j++)
@@ -599,13 +599,13 @@ ULONG InsertWfdSubelmtTlv(
 		}
 		case SUBID_WFD_ALTERNATE_MAC_ADDR:
 		{
-			u8 AllZero[MAC_ADDR_LEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+			u8 AllZero[ETH_ALEN] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-			if (memcmp(AllZero, pAd->CurrentAddress, MAC_ADDR_LEN) != 0)
+			if (memcmp(AllZero, pAd->CurrentAddress, ETH_ALEN) != 0)
 			{
 				EidLen = SUBID_WFD_ALTERNATE_MAC_ADDR_LEN;
 				*((PUSHORT) (pDest)) = cpu2be16(EidLen);
-				memmove(pDest + 2, pAd->CurrentAddress, MAC_ADDR_LEN);
+				memmove(pDest + 2, pAd->CurrentAddress, ETH_ALEN);
 				Length = EidLen + 3;
 			}
 
@@ -699,7 +699,7 @@ void WfdParseSubElmt(
 					case SUBID_WFD_ASSOCIATED_BSSID:
 					{
 						memmove(&pWfdEntryInfo->wfd_serv_disc_query_info.wfd_associate_bssid_ie, pWfdEid->Octet, SUBID_WFD_ASSOCIATED_BSSID_LEN);
-						memmove(&pWfdEntryInfo->assoc_addr, pWfdEid->Octet, MAC_ADDR_LEN);
+						memmove(&pWfdEntryInfo->assoc_addr, pWfdEid->Octet, ETH_ALEN);
 						DBGPRINT(RT_DEBUG_INFO, ("%s::SUBID_WFD_ASSOCIATED_BSSID\n", __FUNCTION__));
 						break;
 					}

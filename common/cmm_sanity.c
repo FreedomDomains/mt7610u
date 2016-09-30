@@ -133,7 +133,7 @@ BOOLEAN MlmeDelBAReqSanity(
         return FALSE;
     }
 
-	if (memcmp(pAd->MacTab.Content[pInfo->Wcid].Addr, pInfo->Addr, MAC_ADDR_LEN) != 0)
+	if (memcmp(pAd->MacTab.Content[pInfo->Wcid].Addr, pInfo->Addr, ETH_ALEN) != 0)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("MlmeDelBAReqSanity fail - the peer addr dosen't exist.\n"));
         return FALSE;
@@ -574,7 +574,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             case IE_TIM:
                 if(SubType == SUBTYPE_BEACON)
                 {
-					if (INFRA_ON(pAd) && memcmp(pBssid, pAd->CommonCfg.Bssid, MAC_ADDR_LEN) == 0)
+					if (INFRA_ON(pAd) && memcmp(pBssid, pAd->CommonCfg.Bssid, ETH_ALEN) == 0)
                     {
                         GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, pBcastFlag, pDtimCount, pDtimPeriod, pMessageToMe);
                     }
@@ -1134,7 +1134,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 			if(SubType == SUBTYPE_BEACON)
 			{
 				if (INFRA_ON(pAd) &&
-				    memcmp(&ie_list->Bssid[0], pAd->CommonCfg.Bssid, MAC_ADDR_LEN) == 0)
+				    memcmp(&ie_list->Bssid[0], pAd->CommonCfg.Bssid, ETH_ALEN) == 0)
 				{
 					GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, &ie_list->BcastFlag,
 					&ie_list->DtimCount, &ie_list->DtimPeriod, &ie_list->MessageToMe);
@@ -1886,12 +1886,12 @@ BOOLEAN PeerDlsReqSanity(
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    memmove(pDA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pDA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
     /* get SA from payload and advance the pointer*/
-    memmove(pSA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pSA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
     /* get capability info from payload and advance the pointer*/
     memmove(pCapabilityInfo, Ptr, 2);
@@ -2015,12 +2015,12 @@ BOOLEAN PeerDlsRspSanity(
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    memmove(pDA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pDA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
     /* get SA from payload and advance the pointer*/
-    memmove(pSA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pSA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
 	if (pStatus == 0)
 	{
@@ -2129,12 +2129,12 @@ BOOLEAN PeerDlsTearDownSanity(
     Ptr += 2;
 
     /* get DA from payload and advance the pointer*/
-    memmove(pDA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pDA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
     /* get SA from payload and advance the pointer*/
-    memmove(pSA, Ptr, MAC_ADDR_LEN);
-    Ptr += MAC_ADDR_LEN;
+    memmove(pSA, Ptr, ETH_ALEN);
+    Ptr += ETH_ALEN;
 
 	/* get reason code from payload and advance the pointer*/
     memmove(pReason, Ptr, 2);

@@ -539,8 +539,8 @@ void RTMPCkipInsertCMIC(
 		memmove(ckip_ck, pKey->Key, pKey->KeyLen);
 	}
     RTMPCkipMicInit(&mic_ctx, ckip_ck);
-    RTMPMicUpdate(&mic_ctx, pDA, MAC_ADDR_LEN);            /* MIC <-- DA */
-    RTMPMicUpdate(&mic_ctx, pSA, MAC_ADDR_LEN);            /* MIC <-- SA */
+    RTMPMicUpdate(&mic_ctx, pDA, ETH_ALEN);            /* MIC <-- DA */
+    RTMPMicUpdate(&mic_ctx, pSA, ETH_ALEN);            /* MIC <-- SA */
     RTMPMicUpdate(&mic_ctx, bigethlen, 2);                 /* MIC <-- payload length starting from CKIP SNAP */
     RTMPMicUpdate(&mic_ctx, mic_snap, 8);                  /* MIC <-- snap header */
     RTMPMicUpdate(&mic_ctx, pAd->StaCfg.TxSEQ, 4);   /* MIC <-- TxSEQ */
