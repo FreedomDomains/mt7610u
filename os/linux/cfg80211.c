@@ -1114,7 +1114,7 @@ static int CFG80211_OpsConnect(
 	{
 		CFG80211DBG(RT_DEBUG_ERROR, ("80211> Connect bssid %02x:%02x:%02x:%02x:%02x:%02x\n",
 				PRINT_MAC(pSme->bssid)));
-		ConnInfo.pBssid = pSme->bssid;
+		memcpy(ConnInfo.Bssid, pSme->bssid, ETH_ALEN);
 	}
 
 	RTMP_DRIVER_80211_CONNECT(pAd, &ConnInfo);
