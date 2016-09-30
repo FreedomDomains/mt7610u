@@ -1675,7 +1675,7 @@ static void CFG80211_RegNotifier(struct wiphy *pWiphy,
 	if (pAd == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("crda> reg notify but pAd = NULL!"));
-		return 0;
+		return;
 	} /* End of if */
 
 	/*
@@ -1765,7 +1765,7 @@ static void CFG80211_RegNotifier(struct wiphy *pWiphy,
 		RTMP_DRIVER_80211_REG_NOTIFY(pAd, &RegInfo);
 	} /* End of if */
 
-	return 0;
+	return;
 } /* End of CFG80211_RegNotifier */
 
 #endif /* RT_CFG80211_SUPPORT */
