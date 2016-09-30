@@ -498,7 +498,7 @@ int write_reg(
 	u16 offset,
 	u32 value)
 {
-	int ret;
+	int ret = 0;
 	u8 req;
 	u32 io_value;
 
@@ -508,19 +508,16 @@ int write_reg(
 	io_value = cpu2le32(value);
 
 	ret = RTUSB_VendorRequest(ad,
-							  USBD_TRANSFER_DIRECTION_OUT,
-							  DEVICE_VENDOR_REQUEST_OUT,
-							  req,
-							  0,
-							  offset,
-							  &io_value,
-							  4);
+			USBD_TRANSFER_DIRECTION_OUT,
+			DEVICE_VENDOR_REQUEST_OUT, req, 0,
+			offset, &io_value, 4);
 
 
 	if (ret) {
 		DBGPRINT(RT_DEBUG_ERROR, ("write reg fail\n"));
-		return;
 	}
+
+	return ret;
 }
 
 int read_reg(
@@ -530,7 +527,7 @@ int read_reg(
 	u32 *value)
 {
 	int ret;
-	u8 req;
+	u8 req = 0;
 	u32 io_value;
 
 	if (base == 0x40)
@@ -539,18 +536,16 @@ int read_reg(
 		req = 0x7;
 
 	ret = RTUSB_VendorRequest(ad,
-							  (USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
-							  DEVICE_VENDOR_REQUEST_IN,
-							  req,
-							  0,
-							  offset,
-							  &io_value,
-							  4);
+			(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
+			DEVICE_VENDOR_REQUEST_IN, req, 0,
+			offset, &io_value, 4);
 
 	*value = le2cpu32(io_value);
 
 	if (ret)
 		*value = 0xffffffff;
+
+	return ret;
 }
 
 /*
