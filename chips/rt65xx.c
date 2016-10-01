@@ -49,7 +49,7 @@
 		Before Enable RX, make sure you have enabled Interrupt.
 	========================================================================
 */
-void ral_wlan_chip_onoff(
+void MT76x0_ral_wlan_chip_onoff(
 	IN struct rtmp_adapter*pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN)
@@ -151,7 +151,7 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 
 
 #ifdef RTMP_USB_SUPPORT
-void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
+void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 ret;
 
@@ -196,7 +196,7 @@ void RT65xxUsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 }
 
 
-void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
+void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 MACValue = 0;
 	u32 rx_filter_flag;
@@ -227,7 +227,7 @@ void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 #endif /* CONFIG_PM */
 
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
-		RT65xx_WLAN_ChipOnOff(pAd, TRUE, FALSE);
+		MT76x0_WLAN_ChipOnOff(pAd, TRUE, FALSE);
 
 	/* make some traffic to invoke EvtDeviceD0Entry callback function*/
 	RTUSBReadMACRegister(pAd,0x1000, &MACValue);
@@ -285,7 +285,7 @@ void RT65xxUsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 }
 #endif
 
-void RT65xxDisableTxRx(
+void MT76x0DisableTxRx(
 	struct rtmp_adapter*pAd,
 	u8 Level)
 {
@@ -493,13 +493,13 @@ void RT65xxDisableTxRx(
 				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
 			bResetWLAN = 0;
 
-		RT65xx_WLAN_ChipOnOff(pAd, FALSE, bResetWLAN);
+		MT76x0_WLAN_ChipOnOff(pAd, FALSE, bResetWLAN);
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
 }
 
-void RT65xx_WLAN_ChipOnOff(
+void MT76x0_WLAN_ChipOnOff(
 	IN struct rtmp_adapter*pAd,
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN)

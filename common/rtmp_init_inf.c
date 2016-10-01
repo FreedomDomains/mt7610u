@@ -46,7 +46,7 @@ int rt28xx_init(void *pAdSrc)
 
 #ifdef RT65xx
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
-		RT65xx_WLAN_ChipOnOff(pAd, TRUE, FALSE);
+		MT76x0_WLAN_ChipOnOff(pAd, TRUE, FALSE);
 #endif /* RT65xx */
 
 #ifdef CONFIG_STA_SUPPORT

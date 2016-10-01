@@ -2815,11 +2815,11 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	1. Power save related
 */
 
-	pChipOps->DisableTxRx = RT65xxDisableTxRx;
+	pChipOps->DisableTxRx = MT76x0DisableTxRx;
 
 #ifdef RTMP_USB_SUPPORT
-	pChipOps->AsicRadioOn = RT65xxUsbAsicRadioOn;
-	pChipOps->AsicRadioOff = RT65xxUsbAsicRadioOff;
+	pChipOps->AsicRadioOn = MT76x0UsbAsicRadioOn;
+	pChipOps->AsicRadioOff = MT76x0UsbAsicRadioOff;
 	pChipOps->usb_cfg_read = usb_cfg_read_v1;
 	pChipOps->usb_cfg_write = usb_cfg_write_v1;
 #endif /* RTMP_USB_SUPPORT */
