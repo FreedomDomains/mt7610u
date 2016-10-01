@@ -78,21 +78,21 @@ struct __attribute__ ((packed)) txinfo_nmac_pkt {
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
+struct __attribute__ ((packed)) txinfo_nmac_cmd{
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 cmd_type:7;
 	u32 cmd_seq:4;
 	u32 pkt_len:16;
-}TXINFO_NMAC_CMD;
+};
 #else
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
+struct __attribute__ ((packed)) txinfo_nmac_cmd{
 	u32 pkt_len:16;
 	u32 cmd_seq:4;
 	u32 cmd_type:7;
 	u32 d_port:3;
 	u32 info_type:2;
-}TXINFO_NMAC_CMD;
+};
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN

@@ -76,7 +76,7 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 	struct os_cookie *obj = ad->OS_Cookie;
 	dma_addr_t fw_dma;
 	u8 *fw_data;
-	TXINFO_NMAC_CMD *tx_info;
+	struct txinfo_nmac_cmd *tx_info;
 	s32 sent_len;
 	u32 cur_len = 0;
 	u32 mac_value, loop = 0;
@@ -214,7 +214,7 @@ loadfw_protect:
 		sent_len = (ilm_len - cur_len) >=  sent_len_max ? sent_len_max : (ilm_len - cur_len);
 
 		if (sent_len > 0) {
-			tx_info = (TXINFO_NMAC_CMD *)fw_data;
+			tx_info = (struct txinfo_nmac_cmd *)fw_data;
 			tx_info->info_type = CMD_PACKET;
 			tx_info->pkt_len = sent_len;
 			tx_info->d_port = CPU_TX_PORT;
@@ -352,7 +352,7 @@ loadfw_protect:
 		sent_len = (dlm_len - cur_len) >= sent_len_max ? sent_len_max : (dlm_len - cur_len);
 
 		if (sent_len > 0) {
-			tx_info = (TXINFO_NMAC_CMD *)fw_data;
+			tx_info = (struct txinfo_nmac_cmd *)fw_data;
 			tx_info->info_type = CMD_PACKET;
 			tx_info->pkt_len = sent_len;
 			tx_info->d_port = CPU_TX_PORT;
@@ -1226,7 +1226,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 	struct sk_buff * net_pkt = NULL;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	int ret = NDIS_STATUS_SUCCESS;
-	TXINFO_NMAC_CMD *tx_info;
+	struct txinfo_nmac_cmd *tx_info;
 
 	while (msg = andes_dequeue_cmd_msg(ctl, &ctl->txq)) {
 		if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
@@ -1250,7 +1250,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 		else
 			msg->seq = 0;
 
-		tx_info = (TXINFO_NMAC_CMD *)OS_PKT_HEAD_BUF_EXTEND(net_pkt, sizeof(*tx_info));
+		tx_info = (struct txinfo_nmac_cmd *)OS_PKT_HEAD_BUF_EXTEND(net_pkt, sizeof(*tx_info));
 		tx_info->info_type = CMD_PACKET;
 		tx_info->d_port = CPU_TX_PORT;
 		tx_info->cmd_type = msg->type;

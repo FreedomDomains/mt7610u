@@ -2709,7 +2709,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 #endif /* CONFIG_ANDES_SUPPORT */
 
 	pChipCap->MCUType = ANDES;
-	pChipCap->cmd_header_len = sizeof(TXINFO_NMAC_CMD);
+	pChipCap->cmd_header_len = sizeof(struct txinfo_nmac_cmd);
 
 
 #ifdef RTMP_USB_SUPPORT
