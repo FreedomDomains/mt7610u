@@ -477,17 +477,8 @@ int RTUSBWriteMACRegister(
 	localVal = Value;
 
 	/* MT76xx HW has 4 byte alignment constrained */
-	if (IS_MT76xx(pAd)) {
-		Status = RTUSBMultiWrite_nBytes(
-		pAd,
-		Offset,
-		&Value,
-		4,
-		4);
-	} else {
-		Status = RTUSBSingleWrite(pAd, Offset, (USHORT)(localVal & 0xffff), bWriteHigh);
-		Status = RTUSBSingleWrite(pAd, Offset + 2, (USHORT)((localVal & 0xffff0000) >> 16), bWriteHigh);
-	}
+	/* ULLI : ralink/mediatek MESS about ENDIANESS */
+	Status = RTUSBMultiWrite_nBytes(pAd, Offset, (u8 *) &Value, 4, 4);
 
 	return Status;
 }
