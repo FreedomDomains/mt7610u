@@ -95,12 +95,6 @@ typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
 }TXINFO_NMAC_CMD;
 #endif /* RT_BIG_ENDIAN */
 
-
-typedef union __attribute__ ((packed)) _TXINFO_NMAC{
-	struct txinfo_nmac_pkt txinfo_pkt;
-	struct _TXINFO_NMAC_CMD txinfo_cmd;
-}TXINFO_NMAC;
-
 #ifdef RT_BIG_ENDIAN
 typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
 	u32  rsv:8;
