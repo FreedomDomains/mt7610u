@@ -55,7 +55,7 @@ void MT76x0_ral_wlan_chip_onoff(
 	IN BOOLEAN bResetWLAN)
 {
 	// TODO: check the functionality of the WLAN_FUN_CTRL here, now we just bring up it bu no fine tune.
-	WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
+	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB
@@ -504,7 +504,7 @@ void MT76x0_WLAN_ChipOnOff(
 	IN BOOLEAN bOn,
 	IN BOOLEAN bResetWLAN)
 {
-	WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
+	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB

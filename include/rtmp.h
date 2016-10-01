@@ -2924,7 +2924,7 @@ struct rtmp_adapter {
 
 #if defined(RT3290) || defined(RT65xx)
 
-	WLAN_FUN_CTRL_STRUC WlanFunCtrl;
+	union rtmp_wlan_func_ctrl WlanFunCtrl;
 #endif /* defined(RT3290) || defined(RT65xx) */
 #ifdef RT3290
 	// TODO: shiang, check about the purpose of this parameter

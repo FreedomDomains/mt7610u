@@ -489,7 +489,7 @@ typedef struct __attribute__ ((packed)) _HW_RATE_CTRL_STRUCT_{
 
 #define WLAN_FUN_CTRL		0x80
 #ifdef RT_BIG_ENDIAN
-typedef union _WLAN_FUN_CTRL_STRUC{
+union rtmp_wlan_func_ctrl {
 	struct{
 		u32 GPIO0_OUT_OE_N:8;
 		u32 GPIO0_OUT:8;
@@ -504,9 +504,9 @@ typedef union _WLAN_FUN_CTRL_STRUC{
 		u32 WLAN_EN:1;
 	}field;
 	u32 word;
-}WLAN_FUN_CTRL_STRUC, *PWLAN_FUN_CTRL_STRUC;
+};
 #else
-typedef union _WLAN_FUN_CTRL_STRUC{
+union rtmp_wlan_func_ctrl{
 	struct{
 		u32 WLAN_EN:1;
 		u32 WLAN_CLK_EN:1;
@@ -521,7 +521,7 @@ typedef union _WLAN_FUN_CTRL_STRUC{
 		u32 GPIO0_OUT_OE_N:8;
 	}field;
 	u32 word;
-}WLAN_FUN_CTRL_STRUC, *PWLAN_FUN_CTRL_STRUC;
+};
 #endif
 
 
