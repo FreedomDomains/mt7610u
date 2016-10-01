@@ -1302,7 +1302,7 @@ retry:
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return NDIS_STATUS_FAILURE;
 
-		if (pAd->chipOps.loadFirmware)
+		if (pAd->chipOps.MCU_loadFirmware)
 		{
 			if (j++ == 0)
 			{
@@ -2191,8 +2191,8 @@ int NICLoadFirmware(
 
 	RTMP_GetCurrentSystemTick(&Old);
 
-	if (pAd->chipOps.loadFirmware)
-		status = pAd->chipOps.loadFirmware(pAd);
+	if (pAd->chipOps.MCU_loadFirmware)
+		status = pAd->chipOps.MCU_loadFirmware(pAd);
 
 	RTMP_GetCurrentSystemTick(&New);
 

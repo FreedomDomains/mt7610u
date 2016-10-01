@@ -781,7 +781,7 @@ struct rtmp_chip_ops {
 	int (*eewrite)(struct rtmp_adapter *pAd, USHORT offset, USHORT value);
 
 	/* MCU related callback functions */
-	int (*loadFirmware)(struct rtmp_adapter *pAd);
+	int (*MCU_loadFirmware)(struct rtmp_adapter *pAd);
 	int (*eraseFirmware)(struct rtmp_adapter *pAd);
 	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, u8 cmd, u8 token, u8 arg0, u8 arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, u8 cmd, u8 token, u8 arg0, u8 arg1); */
 #ifdef CONFIG_ANDES_SUPPORT
@@ -800,7 +800,7 @@ struct rtmp_chip_ops {
 	/* Power save */
 	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN BOOLEAN ReduceCorePower);
 	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
-	INT (*PwrSavingOP)(struct rtmp_adapter *pAd, u32 PwrOP, u32 PwrLevel,
+	INT (*MCU_PwrSavingOP)(struct rtmp_adapter *pAd, u32 PwrOP, u32 PwrLevel,
 							u32 ListenInterval, u32 PreTBTTLeadTime,
 							u8 TIMByteOffset, u8 TIMBytePattern);
 
@@ -866,24 +866,24 @@ struct rtmp_chip_ops {
 	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
-	void (*Calibration)(struct rtmp_adapter *pAd, u32 CalibrationID, u32 Parameter);
+	void (*MCU_Calibration)(struct rtmp_adapter *pAd, u32 CalibrationID, u32 Parameter);
 	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
 
-	int (*BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
+	int (*MCU_BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
 
-	int (*BurstRead)(struct rtmp_adapter *ad, u32 Offset, u32 Cnt, u32 *Data);
+	int (*MCU_BurstRead)(struct rtmp_adapter *ad, u32 Offset, u32 Cnt, u32 *Data);
 
-	int (*RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
+	int (*MCU_RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
-	int (*RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
+	int (*MCU_RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
-	int (*ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
+	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
-	int (*RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, u32 Num);
+	int (*MCU_RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, u32 Num);
 
-	int (*RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
+	int (*MCU_RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
-	int (*RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
+	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
 	void (*DisableTxRx)(struct rtmp_adapter *ad, u8 Level);
 
@@ -891,9 +891,9 @@ struct rtmp_chip_ops {
 
 	void (*AsicRadioOff)(struct rtmp_adapter *ad, u8 Stage);
 
-	void (*MCUCtrlInit)(struct rtmp_adapter *ad);
+	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
 
-	void (*MCUCtrlExit)(struct rtmp_adapter *ad);
+	void (*MCU_CtrlExit)(struct rtmp_adapter *ad);
 
 	void (*usb_cfg_read)(struct rtmp_adapter *ad, u32 *value);
 
@@ -915,8 +915,8 @@ do {	\
 #define PWR_SAVING_OP(__pAd, __PwrOP, __PwrLevel, __ListenInterval, \
 						__PreTBTTLeadTime, __TIMByteOffset, __TIMBytePattern)	\
 do {	\
-		if (__pAd->chipOps.PwrSavingOP != NULL)	\
-			__pAd->chipOps.PwrSavingOP(__pAd, __PwrOP, __PwrLevel,	\
+		if (__pAd->chipOps.MCU_PwrSavingOP != NULL)	\
+			__pAd->chipOps.MCU_PwrSavingOP(__pAd, __PwrOP, __PwrLevel,	\
 										__ListenInterval,__PreTBTTLeadTime, \
 										__TIMByteOffset, __TIMBytePattern);	\
 } while (0)
@@ -1071,44 +1071,44 @@ do {	\
 
 #define CHIP_CALIBRATION(__pAd, __CalibrationID, __parameter) \
 do {	\
-	if(__pAd->chipOps.Calibration != NULL) \
-		__pAd->chipOps.Calibration(__pAd, __CalibrationID, __parameter); \
+	if(__pAd->chipOps.MCU_Calibration != NULL) \
+		__pAd->chipOps.MCU_Calibration(__pAd, __CalibrationID, __parameter); \
 } while (0)
 
 #define RTMP_CHIP_CALIBRATION(__pAd, __CalibrationID, __parameter) \
 do {	\
-	if(__pAd->chipOps.Calibration != NULL) \
-		__pAd->chipOps.Calibration(__pAd, __CalibrationID, __parameter); \
+	if(__pAd->chipOps.MCU_Calibration != NULL) \
+		__pAd->chipOps.MCU_Calibration(__pAd, __CalibrationID, __parameter); \
 } while (0)
 
 #define BURST_WRITE(_pAd, _Offset, _pData, _Cnt)	\
 do {												\
-		if (_pAd->chipOps.BurstWrite != NULL)		\
-			_pAd->chipOps.BurstWrite(_pAd, _Offset, _pData, _Cnt);\
+		if (_pAd->chipOps.MCU_BurstWrite != NULL)		\
+			_pAd->chipOps.MCU_BurstWrite(_pAd, _Offset, _pData, _Cnt);\
 } while (0)
 
 #define BURST_READ(_pAd, _Offset, _Cnt, _pData)	\
 do {											\
-		if (_pAd->chipOps.BurstRead != NULL)	\
-			_pAd->chipOps.BurstRead(_pAd, _Offset, _Cnt, _pData);	\
+		if (_pAd->chipOps.MCU_BurstRead != NULL)	\
+			_pAd->chipOps.MCU_BurstRead(_pAd, _Offset, _Cnt, _pData);	\
 } while (0)
 
 #define RANDOM_READ(_pAd, _RegPair, _Num)	\
 do {										\
-		if (_pAd->chipOps.RandomRead != NULL)	\
-			_pAd->chipOps.RandomRead(_pAd, _RegPair, _Num);	\
+		if (_pAd->chipOps.MCU_RandomRead != NULL)	\
+			_pAd->chipOps.MCU_RandomRead(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RF_RANDOM_READ(_pAd, _RegPair, _Num)	\
 do {											\
-		if (_pAd->chipOps.RFRandomRead != NULL)	\
-			_pAd->chipOps.RFRandomRead(_pAd, _RegPair, _Num); \
+		if (_pAd->chipOps.MCU_RFRandomRead != NULL)	\
+			_pAd->chipOps.MCU_RFRandomRead(_pAd, _RegPair, _Num); \
 } while (0)
 
 #define READ_MODIFY_WRITE(_pAd, _RegPair, _Num)	\
 do {	\
-		if (_pAd->chipOps.ReadModifyWrite != NULL)	\
-			_pAd->chipOps.ReadModifyWrite(_pAd, _RegPair, _Num);	\
+		if (_pAd->chipOps.MCU_ReadModifyWrite != NULL)	\
+			_pAd->chipOps.MCU_ReadModifyWrite(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RF_READ_MODIFY_WRITE(_pAd, _RegPair, _Num)	\
@@ -1119,14 +1119,14 @@ do {	\
 
 #define RANDOM_WRITE(_pAd, _RegPair, _Num)	\
 do {	\
-		if (_pAd->chipOps.RandomWrite != NULL)	\
-			_pAd->chipOps.RandomWrite(_pAd, _RegPair, _Num);	\
+		if (_pAd->chipOps.MCU_RandomWrite != NULL)	\
+			_pAd->chipOps.MCU_RandomWrite(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RF_RANDOM_WRITE(_pAd, _RegPair, _Num)	\
 do {	\
-		if (_pAd->chipOps.RFRandomWrite != NULL)	\
-			_pAd->chipOps.RFRandomWrite(_pAd, _RegPair, _Num);	\
+		if (_pAd->chipOps.MCU_RFRandomWrite != NULL)	\
+			_pAd->chipOps.MCU_RFRandomWrite(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RTMP_SECOND_CCA_DETECTION(__pAd)	\
@@ -1157,14 +1157,14 @@ do {	\
 
 #define MCU_CTRL_INIT(_pAd)	\
 do {	\
-	if (_pAd->chipOps.MCUCtrlInit != NULL)	\
-		_pAd->chipOps.MCUCtrlInit(_pAd);	\
+	if (_pAd->chipOps.MCU_CtrlInit != NULL)	\
+		_pAd->chipOps.MCU_CtrlInit(_pAd);	\
 } while (0)
 
 #define MCU_CTRL_EXIT(_pAd)	\
 do {	\
-	if (_pAd->chipOps.MCUCtrlExit != NULL)	\
-		_pAd->chipOps.MCUCtrlExit(_pAd);	\
+	if (_pAd->chipOps.MCU_CtrlExit != NULL)	\
+		_pAd->chipOps.MCU_CtrlExit(_pAd);	\
 } while (0)
 
 #define USB_CFG_READ(_ad, _pvalue)	\
