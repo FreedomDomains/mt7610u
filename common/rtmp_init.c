@@ -3279,8 +3279,7 @@ static INT RtmpChipOpsRegister(
 		return ret;
 	}
 
-	DBGPRINT(RT_DEBUG_OFF, ("MCUType = %d\n", pAd->chipCap.MCUType));
-	ChipOpsMCUHook(pAd, pAd->chipCap.MCUType);
+	ChipOpsMCUHook(pAd);
 
 	/* set eeprom related hook functions */
 	ret = RtmpChipOpsEepromHook(pAd, infType);

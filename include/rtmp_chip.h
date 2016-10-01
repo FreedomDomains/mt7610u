@@ -707,7 +707,6 @@ struct rtmp_chip_cap {
 	u8 CommandBulkOutAddr;
 #endif
 
-	enum MCU_TYPE MCUType;
 	u8 *FWImageName;
 	u8 *MACRegisterVer;
 	u8 *BBPRegisterVer;

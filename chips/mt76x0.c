@@ -2708,7 +2708,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->dlm_offset = 0x80000;
 #endif /* CONFIG_ANDES_SUPPORT */
 
-	pChipCap->MCUType = ANDES;
 	pChipCap->cmd_header_len = sizeof(struct txinfo_nmac_cmd);
 
 

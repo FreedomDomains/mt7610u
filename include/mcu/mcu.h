@@ -28,12 +28,6 @@
 #ifndef __MCU_H__
 #define __MCU_H__
 
-enum MCU_TYPE {
-	SWMCU,
-	M8051,
-	ANDES,
-};
-
 /*
  * Power opration
  */
@@ -47,7 +41,7 @@ enum PWR_OP {
 
 struct rtmp_adapter;
 
-void ChipOpsMCUHook(struct rtmp_adapter *pAd, enum MCU_TYPE MCUType);
+void ChipOpsMCUHook(struct rtmp_adapter *pAd);
 void MCUCtrlInit(struct rtmp_adapter *pAd);
 void MCUCtrlExit(struct rtmp_adapter *pAd);
 

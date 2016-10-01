@@ -42,33 +42,25 @@ INT MCURandomWrite(struct rtmp_adapter *pAd, RTMP_REG_PAIR *RegPair, u32 Num)
 		RTMP_IO_WRITE32(pAd, RegPair->Register, RegPair->Value);
 }
 
-void ChipOpsMCUHook(struct rtmp_adapter *pAd, enum MCU_TYPE MCUType)
+void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 {
 
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
-
-
-#ifdef CONFIG_ANDES_SUPPORT
-	if (MCUType == ANDES)
-	{
-
 #ifdef RTMP_USB_SUPPORT
-		pChipOps->loadFirmware = andes_usb_loadfw;
+	pChipOps->loadFirmware = andes_usb_loadfw;
 #endif
-		//pChipOps->sendCommandToMcu = andes_send_cmd_msg;
-		pChipOps->MCUCtrlInit = andes_ctrl_init;
-		pChipOps->MCUCtrlExit = andes_ctrl_exit;
-		pChipOps->Calibration = andes_calibration;
-		pChipOps->BurstWrite =  andes_burst_write;
-		pChipOps->BurstRead = andes_burst_read;
-		pChipOps->RandomRead = andes_random_read;
-		pChipOps->RFRandomRead = andes_rf_random_read;
-		pChipOps->ReadModifyWrite = andes_read_modify_write;
-		pChipOps->RFReadModifyWrite = andes_rf_read_modify_write;
-		pChipOps->RandomWrite = andes_random_write;
-		pChipOps->RFRandomWrite = andes_rf_random_write;
-		pChipOps->PwrSavingOP = andes_pwr_saving;
-	}
-#endif
+	//pChipOps->sendCommandToMcu = andes_send_cmd_msg;
+	pChipOps->MCUCtrlInit = andes_ctrl_init;
+	pChipOps->MCUCtrlExit = andes_ctrl_exit;
+	pChipOps->Calibration = andes_calibration;
+	pChipOps->BurstWrite =  andes_burst_write;
+	pChipOps->BurstRead = andes_burst_read;
+	pChipOps->RandomRead = andes_random_read;
+	pChipOps->RFRandomRead = andes_rf_random_read;
+	pChipOps->ReadModifyWrite = andes_read_modify_write;
+	pChipOps->RFReadModifyWrite = andes_rf_read_modify_write;
+	pChipOps->RandomWrite = andes_random_write;
+	pChipOps->RFRandomWrite = andes_rf_random_write;
+	pChipOps->PwrSavingOP = andes_pwr_saving;
 }
