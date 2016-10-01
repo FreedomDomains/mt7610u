@@ -43,9 +43,9 @@ INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 	efuse_probe(pAd);
 	if(pAd->bUseEfuse)
 	{
-		pChipOps->eeinit = eFuse_init;
-		pChipOps->eeread = rtmp_ee_efuse_read16;
-		pChipOps->eewrite = rtmp_ee_efuse_write16;
+		pChipOps->ee_init = eFuse_init;
+		pChipOps->ee_read = rtmp_ee_efuse_read16;
+		pChipOps->ee_write = rtmp_ee_efuse_write16;
 		DBGPRINT(RT_DEBUG_OFF, ("NVM is EFUSE\n"));
 		DBGPRINT(RT_DEBUG_TRACE, ("Efuse Size=0x%x [Range:%x-%x] \n",
 				pAd->chipCap.EFUSE_USAGE_MAP_SIZE,
@@ -67,9 +67,9 @@ INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 
 #ifdef RTMP_USB_SUPPORT
 		case RTMP_DEV_INF_USB:
-			pChipOps->eeinit = NULL;
-			pChipOps->eeread = RTUSBReadEEPROM16;
-			pChipOps->eewrite = RTUSBWriteEEPROM16;
+			pChipOps->ee_init = NULL;
+			pChipOps->ee_read = RTUSBReadEEPROM16;
+			pChipOps->ee_write = RTUSBWriteEEPROM16;
 			DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
 			DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
 			break;

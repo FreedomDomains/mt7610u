@@ -299,9 +299,9 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters\n"));
 
-	if (pAd->chipOps.eeinit)
+	if (pAd->chipOps.ee_init)
 	{
-		pAd->chipOps.eeinit(pAd);
+		pAd->chipOps.ee_init(pAd);
 #ifdef RTMP_EFUSE_SUPPORT
 		if(!pAd->bFroceEEPROMBuffer && pAd->bEEPROMFile)
 		{

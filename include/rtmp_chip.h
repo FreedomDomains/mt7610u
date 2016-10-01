@@ -484,10 +484,10 @@ typedef union _EEPROM_ANTENNA_STRUC {
   *   EEPROM operation related marcos
   */
 #define RT28xx_EEPROM_READ16(_pAd, _offset, _value)			\
-	(_pAd)->chipOps.eeread((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (PUSHORT)&(_value))
+	(_pAd)->chipOps.ee_read((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (PUSHORT)&(_value))
 
 #define RT28xx_EEPROM_WRITE16(_pAd, _offset, _value)		\
-	(_pAd)->chipOps.eewrite((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (USHORT)(_value))
+	(_pAd)->chipOps.ee_write((struct rtmp_adapter*)(_pAd), (USHORT)(_offset), (USHORT)(_value))
 
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
@@ -776,9 +776,9 @@ typedef enum _CHIP_SPEC_ID
 
 struct rtmp_chip_ops {
 	/*  Calibration access related callback functions */
-	int (*eeinit)(struct rtmp_adapter *pAd);
-	int (*eeread)(struct rtmp_adapter *pAd, USHORT offset, PUSHORT pValue);
-	int (*eewrite)(struct rtmp_adapter *pAd, USHORT offset, USHORT value);
+	int (*ee_init)(struct rtmp_adapter *pAd);
+	int (*ee_read)(struct rtmp_adapter *pAd, USHORT offset, PUSHORT pValue);
+	int (*ee_write)(struct rtmp_adapter *pAd, USHORT offset, USHORT value);
 
 	/* MCU related callback functions */
 	int (*MCU_loadFirmware)(struct rtmp_adapter *pAd);
