@@ -96,19 +96,19 @@ struct __attribute__ ((packed)) txinfo_nmac_cmd{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
+struct __attribute__ ((packed)) rtmp_led_cmd{
 	u32  rsv:8;
 	u32 CmdID:8;
 	u32 Arg0:8;
 	u32 Arg1:8;
-}LED_NMAC_CMD;
+};
 #else
-typedef struct __attribute__ ((packed)) _LED_NMAC_CMD{
+struct __attribute__ ((packed)) rtmp_led_cmd{
 	u32 Arg1:8;
 	u32 Arg0:8;
 	u32 CmdID:8;
 	u32 rsv:8;
-}LED_NMAC_CMD;
+};
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
