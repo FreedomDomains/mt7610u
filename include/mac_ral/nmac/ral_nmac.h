@@ -281,7 +281,7 @@ typedef struct __attribute__ ((packed)) _RXFCE_INFO{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
+struct __attribute__ ((packed)) rxfce_info_cmd {
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 qsel:2;
@@ -291,9 +291,9 @@ typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
 	u32 self_gen:1;
 	u32 rsv:1;
 	u32 pkt_len:14;
-}RXFCE_INFO_CMD;
+};
 #else
-typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
+struct __attribute__ ((packed)) rxfce_info_cmd {
 	u32 pkt_len:14;
 	u32 rsv:1;
 	u32 self_gen:1;
@@ -303,7 +303,7 @@ typedef struct __attribute__ ((packed)) _RXFCE_INFO_CMD{
 	u32 qsel:2;
 	u32 d_port:3;
 	u32 info_type:2;
-}RXFCE_INFO_CMD;
+};
 #endif
 
 

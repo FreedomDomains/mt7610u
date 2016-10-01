@@ -1767,7 +1767,7 @@ extern MSG_EVENT_HANDLER msg_event_handler_tb[];
 
 static int CmdRspEventCallback(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 {
-	RXFCE_INFO_CMD *pFceInfo = CMDQelmt->buffer;
+	struct rxfce_info_cmd *pFceInfo = CMDQelmt->buffer;
 
 	(*msg_event_handler_tb[pFceInfo->evt_type])(pAd, CMDQelmt->buffer,
 												CMDQelmt->bufferlength);

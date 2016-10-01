@@ -832,7 +832,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 {
 	struct sk_buff * net_pkt = rx_msg->net_pkt;
 	struct cmd_msg *msg, *msg_tmp;
-	RXFCE_INFO_CMD *rx_info = net_pkt->data;
+	struct rxfce_info_cmd *rx_info = net_pkt->data;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
