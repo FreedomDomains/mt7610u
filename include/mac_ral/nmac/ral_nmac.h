@@ -77,14 +77,6 @@ struct __attribute__ ((packed)) txinfo_nmac_pkt {
 };
 #endif /* RT_BIG_ENDIAN */
 
-#define TxInfoWIV			txinfo_nmac_pkt.wiv
-#define TxInfoQSEL			txinfo_nmac_pkt.QSEL
-#define TxInfoPktLen			txinfo_nmac_pkt.pkt_len
-#define TxInfoSwLstRnd		txinfo_nmac_pkt.rsv0
-#define TxInfoUDMATxburst	txinfo_nmac_pkt.tx_burst
-#define TxInfoUDMANextVld	txinfo_nmac_pkt.next_vld
-#define TxInfoPkt80211		txinfo_nmac_pkt.pkt_80211
-
 #ifdef RT_BIG_ENDIAN
 typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD{
 	u32 info_type:2;

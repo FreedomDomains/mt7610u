@@ -191,15 +191,15 @@ void rlt_usb_write_txinfo(
 	nmac_info->cso = 0;
 	nmac_info->tso = 0;
 
-	pTxInfo->TxInfoPktLen = USBDMApktLen;
-	pTxInfo->TxInfoQSEL = QueueSel;
+	pTxInfo->txinfo_nmac_pkt.pkt_len = USBDMApktLen;
+	pTxInfo->txinfo_nmac_pkt.QSEL = QueueSel;
 	if (QueueSel != FIFO_EDCA)
 		DBGPRINT(RT_DEBUG_TRACE, ("====> QueueSel != FIFO_EDCA <====\n"));
-	pTxInfo->TxInfoUDMANextVld = FALSE; /*NextValid;   Need to check with Jan about this.*/
-	pTxInfo->TxInfoUDMATxburst = TxBurst;
-	pTxInfo->TxInfoWIV = bWiv;
+	pTxInfo->txinfo_nmac_pkt.next_vld = FALSE; /*NextValid;   Need to check with Jan about this.*/
+	pTxInfo->txinfo_nmac_pkt.tx_burst = TxBurst;
+	pTxInfo->txinfo_nmac_pkt.wiv = bWiv;
 #ifndef USB_BULK_BUF_ALIGMENT
-	pTxInfo->TxInfoSwLstRnd = 0;
+	pTxInfo->txinfo_nmac_pkt.rsv0 = 0;
 #else
 	pTxInfo->bFragLasAlignmentsectiontRound = 0;
 #endif /* USB_BULK_BUF_ALIGMENT */
@@ -457,7 +457,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 	if (fragNum == pTxBlk->TotalFragNum)
 	{
-		pTxInfo->TxInfoUDMATxburst = 0;
+		pTxInfo->txinfo_nmac_pkt.tx_burst = 0;
 
 #ifdef USB_BULK_BUF_ALIGMENT
 		/*
@@ -484,14 +484,14 @@ USHORT	RtmpUSB_WriteFragTxResource(
 #else
 		if ((pHTTXContext->CurWritePosition + pTxBlk->Priv + 3906)> MAX_TXBULK_LIMIT)
 		{
-			pTxInfo->TxInfoSwLstRnd = 1;
+			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 			TxQLastRound = TRUE;
 		}
 #endif /* USB_BULK_BUF_ALIGMENT */
 	}
 	else
 	{
-		pTxInfo->TxInfoUDMATxburst = 1;
+		pTxInfo->txinfo_nmac_pkt.tx_burst = 1;
 	}
 
 	memmove(pWirelessPacket, pTxBlk->HeaderBuf, TXINFO_SIZE + TXWISize + hwHdrLen);
@@ -614,7 +614,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 #ifndef USB_BULK_BUF_ALIGMENT
 		if ((pHTTXContext->CurWritePosition + 3906 + pTxBlk->Priv) > MAX_TXBULK_LIMIT)
 		{
-			pTxInfo->TxInfoSwLstRnd = 1;
+			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 			bTxQLastRound = TRUE;
 		}
 #endif /* USB_BULK_BUF_ALIGMENT */
@@ -887,7 +887,7 @@ void RtmpUSB_FinalWriteTxResource(
 		padding = (4 - (USBDMApktLen % 4)) & 0x03;	/* round up to 4 byte alignment*/
 		USBDMApktLen += padding;
 
-		pTxInfo->TxInfoPktLen = USBDMApktLen;
+		pTxInfo->txinfo_nmac_pkt.pkt_len = USBDMApktLen;
 
 
 		/*
@@ -919,7 +919,7 @@ void RtmpUSB_FinalWriteTxResource(
 		if ((pHTTXContext->CurWritePosition + 3906)> MAX_TXBULK_LIMIT)
 		{	/* Add 3906 for prevent the NextBulkOut packet size is a A-RALINK/A-MSDU Frame.*/
 			pHTTXContext->CurWritePosition = 8;
-			pTxInfo->TxInfoSwLstRnd = 1;
+			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 		}
 #endif /* USB_BULK_BUF_ALIGMENT */
 
@@ -1092,7 +1092,7 @@ void RtmpUSBNullFrameKickOut(
 		memset(&pWirelessPkt[0], 0, 100);
 		pTxInfo = (TXINFO_STRUC *)&pWirelessPkt[0];
 		rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(frameLen + TXWISize + TSO_SIZE), TRUE, EpToQueue[MGMTPIPEIDX], FALSE,  FALSE);
-		pTxInfo->TxInfoQSEL = FIFO_EDCA;
+		pTxInfo->txinfo_nmac_pkt.QSEL = FIFO_EDCA;
 		pTxWI = (struct txwi_nmac *)&pWirelessPkt[TXINFO_SIZE];
 		RTMPWriteTxWI(pAd, pTxWI,  FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 0, BSSID_WCID, frameLen,
 			0, 0, (u8)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_HTTXOP, FALSE, &pAd->CommonCfg.MlmeTransmit);
