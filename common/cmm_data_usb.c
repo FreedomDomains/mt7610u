@@ -1006,7 +1006,7 @@ int RtmpUSBMgmtKickOut(
 //+++Add by shiang for debug
 if (0) {
 	DBGPRINT(RT_DEBUG_OFF, ("-->%s():shiang-6590, QueIdx=%d, SrcBufLen=%d\n", __FUNCTION__, QueIdx, SrcBufLen));
-	dump_txinfo(pAd, pTxInfo);
+	dump_txinfo(pAd, &pTxInfo->txinfo_nmac_pkt);;
 	dumpTxWI(pAd, (struct txwi_nmac *)(pSrcBufVA + TXINFO_SIZE));
 }
 //---Add by shiang for debug
