@@ -586,43 +586,6 @@ static void ChipBBPAdjust(struct rtmp_adapter*pAd)
 	/*RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0x2D);*/
 }
 
-
-static void Default_ChipSwitchChannel(
-	IN struct rtmp_adapter *pAd,
-	IN u8 Channel,
-	IN BOOLEAN bScan)
-{
-	DBGPRINT(RT_DEBUG_ERROR, ("%s(): dummy channel switch function!\n", __FUNCTION__));
-}
-
-
-static void Default_ChipAGCInit(struct rtmp_adapter*pAd, u8 BandWidth)
-{
-	u8 R66 = 0x30, lan_gain;
-
-	lan_gain = GET_LNA_GAIN(pAd);
-	if (pAd->LatchRfRegs.Channel <= 14)
-	{	// BG band
-		{
-			R66 = 0x2E + lan_gain;
-		}
-	}
-	else
-	{	//A band
-		{
-			if (BandWidth == BW_20)
-				R66 = (u8)(0x32 + (lan_gain * 5) / 3);
-#ifdef DOT11_N_SUPPORT
-			else
-				R66 = (u8)(0x3A + (lan_gain * 5) / 3);
-#endif // DOT11_N_SUPPORT //
-		}
-	}
-	rtmp_bbp_set_agc(pAd, R66, RX_CHAIN_ALL);
-
-}
-
-
 static void AsicAntennaDefaultReset(
 	IN struct rtmp_adapter *	pAd,
 	IN EEPROM_ANTENNA_STRUC	*pAntenna)
