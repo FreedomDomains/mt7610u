@@ -170,7 +170,7 @@ void RTUSBBulkOutDataPacket(
 	PHT_TX_CONTEXT	pHTTXContext;
 	PURB			pUrb;
 	int				ret = 0;
-	TXINFO_STRUC *pTxInfo, *pLastTxInfo = NULL;
+	union txinfo_nmac *pTxInfo, *pLastTxInfo = NULL;
 	struct txwi_nmac *pTxWI;
 	ULONG			TmpBulkEndPos, ThisBulkSize;
 	unsigned long	IrqFlags = 0, IrqFlags2 = 0;
@@ -259,7 +259,7 @@ void RTUSBBulkOutDataPacket(
 
 	do
 	{
-		pTxInfo = (TXINFO_STRUC *)&pWirelessPkt[TmpBulkEndPos];
+		pTxInfo = (union txinfo_nmac *)&pWirelessPkt[TmpBulkEndPos];
 		pTxWI = (struct txwi_nmac *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
 
 		if (pAd->bForcePrintTX == TRUE)

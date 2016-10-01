@@ -49,11 +49,11 @@
 #define FIFO_EDCA	2
 
 #define TXINFO_SIZE			4
-typedef union __attribute__ ((packed)) _TXINFO_STRUC{
+union __attribute__ ((packed)) txinfo_nmac {
 	struct txinfo_nmac_pkt txinfo_nmac_pkt;
 	struct txinfo_nmac_cmd txinfo_nmac_cmd;
 	u32 word;
-}TXINFO_STRUC;
+};
 
 
 /*
