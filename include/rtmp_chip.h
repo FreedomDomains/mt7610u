@@ -818,7 +818,7 @@ struct rtmp_chip_ops {
 	u8 (*ChipAGCAdjust)(struct rtmp_adapter *pAd, CHAR Rssi, u8 OrigR66Value);
 
 	/* Channel */
-	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, enum SWITCH_CHANNEL_STAGE Stage);
+	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, BOOLEAN bScan);
 
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);

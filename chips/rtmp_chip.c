@@ -590,7 +590,7 @@ static void ChipBBPAdjust(struct rtmp_adapter*pAd)
 static void Default_ChipSwitchChannel(
 	IN struct rtmp_adapter *pAd,
 	IN u8 Channel,
-	IN enum SWITCH_CHANNEL_STAGE Stage)
+	IN BOOLEAN bScan)
 {
 	DBGPRINT(RT_DEBUG_ERROR, ("%s(): dummy channel switch function!\n", __FUNCTION__));
 }
