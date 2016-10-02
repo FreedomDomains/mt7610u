@@ -150,7 +150,7 @@ u8 eFuseReadRegisters(
 #if defined(RT65xx)
 	if (IS_RT65XX(pAd))
 		efuse_ctrl_reg = EFUSE_CTRL_3290;
-#endif defined(RT65xx) */
+#endif
 
 	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
