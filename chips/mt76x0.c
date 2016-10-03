@@ -2313,7 +2313,7 @@ void mt76x0_read_per_rate_tx_pwr(
 	IN struct rtmp_adapter *pAd)
 {
 	u32 data;
-	USHORT e2p_val = 0, e2p_val2 = 0;;
+	USHORT e2p_val = 0, e2p_val2 = 0;
 	u8 bw40_gband_delta = 0, bw40_aband_delta = 0, bw80_aband_delta = 0;
 	CHAR t1 = 0, t2 = 0, t3 = 0, t4 = 0;
 	BOOLEAN dec_aband_bw40_delta = FALSE, dec_aband_bw80_delta = FALSE, dec_gband_bw40_delta = FALSE;
