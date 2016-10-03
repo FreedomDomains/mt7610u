@@ -548,8 +548,8 @@ struct os_cookie {
 	addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]
 
 #ifdef DBG
-extern ULONG		RTDebugLevel;
-extern ULONG		RTDebugFunc;
+extern int RTDebugLevel;
+extern int RTDebugFunc;
 
 #define DBGPRINT_RAW(Level, Fmt)    \
 do{                                   \

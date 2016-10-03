@@ -39,8 +39,8 @@
 #define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)
 #define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)
 
-ULONG RTDebugLevel = RT_DEBUG_ERROR;
-ULONG RTDebugFunc = 0;
+int RTDebugLevel = RT_DEBUG_ERROR;
+int RTDebugFunc = 0;
 
 /*
  * the lock will not be used in TX/RX

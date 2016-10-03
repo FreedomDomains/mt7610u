@@ -33,8 +33,8 @@
 /*#include	"rt_config.h" */
 
 #ifdef DBG
-extern ULONG RTDebugLevel;
-extern ULONG RTDebugFunc;
+extern int RTDebugLevel;
+extern int RTDebugFunc;
 #endif
 
 #define NR_WEP_KEYS 				4

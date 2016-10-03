@@ -949,7 +949,7 @@ INT	Set_Debug_Proc(
     if(simple_strtol(arg, 0, 10) <= RT_DEBUG_LOUD)
         RTDebugLevel = simple_strtol(arg, 0, 10);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("<==%s(RTDebugLevel = %ld)\n",
+	DBGPRINT(RT_DEBUG_TRACE, ("<==%s(RTDebugLevel = %d)\n",
 				__FUNCTION__, RTDebugLevel));
 
 	return TRUE;
