@@ -2355,8 +2355,15 @@ void mt76x0_read_per_rate_tx_pwr(
 		Get power delta for BW80
 	*/
 	// TODO: check if any document to describe this ?
+	/*
+	 * ULLI : EEPROM_VHT_BW80_TX_POWER_DELTA is 0xD3
+	 * so EEPROM_VHT_BW80_TX_POWER_DELTA-1 = 0xD3 which is
+	 * word(u16) boundary, right for read16
+	 * So the higher byte here is needed
+	 */
 	RT28xx_EEPROM_READ16(pAd, EEPROM_VHT_BW80_TX_POWER_DELTA - 1, e2p_val);
-	pAd->chipCap.delta_tw_pwr_bw80 = (e2p_val & 0xFF00) == 0xFF00 ? 0 : (e2p_val & 0xFF00);
+	pAd->chipCap.delta_tw_pwr_bw80 =
+		((e2p_val & 0xFF00) == 0xFF00 ? 0 : (e2p_val & 0xFF00)) >> 8;
 
 	if ((e2p_val & 0xFF00) != 0xFF00) {
 		if (e2p_val & 0x8000)
