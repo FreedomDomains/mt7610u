@@ -524,7 +524,7 @@ BOOLEAN CFG80211DRV_KeyAdd(
 	{
 		RT_CMD_STA_IOCTL_SECURITY IoctlSec;
 
-		DBGPRINT(RT_DEBUG_TRACE, ("Set_WPAPSK_Proc ==> %d, %d, %d...\n", pKeyInfo->KeyId, pKeyInfo->KeyType, strlen(pKeyInfo->KeyBuf)));
+		DBGPRINT(RT_DEBUG_TRACE, ("Set_WPAPSK_Proc ==> %d, %d, %d...\n", pKeyInfo->KeyId, pKeyInfo->KeyType, (int) strlen(pKeyInfo->KeyBuf)));
 
 		IoctlSec.KeyIdx = pKeyInfo->KeyId;
 		IoctlSec.pData = pKeyInfo->KeyBuf;
