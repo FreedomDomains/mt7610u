@@ -108,7 +108,7 @@ loadfw_protect:
 		}
 
 		if (loop >= GET_SEMAPHORE_RETRY_MAX) {
-			DBGPRINT(RT_DEBUG_ERROR, ("%s: can not get the hw semaphore\n"));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s: can not get the hw semaphore\n", __FUNCTION__));
 			return NDIS_STATUS_FAILURE;
 		}
 	}
