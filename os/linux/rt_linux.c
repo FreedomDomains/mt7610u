@@ -2705,6 +2705,7 @@ void CFG80211OS_Scaning(
 	IN BOOLEAN					FlgIsNMode,
 	IN u8					BW)
 {
+	struct cfg80211_bss *ret;
 #ifdef CONFIG_STA_SUPPORT
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	u32 IdChan;
@@ -2728,12 +2729,13 @@ void CFG80211OS_Scaning(
 	/* inform 80211 a scan is got */
 	/* we can use cfg80211_inform_bss in 2.6.31, it is easy more than the one */
 	/* in cfg80211_inform_bss_frame(), it will memcpy pFrame but pChan */
-	cfg80211_inform_bss_frame(pCfg80211_CB->pCfg80211_Wdev->wiphy,
+	ret = cfg80211_inform_bss_frame(pCfg80211_CB->pCfg80211_Wdev->wiphy,
 								&pCfg80211_CB->ChanInfo[IdChan],
 								(struct ieee80211_mgmt *)pFrame,
 								FrameLen,
 								RSSI,
 								GFP_ATOMIC);
+	ret = ret;
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> cfg80211_inform_bss_frame\n"));
 #endif /* CONFIG_STA_SUPPORT */
