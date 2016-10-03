@@ -5721,34 +5721,6 @@ INT set_force_ip_assemble(struct rtmp_adapter*pAd, char *arg)
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
-#ifdef RLT_RF
-INT set_rf(struct rtmp_adapter*pAd, char *arg)
-{
-	INT bank_id = 0, rf_id = 0, rv = 0;
-	u8 rf_val = 0;
-
-	if (arg)
-	{
-		rv = sscanf(arg, "%d-%d-%x", &(bank_id), &(rf_id), &(rf_val));
-		DBGPRINT(RT_DEBUG_TRACE, ("%s():rv = %d, bank_id = %d, rf_id = %d, rf_val = 0x%02x\n", __FUNCTION__, rv, bank_id, rf_id, rf_val));
-		if (rv == 3)
-		{
-			rlt_rf_write(pAd, (u8)bank_id, (u8)rf_id, (u8)rf_val);
-
-			rlt_rf_read(pAd, bank_id, rf_id, &rf_val);
-			DBGPRINT(RT_DEBUG_TRACE, ("%s():%d %03d 0x%02X\n", __FUNCTION__, bank_id, rf_id, rf_val));
-		}
-		else if (rv == 2)
-		{
-			rlt_rf_read(pAd, bank_id, rf_id, &rf_val);
-			DBGPRINT(RT_DEBUG_TRACE, ("%s():%d %03d 0x%02X\n", __FUNCTION__, bank_id, rf_id, rf_val));
-		}
-	}
-
-	return TRUE;
-}
-#endif /* RLT_RF */
-
 static struct {
 	char *name;
 	INT (*show_proc)(struct rtmp_adapter *pAdapter, char *arg, ULONG BufLen);
