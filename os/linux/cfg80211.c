@@ -1092,10 +1092,12 @@ static int CFG80211_OpsConnect(
 
 	/* YF@20120328: Use SIOCSIWGENIE to make out the WPA/WPS IEs in AssocReq. */
 	{
-		if (pSme->ie_len > 0)
-			RTMP_DRIVER_80211_GEN_IE_SET(pAd, pSme->ie, pSme->ie_len);
-		else
+		if (pSme->ie_len > 0) {
+			char *ie = (char *) pSme->ie;
+			RTMP_DRIVER_80211_GEN_IE_SET(pAd, ie, pSme->ie_len);
+		} else {
 			RTMP_DRIVER_80211_GEN_IE_SET(pAd, NULL, 0);
+		}
 	}
 
 	//CFG80211DBG(RT_DEBUG_ERROR,	("80211> SME %x\n",	pSme->auth_type));
