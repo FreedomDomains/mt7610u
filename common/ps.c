@@ -185,7 +185,7 @@ void RtmpHandleRxPsPoll(
 				u32 NumOfOldPsPkt;
 				NumOfOldPsPkt = pAd->TxSwQueue[QID_AC_BE].Number;
 #endif /* UAPSD_SUPPORT */
-
+				pEntry = RemoveHeadQueue(&pMacEntry->PsQueue);
 				InsertTailQueueAc(pAd, pMacEntry, &pAd->TxSwQueue[QID_AC_BE], pEntry);
 
 #ifdef UAPSD_SUPPORT
