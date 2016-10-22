@@ -505,8 +505,7 @@ void MlmeHalt(
 #if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB)
 		if (pAd->WOW_Cfg.bEnable == FALSE)
 #endif /* WOW_SUPPORT */
-			if (pChipOps->AsicHaltAction)
-				pChipOps->AsicHaltAction(pAd);
+			;
 	}
 
 	RTMPusecDelay(5000);    /*  5 msec to gurantee Ant Diversity timer canceled*/

@@ -2402,12 +2402,6 @@ void AsicTurnOffRFClk(
 	IN struct rtmp_adapter *pAd,
 	IN	u8 	Channel)
 {
-	if (pAd->chipOps.AsicRfTurnOff)
-	{
-		pAd->chipOps.AsicRfTurnOff(pAd);
-	}
-	else
-	{
 #if defined(RT28xx) || defined(RT2880) || defined(RT2883)
 		/* RF R2 bit 18 = 0*/
 		u32			R1 = 0, R2 = 0, R3 = 0;
@@ -2460,7 +2454,6 @@ void AsicTurnOffRFClk(
 											Channel, pAd->RfIcType));
 				break;
 		}
-	}
 }
 
 

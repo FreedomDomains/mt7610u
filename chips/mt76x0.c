@@ -2777,11 +2777,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;
 	pChipOps->AsicBbpInit = NICInitMT76x0BbpRegisters;
 	pChipOps->AsicRfInit = NICInitMT76x0RFRegisters;
-	pChipOps->AsicRfTurnOn = NULL;
 
-	pChipOps->AsicHaltAction = NULL;
-	pChipOps->AsicRfTurnOff = NULL;
-	pChipOps->AsicReverseRfFromSleepMode = NULL;
 	pChipOps->AsicResetBbpAgent = NULL;
 
 	/* MAC */

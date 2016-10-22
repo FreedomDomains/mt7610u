@@ -1093,14 +1093,6 @@ void NICInitAsicFromEEPROM(
 #endif /* defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) */
 #endif /* PCIE_PS_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
-#ifdef RTMP_MAC_USB
-		if (IS_RT30xx(pAd)|| IS_RT3572(pAd))
-		{
-			struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-			if (pChipOps->AsicReverseRfFromSleepMode)
-				pChipOps->AsicReverseRfFromSleepMode(pAd, TRUE);
-		}
-#endif /* RTMP_MAC_USB */
 	/* Turn off patching for cardbus controller*/
 	if (NicConfig2.field.CardbusAcceleration == 1)
 	{
