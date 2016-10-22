@@ -2663,11 +2663,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 #endif /* DFS_SUPPORT */
 
 #ifdef NEW_MBSSID_MODE
-#ifdef ENHANCE_NEW_MBSSID_MODE
-	pChipCap->MBSSIDMode = MBSSID_MODE4;
-#else
 	pChipCap->MBSSIDMode = MBSSID_MODE1;
-#endif /* ENHANCE_NEW_MBSSID_MODE */
 #else
 	pChipCap->MBSSIDMode = MBSSID_MODE0;
 #endif /* NEW_MBSSID_MODE */
