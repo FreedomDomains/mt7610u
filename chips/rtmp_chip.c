@@ -794,7 +794,6 @@ int RtmpChipOpsHook(void *pCB)
 #endif /* MT76x0 */
 
 done:
-	DBGPRINT(RT_DEBUG_TRACE, ("Chip specific bbpRegTbSize=%d!\n", pChipCap->bbpRegTbSize));
 	DBGPRINT(RT_DEBUG_TRACE, ("Chip VCO calibration mode = %d!\n", pChipCap->FlgIsVcoReCalMode));
 	return ret;
 }

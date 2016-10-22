@@ -541,8 +541,6 @@ struct rtmp_chip_cap {
 	u32 ChipID;
 	/* register */
 	REG_PAIR *pRFRegTable;
-	REG_PAIR *pBBPRegTable;
-	u8 bbpRegTbSize;
 
 	u32 MaxNumOfRfId;
 	u32 MaxNumOfBbpId;

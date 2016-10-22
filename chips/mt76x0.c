@@ -2672,8 +2672,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->pRFRegTable = NULL;
 
 	pChipCap->MaxNumOfBbpId = 200;
-	pChipCap->pBBPRegTable = NULL;
-	pChipCap->bbpRegTbSize = 0;
 
 #ifdef DFS_SUPPORT
 	pChipCap->DfsEngineNum = 4;
