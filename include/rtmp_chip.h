@@ -804,10 +804,6 @@ struct rtmp_chip_ops {
 	/* BBP adjust */
 	void (*ChipBBPAdjust)(IN struct rtmp_adapter *pAd);
 
-	/* AGC */
-	void (*ChipAGCInit)(struct rtmp_adapter *pAd, u8 bw);
-	u8 (*ChipAGCAdjust)(struct rtmp_adapter *pAd, CHAR Rssi, u8 OrigR66Value);
-
 	/* Channel */
 	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, BOOLEAN bScan);
 
@@ -892,12 +888,6 @@ do {	\
 			__pAd->chipOps.MCU_PwrSavingOP(__pAd, __PwrOP, __PwrLevel,	\
 										__ListenInterval,__PreTBTTLeadTime, \
 										__TIMByteOffset, __TIMBytePattern);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_AGC_ADJUST(__pAd, __Rssi, __R66)	\
-do {	\
-		if (__pAd->chipOps.ChipAGCAdjust != NULL)	\
-			__R66 = __pAd->chipOps.ChipAGCAdjust(__pAd, __Rssi, __R66);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_TSSI_TABLE_INIT(__pAd)	\

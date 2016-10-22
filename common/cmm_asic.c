@@ -831,7 +831,6 @@ void AsicSwitchChannel(
 	else {
 		bw = pAd->CommonCfg.BBPCurrentBW;
 	}
-	RTMPSetAGCInitValue(pAd, bw);
 }
 
 

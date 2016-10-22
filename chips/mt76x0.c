@@ -2766,13 +2766,8 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	/* BBP adjust */
 	pChipOps->ChipBBPAdjust = MT76x0_ChipBBPAdjust;
 
-#ifdef CONFIG_STA_SUPPORT
-	pChipOps->ChipAGCAdjust = NULL;
-#endif /* CONFIG_STA_SUPPORT */
-
 	/* Channel */
 	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
-	pChipOps->ChipAGCInit = NULL;
 
 	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;
 	pChipOps->AsicBbpInit = NICInitMT76x0BbpRegisters;

@@ -7435,7 +7435,6 @@ BOOLEAN	AUTH_ReqSend(
 
 
 void ReSyncBeaconTime(struct rtmp_adapter*pAd);
-void RTMPSetAGCInitValue(struct rtmp_adapter*pAd, u8 BandWidth);
 
 #ifdef TXBF_SUPPORT
 void handleHtcField(

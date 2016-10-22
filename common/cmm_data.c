@@ -1273,8 +1273,6 @@ void RTMPSuspendMsduTransmission(
 	//printk("pAd->CommonCfg.BBPCurrentBW = %d\n", pAd->CommonCfg.BBPCurrentBW);
 	pAd->hw_cfg.bbp_bw = pAd->CommonCfg.BBPCurrentBW;
 
-	RTMPSetAGCInitValue(pAd, BW_20);
-
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
 	/* abort all TX rings */
 	/*RTMP_IO_WRITE32(pAd, TX_CNTL_CSR, 0x000f0000);	*/

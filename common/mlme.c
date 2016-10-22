@@ -1026,16 +1026,6 @@ void STAMlmePeriodicExec(
 			}
 		}
 
-		if ((RTMP_TIME_AFTER(pAd->Mlme.Now32, pAd->StaCfg.LastBeaconRxTime + (1*OS_HZ))) &&
-			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)) &&
-			(pAd->StaCfg.bImprovedScan == FALSE) &&
-			((TxTotalCnt + pAd->RalinkCounters.OneSecRxOkCnt) < 600))
-		{
-			printk("pAd->PendingRx = %d\n", pAd->PendingRx);
-			RTMPSetAGCInitValue(pAd, BW_20);
-			DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - No BEACON. restore R66 to the low bound(%d) \n", (0x2E + GET_LNA_GAIN(pAd))));
-		}
-
 
 #ifdef RTMP_MAC_USB
 #ifdef DOT11_N_SUPPORT
@@ -5306,21 +5296,11 @@ void AsicStaBbpTuning(
 		else
 			Rssi = pAd->StaCfg.RssiSample.AvgRssi0;
 
-		RTMP_CHIP_ASIC_AGC_ADJUST(pAd, Rssi, R66);
-
 		// TODO: shiang,I didn't find AsicAGCAdjust for RT30xx, so I move following code from upper #if case.
 
 	}
 }
 #endif /* CONFIG_STA_SUPPORT */
-
-
-void RTMPSetAGCInitValue(struct rtmp_adapter*pAd, u8 BandWidth)
-{
-	if (pAd->chipOps.ChipAGCInit != NULL)
-		pAd->chipOps.ChipAGCInit(pAd, BandWidth);
-}
-
 
 /*
 ========================================================================
