@@ -821,22 +821,6 @@ struct rtmp_chip_ops {
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 
-	/* TX ALC */
-	u32 (*TSSIRatio)(INT32 delta_power);
-	void (*InitDesiredTSSITable)(IN struct rtmp_adapter *pAd);
-	int (*ATETssiCalibration)(struct rtmp_adapter *pAd, char *arg);
-	int (*ATETssiCalibrationExtend)(struct rtmp_adapter *pAd, char *arg);
-	int (*ATEReadExternalTSSI)(struct rtmp_adapter *pAd, char *arg);
-
-	void (*AsicTxAlcGetAutoAgcOffset)(
-				IN struct rtmp_adapter	*pAd,
-				IN char *			pDeltaPwr,
-				IN char *			pTotalDeltaPwr,
-				IN char *			pAgcCompensate,
-				IN char *				pDeltaPowerByBbpR1);
-
-
-
 	void (*AsicGetTxPowerOffset)(struct rtmp_adapter *pAd, ULONG *TxPwr);
 	void (*AsicExtraPowerOverMAC)(struct rtmp_adapter *pAd);
 
@@ -959,14 +943,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.AsicGetTxPowerOffset != NULL)	\
 			__pAd->chipOps.AsicGetTxPowerOffset(__pAd, __pCfgOfTxPwrCtrlOverMAC);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_AUTO_AGC_OFFSET_GET(	\
-		__pAd, __pDeltaPwr, __pTotalDeltaPwr, __pAgcCompensate, __pDeltaPowerByBbpR1)	\
-do {	\
-		if (__pAd->chipOps.AsicTxAlcGetAutoAgcOffset != NULL)	\
-			__pAd->chipOps.AsicTxAlcGetAutoAgcOffset(	\
-		__pAd, __pDeltaPwr, __pTotalDeltaPwr, __pAgcCompensate, __pDeltaPowerByBbpR1);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_EXTRA_POWER_OVER_MAC(__pAd)	\

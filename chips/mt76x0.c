@@ -2792,14 +2792,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	/* Antenna */
 	pChipOps->AsicAntennaDefaultReset = MT76x0_AsicAntennaDefaultReset;
 
-	/* TX ALC */
-	pChipOps->InitDesiredTSSITable = NULL;
- 	pChipOps->ATETssiCalibration = NULL;
-	pChipOps->ATETssiCalibrationExtend = NULL;
-	pChipOps->AsicTxAlcGetAutoAgcOffset = NULL;
-	pChipOps->ATEReadExternalTSSI = NULL;
-	pChipOps->TSSIRatio = NULL;
-
 	/* Others */
 #ifdef CONFIG_STA_SUPPORT
 	pChipOps->NetDevNickNameInit = MT76x0_NetDevNickNameInit;
@@ -2811,7 +2803,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 
 	/* Chip tuning */
 	pChipOps->RxSensitivityTuning = NULL;
-	pChipOps->AsicTxAlcGetAutoAgcOffset = NULL;
 	pChipOps->AsicGetTxPowerOffset = MT76x0_AsicGetTxPowerOffset;
 	pChipOps->AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC;
 
