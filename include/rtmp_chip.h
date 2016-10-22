@@ -539,8 +539,6 @@ struct RF_BANK_OFFSET {
 
 struct rtmp_chip_cap {
 	u32 ChipID;
-	/* register */
-	REG_PAIR *pRFRegTable;
 
 	u32 MaxNumOfRfId;
 	u32 MaxNumOfBbpId;
@@ -565,7 +563,6 @@ struct rtmp_chip_cap {
 #define VCO_CAL_MODE_3		3	/* toggle RF4[7] */
 	u8	FlgIsVcoReCalMode;
 
-	BOOLEAN FlgIsHwAntennaDiversitySup;
 #ifdef TXBF_SUPPORT
 	BOOLEAN FlgHwTxBfCap;
 #endif /* TXBF_SUPPORT */
@@ -699,9 +696,6 @@ struct rtmp_chip_cap {
 #endif
 
 	u8 *FWImageName;
-	u8 *MACRegisterVer;
-	u8 *BBPRegisterVer;
-	u8 *RFRegisterVer;
 
 #ifdef MT76x0
 	BOOLEAN bDoTemperatureSensor;

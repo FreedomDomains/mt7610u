@@ -144,9 +144,6 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 		DBGPRINT(RT_DEBUG_TRACE, ("[TXBE_R0]\n"));
 		tx_prim = (be_r0 & 0x3);
 		DBGPRINT(RT_DEBUG_TRACE, ("\tTxPrimary(TXBE_R0[1:0])=%d\n", tx_prim));
-		DBGPRINT(RT_DEBUG_TRACE, ("\n%s\n", pChipCap->MACRegisterVer));
-		DBGPRINT(RT_DEBUG_TRACE, ("%s\n", pChipCap->BBPRegisterVer));
-		DBGPRINT(RT_DEBUG_TRACE, ("%s\n\n", pChipCap->RFRegisterVer));
 }
 
 

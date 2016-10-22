@@ -2639,7 +2639,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->SnrFormula = SNR_FORMULA2;
 	pChipCap->VcoPeriod = 10;
 	pChipCap->FlgIsVcoReCalMode = VCO_CAL_MODE_3;
-	pChipCap->FlgIsHwAntennaDiversitySup = FALSE;
 #ifdef TXBF_SUPPORT
 	pChipCap->FlgHwTxBfCap = FALSE;
 #endif /* TXBF_SUPPORT */
@@ -2656,7 +2655,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->RfReg17WtMethod = RF_REG_WT_METHOD_STEP_ON;
 
 	pChipCap->MaxNumOfRfId = MAX_RF_ID;
-	pChipCap->pRFRegTable = NULL;
 
 	pChipCap->MaxNumOfBbpId = 200;
 
@@ -2731,10 +2729,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 #endif
 
 	pChipCap->bDoTemperatureSensor = TRUE;
-
-	pChipCap->MACRegisterVer = "MT7650_CR_setting_1225.xlsx";
-	pChipCap->BBPRegisterVer = "MT7650E3_BBP_CR_20121206.xls";
-	pChipCap->RFRegisterVer = "MT7650E3_WiFi_RF_CR_20121202.xls";
 
 	RTMP_DRS_ALG_INIT(pAd, RATE_ALG_GRP);
 
