@@ -2761,12 +2761,25 @@ void CFG80211OS_ScanEnd(
 	IN void *pCB,
 	IN BOOLEAN FlgIsAborted)
 {
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0))
+	bool abort = true;
+
+	struct cfg80211_scan_info info = {
+		.aborted = abort,
+	};
+#endif
+
 #ifdef CONFIG_STA_SUPPORT
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> cfg80211_scan_done\n"));
-	cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, FlgIsAborted);
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0))
+	cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, &info);
+#else
+	cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, FlfIsAborted);
+#endif
+
 #endif /* CONFIG_STA_SUPPORT */
 }
 
