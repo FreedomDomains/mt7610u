@@ -115,15 +115,6 @@ u8 MT76x0_EeBuffer[EEPROM_SIZE] = {
 #define MT7650_EFUSE_CTRL	0x0024
 #define LDO_CTRL1			0x0070
 
-#ifdef CONFIG_WIFI_TEST
-struct RF_BANK_OFFSET MT76x0_RFBankOffset[] = {
-	{RF_BANK0, 0x0000, 0x0080},
-	{RF_BANK5, 0x0000, 0x0080},
-	{RF_BANK6, 0x0000, 0x0080},
-	{RF_BANK7, 0x0000, 0x0080},
-};
-#endif /* CONFIG_WIFI_TEST */
-
 static RTMP_REG_PAIR	MT76x0_MACRegTable[] = {
 	{PBF_SYS_CTRL,		0x80c00},
 	{PBF_CFG,			0x77723c1f},
@@ -2826,21 +2817,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 */
 	}
 #endif /* HDR_TRANS_SUPPORT */
-
-#ifdef CONFIG_WIFI_TEST
-	pChipCap->MemMapStart = 0x1000;
-	pChipCap->MemMapEnd = 0x1600;
-	pChipCap->MacMemMapOffset = 0x1000;
-	pChipCap->MacStart = 0x0000;
-	pChipCap->MacEnd = 0x0600;
-	pChipCap->BBPMemMapOffset = 0x2000;
-	pChipCap->BBPStart = 0x0000;
-	pChipCap->BBPEnd = 0x0f00;
-	pChipCap->RFBankNum = sizeof(MT76x0_RFBankOffset) / sizeof(struct RF_BANK_OFFSET);
-	pChipCap->RFBankOffset = MT76x0_RFBankOffset;
-	pChipCap->E2PStart = 0x0000;
-	pChipCap->E2PEnd = 0x00fe;
-#endif /* CONFIG_WIFI_TEST */
 }
 
 

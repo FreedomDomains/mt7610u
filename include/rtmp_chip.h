@@ -742,23 +742,6 @@ struct rtmp_chip_cap {
 	INT tssi_pre_delta_pwr;
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 #endif /* MT76x0 */
-
-#ifdef CONFIG_WIFI_TEST
-	u32 MemMapStart;
-	u32 MemMapEnd;
-	u32 BBPMemMapOffset;
-	UINT16 BBPStart;
-	UINT16 BBPEnd;
-	UINT16 RFStart;
-	UINT16 RFEnd;
-	u8 RFBankNum;
-	struct RF_BANK_OFFSET *RFBankOffset;
-	u32 MacMemMapOffset;
-	u32 MacStart;
-	u32 MacEnd;
-	UINT16 E2PStart;
-	UINT16 E2PEnd;
-#endif
 };
 
 typedef void (*CHIP_SPEC_FUNC)(void *pAd, void *pData, ULONG Data);

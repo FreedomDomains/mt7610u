@@ -1620,10 +1620,6 @@ struct common_config {
 	//brian
 	u32 nLoopBack_Count;
 	u32 nWIFI_Info_Idx;
-
-#ifdef CONFIG_WIFI_TEST
-	ULONG WiFiTestFlags;
-#endif
 };
 
 #ifdef DBG_CTRL_SUPPORT
