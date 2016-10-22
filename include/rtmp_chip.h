@@ -566,9 +566,6 @@ struct rtmp_chip_cap {
 	u8	FlgIsVcoReCalMode;
 
 	BOOLEAN FlgIsHwAntennaDiversitySup;
-#ifdef STREAM_MODE_SUPPORT
-	BOOLEAN FlgHwStreamMode;
-#endif /* STREAM_MODE_SUPPORT */
 #ifdef TXBF_SUPPORT
 	BOOLEAN FlgHwTxBfCap;
 #endif /* TXBF_SUPPORT */

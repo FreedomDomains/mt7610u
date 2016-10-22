@@ -299,10 +299,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			pEntry->TimeStamp_toTxRing = 0;
 			InitializeQueueHeader(&pEntry->PsQueue);
 
-#ifdef STREAM_MODE_SUPPORT
-			/* Enable Stream mode for first three entries in MAC table */
-
-#endif /* STREAM_MODE_SUPPORT */
 
 
 			pAd->MacTab.Size ++;
@@ -397,13 +393,6 @@ BOOLEAN MacTableDeleteEntry(
 			if (pAd->chipCap.FlgHwTxBfCap)
 				RTMPReleaseTimer(&pEntry->eTxBfProbeTimer, &Cancelled);
 #endif /* TXBF_SUPPORT */
-
-#ifdef STREAM_MODE_SUPPORT
-			/* Clear Stream Mode register for this client */
-			if (pEntry->StreamModeMACReg != 0)
-				RTMP_IO_WRITE32(pAd, pEntry->StreamModeMACReg+4, 0);
-#endif // STREAM_MODE_SUPPORT //
-
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */

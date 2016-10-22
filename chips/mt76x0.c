@@ -2640,9 +2640,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->VcoPeriod = 10;
 	pChipCap->FlgIsVcoReCalMode = VCO_CAL_MODE_3;
 	pChipCap->FlgIsHwAntennaDiversitySup = FALSE;
-#ifdef STREAM_MODE_SUPPORT
-	pChipCap->FlgHwStreamMode = FALSE;
-#endif /* STREAM_MODE_SUPPORT */
 #ifdef TXBF_SUPPORT
 	pChipCap->FlgHwTxBfCap = FALSE;
 #endif /* TXBF_SUPPORT */

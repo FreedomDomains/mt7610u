@@ -384,11 +384,6 @@ int rt28xx_init(void *pAdSrc)
 	}
 #endif /* DOT11N_SS3_SUPPORT */
 
-#ifdef STREAM_MODE_SUPPORT
-	RtmpStreamModeInit(pAd);
-#endif /* STREAM_MODE_SUPPORT */
-
-
 #ifdef DOT11_N_SUPPORT
 #ifdef TXBF_SUPPORT
 	if (pAd->CommonCfg.ITxBfTimeout)

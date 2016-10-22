@@ -1896,47 +1896,6 @@ int	RTMPSetProfileParameters(
 		}
 #endif /* PRE_ANT_SWITCH */
 
-
-
-#ifdef STREAM_MODE_SUPPORT
-		/* StreamMode*/
-		if (pAd->chipCap.FlgHwStreamMode)
-		{
-			if(RTMPGetKeyParameter("StreamMode", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.StreamMode = (simple_strtol(tmpbuf, 0, 10) & 0x03);
-				DBGPRINT(RT_DEBUG_TRACE, ("StreamMode= %d\n", pAd->CommonCfg.StreamMode));
-			}
-
-			/* StreamModeMac*/
-			for (i = 0; i < STREAM_MODE_STA_NUM; i++)
-			{
-				STRING		tok_str[32];
-
-				sprintf(tok_str, "StreamModeMac%d", i);
-
-				if (RTMPGetKeyParameter(tok_str, tmpbuf, MAX_PARAM_BUFFER_SIZE, pBuffer, TRUE))
-				{
-					int j;
-					if(strlen(tmpbuf) != 17)  /*Mac address acceptable format 01:02:03:04:05:06 length 17*/
-						continue;
-
-					for (j=0; j<ETH_LENGTH_OF_ADDRESS; j++)
-					{
-						AtoH(tmpbuf, &pAd->CommonCfg.StreamModeMac[i][j], 1);
-						tmpbuf=tmpbuf+3;
-					}
-				}
-			}
-
-			if (memcmp(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], ETH_ALEN) == 0)
-			{
-				/* set default broadcast mac to entry 0 if user not set it */
-				memmove(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, ETH_ALEN);
-			}
-		}
-#endif /* STREAM_MODE_SUPPORT */
-
 #ifdef DBG_CTRL_SUPPORT
 		/*DebugFlags*/
 		if(RTMPGetKeyParameter("DebugFlags", tmpbuf, 32, pBuffer, TRUE))
