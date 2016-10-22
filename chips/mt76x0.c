@@ -2662,12 +2662,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->DfsEngineNum = 4;
 #endif /* DFS_SUPPORT */
 
-#ifdef NEW_MBSSID_MODE
 	pChipCap->MBSSIDMode = MBSSID_MODE1;
-#else
-	pChipCap->MBSSIDMode = MBSSID_MODE0;
-#endif /* NEW_MBSSID_MODE */
-
 
 #ifdef CONFIG_STA_SUPPORT
 	pChipCap->init_vga_gain_5G = 0x54;
