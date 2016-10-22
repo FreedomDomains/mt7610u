@@ -557,10 +557,6 @@ struct rtmp_chip_cap {
 	UINT16 BcnMaxHwSize;	/* hardware maximum beacon size */
 	UINT16 BcnBase[HW_BEACON_MAX_NUM];	/* hardware beacon base address */
 
-	/* function */
-	/* use u8, not bit-or to speed up driver */
-	BOOLEAN FlgIsHwWapiSup;
-
 	/* VCO calibration mode */
 	u8	VcoPeriod; /* default 10s */
 #define VCO_CAL_DISABLE		0	/* not support */

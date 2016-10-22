@@ -2637,7 +2637,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->MaxNss = 1;
 
 	pChipCap->SnrFormula = SNR_FORMULA2;
-	pChipCap->FlgIsHwWapiSup = TRUE;
 	pChipCap->VcoPeriod = 10;
 	pChipCap->FlgIsVcoReCalMode = VCO_CAL_MODE_3;
 	pChipCap->FlgIsHwAntennaDiversitySup = FALSE;
