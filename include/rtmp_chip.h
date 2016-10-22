@@ -833,8 +833,6 @@ struct rtmp_chip_ops {
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
 
-	void (*AsicResetBbpAgent)(IN struct rtmp_adapter *pAd);
-
 #ifdef CARRIER_DETECTION_SUPPORT
 	void (*ToneRadarProgram)(struct rtmp_adapter *pAd, ULONG  threshold);
 #endif /* CARRIER_DETECTION_SUPPORT */
@@ -991,16 +989,11 @@ do {	\
 
 #define RTMP_CHIP_ASIC_RESET_BBP_AGENT(__pAd)	\
 do {	\
-		if (__pAd->chipOps.AsicResetBbpAgent != NULL)	\
-			__pAd->chipOps.AsicResetBbpAgent(__pAd);	\
-		else	\
-		{	\
-			BBP_CSR_CFG_STRUC	BbpCsr;	\
-			DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));	\
-			RTMP_IO_READ32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
-			BbpCsr.field.Busy = 0;	\
-			RTMP_IO_WRITE32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
-		}	\
+		BBP_CSR_CFG_STRUC	BbpCsr;	\
+		DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));	\
+		RTMP_IO_READ32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
+		BbpCsr.field.Busy = 0;	\
+		RTMP_IO_WRITE32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
 } while (0)
 
 #define RTMP_CHIP_UPDATE_BEACON(__pAd, Offset, Value, Unit)	\

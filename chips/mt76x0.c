@@ -2778,8 +2778,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipOps->AsicBbpInit = NICInitMT76x0BbpRegisters;
 	pChipOps->AsicRfInit = NICInitMT76x0RFRegisters;
 
-	pChipOps->AsicResetBbpAgent = NULL;
-
 	/* MAC */
 
 	/* EEPROM */
