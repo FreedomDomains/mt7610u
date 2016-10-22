@@ -798,9 +798,6 @@ struct rtmp_chip_ops {
 							u32 ListenInterval, u32 PreTBTTLeadTime,
 							u8 TIMByteOffset, u8 TIMBytePattern);
 
-	/* Chip tuning */
-	void (*RxSensitivityTuning)(IN struct rtmp_adapter *pAd);
-
 	/* MAC */
 	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, u32 Value, u8 Unit);
 
@@ -897,12 +894,6 @@ do {	\
 			__pAd->chipOps.MCU_PwrSavingOP(__pAd, __PwrOP, __PwrLevel,	\
 										__ListenInterval,__PreTBTTLeadTime, \
 										__TIMByteOffset, __TIMBytePattern);	\
-} while (0)
-
-#define RTMP_CHIP_RX_SENSITIVITY_TUNING(__pAd)	\
-do {	\
-		if (__pAd->chipOps.RxSensitivityTuning != NULL)	\
-			__pAd->chipOps.RxSensitivityTuning(__pAd);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_AGC_ADJUST(__pAd, __Rssi, __R66)	\

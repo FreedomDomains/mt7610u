@@ -2798,7 +2798,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 #endif /* CARRIER_DETECTION_SUPPORT */
 
 	/* Chip tuning */
-	pChipOps->RxSensitivityTuning = NULL;
 	pChipOps->AsicGetTxPowerOffset = MT76x0_AsicGetTxPowerOffset;
 	pChipOps->AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC;
 

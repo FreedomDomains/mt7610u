@@ -1742,7 +1742,6 @@ DBGPRINT(RT_DEBUG_OFF, ("%s():wrq->u.data.length=%d, wrq->u.data.pointer=%s!\n",
 				else
 				{
 					pAd->BbpTuning.bEnable = FALSE;
-					RTMP_CHIP_RX_SENSITIVITY_TUNING(pAd);
 				}
 				goto LabelOK;
 			}
