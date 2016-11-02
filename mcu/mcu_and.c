@@ -554,7 +554,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int 
 	msg->urb = urb;
 #endif
 
-	msg->priv = (void *)ad;
+	msg->priv = ad;
 	msg->net_pkt = net_pkt;
 
 	ctl->alloc_cmd_msg++;
@@ -602,7 +602,7 @@ static void andes_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int l
 void andes_free_cmd_msg(struct cmd_msg *msg)
 {
 	struct sk_buff * net_pkt = msg->net_pkt;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)(msg->priv);
+	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	if (msg->need_wait)
@@ -705,7 +705,7 @@ static void andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
+	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	lock = andes_get_spin_lock(ctl, list);
@@ -727,7 +727,7 @@ static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
+	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	lock = andes_get_spin_lock(ctl, list);
@@ -792,7 +792,7 @@ static void andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
+	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	lock = andes_get_spin_lock(ctl, list);
@@ -883,7 +883,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 {
 	struct sk_buff * net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
+	struct rtmp_adapter*ad = msg->priv;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
@@ -1047,7 +1047,7 @@ static void usb_kick_out_cmd_msg_complete(PURB urb)
 {
 	struct sk_buff * net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)msg->priv;
+	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
