@@ -555,7 +555,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int 
 #endif
 
 	msg->priv = ad;
-	msg->net_pkt = net_pkt;
+	msg->skb = net_pkt;
 
 	ctl->alloc_cmd_msg++;
 
@@ -593,7 +593,7 @@ static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, BOOLEAN need_wait, 
 
 static void andes_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int len)
 {
-	struct sk_buff * net_pkt = msg->net_pkt;
+	struct sk_buff * net_pkt = msg->skb;
 
 	if (data)
 		memcpy(OS_PKT_TAIL_BUF_EXTEND(net_pkt, len), data, len);
@@ -601,7 +601,7 @@ static void andes_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int l
 
 void andes_free_cmd_msg(struct cmd_msg *msg)
 {
-	struct sk_buff * net_pkt = msg->net_pkt;
+	struct sk_buff * net_pkt = msg->skb;
 	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
@@ -830,7 +830,7 @@ static struct cmd_msg *andes_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list
 
 void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 {
-	struct sk_buff * net_pkt = rx_msg->net_pkt;
+	struct sk_buff * net_pkt = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
 	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) net_pkt->data;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
@@ -914,7 +914,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
 			return;
 		}
 
-		net_pkt = msg->net_pkt;
+		net_pkt = msg->skb;
 
 		RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 							usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
@@ -955,7 +955,7 @@ int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 		return ret;
 	}
 
-	net_pkt = msg->net_pkt;
+	net_pkt = msg->skb;
 
 	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 						usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
@@ -1083,7 +1083,7 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	int ret = 0;
-	struct sk_buff * net_pkt = msg->net_pkt;
+	struct sk_buff * net_pkt = msg->skb;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
@@ -1243,7 +1243,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 			continue;
 		}
 
-		net_pkt = msg->net_pkt;
+		net_pkt = msg->skb;
 
 		if (msg->need_rsp)
 			msg->seq = andes_get_cmd_msg_seq(ad);
