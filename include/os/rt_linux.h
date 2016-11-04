@@ -706,11 +706,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define RTMP_USB_URB_STATUS_GET(__pUrb)			((purbb_t)__pUrb)->status
 #define RTMP_USB_URB_LEN_GET(__pUrb)			((purbb_t)__pUrb)->actual_length
 
-/***********************************************************************************
- *	Network Related data structure and marco definitions
- ***********************************************************************************/
-#define PKTSRC_NDIS             0x7f
-#define PKTSRC_DRIVER           0x0f
 
 #define RTMP_OS_NETDEV_STATE_RUNNING(_pNetDev)	((_pNetDev)->flags & IFF_UP)
 
@@ -807,10 +802,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 /* 0x80~0xff: TX to a WDS link. b0~6: WDS index */
 #define RTMP_SET_PACKET_WCID(_p, _wdsidx)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+2] = _wdsidx)
 #define RTMP_GET_PACKET_WCID(_p)          		((u8)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+2]))
-
-/* 0xff: PKTSRC_NDIS, others: local TX buffer index. This value affects how to a packet */
-#define RTMP_SET_PACKET_SOURCE(_p, _pktsrc)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+3] = _pktsrc)
-#define RTMP_GET_PACKET_SOURCE(_p)       		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+3])
 
 /* RTS/CTS-to-self protection method */
 #define RTMP_SET_PACKET_RTS(_p, _num)      		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+4] = _num)
@@ -1031,7 +1022,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 {																		\
 	memcpy(skb_put(__pNetPkt, __Len), __pData, __Len);					\
 	__pNetPkt->dev = __pNetDev;							\
-	RTMP_SET_PACKET_SOURCE((__pNetPkt), PKTSRC_NDIS);		\
 }
 
 #define BULKAGGRE_SIZE				60 /* 100 */

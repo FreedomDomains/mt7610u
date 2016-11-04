@@ -273,10 +273,6 @@ struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 			 ("can't allocate frag rx %ld size packet\n", len));
 	}
 
-	if (pkt) {
-		RTMP_SET_PACKET_SOURCE(pkt, PKTSRC_NDIS);
-	}
-
 	return (struct sk_buff *) pkt;
 }
 
@@ -316,7 +312,6 @@ int RTMPAllocateNdisPacket(
 	skb_put(pPacket, HeaderLen + DataLen);
 /* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, pPacket->len);*/
 
-	RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
 	*ppPacket = (struct sk_buff *)pPacket;
 
 	return NDIS_STATUS_SUCCESS;

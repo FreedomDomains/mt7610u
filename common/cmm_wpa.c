@@ -393,8 +393,6 @@ void RTMPToWirelessSta(
 			else
 				RTMP_SET_PACKET_CLEAR_EAP_FRAME(pPacket, 0);
 		{
-			RTMP_SET_PACKET_SOURCE(pPacket, PKTSRC_NDIS);
-
 			RTMP_SET_PACKET_NET_DEVICE_MBSSID(pPacket, MAIN_MBSSID);	/* set a default value*/
 			if(pEntry->apidx != 0)
         		RTMP_SET_PACKET_NET_DEVICE_MBSSID(pPacket, pEntry->apidx);
