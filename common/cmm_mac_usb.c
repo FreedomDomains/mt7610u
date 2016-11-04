@@ -35,7 +35,7 @@
 
 static int RTMPAllocUsbBulkBufStruct(
 	IN struct rtmp_adapter*pAd,
-	IN PURB *ppUrb,
+	IN struct urb **ppUrb,
 	IN void **ppXBuffer,
 	IN INT	bufLen,
 	IN dma_addr_t *pDmaAddr,
@@ -63,7 +63,7 @@ static int RTMPAllocUsbBulkBufStruct(
 
 static int RTMPFreeUsbBulkBufStruct(
 	IN struct rtmp_adapter*pAd,
-	IN PURB *ppUrb,
+	IN struct urb **ppUrb,
 	IN u8 **ppXBuffer,
 	IN INT bufLen,
 	IN dma_addr_t data_dma)
@@ -386,7 +386,7 @@ int	NICInitTransmit(
 	void *		RingBaseVa;
 	RTMP_MGMT_RING  *pMgmtRing;
 	void *pTransferBuffer;
-	PURB	pUrb;
+	struct urb *pUrb;
 	dma_addr_t data_dma;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitTransmit\n"));

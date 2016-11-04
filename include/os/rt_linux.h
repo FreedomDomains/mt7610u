@@ -96,7 +96,6 @@
 
 /*#ifdef RTMP_USB_SUPPORT // os abl move */
 typedef struct usb_device	*PUSB_DEV;
-typedef struct urb *purbb_t;
 typedef struct usb_ctrlrequest devctrlrequest;
 /*#endif */
 
@@ -702,9 +701,9 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define RTMP_SYS_IO_WRITE32
 #endif /* RTMP_MAC_USB */
 
-#define RTMP_USB_URB_DATA_GET(__pUrb)			((purbb_t)__pUrb)->context
-#define RTMP_USB_URB_STATUS_GET(__pUrb)			((purbb_t)__pUrb)->status
-#define RTMP_USB_URB_LEN_GET(__pUrb)			((purbb_t)__pUrb)->actual_length
+#define RTMP_USB_URB_DATA_GET(__pUrb)			((struct urb *)__pUrb)->context
+#define RTMP_USB_URB_STATUS_GET(__pUrb)			((struct urb *)__pUrb)->status
+#define RTMP_USB_URB_LEN_GET(__pUrb)			((struct urb *)__pUrb)->actual_length
 
 
 #define RTMP_OS_NETDEV_STATE_RUNNING(_pNetDev)	((_pNetDev)->flags & IFF_UP)
@@ -1073,13 +1072,13 @@ typedef void USBHST_STATUS;
 typedef INT32 URBCompleteStatus;
 typedef struct pt_regs pregs;
 
-USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkOutRTSFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkOutRTSFrameComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
+USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
 
 /* Fill Bulk URB Macro */
 
@@ -1175,7 +1174,7 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 /* Prototypes of completion funuc. */
 #define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB)
 
-USBHST_STATUS ATE_RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
+USBHST_STATUS ATE_RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs);
 
 #endif /* RTMP_USB_SUPPORT */
 

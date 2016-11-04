@@ -138,7 +138,7 @@ struct cmd_msg {
 	struct rtmp_adapter *priv;
 	struct sk_buff *skb;
 #ifdef RTMP_USB_SUPPORT
-	PURB urb;
+	struct urb *urb;
 #endif
 	int retransmit_times;
 };

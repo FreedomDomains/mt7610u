@@ -39,7 +39,7 @@ void RTUSBInitTxDesc(
 	IN	u8 		BulkOutPipeId,
 	IN	usb_complete_t	Func)
 {
-	PURB				pUrb;
+	struct urb *			pUrb;
 	u8 *			pSrc = NULL;
 	struct os_cookie *		pObj = pAd->OS_Cookie;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
@@ -85,7 +85,7 @@ void RTUSBInitHTTxDesc(
 	IN	ULONG			BulkOutSize,
 	IN	usb_complete_t	Func)
 {
-	PURB				pUrb;
+	struct urb *			pUrb;
 	u8 *			pSrc = NULL;
 	struct os_cookie *		pObj = pAd->OS_Cookie;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
@@ -112,7 +112,7 @@ void RTUSBInitRxDesc(
 	IN	struct rtmp_adapter *pAd,
 	IN	PRX_CONTEXT		pRxContext)
 {
-	PURB				pUrb;
+	struct urb *			pUrb;
 	struct os_cookie *		pObj = pAd->OS_Cookie;
 	ULONG				RX_bulk_size;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
@@ -168,7 +168,7 @@ void RTUSBBulkOutDataPacket(
 {
 
 	PHT_TX_CONTEXT	pHTTXContext;
-	PURB			pUrb;
+	struct urb *		pUrb;
 	int				ret = 0;
 	union txinfo_nmac *pTxInfo, *pLastTxInfo = NULL;
 	struct txwi_nmac *pTxWI;
@@ -542,7 +542,7 @@ void RTUSBBulkOutDataPacket(
 }
 
 
-USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
+USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs)
 {
 	PHT_TX_CONTEXT	pHTTXContext;
 	struct rtmp_adapter *pAd;
@@ -616,7 +616,7 @@ void RTUSBBulkOutNullFrame(
 	IN	struct rtmp_adapter *pAd)
 {
 	PTX_CONTEXT		pNullContext = &(pAd->NullContext);
-	PURB			pUrb;
+	struct urb *		pUrb;
 	int				ret = 0;
 	unsigned long	IrqFlags;
 
@@ -661,7 +661,7 @@ void RTUSBBulkOutNullFrame(
 }
 
 /* NULL frame use BulkOutPipeId = 0*/
-USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
+USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs)
 {
 	struct rtmp_adapter *	pAd;
 	PTX_CONTEXT			pNullContext;
@@ -698,7 +698,7 @@ void RTUSBBulkOutMLMEPacket(
 	IN	u8 		Index)
 {
 	PTX_CONTEXT		pMLMEContext;
-	PURB			pUrb;
+	struct urb *		pUrb;
 	int				ret = 0;
 	unsigned long	IrqFlags;
 
@@ -762,7 +762,7 @@ void RTUSBBulkOutMLMEPacket(
 }
 
 
-USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
+USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs)
 {
 	PTX_CONTEXT		pMLMEContext;
 	struct rtmp_adapter *	pAd;
@@ -798,7 +798,7 @@ void RTUSBBulkOutPsPoll(
 	IN	struct rtmp_adapter *pAd)
 {
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
-	PURB			pUrb;
+	struct urb *		pUrb;
 	int				ret = 0;
 	unsigned long	IrqFlags;
 
@@ -840,7 +840,7 @@ void RTUSBBulkOutPsPoll(
 }
 
 /* PS-Poll frame use BulkOutPipeId = 0*/
-USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
+USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs)
 {
 	struct rtmp_adapter *	pAd;
 	PTX_CONTEXT			pPsPollContext;
@@ -862,7 +862,7 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB,
 void DoBulkIn(IN struct rtmp_adapter*pAd)
 {
 	PRX_CONTEXT		pRxContext;
-	PURB			pUrb;
+	struct urb *		pUrb;
 	int				ret = 0;
 	unsigned long	IrqFlags;
 
@@ -1016,7 +1016,7 @@ void RTUSBBulkReceive(
 		Always returns STATUS_MORE_PROCESSING_REQUIRED
 	========================================================================
 */
-USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
+USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, struct urb *pURB, pregs *pt_regs)
 {
 	/* use a receive tasklet to handle received packets;*/
 	/* or sometimes hardware IRQ will be disabled here, so we can not*/

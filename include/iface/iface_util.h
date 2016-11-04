@@ -60,7 +60,6 @@
 #define USBD_TRANSFER_DIRECTION_OUT		0
 #define USBD_TRANSFER_DIRECTION_IN		0
 #define USBD_SHORT_TRANSFER_OK			0
-#define PURB			purbb_t
 
 #define OS_RTUSBMlmeUp					RtmpOsMlmeUp
 

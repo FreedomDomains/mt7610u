@@ -29,7 +29,7 @@
 
 
 #ifdef RTMP_MAC_USB
-void usb_uploadfw_complete(purbb_t urb)
+void usb_uploadfw_complete(struct urb *urb)
 {
 	RTMP_OS_COMPLETION *load_fw_done = urb->context;
 
@@ -72,7 +72,7 @@ static int usb_load_ivb(struct rtmp_adapter*ad)
 
 int andes_usb_loadfw(struct rtmp_adapter*ad)
 {
-	PURB urb;
+	struct urb *urb;
 	struct os_cookie *obj = ad->OS_Cookie;
 	dma_addr_t fw_dma;
 	u8 *fw_data;
@@ -520,7 +520,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int 
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 #ifdef RTMP_USB_SUPPORT
-	PURB urb = NULL;
+	struct urb *urb = NULL;
 #endif
 
 	struct sk_buff * net_pkt = RTMP_AllocateFragPacketBuffer(ad, cap->cmd_header_len + length + cap->cmd_padding_len);
@@ -879,7 +879,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 }
 
 #ifdef RTMP_USB_SUPPORT
-static void usb_rx_cmd_msg_complete(PURB urb)
+static void usb_rx_cmd_msg_complete(struct urb *urb)
 {
 	struct sk_buff * net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
@@ -1043,7 +1043,7 @@ void andes_bh_schedule(struct rtmp_adapter*ad)
 	}
 }
 
-static void usb_kick_out_cmd_msg_complete(PURB urb)
+static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 {
 	struct sk_buff * net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;

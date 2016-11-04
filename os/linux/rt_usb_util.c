@@ -227,7 +227,7 @@ void RtmpOsUsbInitHTTxDesc(
 	IN	void 		*pTxContext,
 	IN	dma_addr_t		TransferDma)
 {
-	PURB pUrb = (PURB)pUrbSrc;
+	struct urb *pUrb = (struct urb *)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
 
 
@@ -255,7 +255,7 @@ void RtmpOsUsbInitRxDesc(
 	IN	void 		*pRxContext,
 	IN	dma_addr_t		TransferDma)
 {
-	PURB pUrb = (PURB)pUrbSrc;
+	struct urb *pUrb = (struct urb *)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
 
 
@@ -275,7 +275,7 @@ void RtmpOsUsbInitRxDesc(
 void RtmpOsUsbDmaMapping(
 	IN	void 		*pUrb)
 {
-	RTUSB_URB_DMA_MAPPING(((purbb_t)pUrb));
+	RTUSB_URB_DMA_MAPPING(((struct urb *)pUrb));
 }
 
 

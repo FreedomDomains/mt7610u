@@ -1418,7 +1418,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 		{
 			/*RTUSBBulkReceive(pAd);*/
 			PRX_CONTEXT		pRxContext;
-			PURB			pUrb;
+			struct urb *		pUrb;
 			int				ret = 0;
 			unsigned long	IrqFlags;
 
@@ -1915,7 +1915,7 @@ void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 	PHT_TX_CONTEXT		pHTTXContext;
 	int 					idx;
 	ULONG				irqFlags;
-	PURB		   		pUrb;
+	struct urb *	   		pUrb;
 	BOOLEAN				needDumpSeq = FALSE;
 	u32          	MACValue;
 

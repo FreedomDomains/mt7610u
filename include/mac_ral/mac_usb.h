@@ -162,7 +162,7 @@ typedef struct __HTTX_BUFFER{
 typedef struct _TX_CONTEXT
 {
 	void *		pAd;		/*Initialized in MiniportInitialize */
-	PURB			pUrb;			/*Initialized in MiniportInitialize */
+	struct urb *		pUrb;			/*Initialized in MiniportInitialize */
 	void *		pIrp;			/*used to cancel pending bulk out. */
 									/*Initialized in MiniportInitialize */
 	PTX_BUFFER		TransferBuffer;	/*Initialized in MiniportInitialize */
@@ -188,7 +188,7 @@ typedef struct _TX_CONTEXT
 typedef struct _HT_TX_CONTEXT
 {
 	void *		pAd;		/*Initialized in MiniportInitialize */
-	PURB			pUrb;			/*Initialized in MiniportInitialize */
+	struct urb *		pUrb;			/*Initialized in MiniportInitialize */
 	void *			pIrp;			/*used to cancel pending bulk out. */
 									/*Initialized in MiniportInitialize */
 	PHTTX_BUFFER	TransferBuffer;	/*Initialized in MiniportInitialize */
@@ -218,7 +218,7 @@ typedef struct _HT_TX_CONTEXT
 typedef struct _CMD_CONTEXT
 {
 	void *pAd;
-	PURB pUrb;
+	struct urb *pUrb;
 	dma_addr_t data_dma;
 	u8 *TransferBuffer;
 	BOOLEAN IRPPending;
@@ -233,7 +233,7 @@ typedef struct _RX_CONTEXT
 	u8 *			TransferBuffer;
 	void *			pAd;
 	void *			pIrp;/*used to cancel pending bulk in. */
-	PURB				pUrb;
+	struct urb *			pUrb;
 	/*These 2 Boolean shouldn't both be 1 at the same time. */
 	ULONG				BulkInOffset;	/* number of packets waiting for reordering . */
 /*	BOOLEAN				ReorderInUse;	// At least one packet in this buffer are in reordering buffer and wait for receive indication */
@@ -251,7 +251,7 @@ typedef struct _CMD_RSP_CONTEXT
 {
 	u8 *CmdRspBuffer;
 	void *pAd;
-	PURB pUrb;
+	struct urb *pUrb;
 	BOOLEAN IRPPending;
 	BOOLEAN InUse;
 	BOOLEAN Readable;
