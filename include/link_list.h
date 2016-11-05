@@ -164,7 +164,7 @@ static inline void DlListDel(struct _DL_LIST *Item)
 	Item->Prev = NULL;
 }
 
-static inline int DlListEmpty(struct _DL_LIST *List)
+static inline bool DlListEmpty(struct _DL_LIST *List)
 {
 	return List->Next == List;
 }
