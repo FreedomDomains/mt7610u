@@ -966,14 +966,6 @@ extern u32 RT_RateSize;
 #include "vrut_ubm.h"
 #endif /* PLATFORM_UBM_IPX8 */
 
-void OS_SPIN_LOCK_IRQSAVE(spinlock_t *lock, unsigned long *flags);
-void OS_SPIN_UNLOCK_IRQRESTORE(spinlock_t *lock, unsigned long *flags);
-void OS_SPIN_LOCK_IRQ(spinlock_t *lock);
-void OS_SPIN_UNLOCK_IRQ(spinlock_t *lock);
-void RtmpOsSpinLockIrqSave(spinlock_t *lock, unsigned long *flags);
-void RtmpOsSpinUnlockIrqRestore(spinlock_t *lock, unsigned long *flags);
-void RtmpOsSpinLockIrq(spinlock_t *lock);
-void RtmpOsSpinUnlockIrq(spinlock_t *lock);
 int OS_TEST_BIT(int bit, unsigned long *flags);
 void OS_SET_BIT(int bit, unsigned long *flags);
 void OS_CLEAR_BIT(int bit, unsigned long *flags);

@@ -678,7 +678,7 @@ static inline u8 andes_get_cmd_msg_seq(struct rtmp_adapter*ad)
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;
 
-	RTMP_SPIN_LOCK_IRQ(&ctl->ackq_lock);
+	spin_lock_irq(&ctl->ackq_lock);
 get_seq:
 	ctl->cmd_seq >= 0xf ? ctl->cmd_seq = 1 : ctl->cmd_seq++;
 	DlListForEach(msg, &ctl->ackq, struct cmd_msg, list) {
@@ -688,7 +688,7 @@ get_seq:
 			goto get_seq;
 		}
 	}
-	RTMP_SPIN_UNLOCK_IRQ(&ctl->ackq_lock);
+	spin_unlock_irq(&ctl->ackq_lock);
 
 	return ctl->cmd_seq;
 }
@@ -710,9 +710,9 @@ static void andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	_andes_queue_tail_cmd_msg(list, msg, state);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 static void _andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
@@ -732,9 +732,9 @@ static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	_andes_queue_head_cmd_msg(list, msg, state);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 static u32 andes_queue_len(struct MCU_CTRL *ctl, DL_LIST *list)
@@ -745,9 +745,9 @@ static u32 andes_queue_len(struct MCU_CTRL *ctl, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	qlen = DlListLen(list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 
 	return qlen;
 }
@@ -760,9 +760,9 @@ static int andes_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	is_empty = DlListEmpty(list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 
 	return is_empty;
 }
@@ -775,9 +775,9 @@ static void andes_queue_init(struct MCU_CTRL *ctl, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	DlListInit(list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 static void _andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
@@ -797,9 +797,9 @@ static void andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	_andes_unlink_cmd_msg(msg, list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 static struct cmd_msg *_andes_dequeue_cmd_msg(DL_LIST *list)
@@ -821,9 +821,9 @@ static struct cmd_msg *andes_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	msg = _andes_dequeue_cmd_msg(list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 
 	return msg;
 }
@@ -850,11 +850,11 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 		RTEnqueueInternalCmd(ad, CMDTHREAD_RESPONSE_EVENT_CALLBACK,
 								net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
 	} else {
-		RTMP_SPIN_LOCK_IRQ(&ctl->ackq_lock);
+		spin_lock_irq(&ctl->ackq_lock);
 		DlListForEachSafe(msg, msg_tmp, &ctl->ackq, struct cmd_msg, list) {
 			if (msg->seq == rx_info->cmd_seq) {
 				_andes_unlink_cmd_msg(msg, &ctl->ackq);
-				RTMP_SPIN_UNLOCK_IRQ(&ctl->ackq_lock);
+				spin_unlock_irq(&ctl->ackq_lock);
 
 				if ((msg->rsp_payload_len == rx_info->pkt_len) && (msg->rsp_payload_len != 0)) {
 					msg->rsp_handler(msg, net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
@@ -870,11 +870,11 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 				else
 					andes_free_cmd_msg(msg);
 
-				RTMP_SPIN_LOCK_IRQ(&ctl->ackq_lock);
+				spin_lock_irq(&ctl->ackq_lock);
 				break;
 			}
 		}
-		RTMP_SPIN_UNLOCK_IRQ(&ctl->ackq_lock);
+		spin_unlock_irq(&ctl->ackq_lock);
 	}
 }
 
@@ -903,9 +903,9 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 		DBGPRINT(RT_DEBUG_ERROR, ("receive cmd msg fail(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
 	}
 
-	RTMP_SPIN_LOCK_IRQSAVE(&ctl->rx_doneq_lock, &flags);
+	spin_lock_irqsave(&ctl->rx_doneq_lock, flags);
 	_andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, state);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(&ctl->rx_doneq_lock, &flags);
+	spin_unlock_irqrestore(&ctl->rx_doneq_lock, flags);
 
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		msg = andes_alloc_cmd_msg(ad, 512);
@@ -1130,16 +1130,16 @@ void andes_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
-		RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+		spin_unlock_irqrestore(lock, flags);
 		if ((msg->state == wait_cmd_out_and_ack) || (msg->state == wait_cmd_out) ||
 						(msg->state == tx_start) || (msg->state == rx_start) ||
 						(msg->state == tx_retransmit))
 			RTUSB_UNLINK_URB(msg->urb);
-		RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+		spin_lock_irqsave(lock, flags);
 	}
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 #endif
@@ -1153,13 +1153,13 @@ void andes_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 
 	lock = andes_get_spin_lock(ctl, list);
 
-	RTMP_SPIN_LOCK_IRQSAVE(lock, &flags);
+	spin_lock_irqsave(lock, flags);
 	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
 		_andes_unlink_cmd_msg(msg, list);
 		andes_free_cmd_msg(msg);
 	}
 	DlListInit(list);
-	RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
+	spin_unlock_irqrestore(lock, flags);
 }
 
 void andes_ctrl_init(struct rtmp_adapter*ad)
