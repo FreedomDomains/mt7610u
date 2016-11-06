@@ -36,7 +36,7 @@ void usb_uploadfw_complete(struct urb *urb)
 	RTMP_OS_COMPLETE(load_fw_done);
 }
 
-static int usb_load_ivb(struct rtmp_adapter*ad)
+static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 {
 	int Status = NDIS_STATUS_SUCCESS;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
@@ -49,7 +49,7 @@ static int usb_load_ivb(struct rtmp_adapter*ad)
 				 0x01,
 				 0x12,
 				 0x00,
-				 cap->FWImageName + 32,
+				 fw_image + 32,
 				 64);
 	} else {
 		Status = RTUSB_VendorRequest(ad,
@@ -479,7 +479,7 @@ loadfw_protect:
 
 	/* Upload new 64 bytes interrupt vector or reset andes */
 	DBGPRINT(RT_DEBUG_OFF, ("\n"));
-	usb_load_ivb(ad);
+	usb_load_ivb(ad, fw_image);
 
 	/* Check MCU if ready */
 	loop = 0;
