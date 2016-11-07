@@ -709,9 +709,6 @@ PHONY += all build_tools test LINUX clean
 
 all: modules
 
-test:
-	$(MAKE) -C tools test
-
 modules:
 	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(PWD) modules
 
