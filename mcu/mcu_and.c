@@ -1325,13 +1325,6 @@ retransmit:
 		expire = timeout ? RTMPMsecsToJiffies(timeout) : RTMPMsecsToJiffies(CMD_MSG_TIMEOUT);
 		if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&msg->ack_done, expire)) {
 			ret = NDIS_STATUS_FAILURE;
-			DBGPRINT(RT_DEBUG_ERROR, ("command (%d) timeout(%dms)\n", msg->type, CMD_MSG_TIMEOUT));
-			DBGPRINT(RT_DEBUG_ERROR, ("txq qlen = %d\n", andes_queue_len(ctl, &ctl->txq)));
-			DBGPRINT(RT_DEBUG_ERROR, ("rxq qlen = %d\n", andes_queue_len(ctl, &ctl->rxq)));
-			DBGPRINT(RT_DEBUG_ERROR, ("kickq qlen = %d\n", andes_queue_len(ctl, &ctl->kickq)));
-			DBGPRINT(RT_DEBUG_ERROR, ("ackq qlen = %d\n", andes_queue_len(ctl, &ctl->ackq)));
-			DBGPRINT(RT_DEBUG_ERROR, ("tx_doneq.qlen = %d\n", andes_queue_len(ctl, &ctl->tx_doneq)));
-			DBGPRINT(RT_DEBUG_ERROR, ("rx_done qlen = %d\n", andes_queue_len(ctl, &ctl->rx_doneq)));
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 				if (msg->state == wait_cmd_out_and_ack) {
 					RTUSB_UNLINK_URB(msg->urb);
