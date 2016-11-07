@@ -26,6 +26,7 @@
 
 
 #include	"rt_config.h"
+#include <linux/firmware.h>
 
 
 #ifdef RTMP_MAC_USB
@@ -72,6 +73,8 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 
 int andes_usb_loadfw(struct rtmp_adapter*ad)
 {
+	const struct firmware *fw;
+	struct device *dev = &ad->OS_Cookie->pUsb_Dev->dev;
 	struct urb *urb;
 	struct os_cookie *obj = ad->OS_Cookie;
 	dma_addr_t fw_dma;
@@ -88,14 +91,26 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 	u16 fw_ver, build_ver;
 	RTMP_OS_COMPLETION load_fw_done;
 	USB_DMA_CFG_STRUC UsbCfg;
-	u8 *fw_image = cap->FWImageName;
+	u8 *fw_image = NULL;
+
+	dev_info(dev, "loading firmware %s\n", cap->fw_name);
+
+	ret = request_firmware(&fw, cap->fw_name, dev);
+	if (ret) {
+		dev_info(dev, "loading failed %s\n", cap->fw_name);
+		return ret;
+	}
 
 	RtmpOsMsDelay(5);
+
+	fw_image = (u8 *) fw->data;
 
 	if (!fw_image) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:Please assign a fw image\n", __FUNCTION__));
 		return NDIS_STATUS_FAILURE;
 	}
+
+	dev_info(dev, "firmware %s loaded\n", cap->fw_name);
 
 	if (cap->IsComboChip) {
 loadfw_protect:
@@ -505,6 +520,8 @@ error1:
 	RTUSB_FREE_URB(urb);
 
 error0:
+	release_firmware(fw);
+
 	if (cap->IsComboChip)
 		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1, FALSE);
 

@@ -94,6 +94,9 @@
 #endif /* CONFIG_STA_SUPPORT */
 
 
+#define MT7610_FIRMWARE_NAME	"mt7610u.bin"
+#define MT7650_FIRMWARE_NAME	"mt7650u.bin"
+
 /*#ifdef RTMP_USB_SUPPORT // os abl move */
 typedef struct usb_device	*PUSB_DEV;
 typedef struct usb_ctrlrequest devctrlrequest;

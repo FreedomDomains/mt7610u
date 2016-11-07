@@ -688,7 +688,7 @@ struct rtmp_chip_cap {
 	u8 CommandBulkOutAddr;
 #endif
 
-	u8 *FWImageName;
+	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
 #ifdef MT76x0
 	BOOLEAN bDoTemperatureSensor;

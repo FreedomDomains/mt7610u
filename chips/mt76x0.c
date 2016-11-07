@@ -27,14 +27,6 @@
 
 #include "rt_config.h"
 
-#if defined(MT7650) || defined(MT7630)
-#include "mcu/mt7650_firmware.h"
-#endif
-
-#ifdef MT7610
-#include "mcu/mt7610_firmware.h"
-#endif
-
 #ifdef SINGLE_SKU_V2
 #define MT76x0_RF_2G_PA_MODE0_DECODE	0
 #define MT76x0_RF_2G_PA_MODE1_DECODE	29491 /* 3.6 * 8192 */
@@ -2706,17 +2698,17 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 
 #ifdef MT7650
 	if (IS_MT7650(pAd))
-		pChipCap->FWImageName = MT7650_FirmwareImage;
+		pChipCap->fw_name = MT7650_FIRMWARE_NAME;
 #endif
 
 #ifdef MT7630
 	if (IS_MT7630(pAd))
-		pChipCap->FWImageName = MT7650_FirmwareImage;
+		pChipCap->fw_name = MT7650_FIRMWARE_NAME;
 #endif
 
 #ifdef MT7610
 	if (IS_MT7610(pAd))
-		pChipCap->FWImageName = MT7610_FirmwareImage;
+		pChipCap->fw_name = MT7610_FIRMWARE_NAME;
 #endif
 
 	pChipCap->bDoTemperatureSensor = TRUE;
