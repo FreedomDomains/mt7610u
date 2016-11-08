@@ -754,21 +754,6 @@ static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static u32 andes_queue_len(struct MCU_CTRL *ctl, DL_LIST *list)
-{
-	u32 qlen;
-	unsigned long flags;
-	spinlock_t *lock;
-
-	lock = andes_get_spin_lock(ctl, list);
-
-	spin_lock_irqsave(lock, flags);
-	qlen = DlListLen(list);
-	spin_unlock_irqrestore(lock, flags);
-
-	return qlen;
-}
-
 static bool andes_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	unsigned long flags;
@@ -998,7 +983,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 	int i;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	for (i = 0; (i < 1) && (andes_queue_len(ctl, &ctl->rxq) < 1); i++) {
+	for (i = 0; (i < 1) && andes_queue_empty(ctl, &ctl->rxq); i++) {
 		ret = usb_rx_cmd_msg_submit(ad);
 		if (ret)
 			break;
@@ -1052,9 +1037,9 @@ void andes_bh_schedule(struct rtmp_adapter*ad)
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return;
 
-	if (((andes_queue_len(ctl, &ctl->rx_doneq) > 0)
-							|| (andes_queue_len(ctl, &ctl->tx_doneq) > 0))
-							&& OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
+	if ((!andes_queue_empty(ctl, &ctl->rx_doneq) ||
+	     !andes_queue_empty(ctl, &ctl->tx_doneq)) &&
+	    OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		RTMP_NET_TASK_DATA_ASSIGN(&ctl->cmd_msg_task, (unsigned long)(ad));
 		RTMP_OS_TASKLET_SCHE(&ctl->cmd_msg_task);
 	}
@@ -1254,7 +1239,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 			continue;
 		}
 
-		if (andes_queue_len(ctl, &ctl->ackq) > 0) {
+		if (!andes_queue_empty(ctl, &ctl->ackq)) {
 			andes_queue_head_cmd_msg(&ctl->txq, msg, msg->state);
 			ret = NDIS_STATUS_FAILURE;
 			continue;
