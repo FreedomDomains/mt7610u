@@ -3,7 +3,8 @@ i<u>**MT7610U for Linux**</u>
 Driver for 802.11ac USB Adapter with MT7610U chipset  
 Only STA Mode is supported, no AP.  
 
-Monitor mode is not tested.
+Monitor mode is not tested.  
+You need to install the firmware blobs  
 
 <u>At least v4.0 is needed to compile this module</u>  
 sorry people with older kernels, the code is removed.
@@ -14,6 +15,9 @@ cross compile possible, but not fully tested, see TODO.
 For compiling type  
 `make`  
 in source dir  
+
+For install the needed firmware files  
+`sudo make installfw`
 
 For install the driver use  
 `sudo insmod mt7610u.ko`  
