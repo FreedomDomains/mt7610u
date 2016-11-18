@@ -27,8 +27,6 @@
 
 #include	"rt_config.h"
 
-#ifdef LED_CONTROL_SUPPORT
-
 INT LED_Array[16][12]={
 	{	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1,	-1},
 	{ 	0, 	2,  	1,	0,	-1,	-1,	0, 	-1, 	5, 	-1, 	-1, 	17},
@@ -81,37 +79,19 @@ void RTMPSetLEDStatus(
 	BOOLEAN 		bIgnored = FALSE;
 	INT LED_CMD = -1;
 
-#ifdef RALINK_ATE
-	/*
-		In ATE mode of RT2860 AP/STA, we have erased 8051 firmware.
-		So LED mode is not supported when ATE is running.
-	*/
-	if (!IS_RT3572(pAd))
-	{
-		if (ATE_ON(pAd))
-			return;
-	}
-#endif /* RALINK_ATE */
-
-#ifdef RTMP_MAC_USB
 #ifdef STATS_COUNT_SUPPORT
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
 #endif /* STATS_COUNT_SUPPORT */
-#endif /* RTMP_MAC_USB */
-
 
 	LedMode = LED_MODE(pAd);
 
-	if (IS_MT76x0(pAd)) {
-		if (LedMode < 0 || Status < 0 || LedMode > 15 || Status > 11)
-			return;
+	if (LedMode < 0 || Status < 0 || LedMode > 15 || Status > 11)
+		return;
 
-		LED_CMD = LED_Array[LedMode][Status];
-	}
+	LED_CMD = LED_Array[LedMode][Status];
 
-	switch (Status)
-	{
+	switch (Status) {
 		case LED_LINK_DOWN:
 			LinkStatus = LINK_STATUS_LINK_DOWN;
 			pAd->LedCntl.LedIndicatorStrength = 0;
@@ -147,20 +127,14 @@ void RTMPSetLEDStatus(
 			LinkStatus = LINK_STATUS_POWER_UP;
 			MCUCmd = MCU_SET_LED_MODE;
 			break;
-#ifdef RALINK_ATE
-#endif /* RALINK_ATE */
 		default:
 			DBGPRINT(RT_DEBUG_WARN, ("RTMPSetLED::Unknown Status 0x%x\n", Status));
 			break;
 	}
 
-	if (IS_MT76x0(pAd)) {
-		if (LED_CMD != -1)
-			andes_led_op(pAd, 0, LED_CMD);
-	} else {
-		if (MCUCmd)
-			AsicSendCommandToMcu(pAd, MCUCmd, 0xff, LedMode, LinkStatus, FALSE);
-	}
+	if (LED_CMD != -1)
+		andes_led_op(pAd, 0, LED_CMD);
+
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: MCUCmd:0x%x, LED Mode:0x%x, LinkStatus:0x%x\n", __FUNCTION__, MCUCmd, LedMode, LinkStatus));
 
     /* */
@@ -207,16 +181,12 @@ void RTMPSetSignalLED(
 	u8 	nLed = 0;
 
 
-#ifdef RTMP_MAC_USB
 #ifdef STATS_COUNT_SUPPORT
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
 #endif /* STATS_COUNT_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
-
-	if (pAd->LedCntl.MCULedCntl.field.LedMode == LED_MODE_SIGNAL_STREGTH)
-	{
+	if (pAd->LedCntl.MCULedCntl.field.LedMode == LED_MODE_SIGNAL_STREGTH) {
 		if (Dbm <= -90)
 			nLed = 0;
 		else if (Dbm <= -81)
@@ -233,8 +203,7 @@ void RTMPSetSignalLED(
 		/* */
 		/* Update Signal Stregth to firmware if changed. */
 		/* */
-		if (pAd->LedCntl.LedIndicatorStrength != nLed)
-		{
+		if (pAd->LedCntl.LedIndicatorStrength != nLed) {
 			AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, nLed, pAd->LedCntl.MCULedCntl.field.Polarity, FALSE);
 			pAd->LedCntl.LedIndicatorStrength = nLed;
 		}
@@ -248,31 +217,16 @@ void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 {
 	USHORT Value;
 	PLED_CONTROL pLedCntl = &pAd->LedCntl;
-#ifdef RT65xx
-	if (IS_MT76x0(pAd))
-	{
-		// TODO: wait TC6008 EEPROM format
-		RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
-		pLedCntl->MCULedCntl.word = (Value >> 8);
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LEDAG_CONF_OFFSET, Value);
-		pLedCntl->LedAGCfg= Value;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LEDACT_CONF_OFFSET, Value);
-		pLedCntl->LedACTCfg = Value;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LED_POLARITY_OFFSET, Value);
-		pLedCntl->LedPolarity = Value;
-	}
-	else
-#endif /* RT65xx */
-	{
-		RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
-		pLedCntl->MCULedCntl.word = (Value >> 8);
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LEDAG_CONF_OFFSET, Value);
-		pLedCntl->LedAGCfg= Value;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LEDACT_CONF_OFFSET, Value);
-		pLedCntl->LedACTCfg = Value;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_LED_POLARITY_OFFSET, Value);
-		pLedCntl->LedPolarity = Value;
-	}
+
+	// TODO: wait TC6008 EEPROM format
+	RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
+	pLedCntl->MCULedCntl.word = (Value >> 8);
+	RT28xx_EEPROM_READ16(pAd, EEPROM_LEDAG_CONF_OFFSET, Value);
+	pLedCntl->LedAGCfg= Value;
+	RT28xx_EEPROM_READ16(pAd, EEPROM_LEDACT_CONF_OFFSET, Value);
+	pLedCntl->LedACTCfg = Value;
+	RT28xx_EEPROM_READ16(pAd, EEPROM_LED_POLARITY_OFFSET, Value);
+	pLedCntl->LedPolarity = Value;
 }
 
 
@@ -285,15 +239,11 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 {
 	PLED_CONTROL pLedCntl = &pAd->LedCntl;
 
-	if (pLedCntl->MCULedCntl.word == 0xFF)
-	{
+	if (pLedCntl->MCULedCntl.word == 0xFF) 	{
 		pLedCntl->MCULedCntl.word = 0x01;
 		pLedCntl->LedAGCfg = 0x5555;
 		pLedCntl->LedACTCfg= 0x2221;
-
-#ifdef RTMP_MAC_USB
 		pLedCntl->LedPolarity = 0x5627;
-#endif /* RTMP_MAC_USB */
 	}
 
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (u8)pLedCntl->LedAGCfg, (u8)(pLedCntl->LedAGCfg >> 8), FALSE);
@@ -316,4 +266,3 @@ inline void RTMPExitLEDMode(IN struct rtmp_adapter*pAd)
 	return;
 }
 
-#endif /* LED_CONTROL_SUPPORT */
