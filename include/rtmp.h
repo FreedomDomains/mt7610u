@@ -7263,13 +7263,6 @@ INT	Show_QoSLoad_Proc(
 	IN	char *		arg);
 #endif /* AP_QLOAD_SUPPORT */
 
-/*///////////////////////////////////*/
-INT RTMPShowCfgValue(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		pName,
-	IN	char *		pBuf,
-	IN	u32			MaxLen);
-
 char *RTMPGetRalinkAuthModeStr(
     IN  NDIS_802_11_AUTHENTICATION_MODE authMode);
 
