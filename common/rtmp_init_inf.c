@@ -195,12 +195,6 @@ int rt28xx_init(void *pAdSrc)
 #endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 
-#ifdef CONFIG_STA_SUPPORT
-#ifdef CREDENTIAL_STORE
-	RecoverConnectInfo(pAd);
-#endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
-
 	DBGPRINT(RT_DEBUG_OFF, ("1. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
@@ -523,20 +517,6 @@ void RTMPDrvSTAClose(
 	BOOLEAN Cancelled;
 	u32 i = 0;
 	Cancelled = FALSE;
-
-#ifdef CREDENTIAL_STORE
-	if (pAd->IndicateMediaState == NdisMediaStateConnected)
-	{
-		StoreConnectInfo(pAd);
-	}
-	else
-	{
-		RTMP_SEM_LOCK(&pAd->StaCtIf.Lock);
-		pAd->StaCtIf.Changeable = FALSE;
-		RTMP_SEM_UNLOCK(&pAd->StaCtIf.Lock);
-	}
-#endif
-
 
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{

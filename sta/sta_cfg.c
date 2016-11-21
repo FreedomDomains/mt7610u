@@ -3980,11 +3980,6 @@ INT RTMP_STA_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_ORI_DEV_TYPE_SET:
 			pAd->StaCfg.OriDevType = Data;
-#ifdef CONFIG_STA_SUPPORT
-#ifdef CREDENTIAL_STORE
-	spin_lock_init(pAd, &pAd->StaCtIf.Lock);
-#endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
 			break;
 		case CMD_RTPRIV_IOCTL_STA_SCAN_SANITY_CHECK:

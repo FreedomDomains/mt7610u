@@ -3383,11 +3383,6 @@ BOOLEAN RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
 	INT index;
 
-#ifdef CONFIG_STA_SUPPORT
-#ifdef CREDENTIAL_STORE
-#endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
-
 #ifdef RT65xx
 	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1)) {
 		MT76x0_WLAN_ChipOnOff(pAd, FALSE, FALSE);
