@@ -207,7 +207,6 @@ INT Set_NetworkType_Proc(
 				Value &= (~0x80);
 				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
-                pAd->StaCfg.bAutoReconnect = TRUE;
                 LinkDown(pAd, FALSE);
             }
 			if (INFRA_ON(pAd))
@@ -244,7 +243,6 @@ INT Set_NetworkType_Proc(
 				Value &= (~0x80);
 				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
-                pAd->StaCfg.bAutoReconnect = TRUE;
                 LinkDown(pAd, FALSE);
             }
 			if (ADHOC_ON(pAd))
@@ -287,7 +285,6 @@ INT Set_NetworkType_Proc(
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_ADHOC_ON);
 		OPSTATUS_SET_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
 		/* disable all periodic state machine */
-		pAd->StaCfg.bAutoReconnect = FALSE;
 		/* reset all mlme state machine */
 		RTMP_MLME_RESET_STATE_MACHINE(pAd);
 		DBGPRINT(RT_DEBUG_TRACE, ("fOP_STATUS_MEDIA_STATE_CONNECTED \n"));
@@ -1457,19 +1454,6 @@ void StaSiteSurvey(
 			0);
 
 	RTMP_MLME_HANDLER(pAd);
-}
-
-INT Set_AutoReconnect_Proc(
-    IN  struct rtmp_adapter *pAd,
-    IN  char *		arg)
-{
-	if (simple_strtol(arg, 0, 10) == 0)
-        pAd->StaCfg.bAutoReconnect = FALSE;
-	else
-		pAd->StaCfg.bAutoReconnect = TRUE;
-
-	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_AutoReconnect_Proc::(bAutoReconnect=%d)\n", pAd->StaCfg.bAutoReconnect));
-	return TRUE;
 }
 
 INT Set_AdhocN_Proc(

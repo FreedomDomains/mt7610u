@@ -2602,11 +2602,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->StaCfg.bShowHiddenSSID = FALSE;		/* Default no show*/
 
 		/* Nitro mode control*/
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-		pAd->StaCfg.bAutoReconnect = FALSE;
-#else
-		pAd->StaCfg.bAutoReconnect = TRUE;
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 		pAd->StaCfg.LastScanTime = 0;
 

@@ -485,8 +485,6 @@ void RTMPDrvSTAOpen(
 		To reduce connection time,
 		do auto reconnect here instead of waiting STAMlmePeriodicExec to do auto reconnect.
 	*/
-	if (pAd->OpMode == OPMODE_STA)
-		MlmeAutoReconnectLastSSID(pAd);
 
 //+++Add by shiang for debug
 	DBGPRINT(RT_DEBUG_OFF, ("%s(2):Check if PDMA is idle!\n", __FUNCTION__));

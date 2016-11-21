@@ -1147,16 +1147,11 @@ void STAMlmePeriodicExec(
 			pAd->MlmeAux.CurrReqIsFromNdis = FALSE;
 			/* Lost AP, send disconnect & link down event*/
 			LinkDown(pAd, FALSE);
-
-/* should mark this two function, because link down alse will call this function */
-			/* RTMPPatchMacBbpBug(pAd);*/
-			MlmeAutoReconnectLastSSID(pAd);
 		}
 		else if (CQI_IS_BAD(pAd->Mlme.ChannelQuality))
 		{
 			pAd->RalinkCounters.BadCQIAutoRecoveryCount ++;
 			DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - Bad CQI. Auto Recovery attempt #%ld\n", pAd->RalinkCounters.BadCQIAutoRecoveryCount));
-			MlmeAutoReconnectLastSSID(pAd);
 		}
 
 		if (pAd->StaCfg.bAutoRoaming)
@@ -1241,49 +1236,6 @@ void STAMlmePeriodicExec(
 		else
 			pAd->StaCfg.bSkipAutoScanConn = FALSE;
 
-		if ((pAd->StaCfg.bAutoReconnect == TRUE)
-			&& RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_START_UP)
-			&& (MlmeValidateSSID(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen) == TRUE))
-		{
-			if ((pAd->ScanTab.BssNr==0) && (pAd->Mlme.CntlMachine.CurrState == CNTL_IDLE)
-				)
-			{
-				MLME_SCAN_REQ_STRUCT	   ScanReq;
-
-				if (RTMP_TIME_AFTER(pAd->Mlme.Now32, pAd->StaCfg.LastScanTime + (10 * OS_HZ))
-					|| (pAd->StaCfg.LastScanTime == 0)
-					|| (pAd->StaCfg.bNotFirstScan == FALSE))
-				{
-					DBGPRINT(RT_DEBUG_TRACE, ("STAMlmePeriodicExec():CNTL - ScanTab.BssNr==0, start a new ACTIVE scan SSID[%s]\n", pAd->MlmeAux.AutoReconnectSsid));
-					if (pAd->StaCfg.BssType == BSS_ADHOC)
-						pAd->StaCfg.bNotFirstScan = TRUE;
-					ScanParmFill(pAd, &ScanReq, (char *) pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen, BSS_ANY, SCAN_ACTIVE);
-					MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_SCAN_REQ, sizeof(MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
-					pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_LIST_SCAN;
-					/* Reset Missed scan number*/
-					pAd->StaCfg.LastScanTime = pAd->Mlme.Now32;
-				}
-				else
-					MlmeAutoReconnectLastSSID(pAd);
-			}
-			else if (pAd->Mlme.CntlMachine.CurrState == CNTL_IDLE)
-			{
-#ifdef CARRIER_DETECTION_SUPPORT /* Roger sync Carrier*/
-				if (pAd->CommonCfg.CarrierDetect.Enable == TRUE)
-				{
-					if ((pAd->Mlme.OneSecPeriodicRound % 5) == 1)
-						MlmeAutoReconnectLastSSID(pAd);
-				}
-				else
-#endif /* CARRIER_DETECTION_SUPPORT */
-				{
-#ifdef WPA_SUPPLICANT_SUPPORT
-					if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_ENABLE)
-#endif // WPA_SUPPLICANT_SUPPORT //
-					MlmeAutoReconnectLastSSID(pAd);
-				}
-			}
-		}
 	}
 
 SKIP_AUTO_SCAN_CONN:
@@ -1386,46 +1338,6 @@ void MlmeAutoScan(
 		RTMP_MLME_HANDLER(pAd);
 	}
 }
-
-/* IRQL = DISPATCH_LEVEL*/
-void MlmeAutoReconnectLastSSID(
-	IN struct rtmp_adapter *pAd)
-{
-	if (pAd->StaCfg.bAutoConnectByBssid)
-	{
-		DBGPRINT(RT_DEBUG_TRACE, ("Driver auto reconnect to last OID_802_11_BSSID setting - %02X:%02X:%02X:%02X:%02X:%02X\n",
-									PRINT_MAC(pAd->MlmeAux.Bssid)));
-
-		pAd->MlmeAux.Channel = pAd->CommonCfg.Channel;
-		MlmeEnqueue(pAd,
-			 MLME_CNTL_STATE_MACHINE,
-			 OID_802_11_BSSID,
-			 ETH_ALEN,
-			 pAd->MlmeAux.Bssid, 0);
-
-		pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
-
-		RTMP_MLME_HANDLER(pAd);
-	}
-	/* check CntlMachine.CurrState to avoid collision with NDIS SetOID request*/
-	else if ((pAd->Mlme.CntlMachine.CurrState == CNTL_IDLE) &&
-		(MlmeValidateSSID(pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen) == TRUE))
-	{
-		NDIS_802_11_SSID OidSsid;
-		OidSsid.SsidLength = pAd->MlmeAux.AutoReconnectSsidLen;
-		memmove(OidSsid.Ssid, pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen);
-
-		DBGPRINT(RT_DEBUG_TRACE, ("Driver auto reconnect to last OID_802_11_SSID setting - %s, len - %d\n", pAd->MlmeAux.AutoReconnectSsid, pAd->MlmeAux.AutoReconnectSsidLen));
-
-		MlmeEnqueue(pAd,
-					MLME_CNTL_STATE_MACHINE,
-					OID_802_11_SSID,
-					sizeof(NDIS_802_11_SSID),
-					&OidSsid, 0);
-		RTMP_MLME_HANDLER(pAd);
-	}
-}
-
 
 /*
 	==========================================================================

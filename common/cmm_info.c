@@ -3776,15 +3776,6 @@ INT	Show_WPAPSK_Proc(
 	return 0;
 }
 
-INT	Show_AutoReconnect_Proc(
-	IN	struct rtmp_adapter *pAd,
-	OUT	char *		pBuf,
-	IN	ULONG			BufLen)
-{
-	snprintf(pBuf, BufLen, "\tAutoReconnect = %d", pAd->StaCfg.bAutoReconnect);
-	return 0;
-}
-
 #endif /* CONFIG_STA_SUPPORT */
 
 INT	Show_AuthMode_Proc(

@@ -1667,7 +1667,6 @@ typedef struct _STA_ADMIN_CONFIG {
 	ULONG WindowsPowerMode;	/* Power mode for AC power */
 	ULONG WindowsBatteryPowerMode;	/* Power mode for battery if exists */
 	BOOLEAN bWindowsACCAMEnable;	/* Enable CAM power mode when AC on */
-	BOOLEAN bAutoReconnect;	/* Set to TRUE when setting OID_802_11_SSID with no matching BSSID */
 	ULONG WindowsPowerProfile;	/* Windows power profile, for NDIS5.1 PnP */
 
 	BOOLEAN	 FlgPsmCanNotSleep; /* TRUE: can not switch ASIC to sleep */
@@ -5486,9 +5485,6 @@ void STAMlmePeriodicExec(
 	struct rtmp_adapter *pAd);
 
 void MlmeAutoScan(
-	IN struct rtmp_adapter *pAd);
-
-void MlmeAutoReconnectLastSSID(
 	IN struct rtmp_adapter *pAd);
 
 BOOLEAN MlmeValidateSSID(

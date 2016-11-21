@@ -361,8 +361,6 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 		return TRUE; /* not need to set SSID */
 	} /* End of if */
 
-	pAd->StaCfg.bAutoReconnect = TRUE;
-
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> SSID = %s\n", pAd->CommonCfg.Ssid));
 	Set_SSID_Proc(pAd, (char *)pAd->CommonCfg.Ssid);
 #endif /* CONFIG_STA_SUPPORT */
@@ -397,7 +395,6 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
 
 
 	pIbssInfo = (CMD_RTPRIV_IOCTL_80211_IBSS *)pData;
-	pAd->StaCfg.bAutoReconnect = TRUE;
 
 	pAd->CommonCfg.BeaconPeriod = pIbssInfo->BeaconInterval;
 	Set_SSID_Proc(pAd, pIbssInfo->Ssid);
@@ -413,7 +410,6 @@ BOOLEAN CFG80211DRV_OpsLeave(
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
 
 
-	pAd->StaCfg.bAutoReconnect = FALSE;
 	pAd->FlgCfg80211Connecting = FALSE;
 	LinkDown(pAd, FALSE);
 #endif /* CONFIG_STA_SUPPORT */
@@ -782,7 +778,6 @@ BOOLEAN CFG80211DRV_Connect(
 	/* TODO: We need to provide a command to set BSSID to associate a AP */
 	//pAd->cfg80211_ctrl.FlgCfg80211Connecting = TRUE;
 
-	pAd->StaCfg.bAutoReconnect = TRUE;
 	pAd->FlgCfg80211Connecting = TRUE;
 
 	/*SSIDLen = pConnInfo->SsidLen;

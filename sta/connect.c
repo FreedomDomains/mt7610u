@@ -548,39 +548,11 @@ void CntlOidSsidProc(
 				 ("CntlOidSsidProc():NDIS_STATUS_MEDIA_DISCONNECT Event C!\n"));
 		}
 
-		if ((pAd->MlmeAux.SsidBssTab.BssNr == 0) &&
-		    (pAd->StaCfg.bAutoReconnect == TRUE) &&
-		    (((pAd->MlmeAux.BssType == BSS_INFRA) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)))
-		     || ((pAd->MlmeAux.BssType == BSS_ADHOC) && !pAd->StaCfg.bNotFirstScan))
-		    && (MlmeValidateSSID(pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen) == TRUE)
-		    ) {
-			MLME_SCAN_REQ_STRUCT ScanReq;
-
-			if (pAd->MlmeAux.BssType == BSS_ADHOC)
-				pAd->StaCfg.bNotFirstScan = TRUE;
-			DBGPRINT(RT_DEBUG_TRACE, ("CntlOidSsidProc():CNTL - No matching BSS, start a new scan\n"));
-
-			if((pAd->StaCfg.ConnectinfoChannel != 0) && (pAd->StaCfg.Connectinfoflag == TRUE))
-			{
-				ScanParmFill(pAd, &ScanReq, (char *) pAd->MlmeAux.Ssid,
-					pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
-				MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_FORCE_SCAN_REQ,
-					sizeof (MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
-				pAd->Mlme.CntlMachine.CurrState =	CNTL_WAIT_SCAN_FOR_CONNECT;
-			}
-			else
-			{
-				ScanParmFill(pAd, &ScanReq, (char *) pAd->MlmeAux.Ssid,
-					     pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
-				MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_SCAN_REQ,
-					    sizeof (MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
-				pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_LIST_SCAN;
-			}
-
-			/* Reset Missed scan number */
-			NdisGetSystemUpTime(&pAd->StaCfg.LastScanTime);
-			pAd->StaCfg.bNotFirstScan = TRUE;
-		} else {
+		{
+			/*
+			 * ULLI : form removed bAutoReconnect
+			 * ULLI : yeah I know it's about (coding)style
+			 */
 
 			if ((pAd->CommonCfg.CountryRegion & 0x7f) == REGION_33_BG_BAND)
 			{
