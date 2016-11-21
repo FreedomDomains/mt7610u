@@ -452,93 +452,6 @@ static int CFG80211_OpsIbssLeave(
 } /* End of CFG80211_OpsIbssLeave */
 #endif /* CONFIG_STA_SUPPORT */
 
-
-/*
-========================================================================
-Routine Description:
-	Set the transmit power according to the parameters.
-
-Arguments:
-	pWiphy			- Wireless hardware description
-	Type			-
-	dBm				- dBm
-
-Return Value:
-	0				- success
-	-x				- fail
-
-Note:
-	Type -
-	TX_POWER_AUTOMATIC: the dbm parameter is ignored
-	TX_POWER_LIMITED: limit TX power by the dbm parameter
-	TX_POWER_FIXED: fix TX power to the dbm parameter
-========================================================================
-*/
-static int CFG80211_OpsTxPwrSet(struct wiphy *pWiphy,
-	struct wireless_dev *wdev,
-	enum nl80211_tx_power_setting Type,
-	int dBm)
-{
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
-	return -EOPNOTSUPP;
-} /* End of CFG80211_OpsTxPwrSet */
-
-
-
-/*
-========================================================================
-Routine Description:
-	Store the current TX power into the dbm variable.
-
-Arguments:
-	pWiphy			- Wireless hardware description
-	pdBm			- dBm
-
-Return Value:
-	0				- success
-	-x				- fail
-
-Note:
-========================================================================
-*/
-static int CFG80211_OpsTxPwrGet(struct wiphy *pWiphy,
-	struct wireless_dev *wdev,
-	int *pdBm)
-{
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
-	return -EOPNOTSUPP;
-} /* End of CFG80211_OpsTxPwrGet */
-
-
-/*
-========================================================================
-Routine Description:
-	Power management.
-
-Arguments:
-	pWiphy			- Wireless hardware description
-	pNdev			-
-	FlgIsEnabled	-
-	Timeout			-
-
-Return Value:
-	0				- success
-	-x				- fail
-
-Note:
-========================================================================
-*/
-static int CFG80211_OpsPwrMgmt(
-	IN struct wiphy						*pWiphy,
-	IN struct net_device				*pNdev,
-	IN bool								FlgIsEnabled,
-	IN int								Timeout)
-{
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
-	return -EOPNOTSUPP;
-} /* End of CFG80211_OpsPwrMgmt */
-
-
 /*
 ========================================================================
 Routine Description:
@@ -1412,12 +1325,6 @@ struct cfg80211_ops CFG80211_Ops = {
 	.leave_ibss					= CFG80211_OpsIbssLeave,
 #endif /* CONFIG_STA_SUPPORT */
 
-	/* set the transmit power according to the parameters */
-	.set_tx_power				= CFG80211_OpsTxPwrSet,
-	/* store the current TX power into the dbm variable */
-	.get_tx_power				= CFG80211_OpsTxPwrGet,
-	/* configure WLAN power management */
-	.set_power_mgmt				= CFG80211_OpsPwrMgmt,
 	/* get station information for the station identified by @mac */
 	.get_station				= CFG80211_OpsStaGet,
 	/* dump station callback */
