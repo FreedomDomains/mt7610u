@@ -70,6 +70,7 @@ static struct usb_device_id rtusb_dev_id[] = {
 	{ USB_DEVICE(0x20f4, 0x806b) },	/* TRENDnet TEW-806UBH  */
 	{ USB_DEVICE(0x7392, 0xc711) }, /* Devolo Wifi ac Stick */
 	{ USB_DEVICE(0x0bdb, 0x1011) }, /* Sitecom Europe B.V. ac  Stick */
+	{ USB_DEVICE(0x2357, 0x0105) }, /* TP-LINK Archer T1U */
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0E8D, 0x7630, 0xff, 0x2, 0xff)}, /* MT7630U */
 	{ USB_DEVICE_AND_INTERFACE_INFO(0x0E8D, 0x7650, 0xff, 0x2, 0xff)}, /* MT7650U */
 	{ }/* Terminating entry */
