@@ -2770,12 +2770,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->fpga_ctl.rx_data_mcs = 0;
 	pAd->fpga_ctl.rx_data_bw = 0;
 	pAd->fpga_ctl.rx_data_gi = 0;
-#ifdef CAPTURE_MODE
-	pAd->fpga_ctl.cap_type = 2; /* CAP_MODE_ADC8; */
-	pAd->fpga_ctl.cap_trigger = 2; /* CAP_TRIGGER_AUTO; */
-	pAd->fpga_ctl.trigger_offset = 200;
-	pAd->fpga_ctl.cap_support = 0;
-#endif /* CAPTURE_MODE */
 #endif /* FPGA_MODE */
 
 #ifdef MT76x0

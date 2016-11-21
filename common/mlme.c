@@ -593,13 +593,6 @@ void MlmePeriodicExec(
 		return;
 	}
 
-#ifdef CONFIG_FPGA_MODE
-#ifdef CAPTURE_MODE
-	cap_status_chk_and_get(pAd);
-#endif /* CAPTURE_MODE */
-#endif /* CONFIG_FPGA_MODE */
-
-
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{

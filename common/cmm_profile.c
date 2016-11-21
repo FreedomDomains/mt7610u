@@ -1957,16 +1957,6 @@ int	RTMPSetProfileParameters(
 #endif /* DOT11_VHT_AC */
 
 #ifdef CONFIG_FPGA_MODE
-#ifdef CAPTURE_MODE
-				if(RTMPGetKeyParameter("cap_support", tmpbuf, 25, pBuffer, TRUE))
-				{
-					ULONG cap_support = simple_strtol(tmpbuf, 0, 10);
-
-					pAd->cap_support = cap_support > 0 ? TRUE : FALSE;
-					DBGPRINT(RT_DEBUG_OFF, ("%s(): CaptureMode=%d\n",
-								__FUNCTION__, pAd->cap_support));
-				}
-#endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 
 

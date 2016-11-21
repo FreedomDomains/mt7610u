@@ -174,17 +174,6 @@ extern u8 WME_PARM_ELEM[];
 extern u8 RALINK_OUI[];
 extern u8 PowerConstraintIE[];
 
-typedef union _CAPTURE_MODE_PACKET_BUFFER {
-	struct
-	{
-		u32       BYTE0:8;
-		u32       BYTE1:8;
-		u32       BYTE2:8;
-		u32       BYTE3:8;
-	} field;
-	u32                   Value;
-}CAPTURE_MODE_PACKET_BUFFER, *PCAPTURE_MODE_PACKET_BUFFER;
-
 typedef struct _RSSI_SAMPLE {
 	CHAR LastRssi0;		/* last received RSSI */
 	CHAR LastRssi1;		/* last received RSSI */
@@ -3194,15 +3183,6 @@ struct rtmp_adapter {
 
 #ifdef CONFIG_FPGA_MODE
 	struct fpga_ctrl fpga_ctl;
-#ifdef CAPTURE_MODE
-	BOOLEAN cap_support;	/* 0: no cap mode; 1: cap mode enable */
-	u8 cap_type;			/* 1: ADC6, 2: ADC8, 3: FEQ */
-	u8 cap_trigger;		/* 1: manual trigger, 2: auto trigger */
-	BOOLEAN do_cap;			/* 1: start to do cap, if auto, will triggered depends on trigger condition, if manual, start immediately */
-	BOOLEAN cap_done;		/* 1: capture done, 0: capture not finish yet */
-	u32 trigger_offset;	/* in unit of bytes */
-	u8 *cap_buf;
-#endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 #ifdef WFA_VHT_PF
 	BOOLEAN force_amsdu;
@@ -7764,17 +7744,6 @@ INT set_data_gi(struct rtmp_adapter*pAd, char *arg);
 INT set_data_basize(struct rtmp_adapter*pAd, char *arg);
 INT set_fpga_mode(struct rtmp_adapter*pAd, char *arg);
 
-#ifdef CAPTURE_MODE
-void cap_mode_init(struct rtmp_adapter*pAd);
-void cap_mode_deinit(struct rtmp_adapter*pAd);
-INT set_cap_start(struct rtmp_adapter*pAd, char *arg);
-INT set_cap_trigger(struct rtmp_adapter*pAd, char *arg);
-INT asic_cap_start(struct rtmp_adapter*pAd);
-INT asic_cap_stop(struct rtmp_adapter*pAd);
-INT cap_status_chk_and_get(struct rtmp_adapter*pAd);
-INT set_cap_dump(struct rtmp_adapter*pAd, char *arg);
-void cap_dump(struct rtmp_adapter*pAd, CHAR *bank1, CHAR *bank2, INT len);
-#endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 
 #ifdef WFA_VHT_PF

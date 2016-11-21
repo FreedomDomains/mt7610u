@@ -189,12 +189,6 @@ int rt28xx_init(void *pAdSrc)
 	pAd->RfIcType = RFIC_UNKNOWN;
 	Status = RTMPReadParametersHook(pAd);
 
-#ifdef CONFIG_FPGA_MODE
-#ifdef CAPTURE_MODE
-	cap_mode_init(pAd);
-#endif /* CAPTURE_MODE */
-#endif /* CONFIG_FPGA_MODE */
-
 	DBGPRINT(RT_DEBUG_OFF, ("1. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
@@ -645,12 +639,6 @@ void RTMPDrvSTAClose(
 
 #ifdef RTMP_TIMER_TASK_SUPPORT
 #endif /* RTMP_TIMER_TASK_SUPPORT */
-
-#ifdef CONFIG_FPGA_MODE
-#ifdef CAPTURE_MODE
-	cap_mode_deinit(pAd);
-#endif /* CAPTURE_MODE */
-#endif /* CONFIG_FPGA_MODE */
 }
 #endif
 
