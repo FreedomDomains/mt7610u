@@ -607,14 +607,13 @@ INT RtmpIoctl_rt_ioctl_giwname(
 
 
 INT RTMP_COM_IoctlHandle(
-	IN	void 				*pAdSrc,
+	IN	struct rtmp_adapter *pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
 	IN	INT						cmd,
 	IN	USHORT					subcmd,
 	IN	void 				*pData,
 	IN	ULONG					Data)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	struct os_cookie *pObj = pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
 	u8 PermanentAddress[ETH_ALEN];

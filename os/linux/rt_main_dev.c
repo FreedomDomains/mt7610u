@@ -52,8 +52,6 @@
 /*---------------------------------------------------------------------*/
 
 /* public function prototype */
-int rt28xx_close(void *net_dev);
-int rt28xx_open(void *net_dev);
 
 /* private function prototype */
 static INT rt28xx_send_packets(IN struct sk_buff *skb_p, IN struct net_device *net_dev);
@@ -172,9 +170,8 @@ Note:
 		(3) BA Reordering: 				ba_reordering_resource_release()
 ========================================================================
 */
-int rt28xx_close(void *dev)
+int rt28xx_close(struct net_device *net_dev)
 {
-	struct net_device * net_dev = (struct net_device *)dev;
 	struct rtmp_adapter*pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
@@ -210,9 +207,8 @@ Return Value:
 Note:
 ========================================================================
 */
-int rt28xx_open(void *dev)
+int rt28xx_open(struct net_device *net_dev)
 {
-	struct net_device * net_dev = (struct net_device *)dev;
 	struct rtmp_adapter *pAd = NULL;
 	int retval = 0;
 	ULONG OpMode;

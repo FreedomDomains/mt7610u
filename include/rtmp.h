@@ -7635,7 +7635,7 @@ void RTMP_TxEvmCalibration(
 #endif /* defined(RT3350) || defined(RT33xx) */
 
 INT RTMP_COM_IoctlHandle(
-	IN void *pAdSrc,
+	IN struct rtmp_adapter *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
 	IN INT cmd,
 	IN USHORT subcmd,

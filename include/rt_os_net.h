@@ -77,7 +77,7 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType);
 void RTMPHandleInterrupt(struct rtmp_adapter *pAd);
 
 INT RTMP_COM_IoctlHandle(
-	IN	void 				*pAd,
+	IN	struct rtmp_adapter *pAd,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
 	IN	INT						cmd,
 	IN	USHORT					subcmd,
@@ -125,21 +125,21 @@ INT RTMP_STA_IoctlHandle(
 	IN  USHORT                  priv_flags );
 #endif /* CONFIG_STA_SUPPORT */
 
-void RTMPDrvSTAOpen(void *pAd);
-void RTMPDrvAPOpen(void *pAd);
-void RTMPDrvSTAClose(void *pAd, void *net_dev);
-void RTMPDrvAPClose(void *pAd, void *net_dev);
-void RTMPInfClose(void *pAd);
+void RTMPDrvSTAOpen(struct rtmp_adapter *pAd);
+void RTMPDrvAPOpen(struct rtmp_adapter *pAd);
+void RTMPDrvSTAClose(struct rtmp_adapter *pAd, struct net_device *net_dev);
+void RTMPDrvAPClose(struct rtmp_adapter *pAd, struct net_device *net_dev);
+void RTMPInfClose(struct rtmp_adapter *pAd);
 
-int rt28xx_init(void *pAd);
+int rt28xx_init(struct rtmp_adapter *pAd);
 
-struct net_device *RtmpPhyNetDevMainCreate(void *pAd);
+struct net_device *RtmpPhyNetDevMainCreate(struct rtmp_adapter *pAd);
 
 /* ========================================================================== */
-int rt28xx_close(void *dev);
-int rt28xx_open(void *dev);
+int rt28xx_close(struct net_device *net_dev);
+int rt28xx_open(struct net_device *net_dev);
 
-__inline INT VIRTUAL_IF_UP(void *pAd)
+__inline INT VIRTUAL_IF_UP(struct rtmp_adapter *pAd)
 {
 	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
 	if (RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_UP,
@@ -148,7 +148,7 @@ __inline INT VIRTUAL_IF_UP(void *pAd)
 	return 0;
 }
 
-__inline void VIRTUAL_IF_DOWN(void *pAd)
+__inline void VIRTUAL_IF_DOWN(struct rtmp_adapter *pAd)
 {
 	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
 	RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_DOWN,

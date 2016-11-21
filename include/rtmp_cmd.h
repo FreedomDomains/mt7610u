@@ -598,12 +598,12 @@ typedef struct __RT_CMD_WAIT_QUEUE_LIST {
 
 typedef struct __RT_CMD_INF_UP_DOWN {
 
-	IN	int (*rt28xx_open)(void *net_dev);
-	IN	int (*rt28xx_close)(void *net_dev);
+	IN	int (*rt28xx_open)(struct net_device *net_dev);
+	IN	int (*rt28xx_close)(struct net_device *net_dev);
 } RT_CMD_INF_UP_DOWN;
 
 typedef struct __RT_CMD_STATS {
-	IN void *pNetDev;
+	IN struct net_device *pNetDev;
 	OUT void *pStats;	/* point to pAd->stats */
 
 	OUT unsigned long rx_packets;	/* total packets received       */

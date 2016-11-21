@@ -27,9 +27,8 @@
 
 #include	"rt_config.h"
 
-int rt28xx_init(void *pAdSrc)
+int rt28xx_init(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
 	UINT index;
 	int Status;
 
@@ -442,10 +441,8 @@ err0:
 
 
 #ifdef CONFIG_STA_SUPPORT
-void RTMPDrvSTAOpen(
-	IN void *pAdSrc)
+void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	u32 reg = 0;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
@@ -496,10 +493,9 @@ void RTMPDrvSTAOpen(
 }
 
 void RTMPDrvSTAClose(
-	IN void *pAdSrc,
-	IN void *net_dev)
+	IN struct rtmp_adapter *pAd,
+	IN struct net_device *net_dev)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	BOOLEAN Cancelled;
 	u32 i = 0;
 	Cancelled = FALSE;
@@ -634,15 +630,8 @@ void RTMPDrvSTAClose(
 }
 #endif
 
-void RTMPInfClose(
-	IN void 			*pAdSrc)
+void RTMPInfClose(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
-
-
-
-
-
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
@@ -741,15 +730,10 @@ void RTMPInfClose(
 
 
 
-struct net_device *RtmpPhyNetDevMainCreate(
-	IN void 			*pAdSrc)
+struct net_device *RtmpPhyNetDevMainCreate(struct rtmp_adapter *pAd)
 {
-	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdSrc;
 	struct net_device *pDevNew;
 	u32 MC_RowID = 0, IoctlIF = 0;
-
-
-	pAd = pAd;
 
 #ifdef HOSTAPD_SUPPORT
 	IoctlIF = pAd->IoctlIF;
