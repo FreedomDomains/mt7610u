@@ -265,21 +265,6 @@ int MiniportMMRequest(
 		QueIdx &= (~MGMT_USE_QUEUE_FLAG);
 	}
 
-#ifdef CONFIG_FPGA_MODE
-	if (pAd->fpga_ctl.fpga_on & 0x1) {
-		if (pAd->fpga_ctl.tx_kick_cnt > 0) {
-			if (pAd->fpga_ctl.tx_kick_cnt < 0xffff)
-				pAd->fpga_ctl.tx_kick_cnt--;
-		}
-		else
-			return NDIS_STATUS_FAILURE;
-
-		QueIdx = 0;
-		bUseDataQ = TRUE;
-	}
-#endif /* CONFIG_FPGA_MODE */
-
-
 	do
 	{
 		/* Reset is in progress, stop immediately*/

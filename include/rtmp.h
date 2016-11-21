@@ -3181,9 +3181,6 @@ struct rtmp_adapter {
     struct sk_buff_head rx0_recycle;
 #endif /* WLAN_SKB_RECYCLE */
 
-#ifdef CONFIG_FPGA_MODE
-	struct fpga_ctrl fpga_ctl;
-#endif /* CONFIG_FPGA_MODE */
 #ifdef WFA_VHT_PF
 	BOOLEAN force_amsdu;
 	BOOLEAN force_noack;
@@ -7730,21 +7727,6 @@ void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI);
 void dump_txinfo(struct rtmp_adapter*pAd, struct txinfo_nmac_pkt *pTxInfo);
 void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo);
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo);
-
-
-
-#ifdef CONFIG_FPGA_MODE
-INT set_tr_stop(struct rtmp_adapter*pAd, char *arg);
-INT set_tx_kickcnt(struct rtmp_adapter*pAd, char *arg);
-INT set_data_phy_mode(struct rtmp_adapter*pAd, char *arg);
-INT set_data_bw(struct rtmp_adapter*pAd, char *arg);
-INT set_data_ldpc(struct rtmp_adapter*pAd, char *arg);
-INT set_data_mcs(struct rtmp_adapter*pAd, char *arg);
-INT set_data_gi(struct rtmp_adapter*pAd, char *arg);
-INT set_data_basize(struct rtmp_adapter*pAd, char *arg);
-INT set_fpga_mode(struct rtmp_adapter*pAd, char *arg);
-
-#endif /* CONFIG_FPGA_MODE */
 
 #ifdef WFA_VHT_PF
 INT set_force_amsdu(struct rtmp_adapter*pAd, char *arg);

@@ -449,13 +449,6 @@ void RTMPDrvSTAOpen(
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
-
-#ifdef CONFIG_FPGA_MODE
-#ifdef CUSTOMER_DEMO
-	set_fpga_mode(pAd, "6");
-#endif /* CUSTOMER_DEMO */
-#endif /* CONFIG_FPGA_MODE */
-
 	/* Enable Interrupt*/
 	RTMP_IRQ_ENABLE(pAd);
 

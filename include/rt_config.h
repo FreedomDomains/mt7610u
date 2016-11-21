@@ -49,10 +49,6 @@
 #include "ags.h"
 #endif /* AGS_SUPPORT */
 
-#ifdef CONFIG_FPGA_MODE
-#include "fpga/fpga_ctl.h"
-#endif /* CONFIG_FPGA_MODE */
-
 #include "mlme.h"
 #include "crypt_md5.h"
 #include "crypt_sha2.h"

@@ -407,16 +407,6 @@ void AsicUpdateProtect(
 		}
 	}
 
-#ifdef CONFIG_FPGA_MODE
-//+++Add by shiang for debug
-	if (pAd->fpga_ctl.fpga_on & 0x8)
-	{
-		DBGPRINT(RT_DEBUG_TRACE, ("%s():RtsRate=%d\n",
-					__FUNCTION__, pAd->CommonCfg.RtsRate));
-	}
-//---Add by shiang for debug
-#endif /* CONFIG_FPGA_MODE */
-
 	/* Handle legacy(B/G) protection*/
 	if (bDisableBGProtect)
 	{

@@ -332,19 +332,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	/* for rate adapation*/
 	pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
 
-#ifdef CONFIG_FPGA_MODE
-	if (pAd->fpga_ctl.fpga_on & 0x6)
-	{
-		pTxWI->TxWIPHYMODE = pAd->fpga_ctl.tx_data_phy;
-		pTxWI->TxWIMCS = pAd->fpga_ctl.tx_data_mcs;
-		pTxWI->TxWILDPC = pAd->fpga_ctl.tx_data_ldpc;
-		pTxWI->TxWIBW = pAd->fpga_ctl.tx_data_bw;
-		pTxWI->TxWIShortGI = pAd->fpga_ctl.tx_data_gi;
-		if (pAd->fpga_ctl.data_basize)
-			pTxWI->TxWIBAWinSize = pAd->fpga_ctl.data_basize;
-	}
-#endif /* CONFIG_FPGA_MODE */
-
 #ifdef MCS_LUT_SUPPORT
 	if ((RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT)) &&
 		(pTxWI->TxWIWirelessCliID < 128) &&
@@ -513,18 +500,6 @@ void RTMPWriteTxWI_Cache(
 	else
 #endif /* WFA_VHT_PF */
 		pTxWI->TxWIACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
-
-#ifdef CONFIG_FPGA_MODE
-	if (pAd->fpga_ctl.fpga_on & 0x6)
-	{
-		pTxWI->TxWIPHYMODE = pAd->fpga_ctl.tx_data_phy;
-		pTxWI->TxWIMCS = pAd->fpga_ctl.tx_data_mcs;
-		pTxWI->TxWIBW = pAd->fpga_ctl.tx_data_bw;
-		pTxWI->TxWIShortGI = pAd->fpga_ctl.tx_data_gi;
-		if (pAd->fpga_ctl.data_basize)
-			pTxWI->TxWIBAWinSize = pAd->fpga_ctl.data_basize;
-	}
-#endif /* CONFIG_FPGA_MODE */
 
 #ifdef MCS_LUT_SUPPORT
 	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) &&

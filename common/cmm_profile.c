@@ -1956,10 +1956,6 @@ int	RTMPSetProfileParameters(
 				VHTParametersHook(pAd, tmpbuf, pBuffer);
 #endif /* DOT11_VHT_AC */
 
-#ifdef CONFIG_FPGA_MODE
-#endif /* CONFIG_FPGA_MODE */
-
-
 #ifdef CARRIER_DETECTION_SUPPORT
 					/*CarrierDetect*/
 					if(RTMPGetKeyParameter("CarrierDetect", tmpbuf, 128, pBuffer, TRUE))

@@ -2756,22 +2756,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->Dot11_H.RDMode = RD_NORMAL_MODE;
 	pAd->Dot11_H.bDFSIndoor = 1;
 
-
-#ifdef CONFIG_FPGA_MODE
-	pAd->fpga_ctl.fpga_on = 0x0;
-	pAd->fpga_ctl.tx_kick_cnt = 0;
-	pAd->fpga_ctl.tx_data_phy = 0;
-	pAd->fpga_ctl.tx_data_ldpc = 0;
-	pAd->fpga_ctl.tx_data_mcs = 0;
-	pAd->fpga_ctl.tx_data_bw = 0;
-	pAd->fpga_ctl.tx_data_gi = 0;
-	pAd->fpga_ctl.rx_data_phy = 0;
-	pAd->fpga_ctl.rx_data_ldpc = 0;
-	pAd->fpga_ctl.rx_data_mcs = 0;
-	pAd->fpga_ctl.rx_data_bw = 0;
-	pAd->fpga_ctl.rx_data_gi = 0;
-#endif /* FPGA_MODE */
-
 #ifdef MT76x0
 	pAd->chipCap.LastTemperatureforVCO = 0x7FFF;
 	pAd->chipCap.LastTemperatureforCal = 0x7FFF;

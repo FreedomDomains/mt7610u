@@ -1424,19 +1424,6 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 		RTMPWIEndianChange(pRxWI, sizeof(*pRxWI));
 #endif
 
-#ifdef CONFIG_FPGA_MODE
-	if (pAd->fpga_ctl.fpga_on & 0x6) {
-		if (pHeader->FC.Type == BTYPE_DATA) {
-			pAd->fpga_ctl.rx_data_phy = pRxWI->RxWIPhyMode;
-			pAd->fpga_ctl.rx_data_bw = pRxWI->RxWIBW;
-			pAd->fpga_ctl.rx_data_ldpc = pRxWI->RxWILDPC;
-			pAd->fpga_ctl.rx_data_mcs = pRxWI->RxWIMCS;
-			pAd->fpga_ctl.rx_data_gi = pRxWI->RxWISGI;
-			pAd->fpga_ctl.rx_data_stbc = pRxWI->RxWISTBC;
-		}
-	}
-#endif /* CONFIG_FPGA_MODE */
-
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
 		if (pAd->CommonCfg.DebugFlags & DBF_DBQ_RXWI)
