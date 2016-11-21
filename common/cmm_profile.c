@@ -599,66 +599,6 @@ static int rtmp_parse_key_buffer_from_file(IN  struct rtmp_adapter *pAd,IN  char
 }
 
 
-static void rtmp_read_key_parms_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
-{
-	STRING		tok_str[16];
-	char *	macptr;
-	INT			i = 0, idx;
-	ULONG		KeyType[HW_BEACON_MAX_NUM];
-	ULONG		KeyIdx;
-
-	memset(KeyType, 0, sizeof(KeyType));
-
-	/*DefaultKeyID*/
-	if(RTMPGetKeyParameter("DefaultKeyID", tmpbuf, 25, buffer, TRUE))
-	{
-
-#ifdef CONFIG_STA_SUPPORT
-		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{
-			KeyIdx = simple_strtol(tmpbuf, 0, 10);
-			RTMPSetSTADefKeyId(pAd, KeyIdx);
-
-			DBGPRINT(RT_DEBUG_TRACE, ("DefaultKeyID(0~3)=%d\n", pAd->StaCfg.DefaultKeyId));
-		}
-#endif /* CONFIG_STA_SUPPORT */
-	}
-
-
-	for (idx = 0; idx < 4; idx++)
-	{
-		snprintf(tok_str, sizeof(tok_str), "Key%dType", idx + 1);
-		/*Key1Type*/
-		if (RTMPGetKeyParameter(tok_str, tmpbuf, 128, buffer, TRUE))
-		{
-		    for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
-		    {
-				/*
-					do sanity check for KeyType length;
-					or in station mode, the KeyType length > 1,
-					the code will overwrite the stack of caller
-					(RTMPSetProfileParameters) and cause srcbuf = NULL
-				*/
-				if (i < MAX_MBSSID_NUM(pAd))
-					KeyType[i] = simple_strtol(macptr, 0, 10);
-		    }
-
-#ifdef CONFIG_STA_SUPPORT
-			IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-			{
-				snprintf(tok_str, sizeof(tok_str), "Key%dStr", idx + 1);
-				if (RTMPGetKeyParameter(tok_str, tmpbuf, 128, buffer, FALSE))
-				{
-					rtmp_parse_key_buffer_from_file(pAd, tmpbuf, KeyType[BSS0], BSS0, idx);
-				}
-			}
-#endif /* CONFIG_STA_SUPPORT */
-		}
-	}
-}
-
-
-
 #ifdef CONFIG_STA_SUPPORT
 static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
 {
@@ -1346,59 +1286,6 @@ static void HTParametersHook(
 }
 #endif /* DOT11_N_SUPPORT */
 
-
-#ifdef CONFIG_STA_SUPPORT
-
-void RTMPSetSTAPassPhrase(struct rtmp_adapter*pAd, char *PassPh)
-{
-	int     ret = TRUE;
-
-	PassPh[strlen(PassPh)] = '\0'; /* make STA can process .$^& for WPAPSK input */
-
-	if ((pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPAPSK) &&
-		(pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPA2PSK) &&
-		(pAd->StaCfg.AuthMode != Ndis802_11AuthModeWPANone)
-		)
-	{
-		ret = FALSE;
-	}
-	else
-	{
-		ret = RT_CfgSetWPAPSKKey(pAd, PassPh, strlen(PassPh), (u8 *)pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen, pAd->StaCfg.PMK);
-	}
-
-	if (ret == TRUE)
-	{
-		memset(pAd->StaCfg.WpaPassPhrase, 0, 64);
-		memmove(pAd->StaCfg.WpaPassPhrase, PassPh, strlen(PassPh));
-		pAd->StaCfg.WpaPassPhraseLen= strlen(PassPh);
-
-	    if ((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPAPSK) ||
-			(pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK))
-		{
-			/* Start STA supplicant state machine*/
-			pAd->StaCfg.WpaState = SS_START;
-		}
-		else if (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
-		{
-			pAd->StaCfg.WpaState = SS_NOTUSE;
-		}
-		DBGPRINT(RT_DEBUG_TRACE, ("%s::(WPAPSK=%s)\n", __FUNCTION__, PassPh));
-	}
-}
-
-
-inline void RTMPSetSTACipherSuites(struct rtmp_adapter*pAd, NDIS_802_11_ENCRYPTION_STATUS WepStatus)
-{
-	/* Update all wepstatus related*/
-	pAd->StaCfg.PairCipher		= WepStatus;
-	pAd->StaCfg.GroupCipher 	= WepStatus;
-	pAd->StaCfg.bMixCipher 		= FALSE;
-}
-
-#endif /* CONFIG_STA_SUPPORT */
-
-
 void RTMPSetCountryCode(struct rtmp_adapter*pAd, char *CountryCode)
 {
 	memmove(pAd->CommonCfg.CountryCode, CountryCode , 2);
@@ -1847,73 +1734,6 @@ int	RTMPSetProfileParameters(
 			pAd->CommonCfg.RDDurRegion = CE;
 			/*pRadarDetect->DfsSessionTime = 13;*/
 		}
-
-		/*AuthMode*/
-		if(RTMPGetKeyParameter("AuthMode", tmpbuf, 128, pBuffer, TRUE))
-		{
-#ifdef CONFIG_STA_SUPPORT
-			IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-			{
-				if ((strcmp(tmpbuf, "WEPAUTO") == 0) || (strcmp(tmpbuf, "wepauto") == 0))
-	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeAutoSwitch;
-	                        else if ((strcmp(tmpbuf, "SHARED") == 0) || (strcmp(tmpbuf, "shared") == 0))
-	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeShared;
-	                        else if ((strcmp(tmpbuf, "WPAPSK") == 0) || (strcmp(tmpbuf, "wpapsk") == 0))
-	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPAPSK;
-	                        else if ((strcmp(tmpbuf, "WPANONE") == 0) || (strcmp(tmpbuf, "wpanone") == 0))
-	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPANone;
-	                        else if ((strcmp(tmpbuf, "WPA2PSK") == 0) || (strcmp(tmpbuf, "wpa2psk") == 0))
-							    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2PSK;
-#ifdef WPA_SUPPLICANT_SUPPORT
-							else if ((strcmp(tmpbuf, "WPA") == 0) || (strcmp(tmpbuf, "wpa") == 0))
-			                    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA;
-							else if ((strcmp(tmpbuf, "WPA2") == 0) || (strcmp(tmpbuf, "wpa2") == 0))
-							    pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;
-#endif /* WPA_SUPPLICANT_SUPPORT */
-	                        else
-	                            pAd->StaCfg.AuthMode = Ndis802_11AuthModeOpen;
-
-	                        pAd->StaCfg.PortSecured = WPA_802_1X_PORT_NOT_SECURED;
-
-				DBGPRINT(RT_DEBUG_TRACE, ("%s::(AuthMode=%d)\n", __FUNCTION__, pAd->StaCfg.AuthMode));
-			}
-#endif /* CONFIG_STA_SUPPORT */
-		}
-		/*EncrypType*/
-		if(RTMPGetKeyParameter("EncrypType", tmpbuf, 128, pBuffer, TRUE))
-		{
-
-#ifdef CONFIG_STA_SUPPORT
-			IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-			{
-				if ((strcmp(tmpbuf, "WEP") == 0) || (strcmp(tmpbuf, "wep") == 0))
-					pAd->StaCfg.WepStatus	= Ndis802_11WEPEnabled;
-				else if ((strcmp(tmpbuf, "TKIP") == 0) || (strcmp(tmpbuf, "tkip") == 0))
-					pAd->StaCfg.WepStatus	= Ndis802_11Encryption2Enabled;
-				else if ((strcmp(tmpbuf, "AES") == 0) || (strcmp(tmpbuf, "aes") == 0))
-					pAd->StaCfg.WepStatus	= Ndis802_11Encryption3Enabled;
-				else
-					pAd->StaCfg.WepStatus	= Ndis802_11WEPDisabled;
-				RTMPSetSTACipherSuites(pAd, pAd->StaCfg.WepStatus);
-				/*RTMPMakeRSNIE(pAd, pAd->StaCfg.AuthMode, pAd->StaCfg.WepStatus, 0);*/
-				DBGPRINT(RT_DEBUG_TRACE, ("%s::(EncrypType=%d)\n", __FUNCTION__, pAd->StaCfg.WepStatus));
-			}
-		#endif /* CONFIG_STA_SUPPORT */
-		}
-
-
-#ifdef CONFIG_STA_SUPPORT
-				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-				{
-					if(RTMPGetKeyParameter("WPAPSK", tmpbuf, 512, pBuffer, FALSE))
-						RTMPSetSTAPassPhrase(pAd, tmpbuf);
-				}
-#endif /* CONFIG_STA_SUPPORT */
-
-				/*DefaultKeyID, KeyType, KeyStr*/
-				rtmp_read_key_parms_from_file(pAd, tmpbuf, pBuffer);
-
-
 
 
 #ifdef DOT11_N_SUPPORT
