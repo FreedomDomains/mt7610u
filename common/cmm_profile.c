@@ -1348,22 +1348,6 @@ static void HTParametersHook(
 
 
 #ifdef CONFIG_STA_SUPPORT
-void RTMPSetSTASSID(struct rtmp_adapter*pAd, char *SSID)
-{
-	pAd->CommonCfg.SsidLen = (u8) strlen(SSID);
-	memset(pAd->CommonCfg.Ssid, 0, NDIS_802_11_LENGTH_SSID);
-	memmove(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
-	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
-	memset(pAd->CommonCfg.LastSsid, 0, NDIS_802_11_LENGTH_SSID);
-	memmove(pAd->CommonCfg.LastSsid, SSID, pAd->CommonCfg.LastSsidLen);
-	pAd->MlmeAux.AutoReconnectSsidLen = pAd->CommonCfg.SsidLen;
-	memset(pAd->MlmeAux.AutoReconnectSsid, 0, NDIS_802_11_LENGTH_SSID);
-	memmove(pAd->MlmeAux.AutoReconnectSsid, SSID, pAd->MlmeAux.AutoReconnectSsidLen);
-	pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
-	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
-	memmove(pAd->MlmeAux.Ssid, SSID, pAd->MlmeAux.SsidLen);
-}
-
 
 void RTMPSetSTAPassPhrase(struct rtmp_adapter*pAd, char *PassPh)
 {
@@ -1510,22 +1494,6 @@ int	RTMPSetProfileParameters(
 		}
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
-
-
-#ifdef CONFIG_STA_SUPPORT
-		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{
-			/*SSID*/
-			if (RTMPGetKeyParameter("SSID", tmpbuf, 256, pBuffer, FALSE))
-			{
-				if (strlen(tmpbuf) <= 32)
-				{
-					RTMPSetSTASSID(pAd, tmpbuf);
-					DBGPRINT(RT_DEBUG_TRACE, ("%s::(SSID=%s)\n", __FUNCTION__, tmpbuf));
-				}
-			}
-		}
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)

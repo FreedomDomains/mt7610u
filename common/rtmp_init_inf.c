@@ -188,6 +188,15 @@ int rt28xx_init(void *pAdSrc)
 		goto err6;
 	}
 
+	pAd->CommonCfg.SsidLen = 0;
+	memset(pAd->CommonCfg.Ssid, 0, NDIS_802_11_LENGTH_SSID);
+	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
+	memset(pAd->CommonCfg.LastSsid, 0, NDIS_802_11_LENGTH_SSID);
+	pAd->MlmeAux.AutoReconnectSsidLen = pAd->CommonCfg.SsidLen;
+	memset(pAd->MlmeAux.AutoReconnectSsid, 0, NDIS_802_11_LENGTH_SSID);
+	pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
+	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
+
 #ifdef RTMP_MAC_USB
 	pAd->CommonCfg.bMultipleIRP = FALSE;
 
