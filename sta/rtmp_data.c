@@ -722,8 +722,6 @@ void STAHandleRxDataFrame(
 
 		}
 
-#ifdef PRE_ANT_SWITCH
-#endif /* PRE_ANT_SWITCH */
 
 #ifdef RTMP_MAC_USB
 		/* there's packet sent to me, keep awake for 1200ms */
@@ -1151,9 +1149,6 @@ void STAHandleRxDataFrame_Hdr_Trns(
 
 		}
 
-#ifdef PRE_ANT_SWITCH
-#endif /* PRE_ANT_SWITCH */
-
 #ifdef RTMP_MAC_USB
 		/* there's packet sent to me, keep awake for 1200ms */
 		if (pAd->CountDowntoPsm < 12)
@@ -1242,8 +1237,6 @@ void STAHandleRxMgmtFrame(
 			pAd->StaCfg.LastSNR2 = (u8) (pRxWI->RxWISNR2);
 #endif /* DOT11N_SS3_SUPPORT */
 
-#ifdef PRE_ANT_SWITCH
-#endif /* PRE_ANT_SWITCH */
 		}
 
 		if ((pHeader->FC.SubType == SUBTYPE_BEACON) &&

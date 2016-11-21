@@ -1556,12 +1556,6 @@ struct common_config {
 	BOOLEAN HT_Disable;	/* 1: disable HT function; 0: enable HT function */
 
 
-#ifdef PRE_ANT_SWITCH
-	BOOLEAN PreAntSwitch;	/* Preamble Antenna Switch */
-	SHORT PreAntSwitchRSSI;	/* Preamble Antenna Switch RSSI threshold */
-	SHORT PreAntSwitchTimeout; /* Preamble Antenna Switch timeout in seconds */
-#endif /* PRE_ANT_SWITCH */
-
 #ifdef CFO_TRACK
 	SHORT	CFOTrack;	/* CFO Tracking. 0=>use default, 1=>track, 2-7=> track 8-n times, 8=>done tracking */
 #endif /* CFO_TRACK */
@@ -6350,22 +6344,6 @@ INT	Set_ITxBfEn_Proc(
 INT Set_RateAdaptInterval(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg);
-
-
-#ifdef PRE_ANT_SWITCH
-INT Set_PreAntSwitch_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg);
-
-INT Set_PreAntSwitchRSSI_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg);
-
-INT Set_PreAntSwitchTimeout_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg);
-
-#endif /* PRE_ANT_SWITCH */
 
 
 #ifdef CFO_TRACK

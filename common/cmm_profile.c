@@ -1537,15 +1537,6 @@ int	RTMPSetProfileParameters(
 #endif /* TXBF_SUPPORT */
 
 
-#ifdef PRE_ANT_SWITCH
-		/*PreAntSwitch*/
-		if(RTMPGetKeyParameter("PreAntSwitch", tmpbuf, 32, pBuffer, TRUE))
-		{
-			pAd->CommonCfg.PreAntSwitch = (simple_strtol(tmpbuf, 0, 10) != 0);
-			DBGPRINT(RT_DEBUG_TRACE, ("PreAntSwitch = %d\n", pAd->CommonCfg.PreAntSwitch));
-		}
-#endif /* PRE_ANT_SWITCH */
-
 #ifdef DBG_CTRL_SUPPORT
 		/*DebugFlags*/
 		if(RTMPGetKeyParameter("DebugFlags", tmpbuf, 32, pBuffer, TRUE))
