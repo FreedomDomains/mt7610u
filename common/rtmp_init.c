@@ -2611,9 +2611,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->StaCfg.LastScanTime = 0;
 
 		memset(pAd->nickname, 0, IW_ESSID_MAX_SIZE+1);
-#ifdef PROFILE_STORE
-		pAd->bWriteDat = FALSE;
-#endif /* PROFILE_STORE */
 #ifdef WPA_SUPPLICANT_SUPPORT
 		pAd->StaCfg.IEEE8021X = FALSE;
 		pAd->StaCfg.IEEE8021x_required_keys = FALSE;
@@ -2621,9 +2618,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->StaCfg.bRSN_IE_FromWpaSupplicant = FALSE;
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 		pAd->StaCfg.WpaSupplicantUP = WPA_SUPPLICANT_ENABLE;
-#ifdef PROFILE_STORE
-		pAd->bWriteDat = TRUE;
-#endif /* PROFILE_STORE */
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 		pAd->StaCfg.bLostAp = FALSE;
 		pAd->StaCfg.pWpsProbeReqIe = NULL;
