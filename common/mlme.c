@@ -488,7 +488,6 @@ void MlmeHalt(
 #ifdef LED_CONTROL_SUPPORT
 		/* Set LED*/
 		RTMPSetLED(pAd, LED_HALT);
-		RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it.*/
 #ifdef RTMP_MAC_USB
 		{
 			LED_CFG_STRUC LedCfg;

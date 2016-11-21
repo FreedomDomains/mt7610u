@@ -2274,8 +2274,6 @@ void LinkDown(
 #ifdef LED_CONTROL_SUPPORT
 	/* Set LED */
 	RTMPSetLED(pAd, LED_LINK_DOWN);
-	pAd->LedCntl.LedIndicatorStrength = 0xF0;
-	RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it. */
 #endif /* LED_CONTROL_SUPPORT */
 
 		AsicDisableSync(pAd);

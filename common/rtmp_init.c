@@ -2329,11 +2329,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	/*pAd->TurnAggrBulkInCount = 0;*/
 	pAd->bUsbTxBulkAggre = 0;
 
-#ifdef LED_CONTROL_SUPPORT
-	/* init as unsed value to ensure driver will set to MCU once.*/
-	pAd->LedCntl.LedIndicatorStrength = 0xFF;
-#endif /* LED_CONTROL_SUPPORT */
-
 	pAd->CommonCfg.MaxPktOneTxBulk = 2;
 	pAd->CommonCfg.TxBulkFactor = 1;
 	pAd->CommonCfg.RxBulkFactor =1;

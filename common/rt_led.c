@@ -94,7 +94,6 @@ void RTMPSetLEDStatus(
 	switch (Status) {
 		case LED_LINK_DOWN:
 			LinkStatus = LINK_STATUS_LINK_DOWN;
-			pAd->LedCntl.LedIndicatorStrength = 0;
 			MCUCmd = MCU_SET_LED_MODE;
 			break;
 		case LED_LINK_UP:
@@ -146,73 +145,6 @@ void RTMPSetLEDStatus(
 
 }
 
-
-/*
-	========================================================================
-
-	Routine Description:
-		Set LED Signal Stregth
-
-	Arguments:
-		pAd						Pointer to our adapter
-		Dbm						Signal Stregth
-
-	Return Value:
-		None
-
-	IRQL = PASSIVE_LEVEL
-
-	Note:
-		Can be run on any IRQL level.
-
-		According to Microsoft Zero Config Wireless Signal Stregth definition as belows.
-		<= -90  No Signal
-		<= -81  Very Low
-		<= -71  Low
-		<= -67  Good
-		<= -57  Very Good
-		 > -57  Excellent
-	========================================================================
-*/
-void RTMPSetSignalLED(
-	IN struct rtmp_adapter *	pAd,
-	IN NDIS_802_11_RSSI Dbm)
-{
-	u8 	nLed = 0;
-
-
-#ifdef STATS_COUNT_SUPPORT
-	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
-		return;
-#endif /* STATS_COUNT_SUPPORT */
-
-	if (pAd->LedCntl.MCULedCntl.field.LedMode == LED_MODE_SIGNAL_STREGTH) {
-		if (Dbm <= -90)
-			nLed = 0;
-		else if (Dbm <= -81)
-			nLed = 1;
-		else if (Dbm <= -71)
-			nLed = 3;
-		else if (Dbm <= -67)
-			nLed = 7;
-		else if (Dbm <= -57)
-			nLed = 15;
-		else
-			nLed = 31;
-
-		/* */
-		/* Update Signal Stregth to firmware if changed. */
-		/* */
-		if (pAd->LedCntl.LedIndicatorStrength != nLed) {
-			AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, nLed, pAd->LedCntl.MCULedCntl.field.Polarity, FALSE);
-			pAd->LedCntl.LedIndicatorStrength = nLed;
-		}
-	}
-}
-
-
-
-
 void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 {
 	USHORT Value;
@@ -250,9 +182,6 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (u8)pLedCntl->LedACTCfg, (u8)(pLedCntl->LedACTCfg >> 8), FALSE);
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (u8)pLedCntl->LedPolarity, (u8)(pLedCntl->LedPolarity >> 8), FALSE);
 	AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, 0, pLedCntl->MCULedCntl.field.Polarity, FALSE);
-
-	pAd->LedCntl.LedIndicatorStrength = 0xFF;
-	RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, before link up */
 
 	RTMPStartLEDMode(pAd);
 }
