@@ -86,6 +86,7 @@ Note:
 int MainVirtualIF_close(IN struct net_device *net_dev)
 {
 	struct rtmp_adapter *pAd = NULL;
+	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -98,8 +99,8 @@ int MainVirtualIF_close(IN struct net_device *net_dev)
 
 	RTMPInfClose(pAd);
 
-
-	VIRTUAL_IF_DOWN(pAd);
+	RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_DOWN,
+						0, &InfConf, 0);
 
 	RT_MOD_DEC_USE_COUNT();
 
@@ -129,6 +130,7 @@ Note:
 int MainVirtualIF_open(IN struct net_device *net_dev)
 {
 	struct rtmp_adapter *pAd = NULL;
+	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -136,8 +138,8 @@ int MainVirtualIF_open(IN struct net_device *net_dev)
 	if (pAd == NULL)
 		return 0; /* close ok */
 
-
-	if (VIRTUAL_IF_UP(pAd) != 0)
+	if (RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_UP,
+						0, &InfConf, 0) != NDIS_STATUS_SUCCESS)
 		return -1;
 
 	/* increase MODULE use count */

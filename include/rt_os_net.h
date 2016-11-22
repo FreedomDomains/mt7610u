@@ -139,23 +139,6 @@ struct net_device *RtmpPhyNetDevMainCreate(struct rtmp_adapter *pAd);
 int rt28xx_close(struct net_device *net_dev);
 int rt28xx_open(struct net_device *net_dev);
 
-__inline INT VIRTUAL_IF_UP(struct rtmp_adapter *pAd)
-{
-	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
-	if (RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_UP,
-						0, &InfConf, 0) != NDIS_STATUS_SUCCESS)
-		return -1;
-	return 0;
-}
-
-__inline void VIRTUAL_IF_DOWN(struct rtmp_adapter *pAd)
-{
-	RT_CMD_INF_UP_DOWN InfConf = { rt28xx_open, rt28xx_close };
-	RTMP_COM_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_VIRTUAL_INF_DOWN,
-						0, &InfConf, 0);
-	return;
-}
-
 #ifdef RTMP_MODULE_OS
 
 
