@@ -1522,16 +1522,6 @@ struct common_config {
 	HTTRANSMIT_SETTING MCastPhyMode;
 #endif /* MCAST_RATE_SPECIFIC */
 
-#ifdef SINGLE_SKU
-	UINT16 DefineMaxTxPwr;
-	BOOLEAN bSKUMode;
-	UINT16 AntGain;
-	UINT16 BandedgeDelta;
-	UINT16 ModuleTxpower;
-#endif /* SINGLE_SKU */
-
-
-
 	BOOLEAN HT_DisallowTKIP;	/* Restrict the encryption type in 11n HT mode */
 
 	BOOLEAN HT_Disable;	/* 1: disable HT function; 0: enable HT function */
@@ -4235,14 +4225,6 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN char *				pDeltaPowerByBbpR1);
 
 void AsicExtraPowerOverMAC(struct rtmp_adapter*pAd);
-
-#ifdef SINGLE_SKU
-void GetSingleSkuDeltaPower(
-	IN 		struct rtmp_adapter *	pAd,
-	IN 		char *			pTotalDeltaPower,
-	INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
-	INOUT  	u8 *             	pSingleSKUBbpR1Offset);
-#endif /* SINGLE_SKU*/
 
 void AsicPercentageDeltaPower(
 	IN 		struct rtmp_adapter *		pAd,
@@ -7374,12 +7356,6 @@ INT Set_VcoPeriod_Proc(
 INT	Set_RateAlg_Proc(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg);
-
-#ifdef SINGLE_SKU
-INT Set_ModuleTxpower_Proc(
-	IN struct rtmp_adapter*pAd,
-	IN char *arg);
-#endif /* SINGLE_SKU */
 
 void RtmpEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,

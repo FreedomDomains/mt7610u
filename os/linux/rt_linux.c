@@ -2264,11 +2264,7 @@ BOOLEAN CFG80211_SupBandInit(
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> Number of rate = %d\n", NumOfRate));
 
 	/* get TX power */
-#ifdef SINGLE_SKU
-	CurTxPower = pBandInfo->DefineMaxTxPwr; /* dBm */
-#else
 	CurTxPower = 0; /* unknown */
-#endif /* SINGLE_SKU */
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> CurTxPower = %d dBm\n", CurTxPower));
 

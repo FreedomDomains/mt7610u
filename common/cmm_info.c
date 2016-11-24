@@ -2971,18 +2971,6 @@ char *RTMPGetRalinkEncryModeStr(
 	}
 }
 
-
-#ifdef SINGLE_SKU
-INT	Show_ModuleTxpower_Proc(
-	IN	struct rtmp_adapter *pAd,
-	OUT	char *		pBuf,
-	IN	ULONG			BufLen)
-{
-	snprintf(pBuf, BufLen, "\tModuleTxpower = %d", pAd->CommonCfg.ModuleTxpower);
-	return 0;
-}
-#endif /* SINGLE_SKU */
-
 #ifdef APCLI_SUPPORT
  INT RTMPIoctlConnStatus(
 	IN	struct rtmp_adapter *pAd,
@@ -3274,26 +3262,6 @@ INT Set_VcoPeriod_Proc(
 			("VCO Period = %d seconds\n", pAd->chipCap.VcoPeriod));
 	return TRUE;
 }
-
-#ifdef SINGLE_SKU
-INT Set_ModuleTxpower_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg)
-{
-	UINT16 Value;
-
-	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("Do NOT accept this command after interface is up.\n"));
-		return FALSE;
-	}
-
-	Value = (UINT16)simple_strtol(arg, 0, 10);
-	pAd->CommonCfg.ModuleTxpower = Value;
-	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_ModuleTxpower_Proc::(ModuleTxpower=%d)\n", pAd->CommonCfg.ModuleTxpower));
-	return TRUE;
-}
-#endif /* SINGLE_SKU */
 
 #ifdef WFA_VHT_PF
 INT set_force_noack(struct rtmp_adapter*pAd, char *arg)
