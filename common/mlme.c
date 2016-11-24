@@ -4490,11 +4490,6 @@ BOOLEAN RTMPCheckHt(
     if (pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth == BW_20)
         pAd->MlmeAux.HtCapability.MCSSet[4] = 0x0;  /* BW20 can't transmit MCS32*/
 
-#ifdef TXBF_SUPPORT
-	if (pAd->chipCap.FlgHwTxBfCap)
-	    setETxBFCap(pAd, &pAd->MlmeAux.HtCapability.TxBFCap);
-#endif /* TXBF_SUPPORT */
-
 	COPY_AP_HTSETTINGS_FROM_BEACON(pAd, pHtCapability);
 	return TRUE;
 }

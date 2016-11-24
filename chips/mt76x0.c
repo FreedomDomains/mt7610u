@@ -2583,9 +2583,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipCap->SnrFormula = SNR_FORMULA2;
 	pChipCap->VcoPeriod = 10;
 	pChipCap->FlgIsVcoReCalMode = VCO_CAL_MODE_3;
-#ifdef TXBF_SUPPORT
-	pChipCap->FlgHwTxBfCap = FALSE;
-#endif /* TXBF_SUPPORT */
 #ifdef FIFO_EXT_SUPPORT
 	pChipCap->FlgHwFifoExtCap = TRUE;
 #endif /* FIFO_EXT_SUPPORT */

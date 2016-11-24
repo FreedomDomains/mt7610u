@@ -208,12 +208,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-				RTMPInitTimer(pAd, &pEntry->eTxBfProbeTimer, GET_TIMER_FUNCTION(eTxBfProbeTimerExec), pEntry, FALSE);
-#endif /* TXBF_SUPPORT */
-
 			pEntry->pAd = pAd;
 			pEntry->CMTimerRunning = FALSE;
 			pEntry->EnqueueEapolStartTimerRunning = EAPOL_START_DISABLE;
@@ -309,13 +303,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			/* Add this entry into ASIC RX WCID search table */
 			RTMP_STA_ENTRY_ADD(pAd, pEntry);
 
-
-
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-				spin_lock_init(pAd, &pEntry->TxSndgLock);
-#endif /* TXBF_SUPPORT */
-
 			DBGPRINT(RT_DEBUG_TRACE, ("MacTableInsertEntry - allocate entry #%d, Total= %d\n",i, pAd->MacTab.Size));
 			break;
 		}
@@ -388,11 +375,6 @@ BOOLEAN MacTableDeleteEntry(
 			/* free resources of BA*/
 			BASessionTearDownALL(pAd, pEntry->Aid);
 #endif /* DOT11_N_SUPPORT */
-
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-				RTMPReleaseTimer(&pEntry->eTxBfProbeTimer, &Cancelled);
-#endif /* TXBF_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
@@ -478,10 +460,7 @@ BOOLEAN MacTableDeleteEntry(
                         SET_ENTRY_NONE(pEntry);
 
 			pAd->MacTab.Size --;
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-				;
-#endif /* TXBF_SUPPORT */
+
 			DBGPRINT(RT_DEBUG_TRACE, ("MacTableDeleteEntry1 - Total= %d\n", pAd->MacTab.Size));
 		}
 		else

@@ -1646,59 +1646,6 @@ void NICUpdateFifoStaCounters(
 			pEntry->DebugFIFOCount++;
 
 
-#ifdef DOT11_N_SUPPORT
-#ifdef TXBF_SUPPORT
-			/* Update BF statistics*/
-			if (pAd->chipCap.FlgHwTxBfCap)
-			{
-				int succMCS = (StaFifo.field.SuccessRate & 0x7F);
-				int origMCS = pid;
-
-				if (succMCS==32)
-					origMCS = 32;
-#ifdef DOT11N_SS3_SUPPORT
-				if (succMCS>origMCS && pEntry->HTCapability.MCSSet[2]==0xff)
-					origMCS += 16;
-#endif /* DOT11N_SS3_SUPPORT */
-
-				if (succMCS>origMCS)
-					origMCS = succMCS+1;
-
-				/* MCS16 falls back to MCS8*/
-				if (origMCS>=16 && succMCS<=8)
-					succMCS += 8;
-
-				/* MCS8 falls back to 0 */
-				if (origMCS >= 8 && succMCS == 0)
-					succMCS += 7;
-
-				reTry = origMCS-succMCS;
-
-				if (StaFifo.field.eTxBF) {
-					if (StaFifo.field.TxSuccess)
-						pEntry->TxBFCounters.ETxSuccessCount++;
-					else
-						pEntry->TxBFCounters.ETxFailCount++;
-					pEntry->TxBFCounters.ETxRetryCount += reTry;
-				}
-				else if (StaFifo.field.iTxBF) {
-					if (StaFifo.field.TxSuccess)
-						pEntry->TxBFCounters.ITxSuccessCount++;
-					else
-						pEntry->TxBFCounters.ITxFailCount++;
-					pEntry->TxBFCounters.ITxRetryCount += reTry;
-				}
-				else {
-					if (StaFifo.field.TxSuccess)
-						pEntry->TxBFCounters.TxSuccessCount++;
-					else
-						pEntry->TxBFCounters.TxFailCount++;
-					pEntry->TxBFCounters.TxRetryCount += reTry;
-				}
-			}
-#endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
-
 #ifdef UAPSD_SUPPORT
 			UAPSD_SP_AUE_Handle(pAd, pEntry, StaFifo.field.TxSuccess);
 #endif /* UAPSD_SUPPORT */
@@ -2482,11 +2429,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.MlmeTransmit.field.MODE = MODE_OFDM;
 
 	pAd->CommonCfg.BeaconPeriod = 100;     /* in mSec*/
-
-#ifdef TXBF_SUPPORT
-	pAd->CommonCfg.ETxBfNoncompress = 0;
-	pAd->CommonCfg.ETxBfIncapable = 0;
-#endif /* TXBF_SUPPORT */
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	pAd->CommonCfg.lowTrafficThrd = 2;

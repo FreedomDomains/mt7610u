@@ -714,25 +714,6 @@ typedef struct _COUNTER_DRS {
 	ULONG LastTxOkCount;
 } COUNTER_DRS, *PCOUNTER_DRS;
 
-
-#ifdef DOT11_N_SUPPORT
-#ifdef TXBF_SUPPORT
-typedef
-    struct {
-	ULONG TxSuccessCount;
-	ULONG TxRetryCount;
-	ULONG TxFailCount;
-	ULONG ETxSuccessCount;
-	ULONG ETxRetryCount;
-	ULONG ETxFailCount;
-	ULONG ITxSuccessCount;
-	ULONG ITxRetryCount;
-	ULONG ITxFailCount;
-} COUNTER_TXBF;
-#endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
-
-
 /***************************************************************************
   *	security key related data structure
   **************************************************************************/
@@ -1568,16 +1549,6 @@ struct common_config {
 	USHORT	TrainUpHighThrd;	/* QuickDRS Hybrid train up high threshold */
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
-#ifdef TXBF_SUPPORT
-	ULONG ITxBfTimeout;
-	ULONG ETxBfTimeout;
-	ULONG	ETxBfEnCond;		/* Enable sending of sounding and beamforming */
-	BOOLEAN	ETxBfNoncompress;	/* Force non-compressed Sounding Response */
-	BOOLEAN	ETxBfIncapable;		/* Report Incapable of BF in TX BF Capabilities */
-#endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
-
 #ifdef DBG_CTRL_SUPPORT
 	ULONG DebugFlags;	/* Temporary debug flags */
 #endif /* DBG_CTRL_SUPPORT */
@@ -1955,9 +1926,6 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 PTK[64];
 	u8 ReTryCounter;
 	RALINK_TIMER_STRUCT RetryTimer;
-#ifdef TXBF_SUPPORT
-	RALINK_TIMER_STRUCT eTxBfProbeTimer;
-#endif /* TXBF_SUPPORT */
 	NDIS_802_11_AUTHENTICATION_MODE AuthMode;	/* This should match to whatever microsoft defined */
 	NDIS_802_11_WEP_STATUS WepStatus;
 	NDIS_802_11_WEP_STATUS GroupKeyWepStatus;
@@ -2035,12 +2003,6 @@ typedef struct _MAC_TABLE_ENTRY {
 
 	u32 CachedBuf[16];	/* UINT (4 bytes) for alignment */
 
-#ifdef TXBF_SUPPORT
-	COUNTER_TXBF TxBFCounters;		/* TxBF Statistics */
-	UINT LastETxCount;		/* Used to compute %BF statistics */
-	UINT LastITxCount;
-	UINT LastTxCount;
-#endif /* TXBF_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
 
 	UINT FIFOCount;
@@ -2082,34 +2044,6 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 mfbToTx;
 	u8 mfb0, mfb1;
 #endif	/* MFB_SUPPORT */
-#ifdef TXBF_SUPPORT
-	u8 		TxSndgType;
-	spinlock_t	TxSndgLock;
-
-/* ETxBF */
-	u8 	bfState;
-	u8 	sndgMcs;
-	u8 	sndgBW;
-	INT			sndg0Snr0, sndg0Snr1, sndg0Snr2;
-	u8 	sndg0Mcs;
-#ifdef ETXBF_EN_COND3_SUPPORT
-	u8 	bestMethod;
-	u8 	sndgRateIdx;
-	u8 	bf0Mcs, sndg0RateIdx, bf0RateIdx;
-	u8 	sndg1Mcs, bf1Mcs, sndg1RateIdx, bf1RateIdx;
-	INT			sndg1Snr0, sndg1Snr1, sndg1Snr2;
-#endif /* ETXBF_EN_COND3_SUPPORT */
-	u8 	noSndgCnt;
-	u8 	eTxBfEnCond;
-	u8 	noSndgCntThrd, ndpSndgStreams;
-	u8 	iTxBfEn;
-
-	BOOLEAN		phyETxBf;			/* True=>Set ETxBF bit in PHY rate */
-	BOOLEAN		phyITxBf;			/* True=>Set ITxBF bit in PHY rate */
-	u8 	lastNonBfRate;		/* Last good non-BF rate */
-	BOOLEAN		lastRatePhyTxBf;	/* For Quick Check. True if last rate was BF */
-	USHORT      BfTxQuality[MAX_TX_RATE_INDEX + 1];	/* Beamformed TX Quality */
-#endif /* TXBF_SUPPORT */
 
 	/* to record the each TX rate's quality. 0 is best, the bigger the worse. */
 	USHORT      TxQuality[MAX_TX_RATE_INDEX + 1];
@@ -2745,9 +2679,6 @@ struct rtmp_adapter {
 	ULONG EepromVersion;	/* byte 0: version, byte 1: revision, byte 2~3: unused */
 	ULONG FirmwareVersion;	/* byte 0: Minor version, byte 1: Major version, otherwise unused. */
 	USHORT EEPROMDefaultValue[NUM_EEPROM_BBP_PARMS];
-#ifdef TXBF_SUPPORT
-	USHORT EEPROMITxBFCalParams[6];
-#endif /* TXBF_SUPPORT */
 	u8 EEPROMAddressNum;	/* 93c46=6  93c66=8 */
 	BOOLEAN EepromAccess;
 	u8 EFuseTag;
@@ -3430,13 +3361,6 @@ typedef struct _TX_BLK_
 
 	/*YOU SHOULD NOT TOUCH IT! Following parameters are used for hardware-depended layer. */
 	ULONG				Priv;						/* Hardware specific value saved in here. */
-
-
-#ifdef TXBF_SUPPORT
-	u8 			TxSndgPkt; /* 1: sounding 2: NDP sounding */
-	u8 			TxNDPSndgBW;
-	u8 			TxNDPSndgMcs;
-#endif /* TXBF_SUPPORT */
 
 	u8 			naf_type;
 #ifdef TX_PKT_SG
@@ -5472,13 +5396,6 @@ void MlmeCheckForRoaming(
 BOOLEAN MlmeCheckForFastRoaming(
 	IN  struct rtmp_adapter *  pAd);
 
-#ifdef TXBF_SUPPORT
-BOOLEAN MlmeTxBfAllowed(
-	IN struct rtmp_adapter *		pAd,
-	IN PMAC_TABLE_ENTRY		pEntry,
-	IN struct _RTMP_RA_LEGACY_TB *pTxRate);
-#endif /* TXBF_SUPPORT */
-
 #ifdef AGS_SUPPORT
 INT Show_AGS_Proc(
     IN  struct rtmp_adapter *pAd,
@@ -5931,14 +5848,6 @@ void WPARetryExec(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3);
 
-#ifdef TXBF_SUPPORT
-void eTxBfProbeTimerExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
-#endif /* TXBF_SUPPORT */
-
 void EnqueueStartForPSKExec(
     IN void *SystemSpecific1,
     IN void *FunctionContext,
@@ -6220,101 +6129,6 @@ INT	Set_DebugFunc_Proc(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg);
 #endif
-
-#ifdef TXBF_SUPPORT
-INT	Set_ReadITxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ReadETxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_WriteITxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_WriteETxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_StatITxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_StatETxBf_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_TxBfTag_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT Set_ITxBfTimeout_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT Set_ETxBfTimeout_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT	Set_InvTxBfTag_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ITxBfCal_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ITxBfDivCal_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ITxBfLnaCal_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ETxBfEnCond_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT Set_ETxBfCodebook_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT Set_ETxBfCoefficient_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT Set_ETxBfGrouping_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT Set_ETxBfNoncompress_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT Set_ETxBfIncapable_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *         arg);
-
-INT	Set_NoSndgCntThrd_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_NdpSndgStreams_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_Trigger_Sounding_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-INT	Set_ITxBfEn_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
-#endif /* TXBF_SUPPORT */
 
 INT Set_RateAdaptInterval(
 	IN struct rtmp_adapter*pAd,
@@ -6600,44 +6414,6 @@ UINT deaggregate_AMSDU_announce(
 	IN	u8 *		pData,
 	IN	ULONG			DataSize,
 	IN	u8 		OpMode);
-
-#ifdef TXBF_SUPPORT
-BOOLEAN clientSupportsETxBF(struct rtmp_adapter*pAd, HT_BF_CAP *pTxBFCap);
-void setETxBFCap(struct rtmp_adapter*pAd, HT_BF_CAP *pTxBFCap);
-
-#ifdef ETXBF_EN_COND3_SUPPORT
-void txSndgSameMcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY * pEnt, u8 smoothMfb);
-void txSndgOtherGroup(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry);
-void txMrqInvTxBF(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry);
-void chooseBestMethod(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, u8 mfb);
-void rxBestSndg(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry);
-#endif /* ETXBF_EN_COND3_SUPPORT */
-
-void handleBfFb(struct rtmp_adapter*pAd, RX_BLK *pRxBlk);
-
-void TxBFInit(
-	IN struct rtmp_adapter *	pAd,
-	IN MAC_TABLE_ENTRY	*pEntry,
-	IN BOOLEAN			supportsETxBF);
-
-void eTxBFProbing(
- 	IN struct rtmp_adapter *	pAd,
-	IN MAC_TABLE_ENTRY	*pEntry);
-
-void Trigger_Sounding_Packet(
-	IN	struct rtmp_adapter *pAd,
-	IN	u8 		SndgType,
-	IN	u8 		SndgBW,
-	IN	u8 		SndgMcs,
-	IN  MAC_TABLE_ENTRY *pEntry);
-
-void rtmp_asic_set_bf(
-	IN struct rtmp_adapter*pAd);
-
-BOOLEAN rtmp_chk_itxbf_calibration(
-	IN struct rtmp_adapter*pAd);
-
-#endif /* TXBF_SUPPORT */
 
 BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, u8 *pRspBuffer);
 
@@ -7247,12 +7023,6 @@ BOOLEAN	AUTH_ReqSend(
 
 
 void ReSyncBeaconTime(struct rtmp_adapter*pAd);
-
-#ifdef TXBF_SUPPORT
-void handleHtcField(
-	IN	struct rtmp_adapter *pAd,
-	IN	RX_BLK			*pRxBlk);
-#endif /* TXBF_SUPPORT */
 
 #ifdef MFB_SUPPORT
 void MFB_PerPareMRQ(

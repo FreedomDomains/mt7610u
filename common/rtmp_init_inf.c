@@ -364,21 +364,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 #endif /* DOT11N_SS3_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
-#ifdef TXBF_SUPPORT
-	if (pAd->CommonCfg.ITxBfTimeout)
-	{
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R179, 0x02);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R180, 0);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R182, pAd->CommonCfg.ITxBfTimeout & 0xFF);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R180, 1);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R182, (pAd->CommonCfg.ITxBfTimeout>>8) & 0xFF);
-	}
-
-	if (pAd->CommonCfg.ETxBfTimeout)
-	{
-		RTMP_IO_WRITE32(pAd, TX_TXBF_CFG_3, pAd->CommonCfg.ETxBfTimeout);
-	}
-#endif /* TXBF_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
 
 	DBGPRINT_S(Status, ("<==== rt28xx_init, Status=%x\n", Status));

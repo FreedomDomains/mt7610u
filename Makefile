@@ -137,8 +137,6 @@ HAS_LED_CONTROL_SUPPORT=y
 #Support WIDI feature
 #Must enable HAS_WSC at the same time.
 
-HAS_TXBF_SUPPORT=n
-
 HAS_NEW_RATE_ADAPT_SUPPORT=y
 
 HAS_RATE_ADAPT_AGS_SUPPORT=n
@@ -259,10 +257,6 @@ WFLAGS += -DDOT11_N_SUPPORT
 
 ifeq ($(HAS_DOT11N_DRAFT3_SUPPORT),y)
 WFLAGS += -DDOT11N_DRAFT3
-endif
-
-ifeq ($(HAS_TXBF_SUPPORT),y)
-WFLAGS += -DTXBF_SUPPORT
 endif
 
 ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
@@ -541,13 +535,6 @@ obj_cmm += \
 		common/ba_action.o\
 		mgmt/mgmt_ht.o
 
-#ifdef TXBF_SUPPORT
-ifeq ($(HAS_TXBF_SUPPORT),y)
-obj_cmm += \
-		common/cmm_txbf.o\
-		common/cmm_txbf_cal.o
-endif
-#endif // TXBF_SUPPORT //
 endif
 #endif // DOT11_N_SUPPORT //
 

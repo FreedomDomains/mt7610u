@@ -556,9 +556,6 @@ struct rtmp_chip_cap {
 #define VCO_CAL_MODE_3		3	/* toggle RF4[7] */
 	u8	FlgIsVcoReCalMode;
 
-#ifdef TXBF_SUPPORT
-	BOOLEAN FlgHwTxBfCap;
-#endif /* TXBF_SUPPORT */
 #ifdef FIFO_EXT_SUPPORT
 	BOOLEAN FlgHwFifoExtCap;
 #endif /* FIFO_EXT_SUPPORT */

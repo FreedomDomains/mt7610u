@@ -1475,68 +1475,6 @@ int	RTMPSetProfileParameters(
 			DBGPRINT(RT_DEBUG_TRACE, ("ShortSlot=%d\n", pAd->CommonCfg.bUseShortSlotTime));
 		}
 
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-		{
-#if defined(CONFIG_AP_SUPPORT) || defined(STA_ITXBF_SUPPORT)
-			/*ITxBfEn*/
-			if(RTMPGetKeyParameter("ITxBfEn", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.RegTransmitSetting.field.ITxBfEn = (simple_strtol(tmpbuf, 0, 10) != 0);
-				DBGPRINT(RT_DEBUG_TRACE, ("ITxBfEn = %d\n", pAd->CommonCfg.RegTransmitSetting.field.ITxBfEn));
-
-				rtmp_asic_set_bf(pAd);
-			}
-
-			/* ITxBfTimeout */
-			if(RTMPGetKeyParameter("ITxBfTimeout", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.ITxBfTimeout = simple_strtol(tmpbuf, 0, 10);
-				DBGPRINT(RT_DEBUG_TRACE, ("ITxBfTimeout = %ld\n", pAd->CommonCfg.ITxBfTimeout));
-			}
-#endif /* defined(CONFIG_AP_SUPPORT) || defined(STA_ITXBF_SUPPORT) */
-
-			/* ETxBfEnCond*/
-			if(RTMPGetKeyParameter("ETxBfEnCond", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.ETxBfEnCond = simple_strtol(tmpbuf, 0, 10);
-				DBGPRINT(RT_DEBUG_TRACE, ("ETxBfEnCond = %ld\n", pAd->CommonCfg.ETxBfEnCond));
-
-				if (pAd->CommonCfg.ETxBfEnCond)
-				{
-					pAd->CommonCfg.RegTransmitSetting.field.TxBF = TRUE;
-				}
-				else
-				{
-					pAd->CommonCfg.RegTransmitSetting.field.TxBF = FALSE;
-			}
-				rtmp_asic_set_bf(pAd);
-			}
-
-			/* ETxBfTimeout*/
-			if(RTMPGetKeyParameter("ETxBfTimeout", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.ETxBfTimeout = simple_strtol(tmpbuf, 0, 10);
-				DBGPRINT(RT_DEBUG_TRACE, ("ETxBfTimeout = %ld\n", pAd->CommonCfg.ETxBfTimeout));
-			}
-
-			/* ETxBfNoncompress*/
-			if(RTMPGetKeyParameter("ETxBfNoncompress", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.ETxBfNoncompress = simple_strtol(tmpbuf, 0, 10);
-				DBGPRINT(RT_DEBUG_TRACE, ("ETxBfNoncompress = %d\n", pAd->CommonCfg.ETxBfNoncompress));
-			}
-
-			/* ETxBfIncapable */
-			if(RTMPGetKeyParameter("ETxBfIncapable", tmpbuf, 32, pBuffer, TRUE))
-			{
-				pAd->CommonCfg.ETxBfIncapable = simple_strtol(tmpbuf, 0, 10);
-				DBGPRINT(RT_DEBUG_TRACE, ("ETxBfIncapable = %d\n", pAd->CommonCfg.ETxBfIncapable));
-			}
-		}
-#endif /* TXBF_SUPPORT */
-
-
 #ifdef DBG_CTRL_SUPPORT
 		/*DebugFlags*/
 		if(RTMPGetKeyParameter("DebugFlags", tmpbuf, 32, pBuffer, TRUE))

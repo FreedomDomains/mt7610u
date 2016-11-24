@@ -710,12 +710,6 @@ void STAHandleRxDataFrame(
 		if (pEntry != NULL)
 		{
 			pEntry->LastRxRate = pAd->LastRxRate;
-#ifdef TXBF_SUPPORT
-			if (pRxWI->ShortGI)
-				pEntry->OneSecRxSGICount++;
-			else
-				pEntry->OneSecRxLGICount++;
-#endif /* TXBF_SUPPORT */
 
 			pEntry->freqOffset = (CHAR)(pRxWI->RxWIFOFFSET);
 			pEntry->freqOffsetValid = TRUE;
@@ -1137,12 +1131,6 @@ void STAHandleRxDataFrame_Hdr_Trns(
 		if (pEntry != NULL)
 		{
 			pEntry->LastRxRate = pAd->LastRxRate;
-#ifdef TXBF_SUPPORT
-			if (pRxWI->ShortGI)
-				pEntry->OneSecRxSGICount++;
-			else
-				pEntry->OneSecRxLGICount++;
-#endif /* TXBF_SUPPORT */
 
 			pEntry->freqOffset = (CHAR)(pRxWI->RxWIFOFFSET);
 			pEntry->freqOffsetValid = TRUE;
@@ -1263,27 +1251,6 @@ void STAHandleRxMgmtFrame(
 					  pRxWI->RxWIRSSI2, MinSNR,
 					  OPMODE_STA);
 
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-		{
-			pRxBlk->pData += LENGTH_802_11;
-			pRxBlk->DataSize -= LENGTH_802_11;
-
-			if (pHeader->FC.Order) {
-				//handleHtcField(pAd, pRxBlk);	// Ignore MCS FB
-				pRxBlk->pData += 4;
-				pRxBlk->DataSize -= 4;
-			}
-
-			// Check for compressed or non-compressed Sounding Response
-			if ( (pHeader->FC.SubType==SUBTYPE_ACTION || pHeader->FC.SubType==SUBTYPE_ACTION_NO_ACK) &&
-				  pRxBlk->pData[0]==CATEGORY_HT &&
-				 (pRxBlk->pData[1]==MIMO_N_BEACONFORM || pRxBlk->pData[1]==MIMO_BEACONFORM) )
-			{
-				handleBfFb(pAd, pRxBlk);
-			}
-		}
-#endif /* TXBF_SUPPORT */
 	} while (FALSE);
 
 	RTMPFreeNdisPacket(pAd, pRxPacket);
@@ -1465,51 +1432,6 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 				ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
 			}
 
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-			{
-				/* Check sounding frame */
-				if (pHeader->FC.Type == BTYPE_MGMT)
-				{
-					RX_BLK *pRxBlk = &RxBlk;
-
-					pRxBlk->pData += LENGTH_802_11;
-					pRxBlk->DataSize -= LENGTH_802_11;
-
-					if (pHeader->FC.Order) {
-						pRxBlk->pData += 4;
-						pRxBlk->DataSize -= 4;
-
-					}
-
-					if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK))
-						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT
-						&&  ((pRxBlk ->pData)[ 1] == MIMO_N_BEACONFORM //non-compressed beamforming report
-						|| (pRxBlk ->pData)[1] == MIMO_BEACONFORM)  )) //compressed beamforming report
-					{
-						// sounding frame
-						//printk("Receive sounding response\n");
-						if (pAd->ate.sounding == 1) {
-							int i, Nc = ((pRxBlk ->pData)[2] & 0x3) + 1;
-							pAd->ate.soundingSNR[0] = (CHAR)((pRxBlk ->pData)[8]);
-							pAd->ate.soundingSNR[1] = (Nc<2)? 0: (CHAR)((pRxBlk ->pData)[9]);
-							pAd->ate.soundingSNR[2] = (Nc<3)? 0: (CHAR)((pRxBlk ->pData)[10]);
-							pAd->ate.sounding = 2;
-							pAd->ate.soundingRespSize = pRxBlk->DataSize;
-							for (i=0; i<pRxBlk->DataSize && i<sizeof(pAd->ate.soundingResp); i++)
-								pAd->ate.soundingResp[i] = pRxBlk->pData[i];
-						}
-					}
-					// Roger Debug : Fix Me
-					else
-					{
-						if (pHeader->FC.Order)
-							DBGPRINT( RT_DEBUG_WARN, ("fcsubtype=%x\ndata[0]=%x\ndata[1]=%x\n", pHeader->FC.SubType, (pRxBlk ->pData)[ 0], (pRxBlk ->pData)[1]));
-					}
-
-				}
-			}
-#endif /* TXBF_SUPPORT */
 #endif /* RALINK_QA */
 			RTMPFreeNdisPacket(pAd, pRxPacket);
 			continue;
@@ -1605,50 +1527,6 @@ BOOLEAN STAHandleRxDonePacket(
 			/* (*pRxD) has been swapped in GetPacketFromRxRing() */
 			ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
 		}
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-		{
-			/* Check sounding frame */
-			if (pHeader->FC.Type == BTYPE_MGMT)
-			{
-				pRxBlk->pData += LENGTH_802_11;
-				pRxBlk->DataSize -= LENGTH_802_11;
-
-				if (pHeader->FC.Order)
-				{
-					pRxBlk->pData += 4;
-					pRxBlk->DataSize -= 4;
-				}
-
-				if ((((pHeader->FC.SubType == SUBTYPE_ACTION) || (pHeader->FC.SubType == SUBTYPE_ACTION_NO_ACK))
-						&&  (pRxBlk ->pData)[ 0] == CATEGORY_HT
-						&&  ((pRxBlk ->pData)[ 1] == MIMO_N_BEACONFORM /* non-compressed beamforming report */
-						|| (pRxBlk ->pData)[1] == MIMO_BEACONFORM)  )) /* compressed beamforming report */
-				{
-					/* sounding frame */
-					/*printk("Receive sounding response\n"); */
-					if (pAd->ate.sounding == 1)
-					{
-						int i, Nc = ((pRxBlk ->pData)[2] & 0x3) + 1;
-
-						pAd->ate.soundingSNR[0] = (CHAR)((pRxBlk ->pData)[8]);
-						pAd->ate.soundingSNR[1] = (Nc<2)? 0: (CHAR)((pRxBlk ->pData)[9]);
-						pAd->ate.soundingSNR[2] = (Nc<3)? 0: (CHAR)((pRxBlk ->pData)[10]);
-						pAd->ate.sounding = 2;
-						pAd->ate.soundingRespSize = pRxBlk->DataSize;
-
-						for (i=0; i<pRxBlk->DataSize && i<sizeof(pAd->ate.soundingResp); i++)
-							pAd->ate.soundingResp[i] = pRxBlk->pData[i];
-					}
-				}
-				else
-				{
-					if (pHeader->FC.Order)
-						DBGPRINT( RT_DEBUG_WARN, ("fcsubtype=%x\ndata[0]=%x\ndata[1]=%x\n", pHeader->FC.SubType, (pRxBlk ->pData)[ 0], (pRxBlk ->pData)[1]));
-				}
-			}
-		}
-#endif /* TXBF_SUPPORT */
 #endif /* RALINK_QA */
 		RTMPFreeNdisPacket(pAd, pRxPacket);
 		return bReschedule;
@@ -2722,9 +2600,6 @@ void STA_AMPDU_Frame_Tx(
 
 		pMacEntry = pTxBlk->pMacEntry;
 		if ((pMacEntry->isCached)
-#ifdef TXBF_SUPPORT
-			&& (pMacEntry->TxSndgType == SNDG_TYPE_DISABLE)
-#endif // TXBF_SUPPORT //
 		)
 		{
 			/* NOTE: Please make sure the size of pMacEntry->CachedBuf[] is smaller than pTxBlk->HeaderBuf[]!!!! */
@@ -2763,9 +2638,6 @@ void STA_AMPDU_Frame_Tx(
 #ifdef SOFT_ENCRYPT
 		    && !TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)
 #endif /* SOFT_ENCRYPT */
-#ifdef TXBF_SUPPORT
-			&& (pMacEntry->TxSndgType == SNDG_TYPE_DISABLE)
-#endif // TXBF_SUPPORT //
 			)
 		{
 			pHeader_802_11 = (HEADER_802_11 *) pHeaderBufPtr;
@@ -2815,9 +2687,6 @@ void STA_AMPDU_Frame_Tx(
 
 			if ((pAd->CommonCfg.bRdg == TRUE)
 			    && CLIENT_STATUS_TEST_FLAG(pTxBlk->pMacEntry, fCLIENT_STATUS_RDG_CAPABLE)
-#ifdef TXBF_SUPPORT
-				&& (pMacEntry->TxSndgType != SNDG_TYPE_NDP)
-#endif /* TXBF_SUPPORT */
 			)
 			{
 				if (pMacEntry->isCached == FALSE)
@@ -2832,84 +2701,6 @@ void STA_AMPDU_Frame_Tx(
 				bHTCPlus = TRUE;
 			}
 
-#ifdef TXBF_SUPPORT
-			pTxBlk->TxSndgPkt = SNDG_TYPE_DISABLE;
-
-			NdisAcquireSpinLock(&pMacEntry->TxSndgLock);
-			if (pMacEntry->TxSndgType >= SNDG_TYPE_SOUNDING)
-			{
-				DBGPRINT(RT_DEBUG_TRACE, ("--Sounding in AMPDU: TxSndgType=%d, MCS=%d\n",
-								pMacEntry->TxSndgType,
-								pMacEntry->TxSndgType==SNDG_TYPE_NDP? pMacEntry->sndgMcs: pTxBlk->pTransmit->field.MCS));
-
-				// Set HTC bit
-				if (bHTCPlus == FALSE)
-				{
-					bHTCPlus = TRUE;
-					memset(pHeaderBufPtr, 0, sizeof(HT_CONTROL));
-				}
-
-				if (pMacEntry->TxSndgType == SNDG_TYPE_SOUNDING)
-				{
-					// Select compress if supported. Otherwise select noncompress
-					if (pAd->CommonCfg.ETxBfNoncompress==0 &&
-						(pMacEntry->HTCapability.TxBFCap.ExpComBF>0) )
-						((PHT_CONTROL)pHeaderBufPtr)->CSISTEERING = 3;
-					else
-						((PHT_CONTROL)pHeaderBufPtr)->CSISTEERING = 2;
-
-				}
-				else if (pMacEntry->TxSndgType == SNDG_TYPE_NDP)
-				{
-					// Select compress if supported. Otherwise select noncompress
-					if (pAd->CommonCfg.ETxBfNoncompress==0 &&
-						(pMacEntry->HTCapability.TxBFCap.ExpComBF>0) &&
-						(pMacEntry->HTCapability.TxBFCap.ComSteerBFAntSup >= (pMacEntry->sndgMcs/8))
-						)
-						((PHT_CONTROL)pHeaderBufPtr)->CSISTEERING = 3;
-					else
-						((PHT_CONTROL)pHeaderBufPtr)->CSISTEERING = 2;
-
-					// Set NDP Announcement
-					((PHT_CONTROL)pHeaderBufPtr)->NDPAnnounce = 1;
-
-					pTxBlk->TxNDPSndgBW = pMacEntry->sndgBW;
-					pTxBlk->TxNDPSndgMcs = pMacEntry->sndgMcs;
-				}
-
-				pTxBlk->TxSndgPkt = pMacEntry->TxSndgType;
-				pMacEntry->TxSndgType = SNDG_TYPE_DISABLE;
-			}
-
-			NdisReleaseSpinLock(&pMacEntry->TxSndgLock);
-
-#ifdef MFB_SUPPORT
-#if defined(MRQ_FORCE_TX)//have to replace this by the correct condition!!!
-			pMacEntry->HTCapability.ExtHtCapInfo.MCSFeedback = MCSFBK_MRQ;
-#endif
-			if ((pMacEntry->HTCapability.ExtHtCapInfo.MCSFeedback >=MCSFBK_MRQ) &&
-					(pTxBlk->TxSndgPkt == SNDG_TYPE_DISABLE))//because the signal format of sounding frmae may be different from normal data frame, which may result in different MFB
-			{
-				if (bHTCPlus == FALSE)
-				{
-					bHTCPlus = TRUE;
-					memset(pHeaderBufPtr, 0, sizeof(HT_CONTROL));
-				}
-				MFB_PerPareMRQ(pAd, pHeaderBufPtr, pMacEntry);
-			}
-
-			if (pAd->CommonCfg.HtCapability.ExtHtCapInfo.MCSFeedback >=MCSFBK_MRQ && pMacEntry->toTxMfb == 1)
-			{
-				if (bHTCPlus == FALSE)
-				{
-					bHTCPlus = TRUE;
-					memset(pHeaderBufPtr, 0, sizeof(HT_CONTROL));
-				}
-				MFB_PerPareMFB(pAd, pHeaderBufPtr, pMacEntry);// not complete yet!!!
-				pMacEntry->toTxMfb = 0;
-			}
-#endif // MFB_SUPPORT //
-#endif // TXBF_SUPPORT //
 
 			if (bHTCPlus)
 			{
@@ -3016,9 +2807,6 @@ void STA_AMPDU_Frame_Tx(
 		}
 
 		if ((pMacEntry->isCached)
-#ifdef TXBF_SUPPORT
-			&& (pTxBlk->TxSndgPkt == SNDG_TYPE_DISABLE)
-#endif // TXBF_SUPPORT //
 		)
 		{
 			RTMPWriteTxWI_Cache(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
@@ -3036,11 +2824,6 @@ void STA_AMPDU_Frame_Tx(
 
 			pMacEntry->isCached = TRUE;
 		}
-
-#ifdef TXBF_SUPPORT
-		if (pTxBlk->TxSndgPkt != SNDG_TYPE_DISABLE)
-			pMacEntry->isCached = FALSE;
-#endif // TXBF_SUPPORT //
 
 #ifdef STATS_COUNT_SUPPORT
 		/* calculate Transmitted AMPDU count and ByteCount  */
@@ -4177,9 +3960,6 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 #endif /* CLIENT_WDS */
 	{
 
-#ifdef TXBF_SUPPORT
-		bDoHdrTrans = FALSE;
-#endif // TXBF_SUPPORT //
 	}
 #endif /* HDR_TRANS_SUPPORT */
 

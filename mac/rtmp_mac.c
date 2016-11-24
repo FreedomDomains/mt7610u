@@ -122,13 +122,6 @@ void RTMPWriteTxWI(
 	pTxWI->TxWIShortGI = pTransmit->field.ShortGI;
 	pTxWI->TxWISTBC = pTransmit->field.STBC;
 
-#ifdef TXBF_SUPPORT
-	if (pMac && pAd->chipCap.FlgHwTxBfCap)
-	{
-		if (pMac->TxSndgType == SNDG_TYPE_NDP  || pMac->TxSndgType == SNDG_TYPE_SOUNDING || pTxWI->eTxBF)
-			pTxWI->TxWISTBC = 0;
-	}
-#endif /* TXBF_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
 
 	pTxWI->TxWIWirelessCliID = WCID;
@@ -250,43 +243,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 
 	pTxWI->TxWIBAWinSize = BASize;
 
-#ifdef TXBF_SUPPORT
-	if(pTxBlk->TxSndgPkt > SNDG_TYPE_DISABLE)
-		pTxWI->TxWIAMPDU = FALSE;
-
-	if (pTxBlk->TxSndgPkt == SNDG_TYPE_SOUNDING)
-	{
-		pTxWI->Sounding = 1;
-		DBGPRINT(RT_DEBUG_TRACE, ("ETxBF in RTMPWriteTxWI_Data(): sending normal sounding, eTxBF=%d\n", pTxWI->eTxBF));
-		pTxWI->iTxBF = 0;
-	}
-	else if (pTxBlk->TxSndgPkt == SNDG_TYPE_NDP)
-	{
-		if (pTxBlk->TxNDPSndgMcs >= 16)
-			pTxWI->NDPSndRate = 2;
-		else if (pTxBlk->TxNDPSndgMcs >= 8)
-			pTxWI->NDPSndRate = 1;
-		else
-			pTxWI->NDPSndRate = 0;
-
-		pTxWI->NDPSndBW = pTransmit->field.BW;
-		pTxWI->iTxBF = 0;
-	}
-	else
-	{
-#ifdef MFB_SUPPORT
-		if (pMacEntry && (pMacEntry->mrqCnt >0) && (pMacEntry->toTxMrq == TRUE))
-			pTxWI->eTxBF = ~(pTransmit->field.eTxBF);
-		else
-#endif	/* MFB_SUPPORT */
-			pTxWI->eTxBF = pTransmit->field.eTxBF;
-		pTxWI->iTxBF = pTransmit->field.iTxBF;
-	}
-
-	if (pTxBlk->TxSndgPkt == SNDG_TYPE_NDP  || pTxBlk->TxSndgPkt == SNDG_TYPE_SOUNDING || pTxWI->eTxBF)
-		pTxWI->TxWISTBC = 0;
-#endif /* TXBF_SUPPORT */
-
 #endif /* DOT11_N_SUPPORT */
 
 
@@ -313,14 +269,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	}
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef TXBF_SUPPORT
-	if (pTxBlk->TxSndgPkt > SNDG_TYPE_DISABLE)
-	{
-		pTxWI->TxWIMCS = 0;
-		pTxWI->TxWIAMPDU = FALSE;
-	}
-#endif /* TXBF_SUPPORT */
-
 #ifdef DBG_DIAGNOSE
 	if (pTxBlk->QueIdx== 0)
 	{
@@ -340,10 +288,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 		HTTRANSMIT_SETTING rate_ctrl;
 
 		rate_ctrl.field.MODE = pTxWI->TxWIPHYMODE;
-#ifdef TXBF_SUPPORT
-		rate_ctrl.field.iTxBF = pTxWI->iTxBF;
-		rate_ctrl.field.eTxBF = pTxWI->eTxBF;
-#endif /* TXBF_SUPPORT */
 		rate_ctrl.field.STBC = pTxWI->TxWISTBC;
 		rate_ctrl.field.ShortGI = pTxWI->TxWIShortGI;
 		rate_ctrl.field.BW = pTxWI->TxWIBW;
@@ -381,11 +325,6 @@ void RTMPWriteTxWI_Cache(
 		pTxWI->TxWIShortGI = pTransmit->field.ShortGI;
 		pTxWI->TxWISTBC = pTransmit->field.STBC;
 
-#ifdef TXBF_SUPPORT
-		if (pTxBlk->TxSndgPkt == SNDG_TYPE_NDP  || pTxBlk->TxSndgPkt == SNDG_TYPE_SOUNDING || pTxWI->eTxBF)
-			pTxWI->TxWISTBC = 0;
-#endif /* TXBF_SUPPORT */
-
 		pTxWI->TxWIMCS = pTransmit->field.MCS;
 		pTxWI->TxWIPHYMODE = pTransmit->field.MODE;
 
@@ -396,10 +335,6 @@ void RTMPWriteTxWI_Cache(
 
 #ifdef DOT11_N_SUPPORT
 	pTxWI->TxWIAMPDU = ((pMacEntry->NoBADataCountDown == 0) ? TRUE: FALSE);
-#ifdef TXBF_SUPPORT
-	if(pTxBlk->TxSndgPkt > SNDG_TYPE_DISABLE)
-		pTxWI->TxWIAMPDU = FALSE;
-#endif /* TXBF_SUPPORT */
 
 	pTxWI->TxWIMIMOps = 0;
 
@@ -437,60 +372,6 @@ void RTMPWriteTxWI_Cache(
 	}
 #endif /* DBG_DIAGNOSE */
 
-#ifdef TXBF_SUPPORT
-	if (pTxBlk->TxSndgPkt == SNDG_TYPE_SOUNDING)
-	{
-		pTxWI->Sounding = 1;
-		pTxWI->eTxBF = 0;
-		pTxWI->iTxBF = 0;
-		DBGPRINT(RT_DEBUG_TRACE, ("ETxBF in RTMPWriteTxWI_Cache(): sending normal sounding, eTxBF=%d\n", pTxWI->eTxBF));
-	}
-	else if (pTxBlk->TxSndgPkt == SNDG_TYPE_NDP)
-	{
-		if (pTxBlk->TxNDPSndgMcs>=16)
-			pTxWI->NDPSndRate = 2;
-		else if (pTxBlk->TxNDPSndgMcs>=8)
-			pTxWI->NDPSndRate = 1;
-		else
-			pTxWI->NDPSndRate = 0;
-		pTxWI->Sounding = 0;
-		pTxWI->eTxBF = 0;
-		pTxWI->iTxBF = 0;
-
-		pTxWI->NDPSndBW = pTransmit->field.BW;
-
-/*
-		DBGPRINT(RT_DEBUG_TRACE,
-				("%s():ETxBF, sending ndp sounding(BW=%d, Rate=%d, eTxBF=%d)\n",
-				__FUNCTION__, pTxWI->NDPSndBW, pTxWI->NDPSndRate, pTxWI->eTxBF));
-*/
-	}
-	else
-	{
-		pTxWI->Sounding = 0;
-#ifdef MFB_SUPPORT
-		if (pMacEntry && pMacEntry->mrqCnt >0 && pMacEntry->toTxMrq == 1)
-		{
-			pTxWI->eTxBF = ~(pTransmit->field.eTxBF);
-			DBGPRINT_RAW(RT_DEBUG_TRACE,("ETxBF in AP_AMPDU_Frame_Tx(): invert eTxBF\n"));
-		}
-		else
-#endif	/* MFB_SUPPORT */
-			pTxWI->eTxBF = pTransmit->field.eTxBF;
-
-		pTxWI->iTxBF = pTransmit->field.iTxBF;
-
-		if (pTxWI->eTxBF || pTxWI->iTxBF)
-			pTxWI->TxWISTBC = 0;
-	}
-
-	if (pTxBlk->TxSndgPkt > SNDG_TYPE_DISABLE)
-	{
-		pTxWI->TxWIMCS = 0;
-		pTxWI->TxWIAMPDU = FALSE;
-	}
-#endif /* TXBF_SUPPORT */
-
 	pTxWI->TxWIMPDUByteCnt = pTxBlk->MpduHeaderLen + pTxBlk->SrcBufLen;
 
 
@@ -509,10 +390,6 @@ void RTMPWriteTxWI_Cache(
 		HTTRANSMIT_SETTING rate_ctrl;
 
 		rate_ctrl.field.MODE = pTxWI->TxWIPHYMODE;
-#ifdef TXBF_SUPPORT
-		rate_ctrl.field.iTxBF = pTxWI->iTxBF;
-		rate_ctrl.field.eTxBF = pTxWI->eTxBF;
-#endif /* TXBF_SUPPORT */
 		rate_ctrl.field.STBC = pTxWI->TxWISTBC;
 		rate_ctrl.field.ShortGI = pTxWI->TxWIShortGI;
 		rate_ctrl.field.BW = pTxWI->TxWIBW;

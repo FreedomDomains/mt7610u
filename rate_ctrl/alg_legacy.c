@@ -241,9 +241,6 @@ void MlmeDynamicTxRateSwitching(
 				Then return for next DRS.
 			*/
 			pEntry->CurrTxRateIndex = InitTxRateIdx;
-#ifdef TXBF_SUPPORT
-			pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
-#endif /* TXBF_SUPPORT */
 			MlmeNewTxRate(pAd, pEntry);
 
 			/* reset all OneSecTx counters */
@@ -425,9 +422,6 @@ void MlmeDynamicTxRateSwitching(
 
 			{
 				pEntry->CurrTxRateIndex = TxRateIdx;
-#ifdef TXBF_SUPPORT
-				pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
-#endif /* TXBF_SUPPORT */
 				MlmeNewTxRate(pAd, pEntry);
 				if (!pEntry->fLastSecAccordingRSSI)
 					DBGPRINT_RAW(RT_DEBUG_INFO,("DRS: TxTotalCnt <= 15, switch MCS according to RSSI (%d), RssiOffset=%d\n", Rssi, RssiOffset));
@@ -439,13 +433,6 @@ void MlmeDynamicTxRateSwitching(
 			/* reset all OneSecTx counters */
 			RESET_ONE_SEC_TX_CNT(pEntry);
 
-#ifdef TXBF_SUPPORT
-#ifdef DBG_CTRL_SUPPORT
-			/* In Unaware mode always try to send sounding */
-			if (pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)
-				eTxBFProbing(pAd, pEntry);
-#endif /* DBG_CTRL_SUPPORT */
-#endif /* TXBF_SUPPORT */
 
 			continue;
 		}
@@ -457,10 +444,6 @@ void MlmeDynamicTxRateSwitching(
 			/* reset all OneSecTx counters */
 			RESET_ONE_SEC_TX_CNT(pEntry);
 
-#ifdef TXBF_SUPPORT
-			if (pAd->chipCap.FlgHwTxBfCap)
-			eTxBFProbing(pAd, pEntry);
-#endif /* TXBF_SUPPORT */
 
 			continue;
 		}
@@ -478,10 +461,6 @@ void MlmeDynamicTxRateSwitching(
 		/* reset all OneSecTx counters */
 		RESET_ONE_SEC_TX_CNT(pEntry);
 
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-		eTxBFProbing(pAd, pEntry);
-#endif /* TXBF_SUPPORT */
 		}
 }
 
@@ -520,9 +499,6 @@ void StaQuickResponeForRateUpExec(
 	CHAR					Rssi, ratio;
 	ULONG					TxSuccess, TxRetransmit, TxFailCount;
 	MAC_TABLE_ENTRY			*pEntry;
-#ifdef TXBF_SUPPORT
-	BOOLEAN					CurrPhyETxBf, CurrPhyITxBf;
-#endif /* TXBF_SUPPORT */
 #ifdef AGS_SUPPORT
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
 #endif /* AGS_SUPPORT */
@@ -566,10 +542,6 @@ void StaQuickResponeForRateUpExec(
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
 		CurrRateIdx = pEntry->CurrTxRateIndex;
-#ifdef TXBF_SUPPORT
-		CurrPhyETxBf = pEntry->phyETxBf;
-		CurrPhyITxBf = pEntry->phyITxBf;
-#endif /* TXBF_SUPPORT */
 		pCurrTxRate = PTX_RA_LEGACY_ENTRY(pTable, CurrRateIdx);
 
 #ifdef DOT11_N_SUPPORT
@@ -758,12 +730,6 @@ void StaQuickResponeForRateUpExec(
 			{
 				if (TxErrorRatio >= TrainDown)
 				{
-#ifdef TXBF_SUPPORT
-					/* If PER>50% or TP<lastTP/2 then double the TxQuality delay */
-					if ((TxErrorRatio > 50) || (OneSecTxNoRetryOKRationCount < pEntry->LastTxOkCount/2))
-						MlmeSetTxQuality(pEntry, CurrRateIdx, DRS_TX_QUALITY_WORST_BOUND*2);
-					else
-#endif /* TXBF_SUPPORT */
 						MlmeSetTxQuality(pEntry, CurrRateIdx, DRS_TX_QUALITY_WORST_BOUND);
 
 					MlmeRestoreLastRate(pEntry);
@@ -791,17 +757,9 @@ void StaQuickResponeForRateUpExec(
 			}
 		}while (FALSE);
 
-#ifdef TXBF_SUPPORT
-		/* Remember last good non-BF rate */
-		if (!pEntry->phyETxBf && !pEntry->phyITxBf)
-			pEntry->lastNonBfRate = pEntry->CurrTxRateIndex;
-#endif /* TXBF_SUPPORT */
 
 		/* If rate changed then update the history and set the new tx rate */
 		if ((pEntry->CurrTxRateIndex != CurrRateIdx)
-#ifdef TXBF_SUPPORT
-			|| (pEntry->phyETxBf!=CurrPhyETxBf) || (pEntry->phyITxBf!=CurrPhyITxBf)
-#endif /* TXBF_SUPPORT */
 		)
 		{
 			/* if rate-up happen, clear all bad history of all TX rates */
@@ -857,10 +815,6 @@ void MlmeOldRateAdapt(
 	IN ULONG			TxErrorRatio)
 {
 	BOOLEAN	bTrainUp = FALSE;
-#ifdef TXBF_SUPPORT
-	u8 *pTable = pEntry->pTable;
-	BOOLEAN invertTxBf = FALSE;
-#endif /* TXBF_SUPPORT */
 
 	pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 
@@ -870,27 +824,6 @@ void MlmeOldRateAdapt(
 	if (TxErrorRatio >= TrainDown)
 	{
 		MlmeSetTxQuality(pEntry, CurrRateIdx, DRS_TX_QUALITY_WORST_BOUND);
-#ifdef TXBF_SUPPORT
-		/*
-			Need to train down. If BF and last Non-BF isn't too much lower then
-			go to last Non-BF rate. Otherwise just go to the down rate
-		*/
-		if ((pEntry->phyETxBf || pEntry->phyITxBf) &&
-			(DownRateIdx - pEntry->lastNonBfRate)<2
-#ifdef DBG_CTRL_SUPPORT
-			&& ((pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)==0)
-#endif /* DBG_CTRL_SUPPORT */
-		)
-		{
-			/* Go directly to last non-BF rate without 100 msec check */
-			pEntry->CurrTxRateIndex = pEntry->lastNonBfRate;
-			pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
-			MlmeNewTxRate(pAd, pEntry);
-			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: --TX rate from %d to %d \n", CurrRateIdx, pEntry->CurrTxRateIndex));
-			return;
-		}
-		else
-#endif /* TXBF_SUPPORT */
 		if (CurrRateIdx != DownRateIdx)
 		{
 			pEntry->CurrTxRateIndex = DownRateIdx;
@@ -919,63 +852,6 @@ void MlmeOldRateAdapt(
 				pEntry->CurrTxRateIndex = UpRateIdx;
 				pEntry->LastSecTxRateChangeAction = RATE_UP;
 			}
-#ifdef TXBF_SUPPORT
-			else if (((CurrRateIdx != UpRateIdx) || (TxErrorRatio > TrainUp))
-#ifdef DBG_CTRL_SUPPORT
-					&& ((pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)==0)
-#endif /* DBG_CTRL_SUPPORT */
-			)
-			{
-				/* UpRate TxQuality is not 0. Try to invert BF state */
-				if (pEntry->phyETxBf || pEntry->phyITxBf)
-				{
-					/* BF tries same MCS, non-BF */
-					if (pEntry->TxQuality[CurrRateIdx])
-						pEntry->TxQuality[CurrRateIdx]--;
-
-					if (pEntry->TxQuality[CurrRateIdx]==0)
-					{
-						invertTxBf = TRUE;
-						pEntry->CurrTxRateIndex = CurrRateIdx;
-						pEntry->LastSecTxRateChangeAction = RATE_UP;
-					}
-				}
-				else if (pEntry->eTxBfEnCond>0 || pEntry->iTxBfEn)
-				{
-					RTMP_RA_LEGACY_TB *pUpRate = PTX_RA_LEGACY_ENTRY(pTable, UpRateIdx);
-					RTMP_RA_LEGACY_TB *pCurrTxRate = PTX_RA_LEGACY_ENTRY(pTable, CurrRateIdx);
-
-					/* First try Up Rate with BF */
-					if ((CurrRateIdx != UpRateIdx) && MlmeTxBfAllowed(pAd, pEntry, pUpRate))
-					{
-						if (pEntry->BfTxQuality[UpRateIdx])
-							pEntry->BfTxQuality[UpRateIdx]--;
-
-						if (pEntry->BfTxQuality[UpRateIdx]==0)
-						{
-							invertTxBf = TRUE;
-							pEntry->CurrTxRateIndex = UpRateIdx;
-							pEntry->LastSecTxRateChangeAction = RATE_UP;
-						}
-					}
-
-					/* Try Same Rate if Up Rate failed */
-					if (pEntry->LastSecTxRateChangeAction==RATE_NO_CHANGE &&
-						MlmeTxBfAllowed(pAd, pEntry, pCurrTxRate))
-					{
-						if (pEntry->BfTxQuality[CurrRateIdx])
-							pEntry->BfTxQuality[CurrRateIdx]--;
-
-						if (pEntry->BfTxQuality[CurrRateIdx]==0)
-						{
-							invertTxBf = TRUE;
-							pEntry->CurrTxRateIndex = CurrRateIdx;
-							pEntry->LastSecTxRateChangeAction = RATE_UP;
-						}
-					}
-				}
-			}
-#endif /* TXBF_SUPPORT */
 		}
 	}
 
@@ -987,18 +863,6 @@ void MlmeOldRateAdapt(
 
 		/* Save last rate information */
 		pEntry->lastRateIdx = CurrRateIdx;
-#ifdef TXBF_SUPPORT
-		if (pEntry->eTxBfEnCond>0)
-		{
-			pEntry->lastRatePhyTxBf = pEntry->phyETxBf;
-			pEntry->phyETxBf ^= invertTxBf;
-		}
-		else
-		{
-			pEntry->lastRatePhyTxBf = pEntry->phyITxBf;
-			pEntry->phyITxBf ^= invertTxBf;
-		}
-#endif /* TXBF_SUPPORT */
 
 		/* Update TxQuality */
 		if (pEntry->LastSecTxRateChangeAction == RATE_UP)

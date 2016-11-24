@@ -152,11 +152,6 @@
 #endif /* WORKQUEUE_BH / */
 
 
-#ifdef TXBF_SUPPORT
-#include "rt_txbf.h"
-#endif /* TXBF_SUPPORT */
-
-
 #include "mac_ral/fce.h"
 
 #endif	/* __RT_CONFIG_H__ */

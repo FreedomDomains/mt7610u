@@ -381,21 +381,6 @@ void RTMPSetHT(
 	}
 	AsicSetEdcaParm(pAd, &pAd->CommonCfg.APEdcaParm);
 
-#ifdef TXBF_SUPPORT
-	if (pAd->chipCap.FlgHwTxBfCap)
-	{
-		/* Set ETxBF */
-		setETxBFCap(pAd, &ht_cap->TxBFCap);
-
-		/* Check ITxBF */
-		pAd->CommonCfg.RegTransmitSetting.field.ITxBfEn &= rtmp_chk_itxbf_calibration(pAd);
-
-		/* Apply to ASIC */
-		rtmp_asic_set_bf(pAd);
-	}
-#endif /* TXBF_SUPPORT */
-
-
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{

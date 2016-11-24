@@ -812,9 +812,6 @@ void MlmeNewRateAdapt(
 {
 	USHORT		phyRateLimit20 = 0;
 	BOOLEAN		bTrainUp = FALSE;
-#ifdef TXBF_SUPPORT
-	BOOLEAN 	invertTxBf = FALSE;
-#endif /*  TXBF_SUPPORT */
 	u8 *pTable = pEntry->pTable;
 	u8 CurrRateIdx = pEntry->CurrTxRateIndex;
 	RTMP_RA_GRP_TB *pCurrTxRate = PTX_RA_GRP_ENTRY(pTable, CurrRateIdx);
@@ -826,35 +823,10 @@ void MlmeNewRateAdapt(
 
 	if (TxErrorRatio >= TrainDown)
 	{
-#ifdef TXBF_SUPPORT
-		RTMP_RA_GRP_TB *pDownRate, *pLastNonBfRate;
-#endif /* TXBF_SUPPORT */
 
 		/*  Downgrade TX quality if PER >= Rate-Down threshold */
 		MlmeSetTxQuality(pEntry, CurrRateIdx, DRS_TX_QUALITY_WORST_BOUND);
 
-#ifdef TXBF_SUPPORT
-		/*
-			Need to train down. If BF and last Non-BF is no worse than the down rate then
-			go to last Non-BF rate. Otherwise just go to the down rate
-		*/
-
-		pDownRate = PTX_RA_GRP_ENTRY(pTable, DownRateIdx);
-		pLastNonBfRate = PTX_RA_GRP_ENTRY(pTable, pEntry->lastNonBfRate);
-
-		if ((pEntry->phyETxBf || pEntry->phyITxBf) &&
-			(pLastNonBfRate->dataRate >= pDownRate->dataRate)
-#ifdef DBG_CTRL_SUPPORT
-			&& ((pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)==0)
-#endif /* DBG_CTRL_SUPPORT */
-		)
-		{
-			invertTxBf = TRUE;
-			pEntry->CurrTxRateIndex = pEntry->lastNonBfRate;
-			pEntry->LastSecTxRateChangeAction = RATE_DOWN;
-		}
-		else
-#endif /*  TXBF_SUPPORT */
 		if (CurrRateIdx != DownRateIdx)
 		{
 			pEntry->CurrTxRateIndex = DownRateIdx;
@@ -918,63 +890,6 @@ void MlmeNewRateAdapt(
 			pEntry->CurrTxRateIndex = UpRateIdx;
 			pEntry->LastSecTxRateChangeAction = RATE_UP;
 		}
-#ifdef TXBF_SUPPORT
-		else
-#ifdef DBG_CTRL_SUPPORT
-		if ((pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)==0)
-#endif /* DBG_CTRL_SUPPORT */
-		{
-			/*  If not at the highest rate then try inverting BF state */
-			if (pEntry->phyETxBf || pEntry->phyITxBf)
-			{
-				/*  If BF then try the same MCS non-BF unless PER is good */
-				if (TxErrorRatio > TrainUp)
-				{
-					if (pEntry->TxQuality[CurrRateIdx])
-						pEntry->TxQuality[CurrRateIdx]--;
-
-					if (pEntry->TxQuality[CurrRateIdx]==0)
-					{
-						invertTxBf = TRUE;
-						pEntry->CurrTxRateIndex = CurrRateIdx;
-						pEntry->LastSecTxRateChangeAction = RATE_UP;
-					}
-				}
-			}
-			else if (pEntry->eTxBfEnCond>0 || pEntry->iTxBfEn)
-			{
-				/*  First try Up Rate with BF */
-				if ((CurrRateIdx != UpRateIdx) &&
-					 MlmeTxBfAllowed(pAd, pEntry, (RTMP_RA_LEGACY_TB *)pUpRate))
-				{
-					if (pEntry->BfTxQuality[UpRateIdx])
-						pEntry->BfTxQuality[UpRateIdx]--;
-
-					if (pEntry->BfTxQuality[UpRateIdx]==0)
-					{
-						invertTxBf = TRUE;
-						pEntry->CurrTxRateIndex = UpRateIdx;
-						pEntry->LastSecTxRateChangeAction = RATE_UP;
-					}
-				}
-
-				/*  Try Same Rate if Up Rate failed */
-				if (pEntry->LastSecTxRateChangeAction==RATE_NO_CHANGE &&
-					MlmeTxBfAllowed(pAd, pEntry, (RTMP_RA_LEGACY_TB *)pCurrTxRate))
-				{
-					if (pEntry->BfTxQuality[CurrRateIdx])
-						pEntry->BfTxQuality[CurrRateIdx]--;
-
-					if (pEntry->BfTxQuality[CurrRateIdx]==0)
-					{
-						invertTxBf = TRUE;
-						pEntry->CurrTxRateIndex = CurrRateIdx;
-						pEntry->LastSecTxRateChangeAction = RATE_UP;
-					}
-				}
-			}
-		}
-#endif /*  TXBF_SUPPORT */
 	}
 
 	/*  Handle the rate change */
@@ -995,18 +910,6 @@ void MlmeNewRateAdapt(
 
 		/*  Save last rate information */
 		pEntry->lastRateIdx = CurrRateIdx;
-#ifdef TXBF_SUPPORT
-		if (pEntry->eTxBfEnCond > 0)
-		{
-			pEntry->lastRatePhyTxBf = pEntry->phyETxBf;
-			pEntry->phyETxBf ^= invertTxBf;
-		}
-		else
-		{
-			pEntry->lastRatePhyTxBf = pEntry->phyITxBf;
-			pEntry->phyITxBf ^= invertTxBf;
-		}
-#endif /*  TXBF_SUPPORT */
 
 		/*  Update TxQuality */
 		if (pEntry->LastSecTxRateChangeAction == RATE_DOWN)
@@ -1052,9 +955,6 @@ void StaQuickResponeForRateUpExecAdapt(
 	ULONG					TxSuccess, TxRetransmit, TxFailCount;
 	ULONG					OneSecTxNoRetryOKRationCount;
 	BOOLEAN					rateChanged;
-#ifdef TXBF_SUPPORT
-	BOOLEAN					CurrPhyETxBf, CurrPhyITxBf;
-#endif /* TXBF_SUPPORT */
 
 
 	pEntry = &pAd->MacTab.Content[i];
@@ -1098,10 +998,6 @@ void StaQuickResponeForRateUpExecAdapt(
 
 	/* Remember the current rate */
 	CurrRateIdx = pEntry->CurrTxRateIndex;
-#ifdef TXBF_SUPPORT
-	CurrPhyETxBf = pEntry->phyETxBf;
-	CurrPhyITxBf = pEntry->phyITxBf;
-#endif /* TXBF_SUPPORT */
 	pCurrTxRate = PTX_RA_GRP_ENTRY(pTable, CurrRateIdx);
 
 #ifdef DOT11_N_SUPPORT
@@ -1236,16 +1132,7 @@ void StaQuickResponeForRateUpExecAdapt(
 	}
 
 	/* See if we reverted to the old rate */
-#ifdef TXBF_SUPPORT
-	rateChanged = (pEntry->CurrTxRateIndex != CurrRateIdx) ||
-				  (pEntry->phyETxBf!=CurrPhyETxBf) || (pEntry->phyITxBf!=CurrPhyITxBf);
-
-	/* Remember last good non-BF rate */
-	if (!pEntry->phyETxBf && !pEntry->phyITxBf)
-		pEntry->lastNonBfRate = pEntry->CurrTxRateIndex;
-#else
 	rateChanged = (pEntry->CurrTxRateIndex != CurrRateIdx);
-#endif /* TXBF_SUPPORT */
 
 	/* Update mcsGroup */
 	if (pEntry->LastSecTxRateChangeAction == RATE_UP)
@@ -1472,9 +1359,6 @@ void MlmeDynamicTxRateSwitchingAdapt(
 				MlmeSetMcsGroup(pAd, pEntry);
 
 				pEntry->CurrTxRateIndex = TxRateIdx;
-#ifdef TXBF_SUPPORT
-				pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
-#endif /* TXBF_SUPPORT */
 				MlmeNewTxRate(pAd, pEntry);
 				if (!pEntry->fLastSecAccordingRSSI)
 				{
@@ -1489,14 +1373,6 @@ void MlmeDynamicTxRateSwitchingAdapt(
 		/* reset all OneSecTx counters */
 		RESET_ONE_SEC_TX_CNT(pEntry);
 
-#ifdef TXBF_SUPPORT
-#ifdef DBG_CTRL_SUPPORT
-		/* In Unaware mode always try to send sounding */
-		if (pAd->CommonCfg.DebugFlags & DBF_NO_BF_AWARE_RA)
-			eTxBFProbing(pAd, pEntry);
-#endif /* DBG_CTRL_SUPPORT */
-#endif /* TXBF_SUPPORT */
-
 		return;
 	}
 
@@ -1510,11 +1386,6 @@ void MlmeDynamicTxRateSwitchingAdapt(
 
 		/* reset all OneSecTx counters */
 		RESET_ONE_SEC_TX_CNT(pEntry);
-
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-			eTxBFProbing(pAd, pEntry);
-#endif /* TXBF_SUPPORT */
 
 		return;
 	}
@@ -1532,10 +1403,6 @@ void MlmeDynamicTxRateSwitchingAdapt(
 	/* reset all OneSecTx counters */
 	RESET_ONE_SEC_TX_CNT(pEntry);
 
-#ifdef TXBF_SUPPORT
-	if (pAd->chipCap.FlgHwTxBfCap)
-		eTxBFProbing(pAd, pEntry);
-#endif /* TXBF_SUPPORT */
 }
 #endif /* CONFIG_STA_SUPPORT */
 

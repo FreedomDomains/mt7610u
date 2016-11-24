@@ -611,11 +611,6 @@ void MlmeGetSupportedMcs(
 void MlmeClearTxQuality(
 	IN MAC_TABLE_ENTRY	*pEntry)
 {
-#ifdef TXBF_SUPPORT
-	if (pEntry->phyETxBf || pEntry->phyITxBf)
-		memset(pEntry->BfTxQuality, 0, sizeof(pEntry->BfTxQuality));
-	else
-#endif /*  TXBF_SUPPORT */
 		memset(pEntry->TxQuality, 0, sizeof(pEntry->TxQuality));
 
 	memset(pEntry->PER, 0, sizeof(pEntry->PER));
@@ -626,9 +621,6 @@ void MlmeClearTxQuality(
 void MlmeClearAllTxQuality(
 	IN MAC_TABLE_ENTRY	*pEntry)
 {
-#ifdef TXBF_SUPPORT
-	memset(pEntry->BfTxQuality, 0, sizeof(pEntry->BfTxQuality));
-#endif
 	memset(pEntry->TxQuality, 0, sizeof(pEntry->TxQuality));
 
 	memset(pEntry->PER, 0, sizeof(pEntry->PER));
@@ -640,13 +632,6 @@ void MlmeDecTxQuality(
 	IN MAC_TABLE_ENTRY	*pEntry,
 	IN u8 		rateIndex)
 {
-#ifdef TXBF_SUPPORT
-	if (pEntry->phyETxBf || pEntry->phyITxBf) {
-		if (pEntry->BfTxQuality[rateIndex])
-			pEntry->BfTxQuality[rateIndex]--;
-	}
-	else
-#endif /*  TXBF_SUPPORT */
 	if (pEntry->TxQuality[rateIndex])
 		pEntry->TxQuality[rateIndex]--;
 }
@@ -657,11 +642,6 @@ void MlmeSetTxQuality(
 	IN u8 		rateIndex,
 	IN USHORT			txQuality)
 {
-#ifdef TXBF_SUPPORT
-	if (pEntry->phyETxBf || pEntry->phyITxBf)
-		pEntry->BfTxQuality[rateIndex] = txQuality;
-	else
-#endif /*  TXBF_SUPPORT */
 		pEntry->TxQuality[rateIndex] = txQuality;
 }
 
@@ -670,10 +650,6 @@ USHORT MlmeGetTxQuality(
 	IN MAC_TABLE_ENTRY	*pEntry,
 	IN u8 		rateIndex)
 {
-#ifdef TXBF_SUPPORT
-	if (pEntry->phyETxBf || pEntry->phyITxBf)
-		return pEntry->BfTxQuality[rateIndex];
-#endif /*  TXBF_SUPPORT */
 	return pEntry->TxQuality[rateIndex];
 }
 
@@ -1619,12 +1595,6 @@ void MlmeRAInit(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 	pEntry->perThrdAdj = PER_THRD_ADJ;
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-#ifdef TXBF_SUPPORT
-	pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
-	pEntry->lastRatePhyTxBf = FALSE;
-	pEntry->lastNonBfRate = 0;
-#endif /* TXBF_SUPPORT */
-
 	pEntry->fLastSecAccordingRSSI = FALSE;
 	pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 	pEntry->CurrTxRateIndex = 0;
@@ -1648,12 +1618,6 @@ void MlmeRALog(
 	IN ULONG			TxErrorRatio,
 	IN ULONG			TxTotalCnt)
 {
-#ifdef TXBF_SUPPORT
-	UINT ETxCount = pEntry->TxBFCounters.ETxSuccessCount + pEntry->TxBFCounters.ETxFailCount;
-	UINT ITxCount = pEntry->TxBFCounters.ITxSuccessCount + pEntry->TxBFCounters.ITxFailCount;
-	UINT TxCount = pEntry->TxBFCounters.TxSuccessCount + pEntry->TxBFCounters.TxFailCount + ETxCount + ITxCount;
-	ULONG bfRatio = 0;
-#endif /*  TXBF_SUPPORT */
 #ifdef TIMESTAMP_RA_LOG
 	ULONG newTime;
 	static ULONG saveRATime;
@@ -1687,34 +1651,6 @@ void MlmeRALog(
 		else
 			tp = (100-TxErrorRatio)*TxTotalCnt*RA_INTERVAL/(100*(RA_INTERVAL-pAd->ra_fast_interval));
 
-#ifdef TXBF_SUPPORT
-		/*  Compute BF ratio in the last interval */
-		if ((TxCount - pEntry->LastTxCount)>0)
-		{
-			if (pEntry->HTPhyMode.field.eTxBF)
-				bfRatio = 100*(ETxCount-pEntry->LastETxCount)/(TxCount - pEntry->LastTxCount);
-			else if (pEntry->HTPhyMode.field.iTxBF)
-				bfRatio = 100*(ITxCount-pEntry->LastITxCount)/(TxCount - pEntry->LastTxCount);
-		}
-
-		if ((pEntry->HTPhyMode.field.eTxBF || pEntry->HTPhyMode.field.iTxBF)
-#ifdef DBG_CTRL_SUPPORT
-			&& (pAd->CommonCfg.DebugFlags & DBF_DBQ_RA_LOG)==0
-#endif /* DBG_CTRL_SUPPORT */
-		)
-		{
-			DBGPRINT_RAW(RT_DEBUG_ERROR,("%s[%d]: M=%d %c%c%c%c%c PER=%ld%% TP=%ld BF=%ld%% ",
-				raLogType==RAL_QUICK_DRS? " Q": (raLogType==RAL_NEW_DRS? "\nRA": "\nra"),
-				pEntry->Aid, pEntry->HTPhyMode.field.MCS,
-				pEntry->HTPhyMode.field.MODE==MODE_CCK? 'C': (pEntry->HTPhyMode.field.ShortGI? 'S': 'L'),
-				pEntry->HTPhyMode.field.BW? '4': '2',
-				stbc? 'S': 's',
-				csd? 'C': 'c',
-				pEntry->HTPhyMode.field.eTxBF? 'E': (pEntry->HTPhyMode.field.iTxBF? 'I': '-'),
-				TxErrorRatio, tp, bfRatio) );
-		}
-		else
-#endif /* TXBF_SUPPORT */
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
 		if (pAd->CommonCfg.DebugFlags & DBF_DBQ_RA_LOG)
@@ -1729,9 +1665,6 @@ void MlmeRALog(
 			raLogInfo.phyMode = pEntry->HTPhyMode.word;
 			raLogInfo.per = TxErrorRatio;
 			raLogInfo.tp = tp;
-#ifdef TXBF_SUPPORT
-			raLogInfo.bfRatio = bfRatio;
-#endif /* TXBF_SUPPORT */
 			dbQueueEnqueue(0x7e, (u8 *)&raLogInfo);
 		}
 		else
@@ -1749,12 +1682,6 @@ void MlmeRALog(
 		}
 	}
 
-#ifdef TXBF_SUPPORT
-	/*  Remember previous counts */
-	pEntry->LastETxCount = ETxCount;
-	pEntry->LastITxCount = ITxCount;
-	pEntry->LastTxCount = TxCount;
-#endif /*  TXBF_SUPPORT */
 #ifdef TIMESTAMP_RA_LOG
 	saveRATime = newTime;
 #endif
@@ -1766,12 +1693,6 @@ void MlmeRestoreLastRate(
 	IN PMAC_TABLE_ENTRY	pEntry)
 {
 	pEntry->CurrTxRateIndex = pEntry->lastRateIdx;
-#ifdef TXBF_SUPPORT
-	if (pEntry->eTxBfEnCond>0)
-		pEntry->phyETxBf = pEntry->lastRatePhyTxBf;
-	else
-		pEntry->phyITxBf = pEntry->lastRatePhyTxBf;
-#endif /*  TXBF_SUPPORT */
 }
 
 
@@ -1835,59 +1756,6 @@ void MlmeCheckRDG(
 	}
 }
 #endif /*  DOT11N_SS3_SUPPORT */
-
-
-#ifdef TXBF_SUPPORT
-void txbf_rate_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
-{
-	RTMP_RA_LEGACY_TB *pNextTxRate;
-	u8 *pTable = pEntry->pTable;
-
-
-	/*  Get pointer to CurrTxRate entry */
-#ifdef NEW_RATE_ADAPT_SUPPORT
-	if (ADAPT_RATE_TABLE(pTable))
-		pNextTxRate = (RTMP_RA_LEGACY_TB *)PTX_RA_GRP_ENTRY(pTable, pEntry->CurrTxRateIndex);
-	else
-#endif /*  NEW_RATE_ADAPT_SUPPORT */
-		pNextTxRate = PTX_RA_LEGACY_ENTRY(pTable, pEntry->CurrTxRateIndex);
-
-		/*  If BF has been disabled then force a non-BF rate */
-		if (pEntry->eTxBfEnCond==0)
-			pEntry->phyETxBf = 0;
-
-		if (pEntry->iTxBfEn==0)
-			pEntry->phyITxBf = 0;
-
-
-	   	/*  Set BF options */
-		pEntry->HTPhyMode.field.eTxBF = pEntry->phyETxBf;
-		pEntry->HTPhyMode.field.iTxBF = pEntry->phyITxBf;
-
-		/*  Give ETxBF priority over ITxBF */
-		if (pEntry->HTPhyMode.field.eTxBF)
-			pEntry->HTPhyMode.field.iTxBF = 0;
-
-		/*  In ITxBF mode force GI if we have no choice */
-		if (pEntry->HTPhyMode.field.iTxBF &&
-			(pEntry->OneSecRxLGICount + pEntry->OneSecRxSGICount) > 10)
-		{
-			if (pEntry->OneSecRxSGICount==0)
-				pEntry->HTPhyMode.field.ShortGI = GI_800;
-
-			if (pEntry->OneSecRxLGICount==0)
-			{
-				if ((pEntry->HTPhyMode.field.BW==BW_20 && CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_SGI20_CAPABLE)) ||
-			    	(pEntry->HTPhyMode.field.BW==BW_40 && CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_SGI40_CAPABLE)))
-						pEntry->HTPhyMode.field.ShortGI = GI_400;
-			}
-		}
-
-		/*  Disable STBC if BF is enabled */
-		if (pEntry->HTPhyMode.field.eTxBF || pEntry->HTPhyMode.field.iTxBF)
-			pEntry->HTPhyMode.field.STBC = STBC_NONE;
-	}
-#endif /* TXBF_SUPPORT */
 
 
 INT rtmp_get_rate_from_rate_tb(u8 *table, INT idx, RTMP_TX_RATE *tx_rate)
@@ -1965,11 +1833,6 @@ void MlmeNewTxRate(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 			pEntry->HTPhyMode.field.STBC = 0;
 	}
 #endif /*  DOT11_N_SUPPORT */
-
-#ifdef TXBF_SUPPORT
-	if (pAd->chipCap.FlgHwTxBfCap)
-		txbf_rate_adjust(pAd, pEntry);
-#endif /*  TXBF_SUPPORT */
 
 	pAd->LastTxRate = (USHORT)(pEntry->HTPhyMode.word);
 

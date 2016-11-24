@@ -1739,9 +1739,6 @@ BOOLEAN StaAddMacTableEntry(
 {
 	u8 MaxSupportedRate = RATE_11;
 	BOOLEAN bSupportN = FALSE;
-#ifdef TXBF_SUPPORT
-	BOOLEAN		supportsETxBf = FALSE;
-#endif
 
 	if (!pEntry)
 		return FALSE;
@@ -1809,11 +1806,6 @@ BOOLEAN StaAddMacTableEntry(
 			CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_WMM_CAPABLE);
 
 		ht_mode_adjust(pAd, pEntry, pHtCapability, &pAd->CommonCfg.DesiredHtPhy);
-
-#ifdef TXBF_SUPPORT
-		if (pAd->chipCap.FlgHwTxBfCap)
-			supportsETxBf = clientSupportsETxBF(pAd, &pHtCapability->TxBFCap);
-#endif /* TXBF_SUPPORT */
 
 		/* find max fixed rate */
 		pEntry->MaxHTPhyMode.field.MCS = get_ht_max_mcs(pAd, &pAd->StaCfg.DesiredHtPhyInfo.MCSSet[0], &pHtCapability->MCSSet[0]);
@@ -1883,13 +1875,6 @@ BOOLEAN StaAddMacTableEntry(
 #endif /* MFB_SUPPORT */
 
 	pEntry->freqOffsetValid = FALSE;
-
-#ifdef TXBF_SUPPORT
-	TxBFInit(pAd, pEntry, supportsETxBf);
-
-	RTMPInitTimer(pAd, &pEntry->eTxBfProbeTimer, GET_TIMER_FUNCTION(eTxBfProbeTimerExec), pEntry, FALSE);
-	spin_lock_init(pAd, &pEntry->TxSndgLock);
-#endif /* TXBF_SUPPORT */
 
 	MlmeRAInit(pAd, pEntry);
 

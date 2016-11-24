@@ -207,11 +207,6 @@
 #define	RT_OID_802_11_SNR_2							0x067A
 #define RT_OID_802_11_PER_BSS_STATISTICS			0x067D
 
-#ifdef TXBF_SUPPORT
-#define RT_OID_802_11_QUERY_TXBF_TABLE				0x067C
-#endif
-
-
 #ifdef HOSTAPD_SUPPORT
 #define SIOCSIWGENIE	0x8B30
 #define OID_HOSTAPD_SUPPORT               0x0661
@@ -1027,29 +1022,6 @@ typedef struct _RT_802_11_MAC_TABLE {
 	ULONG Num;
 	RT_802_11_MAC_ENTRY Entry[MAX_NUMBER_OF_MAC];
 } RT_802_11_MAC_TABLE, *PRT_802_11_MAC_TABLE;
-
-#ifdef DOT11_N_SUPPORT
-#ifdef TXBF_SUPPORT
-typedef
-    struct {
-	ULONG TxSuccessCount;
-	ULONG TxRetryCount;
-	ULONG TxFailCount;
-	ULONG ETxSuccessCount;
-	ULONG ETxRetryCount;
-	ULONG ETxFailCount;
-	ULONG ITxSuccessCount;
-	ULONG ITxRetryCount;
-	ULONG ITxFailCount;
-} RT_COUNTER_TXBF;
-
-typedef
-    struct {
-	ULONG Num;
-	RT_COUNTER_TXBF Entry[MAX_NUMBER_OF_MAC];
-} RT_802_11_TXBF_TABLE;
-#endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
 /* structure for query/set hardware register - MAC, BBP, RF register */
 typedef struct _RT_802_11_HARDWARE_REGISTER {
