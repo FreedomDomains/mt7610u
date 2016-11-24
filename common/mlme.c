@@ -950,11 +950,6 @@ void STAMlmePeriodicExec(
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 		AsicAdjustTxPower(pAd);
 
-#ifndef SINGLE_SKU_V2
-	if (pAd->Mlme.OneSecPeriodicRound % 5 == 0)
-		mt76x0_adjust_per_rate_pwr(pAd);
-#endif /* SINGLE_SKU_V2 */
-
 #ifdef RTMP_TEMPERATURE_TX_ALC
 	mt76x0_temp_tx_alc(pAd);
 #endif /* RTMP_TEMPERATURE_TX_ALC */

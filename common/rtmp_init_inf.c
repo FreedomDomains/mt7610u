@@ -555,17 +555,6 @@ void RTMPDrvSTAClose(
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE);
 	}
 
-#ifdef SINGLE_SKU_V2
-	{
-		CH_POWER *ch, *ch_temp;
-		DlListForEachSafe(ch, ch_temp, &pAd->SingleSkuPwrList, CH_POWER, List)
-		{
-			DlListDel(&ch->List);
-			kfree(ch);
-		}
-	}
-#endif /* SINGLE_SKU_V2 */
-
 #ifdef RESOURCE_PRE_ALLOC
 	RTMPResetTxRxRingMemory(pAd);
 #else

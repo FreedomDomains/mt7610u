@@ -590,15 +590,6 @@ struct rtmp_chip_cap {
 #endif /* A_BAND_SUPPORT */
 #endif /* defined(RTMP_INTERNAL_TX_ALC) */
 
-#ifdef SINGLE_SKU_V2
-	INT16	PAModeCCK[4];
-	INT16	PAModeOFDM[8];
-	INT16	PAModeHT[16];
-#ifdef DOT11_VHT_AC
-	INT16	PAModeVHT[10];
-#endif /* DOT11_VHT_AC */
-#endif /* SINGLE_SKU_V2 */
-
 	/* ---------------------------- packet ---------------------------------- */
 
 	/* ---------------------------- others ---------------------------------- */

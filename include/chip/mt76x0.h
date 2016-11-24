@@ -254,14 +254,4 @@ void MT76x0_IntTxAlcProcess(
 void MT76x0_MakeUpRatePwrTable(
 	IN struct rtmp_adapter *pAd);
 
-#ifdef SINGLE_SKU_V2
-u8 MT76x0_GetSkuChannelBasePwr(
-	IN struct rtmp_adapter *pAd,
-	IN u8 channel);
-
-u8 MT76x0_UpdateSkuPwr(
-	IN struct rtmp_adapter *pAd,
-	IN u8 channel);
-#endif /* SINGLE_SKU_V2 */
-
 #endif /* __MT76x0_H__ */

@@ -141,10 +141,6 @@ int	RTMPReadParametersHook(
 		}
 #endif /*HOSTAPD_SUPPORT */
 
-#ifdef SINGLE_SKU_V2
-	RTMPSetSingleSKUParameters(pAd);
-#endif /* SINGLE_SKU_V2 */
-
 /*	kfree(buffer); */
 	kfree(buffer);
 

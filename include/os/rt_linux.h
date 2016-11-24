@@ -109,13 +109,6 @@ typedef struct usb_ctrlrequest devctrlrequest;
 
 #ifdef CONFIG_STA_SUPPORT
 
-#ifdef RTMP_MAC_USB
-#ifdef SINGLE_SKU_V2
-#define SINGLE_SKU_TABLE_FILE_NAME	"/etc/Wireless/RT2870STA/SingleSKU.dat"
-#endif /* SINGLE_SKU_V2 */
-#endif /* RTMP_MAC_USB */
-
-
 extern	const struct iw_handler_def rt28xx_iw_handler_def;
 #endif /* CONFIG_STA_SUPPORT */
 

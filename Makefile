@@ -63,9 +63,6 @@ HAS_SNMP_SUPPORT=n
 #Support features of 802.11n Draft3
 HAS_DOT11N_DRAFT3_SUPPORT=y
 
-#Support features of Single SKU.
-HAS_SINGLE_SKU_SUPPORT=n
-
 #Support features of 802.11n
 HAS_DOT11_N_SUPPORT=y
 
@@ -201,10 +198,6 @@ endif
 
 ifeq ($(HAS_RTMP_FLASH_SUPPORT),y)
 WFLAGS += -DRTMP_FLASH_SUPPORT
-endif
-
-ifeq ($(HAS_SINGLE_SKU_SUPPORT),y)
-WFLAGS += -DSINGLE_SKU_V2
 endif
 
 ifeq ($(HAS_HDR_TRANS_SUPPORT),y)

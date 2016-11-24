@@ -3098,12 +3098,6 @@ struct rtmp_adapter {
 	BOOLEAN TestMulMac;
 
 	struct MCU_CTRL MCUCtrl;
-
-#ifdef SINGLE_SKU_V2
-	DL_LIST SingleSkuPwrList;
-	CHAR DefaultTargetPwr;
-	CHAR SingleSkuRatePwrDiff[19];
-#endif /* SINGLE_SKU_V2 */
 };
 
 #if defined(RTMP_INTERNAL_TX_ALC)
@@ -3688,11 +3682,6 @@ int	RTMPReadParametersHook(
 int	RTMPSetProfileParameters(
 	IN struct rtmp_adapter*pAd,
 	IN char *	pBuffer);
-
-#ifdef SINGLE_SKU_V2
-int	RTMPSetSingleSKUParameters(
-	IN struct rtmp_adapter*pAd);
-#endif /* SINGLE_SKU_V2 */
 
 INT RTMPGetKeyParameter(
     IN char *key,
