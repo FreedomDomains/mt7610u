@@ -410,14 +410,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	pAd->NicConfig3.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG3_OFFSET];
 #endif /* defined(BT_COEXISTENCE_SUPPORT) */
 
-#ifndef RT65xx /* MT7650 EEPROM doesn't have those BBP setting @20121001 */
-	for(i = 0; i < 8; i++)
-	{
-		RT28xx_EEPROM_READ16(pAd, EEPROM_BBP_BASE_OFFSET + i*2, value);
-		pAd->EEPROMDefaultValue[i+EEPROM_BBP_ARRAY_OFFSET] = value;
-	}
-#endif /*!MT76x0 */
-
 	/* We have to parse NIC configuration 0 at here.*/
 	/* If TSSI did not have preloaded value, it should reset the TxAutoAgc to false*/
 	/* Therefore, we have to read TxAutoAgc control beforehand.*/
@@ -1004,20 +996,6 @@ void NICInitAsicFromEEPROM(
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitAsicFromEEPROM\n"));
-
-#ifndef RT65xx
-	for(i = EEPROM_BBP_ARRAY_OFFSET; i < NUM_EEPROM_BBP_PARMS; i++)
-	{
-		u8 BbpRegIdx, BbpValue;
-
-		if ((pAd->EEPROMDefaultValue[i] != 0xFFFF) && (pAd->EEPROMDefaultValue[i] != 0))
-		{
-			BbpRegIdx = (u8)(pAd->EEPROMDefaultValue[i] >> 8);
-			BbpValue  = (u8)(pAd->EEPROMDefaultValue[i] & 0xff);
-			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BbpRegIdx, BbpValue);
-		}
-	}
-#endif /* !RT65xx */
 
 	NicConfig2.word = pAd->NicConfig2.word;
 
