@@ -1711,54 +1711,6 @@ static void MT76x0_AsicAntennaDefaultReset(
 	pAntenna->field.RxPath = 1;
 }
 
-
-static void MT76x0_ChipBBPAdjust(struct rtmp_adapter*pAd)
-{
-	static char *ext_str[]={"extNone", "extAbove", "", "extBelow"};
-	u8 rf_bw, ext_ch;
-
-
-#ifdef DOT11_N_SUPPORT
-	if (get_ht_cent_ch(pAd, &rf_bw, &ext_ch) == FALSE)
-#endif /* DOT11_N_SUPPORT */
-	{
-		rf_bw = BW_20;
-		ext_ch = EXTCHA_NONE;
-		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
-	}
-
-#ifdef DOT11_VHT_AC
-	if (WMODE_CAP(pAd->CommonCfg.PhyMode, WMODE_AC) &&
-		(pAd->CommonCfg.Channel > 14) &&
-		(rf_bw == BW_40) &&
-		(pAd->CommonCfg.vht_bw == VHT_BW_80) &&
-		(pAd->CommonCfg.vht_cent_ch != pAd->CommonCfg.CentralChannel))
-	{
-		rf_bw = BW_80;
-		pAd->CommonCfg.vht_cent_ch = vht_cent_ch_freq(pAd, pAd->CommonCfg.Channel);
-	}
-
-	DBGPRINT(RT_DEBUG_OFF, ("%s():rf_bw=%d, ext_ch=%d, PrimCh=%d, HT-CentCh=%d, VHT-CentCh=%d\n",
-				__FUNCTION__, rf_bw, ext_ch, pAd->CommonCfg.Channel,
-				pAd->CommonCfg.CentralChannel, pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
-
-	rtmp_bbp_set_bw(pAd, rf_bw);
-
-	/* TX/Rx : control channel setting */
-	rtmp_mac_set_ctrlch(pAd, ext_ch);
-	rtmp_bbp_set_ctrlch(pAd, ext_ch);
-
-#ifdef DOT11_N_SUPPORT
-	DBGPRINT(RT_DEBUG_TRACE, ("%s() : %s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
-					__FUNCTION__, ext_str[ext_ch],
-					pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
-					pAd->CommonCfg.Channel,
-					pAd->CommonCfg.RegTransmitSetting.field.EXTCHA,
-					pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset));
-#endif /* DOT11_N_SUPPORT */
-}
-
 static void MT76x0_ChipSwitchChannel(
 	struct rtmp_adapter *pAd,
 	u8 Channel,
@@ -2726,9 +2678,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	/*
 		init operator
 	*/
-
-	/* BBP adjust */
-	pChipOps->ChipBBPAdjust = MT76x0_ChipBBPAdjust;
 
 	/* Channel */
 	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;

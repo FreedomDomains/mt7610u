@@ -4357,9 +4357,6 @@ void 	AsicUpdateProtect(
 	IN		BOOLEAN			bDisableBGProtect,
 	IN		BOOLEAN			bNonGFExist);
 
-void AsicBBPAdjust(
-	IN struct rtmp_adapter*pAd);
-
 void AsicSwitchChannel(
 	IN  struct rtmp_adapter *  pAd,
 	IN	u8 		Channel,

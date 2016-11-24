@@ -764,9 +764,6 @@ struct rtmp_chip_ops {
 	/* MAC */
 	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, u32 Value, u8 Unit);
 
-	/* BBP adjust */
-	void (*ChipBBPAdjust)(IN struct rtmp_adapter *pAd);
-
 	/* Channel */
 	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, BOOLEAN bScan);
 

@@ -523,69 +523,6 @@ static u8 ChipAGCAdjust(
 }
 #endif /* CONFIG_STA_SUPPORT */
 
-
-static void ChipBBPAdjust(struct rtmp_adapter*pAd)
-{
-	u8 rf_bw, ext_ch;
-	u8 bbp_val;
-
-
-#ifdef DOT11_N_SUPPORT
-	if (get_ht_cent_ch(pAd, &rf_bw, &ext_ch) == FALSE)
-#endif /* DOT11_N_SUPPORT */
-	{
-		rf_bw = BW_20;
-		ext_ch = EXTCHA_NONE;
-		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
-	}
-
-	rtmp_bbp_set_bw(pAd, rf_bw);
-
-	/*  TX/RX : control channel setting */
-	rtmp_mac_set_ctrlch(pAd, ext_ch);
-	rtmp_bbp_set_ctrlch(pAd, ext_ch);
-
-	/* request by Gary 20070208 for middle and long range G Band*/
-#ifdef DOT11_N_SUPPORT
-	if (rf_bw == BW_40)
-		bbp_val = (pAd->CommonCfg.Channel > 14) ? 0x48 : 0x38;
-	else
-#endif /* DOT11_N_SUPPORT */
-		bbp_val = (pAd->CommonCfg.Channel > 14) ? 0x40 : 0x38;
-	rtmp_bbp_set_agc(pAd, bbp_val, RX_CHAIN_ALL);
-
-
-	if (pAd->MACVersion == 0x28600100)
-	{
-#ifdef RT28xx
-		RT28xx_ch_tunning(pAd, BW_40);
-#endif /* RT28xx */
-	}
-	else
-	{
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R69, 0x12);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R70, 0x0A);
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R73, 0x10);
-	}
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s(): BW_%s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
-					__FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
-					pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
-					pAd->CommonCfg.Channel,
-					pAd->CommonCfg.RegTransmitSetting.field.EXTCHA,
-					pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset));
-
-	/* request by Gary 20070208 for middle and long range A Band*/
-	if (pAd->CommonCfg.Channel > 14)
-		bbp_val = 0x1D;
-	else
-		bbp_val = 0x2D;
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R62, 0x2D);
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R63, 0x2D);
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R64, 0x2D);
-	/*RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R86, 0x2D);*/
-}
-
 static void AsicAntennaDefaultReset(
 	IN struct rtmp_adapter *	pAd,
 	IN EEPROM_ANTENNA_STRUC	*pAntenna)
