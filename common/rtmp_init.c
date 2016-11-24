@@ -1018,31 +1018,6 @@ void NICInitAsicFromEEPROM(
 #endif /* LED_CONTROL_SUPPORT */
 
 	}
-#ifdef PCIE_PS_SUPPORT
-#if defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) || defined(RT5592)
-		if (IS_RT3090(pAd)|| IS_RT3572(pAd) || IS_RT3390(pAd)
-			|| IS_RT3593(pAd) || IS_RT5390(pAd) || IS_RT5392(pAd)
-			|| IS_RT5592(pAd))
-		{
-			struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-			if (pChipOps->AsicReverseRfFromSleepMode)
-				pChipOps->AsicReverseRfFromSleepMode(pAd, TRUE);
-		}
-		/* 3090 MCU Wakeup command needs more time to be stable. */
-		/* Before stable, don't issue other MCU command to prevent from firmware error.*/
-		if ((((IS_RT3090(pAd)|| IS_RT3572(pAd) ||IS_RT3390(pAd)
-			|| IS_RT3593(pAd) || IS_RT5390(pAd) || IS_RT5392(pAd))
-			  && IS_VERSION_AFTER_F(pAd)) || IS_RT5592(pAd))
-			&& (pAd->StaCfg.PSControl.field.rt30xxPowerMode == 3)
-			&& (pAd->StaCfg.PSControl.field.EnableNewPS == TRUE))
-		{
-			DBGPRINT(RT_DEBUG_TRACE,("%s::%d,release Mcu Lock\n",__FUNCTION__,__LINE__));
-			RTMP_SEM_LOCK(&pAd->McuCmdLock);
-			pAd->brt30xxBanMcuCmd = FALSE;
-			RTMP_SEM_UNLOCK(&pAd->McuCmdLock);
-		}
-#endif /* defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) */
-#endif /* PCIE_PS_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 	/* Turn off patching for cardbus controller*/
 	if (NicConfig2.field.CardbusAcceleration == 1)
@@ -2574,13 +2549,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 
 	pAd->CommonCfg.bWiFiTest = FALSE;
-
-
-#ifdef CONFIG_STA_SUPPORT
-#ifdef PCIE_PS_SUPPORT
-	RTMP_SET_PSFLAG(pAd, fRTMP_PS_CAN_GO_SLEEP);
-#endif /* PCIE_PS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
 	pAd->RxAnt.Pair1PrimaryRxAnt = 0;
 	pAd->RxAnt.Pair1SecondaryRxAnt = 1;

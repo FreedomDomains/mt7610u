@@ -40,25 +40,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 		MT76x0_WLAN_ChipOnOff(pAd, TRUE, FALSE);
 #endif /* RT65xx */
 
-#ifdef CONFIG_STA_SUPPORT
-#ifdef PCIE_PS_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-	    	/* If dirver doesn't wake up firmware here,*/
-	    	/* NICLoadFirmware will hang forever when interface is up again.*/
-	    	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE) &&
-	        	OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_ADVANCE_POWER_SAVE_PCIE_DEVICE))
-	    	{
-	        	AUTO_WAKEUP_STRUC AutoWakeupCfg;
-				AsicForceWakeup(pAd, TRUE);
-	        	AutoWakeupCfg.word = 0;
-		    	RTMP_IO_WRITE32(pAd, AUTO_WAKEUP_CFG, AutoWakeupCfg.word);
-	        	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_DOZE);
-	    	}
-	}
-#endif /* PCIE_PS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
-
 	/* reset Adapter flags*/
 	RTMP_CLEAR_FLAGS(pAd);
 
@@ -478,10 +459,6 @@ void RTMPDrvSTAClose(
 
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
-#ifdef PCIE_PS_SUPPORT
-		RTMPPCIeLinkCtrlValueRestore(pAd, RESTORE_CLOSE);
-#endif /* PCIE_PS_SUPPORT */
-
 		/* If dirver doesn't wake up firmware here,*/
 		/* NICLoadFirmware will hang forever when interface is up again.*/
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
