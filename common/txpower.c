@@ -419,24 +419,6 @@ void AsicCompensatePowerViaBBP(
 		/* Control the the transmit power by using the MAC only */
 		mdsm_drop_pwr = MDSM_NORMAL_TX_POWER;
 	}
-
-#ifdef RT65xx
-	if (IS_RT65XX(pAd))
-	{
-	}
-	else
-#endif /* RT65xx */
-	{
-		u8 BbpR1 = 0;
-
-		/* The BBP R1 controls the transmit power for all rates */
-		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R1, &BbpR1);
-		BbpR1 &= ~MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK;
-		BbpR1 |= mdsm_drop_pwr;
-		RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R1, BbpR1);
-
-		DBGPRINT(RT_DEBUG_INFO, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X \n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
-	}
 }
 
 
