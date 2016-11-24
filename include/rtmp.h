@@ -2348,7 +2348,7 @@ typedef struct _RtmpDiagStrcut_ {	/* Diagnosis Related element */
 } RtmpDiagStruct;
 #endif /* DBG_DIAGNOSE */
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 /*
 	The number of channels for per-channel Tx power offset
 */
@@ -2372,16 +2372,8 @@ typedef struct _TX_POWER_CONTROL {
 	CHAR MAC_PowerDelta; /* Tx power control over MAC 0x1314~0x1324 */
 	CHAR MAC_PowerDelta2; /* Tx power control for Tx1 */
 	CHAR TotalDeltaPower2; /* Tx power control for Tx1 */
-#ifdef RTMP_TEMPERATURE_COMPENSATION
-	INT LookupTable[IEEE80211_BAND_NUMS][LOOKUP_TB_SIZE];
-	INT RefTemp[IEEE80211_BAND_NUMS];
-	u8 TssiGain[IEEE80211_BAND_NUMS];
-	/* Index offset, -7....25. */
-	INT LookupTableIndex;
-#endif /* RTMP_TEMPERATURE_COMPENSATION */
-
 } TX_POWER_CONTROL, *PTX_POWER_CONTROL;
-#endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
+#endif /* RTMP_INTERNAL_TX_ALC */
 
 /* */
 /* The entry of transmit power control over MAC */
@@ -2827,11 +2819,11 @@ struct rtmp_adapter {
 	CHAR LastTempCompDeltaPwr;
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 	TX_POWER_CONTROL TxPowerCtrl;	/* The Tx power control using the internal ALC */
 	CHAR curr_temp;
 	CHAR rx_temp_base[2];	/* initial VGA value for chain 0/1,  used for base of rx temp compensation power base */
-#endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
+#endif /* RTMP_INTERNAL_TX_ALC */
 
 
 	signed char BGRssiOffset[3]; /* Store B/G RSSI #0/1/2 Offset value on EEPROM 0x46h */
@@ -3193,7 +3185,7 @@ struct rtmp_adapter {
 #endif /* SINGLE_SKU_V2 */
 };
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 /* The offset of the Tx power tuning entry (zero-based array) */
 #define TX_POWER_TUNING_ENTRY_OFFSET			30
 
@@ -3330,7 +3322,7 @@ typedef struct _TSSI_INFO_{
 	HT_TSSI_INFO ht_tssi_info_2;
 }TSSI_INFO;
 
-#endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
+#endif /* RTMP_INTERNAL_TX_ALC */
 
 
 /***************************************************************************
@@ -4319,15 +4311,6 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN char *				pDeltaPowerByBbpR1);
 
 void AsicExtraPowerOverMAC(struct rtmp_adapter*pAd);
-
-#ifdef RTMP_TEMPERATURE_COMPENSATION
-void AsicGetAutoAgcOffsetForTemperatureSensor(
-	IN struct rtmp_adapter *		pAd,
-	IN char *			pDeltaPwr,
-	IN char *			pTotalDeltaPwr,
-	IN char *			pAgcCompensate,
-	IN char *				pDeltaPowerByBbpR1);
-#endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 #ifdef SINGLE_SKU
 void GetSingleSkuDeltaPower(
@@ -5661,11 +5644,6 @@ int MlmeInit(
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
-
-#ifdef RTMP_TEMPERATURE_COMPENSATION
-void InitLookupTable(
-	IN struct rtmp_adapter *pAd);
-#endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 void MlmeHandler(
 	IN  struct rtmp_adapter *  pAd);

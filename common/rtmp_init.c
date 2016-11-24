@@ -2362,14 +2362,11 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->bAutoTxAgcA = FALSE;			/* Default is OFF*/
 	pAd->bAutoTxAgcG = FALSE;			/* Default is OFF*/
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 	pAd->TxPowerCtrl.bInternalTxALC = FALSE; /* Off by default */
 	pAd->TxPowerCtrl.idxTxPowerTable = 0;
 	pAd->TxPowerCtrl.idxTxPowerTable2 = 0;
-#ifdef RTMP_TEMPERATURE_COMPENSATION
-	pAd->TxPowerCtrl.LookupTableIndex = 0;
-#endif /* RTMP_TEMPERATURE_COMPENSATION */
-#endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
+#endif /* RTMP_INTERNAL_TX_ALC */
 
 	pAd->RfIcType = RFIC_2820;
 

@@ -52,7 +52,7 @@ INT rtmp_bbp_get_temp(struct rtmp_adapter *pAd, CHAR *temp_val)
 {
 	u32 bbp_val;
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 	RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
 	*temp_val = (CHAR)(bbp_val & 0xff);
 
@@ -67,7 +67,7 @@ INT 	rtmp_bbp_tx_comp_init(struct rtmp_adapter*pAd, INT adc_insel, INT tssi_mode
 	u32 bbp_val;
 	u8 rf_val;
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 	RTMP_BBP_IO_READ32(pAd, CORE_R34, &bbp_val);
 	bbp_val = (bbp_val & 0xe7);
 	bbp_val = (bbp_val | 0x80);

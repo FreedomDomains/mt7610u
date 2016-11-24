@@ -165,7 +165,7 @@ RTMP_RF_REGS RF2850RegTable[] = {
 u8 NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
 #endif /* defined(RT28xx) || defined(RT2883) */
 
-#if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
+#if defined(RTMP_INTERNAL_TX_ALC)
 
 /* The Tx power tuning entry*/
 const TX_POWER_TUNING_ENTRY_STRUCT TxPowerTuningTableOrg[] =
@@ -249,7 +249,7 @@ const TX_POWER_TUNING_ENTRY_STRUCT TxPowerTuningTableOrg[] =
 /*	74	*/				{0x0F-1,							15},
 /*	75	*/				{0x0F,							15},
 };
-#endif /* RTMP_INTERNAL_TX_ALC || RTMP_TEMPERATURE_COMPENSATION */
+#endif /* RTMP_INTERNAL_TX_ALC */
 
 
 /*
