@@ -286,12 +286,6 @@ void RTMP_P2P_Remove(
 //#ifdef CONFIG_PM
 //#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
-#define RTMP_DRIVER_USB_DEV_GET(__pAd, __pUsbDev)                                                       \
-        RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_USB_DEV_GET, 0, __pUsbDev, 0)
-
-#define RTMP_DRIVER_USB_INTF_GET(__pAd, __pUsbIntf)                                                     \
-        RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_USB_INTF_GET, 0, __pUsbIntf, 0)
-
 #define RTMP_DRIVER_ADAPTER_SUSPEND_SET(__pAd)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_SET, 0, NULL, 0)
 

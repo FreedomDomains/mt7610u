@@ -678,22 +678,6 @@ INT RTMP_COM_IoctlHandle(
 //#ifdef CONFIG_PM
 #ifdef RTMP_USB_SUPPORT
 //#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-                case CMD_RTPRIV_IOCTL_USB_DEV_GET:
-                /* get USB DEV */
-                {
-                        struct usb_device **ppUsb_Dev = (struct usb_device **)pData;
-                        *ppUsb_Dev = (struct usb_device *)(pObj->pUsb_Dev);
-                }
-                        break;
-
-                case CMD_RTPRIV_IOCTL_USB_INTF_GET:
-                /* get USB INTF */
-                {
-                        void **ppINTF = (void **)pData;
-                        //*ppINTF = (void *)(pObj->intf);
-                }
-                        break;
-
 		case CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_SET:
 		/* set driver state to fRTMP_ADAPTER_SUSPEND */
 			RTMP_SET_FLAG(pAd,fRTMP_ADAPTER_SUSPEND);
