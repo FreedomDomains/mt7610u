@@ -602,9 +602,6 @@ struct rtmp_chip_cap {
 #ifdef RTMP_FLASH_SUPPORT
 	u8 *eebuf;
 #endif /* RTMP_FLASH_SUPPORT */
-#ifdef CARRIER_DETECTION_SUPPORT
-	u8 carrier_func;
-#endif /* CARRIER_DETECTION_SUPPORT */
 #ifdef DFS_SUPPORT
 	u8 DfsEngineNum;
 #endif /* DFS_SUPPORT */
@@ -777,9 +774,6 @@ struct rtmp_chip_ops {
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
 
-#ifdef CARRIER_DETECTION_SUPPORT
-	void (*ToneRadarProgram)(struct rtmp_adapter *pAd, ULONG  threshold);
-#endif /* CARRIER_DETECTION_SUPPORT */
 	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
@@ -939,14 +933,6 @@ do {	\
 		if (__pAd->chipOps.BeaconUpdate != NULL)	\
 			__pAd->chipOps.BeaconUpdate(__pAd, Offset, Value, Unit);	\
 } while (0)
-
-#ifdef CARRIER_DETECTION_SUPPORT
-#define	RTMP_CHIP_CARRIER_PROGRAM(__pAd, threshold)	\
-do {	\
-		if(__pAd->chipOps.ToneRadarProgram != NULL)	\
-			__pAd->chipOps.ToneRadarProgram(__pAd, threshold);	\
-} while (0)
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 #define RTMP_CHIP_CCK_MRC_STATUS_CTRL(__pAd)	\
 do {	\

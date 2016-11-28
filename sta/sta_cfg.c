@@ -37,16 +37,6 @@ INT Set_AdhocN_Proc(
     IN  struct rtmp_adapter *pAd,
     IN  char *		arg);
 
-
-
-
-#ifdef CARRIER_DETECTION_SUPPORT
-INT Set_StaCarrierDetect_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg);
-#endif /* CARRIER_DETECTION_SUPPORT */
-
-
 /*
     ==========================================================================
     Description:
@@ -1067,21 +1057,6 @@ INT Set_Ieee80211dClientMode_Proc(
     return TRUE;
 }
 #endif /* EXT_BUILD_CHANNEL_LIST */
-
-#ifdef CARRIER_DETECTION_SUPPORT
-INT Set_StaCarrierDetect_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg)
-{
-    if (simple_strtol(arg, 0, 10) == 0)
-        pAd->CommonCfg.CarrierDetect.Enable = FALSE;
-    else
-        pAd->CommonCfg.CarrierDetect.Enable = TRUE;
-
-    DBGPRINT(RT_DEBUG_TRACE, ("IF Set_StaCarrierDetect_Proc::(CarrierDetect.Enable=%d)\n", pAd->CommonCfg.CarrierDetect.Enable));
-	return TRUE;
-}
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 INT	Show_Adhoc_MacTable_Proc(
 	IN	struct rtmp_adapter *pAd,

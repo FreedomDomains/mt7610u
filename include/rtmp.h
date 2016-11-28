@@ -75,10 +75,6 @@ typedef struct _UAPSD_INFO {
 
 #include "radar.h"
 
-#ifdef CARRIER_DETECTION_SUPPORT
-#include "cs.h"
-#endif /* CARRIER_DETECTION_SUPPORT */
-
 #ifdef DFS_SUPPORT
 #include "dfs.h"
 #endif /* DFS_SUPPORT */
@@ -1407,9 +1403,6 @@ struct common_config {
 	/* IEEE802.11H--DFS. */
 	RADAR_DETECT_STRUCT RadarDetect;
 #endif /* DFS_SUPPORT */
-#ifdef CARRIER_DETECTION_SUPPORT
-	CARRIER_DETECTION_STRUCT CarrierDetect;
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
 	/* HT */

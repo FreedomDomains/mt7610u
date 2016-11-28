@@ -36,9 +36,6 @@ HAS_IGMP_SNOOP_SUPPORT=n
 #Support DFS function
 HAS_DFS_SUPPORT=n
 
-#Support Carrier-Sense function
-HAS_CS_SUPPORT=n
-
 #Support WEPAUTO mode try Open first then shared
 HAS_WEPAUTO_OPEN_FIRST_SUPPORT=n
 
@@ -263,11 +260,6 @@ ifeq ($(HAS_WFD_SUPPORT),y)
 HAS_P2P_SUPPORT=y
 HAS_P2P_SPECIFIC_WIRELESS_EVENT=y
 WFLAGS += -DWFD_SUPPORT
-endif
-
-
-ifeq ($(HAS_CS_SUPPORT),y)
-WFLAGS += -DCARRIER_DETECTION_SUPPORT
 endif
 
 ifeq ($(HAS_STATS_COUNT),y)
@@ -516,10 +508,6 @@ endif
 
 ifeq ($(HAS_DFS_SUPPORT),y)
 obj_cmm += 	common/cmm_dfs.o
-endif
-
-ifeq ($(HAS_CS_SUPPORT),y)
-obj_cmm += 	common/cmm_cs.o
 endif
 
 #ifdef DOT11_N_SUPPORT

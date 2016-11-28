@@ -444,10 +444,6 @@ void ScanNextChannel(
 					&& RadarChannelCheck(pAd, pAd->MlmeAux.Channel))
 					bScanPassive = TRUE;
 			}
-#ifdef CARRIER_DETECTION_SUPPORT
-			if (pAd->CommonCfg.CarrierDetect.Enable == TRUE)
-				bScanPassive = TRUE;
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 			if (bScanPassive)
 			{

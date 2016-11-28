@@ -195,7 +195,7 @@ INT Set_BlockChReset_Proc(
 }
 
 
-#if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
+#if defined(DFS_SUPPORT)
 
 INT	Set_RadarShow_Proc(
 	IN	struct rtmp_adapter *pAd,
@@ -255,14 +255,6 @@ INT	Set_RadarShow_Proc(
 	printk("pAd->Dot11_H.RDMode = %d\n", pAd->Dot11_H.RDMode);
 #endif /* DFS_SUPPORT */
 
-#ifdef CARRIER_DETECTION_SUPPORT
-	printk("pAd->CommonCfg.CarrierDetect.CD_State = %d\n", pAd->CommonCfg.CarrierDetect.CD_State);
-	printk("pAd->CommonCfg.CarrierDetect.criteria = %d\n", pAd->CommonCfg.CarrierDetect.criteria);
-	printk("pAd->CommonCfg.CarrierDetect.Delta = %d\n", pAd->CommonCfg.CarrierDetect.delta);
-	printk("pAd->CommonCfg.CarrierDetect.DivFlag = %d\n", pAd->CommonCfg.CarrierDetect.div_flag);
-	printk("pAd->CommonCfg.CarrierDetect.Threshold = %d(0x%x)\n", pAd->CommonCfg.CarrierDetect.threshold, pAd->CommonCfg.CarrierDetect.threshold);
-#endif /* CARRIER_DETECTION_SUPPORT */
-
 	return TRUE;
 }
 
@@ -294,5 +286,5 @@ void CckMrcStatusCtrl(IN struct rtmp_adapter *pAd)
 void RadarGLRTCompensate(IN struct rtmp_adapter *pAd)
 {
 }
-#endif /*defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT) */
+#endif /*defined(DFS_SUPPORT)  */
 

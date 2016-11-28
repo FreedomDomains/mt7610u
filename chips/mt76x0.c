@@ -2598,10 +2598,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 #ifdef CONFIG_STA_SUPPORT
 	pChipOps->NetDevNickNameInit = MT76x0_NetDevNickNameInit;
 #endif /* CONFIG_STA_SUPPORT */
-#ifdef CARRIER_DETECTION_SUPPORT
-	pAd->chipCap.carrier_func = TONE_RADAR_V3;
-	pChipOps->ToneRadarProgram = ToneRadarProgram_v3;
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 	/* Chip tuning */
 	pChipOps->AsicGetTxPowerOffset = MT76x0_AsicGetTxPowerOffset;

@@ -586,20 +586,6 @@ typedef union _BBP_R182_STRUC {
 	Generate PER to test BA
  *****************************************************************************/
 
-#ifdef CARRIER_DETECTION_SUPPORT
-/*TONE_RADAR_DETECT_V2*/
-#define RTMP_CARRIER_IO_READ8(_A, _I, _V)               \
-{                                                       \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R184, _I);          \
-	RTMP_BBP_IO_READ8_BY_REG_ID(_A, BBP_R185, _V);           \
-}
-#define RTMP_CARRIER_IO_WRITE8(_A, _I, _V)              \
-{                                                       \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R184, _I);          \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R185, _V);          \
-}
-#endif /* CARRIER_DETECTION_SUPPORT */
-
 #ifdef DFS_SUPPORT
 #define RTMP_DFS_IO_READ8(_A, _I, _V)                   \
 {                                                       \

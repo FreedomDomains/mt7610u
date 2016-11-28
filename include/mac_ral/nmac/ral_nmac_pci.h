@@ -59,10 +59,6 @@
 #define INT_RESVD_2		(1<<25)
 #define INT_RX_DLY		(1<<26)
 #define INT_TX_DLY		(1<<27)
-#ifdef CARRIER_DETECTION_SUPPORT
-// TODO: shiang-6590, for 6590, what's the interrupt bit for TONE_RADAR?? now just give a reseved bit
-#define RT2860_INT_TONE_RADAR	(1<<29)
-#endif /* CARRIER_DETECTION_SUPPORT*/
 
  /* Delayed Rx or indivi rx */
 #define RxINT			(INT_R0_DONE | INT_R1_DONE /* | INT_RX_DLY */)
@@ -93,10 +89,6 @@
 /* GPtimeout interrupt */
 #define GPTimeOutInt	INT_GP_TIMER
 
-#ifdef CARRIER_DETECTION_SUPPORT
-#define RadarInt			(RT2860_INT_TONE_RADAR)
-#endif /* CARRIER_DETECTION_SUPPORT*/
-
 #define INT_RX			(INT_R0_DONE | INT_R1_DONE)
 
 #define INT_AC0_DLY		(INT_T0_DONE)
@@ -110,19 +102,6 @@
 #define INT_HCCA_DLY	(INT_T8_DONE)
 #define INT_MGMT_DLY	(INT_T9_DONE)
 #endif /* RT8592 */
-
-#ifdef CARRIER_DETECTION_SUPPORT
-#define INT_TONE_RADAR	(RT2860_INT_TONE_RADAR)
-#endif /* CARRIER_DETECTION_SUPPORT*/
-
-#ifdef CARRIER_DETECTION_SUPPORT
-#define DELAYINTMASK	(0x0DFF3FF3 | (RadarInt))
-#define INTMASK			(0x0DFF3FF3 | (RadarInt))
-#else
-#define DELAYINTMASK	0x0DFF3FF3
-#define INTMASK			0x0DFF3FF3
-#endif /* CARRIER_DETECTION_SUPPORT */
-
 
 #ifdef RT_BIG_ENDIAN
 typedef union _INT_SOURCE_CSR_STRUC {

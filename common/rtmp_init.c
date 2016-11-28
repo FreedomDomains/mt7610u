@@ -2264,20 +2264,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.PhyMode = 0xff;     /* unknown*/
 	pAd->CommonCfg.SavedPhyMode = pAd->CommonCfg.PhyMode;
 
-
-
-#ifdef CARRIER_DETECTION_SUPPORT
-	pAd->CommonCfg.CarrierDetect.delta = CARRIER_DETECT_DELTA;
-	pAd->CommonCfg.CarrierDetect.div_flag = CARRIER_DETECT_DIV_FLAG;
-	pAd->CommonCfg.CarrierDetect.criteria = CARRIER_DETECT_CRITIRIA;
-	pAd->CommonCfg.CarrierDetect.threshold = CARRIER_DETECT_THRESHOLD;
-	pAd->CommonCfg.CarrierDetect.recheck1 = CARRIER_DETECT_RECHECK_TIME;
-	pAd->CommonCfg.CarrierDetect.CarrierGoneThreshold = CARRIER_GONE_TRESHOLD;
-	pAd->CommonCfg.CarrierDetect.VGA_Mask = CARRIER_DETECT_DEFAULT_MASK;
-	pAd->CommonCfg.CarrierDetect.Packet_End_Mask = CARRIER_DETECT_DEFAULT_MASK;
-	pAd->CommonCfg.CarrierDetect.Rx_PE_Mask = CARRIER_DETECT_DEFAULT_MASK;
-#endif /* CARRIER_DETECTION_SUPPORT */
-
 #ifdef DFS_SUPPORT
 	pAd->CommonCfg.RadarDetect.bDfsInit = FALSE;
 #endif /* DFS_SUPPORT */

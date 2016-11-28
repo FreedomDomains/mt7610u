@@ -1549,13 +1549,6 @@ void MlmeCalculateChannelQuality(
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef CARRIER_DETECTION_SUPPORT /* Roger sync Carrier*/
-	/* longer beacon lost time when carrier detection enabled*/
-	if (pAd->CommonCfg.CarrierDetect.Enable == TRUE)
-	{
-		BeaconLostTime = pAd->StaCfg.BeaconLostTime + (pAd->StaCfg.BeaconLostTime/2);
-	}
-#endif /* CARRIER_DETECTION_SUPPORT */
 
 #ifdef APCLI_SUPPORT
 		if (pMacEntry && IS_ENTRY_APCLI(pMacEntry) && (pMacEntry->MatchAPCLITabIdx < MAX_APCLI_NUM))
@@ -2909,9 +2902,6 @@ void BssTableSsidSort(
 		if ( ((pAd->CommonCfg.bIEEE80211H == 1) &&
 				(pAd->MlmeAux.Channel > 14) &&
 				 RadarChannelCheck(pAd, pInBss->Channel))
-#ifdef CARRIER_DETECTION_SUPPORT /* Roger sync Carrier             */
-             || (pAd->CommonCfg.CarrierDetect.Enable == TRUE)
-#endif /* CARRIER_DETECTION_SUPPORT */
             )
 		{
 			if (pInBss->Hidden)
