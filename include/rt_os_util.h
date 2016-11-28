@@ -726,12 +726,12 @@ struct sk_buff * RTMP_AllocateRxPacketBuffer(
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
 int RTMP_Usb_AutoPM_Put_Interface(
-	IN	void 		*pUsb_Dev,
-	IN	void 		*intf);
+	struct usb_device *pUsb_Dev,
+	void *intf);
 
 int  RTMP_Usb_AutoPM_Get_Interface(
-	IN	void 		*pUsb_Dev,
-	IN	void 		*intf);
+	struct usb_device *pUsb_Dev,
+	void  *intf);
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
@@ -807,24 +807,24 @@ void RtmpOsUsbEmptyUrbCheck(
 
 
 void RtmpOsUsbInitHTTxDesc(
-	IN	void 		*pUrbSrc,
-	IN	void 		*pUsb_Dev,
-	IN	UINT			BulkOutEpAddr,
-	IN	u8 *		pSrc,
-	IN	ULONG			BulkOutSize,
-	IN	USB_COMPLETE_HANDLER	Func,
-	IN	void 		*pTxContext,
-	IN	dma_addr_t		TransferDma);
+	struct urb *pUrb,
+	struct usb_device *pUsb_Dev,
+	UINT BulkOutEpAddr,
+	u8 *pSrc,
+	ULONG BulkOutSize,
+	USB_COMPLETE_HANDLER Func,
+	void *pTxContext,
+	dma_addr_t TransferDma);
 
 void RtmpOsUsbInitRxDesc(
-	IN	void 		*pUrbSrc,
-	IN	void 		*pUsb_Dev,
-	IN	UINT			BulkInEpAddr,
-	IN	u8 		*pTransferBuffer,
-	IN	u32			BufSize,
-	IN	USB_COMPLETE_HANDLER	Func,
-	IN	void 		*pRxContext,
-	IN	dma_addr_t		TransferDma);
+	struct urb *pUrb,
+	struct usb_device *pUsb_Dev,
+	UINT BulkInEpAddr,
+	u8 *pTransferBuffer,
+	u32 BufSize,
+	USB_COMPLETE_HANDLER Func,
+	void *pRxContext,
+	dma_addr_t TransferDma);
 
 void RtmpOsUsbDmaMapping(
 	IN	void 		*pUrb);

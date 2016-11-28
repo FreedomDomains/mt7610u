@@ -681,8 +681,8 @@ INT RTMP_COM_IoctlHandle(
                 case CMD_RTPRIV_IOCTL_USB_DEV_GET:
                 /* get USB DEV */
                 {
-                        void **ppUsb_Dev = (void **)pData;
-                        *ppUsb_Dev = (void *)(pObj->pUsb_Dev);
+                        struct usb_device **ppUsb_Dev = (struct usb_device **)pData;
+                        *ppUsb_Dev = (struct usb_device *)(pObj->pUsb_Dev);
                 }
                         break;
 

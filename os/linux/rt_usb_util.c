@@ -108,22 +108,20 @@ Note:
 */
 
 int RTMP_Usb_AutoPM_Put_Interface (
-	IN	void 		*pUsb_Devsrc,
-	IN	void 		*intfsrc)
+	struct usb_device *pUsb_Devsrc,
+	void intfsrc)
 {
 
 	INT	 pm_usage_cnt;
 	struct usb_interface	*intf =(struct usb_interface *)intfsrc;
 
-		pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
+	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
 
-		if (pm_usage_cnt == 1)
-		{
-			rausb_autopm_put_interface(intf);
+	if (pm_usage_cnt == 1) {
+		rausb_autopm_put_interface(intf);
+	}
 
-              }
-
-			return 0;
+	return 0;
 }
 
 EXPORT_SYMBOL(RTMP_Usb_AutoPM_Put_Interface);
@@ -144,8 +142,8 @@ Note:
 */
 
 int RTMP_Usb_AutoPM_Get_Interface (
-	IN	void 		*pUsb_Devsrc,
-	IN	void 		*intfsrc)
+	struct usb_device *pUsb_Devsrc,
+	void *intfsrc)
 {
 
 	INT	 pm_usage_cnt;
@@ -153,13 +151,11 @@ int RTMP_Usb_AutoPM_Get_Interface (
 
 	pm_usage_cnt = (INT)atomic_read(&intf->pm_usage_cnt);
 
-	if (pm_usage_cnt == 0)
-	{
+	if (pm_usage_cnt == 0) {
 		int res=1;
 
 		res = rausb_autopm_get_interface(intf);
-		if (res)
-		{
+		if (res) {
 			DBGPRINT(RT_DEBUG_ERROR, ("AsicSwitchChannel autopm_resume fail ------\n"));
 			return (-1);
 		}
@@ -197,13 +193,11 @@ void RtmpOsUsbEmptyUrbCheck(
 	/* maybe wait for deletions to finish. */
 	i = 0;
 	/*while((i < 25) && atomic_read(&pAd->PendingRx) > 0) */
-	while(i < 25)
-	{
+	while(i < 25) {
 /*		unsigned long IrqFlags; */
 
 		RTMP_SEM_LOCK(pBulkInLock);
-		if (*pPendingRx == 0)
-		{
+		if (*pPendingRx == 0) {
 			RTMP_SEM_UNLOCK(pBulkInLock);
 			break;
 		}
@@ -218,16 +212,15 @@ void RtmpOsUsbEmptyUrbCheck(
 
 
 void RtmpOsUsbInitHTTxDesc(
-	IN	void 		*pUrbSrc,
-	IN	void 		*pUsb_Dev,
-	IN	UINT			BulkOutEpAddr,
-	IN	u8 *			pSrc,
-	IN	ULONG			BulkOutSize,
-	IN	USB_COMPLETE_HANDLER	Func,
-	IN	void 		*pTxContext,
-	IN	dma_addr_t		TransferDma)
+	struct urb *pUrb,
+	struct usb_device *pUsb_Dev,
+	UINT BulkOutEpAddr,
+	u8 *pSrc,
+	ULONG BulkOutSize,
+	USB_COMPLETE_HANDLER Func,
+	void *pTxContext,
+	dma_addr_t TransferDma)
 {
-	struct urb *pUrb = (struct urb *)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
 
 
@@ -246,16 +239,15 @@ void RtmpOsUsbInitHTTxDesc(
 
 
 void RtmpOsUsbInitRxDesc(
-	IN	void 		*pUrbSrc,
-	IN	void 		*pUsb_Dev,
-	IN	UINT			BulkInEpAddr,
-	IN	u8 		*pTransferBuffer,
-	IN	u32			BufSize,
-	IN	USB_COMPLETE_HANDLER	Func,
-	IN	void 		*pRxContext,
-	IN	dma_addr_t		TransferDma)
+	struct urb *pUrb,
+	struct usb_device *pUsb_Dev,
+	UINT BulkInEpAddr,
+	u8 *pTransferBuffer,
+	u32 BufSize,
+	USB_COMPLETE_HANDLER Func,
+	void *pRxContext,
+	dma_addr_t TransferDma)
 {
-	struct urb *pUrb = (struct urb *)pUrbSrc;
 	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
 
 
