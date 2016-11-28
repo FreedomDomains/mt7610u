@@ -6711,13 +6711,6 @@ void RTUSBPutToSleep(
 int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd);
 
-int	RTUSBEnqueueCmdFromNdis(
-	IN	struct rtmp_adapter *pAd,
-	IN	NDIS_OID		Oid,
-	IN	BOOLEAN			SetInformation,
-	IN	void *		pInformationBuffer,
-	IN	u32			InformationBufferLength);
-
 void RTUSBDequeueCmd(
 	IN	PCmdQ		cmdq,
 	OUT	PCmdQElmt	*pcmdqelmt);
