@@ -6637,12 +6637,6 @@ void RtmpTimerQInit(
 
 #ifdef RTMP_MAC_USB
 
-int RTUSBMultiRead(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	OUT	u8 *		pData,
-	IN	USHORT			length);
-
 int RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,

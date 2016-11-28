@@ -182,42 +182,6 @@ int	RTUSBVenderReset(
 	DBGPRINT_RAW(RT_DEBUG_ERROR, ("<--RTUSBVenderReset\n"));
 	return Status;
 }
-/*
-	========================================================================
-
-	Routine Description: Read various length data from RT2573
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int	RTUSBMultiRead(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	OUT	u8 *		pData,
-	IN	USHORT			length)
-{
-	int	Status;
-
-	Status = RTUSB_VendorRequest(
-		pAd,
-		(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
-		DEVICE_VENDOR_REQUEST_IN,
-		0x7,
-		0,
-		Offset,
-		pData,
-		length);
-
-	return Status;
-}
-
 
 /*
 	========================================================================
