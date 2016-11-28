@@ -403,62 +403,6 @@ int RTUSBWriteMACRegister(
 	return Status;
 }
 
-int write_reg(
-	struct rtmp_adapter*ad,
-	u32 base,
-	u16 offset,
-	u32 value)
-{
-	int ret = 0;
-	u8 req;
-	u32 io_value;
-
-	if (base == 0x40)
-		req = 0x46;
-
-	io_value = cpu2le32(value);
-
-	ret = RTUSB_VendorRequest(ad,
-			USBD_TRANSFER_DIRECTION_OUT,
-			DEVICE_VENDOR_REQUEST_OUT, req, 0,
-			offset, &io_value, 4);
-
-
-	if (ret) {
-		DBGPRINT(RT_DEBUG_ERROR, ("write reg fail\n"));
-	}
-
-	return ret;
-}
-
-int read_reg(
-	struct rtmp_adapter*ad,
-	u32 base,
-	u16 offset,
-	u32 *value)
-{
-	int ret;
-	u8 req = 0;
-	u32 io_value;
-
-	if (base == 0x40)
-		req = 0x47;
-	else if (base == 0x41)
-		req = 0x7;
-
-	ret = RTUSB_VendorRequest(ad,
-			(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
-			DEVICE_VENDOR_REQUEST_IN, req, 0,
-			offset, &io_value, 4);
-
-	*value = le2cpu32(io_value);
-
-	if (ret)
-		*value = 0xffffffff;
-
-	return ret;
-}
-
 /*
 	========================================================================
 

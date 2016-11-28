@@ -184,16 +184,5 @@ void usb_cfg_read_v1(struct rtmp_adapter *ad, u32 *value);
 void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value);
 void usb_cfg_read_v2(struct rtmp_adapter *ad, u32 *value);
 void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value);
-int write_reg(
-	struct rtmp_adapter *ad,
-	u32 base,
-	u16 offset,
-	u32 value);
-
-int read_reg(
-	struct rtmp_adapter *ad,
-	u32 base,
-	u16 offset,
-	u32 *value);
 
 #endif /* __RTUSB_IO_H__ */
