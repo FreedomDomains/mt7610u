@@ -1130,20 +1130,6 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, struct urb 
 		pUrb->transfer_flags &= (~URB_NO_TRANSFER_DMA_MAP);	\
 	}
 
-#define RTUSB_CONTROL_MSG(pUsb_Dev, uEndpointAddress, Request, RequestType, Value,Index, tmpBuf, TransferBufferLength, timeout, ret)	\
-  		do{	\
-			if (RequestType == DEVICE_VENDOR_REQUEST_OUT)	\
-				ret = USB_CONTROL_MSG(pUsb_Dev, usb_sndctrlpipe(pUsb_Dev, uEndpointAddress), Request, RequestType, Value, Index, tmpBuf, TransferBufferLength, timeout);	\
-			else if (RequestType == DEVICE_VENDOR_REQUEST_IN)	\
-				ret = USB_CONTROL_MSG(pUsb_Dev, usb_rcvctrlpipe(pUsb_Dev, uEndpointAddress), Request, RequestType, Value, Index, tmpBuf, TransferBufferLength, timeout);	\
-			else	\
-			{	\
-				DBGPRINT(RT_DEBUG_ERROR, ("vendor request direction is failed\n"));	\
-				ret = -1;	\
-			}	\
-		}while(0)
-
-
 #define USB_CONTROL_MSG		usb_control_msg
 
 
