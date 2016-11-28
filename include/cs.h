@@ -76,45 +76,6 @@ typedef struct CARRIER_DETECTION_s {
 	u8 Rx_PE_Mask;
 } CARRIER_DETECTION_STRUCT, *PCARRIER_DETECTION_STRUCT;
 
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-/* Mcu command */
-#define CD_ONOFF_MCU_CMD			0x65
-#define CD_CHECKOUT_MCU_CMD			0x66
-/* share memory offsets */
-#define CD_CRITERIA     			0x4CB2
-#define CD_CHECK_COUNT  			0x4CB9
-#define RADAR_TONE_COUNT			0x4CBE
-#define CD_RECHECK      			0x4CBF
-#undef CARRIER_DETECT_RECHECK_TIME
-#undef CARRIER_GONE_TRESHOLD
-#undef CARRIER_DETECT_THRESHOLD
-#define CARRIER_DETECT_RECHECK_TIME			5
-#define CARRIER_GONE_TRESHOLD				35
-#define CARRIER_DETECT_THRESHOLD			0x4fffffff
-
-/* Parameters needed to decide the Carrier Detect State */
-typedef struct _CARRIER_DETECT_PARAM {
-		u8	RadarToneCount; /* Number of radar tones in 100 msec*/
-		u8	ReCheck;
-} CARRIER_DETECT_PARAM, *PCARRIER_DETECT_PARAM;
-
-/* For debug print */
-typedef struct _CARRIER_DETECT_DEBUG {
-	 	u8	delta_div;
-		u8	internalRadarToneCount;
-		UINT16	Criteria;
-		UINT32	Threshold;
-		u8	Count;
-		u8	CheckCount;
-		u8 	Reserved;
-		u8	VGA_Mask;
-		u8	PckMask;
-		u8	RxPeMask;
-		u8	RadarToneCount;
-		u8	ReCheck;
-} CARRIER_DETECT_DEBUG, *PCARRIER_DETECT_DEBUG;
-#endif /*CARRIER_DETECTION_FIRMWARE_SUPPORT*/
-
 INT isCarrierDetectExist(
 	IN struct rtmp_adapter *pAd);
 
@@ -188,11 +149,6 @@ void ToneRadarProgram_v2(
 void ToneRadarProgram_v3(
 	IN struct rtmp_adapter *pAd,
 	IN ULONG threshold);
-
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-void CarrierDetectionPeriodicStateCtrl(
-	IN struct rtmp_adapter *pAd);
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
 
 #endif /* CARRIER_DETECTION_SUPPORT */
 

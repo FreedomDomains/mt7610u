@@ -35,82 +35,6 @@ static ULONG cd_idx=0;
 
 static void ToneRadarProgram(struct rtmp_adapter *pAd);
 
-
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-/*
-    ==========================================================================
-    Description:
-        When h/w interrupt is not available for CS, f/w take care of the operation, this function monitor necessary
-        parameters that determine the CS state periodically. (every 100ms)
-
-	Arguments:
-	    pAd                    Pointer to our adapter
-
-    Return Value:
-        None
-
-    Note:
-    ==========================================================================
-*/
-void CarrierDetectionPeriodicStateCtrl(
-	IN struct rtmp_adapter *pAd)
-{
-	CD_STATE *pCD_State = &pAd->CommonCfg.CarrierDetect.CD_State;
-	ULONG *pOneSecIntCount = &pAd->CommonCfg.CarrierDetect.OneSecIntCount;
-	CARRIER_DETECT_PARAM CarrDetectParam;
-
-
-#ifdef RALINK_ATE
-	/* Nothing to do in ATE mode */
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
-
-	/* tell firmware to prepare Recheck and RadarToneCount  */
-	AsicSendCommandToMcu(pAd, CD_CHECKOUT_MCU_CMD, 0xff, 0x00, 0x00, FALSE);
-	/* Debug */
-	if (pAd->CommonCfg.CarrierDetect.Debug == RT_DEBUG_TRACE)
-	{
-		CARRIER_DETECT_DEBUG CarrDetectDebug;
-		RTUSBMultiRead(pAd, 0x4CB0, (u8 *) &CarrDetectDebug, sizeof(CarrDetectDebug));
-		printk("delta_div = 0x%02X, rRadarToneCount = %u, Recheck = %u, Criteria = %u, Threshold = 0x%08X, VGA_Mask = 0x%04X\n",
-				CarrDetectDebug.delta_div,
-				CarrDetectDebug.RadarToneCount,
-				CarrDetectDebug.ReCheck,
-				CarrDetectDebug.Criteria << 6, /* ms -> 16us*/
-				CarrDetectDebug.Threshold,
-				CarrDetectDebug.VGA_Mask);
-	}
-
-	RTUSBMultiRead(pAd, RADAR_TONE_COUNT, (u8 *) &CarrDetectParam, sizeof(CarrDetectParam));
-	switch(*pCD_State)
-	{
-		case CD_NORMAL:
-			if (CarrDetectParam.ReCheck == 0)
-			{
-				*pCD_State = CD_SILENCE;
-				if (pAd->CommonCfg.CarrierDetect.Debug != RT_DEBUG_TRACE)
-				{
-					DBGPRINT(RT_DEBUG_TRACE, ("Carrier Detected\n"));
-
-					/* stop all TX actions including Beacon sending.*/
-					AsicDisableSync(pAd);
-				}
-				else
-				printk("Carrier Detected\n");
-			}
-			break;
-
-		case CD_SILENCE:
-                     *pOneSecIntCount += CarrDetectParam.RadarToneCount;
-			break;
-
-		default:
-			break;
-	}
-}
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
-
 /*
     ==========================================================================
     Description:
@@ -265,14 +189,6 @@ INT Set_CarrierCriteria_Proc(
 	Value = simple_strtol(arg, 0, 10);
 
 	pAd->CommonCfg.CarrierDetect.criteria = Value;
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-	{
-		USHORT sVal = (USHORT) (Value >> 6); /* convert unit from 16us to ms:(2^4 /2^10)  */
-		RTUSBMultiWrite(pAd, CD_CRITERIA, (u8 *) &sVal, 2, FALSE);
-		/* send enable cmd to mcu to take effect */
-		AsicSendCommandToMcu(pAd, CD_ONOFF_MCU_CMD, 0xff, 0x01, 0x00, FALSE);
-	}
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
 	return TRUE;
 }
 
@@ -298,11 +214,6 @@ INT Set_CarrierReCheck_Proc(
 {
 	pAd->CommonCfg.CarrierDetect.recheck1 = simple_strtol(arg, 0, 10);
 	DBGPRINT(RT_DEBUG_TRACE, ("Set Recheck = %u\n", pAd->CommonCfg.CarrierDetect.recheck1));
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-	RTMP_IO_WRITE8(pAd, CD_CHECK_COUNT, pAd->CommonCfg.CarrierDetect.recheck1);
-	/* send enable cmd to mcu to take effect */
-	AsicSendCommandToMcu(pAd, CD_ONOFF_MCU_CMD, 0xff, 0x01, 0x00, FALSE);
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
 
 	return TRUE;
 }
@@ -544,20 +455,6 @@ void CarrierDetectionStart(struct rtmp_adapter *pAd)
 	{
 		CSInit(pAd);
 		ToneRadarProgram(pAd);
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-		{
-		USHORT criteria = (USHORT) (pAd->CommonCfg.CarrierDetect.criteria >> 6); /* convert unit from 16us to 1ms:(2^4 /2^10)  */
-		RTUSBMultiWrite(pAd, CD_CRITERIA, (u8 *) &criteria, 2, FALSE);
-		RTMP_IO_WRITE8(pAd, CD_CHECK_COUNT, pAd->CommonCfg.CarrierDetect.recheck1);
-		AsicSendCommandToMcu(pAd, CD_ONOFF_MCU_CMD, 0xff, 0x01, 0x00, FALSE);
-		}
-#else
-#ifndef MT760x
-		/* trun on interrupt polling for pcie device */
-		if (pAd->infType == RTMP_DEV_INF_PCIE)
-			AsicSendCommandToMcu(pAd, CD_INT_POLLING_CMD, 0xff, 0x01, 0x00, FALSE);
-#endif /* MT760x */
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
 	}
 }
 
@@ -578,10 +475,6 @@ void CarrierDetectionStart(struct rtmp_adapter *pAd)
 void CarrierDetectionStop(IN struct rtmp_adapter *pAd)
 {
 	CarrierDetectReset(pAd);
-#ifdef CARRIER_DETECTION_FIRMWARE_SUPPORT
-	/* Stop firmware CS action */
-	AsicSendCommandToMcu(pAd, CD_ONOFF_MCU_CMD, 0xff, 0x00, 0x00, FALSE);
-#endif /* CARRIER_DETECTION_FIRMWARE_SUPPORT */
 	return;
 }
 
