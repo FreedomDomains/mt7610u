@@ -58,50 +58,6 @@ void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value)
 	RTUSBWriteMACRegister(ad, USB_DMA_CFG, value, FALSE);
 }
 
-void usb_cfg_read_v2(struct rtmp_adapter *ad, u32 *value)
-{
-	int ret;
-	u32 io_value;
-
-	ret = RTUSB_VendorRequest(ad,
-							  (USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
-							  DEVICE_VENDOR_REQUEST_IN,
-							  0x47,
-							  0,
-							  U3DMA_WLCFG,
-							  &io_value,
-							  4);
-
-	*value = le2cpu32(io_value);
-
-	if (ret)
-		*value = 0xffffffff;
-}
-
-void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value)
-{
-	int ret;
-	u32 io_value;
-
-
-	io_value = cpu2le32(value);
-
-	ret = RTUSB_VendorRequest(ad,
-							  USBD_TRANSFER_DIRECTION_OUT,
-							  DEVICE_VENDOR_REQUEST_OUT,
-							  0x46,
-							  0,
-							  U3DMA_WLCFG,
-							  &io_value,
-							  4);
-
-
-	if (ret) {
-		DBGPRINT(RT_DEBUG_ERROR, ("usb cfg write fail\n"));
-		return;
-	}
-}
-
 static int	RTUSBFirmwareRun(
 	IN	struct rtmp_adapter *pAd)
 {
