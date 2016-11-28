@@ -6795,13 +6795,6 @@ BOOLEAN	RTUSBNeedQueueBackForAgg(
 	IN u8 	BulkOutPipeId);
 
 
-/* Function Prototype in cmm_data_usb.c */
-USHORT RtmpUSB_WriteSubTxResource(
-	IN	struct rtmp_adapter *pAd,
-	IN	TX_BLK			*pTxBlk,
-	IN	BOOLEAN			bIsLast,
-	OUT	USHORT			*FreeNumber);
-
 USHORT RtmpUSB_WriteSingleTxResource(
 	IN	struct rtmp_adapter *pAd,
 	IN	TX_BLK			*pTxBlk,

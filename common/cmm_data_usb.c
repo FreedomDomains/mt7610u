@@ -343,19 +343,6 @@ static inline int RtmpUSBCanDoWrite(
 	return canWrite;
 }
 
-
-USHORT RtmpUSB_WriteSubTxResource(
-	IN struct rtmp_adapter*pAd,
-	IN TX_BLK *pTxBlk,
-	IN BOOLEAN bIsLast,
-	OUT	USHORT *freeCnt)
-{
-
-	/* Dummy function. Should be removed in the future.*/
-	return 0;
-
-}
-
 USHORT	RtmpUSB_WriteFragTxResource(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
