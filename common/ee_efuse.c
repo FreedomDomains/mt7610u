@@ -971,11 +971,6 @@ int RtmpEfuseSupportCheck(
 {
 	USHORT value;
 
-	if (IS_RT30xx(pAd) || IS_RT3593(pAd))
-	{
-		eFusePhysicalReadRegisters(pAd, EFUSE_TAG, 2, &value);
-		pAd->EFuseTag = (value & 0xff);
-	}
 	return 0;
 }
 

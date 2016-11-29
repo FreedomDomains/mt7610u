@@ -797,15 +797,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("TXALC> bInternalTxALC = %d\n", pAd->TxPowerCtrl.bInternalTxALC));
 #endif /* RTMP_INTERNAL_TX_ALC */
 
-
-
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: pAd->Antenna.field.BoardType = %d, IS_MINI_CARD(pAd) = %d, IS_RT5390U(pAd) = %d\n",
-		__FUNCTION__,
-		pAd->Antenna.field.BoardType,
-		IS_MINI_CARD(pAd),
-		IS_RT5390U(pAd)));
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd))
 	{
@@ -1393,7 +1384,7 @@ int	NICInitializeAsic(
 	NICInitBBP(pAd);
 
 
-	if ((IS_RT3883(pAd)) || IS_RT65XX(pAd) ||
+	if (IS_RT65XX(pAd) ||
 		((pAd->MACVersion >= RALINK_2880E_VERSION) &&
 		(pAd->MACVersion < RALINK_3070_VERSION))) /* 3*3*/
 	{
@@ -1401,7 +1392,7 @@ int	NICInitializeAsic(
 		u32 csr;
 		RTMP_IO_READ32(pAd, MAX_LEN_CFG, &csr);
 #if defined(RT2883) || defined(RT3883) || defined(RT3593) || defined(RT65xx)
-		if (IS_RT2883(pAd) || IS_RT3883(pAd) || IS_RT3593(pAd) || IS_RT65XX(pAd))
+		if (IS_RT65XX(pAd))
 		{
 			csr |= 0x3fff;
 		}

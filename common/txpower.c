@@ -176,10 +176,6 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
 			RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R49, &BbpR49.byte);
 
 			/* TSSI representation */
-			if (IS_RT3071(pAd) || IS_RT3390(pAd) || IS_RT3090A(pAd) || IS_RT3572(pAd)) /* 5-bits */
-			{
-				BbpR49.byte = (BbpR49.byte & 0x1F);
-			}
 
 			/* (p) TssiPlusBoundaryG[0] = 0 = (m) TssiMinusBoundaryG[0] */
 			/* compensate: +4     +3   +2   +1    0   -1   -2   -3   -4 * steps */
@@ -745,9 +741,6 @@ void RTMPReadChannelPwr(struct rtmp_adapter*pAd)
 
 
 	{
-		if (IS_RT5592(pAd))
-			return;
-
 		/* 1. U-NII lower/middle band: 36, 38, 40; 44, 46, 48; 52, 54, 56; 60, 62, 64 (including central frequency in BW 40MHz)*/
 		/* 1.1 Fill up channel*/
 		choffset = 14;
