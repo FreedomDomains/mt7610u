@@ -45,7 +45,6 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 
 	if (cap->load_iv) {
 		Status = RTUSB_VendorRequest(ad,
-				 USBD_TRANSFER_DIRECTION_OUT,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 0x01,
 				 0x12,
@@ -54,7 +53,6 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 				 64);
 	} else {
 		Status = RTUSB_VendorRequest(ad,
-				 USBD_TRANSFER_DIRECTION_OUT,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 0x01,
 				 0x12,
@@ -246,7 +244,6 @@ loadfw_protect:
 
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
-					 USBD_TRANSFER_DIRECTION_OUT,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 0x42,
 					 value,
@@ -264,7 +261,6 @@ loadfw_protect:
 
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
-					 USBD_TRANSFER_DIRECTION_OUT,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 0x42,
 					 value,
@@ -286,7 +282,6 @@ loadfw_protect:
 
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
-					 USBD_TRANSFER_DIRECTION_OUT,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 0x42,
 					 value,
@@ -303,7 +298,6 @@ loadfw_protect:
 
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
-					 USBD_TRANSFER_DIRECTION_OUT,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 0x42,
 					 value,
@@ -383,7 +377,6 @@ loadfw_protect:
 
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
-					 USBD_TRANSFER_DIRECTION_OUT,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 0x42,
 					 value,
@@ -401,7 +394,6 @@ loadfw_protect:
 
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
-					  USBD_TRANSFER_DIRECTION_OUT,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  0x42,
 					  value,
@@ -423,7 +415,6 @@ loadfw_protect:
 
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
-					  USBD_TRANSFER_DIRECTION_OUT,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  0x42,
 					  value,
@@ -440,7 +431,6 @@ loadfw_protect:
 
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
-				  	  USBD_TRANSFER_DIRECTION_OUT,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  0x42,
 					  value,

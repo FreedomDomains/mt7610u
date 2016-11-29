@@ -65,7 +65,6 @@ static int	RTUSBFirmwareRun(
 
 	Status = RTUSB_VendorRequest(
 		pAd,
-		USBD_TRANSFER_DIRECTION_OUT,
 		DEVICE_VENDOR_REQUEST_OUT,
 		0x01,
 		0x8,
@@ -103,7 +102,6 @@ int	RTUSBFirmwareOpmode(
 
 	Status = RTUSB_VendorRequest(
 		pAd,
-		(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
 		DEVICE_VENDOR_REQUEST_IN,
 		0x1,
 		0x11,
@@ -171,7 +169,6 @@ int	RTUSBVenderReset(
 	DBGPRINT_RAW(RT_DEBUG_ERROR, ("-->RTUSBVenderReset\n"));
 	Status = RTUSB_VendorRequest(
 		pAd,
-		USBD_TRANSFER_DIRECTION_OUT,
 		DEVICE_VENDOR_REQUEST_OUT,
 		0x01,
 		0x1,
@@ -216,7 +213,6 @@ int RTUSBMultiWrite_nBytes(
 		actLen = (actLen > batchLen ? batchLen : actLen);
 		Status = RTUSB_VendorRequest(
 			pAd,
-			USBD_TRANSFER_DIRECTION_OUT,
 			DEVICE_VENDOR_REQUEST_OUT,
 			0x6,
 			0,
@@ -264,7 +260,6 @@ int	RTUSBMultiWrite_OneByte(
 	/* TODO: In 2870, use this funciton carefully cause it's not stable.*/
 	Status = RTUSB_VendorRequest(
 		pAd,
-		USBD_TRANSFER_DIRECTION_OUT,
 		DEVICE_VENDOR_REQUEST_OUT,
 		0x6,
 		0,
@@ -314,7 +309,6 @@ int RTUSBSingleWrite(
 
 	Status = RTUSB_VendorRequest(
 		pAd,
-		USBD_TRANSFER_DIRECTION_OUT,
 		DEVICE_VENDOR_REQUEST_OUT,
 		(WriteHigh == TRUE) ? 0x10 : 0x2,
 		Value,
@@ -352,7 +346,6 @@ int	RTUSBReadMACRegister(
 
 	Status = RTUSB_VendorRequest(
 		pAd,
-		(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
 		DEVICE_VENDOR_REQUEST_IN,
 		0x7,
 		0,
@@ -618,7 +611,6 @@ int RTUSBReadEEPROM(
 
 		Status = RTUSB_VendorRequest(
 			pAd,
-			(USBD_TRANSFER_DIRECTION_IN | USBD_SHORT_TRANSFER_OK),
 			DEVICE_VENDOR_REQUEST_IN,
 			0x9,
 			0,
@@ -655,7 +647,6 @@ int RTUSBWriteEEPROM(
 
 	Status = RTUSB_VendorRequest(
 				pAd,
-				USBD_TRANSFER_DIRECTION_OUT,
 				DEVICE_VENDOR_REQUEST_OUT,
 				0x8,
 				0,
@@ -745,7 +736,6 @@ int RTUSBWakeUp(
 
 	Status = RTUSB_VendorRequest(
 		pAd,
-		USBD_TRANSFER_DIRECTION_OUT,
 		DEVICE_VENDOR_REQUEST_OUT,
 		0x01,
 		0x09,
@@ -792,7 +782,6 @@ int RTUSBWakeUp(
 */
 int RTUSB_VendorRequest(
 	struct rtmp_adapter *pAd,
-	u32 TransferFlags,
 	u8 RequestType,
 	u8 Request,
 	USHORT Value,
@@ -861,8 +850,8 @@ int RTUSB_VendorRequest(
 	  	RTMP_SEM_EVENT_UP(&(pAd->UsbVendorReq_semaphore));
 
 		if (ret < 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("RTUSB_VendorRequest failed(%d),TxFlags=0x%x, ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
-						ret, TransferFlags, (RequestType == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), Request, Index, pAd->Flags));
+			DBGPRINT(RT_DEBUG_ERROR, ("RTUSB_VendorRequest failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
+						ret, (RequestType == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), Request, Index, pAd->Flags));
 			if (Request == 0x2)
 				DBGPRINT(RT_DEBUG_ERROR, ("\tRequest Value=0x%04x!\n", Value));
 

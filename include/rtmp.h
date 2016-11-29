@@ -6669,7 +6669,6 @@ int RTUSBWriteRFRegister(
 
 int RTUSB_VendorRequest(
 	IN	struct rtmp_adapter *pAd,
-	IN	u32			TransferFlags,
 	IN	u8 		ReservedBits,
 	IN	u8 		Request,
 	IN	USHORT			Value,
