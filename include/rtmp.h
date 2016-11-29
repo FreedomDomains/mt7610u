@@ -5480,9 +5480,6 @@ void eFusePhysicalReadRegisters(
 	IN	USHORT Length,
 	OUT	USHORT* pData);
 
-int RtmpEfuseSupportCheck(
-	IN struct rtmp_adapter*pAd);
-
 #endif /* RTMP_EFUSE_SUPPORT */
 
 

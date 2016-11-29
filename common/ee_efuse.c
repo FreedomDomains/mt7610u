@@ -965,17 +965,6 @@ int rtmp_ee_efuse_write16(
 	return 0;
 }
 
-
-int RtmpEfuseSupportCheck(
-	IN struct rtmp_adapter*pAd)
-{
-	USHORT value;
-
-	return 0;
-}
-
-
-
 /*
 	========================================================================
 
