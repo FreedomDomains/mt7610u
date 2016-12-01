@@ -72,9 +72,8 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 int andes_usb_loadfw(struct rtmp_adapter*ad)
 {
 	const struct firmware *fw;
-	struct device *dev = &ad->OS_Cookie->pUsb_Dev->dev;
+	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
 	struct urb *urb;
-	struct os_cookie *obj = ad->OS_Cookie;
 	dma_addr_t fw_dma;
 	u8 *fw_data;
 	struct txinfo_nmac_cmd *tx_info;
@@ -91,11 +90,11 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 	USB_DMA_CFG_STRUC UsbCfg;
 	u8 *fw_image = NULL;
 
-	dev_info(dev, "loading firmware %s\n", cap->fw_name);
+	dev_info(&udev->dev, "loading firmware %s\n", cap->fw_name);
 
-	ret = request_firmware(&fw, cap->fw_name, dev);
+	ret = request_firmware(&fw, cap->fw_name, &udev->dev);
 	if (ret) {
-		dev_info(dev, "loading failed %s\n", cap->fw_name);
+		dev_info(&udev->dev, "loading failed %s\n", cap->fw_name);
 		return ret;
 	}
 
@@ -108,7 +107,7 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 		return NDIS_STATUS_FAILURE;
 	}
 
-	dev_info(dev, "firmware %s loaded\n", cap->fw_name);
+	dev_info(&udev->dev, "firmware %s loaded\n", cap->fw_name);
 
 	if (cap->IsComboChip) {
 loadfw_protect:
@@ -205,7 +204,7 @@ loadfw_protect:
 	}
 
 	/* Allocate TransferBuffer */
-	fw_data = RTUSB_URB_ALLOC_BUFFER(obj->pUsb_Dev, UPLOAD_FW_UNIT, &fw_dma);
+	fw_data = RTUSB_URB_ALLOC_BUFFER(udev, UPLOAD_FW_UNIT, &fw_dma);
 
 	if (!fw_data) {
 		ret = NDIS_STATUS_RESOURCES;
@@ -312,7 +311,7 @@ loadfw_protect:
 
 			/* Initialize URB descriptor */
 			RTUSB_FILL_HTTX_BULK_URB(urb,
-					 obj->pUsb_Dev,
+					 udev,
 					 cap->CommandBulkOutAddr,
 					 fw_data,
 					 sent_len + sizeof(*tx_info) + USB_END_PADDING,
@@ -445,7 +444,7 @@ loadfw_protect:
 
 			/* Initialize URB descriptor */
 			RTUSB_FILL_HTTX_BULK_URB(urb,
-					 obj->pUsb_Dev,
+					 udev,
 					 cap->CommandBulkOutAddr,
 					 fw_data,
 					 sent_len + sizeof(*tx_info) + USB_END_PADDING,
@@ -503,7 +502,7 @@ loadfw_protect:
 
 error2:
 	/* Free TransferBuffer */
-	RTUSB_URB_FREE_BUFFER(obj->pUsb_Dev, UPLOAD_FW_UNIT, fw_data, fw_dma);
+	RTUSB_URB_FREE_BUFFER(udev, UPLOAD_FW_UNIT, fw_data, fw_dma);
 
 error1:
 	/* Free URB */
