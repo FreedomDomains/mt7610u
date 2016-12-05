@@ -537,17 +537,6 @@ static void AsicAntennaDefaultReset(
 	DBGPRINT(RT_DEBUG_WARN, ("E2PROM error, hard code as 0x%04x\n", pAntenna->word));
 }
 
-
-void NetDevNickNameInit(
-	IN struct rtmp_adapter *	pAd)
-{
-#ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
-		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
-#endif /* RTMP_MAC_USB */
-#endif /* CONFIG_STA_SUPPORT */
-}
-
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd)
 {

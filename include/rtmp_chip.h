@@ -672,9 +672,6 @@ struct rtmp_chip_ops {
 	/* high power tuning */
 	void (*HighPowerTuning)(struct rtmp_adapter *pAd, struct _RSSI_SAMPLE *pRssi);
 
-	/* Others */
-	void (*NetDevNickNameInit)(IN struct rtmp_adapter *pAd);
-
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
 
@@ -800,12 +797,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.AsicAntennaDefaultReset != NULL)	\
 			__pAd->chipOps.AsicAntennaDefaultReset(__pAd, __pAntenna);	\
-} while (0)
-
-#define RTMP_NET_DEV_NICKNAME_INIT(__pAd)	\
-do {	\
-		if (__pAd->chipOps.NetDevNickNameInit != NULL)	\
-			__pAd->chipOps.NetDevNickNameInit(__pAd);	\
 } while (0)
 
 #define RTMP_EEPROM_ASIC_INIT(__pAd)	\
@@ -980,13 +971,6 @@ void RtmpChipWriteMemory(
 
 void RTMPReadChannelPwr(struct rtmp_adapter *pAd);
 void RTMPReadTxPwrPerRate(struct rtmp_adapter *pAd);
-
-
-void NetDevNickNameInit(IN struct rtmp_adapter *pAd);
-
-
-
-
 
 /* global variable */
 extern FREQUENCY_ITEM RtmpFreqItems3020[];

@@ -588,8 +588,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->RFICType = RFIC_24GHZ;
 	}
 
-	RTMP_NET_DEV_NICKNAME_INIT(pAd);
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
 		mt76x0_read_tx_alc_info_from_eeprom(pAd);
@@ -2447,7 +2445,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 		pAd->StaCfg.LastScanTime = 0;
 
-		memset(pAd->nickname, 0, IW_ESSID_MAX_SIZE+1);
 #ifdef WPA_SUPPLICANT_SUPPORT
 		pAd->StaCfg.IEEE8021X = FALSE;
 		pAd->StaCfg.IEEE8021x_required_keys = FALSE;

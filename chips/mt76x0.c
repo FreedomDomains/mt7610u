@@ -1885,21 +1885,6 @@ static void MT76x0_ChipSwitchChannel(
 	return;
 }
 
-#ifdef CONFIG_STA_SUPPORT
-static void MT76x0_NetDevNickNameInit(struct rtmp_adapter*pAd)
-{
-
-#ifdef RTMP_MAC_USB
-	if (IS_MT7650U(pAd))
-		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7650U_STA");
-	else if (IS_MT7630U(pAd))
-		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7630U_STA");
-	else if (IS_MT7610U(pAd))
-		snprintf((char *) pAd->nickname, sizeof(pAd->nickname), "MT7610U_STA");
-#endif
-}
-#endif /* CONFIG_STA_SUPPORT */
-
 void MT76x0_NICInitAsicFromEEPROM(
 	IN struct rtmp_adapter *	pAd)
 {
@@ -2593,11 +2578,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 
 	/* Antenna */
 	pChipOps->AsicAntennaDefaultReset = MT76x0_AsicAntennaDefaultReset;
-
-	/* Others */
-#ifdef CONFIG_STA_SUPPORT
-	pChipOps->NetDevNickNameInit = MT76x0_NetDevNickNameInit;
-#endif /* CONFIG_STA_SUPPORT */
 
 	/* Chip tuning */
 	pChipOps->AsicGetTxPowerOffset = MT76x0_AsicGetTxPowerOffset;
