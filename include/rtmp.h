@@ -4157,10 +4157,6 @@ void RTMPCckBbpTuning(
 /* */
 
 /* Asic/RF/BBP related functions */
-void AsicGetTxPowerOffset(
-	IN struct rtmp_adapter *			pAd,
-	IN PULONG					TxPwr);
-
 void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN struct rtmp_adapter *		pAd,
 	IN char *				pDeltaPwr,
