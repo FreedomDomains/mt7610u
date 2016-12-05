@@ -4156,13 +4156,6 @@ void RTMPCckBbpTuning(
 /* MLME routines */
 /* */
 
-/* Asic/RF/BBP related functions */
-void AsicGetAutoAgcOffsetForExternalTxAlc(
-	IN struct rtmp_adapter *		pAd,
-	IN char *				pDeltaPwr,
-	IN char *				pTotalDeltaPwr,
-	IN char *				pAgcCompensate,
-	IN char *				pDeltaPowerByBbpR1);
 
 void AsicExtraPowerOverMAC(struct rtmp_adapter*pAd);
 
