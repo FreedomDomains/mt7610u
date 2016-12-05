@@ -3151,34 +3151,6 @@ done:
 #endif /* RTMP_MAC_USB */
 }
 
-#ifdef RTMP_FLASH_SUPPORT
-void MT76x0_ReadFlashAndInitAsic(
-	IN struct rtmp_adapter*pAd)
-{
-	USHORT ee_val = 0;
-	u32 reg_val = 0;
-
-
-	rtmp_nv_init(pAd);
-
-	rtmp_ee_flash_read(pAd, 0x22, &ee_val);
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: 0x22 = 0x%x\n", __FUNCTION__, ee_val));
-	RTMP_IO_READ32(pAd, CMB_CTRL, &reg_val);
-	reg_val &= 0xFFFF0000;
-	reg_val |= ee_val;
-	RTMP_IO_WRITE32(pAd, CMB_CTRL, reg_val);
-
-	rtmp_ee_flash_read(pAd, 0x24, &ee_val);
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: 0x24 = 0x%x\n", __FUNCTION__, ee_val));
-	RTMP_IO_READ32(pAd, 0x104, &reg_val);
-	reg_val &= 0xFFFF0000;
-	reg_val |= ee_val;
-	RTMP_IO_WRITE32(pAd, 0x104, reg_val);
-	return;
-}
-#endif /* RTMP_FLASH_SUPPORT */
-
-
 void MT76x0_MakeUpRatePwrTable(
 	IN struct rtmp_adapter*pAd)
 {

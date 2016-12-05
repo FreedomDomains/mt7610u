@@ -280,16 +280,6 @@ int RTUSBWriteEEPROM16(
 	IN USHORT value);
 #endif /* RTMP_USB_SUPPORT */
 
-
-#if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)
-int rtmp_nv_init(struct rtmp_adapter *pAd);
-int rtmp_ee_flash_read(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pVal);
-int rtmp_ee_flash_write(struct rtmp_adapter *pAd, USHORT Offset, USHORT data);
-void rtmp_ee_flash_read_all(struct rtmp_adapter *pAd, USHORT *Data);
-void rtmp_ee_flash_write_all(struct rtmp_adapter *pAd, USHORT *Data);
-#endif /* defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT) */
-
-
 #ifdef RTMP_EFUSE_SUPPORT
 INT eFuseLoadEEPROM(struct rtmp_adapter *pAd);
 void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);

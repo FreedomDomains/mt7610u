@@ -41,17 +41,6 @@ struct rtmp_adapter;
 #define EXT_PA_2G_ONLY		0x2
 #define INT_PA_2G_5G		0x3
 
-#ifdef RTMP_FLASH_SUPPORT
-
-#ifdef RTMP_MAC_USB
-#define EEPROM_DEFAULT_FILE_PATH                     "/etc_ro/Wireless/RT2870AP/MT7610U_ePA_V0_3.bin"
-#endif /* RTMP_MAC_USB */
-
-#define RF_OFFSET					0x48000
-
-#endif /* RTMP_FLASH_SUPPORT */
-
-
 /*
 	rsv: Reserved
 	tcp: packet type, tcp : 1, udp:0
@@ -223,10 +212,6 @@ void MT76x0_TempSensor(
 void MT76x0_DFS_CR_Init(
 	IN struct rtmp_adapter *pAd);
 #endif /* DFS_SUPPORT */
-#ifdef RTMP_FLASH_SUPPORT
-void MT76x0_ReadFlashAndInitAsic(
-	IN struct rtmp_adapter *pAd);
-#endif /* RTMP_FLASH_SUPPORT */
 
 INT Set_AntennaSelect_Proc(
 	IN struct rtmp_adapter		*pAd,

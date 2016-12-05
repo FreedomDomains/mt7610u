@@ -123,8 +123,6 @@ HAS_RFKILL_HW_SUPPORT=n
 
 HAS_APCLI_WPA_SUPPLICANT=n
 
-HAS_RTMP_FLASH_SUPPORT=n
-
 HAS_LED_CONTROL_SUPPORT=y
 
 
@@ -191,10 +189,6 @@ endif
 
 ifeq ($(HAS_KTHREAD_SUPPORT),y)
 WFLAGS += -DKTHREAD_SUPPORT
-endif
-
-ifeq ($(HAS_RTMP_FLASH_SUPPORT),y)
-WFLAGS += -DRTMP_FLASH_SUPPORT
 endif
 
 ifeq ($(HAS_HDR_TRANS_SUPPORT),y)
@@ -618,11 +612,6 @@ $(MOD_NAME)-objs += \
 		mac/ral_nmac.o\
 		mcu/mcu.o\
 		mcu/mcu_and.o
-
-ifeq ($(HAS_RTMP_FLASH_SUPPORT),y)
-$(MOD_NAME)-objs += \
-		common/ee_flash.o
-endif
 
 ifeq ($(HAS_TSO_SUPPORT),y)
 $(MOD_NAME)-objs += \

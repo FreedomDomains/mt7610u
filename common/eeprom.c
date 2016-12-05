@@ -32,13 +32,6 @@ INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 {
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
-#ifdef RTMP_FLASH_SUPPORT
-	pChipOps->eeinit = rtmp_nv_init;
-	pChipOps->eeread = rtmp_ee_flash_read;
-	pChipOps->eewrite = rtmp_ee_flash_write;
-	return 0;
-#endif /* RTMP_FLASH_SUPPORT */
-
 #ifdef RTMP_EFUSE_SUPPORT
 	efuse_probe(pAd);
 	if(pAd->bUseEfuse)
