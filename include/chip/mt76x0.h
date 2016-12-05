@@ -221,8 +221,6 @@ INT Set_AntennaSelect_Proc(
 void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 #endif /* RTMP_TEMPERATURE_TX_ALC */
 
-void mt76x0_adjust_per_rate_pwr(struct rtmp_adapter *pAd);
-
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION

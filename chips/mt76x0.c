@@ -4874,34 +4874,6 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 		DBGPRINT(RT_DEBUG_ERROR, ("Temperature Tx ALC not enabled\n"));
 }
 
-
-void mt76x0_adjust_per_rate_pwr(struct rtmp_adapter *pAd)
-{
-	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
-	INT32 mac_idx = 0;
-
-	DBGPRINT(RT_DEBUG_INFO,("-->%s\n", __FUNCTION__));
-
-	/* Update per tx rate table */
-	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
-
-	/* Set new tx power per tx rate */
-	for (mac_idx = 0; mac_idx < CfgOfTxPwrCtrlOverMAC.NumOfEntries; mac_idx++)
-	{
-		TX_POWER_CONTROL_OVER_MAC_ENTRY *pTxPwrEntry;
-		pTxPwrEntry = &CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[mac_idx];
-
-		if (pTxPwrEntry->RegisterValue != 0xFFFFFFFF) {
-			RTMP_IO_WRITE32(pAd, pTxPwrEntry->MACRegisterOffset, pTxPwrEntry->RegisterValue);
-		}
-	}
-
-	/* Extra set MAC CRs to compensate tx power if any */
-	RTMP_CHIP_ASIC_EXTRA_POWER_OVER_MAC(pAd);
-
-	DBGPRINT(RT_DEBUG_INFO, ("<--%s\n", __FUNCTION__));
-}
-
 /******************************* Command API *******************************/
 INT Set_AntennaSelect_Proc(
 	IN struct rtmp_adapter	*pAd,
