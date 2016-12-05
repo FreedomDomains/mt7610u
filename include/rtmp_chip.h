@@ -650,7 +650,6 @@ struct rtmp_chip_ops {
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 
-	void (*AsicGetTxPowerOffset)(struct rtmp_adapter *pAd, ULONG *TxPwr);
 	void (*AsicExtraPowerOverMAC)(struct rtmp_adapter *pAd);
 
 	/* Antenna */
@@ -746,12 +745,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.ATEReadExternalTSSI != NULL)	\
 			__pAd->chipOps.ATEReadExternalTSSI(__pAd, __pData);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(__pAd, __pCfgOfTxPwrCtrlOverMAC)	\
-do {	\
-		if (__pAd->chipOps.AsicGetTxPowerOffset != NULL)	\
-			__pAd->chipOps.AsicGetTxPowerOffset(__pAd, __pCfgOfTxPwrCtrlOverMAC);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_EXTRA_POWER_OVER_MAC(__pAd)	\
