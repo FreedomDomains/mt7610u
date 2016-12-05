@@ -1032,13 +1032,6 @@ void SelectBandMT76x0(
 	IN struct rtmp_adapter *pAd,
 	IN u8 Channel)
 {
-	if (!IS_MT76x0(pAd))
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s: Incorrect NIC\n", __FUNCTION__));
-
-		return;
-	}
-
 	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
 
 	if (Channel <= 14)
@@ -1094,12 +1087,6 @@ void SetRfChFreqParametersMT76x0(
 	u8 RFValue = 0;
 	bool bSDM = false;
 	MT76x0_FREQ_ITEM *pMT76x0_freq_item = NULL;
-
-	if (!IS_MT76x0(pAd))
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s: Incorrect NIC\n", __FUNCTION__));
-		return;
-	}
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
 
