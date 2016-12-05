@@ -2237,12 +2237,6 @@ typedef	union _QOS_CSR1_STRUC {
 #define HW_DEBUG_SETTING_BASE   0x77f0  /* 0x77f0~0x77ff total 16 bytes */
 #define HW_DEBUG_SETTING_BASE2  0x7770  /* 0x77f0~0x77ff total 16 bytes */
 
-#ifdef WOW_SUPPORT
-/* WOW - NullFrame buffer */
-#define HW_NULL2_BASE			0x7780
-#define GPIO_HOLDTIME_OFFSET    0x7020 /* Target is 0x7023 */
-#endif /* WOW_SUPPORT */
-
 /*
 	On-chip BEACON frame space -
    	1. HW_BEACON_OFFSET/64B must be 0;

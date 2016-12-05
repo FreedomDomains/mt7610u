@@ -484,10 +484,6 @@ void MlmeHalt(
 #endif /* RTMP_MAC_USB */
 #endif /* LED_CONTROL_SUPPORT */
 
-#if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB)
-		if (pAd->WOW_Cfg.bEnable == false)
-#endif /* WOW_SUPPORT */
-			;
 	}
 
 	RTMPusecDelay(5000);    /*  5 msec to gurantee Ant Diversity timer canceled*/

@@ -736,22 +736,6 @@ INT RTMP_COM_IoctlHandle(
 			ASIC_RADIO_ON(pAd, RESUME_RADIO_ON);
 			break;
 
-#ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
-		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_STATUS:
-			*(u8 *)pData = (u8)pAd->WOW_Cfg.bEnable;
-			break;
-
-		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_ENABLE:
-			RT28xxUsbAsicWOWEnable(pAd);
-			break;
-
-		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_DISABLE:
-			RT28xxUsbAsicWOWDisable(pAd);
-			break;
-#endif /* RTMP_MAC_USB */
-#endif /* WOW_SUPPORT */
-
 //#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif
 //#endif /* CONFIG_PM */

@@ -1901,41 +1901,4 @@ bool AsicCheckCommandOk(
 
 }
 
-
-#ifdef WOW_SUPPORT
-void RT28xxUsbAsicWOWEnable(
-	IN struct rtmp_adapter *pAd)
-{
-	u32 Value;
-
-	/* load WOW-enable firmware */
-	AsicLoadWOWFirmware(pAd, true);
-	/* put null frame data to MCU memory from 0x7780 */
-	AsicWOWSendNullFrame(pAd, pAd->CommonCfg.TxRate, (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? true:false));
-	/* send WOW enable command to MCU. */
-	AsicSendCommandToMcu(pAd, 0x33, 0xff, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nDelay, false);
-	/* set GPIO pulse hold time at MSB (Byte) */
-	RTMP_IO_READ32(pAd, GPIO_HOLDTIME_OFFSET, &Value);
-	Value &= 0x00FFFFFF;
-	Value |= (pAd->WOW_Cfg.nHoldTime << 24);
-	RTMP_IO_WRITE32(pAd, GPIO_HOLDTIME_OFFSET, Value);
-	DBGPRINT(RT_DEBUG_OFF, ("Send WOW enable cmd (%d/%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nHoldTime));
-	RTMP_IO_READ32(pAd, GPIO_HOLDTIME_OFFSET, &Value);
-	DBGPRINT(RT_DEBUG_OFF, ("Hold time: 0x7020 ==> %x\n", Value));
-}
-
-void RT28xxUsbAsicWOWDisable(
-	IN struct rtmp_adapter *pAd)
-{
-	u32 Value;
-	/* load normal firmware */
-	AsicLoadWOWFirmware(pAd, false);
-	/* for suspend/resume, needs to restore RX Queue operation mode to auto mode */
-	RTMP_IO_READ32(pAd, PBF_CFG, &Value);
-	Value &= ~0x2200;
-	RTMP_IO_WRITE32(pAd, PBF_CFG, Value);
-    //AsicSendCommandToMcu(pAd, 0x34, 0xff, 0x00, 0x00, false);   /* send WOW disable command to MCU*/
-    DBGPRINT(RT_DEBUG_OFF, ("MCU back to normal mode (%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO));
-}
-#endif /* WOW_SUPPORT */
 #endif /* RTMP_MAC_USB */

@@ -503,12 +503,7 @@ void RTMPDrvSTAClose(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
 		MacTableReset(pAd);
-#if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB) && defined(WOW_IFDOWN_SUPPORT)
-		if (pAd->WOW_Cfg.bEnable == true)
-			RT28xxUsbAsicWOWEnable(pAd);
-		else
-#endif /* WOW_SUPPORT */
-			MlmeRadioOff(pAd);
+		MlmeRadioOff(pAd);
 	}
 
 	MeasureReqTabExit(pAd);
@@ -609,9 +604,6 @@ void RTMPInfClose(struct rtmp_adapter *pAd)
 #endif /* QOS_DLS_SUPPORT */
 
 		if (INFRA_ON(pAd) &&
-#if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB) && defined(WOW_IFDOWN_SUPPORT) /* In WOW state, can't issue disassociation reqeust */
-			pAd->WOW_Cfg.bEnable == false &&
-#endif /* WOW_SUPPORT */
 			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
 		{
 			MLME_DISASSOC_REQ_STRUCT	DisReq;

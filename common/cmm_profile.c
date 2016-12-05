@@ -1689,28 +1689,6 @@ int	RTMPSetProfileParameters(
 				}
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
-		/* set GPIO pin for wake-up signal */
-		if (RTMPGetKeyParameter("WOW_GPIO", tmpbuf, 10, pBuffer, true))
-			Set_WOW_GPIO(pAd, tmpbuf);
-
-		/* set WOW enable/disable */
-		if (RTMPGetKeyParameter("WOW_Enable", tmpbuf, 10, pBuffer, true))
-			Set_WOW_Enable(pAd, tmpbuf);
-
-		/* set delay time for WOW really enable */
-		if (RTMPGetKeyParameter("WOW_Delay", tmpbuf, 10, pBuffer, true))
-			Set_WOW_Delay(pAd, tmpbuf);
-
-		/* set GPIO pulse hold time */
-		if (RTMPGetKeyParameter("WOW_Hold", tmpbuf, 10, pBuffer, true))
-			Set_WOW_Hold(pAd, tmpbuf);
-
-
-#endif /* RTMP_MAC_USB */
-#endif /* WOW_SUPPORT */
-
 	}while(0);
 
 #ifdef CUSTOMER_DEMO

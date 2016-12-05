@@ -2397,19 +2397,6 @@ typedef struct _TX_POWER_CONTROL_EXT_OVER_MAC {
 	} BW40Over5G;
 } TX_POWER_CONTROL_EXT_OVER_MAC, *PTX_POWER_CONTROL_EXT_OVER_MAC;
 
-/* For Wake on Wireless LAN */
-#ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
-typedef struct _WOW_CFG_STRUCT {
-	bool 		bEnable;		/* Enable WOW function*/
-	bool 		bWOWFirmware;	/* Enable WOW function, trigger to reload WOW-support firmware */
-	u8			nSelectedGPIO;	/* Side band signal to wake up system */
-	u8			nDelay;			/* Delay number is multiple of 3 secs, and it used to postpone the WOW function */
-	u8           nHoldTime;      /* GPIO puls hold time, unit: 10ms */
-} WOW_CFG_STRUCT, *PWOW_CFG_STRUCT;
-#endif /* RTMP_MAC_USB */
-#endif /* WOW_SUPPORT */
-
 /*
 	Packet drop reason code
 */
@@ -3059,16 +3046,6 @@ struct rtmp_adapter {
 	/* purpose: Cancel all timers when module is removed */
 	LIST_HEADER RscTimerCreateList;	/* timers list */
 
-
-
-
-
-
-#ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
-	WOW_CFG_STRUCT WOW_Cfg; /* data structure for wake on wireless */
-#endif /* RTMP_MAC_USB */
-#endif /* WOW_SUPPORT */
 
 #ifdef WLAN_SKB_RECYCLE
     struct sk_buff_head rx0_recycle;
@@ -4362,20 +4339,6 @@ bool AsicSendCommandToMcuBBP(
 	IN u8 	 Arg0,
 	IN u8 	 Arg1,
 	IN bool 	FlgIsNeedLocked);
-
-#ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
-/* For WOW, 8051 MUC send full frame */
-void AsicWOWSendNullFrame(
-    IN struct rtmp_adapter *pAd,
-    IN u8 TxRate,
-    IN bool bQosNull);
-
-void AsicLoadWOWFirmware(
-    IN struct rtmp_adapter *pAd,
-    IN bool WOW);
-#endif /* RTMP_MAC_USB */
-#endif /* WOW_SUPPORT */
 
 void MacAddrRandomBssid(
 	IN  struct rtmp_adapter *  pAd,
