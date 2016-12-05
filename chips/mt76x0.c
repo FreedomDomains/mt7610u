@@ -27,39 +27,6 @@
 
 #include "rt_config.h"
 
-#define BIT0		(1 << 0)
-#define BIT1		(1 << 1)
-#define BIT2		(1 << 2)
-#define BIT3		(1 << 3)
-#define BIT4		(1 << 4)
-#define BIT5		(1 << 5)
-#define BIT6		(1 << 6)
-#define BIT7		(1 << 7)
-#define BIT8		(1 << 8)
-#define BIT9		(1 << 9)
-#define BIT10	(1 << 10)
-#define BIT11	(1 << 11)
-#define BIT12	(1 << 12)
-#define BIT13	(1 << 13)
-#define BIT14	(1 << 14)
-#define BIT15	(1 << 15)
-#define BIT16	(1 << 16)
-#define BIT17	(1 << 17)
-#define BIT18	(1 << 18)
-#define BIT19	(1 << 19)
-#define BIT20	(1 << 20)
-#define BIT21	(1 << 21)
-#define BIT22	(1 << 22)
-#define BIT23	(1 << 23)
-#define BIT24	(1 << 24)
-#define BIT25	(1 << 25)
-#define BIT26	(1 << 26)
-#define BIT27	(1 << 27)
-#define BIT28	(1 << 28)
-#define BIT29	(1 << 29)
-#define BIT30	(1 << 30)
-#define BIT31	(1 << 31)
-
 #define MT7650_EFUSE_CTRL	0x0024
 #define LDO_CTRL1			0x0070
 
@@ -2606,10 +2573,10 @@ void MT76x0_AntennaSelCtrl(
 	RTMP_IO_READ32(pAd, COEXCFG0, &CoexCfg0);
 	RTMP_IO_READ32(pAd, COEXCFG3, &CoexCfg3);
 
-	CoexCfg0 &= ~BIT2;
-	CmbCtrl &= ~(BIT14 | BIT12);
-	WlanFunCtrl &= ~(BIT6 | BIT5);
-	CoexCfg3 &= ~(BIT5 | BIT4 | BIT3 | BIT2 | BIT1);
+	CoexCfg0 &= ~BIT(2);
+	CmbCtrl &= ~(BIT(14) | BIT(12));
+	WlanFunCtrl &= ~(BIT(6) | BIT(5));
+	CoexCfg3 &= ~(BIT(5) | BIT(4) | BIT(3) | BIT(2) | BIT(1));
 
 	/*
 		0x23[7]
@@ -2623,17 +2590,17 @@ void MT76x0_AntennaSelCtrl(
 		if ((pAd->NicConfig2.field.AntOpt == 0)
 			&& (pAd->NicConfig2.field.AntDiversity == 1))
 		{
-			CmbCtrl |= BIT12; /* 0x20[12]=1 */
+			CmbCtrl |= BIT(12); /* 0x20[12]=1 */
 		}
 		else
 		{
-			CoexCfg3 |= BIT4; /* 0x4C[4]=1 */
+			CoexCfg3 |= BIT(4); /* 0x4C[4]=1 */
 		}
-		CoexCfg3 |= BIT3; /* 0x4C[3]=1 */
+		CoexCfg3 |= BIT(3); /* 0x4C[3]=1 */
 
 		if (WMODE_CAP_2G(pAd->CommonCfg.PhyMode))
 		{
-			WlanFunCtrl |= BIT6; /* 0x80[6]=1 */
+			WlanFunCtrl |= BIT(6); /* 0x80[6]=1 */
 		}
 		DBGPRINT(RT_DEBUG_TRACE, ("%s - Dual antenna mode\n", __FUNCTION__));
 	}
@@ -2641,12 +2608,12 @@ void MT76x0_AntennaSelCtrl(
 	{
 		if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode))
 		{
-			CoexCfg3 |= (BIT3 | BIT4); /* 0x4C[3]=1, 0x4C[4]=1 */
+			CoexCfg3 |= (BIT(3) | BIT(4)); /* 0x4C[3]=1, 0x4C[4]=1 */
 		}
 		else
 		{
-			WlanFunCtrl |= BIT6; /* 0x80[6]=1 */
-			CoexCfg3 |= BIT1; /* 0x4C[1]=1 */
+			WlanFunCtrl |= BIT(6); /* 0x80[6]=1 */
+			CoexCfg3 |= BIT(1); /* 0x4C[1]=1 */
 		}
 		DBGPRINT(RT_DEBUG_TRACE, ("%s - Single antenna mode\n", __FUNCTION__));
 	}
