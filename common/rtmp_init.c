@@ -357,13 +357,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 	RTMP_IO_WRITE32(pAd, MAC_ADDR_DW1, csr3.word);
 
-#ifdef HDR_TRANS_SUPPORT
-	RTMP_IO_WRITE32(pAd, HT_MAC_ADDR_DW0, csr2.word);
-	csr3.word &= 0xff00ffff;
-	csr3.word |= 0x00410000;				// HW test code
-	RTMP_IO_WRITE32(pAd, HT_MAC_ADDR_DW1, csr3.word);
-#endif /* HDR_TRANS_SUPPORT */
-
 	DBGPRINT_RAW(RT_DEBUG_TRACE,("Current MAC: =%02x:%02x:%02x:%02x:%02x:%02x\n",
 					PRINT_MAC(pAd->CurrentAddress)));
 
@@ -1280,13 +1273,8 @@ int	NICInitializeAsic(
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
-#ifdef HDR_TRANS_SUPPORT
-	RTMP_IO_WRITE32(pAd, HEADER_TRANS_CTRL_REG, 0X2);
-	RTMP_IO_WRITE32(pAd, TSO_CTRL, 0x7050);
-#else
 	RTMP_IO_WRITE32(pAd, HEADER_TRANS_CTRL_REG, 0x0);
 	RTMP_IO_WRITE32(pAd, TSO_CTRL, 0x0);
-#endif /* HDR_TRANS_SUPPORT */
 
 	/* Select Q2 to receive command response */
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);

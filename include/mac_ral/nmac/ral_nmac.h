@@ -671,11 +671,7 @@ typedef union _TSO_CTRL_STRUC {
 	|TXINO|TXWI|WIFI INFO|802.3 MAC Header|Pyaload|
 */
 
-#ifdef HDR_TRANS_SUPPORT
-#define WIFI_INFO_SIZE		4
-#else
 #define WIFI_INFO_SIZE		0
-#endif
 #ifdef RT_BIG_ENDIAN
 typedef union __attribute__ ((packed)) _WIFI_INFO_STRUC {
 	struct {

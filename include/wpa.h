@@ -263,15 +263,6 @@ bool RTMPCheckWPAframe(
 	IN ULONG DataByteCount,
 	IN u8 FromWhichBSSID);
 
-#ifdef HDR_TRANS_SUPPORT
-bool RTMPCheckWPAframe_Hdr_Trns(
-	IN struct rtmp_adapter *pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN u8 *pData,
-	IN ULONG DataByteCount,
-	IN u8 FromWhichBSSID);
-#endif /* HDR_TRANS_SUPPORT */
-
 bool RTMPParseEapolKeyData(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pKeyData,

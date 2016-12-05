@@ -1859,97 +1859,6 @@ void Indicate_Legacy_Packet(
 }
 
 
-#ifdef HDR_TRANS_SUPPORT
-/* Normal legacy Rx packet indication*/
-void Indicate_Legacy_Packet_Hdr_Trns(
-	IN struct rtmp_adapter*pAd,
-	IN RX_BLK *pRxBlk,
-	IN u8 FromWhichBSSID)
-{
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
-	u8 Header802_3[LENGTH_802_3];
-	USHORT VLAN_VID = 0, VLAN_Priority = 0;
-
-	struct sk_buff *pOSPkt;
-
-	/*
-		1. get 802.3 Header
-		2. remove LLC
-			a. pointer pRxBlk->pData to payload
-			b. modify pRxBlk->DataSize
-	*/
-
-	if (pRxBlk->TransDataSize > 1514 )
-	{
-
-		/* release packet*/
-		RTMPFreeNdisPacket(pAd, pRxPacket);
-		return;
-	}
-
-
-	STATS_INC_RX_PACKETS(pAd, FromWhichBSSID);
-
-#ifdef RTMP_MAC_USB
-#ifdef DOT11_N_SUPPORT
-	if (pAd->CommonCfg.bDisableReordering == 0)
-	{
-		PBA_REC_ENTRY		pBAEntry;
-		ULONG				Now32;
-		u8 			Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
-		u8 			TID = pRxBlk->pRxWI->RxWITID;
-		USHORT				Idx;
-
-#define REORDERING_PACKET_TIMEOUT		((100 * OS_HZ)/1000)	/* system ticks -- 100 ms*/
-
-		if (Wcid < MAX_LEN_OF_MAC_TABLE)
-		{
-			Idx = pAd->MacTab.Content[Wcid].BARecWcidArray[TID];
-			if (Idx != 0)
-			{
-				pBAEntry = &pAd->BATable.BARecEntry[Idx];
-				/* update last rx time*/
-				NdisGetSystemUpTime(&Now32);
-				if ((pBAEntry->list.qlen > 0) &&
-					 RTMP_TIME_AFTER((unsigned long)Now32, (unsigned long)(pBAEntry->LastIndSeqAtTimer+(REORDERING_PACKET_TIMEOUT)))
-	   				)
-				{
-					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
-												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
-					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
-				}
-			}
-		}
-	}
-#endif /* DOT11_N_SUPPORT */
-#endif /* RTMP_MAC_USB */
-
-
-
-	{
-		pOSPkt = RTPKT_TO_OSPKT(pRxPacket);
-
-		/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
-		pOSPkt->dev = get_netdev_from_bssid(pAd, FromWhichBSSID);
-		pOSPkt->data = pRxBlk->pTransData;
-		pOSPkt->len = pRxBlk->TransDataSize;
-		pOSPkt->tail = pOSPkt->data + pOSPkt->len;
-		//printk("\x1b[31m%s: rx trans ...%d\x1b[m\n", __FUNCTION__, __LINE__);
-	}
-
-
-
-	/* pass this 802.3 packet to upper layer or forward this packet to WM directly*/
-
-#ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxPacket, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
-
-}
-#endif /* HDR_TRANS_SUPPORT */
-
-
 /* Normal, AMPDU or AMSDU*/
 void CmmRxnonRalinkFrameIndicate(
 	IN	struct rtmp_adapter *pAd,
@@ -1977,38 +1886,6 @@ void CmmRxnonRalinkFrameIndicate(
 		}
 	}
 }
-
-
-/* Normal, AMPDU or AMSDU*/
-#ifdef HDR_TRANS_SUPPORT
-void CmmRxnonRalinkFrameIndicate_Hdr_Trns(
-	IN	struct rtmp_adapter *pAd,
-	IN	RX_BLK			*pRxBlk,
-	IN	u8 		FromWhichBSSID)
-{
-#ifdef DOT11_N_SUPPORT
-	if (RX_BLK_TEST_FLAG(pRxBlk, fRX_AMPDU) && (pAd->CommonCfg.bDisableReordering == 0))
-	{
-		Indicate_AMPDU_Packet_Hdr_Trns(pAd, pRxBlk, FromWhichBSSID);
-	}
-	else
-#endif /* DOT11_N_SUPPORT */
-	{
-#ifdef DOT11_N_SUPPORT
-		if (RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU))
-		{
-			/* handle A-MSDU*/
-			Indicate_AMSDU_Packet(pAd, pRxBlk, FromWhichBSSID);
-		}
-		else
-#endif /* DOT11_N_SUPPORT */
-		{
-			Indicate_Legacy_Packet_Hdr_Trns(pAd, pRxBlk, FromWhichBSSID);
-		}
-	}
-}
-#endif /* HDR_TRANS_SUPPORT */
-
 
 void CmmRxRalinkFrameIndicate(
 	IN	struct rtmp_adapter *pAd,

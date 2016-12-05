@@ -45,14 +45,8 @@ static RTMP_REG_PAIR	MT76x0_MACRegTable[] = {
 	{0xa44,					0x0}, /* disable Tx info report */
 
 
-#ifdef HDR_TRANS_SUPPORT
-	{HEADER_TRANS_CTRL_REG, 0x2}, /* 0x1: TX, 0x2: RX */
-	{TSO_CTRL, 			0x7050},
-#else
 	{HEADER_TRANS_CTRL_REG, 0x0},
 	{TSO_CTRL, 			0x0},
-#endif /* HDR_TRANS_SUPPORT */
-
 
 	/* BB_PA_MODE_CFG0(0x1214) Keep default value @20120903 */
 	{BB_PA_MODE_CFG1, 0x00500055},
@@ -1535,15 +1529,6 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
 	}
 
-#ifdef HDR_TRANS_TX_SUPPORT
-	/*
-		Enable Header Translation TX
-	*/
-	RTMP_IO_READ32(pAd, HEADER_TRANS_CTRL_REG, &MacReg);
-	MacReg |= 0x1; /* 0x1: TX, 0x2: RX */
-	RTMP_IO_WRITE32(pAd, HEADER_TRANS_CTRL_REG, MacReg);
-#endif /* HDR_TRANS_TX_SUPPORT */
-
 	/*
 		Release BBP and MAC reset
 		MAC_SYS_CTRL[1:0] = 0x0
@@ -2476,25 +2461,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	pChipOps->usb_cfg_read = usb_cfg_read_v1;
 	pChipOps->usb_cfg_write = usb_cfg_write_v1;
 #endif /* RTMP_USB_SUPPORT */
-
-
-#ifdef HDR_TRANS_SUPPORT
-	if (1) {
-		/* enable TX/RX Header Translation */
-		RTMP_IO_WRITE32(pAd, HT_RX_WCID_EN_BASE , 0xFF);	/* all RX WCID enable */
-
-		/* black list - skip EAP-888e/DLS-890d */
-		RTMP_IO_WRITE32(pAd, HT_RX_BL_BASE, 0x888e890d);
-		//RTMP_IO_WRITE32(pAd, HT_RX_BL_BASE, 0x08000806);
-
-		/* tsc conrotl */
-/*
-		RTMP_IO_READ32(pAd, 0x250, &RegVal);
-		RegVal |= 0x6000;
-		RTMP_IO_WRITE32(pAd, 0x250, RegVal);
-*/
-	}
-#endif /* HDR_TRANS_SUPPORT */
 }
 
 

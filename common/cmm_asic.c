@@ -931,9 +931,6 @@ void AsicSetBssid(
 			(ULONG)(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW0, Addr4);
 
-#ifdef HDR_TRANS_SUPPORT
-	RTMP_IO_WRITE32(pAd, HT_MAC_BSSID_DW0, Addr4);
-#endif /* HDR_TRANS_SUPPORT */
 
 	Addr4 = 0;
 	/* always one BSSID in STA mode*/
@@ -941,18 +938,6 @@ void AsicSetBssid(
 
 
 	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW1, Addr4);
-
-#ifdef HDR_TRANS_SUPPORT
-	/*
-		point WCID MAC table to 0x1800
-		This is for debug.
-		But HDR_TRANS doesn't work if you remove it.
-		Check after IC formal release.
-	*/
-	Addr4 |= 0x18000000;
-	RTMP_IO_WRITE32(pAd, HT_MAC_BSSID_DW1, Addr4);
-#endif /* HDR_TRANS_SUPPORT */
-
 }
 
 
