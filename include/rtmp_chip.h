@@ -944,7 +944,6 @@ void RtmpChipWriteMemory(
 	IN	u32			Value,
 	IN	u8			Unit);
 
-void RTMPReadChannelPwr(struct rtmp_adapter *pAd);
 void RTMPReadTxPwrPerRate(struct rtmp_adapter *pAd);
 
 /* global variable */

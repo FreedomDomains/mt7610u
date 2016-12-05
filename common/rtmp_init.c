@@ -362,12 +362,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	/* if not return early. cause fail at emulation.*/
 	/* Init the channel number for TX channel power*/
-#ifdef MT76x0
-	if (IS_MT76x0(pAd))
-		MT76x0_ReadChannelPwr(pAd);
-	else
-#endif /* MT76x0 */
-		RTMPReadChannelPwr(pAd);
+
+	MT76x0_ReadChannelPwr(pAd);
 
 	/* if E2PROM version mismatch with driver's expectation, then skip*/
 	/* all subsequent E2RPOM retieval and set a system error bit to notify GUI*/
