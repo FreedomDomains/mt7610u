@@ -454,16 +454,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	/* must be put here, because RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET() will clear *
 	 * EPROM 0x34~3 */
-#ifdef TXRX_SW_ANTDIV_SUPPORT
-	/* EEPROM 0x34[15:12] = 0xF is invalid, 0x2~0x3 is TX/RX SW AntDiv */
-	if (((Antenna.word & 0xFF00) != 0xFF00) && (Antenna.word & 0x2000))
-	{
-		pAd->chipCap.bTxRxSwAntDiv = true;		/* for GPIO switch */
-		DBGPRINT(RT_DEBUG_OFF, ("\x1b[mAntenna word %X/%d, AntDiv %d\x1b[m\n",
-					Antenna.word, Antenna.field.BoardType, pAd->NicConfig2.field.AntDiversity));
-	}
-#endif /* TXRX_SW_ANTDIV_SUPPORT */
-
 
 	// TODO: shiang, why we only check oxff00??
 	if ((Antenna.word & 0xFF00) == 0xFF00)
@@ -2533,12 +2523,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->RxAnt.Pair1AvgRssi[0] = pAd->RxAnt.Pair1AvgRssi[1] = 0;
 #endif /* CONFIG_STA_SUPPORT */
 
-
-#ifdef TXRX_SW_ANTDIV_SUPPORT
-		pAd->chipCap.bTxRxSwAntDiv = false;
-#endif /* TXRX_SW_ANTDIV_SUPPORT */
-
-
 #if defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT)
 	for (i = 0; i < MAX_LEN_OF_BSS_TABLE; i++)
 	{
@@ -3220,18 +3204,6 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 void AntCfgInit(
 IN  struct rtmp_adapter *  pAd)
 {
-
-
-#ifdef TXRX_SW_ANTDIV_SUPPORT
-	/* EEPROM 0x34[15:12] = 0xF is invalid, 0x2~0x3 is TX/RX SW AntDiv */
-	DBGPRINT(RT_DEBUG_OFF, ("%s: bTxRxSwAntDiv %d\n", __FUNCTION__, pAd->chipCap.bTxRxSwAntDiv));
-	if (pAd->chipCap.bTxRxSwAntDiv)
-	{
-		DBGPRINT(RT_DEBUG_OFF, ("Antenna word %X/%d, AntDiv %d\n",
-					pAd->Antenna.word, pAd->Antenna.field.BoardType, pAd->NicConfig2.field.AntDiversity));
-	}
-#endif /* TXRX_SW_ANTDIV_SUPPORT */
-
 	{
 		if (pAd->NicConfig2.field.AntOpt== 1) /* ant selected by efuse */
 		{

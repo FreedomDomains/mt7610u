@@ -98,9 +98,6 @@ HAS_USB_SUPPORT_SELECTIVE_SUSPEND=n
 #Support USB load firmware by multibyte
 HAS_USB_FIRMWARE_MULTIBYTE_WRITE=n
 
-#Support TXRX SW Antenna Diversity
-HAS_TXRX_SW_ANTDIV_SUPPORT=n
-
 #Support for Bridge Fast Path & Bridge Fast Path function open to other module
 HAS_BGFP_SUPPORT=n
 HAS_BGFP_OPEN_SUPPORT=n
@@ -277,10 +274,6 @@ WFLAGS += -DRT_CFG80211_SUPPORT
 ifeq ($(HAS_RFKILL_HW_SUPPORT),y)
 WFLAGS += -DRFKILL_HW_SUPPORT
 endif
-endif
-
-ifeq ($(HAS_TXRX_SW_ANTDIV_SUPPORT),y)
-WFLAGS += -DTXRX_SW_ANTDIV_SUPPORT
 endif
 
 

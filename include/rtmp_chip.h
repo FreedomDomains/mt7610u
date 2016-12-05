@@ -468,10 +468,6 @@ struct rtmp_chip_cap {
 	enum ASIC_CAP asic_caps;
 	enum PHY_CAP phy_caps;
 
-#ifdef TXRX_SW_ANTDIV_SUPPORT
-	bool bTxRxSwAntDiv;
-#endif /* TXRX_SW_ANTDIV_SUPPORT */
-
 	/* ---------------------------- signal ---------------------------------- */
 #define SNR_FORMULA1		0	/* ((0xeb     - pAd->StaCfg.LastSNR0) * 3) / 16; */
 #define SNR_FORMULA2		1	/* (pAd->StaCfg.LastSNR0 * 3 + 8) >> 4; */
