@@ -4874,33 +4874,3 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 		DBGPRINT(RT_DEBUG_ERROR, ("Temperature Tx ALC not enabled\n"));
 }
 
-/******************************* Command API *******************************/
-INT Set_AntennaSelect_Proc(
-	IN struct rtmp_adapter	*pAd,
-	IN char *		arg)
-{
-	u8 val = (u8)simple_strtol(arg, 0, 10);
-	u32 reg_val = 0;
-
-	/*
-		0x2300[5] Default Antenna:
-		0 for WIFI main antenna
-		1  for WIFI aux  antenna
-
-	*/
-	RTMP_IO_READ32(pAd, AGC1_R0, &reg_val);
-	reg_val &= ~(0x00000020);
-	if (val != 0)
-		reg_val |= 0x20;
-	RTMP_IO_WRITE32(pAd, AGC1_R0, reg_val);
-
-	RTMP_IO_READ32(pAd, AGC1_R0, &reg_val);
-
-	RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 1);
-	DBGPRINT(RT_DEBUG_TRACE, ("Set_AntennaSelect_Proc:: AntennaSelect = %d (0x%08x=0x%08x)\n", val, AGC1_R0, reg_val));
-
-	return TRUE;
-}
-/******************************* Command API end ***************************/
-
-
