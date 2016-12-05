@@ -1494,8 +1494,8 @@ enum WIFI_MODE{
 #define DEFAULT_RX_TIMEOUT   30
 
 /* definition of Recipient or Originator */
-#define I_RECIPIENT                  TRUE
-#define I_ORIGINATOR                   FALSE
+#define I_RECIPIENT                  true
+#define I_ORIGINATOR                   false
 
 #define DEFAULT_BBP_TX_POWER        0
 #define DEFAULT_RF_TX_POWER         5

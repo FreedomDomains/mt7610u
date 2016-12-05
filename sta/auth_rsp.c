@@ -112,7 +112,7 @@ void PeerDeauthAction(
 	u8 Addr2[ETH_ALEN];
 	u8 Addr3[ETH_ALEN];
 	USHORT Reason;
-	BOOLEAN bDoIterate = FALSE;
+	bool bDoIterate = false;
 
 	if (PeerDeauthSanity
 	    (pAd, Elem->Msg, Elem->MsgLen, Addr1, Addr2, Addr3, &Reason)) {
@@ -132,7 +132,7 @@ void PeerDeauthAction(
 			    && (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2)
 			    && (pAd->StaCfg.PortSecured ==
 				WPA_802_1X_PORT_SECURED))
-				pAd->StaCfg.bLostAp = TRUE;
+				pAd->StaCfg.bLostAp = true;
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 			/*
@@ -146,9 +146,9 @@ void PeerDeauthAction(
 			     || (pAd->StaCfg.AuthMode ==
 				 Ndis802_11AuthModeWPA2PSK))
 			    )
-				bDoIterate = TRUE;
+				bDoIterate = true;
 
-			LinkDown(pAd, TRUE);
+			LinkDown(pAd, true);
 
 			if (bDoIterate) {
 				pAd->MlmeAux.BssIdx++;

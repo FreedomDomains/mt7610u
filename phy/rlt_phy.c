@@ -33,7 +33,7 @@ int NICInitBBP(struct rtmp_adapter*pAd)
 	INT idx;
 
 	/* Read BBP register, make sure BBP is up and running before write new data*/
-	if (rlt_bbp_is_ready(pAd) == FALSE)
+	if (rlt_bbp_is_ready(pAd) == false)
 		return NDIS_STATUS_FAILURE;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): Init BBP Registers\n", __FUNCTION__));
@@ -58,7 +58,7 @@ INT rtmp_bbp_get_temp(struct rtmp_adapter *pAd, CHAR *temp_val)
 
 	pAd->curr_temp = (bbp_val & 0xff);
 #endif
-	return TRUE;
+	return true;
 }
 
 
@@ -104,7 +104,7 @@ INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 	if (txbe != txbe_r5)
 		RTMP_BBP_IO_WRITE32(pAd, TXBE_R5, txbe);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -131,7 +131,7 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
 //DBGPRINT(RT_DEBUG_OFF, ("%s(): rxpath=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, rxpath, agc));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -238,7 +238,7 @@ INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
 //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
 //DBGPRINT(RT_DEBUG_OFF, ("%s(): ext_ch=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, ext_ch, agc));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -246,12 +246,12 @@ INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw)
 {
 	andes_fun_set(pAd, BW_SETTING, bw);
 	pAd->CommonCfg.BBPCurrentBW = bw;
-	return TRUE;
+	return true;
 }
 
 
 
-INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower)
+INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, bool ReduceCorePower)
 {
 	u32 bbp_val, org_val;
 
@@ -265,7 +265,7 @@ INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, BOOLEAN ReduceCorePower)
 	if (bbp_val != org_val)
 		RTMP_BBP_IO_WRITE32(pAd, AGC1_R0, bbp_val);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -335,7 +335,7 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 		idx++;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -357,7 +357,7 @@ INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, u8 Channel)
 			RTMP_BBP_IO_WRITE32(pAd, CORE_R1, bbp_val);
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -384,11 +384,11 @@ INT rlt_bbp_is_ready(struct rtmp_adapter *pAd)
 	{
 		RTMP_BBP_IO_READ32(pAd, CORE_R0, &val);
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-			return FALSE;
+			return false;
 		DBGPRINT(RT_DEBUG_TRACE, ("BBP version = %x\n", val));
 	} while ((++idx < 20) && ((val == 0xffffffff) || (val == 0x0)));
 
-	return (((val == 0xffffffff) || (val == 0x0)) ? FALSE : TRUE);
+	return (((val == 0xffffffff) || (val == 0x0)) ? false : true);
 }
 
 

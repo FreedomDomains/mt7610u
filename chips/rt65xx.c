@@ -51,8 +51,8 @@
 */
 void MT76x0_ral_wlan_chip_onoff(
 	IN struct rtmp_adapter*pAd,
-	IN BOOLEAN bOn,
-	IN BOOLEAN bResetWLAN)
+	IN bool bOn,
+	IN bool bResetWLAN)
 {
 	// TODO: check the functionality of the WLAN_FUN_CTRL here, now we just bring up it bu no fine tune.
 	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
@@ -74,13 +74,13 @@ void MT76x0_ral_wlan_chip_onoff(
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
 				__FUNCTION__, bOn, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
-	if (bResetWLAN == TRUE)
+	if (bResetWLAN == true)
 	{
 		WlanFunCtrl.field.GPIO0_OUT_OE_N = 0xFF;
 		WlanFunCtrl.field.FRC_WL_ANT_SET = 0;
 	}
 
-	if (bOn == TRUE)
+	if (bOn == true)
 	{
 		WlanFunCtrl.field.WLAN_CLK_EN = 1;
 		WlanFunCtrl.field.WLAN_EN = 1;
@@ -224,7 +224,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 #endif /* CONFIG_PM */
 
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
-		MT76x0_WLAN_ChipOnOff(pAd, TRUE, FALSE);
+		MT76x0_WLAN_ChipOnOff(pAd, true, false);
 
 	/* make some traffic to invoke EvtDeviceD0Entry callback function*/
 	RTUSBReadMACRegister(pAd,0x1000, &MACValue);
@@ -288,8 +288,8 @@ void MT76x0DisableTxRx(
 {
 	u32 MacReg = 0;
 	u32 MTxCycle;
-	BOOLEAN bResetWLAN = FALSE;
-	BOOLEAN bFree = TRUE;
+	bool bResetWLAN = false;
+	bool bFree = true;
 	u8 CheckFreeTimes = 0;
 
 	if (!IS_RT65XX(pAd))
@@ -314,16 +314,16 @@ void MT76x0DisableTxRx(
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
-		bFree = TRUE;
+		bFree = true;
 		RTMP_IO_READ32(pAd, 0x438, &MacReg);
 		if (MacReg != 0)
-			bFree = FALSE;
+			bFree = false;
 		RTMP_IO_READ32(pAd, 0xa30, &MacReg);
 		if (MacReg & 0x000000FF)
-			bFree = FALSE;
+			bFree = false;
 		RTMP_IO_READ32(pAd, 0xa34, &MacReg);
 		if (MacReg & 0xFF00FF00)
-			bFree = FALSE;
+			bFree = false;
 		if (bFree)
 			break;
 		if (MacReg == 0xFFFFFFFF)
@@ -344,7 +344,7 @@ void MT76x0DisableTxRx(
 
 		RTMP_IO_READ32(pAd, 0x438, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x438 = 0x%08x\n", MacReg));
-		bResetWLAN = TRUE;
+		bResetWLAN = true;
 	}
 
 	/*
@@ -368,10 +368,10 @@ void MT76x0DisableTxRx(
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Tx idle max(0x%08x)\n", MacReg));
-		bResetWLAN = TRUE;
+		bResetWLAN = true;
 	}
 
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == FALSE)
+	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false)
 	{
 		if (Level == RTMP_HALT)
 		{
@@ -398,21 +398,21 @@ void MT76x0DisableTxRx(
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
-		bFree = TRUE;
+		bFree = true;
 		RTMP_IO_READ32(pAd, 0x430, &MacReg);
 
 		if (MacReg & (0x00FF0000))
-			bFree = FALSE;
+			bFree = false;
 
 		RTMP_IO_READ32(pAd, 0xa30, &MacReg);
 
 		if (MacReg != 0)
-			bFree = FALSE;
+			bFree = false;
 
 		RTMP_IO_READ32(pAd, 0xa34, &MacReg);
 
 		if (MacReg != 0)
-			bFree = FALSE;
+			bFree = false;
 
 		if (bFree && (CheckFreeTimes > 20) && (!is_inband_cmd_processing(pAd)))
 			break;
@@ -446,7 +446,7 @@ void MT76x0DisableTxRx(
 
 		RTMP_IO_READ32(pAd, 0x0430, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0430 = 0x%08x\n", MacReg));
-		bResetWLAN = TRUE;
+		bResetWLAN = true;
 	}
 
 	/*
@@ -469,13 +469,13 @@ void MT76x0DisableTxRx(
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Rx idle max(0x%08x)\n", MacReg));
-		bResetWLAN = TRUE;
+		bResetWLAN = true;
 	}
 
 	StopDmaRx(pAd, Level);
 
 	if ((Level == RTMP_HALT) &&
-		(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == FALSE))
+		(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false))
 	{
 		if (!pAd->chipCap.IsComboChip)
 			NICEraseFirmware(pAd);
@@ -490,7 +490,7 @@ void MT76x0DisableTxRx(
 				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
 			bResetWLAN = 0;
 
-		MT76x0_WLAN_ChipOnOff(pAd, FALSE, bResetWLAN);
+		MT76x0_WLAN_ChipOnOff(pAd, false, bResetWLAN);
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
@@ -498,8 +498,8 @@ void MT76x0DisableTxRx(
 
 void MT76x0_WLAN_ChipOnOff(
 	IN struct rtmp_adapter*pAd,
-	IN BOOLEAN bOn,
-	IN BOOLEAN bResetWLAN)
+	IN bool bOn,
+	IN bool bResetWLAN)
 {
 	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
 
@@ -520,7 +520,7 @@ void MT76x0_WLAN_ChipOnOff(
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
 				__FUNCTION__, bOn, bResetWLAN, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
-	if (bResetWLAN == TRUE)
+	if (bResetWLAN == true)
 	{
 		WlanFunCtrl.field.GPIO0_OUT_OE_N = 0xFF;
 		WlanFunCtrl.field.FRC_WL_ANT_SET = 0;
@@ -543,7 +543,7 @@ void MT76x0_WLAN_ChipOnOff(
 		}
 	}
 
-	if (bOn == TRUE)
+	if (bOn == true)
 	{
 		/*
 			Enable WLAN function and clock
@@ -570,7 +570,7 @@ void MT76x0_WLAN_ChipOnOff(
 		DBGPRINT(RT_DEBUG_TRACE, ("MACVersion = 0x%08x\n", pAd->MACVersion));
 	}
 
-	if (bOn == TRUE)
+	if (bOn == true)
 	{
 		UINT index = 0;
 		CMB_CTRL_STRUC CmbCtrl;
@@ -614,7 +614,7 @@ void MT76x0_WLAN_ChipOnOff(
 				break;
 			}
 		}
-		while (TRUE);
+		while (true);
 	}
 
 	pAd->WlanFunCtrl.word = WlanFunCtrl.word;

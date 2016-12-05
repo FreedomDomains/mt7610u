@@ -81,7 +81,7 @@
 /* uapsd initialization */
 #define UAPSD_INFO_INIT(__pInfo)						\
 {														\
-	(__pInfo)->bAPSDCapable = FALSE;					\
+	(__pInfo)->bAPSDCapable = false;					\
 }
 
 #define UAPSD_SP_START(__pAd, __pEntry)					\
@@ -103,10 +103,10 @@
 /* ASIC power save behavior */
 /* TODO: maybe need to do protection */
 #define ASIC_PS_CAN_SLEEP(__pAd)											\
-	__pAd->StaCfg.FlgPsmCanNotSleep = FALSE;
+	__pAd->StaCfg.FlgPsmCanNotSleep = false;
 
 #define ASIC_PS_CAN_NOT_SLEEP(__pAd)										\
-	__pAd->StaCfg.FlgPsmCanNotSleep = TRUE;
+	__pAd->StaCfg.FlgPsmCanNotSleep = true;
 
 /* we will recover ps mode after 5 second if no packet is received. */
 #define RTMP_PS_VIRTUAL_MAX_TIME_OUT		5
@@ -119,7 +119,7 @@
 /* wake up the peer virtually */
 #define RTMP_PS_VIRTUAL_WAKEUP_PEER(__pMacEntry)							\
 {																			\
-	__pMacEntry->FlgPsModeIsWakeForAWhile = TRUE;							\
+	__pMacEntry->FlgPsModeIsWakeForAWhile = true;							\
 	__pMacEntry->VirtualTimeout = RTMP_PS_VIRTUAL_MAX_TIME_OUT;				\
 	DBGPRINT(RT_DEBUG_TRACE,												\
 		("%02x:%02x:%02x:%02x:%02x:%02x will not sleep for a while!\n",		\
@@ -131,7 +131,7 @@
 /* recover the peer power save mode virtually */
 #define RTMP_PS_VIRTUAL_SLEEP(__pMacEntry)									\
 {																			\
-	__pMacEntry->FlgPsModeIsWakeForAWhile = FALSE;							\
+	__pMacEntry->FlgPsModeIsWakeForAWhile = false;							\
 	__pMacEntry->VirtualTimeout = 0;										\
 	DBGPRINT(RT_DEBUG_TRACE,												\
 		("%02x:%02x:%02x:%02x:%02x:%02x can sleep (ps mode = %d)!\n",		\
@@ -263,7 +263,7 @@
 
 /* check if all AC are UAPSD delivery-enabled AC */
 #define UAPSD_MR_IS_ALL_AC_UAPSD(__FlgIsActive, __pMacEntry)				\
-		(((__FlgIsActive) == FALSE) && ((__pMacEntry)->bAPSDAllAC == 1))
+		(((__FlgIsActive) == false) && ((__pMacEntry)->bAPSDAllAC == 1))
 
 /* suspend SP */
 #define UAPSD_MR_SP_SUSPEND(__pAd)											\
@@ -382,7 +382,7 @@ Return Value:
 Note:
 ========================================================================
 */
-UAPSD_EXTERN BOOLEAN UAPSD_SP_IsClosed(
+UAPSD_EXTERN bool UAPSD_SP_IsClosed(
     IN  struct rtmp_adapter *      pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry);
 
@@ -416,7 +416,7 @@ Arguments:
 	pAd				Pointer to our adapter
 	*pEntry			STATION
 	*pElm			QoS information field
-	FlgApsdCapable	TRUE: Support UAPSD
+	FlgApsdCapable	true: Support UAPSD
 
 Return Value:
 	None
@@ -441,7 +441,7 @@ UAPSD_EXTERN void UAPSD_AssocParse(
 	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
 	IN	u8 			*pElm,
-	IN	BOOLEAN				FlgApsdCapable);
+	IN	bool 			FlgApsdCapable);
 
 
 /*
@@ -659,10 +659,10 @@ Routine Description:
 Arguments:
 	pAd					Pointer to our adapter
 	pEntry				the peer entry
-	pFlgIsAnyPktForBK	TRUE: At lease a BK packet is queued
-	pFlgIsAnyPktForBE	TRUE: At lease a BE packet is queued
-	pFlgIsAnyPktForVI	TRUE: At lease a VI packet is queued
-	pFlgIsAnyPktForVO	TRUE: At lease a VO packet is queued
+	pFlgIsAnyPktForBK	true: At lease a BK packet is queued
+	pFlgIsAnyPktForBE	true: At lease a BE packet is queued
+	pFlgIsAnyPktForVI	true: At lease a VI packet is queued
+	pFlgIsAnyPktForVO	true: At lease a VO packet is queued
 
 Return Value:
     None
@@ -673,10 +673,10 @@ Note:
 void UAPSD_QueueStatusGet(
 	IN	struct rtmp_adapter *	pAd,
 	IN	MAC_TABLE_ENTRY		*pEntry,
-	OUT	BOOLEAN				*pFlgIsAnyPktForBK,
-	OUT BOOLEAN				*pFlgIsAnyPktForBE,
-	OUT BOOLEAN				*pFlgIsAnyPktForVI,
-	OUT BOOLEAN				*pFlgIsAnyPktForVO);
+	OUT	bool 			*pFlgIsAnyPktForBK,
+	OUT bool 			*pFlgIsAnyPktForBE,
+	OUT bool 			*pFlgIsAnyPktForVI,
+	OUT bool 			*pFlgIsAnyPktForVO);
 
 
 /*

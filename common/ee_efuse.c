@@ -528,7 +528,7 @@ static int eFuseWriteRegisters(
 
 	USHORT addr,tmpaddr, InBuf[3], tmpOffset;
 	USHORT buffer[8];
-	BOOLEAN	bWriteSuccess = TRUE;
+	bool bWriteSuccess = true;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters Offset=%x, pData=%x\n", Offset, *pData));
 	/*set start block and end block number, start from tail of mapping table*/
@@ -600,7 +600,7 @@ static int eFuseWriteRegisters(
 	if(BlkNum == 0xffff)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters: out of free E-fuse space!!!\n"));
-		return FALSE;
+		return false;
 	}
 
 	/*Step 1. Save data of this block	which is pointed by the avaible logical address pointer*/
@@ -674,7 +674,7 @@ static int eFuseWriteRegisters(
 		eFuseWritePhysical(pAd,&InBuf[0], 6, NULL, 0);
 
 		/*Step 5. Compare data if not the same, invalidate the mapping entry, then re-write the data until E-fuse is exhausted*/
-		bWriteSuccess = TRUE;
+		bWriteSuccess = true;
 		for(i =0; i<8; i++)
 		{
 			addr = BlkNum * 0x10 ;
@@ -687,7 +687,7 @@ static int eFuseWriteRegisters(
 
 			if(buffer[i] != InBuf[2])
 			{
-				bWriteSuccess = FALSE;
+				bWriteSuccess = false;
 				break;
 			}
 		}
@@ -727,7 +727,7 @@ static int eFuseWriteRegisters(
 			if(BlkNum == 0xffff)
 			{
 				DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters: out of free E-fuse space!!!\n"));
-				return FALSE;
+				return false;
 			}
 
 			/*invalidate the original mapping entry if new entry is not found*/
@@ -771,7 +771,7 @@ static int eFuseWriteRegisters(
 	while (!bWriteSuccess&&Loop<2);
 	if(!bWriteSuccess)
 		DBGPRINT(RT_DEBUG_ERROR,("Efsue Write Failed!!\n"));
-	return TRUE;
+	return true;
 }
 
 
@@ -856,7 +856,7 @@ int eFuseWrite(
 	/*				3070	|	7030 (x)*/
 	/* The swapping should be removed for big-endian*/
 	if (OddWriteByteBuf == NULL)
-		return FALSE;
+		return false;
 	if((Offset%2)!=0)
 	{
 		length+=2;
@@ -877,7 +877,7 @@ int eFuseWrite(
 	}
 /*	kfree(OddWriteByteBuf);*/
 	kfree(OddWriteByteBuf);
-	return TRUE;
+	return true;
 }
 
 
@@ -899,11 +899,11 @@ INT set_eFuseGetFreeBlockCount_Proc(
 	IN	char *		arg)
 {
 	UINT efusefreenum=0;
-	if (pAd->bUseEfuse == FALSE && pAd->bFroceEEPROMBuffer == FALSE)
-		return FALSE;
+	if (pAd->bUseEfuse == false && pAd->bFroceEEPROMBuffer == false)
+		return false;
 	eFuseGetFreeBlockCount(pAd,&efusefreenum);
 	printk("efuseFreeNumber is %d\n",efusefreenum);
-	return TRUE;
+	return true;
 }
 
 
@@ -914,8 +914,8 @@ INT set_eFusedump_Proc(
 	USHORT InBuf[3];
 	INT i=0;
 
-	if (pAd->bUseEfuse == FALSE && pAd->bFroceEEPROMBuffer == FALSE)
-		return FALSE;
+	if (pAd->bUseEfuse == false && pAd->bFroceEEPROMBuffer == false)
+		return false;
 
 	for(i =0; i<pAd->chipCap.EFUSE_USAGE_MAP_END/2; i++)
 	{
@@ -928,7 +928,7 @@ INT set_eFusedump_Proc(
 		printk("\nBlock %x:",i/8);
 		printk("%04x ",InBuf[2]);
 	}
-	return TRUE;
+	return true;
 }
 
 
@@ -995,7 +995,7 @@ INT eFuseLoadEEPROM(
 	DBGPRINT(RT_DEBUG_TRACE, ("FileName=%s\n",src));
 
 
-	RtmpOSFSInfoChange(&osFSInfo, TRUE);
+	RtmpOSFSInfoChange(&osFSInfo, true);
 
 	if (src && *src)
 	{
@@ -1003,7 +1003,7 @@ INT eFuseLoadEEPROM(
 		if (IS_FILE_OPEN_ERR(srcf))
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("--> Error opening %s\n", src));
-			return FALSE;
+			return false;
 		}
 		else
 		{
@@ -1027,7 +1027,7 @@ INT eFuseLoadEEPROM(
 	else
 		{
 					DBGPRINT(RT_DEBUG_ERROR, ("--> Error src  or srcf is null\n"));
-					return FALSE;
+					return false;
 
 		}
 
@@ -1039,9 +1039,9 @@ INT eFuseLoadEEPROM(
 	}
 
 
-	RtmpOSFSInfoChange(&osFSInfo, FALSE);
+	RtmpOSFSInfoChange(&osFSInfo, false);
 
-	return TRUE;
+	return true;
 }
 
 void eFuseGetFreeBlockCount(IN struct rtmp_adapter *pAd,
@@ -1176,11 +1176,11 @@ INT eFuse_init(struct rtmp_adapter*pAd)
 	if(EfuseFreeBlock > (pAd->chipCap.EFUSE_USAGE_MAP_SIZE-5))
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("NVM is Efuse and the information is too less to bring up interface. Force to use EEPROM Buffer Mode\n"));
-		pAd->bFroceEEPROMBuffer = TRUE;
+		pAd->bFroceEEPROMBuffer = true;
 		eFuseLoadEEPROM(pAd);
 	}
 	else
-		pAd->bFroceEEPROMBuffer = FALSE;
+		pAd->bFroceEEPROMBuffer = false;
 	DBGPRINT(RT_DEBUG_TRACE, ("NVM is Efuse and force to use EEPROM Buffer Mode=%x\n",pAd->bFroceEEPROMBuffer));
 
 	return 0;
@@ -1192,10 +1192,10 @@ INT efuse_probe(struct rtmp_adapter*pAd)
 	u32 eFuseCtrl, ctrl_reg;
 
 
-	if (WaitForAsicReady(pAd) == FALSE)
+	if (WaitForAsicReady(pAd) == false)
 			return -1;
 
-	pAd->bUseEfuse=FALSE;
+	pAd->bUseEfuse=false;
 #ifdef RT65xx
 	// TODO: shiang-6590, find a better naming for EFUSE_CTRL_3290!!
 	if (IS_RT65XX(pAd))

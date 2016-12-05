@@ -90,7 +90,7 @@ static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 	{
 		pTimer = NULL;
 
-		if (RtmpOSTaskWait(pAd, pTask, &status) == FALSE)
+		if (RtmpOSTaskWait(pAd, pTask, &status) == false)
 		{
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 			break;
@@ -123,7 +123,7 @@ static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 			{
 				if ((pTimer->handle != NULL) && (!pAd->PM_FlgSuspend))
 					pTimer->handle(NULL, (void *) pTimer->cookie, NULL, pTimer);
-				if ((pTimer->Repeat) && (pTimer->State == FALSE))
+				if ((pTimer->Repeat) && (pTimer->State == false))
 					RTMP_OS_Add_Timer(&pTimer->TimerObj, pTimer->TimerValue);
 			}
 		}
@@ -220,7 +220,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 }
 
 
-BOOLEAN RtmpTimerQRemove(
+bool RtmpTimerQRemove(
 	IN struct rtmp_adapter*pAd,
 	IN RALINK_TIMER_STRUCT *pTimer)
 {
@@ -256,7 +256,7 @@ BOOLEAN RtmpTimerQRemove(
 	}
 	RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
 
-	return TRUE;
+	return true;
 }
 
 

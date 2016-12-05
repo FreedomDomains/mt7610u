@@ -205,7 +205,7 @@ INT Show_AGS_Proc(
 	for(IdQuality=0; IdQuality<=23; IdQuality++)
 		DBGPRINT(RT_DEBUG_OFF, ("%02d\t\t%d\n", IdQuality, pEntry->TxQuality[IdQuality]));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -232,7 +232,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 	IN u8 InitTxRateIdx)
 {
 	u8 UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
-	BOOLEAN bTxRateChanged = TRUE, bUpgradeQuality = FALSE;
+	bool bTxRateChanged = true, bUpgradeQuality = false;
 	RTMP_RA_AGS_TB *pCurrTxRate = NULL;
 	RTMP_RA_LEGACY_TB *pNextTxRate = NULL;
 	u8 TrainUp = 0, TrainDown = 0, next_grp;
@@ -624,16 +624,16 @@ void MlmeDynamicTxRateSwitchingAGS(
 		memset(pEntry->TxQuality, 0, (sizeof(USHORT) * (MAX_TX_RATE_INDEX+1)));
 		memset(pEntry->PER, 0, (sizeof(u8) * (MAX_TX_RATE_INDEX+1)));
 
-		pEntry->fLastSecAccordingRSSI = TRUE;
+		pEntry->fLastSecAccordingRSSI = true;
 		/* reset all OneSecTx counters */
 		RESET_ONE_SEC_TX_CNT(pEntry);
 		return;
 	}
 
 	/* The MCS selection is based on the RSSI and skips the rate tuning this time. */
-	if (pEntry->fLastSecAccordingRSSI == TRUE)
+	if (pEntry->fLastSecAccordingRSSI == true)
 	{
-		pEntry->fLastSecAccordingRSSI = FALSE;
+		pEntry->fLastSecAccordingRSSI = false;
 		pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 
 		RESET_ONE_SEC_TX_CNT(pEntry);
@@ -647,7 +647,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 
 	do
 	{
-		BOOLEAN	bTrainUpDown = FALSE;
+		bool bTrainUpDown = false;
 
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 					("%s: AGS: TxQuality[CurrRateIdx(%d)] = %d, UpPenalty:%d\n",
@@ -659,13 +659,13 @@ void MlmeDynamicTxRateSwitchingAGS(
 			/* error ratio too high, do rate down */
 			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 						("%s: AGS: (DOWN) TxErrorRatio >= TrainDown\n",__FUNCTION__));
-			bTrainUpDown = TRUE;
+			bTrainUpDown = true;
 			pEntry->TxQuality[CurrRateIdx] = AGS_TX_QUALITY_WORST_BOUND;
 		}
 		else if (pAGSStatisticsInfo->TxErrorRatio <= TrainUp) /* Good quality */
 		{
-			bTrainUpDown = TRUE;
-			bUpgradeQuality = TRUE;
+			bTrainUpDown = true;
+			bUpgradeQuality = true;
 
 			DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 				("%s: AGS: (UP) pEntry->TxQuality[CurrRateIdx] = %d, pEntry->TxRateUpPenalty = %d\n",
@@ -695,7 +695,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 			/* not bad and not good */
 			if (UpRateIdx != 0)
 			{
-				bTrainUpDown = TRUE;
+				bTrainUpDown = true;
 
 				/* Good quality in the current Tx rate */
 				if (pEntry->TxQuality[CurrRateIdx])
@@ -738,7 +738,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 				DBGPRINT_RAW(RT_DEBUG_TRACE, ("ags> rate up!\n"));
 			}
 		}
-	} while (FALSE);
+	} while (false);
 
 	DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: AGS: pEntry->CurrTxRateIndex = %d, CurrRateIdx = %d, pEntry->LastSecTxRateChangeAction = %d\n",
 		__FUNCTION__,
@@ -757,7 +757,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 		memset(pEntry->PER, 0, sizeof(u8) * (MAX_TX_RATE_INDEX+1));
 		pEntry->AGSCtrl.lastRateIdx = CurrRateIdx;
 
-		bTxRateChanged = TRUE;
+		bTxRateChanged = true;
 	}
 	else if ((pEntry->CurrTxRateIndex != CurrRateIdx) &&
 	             (pEntry->LastSecTxRateChangeAction == RATE_DOWN))
@@ -771,21 +771,21 @@ void MlmeDynamicTxRateSwitchingAGS(
 		pEntry->PER[pEntry->CurrTxRateIndex] = 0;
 		pEntry->AGSCtrl.lastRateIdx = CurrRateIdx;
 
-		bTxRateChanged = TRUE;
+		bTxRateChanged = true;
 	}
 	else /* Tx rate remains unchanged. */
 	{
 		pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE; /* Tx rate remains unchanged. */
-		bTxRateChanged = FALSE;
+		bTxRateChanged = false;
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("ags> no rate up/down!\n"));
 	}
 
 	/* Tx rate fast train up/down */
-	if ((bTxRateChanged == TRUE) &&
+	if ((bTxRateChanged == true) &&
 		(!pAd->StaCfg.StaQuickResponeForRateUpTimerRunning))
 	{
 		RTMPSetTimer(&pAd->StaCfg.StaQuickResponeForRateUpTimer, pAd->ra_fast_interval);
-		pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = TRUE;
+		pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = true;
 	}
 
 	pEntry->LastTxOkCount = pAGSStatisticsInfo->TxSuccess;
@@ -793,7 +793,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 	/* set new tx rate */
 	pNextTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1) * SIZE_OF_AGS_RATE_TABLE_ENTRY]);
 
-	if ((bTxRateChanged == TRUE) && (pNextTxRate != NULL))
+	if ((bTxRateChanged == true) && (pNextTxRate != NULL))
 	{
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 					("ags> set new rate MCS = %d!\n", pEntry->CurrTxRateIndex));
@@ -803,7 +803,7 @@ void MlmeDynamicTxRateSwitchingAGS(
 	/* RDG threshold control for the infrastructure mode only */
 	if (INFRA_ON(pAd))
 	{
-		if ((pAd->CommonCfg.bRdg == TRUE) &&
+		if ((pAd->CommonCfg.bRdg == true) &&
 			CLIENT_STATUS_TEST_FLAG(&pAd->MacTab.Content[BSSID_WCID],
 									fCLIENT_STATUS_RDG_CAPABLE)) /* RDG capable */
 		{
@@ -870,7 +870,7 @@ void StaQuickResponeForRateUpExecAGS(
 	IN u8 InitTxRateIdx)
 {
 	u8 UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
-	BOOLEAN bTxRateChanged = TRUE;
+	bool bTxRateChanged = true;
 	RTMP_RA_AGS_TB *pCurrTxRate = NULL;
 	RTMP_RA_LEGACY_TB *pNextTxRate = NULL;
 	u8 TrainDown = 0, TrainUp = 0;
@@ -880,7 +880,7 @@ void StaQuickResponeForRateUpExecAGS(
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("QuickAGS: ---> %s\n", __FUNCTION__));
 
-	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = FALSE;
+	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = false;
 
 	DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,
 		("%s: QuickAGS: AccuTxTotalCnt = %lu, TxSuccess = %lu, "
@@ -988,7 +988,7 @@ void StaQuickResponeForRateUpExecAGS(
 
 // Don't quick check within train down case
 		}
-	}while (FALSE);
+	}while (false);
 
 	DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 				("ags> new group = %d\n", pEntry->AGSCtrl.MCSGroup));
@@ -1061,13 +1061,13 @@ void StaQuickResponeForRateUpExecAGS(
 	}
 	else
 	{
-		bTxRateChanged = FALSE;
+		bTxRateChanged = false;
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: QuickAGS: rate is not changed\n",
 			__FUNCTION__));
 	}
 
 	pNextTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1) * SIZE_OF_AGS_RATE_TABLE_ENTRY]);
-	if ((bTxRateChanged == TRUE) && (pNextTxRate != NULL))
+	if ((bTxRateChanged == true) && (pNextTxRate != NULL))
 	{
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 					("ags> confirm current rate MCS = %d!\n", pEntry->CurrTxRateIndex));

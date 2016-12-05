@@ -239,7 +239,7 @@ u8 MlmeSelectTxRateAdapt(
 	IN CHAR		Rssi,
 	IN CHAR		RssiOffset);
 
-BOOLEAN MlmeRAHybridRule(
+bool MlmeRAHybridRule(
 	IN struct rtmp_adapter *pAd,
 	IN struct _MAC_TABLE_ENTRY *pEntry,
 	IN RTMP_RA_GRP_TB *pCurrTxRate,

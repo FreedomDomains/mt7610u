@@ -253,7 +253,7 @@ int MiniportMMRequest(
 	ULONG FreeNum;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 	u8 rtmpHwHdr[40];
-	BOOLEAN bUseDataQ = FALSE, FlgDataQForce = FALSE, FlgIsLocked = FALSE;
+	bool bUseDataQ = false, FlgDataQForce = false, FlgIsLocked = false;
 	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize + TSO_SIZE;
 
 
@@ -261,7 +261,7 @@ int MiniportMMRequest(
 
 	if ((QueIdx & MGMT_USE_QUEUE_FLAG) == MGMT_USE_QUEUE_FLAG)
 	{
-		bUseDataQ = TRUE;
+		bUseDataQ = true;
 		QueIdx &= (~MGMT_USE_QUEUE_FLAG);
 	}
 
@@ -356,8 +356,8 @@ int MlmeHardTransmit(
 	IN struct rtmp_adapter*pAd,
 	IN u8 QueIdx,
 	IN struct sk_buff * pPacket,
-	IN BOOLEAN FlgDataQForce,
-	IN BOOLEAN FlgIsLocked)
+	IN bool FlgDataQForce,
+	IN bool FlgIsLocked)
 {
 	PACKET_INFO 	PacketInfo;
 	u8 *		pSrcBufVA;
@@ -388,7 +388,7 @@ int MlmeHardTransmitMgmtRing(
 	u8 *pSrcBufVA;
 	UINT SrcBufLen;
 	HEADER_802_11 *pHeader_802_11;
-	BOOLEAN bAckRequired, bInsertTimestamp;
+	bool bAckRequired, bInsertTimestamp;
 	u8 MlmeRate;
 	struct txwi_nmac *pFirstTxWI;
 	MAC_TABLE_ENTRY *pMacEntry = NULL;
@@ -412,7 +412,7 @@ int MlmeHardTransmitMgmtRing(
 	{
 		/* outgoing frame always wakeup PHY to prevent frame lost*/
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
-			AsicForceWakeup(pAd, TRUE);
+			AsicForceWakeup(pAd, true);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -496,7 +496,7 @@ int MlmeHardTransmitMgmtRing(
 			((pHeader_802_11->FC.SubType == SUBTYPE_QOS_NULL) ||
 			(pHeader_802_11->FC.SubType == SUBTYPE_NULL_FUNC))))
 		{
-			if (RtmpPktPmBitCheck(pAd) == TRUE)
+			if (RtmpPktPmBitCheck(pAd) == true)
 				pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
 			else if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED) &&
 					INFRA_ON(pAd) &&
@@ -516,7 +516,7 @@ int MlmeHardTransmitMgmtRing(
 
 
 
-	bInsertTimestamp = FALSE;
+	bInsertTimestamp = false;
 	if (pHeader_802_11->FC.Type == BTYPE_CNTL) /* must be PS-POLL*/
 	{
 #ifdef CONFIG_STA_SUPPORT
@@ -526,27 +526,27 @@ int MlmeHardTransmitMgmtRing(
 			pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
 		}
 #endif /* CONFIG_STA_SUPPORT */
-		bAckRequired = FALSE;
+		bAckRequired = false;
 	}
 	else /* BTYPE_MGMT or BTYPE_DATA(must be NULL frame)*/
 	{
 		if (pHeader_802_11->Addr1[0] & 0x01) /* MULTICAST, BROADCAST*/
 		{
-			bAckRequired = FALSE;
+			bAckRequired = false;
 			pHeader_802_11->Duration = 0;
 		}
 		else
 		{
-			bAckRequired = TRUE;
+			bAckRequired = true;
 			pHeader_802_11->Duration = RTMPCalcDuration(pAd, MlmeRate, 14);
 			if ((pHeader_802_11->FC.SubType == SUBTYPE_PROBE_RSP) && (pHeader_802_11->FC.Type == BTYPE_MGMT))
 			{
-				bInsertTimestamp = TRUE;
-				bAckRequired = FALSE; /* Disable ACK to prevent retry 0x1f for Probe Response*/
+				bInsertTimestamp = true;
+				bAckRequired = false; /* Disable ACK to prevent retry 0x1f for Probe Response*/
 			}
 			else if ((pHeader_802_11->FC.SubType == SUBTYPE_PROBE_REQ) && (pHeader_802_11->FC.Type == BTYPE_MGMT))
 			{
-				bAckRequired = FALSE; /* Disable ACK to prevent retry 0x1f for Probe Request*/
+				bAckRequired = false; /* Disable ACK to prevent retry 0x1f for Probe Request*/
 			}
 		}
 	}
@@ -568,7 +568,7 @@ int MlmeHardTransmitMgmtRing(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pHeader_802_11, DIR_WRITE, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHeader_802_11, DIR_WRITE, false);
 #endif
 
 
@@ -595,20 +595,20 @@ int MlmeHardTransmitMgmtRing(
 
 	if (pMacEntry == NULL)
 	{
-		RTMPWriteTxWI(pAd, pFirstTxWI, FALSE, FALSE, bInsertTimestamp, FALSE, bAckRequired, FALSE,
+		RTMPWriteTxWI(pAd, pFirstTxWI, false, false, bInsertTimestamp, false, bAckRequired, false,
 						0, RESERVED_WCID, (SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE), PID, 0,
-						(u8)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_BACKOFF, FALSE,
+						(u8)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_BACKOFF, false,
 						&pAd->CommonCfg.MlmeTransmit);
 	}
 	else
 	{
 		/* dont use low rate to send QoS Null data frame */
-		RTMPWriteTxWI(pAd, pFirstTxWI, FALSE, FALSE,
-					bInsertTimestamp, FALSE, bAckRequired, FALSE,
+		RTMPWriteTxWI(pAd, pFirstTxWI, false, false,
+					bInsertTimestamp, false, bAckRequired, false,
 					0, pMacEntry->Aid, (SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE),
 					pMacEntry->MaxHTPhyMode.field.MCS, 0,
 					(u8)pMacEntry->MaxHTPhyMode.field.MCS,
-					IFS_BACKOFF, FALSE, &pMacEntry->MaxHTPhyMode);
+					IFS_BACKOFF, false, &pMacEntry->MaxHTPhyMode);
 	}
 
 #ifdef RT_BIG_ENDIAN
@@ -632,13 +632,13 @@ int MlmeHardTransmitMgmtRing(
  ********************************************************************************/
 #define DEQUEUE_LOCK(lock, bIntContext, IrqFlags) 				\
 			do{													\
-				if (bIntContext == FALSE)						\
+				if (bIntContext == false)						\
 				RTMP_IRQ_LOCK((lock), IrqFlags);		\
 			}while(0)
 
 #define DEQUEUE_UNLOCK(lock, bIntContext, IrqFlags)				\
 			do{													\
-				if (bIntContext == FALSE)						\
+				if (bIntContext == false)						\
 					RTMP_IRQ_UNLOCK((lock), IrqFlags);	\
 			}while(0)
 
@@ -665,21 +665,21 @@ int MlmeHardTransmitMgmtRing(
 
 				Classified Packet Handle Rule=>
 					Multicast:
-								No ACK, 		pTxBlk->bAckRequired = FALSE;
-								No WMM, 		pTxBlk->bWMM = FALSE;
-								No piggyback,   pTxBlk->bPiggyBack = FALSE;
-								Force LowRate,  pTxBlk->bForceLowRate = TRUE;
+								No ACK, 		pTxBlk->bAckRequired = false;
+								No WMM, 		pTxBlk->bWMM = false;
+								No piggyback,   pTxBlk->bPiggyBack = false;
+								Force LowRate,  pTxBlk->bForceLowRate = true;
 					Specific :	Basically, for specific packet, we should handle it specifically, but now all specific packets are use
 									the same policy to handle it.
-								Force LowRate,  pTxBlk->bForceLowRate = TRUE;
+								Force LowRate,  pTxBlk->bForceLowRate = true;
 
 					11N Rate :
-								No piggyback,	pTxBlk->bPiggyBack = FALSE;
+								No piggyback,	pTxBlk->bPiggyBack = false;
 
 								(1).AMSDU
-									pTxBlk->bWMM = TRUE;
+									pTxBlk->bWMM = true;
 								(2).AMPDU
-									pTxBlk->bWMM = TRUE;
+									pTxBlk->bWMM = true;
 								(3).Normal
 
 					B/G Rate :
@@ -696,7 +696,7 @@ static u8 TxPktClassification(
 	u8 		Wcid;
 	MAC_TABLE_ENTRY	*pMacEntry = NULL;
 #ifdef DOT11_N_SUPPORT
-	BOOLEAN			bHTRate = FALSE;
+	bool 		bHTRate = false;
 #endif /* DOT11_N_SUPPORT */
 
 	Wcid = RTMP_GET_PACKET_WCID(pPacket);
@@ -717,7 +717,7 @@ static u8 TxPktClassification(
 
 		/* Depends on HTPhyMode to check if the peer support the HTRate transmission.*/
 		/* 	Currently didn't support A-MSDU embedded in A-MPDU*/
-		bHTRate = TRUE;
+		bHTRate = true;
 		if (RTMP_GET_PACKET_MOREDATA(pPacket) || (pMacEntry->PsMode == PWR_SAVE))
 			TxFrameType = TX_LEGACY_FRAME;
 #ifdef UAPSD_SUPPORT
@@ -725,7 +725,7 @@ static u8 TxPktClassification(
 			TxFrameType = TX_LEGACY_FRAME;
 #endif /* UAPSD_SUPPORT */
 #ifdef WFA_VHT_PF
-		else if (pAd->force_amsdu == TRUE)
+		else if (pAd->force_amsdu == true)
 			return TX_AMSDU_FRAME;
 #endif /* WFA_VHT_PF */
 		else if ((pMacEntry->TXBAbitmap & (1<<(RTMP_GET_PACKET_UP(pPacket)))) != 0)
@@ -765,7 +765,7 @@ static u8 TxPktClassification(
 }
 
 
-BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
+bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 {
 	PACKET_INFO PacketInfo;
 	struct sk_buff * pPacket;
@@ -803,7 +803,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 				pTxBlk->pTransmit = &pAd->MacTab.Content[MCAST_WCID].HTPhyMode;
 		}
 
-		TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bAckRequired);	/* AckRequired = FALSE, when broadcast packet in Adhoc mode.*/
+		TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bAckRequired);	/* AckRequired = false, when broadcast packet in Adhoc mode.*/
 		TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bAllowFrag);
 		TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bWMM);
 		if (RTMP_GET_PACKET_MOREDATA(pPacket))
@@ -863,7 +863,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 				/* Modify the WMM bit for ICV issue. If we have a packet with EOSP field need to set as 1, how to handle it? */
 				if (IS_HT_STA(pTxBlk->pMacEntry) &&
 					(CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_RALINK_CHIPSET)) &&
-					((pAd->CommonCfg.bRdg == TRUE) && CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_RDG_CAPABLE)))
+					((pAd->CommonCfg.bRdg == true) && CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_RDG_CAPABLE)))
 				{
 					TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bWMM);
 					TX_BLK_SET_FLAG(pTxBlk, fTX_bForceNonQoS);
@@ -872,7 +872,7 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 			}
 
 #ifdef DOT11_N_SUPPORT
-			if ( (IS_HT_RATE(pMacEntry) == FALSE) &&
+			if ( (IS_HT_RATE(pMacEntry) == false) &&
 				(CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_PIGGYBACK_CAPABLE)))
 			{	/* Currently piggy-back only support when peer is operate in b/g mode.*/
 				TX_BLK_SET_FLAG(pTxBlk, fTX_bPiggyBack);
@@ -901,11 +901,11 @@ BOOLEAN RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 
 	pAd->LastTxRate = (USHORT)pTxBlk->pTransmit->word;
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CanDoAggregateTransmit(
+bool CanDoAggregateTransmit(
 	IN struct rtmp_adapter*pAd,
 	IN struct sk_buff *pPacket,
 	IN TX_BLK		*pTxBlk)
@@ -915,13 +915,13 @@ BOOLEAN CanDoAggregateTransmit(
 	/*DBGPRINT(RT_DEBUG_TRACE, ("Check if can do aggregation! TxFrameType=%d!\n", pTxBlk->TxFrameType));*/
 
 	if (RTMP_GET_PACKET_WCID(pPacket) == MCAST_WCID)
-		return FALSE;
+		return false;
 
 	if (RTMP_GET_PACKET_DHCP(pPacket) ||
 		RTMP_GET_PACKET_EAPOL(pPacket) ||
 		RTMP_GET_PACKET_WAI(pPacket)
 	)
-		return FALSE;
+		return false;
 
 	/* Make sure the first packet has non-zero-length data payload */
 	if (RTMP_GET_PACKET_VLAN(pPacket))
@@ -929,26 +929,26 @@ BOOLEAN CanDoAggregateTransmit(
 	else if (RTMP_GET_PACKET_LLCSNAP(pPacket))
 		minLen += 8; /* SNAP hdr Len*/
 	if (minLen >= pPacket->len)
-		return FALSE;
+		return false;
 
 	if ((pTxBlk->TxFrameType == TX_AMSDU_FRAME) &&
 		((pTxBlk->TotalFrameLen + pPacket->len)> (RX_BUFFER_AGGRESIZE - 100)))
 	{	/* For AMSDU, allow the packets with total length < max-amsdu size*/
-		return FALSE;
+		return false;
 	}
 
 	if ((pTxBlk->TxFrameType == TX_RALINK_FRAME) &&
 		(pTxBlk->TxPacketList.Number == 2))
 	{	/* For RALINK-Aggregation, allow two frames in one batch.*/
-		return FALSE;
+		return false;
 	}
 
 #ifdef CONFIG_STA_SUPPORT
 	if ((INFRA_ON(pAd)) && (pAd->OpMode == OPMODE_STA)) /* must be unicast to AP*/
-		return TRUE;
+		return true;
 	else
 #endif /* CONFIG_STA_SUPPORT */
-		return FALSE;
+		return false;
 
 }
 
@@ -977,7 +977,7 @@ BOOLEAN CanDoAggregateTransmit(
 */
 void RTMPDeQueuePacket(
 	IN struct rtmp_adapter*pAd,
-	IN BOOLEAN bIntContext,
+	IN bool bIntContext,
 	IN u8 QIdx,
 	IN INT Max_Tx_Packets)
 {
@@ -989,11 +989,11 @@ void RTMPDeQueuePacket(
 	ULONG FreeNumber[NUM_OF_TX_RING];
 	u8 QueIdx, sQIdx, eQIdx;
 	unsigned long	IrqFlags = 0;
-	BOOLEAN hasTxDesc = FALSE;
+	bool hasTxDesc = false;
 	TX_BLK TxBlk, *pTxBlk;
 
 #ifdef DBG_DIAGNOSE
-	BOOLEAN			firstRound;
+	bool 		firstRound;
 	RtmpDiagStruct	*pDiagStruct = &pAd->DiagStruct;
 #endif
 
@@ -1015,7 +1015,7 @@ void RTMPDeQueuePacket(
 		RTMP_START_DEQUEUE(pAd, QueIdx, IrqFlags);
 
 #ifdef DBG_DIAGNOSE
-		firstRound = ((QueIdx == 0) ? TRUE : FALSE);
+		firstRound = ((QueIdx == 0) ? true : false);
 #endif /* DBG_DIAGNOSE */
 
 		while (1)
@@ -1038,7 +1038,7 @@ void RTMPDeQueuePacket(
 			if (&pAd->TxSwQueue[QueIdx] == NULL)
 			{
 #ifdef DBG_DIAGNOSE
-				if (firstRound == TRUE)
+				if (firstRound == true)
 					pDiagStruct->TxSWQueCnt[pDiagStruct->ArrayCurIdx][0]++;
 #endif /* DBG_DIAGNOSE */
 				DEQUEUE_UNLOCK(&pAd->irq_lock, bIntContext, IrqFlags);
@@ -1113,7 +1113,7 @@ void RTMPDeQueuePacket(
 					pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
 					FreeNumber[QueIdx] = GET_TXRING_FREENO(pAd, QueIdx);
 					hasTxDesc = RTMP_HAS_ENOUGH_FREE_DESC(pAd, pTxBlk, FreeNumber[QueIdx], pPacket);
-					if ((hasTxDesc == FALSE) || (CanDoAggregateTransmit(pAd, pPacket, pTxBlk) == FALSE))
+					if ((hasTxDesc == false) || (CanDoAggregateTransmit(pAd, pPacket, pTxBlk) == false))
 						break;
 
 					/*Remove the packet from the TxSwQueue and insert into pTxBlk*/
@@ -1157,7 +1157,7 @@ void RTMPDeQueuePacket(
 #endif /* RTMP_MAC_USB */
 
 #ifdef BLOCK_NET_IF
-		if ((pAd->blockQueueTab[QueIdx].SwTxQueueBlockFlag == TRUE)
+		if ((pAd->blockQueueTab[QueIdx].SwTxQueueBlockFlag == true)
 			&& (pAd->TxSwQueue[QueIdx].Number < 1))
 		{
 			releaseNetIf(&pAd->blockQueueTab[QueIdx]);
@@ -1304,10 +1304,10 @@ void RTMPResumeMsduTransmission(
 /*
 	IrqState = pAd->irq_disabled;
 	if (IrqState)
-		RTMPDeQueuePacket(pAd, TRUE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, true, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	else
 */
-	RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+	RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 }
 
 
@@ -1499,7 +1499,7 @@ void DisassocParmFill(
 }
 
 
-BOOLEAN RTMPCheckEtherType(
+bool RTMPCheckEtherType(
 	IN	struct rtmp_adapter *pAd,
 	IN	struct sk_buff *	pPacket,
 	IN	PMAC_TABLE_ENTRY pMacEntry,
@@ -1512,7 +1512,7 @@ BOOLEAN RTMPCheckEtherType(
 	u8 *pSrcBuf;
 	u32	pktLen;
 	UINT16 	srcPort, dstPort;
-	BOOLEAN bWmmReq;
+	bool bWmmReq;
 
 
 	/*
@@ -1684,7 +1684,7 @@ BOOLEAN RTMPCheckEtherType(
 	}
 
 
-	return TRUE;
+	return true;
 
 }
 
@@ -1696,12 +1696,12 @@ void Update_Rssi_Sample(
 {
 	CHAR rssi[3];
 	u8 snr[3];
-	BOOLEAN bInitial = FALSE;
+	bool bInitial = false;
 	CHAR Phymode = get_pkt_phymode_by_rxwi(pRxWI);
 
 
 	if (!(pRssi->AvgRssi0 | pRssi->AvgRssi0X8 | pRssi->LastRssi0))
-		bInitial = TRUE;
+		bInitial = true;
 
 	get_pkt_rssi_by_rxwi(pRxWI, 3, &rssi[0]);
 	get_pkt_snr_by_rxwi(pRxWI, 3, &snr[0]);
@@ -2108,7 +2108,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 	USHORT DataSize = pRxBlk->DataSize;
 	struct sk_buff * pRetPacket = NULL;
 	u8 *pFragBuffer = NULL;
-	BOOLEAN bReassDone = FALSE;
+	bool bReassDone = false;
 	u8 HeaderRoom = 0;
 
 
@@ -2170,9 +2170,9 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 		pAd->FragFrame.LastFrag = pHeader->Frag;	   /* Update fragment number*/
 
 		/* Last fragment*/
-		if (pHeader->FC.MoreFrag == FALSE)
+		if (pHeader->FC.MoreFrag == false)
 		{
-			bReassDone = TRUE;
+			bReassDone = true;
 		}
 	}
 
@@ -2280,7 +2280,7 @@ void ReSyncBeaconTime(
 }
 
 #ifdef SOFT_ENCRYPT
-BOOLEAN RTMPExpandPacketForSwEncrypt(
+bool RTMPExpandPacketForSwEncrypt(
 	IN  struct rtmp_adapter *  pAd,
 	IN	PTX_BLK			pTxBlk)
 {
@@ -2297,11 +2297,11 @@ BOOLEAN RTMPExpandPacketForSwEncrypt(
 	if (pTxBlk->pPacket == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: out of resource.\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 	RTMP_QueryPacketInfo(pTxBlk->pPacket, &PacketInfo, &pTxBlk->pSrcBufHeader, &pTxBlk->SrcBufLen);
 
-	return TRUE;
+	return true;
 }
 
 void RTMPUpdateSwCacheCipherInfo(
@@ -2349,8 +2349,8 @@ void RtmpEnqueueNullFrame(
 	IN u8         TxRate,
 	IN u8         PID,
 	IN u8         apidx,
-    IN BOOLEAN       bQosNull,
-    IN BOOLEAN       bEOSP,
+    IN bool       bQosNull,
+    IN bool       bEOSP,
     IN u8         OldUP)
 {
 	PHEADER_802_11 pNullFr;
@@ -2468,7 +2468,7 @@ INT ip_assembly_timeout(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, ULONG 
 		pEntry->ip_pkt2_jiffies[QueIdx] = 0;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -2572,18 +2572,18 @@ INT ip_assembly(
 				    && (Flags_frag_offset.field.frag_offset != 0))
 				{
 					u32 fragment_count = 0;
-					BOOLEAN bDrop = FALSE;
+					bool bDrop = false;
 					if (Ipv4Hdr.identifier == (*pAC_ID1)) {
 						fragment_count = ((Flags_frag_offset.field.frag_offset * 8) / (*pAC_ID1_FragSize)) + 1;
 						if (pTempqueue->Number != fragment_count)
-							bDrop = TRUE;
+							bDrop = true;
 						*pAC_ID1 = -1;
 					}
 
 					if (Ipv4Hdr.identifier == (*pAC_ID2)) {
 						fragment_count = ((Flags_frag_offset.field.frag_offset * 8) / (*pAC_ID2_FragSize)) + 1;
 						if (pTempqueue->Number != fragment_count)
-							bDrop = TRUE;
+							bDrop = true;
 						*pAC_ID2 = -1;
 					}
 
@@ -2591,7 +2591,7 @@ INT ip_assembly(
 						if number does not equal coreect fragment count or no enough space,
 						free backup fragments to SwTxQueue[]
 					*/
-					if ((bDrop == TRUE) ||
+					if ((bDrop == true) ||
 					    (pAd->TxSwQueue[QueIdx].Number > (pAd->TxSwQMaxLen - pTempqueue->Number)))
 					{
 						while (1) {
@@ -2652,8 +2652,8 @@ void StopDmaRx(
 	struct sk_buff *	pRxPacket;
 	RX_BLK			RxBlk, *pRxBlk;
 	u32 RxPending = 0, MacReg = 0, MTxCycle = 0;
-	BOOLEAN bReschedule = FALSE;
-	BOOLEAN bCmdRspPacket = FALSE;
+	bool bReschedule = false;
+	bool bCmdRspPacket = false;
 	u8 IdleNums = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
@@ -2667,7 +2667,7 @@ void StopDmaRx(
 			return;
 		pRxBlk = &RxBlk;
 		pRxPacket = GetPacketFromRxRing(pAd, pRxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
-		if ((RxPending == 0) && (bReschedule == FALSE))
+		if ((RxPending == 0) && (bReschedule == false))
 			break;
 		else
 			RTMPFreeNdisPacket(pAd, pRxPacket);

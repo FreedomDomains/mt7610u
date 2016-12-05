@@ -53,7 +53,7 @@ void BuildChannelList(
 {
 	u8 i, j, index=0, num=0;
 	PCH_DESC pChDesc = NULL;
-	BOOLEAN bRegionFound = FALSE;
+	bool bRegionFound = false;
 	u8 *pChannelList;
 	u8 *pChannelListFlag;
 
@@ -69,7 +69,7 @@ void BuildChannelList(
 			{
 				pChDesc = Country_Region_ChDesc_2GHZ[i].pChDesc;
 				num = TotalChNum(pChDesc);
-				bRegionFound = TRUE;
+				bRegionFound = true;
 				break;
 			}
 		}
@@ -127,7 +127,7 @@ void BuildChannelList(
 			kfree(pChannelList);
 			kfree(pChannelListFlag);
 		}
-		bRegionFound = FALSE;
+		bRegionFound = false;
 		num = 0;
 	}
 
@@ -140,7 +140,7 @@ void BuildChannelList(
 			{
 				pChDesc = Country_Region_ChDesc_5GHZ[i].pChDesc;
 				num = TotalChNum(pChDesc);
-				bRegionFound = TRUE;
+				bRegionFound = true;
 				break;
 			}
 		}
@@ -195,7 +195,7 @@ void BuildChannelList(
 				for (j=0; j<15; j++)
 				{
 					if (pChannelList[i] == RadarCh[j])
-						pAd->ChannelList[index+i].DfsReq = TRUE;
+						pAd->ChannelList[index+i].DfsReq = true;
 				}
 				pAd->ChannelList[index+i].MaxTxPwr = 20;
 			}

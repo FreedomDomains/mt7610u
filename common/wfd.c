@@ -36,22 +36,22 @@ INT Set_WfdEnable_Proc(
     IN  struct rtmp_adapter *	pAd,
     IN  char *		arg)
 {
-	BOOLEAN bEnable;
+	bool bEnable;
 
 	bEnable = simple_strtol(arg, 0, 10);
 
-	if (bEnable == TRUE)
+	if (bEnable == true)
 	{
-		pAd->StaCfg.WfdCfg.bWfdEnable = TRUE;
+		pAd->StaCfg.WfdCfg.bWfdEnable = true;
 		DBGPRINT(RT_DEBUG_TRACE, ("%s:: Enable WFD Support!\n", __FUNCTION__));
 	}
 	else
 	{
-		pAd->StaCfg.WfdCfg.bWfdEnable = FALSE;
+		pAd->StaCfg.WfdCfg.bWfdEnable = false;
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: Disable WFD Support!\n", __FUNCTION__));
 	}
 
-	return TRUE;
+	return true;
 }
 
 #ifdef RT_CFG80211_SUPPORT
@@ -59,10 +59,10 @@ INT Set_WfdInsertIe_Proc(
     IN  struct rtmp_adapter *	pAd,
     IN  char *		arg)
 {
-	BOOLEAN bEnable;
+	bool bEnable;
 	CFG80211_CB *pCfg80211_CB = NULL;
 
-	pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = FALSE;
+	pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = false;
 
 	if (pAd->pCfg80211_CB != NULL)
 	{
@@ -74,10 +74,10 @@ INT Set_WfdInsertIe_Proc(
 			{
 				bEnable = simple_strtol(arg, 0, 10);
 
-				if (bEnable == TRUE)
+				if (bEnable == true)
 				{
-					pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = TRUE;
-					pAd->StaCfg.WfdCfg.bWfdEnable = TRUE;
+					pAd->StaCfg.WfdCfg.bSuppInsertWfdIe = true;
+					pAd->StaCfg.WfdCfg.bWfdEnable = true;
 					DBGPRINT(RT_DEBUG_TRACE, ("%s:: Enable Insert WFD IE Support for wpa_supplicant!\n", __FUNCTION__));
 				}
 				else
@@ -94,7 +94,7 @@ INT Set_WfdInsertIe_Proc(
 	else
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: pAd->pCfg80211_CB is NULL. Not Support Insert WFD IE for wpa_supplicant!\n", __FUNCTION__));
 
-	return TRUE;
+	return true;
 }
 #endif /* RT_CFG80211_SUPPORT */
 
@@ -113,12 +113,12 @@ INT Set_WfdDeviceType_Proc(
 	else
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: Device Type Not Support!!\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Device Type = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.DeviceType));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -135,7 +135,7 @@ INT Set_WfdCouple_Proc(
 	else
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:: Coupled out of range!!\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	switch (pAd->StaCfg.WfdCfg.DeviceType)
@@ -156,7 +156,7 @@ INT Set_WfdCouple_Proc(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Device Type = %d, Source Coupled = %d, Sink Coupled = %d\n", __FUNCTION__,
 		pAd->StaCfg.WfdCfg.DeviceType, pAd->StaCfg.WfdCfg.SourceCoupled, pAd->StaCfg.WfdCfg.SinkCoupled));
 
-	return TRUE;
+	return true;
 }
 
 INT Set_WfdSessionAvailable_Proc(
@@ -175,7 +175,7 @@ INT Set_WfdSessionAvailable_Proc(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Session Available = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.SessionAvail));
 
-	return TRUE;
+	return true;
 }
 
 INT Set_WfdCP_Proc(
@@ -194,7 +194,7 @@ INT Set_WfdCP_Proc(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Content Protection = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.CP));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -216,7 +216,7 @@ INT	Set_WfdRtspPort_Proc(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: RTSP Port = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.RtspPort));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -238,7 +238,7 @@ INT	Set_WfdMaxThroughput_Proc(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s:: Max Throughput = %d\n", __FUNCTION__, pAd->StaCfg.WfdCfg.MaxThroughput));
 
-	return TRUE;
+	return true;
 }
 
 INT Set_WfdLocalIp_Proc(
@@ -258,7 +258,7 @@ INT Set_WfdLocalIp_Proc(
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[3],
 			pWFDCtrl->wfd_serv_disc_query_info.wfd_local_ip_ie[4]));
 
-	return TRUE;
+	return true;
 }
 
 INT Set_PeerRtspPort_Proc(
@@ -303,7 +303,7 @@ INT Set_PeerRtspPort_Proc(
 	}
 	DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_P2P_PEER_RTSP_PORT (=%d)\n", RtspPort));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -542,7 +542,7 @@ ULONG InsertWfdSubelmtTlv(
 					MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[i];
 					P2pIdx = P2pGroupTabSearch(pAd, pEntry->Addr);
 
-					if ((P2pIdx < MAX_P2P_GROUP_SIZE) && (Tab->Client[P2pIdx].WfdEntryInfo.bWfdClient == TRUE))
+					if ((P2pIdx < MAX_P2P_GROUP_SIZE) && (Tab->Client[P2pIdx].WfdEntryInfo.bWfdClient == true))
 						NumOfDev++;
 				}
 
@@ -557,7 +557,7 @@ ULONG InsertWfdSubelmtTlv(
 					MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[i];
 					P2pIdx = P2pGroupTabSearch(pAd, pEntry->Addr);
 
-					if ((P2pIdx < MAX_P2P_GROUP_SIZE) && (Tab->Client[P2pIdx].WfdEntryInfo.bWfdClient == TRUE))
+					if ((P2pIdx < MAX_P2P_GROUP_SIZE) && (Tab->Client[P2pIdx].WfdEntryInfo.bWfdClient == true))
 					{
 						INT j = 0;
 						WFD_SESSION_INFO SessionInfo;
@@ -637,7 +637,7 @@ void WfdParseSubElmt(
 	ULONG		Length = 0;
 	ULONG		AttriLen;
 	u8 	offset;
-	BOOLEAN		bTdlsEntry = FALSE;
+	bool 	bTdlsEntry = false;
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s ----->\n", __FUNCTION__));
 
@@ -664,7 +664,7 @@ void WfdParseSubElmt(
 			AttriLen = pWfdEid->Len[1] + (pWfdEid->Len[0] << 8);
 			Length = 0;
 //			printk("AttriLen = %d.  WfdEid = %d.  WfdEidLen = %x %x\n", AttriLen, pWfdEid->Eid, pWfdEid->Len[1], pWfdEid->Len[0]);
-			pWfdEntryInfo->bWfdClient = TRUE; /* Set the P2P client as the WFD device */
+			pWfdEntryInfo->bWfdClient = true; /* Set the P2P client as the WFD device */
 
 //			while (Length <=(Length + 3 + AttriLen) <= AccuWfdIELen)
 			while (Length <= AccuWfdIELen)
@@ -804,10 +804,10 @@ void WfdCfgInit(
 	PRT_WFD_CONFIG	pWfdcfg = &pAd->StaCfg.WfdCfg;
 
 	memset(&pAd->StaCfg.WfdCfg, 0, sizeof(RT_WFD_CONFIG));
-	pWfdcfg->bWfdEnable = TRUE;
+	pWfdcfg->bWfdEnable = true;
 #ifdef RT_CFG80211_SUPPORT
-	pWfdcfg->bSuppInsertWfdIe = FALSE;
-	pWfdcfg->bSuppGoOn = FALSE;
+	pWfdcfg->bSuppInsertWfdIe = false;
+	pWfdcfg->bSuppGoOn = false;
 #endif /* RT_CFG80211_SUPPORT */
 	pWfdcfg->DeviceType = WFD_PRIMARY_SINK;
 	pWfdcfg->SessionAvail = WFD_SESSION_AVAILABLE;

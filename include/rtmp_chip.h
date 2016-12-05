@@ -124,7 +124,7 @@ struct _RSSI_SAMPLE;
 
 /* Dual-band NIC (RF/BBP/MAC are in the same chip.) */
 
-#define IS_RT_NEW_DUAL_BAND_NIC(_pAd) ((FALSE))
+#define IS_RT_NEW_DUAL_BAND_NIC(_pAd) ((false))
 
 
 /* Is the NIC dual-band NIC? */
@@ -135,10 +135,10 @@ struct _RSSI_SAMPLE;
 
 
 /* RT3593 over PCIe bus */
-#define RT3593OverPCIe(_pAd) (IS_RT3593(_pAd) && (_pAd->CommonCfg.bPCIeBus == TRUE))
+#define RT3593OverPCIe(_pAd) (IS_RT3593(_pAd) && (_pAd->CommonCfg.bPCIeBus == true))
 
 /* RT3593 over PCI bus */
-#define RT3593OverPCI(_pAd) (IS_RT3593(_pAd) && (_pAd->CommonCfg.bPCIeBus == FALSE))
+#define RT3593OverPCI(_pAd) (IS_RT3593(_pAd) && (_pAd->CommonCfg.bPCIeBus == false))
 
 /*RT3390,RT3370 */
 #define IS_RT3390(_pAd)				(((_pAd)->MACVersion & 0xFFFF0000) == 0x33900000)
@@ -445,7 +445,7 @@ struct rtmp_chip_cap {
 	u8 RfReg17WtMethod;
 
 	/* beacon */
-	BOOLEAN FlgIsSupSpecBcnBuf;	/* SPECIFIC_BCN_BUF_SUPPORT */
+	bool FlgIsSupSpecBcnBuf;	/* SPECIFIC_BCN_BUF_SUPPORT */
 	u8 BcnMaxNum;	/* software use */
 	u8 BcnMaxHwNum;	/* hardware limitation */
 	u8 WcidHwRsvNum;	/* hardware available WCID number */
@@ -461,7 +461,7 @@ struct rtmp_chip_cap {
 	u8	FlgIsVcoReCalMode;
 
 #ifdef FIFO_EXT_SUPPORT
-	BOOLEAN FlgHwFifoExtCap;
+	bool FlgHwFifoExtCap;
 #endif /* FIFO_EXT_SUPPORT */
 
 
@@ -469,7 +469,7 @@ struct rtmp_chip_cap {
 	enum PHY_CAP phy_caps;
 
 #ifdef TXRX_SW_ANTDIV_SUPPORT
-	BOOLEAN bTxRxSwAntDiv;
+	bool bTxRxSwAntDiv;
 #endif /* TXRX_SW_ANTDIV_SUPPORT */
 
 	/* ---------------------------- signal ---------------------------------- */
@@ -480,10 +480,10 @@ struct rtmp_chip_cap {
 
 	u8 MaxNss;			/* maximum Nss, 3 for 3883 or 3593 */
 
-	BOOLEAN bTempCompTxALC;
-	BOOLEAN rx_temp_comp;
+	bool bTempCompTxALC;
+	bool rx_temp_comp;
 
-	BOOLEAN bLimitPowerRange; /* TSSI compensation range limit */
+	bool bLimitPowerRange; /* TSSI compensation range limit */
 
 #if defined(RTMP_INTERNAL_TX_ALC)
 	u8 TxAlcTxPowerUpperBound_2G;
@@ -525,7 +525,7 @@ struct rtmp_chip_cap {
 	u8 MBSSIDMode;
 
 	/* 2nd CCA Detection ++ */
-	BOOLEAN b2ndCCACheck;
+	bool b2ndCCACheck;
 	u8 CCARatioA;
 	u8 CCARatioB;
 	u8 CCACheckPeriod; /* unit: second */
@@ -557,7 +557,7 @@ struct rtmp_chip_cap {
 	u32 WlanMemmapOffset;
 	u32 InbandPacketMaxLen; /* must be 48 multible */
 	u8 CmdRspRxRing;
-	BOOLEAN IsComboChip;
+	bool IsComboChip;
 	u8 load_iv;
 	u32 ilm_offset;
 	u32 dlm_offset;
@@ -577,7 +577,7 @@ struct rtmp_chip_cap {
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
 #ifdef MT76x0
-	BOOLEAN bDoTemperatureSensor;
+	bool bDoTemperatureSensor;
 	SHORT TemperatureOffset;
 	SHORT LastTemperatureforVCO;
 	SHORT LastTemperatureforCal;
@@ -590,7 +590,7 @@ struct rtmp_chip_cap {
 	u8 delta_tw_pwr_bw40_2G;
 	u8 delta_tw_pwr_bw80;
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-	BOOLEAN bInternalTxALC; /* Internal Tx ALC */
+	bool bInternalTxALC; /* Internal Tx ALC */
 	u8 tssi_info_1;
 	u8 tssi_info_2;
 	u8 tssi_info_3;
@@ -630,9 +630,9 @@ struct rtmp_chip_ops {
 	/* MCU related callback functions */
 	int (*MCU_loadFirmware)(struct rtmp_adapter *pAd);
 	int (*eraseFirmware)(struct rtmp_adapter *pAd);
-	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, u8 cmd, u8 token, u8 arg0, u8 arg1, BOOLEAN FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, u8 cmd, u8 token, u8 arg0, u8 arg1); */
+	int (*sendCommandToMcu)(struct rtmp_adapter *pAd, u8 cmd, u8 token, u8 arg0, u8 arg1, bool FlgIsNeedLocked);	/* int (*sendCommandToMcu)(struct rtmp_adapter*pAd, u8 cmd, u8 token, u8 arg0, u8 arg1); */
 #ifdef CONFIG_ANDES_SUPPORT
-	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, BOOLEAN FlgIsNeedLocked);
+	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, bool FlgIsNeedLocked);
 #endif
 
 	void (*AsicRfInit)(struct rtmp_adapter *pAd);
@@ -641,7 +641,7 @@ struct rtmp_chip_ops {
 
 
 	/* Power save */
-	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN BOOLEAN ReduceCorePower);
+	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN bool ReduceCorePower);
 	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
 	INT (*MCU_PwrSavingOP)(struct rtmp_adapter *pAd, u32 PwrOP, u32 PwrLevel,
 							u32 ListenInterval, u32 PreTBTTLeadTime,
@@ -651,7 +651,7 @@ struct rtmp_chip_ops {
 	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, u32 Value, u8 Unit);
 
 	/* Channel */
-	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, BOOLEAN bScan);
+	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, bool bScan);
 
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
@@ -977,8 +977,8 @@ extern FREQUENCY_ITEM *FreqItems3020;
 extern RTMP_RF_REGS RF2850RegTable[];
 extern u8 NUM_OF_2850_CHNL;
 
-BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
-INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, BOOLEAN enable);
+bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
+INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, bool enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
 
 void StopDmaTx(struct rtmp_adapter *pAd, u8 Level);

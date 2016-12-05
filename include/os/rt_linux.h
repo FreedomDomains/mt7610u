@@ -384,7 +384,7 @@ do { \
 do { \
 		wait_event_interruptible(_pTask->kthread_q, \
 								 _pTask->kthread_running || kthread_should_stop()); \
-		_pTask->kthread_running = FALSE; \
+		_pTask->kthread_running = false; \
 		if (kthread_should_stop()) \
 		{ \
 			(_Status) = -1; \
@@ -399,7 +399,7 @@ do { \
 	do{ \
 		if ((_pTask)->kthread_task) \
         { \
-			(_pTask)->kthread_running = TRUE; \
+			(_pTask)->kthread_running = true; \
 	        wake_up(&(_pTask)->kthread_q); \
 		} \
 	}while(0)
@@ -667,7 +667,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define RTMP_IO_FORCE_WRITE32(_A, _R, _V)	\
 	do{\
 		/*if ((_R) != 0x404)*/ /* TODO:shiang-6590, depends on sw porting guide, don't acccess it now */\
-			RTUSBWriteMACRegister((_A), (_R), (u32) (_V), FALSE);		\
+			RTUSBWriteMACRegister((_A), (_R), (u32) (_V), false);		\
 	}while(0)
 
 #define RTMP_IO_READ8(_A, _R, _pV)								\
@@ -679,18 +679,18 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 	RTUSBReadMACRegister((_A), (_R), (_pV))
 
 #define RTMP_IO_WRITE32(_A, _R, _V)								\
-	RTUSBWriteMACRegister((_A), (_R), (u32) (_V), FALSE)
+	RTUSBWriteMACRegister((_A), (_R), (u32) (_V), false)
 
 #define RTMP_IO_WRITE8(_A, _R, _V)								\
 {																\
 	USHORT	_Val = _V;											\
-	RTUSBSingleWrite((_A), (_R), (USHORT) (_Val), FALSE);		\
+	RTUSBSingleWrite((_A), (_R), (USHORT) (_Val), false);		\
 }
 
 
 #define RTMP_IO_WRITE16(_A, _R, _V)								\
 {																\
-	RTUSBSingleWrite((_A), (_R), (USHORT) (_V), FALSE);			\
+	RTUSBSingleWrite((_A), (_R), (USHORT) (_V), false);			\
 }
 
 #define RTMP_SYS_IO_READ32

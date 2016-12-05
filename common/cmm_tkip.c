@@ -408,8 +408,8 @@ void RTMPInitMICEngine(
 		Len         the length of the received plain text data exclude MIC value
 
 	Return Value:
-		TRUE        MIC value matched
-		FALSE       MIC value mismatched
+		true        MIC value matched
+		false       MIC value mismatched
 
 	IRQL = DISPATCH_LEVEL
 
@@ -417,7 +417,7 @@ void RTMPInitMICEngine(
 
 	========================================================================
 */
-BOOLEAN	RTMPTkipCompareMICValue(
+bool RTMPTkipCompareMICValue(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pSrc,
 	IN	u8 *		pDA,
@@ -454,9 +454,9 @@ BOOLEAN	RTMPTkipCompareMICValue(
 		DBGPRINT_RAW(RT_DEBUG_ERROR, ("RTMPTkipCompareMICValue(): TKIP MIC Error !\n"));  /*MIC error.*/
 
 
-		return (FALSE);
+		return (false);
 	}
-	return (TRUE);
+	return (true);
 }
 
 /*
@@ -535,7 +535,7 @@ void RTMPCalculateMICValue(
 
 		break;	/* No need handle next packet	*/
 
-	} while (TRUE);
+	} while (true);
 
 	/* Compute the final MIC Value*/
 	RTMPTkipGetMIC(&pAd->PrivateInfo.Tx);
@@ -681,10 +681,10 @@ void RTMPTkipMixKey(
 
 
 /*
-	TRUE: Success!
-	FALSE: Decrypt Error!
+	true: Success!
+	false: Decrypt Error!
 */
-BOOLEAN RTMPSoftDecryptTKIP(
+bool RTMPSoftDecryptTKIP(
 	IN 		struct rtmp_adapter *	pAd,
 	IN 		u8 *		pHdr,
 	IN 		u8    		UserPriority,
@@ -717,13 +717,13 @@ BOOLEAN RTMPSoftDecryptTKIP(
 	u8 		TrailMIC[8];
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, pHdr, DIR_READ, false);
 #endif
 
 	if (pKey->KeyLen == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : the key is empty)\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	/* Indicate type and subtype of Frame Control field */
@@ -803,7 +803,7 @@ BOOLEAN RTMPSoftDecryptTKIP(
     if(crc32 != cpu2le32(trailfcs))
     {
 		DBGPRINT(RT_DEBUG_ERROR, ("! WEP Data CRC Error !\n"));	 /*CRC error.*/
-		return FALSE;
+		return false;
 	}
 
 	/* Extract peer's MIC and subtract MIC length from total data length */
@@ -823,22 +823,22 @@ BOOLEAN RTMPSoftDecryptTKIP(
         if (pAd->StaCfg.WpaSupplicantUP) {
                 WpaSendMicFailureToWpaSupplicant(pAd->net_dev,
                                                 (pKey->Type ==
-                                                  PAIRWISEKEY) ? TRUE :
-                                                FALSE);
+                                                  PAIRWISEKEY) ? true :
+                                                false);
         } else
 #endif /* WPA_SUPPLICANT_SUPPORT */
         RTMPReportMicError(pAd, pKey);
 #endif /* CONFIG_STA_SUPPORT */
-		return FALSE;
+		return false;
 	}
 
 	/* Update the total data length */
 	*DataByteCnt = plaintext_len;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, pHdr, DIR_READ, false);
 #endif
-	return TRUE;
+	return true;
 }
 
 /*

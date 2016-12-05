@@ -41,10 +41,10 @@ extern u8 BROADCOM_OUI[];
     Description:
         MLME message sanity check
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
     ==========================================================================
  */
-BOOLEAN MlmeStartReqSanity(
+bool MlmeStartReqSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
@@ -58,13 +58,13 @@ BOOLEAN MlmeStartReqSanity(
 	if (Info->SsidLen > MAX_LEN_OF_SSID) {
 		DBGPRINT(RT_DEBUG_TRACE, ("%s(): fail - wrong SSID length\n",
 									__FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	*pSsidLen = Info->SsidLen;
 	memmove(Ssid, Info->Ssid, *pSsidLen);
 
-	return TRUE;
+	return true;
 }
 
 /*
@@ -72,13 +72,13 @@ BOOLEAN MlmeStartReqSanity(
     Description:
         MLME message sanity check
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
 
     IRQL = DISPATCH_LEVEL
 
     ==========================================================================
  */
-BOOLEAN PeerAssocRspSanity(
+bool PeerAssocRspSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -118,10 +118,10 @@ BOOLEAN PeerAssocRspSanity(
 	Length += 2;
 	*pCkipFlag = 0;
 	*pExtRateLen = 0;
-	pEdcaParm->bValid = FALSE;
+	pEdcaParm->bValid = false;
 
 	if (*pStatus != MLME_SUCCESS)
-		return TRUE;
+		return true;
 
 	memmove(pAid, &pFrame->Octet[4], 2);
 	Length += 2;
@@ -135,7 +135,7 @@ BOOLEAN PeerAssocRspSanity(
 	if ((IeType != IE_SUPP_RATES)
 	    || (*pSupRateLen > MAX_LEN_OF_SUPPORTED_RATES)) {
 		DBGPRINT(RT_DEBUG_TRACE, ("%s(): fail - wrong SupportedRates IE\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	} else
 		memmove(SupRate, &pFrame->Octet[8], *pSupRateLen);
 
@@ -229,10 +229,10 @@ BOOLEAN PeerAssocRspSanity(
 				int i;
 
 				/* parsing EDCA parameters */
-				pEdcaParm->bValid = TRUE;
-				pEdcaParm->bQAck = FALSE;	/* pEid->Octet[0] & 0x10; */
-				pEdcaParm->bQueueRequest = FALSE;	/* pEid->Octet[0] & 0x20; */
-				pEdcaParm->bTxopRequest = FALSE;	/* pEid->Octet[0] & 0x40; */
+				pEdcaParm->bValid = true;
+				pEdcaParm->bQAck = false;	/* pEid->Octet[0] & 0x10; */
+				pEdcaParm->bQueueRequest = false;	/* pEid->Octet[0] & 0x20; */
+				pEdcaParm->bTxopRequest = false;	/* pEid->Octet[0] & 0x40; */
 				pEdcaParm->EdcaUpdateCount =
 				    pEid->Octet[6] & 0x0f;
 				pEdcaParm->bAPSDCapable =
@@ -272,7 +272,7 @@ BOOLEAN PeerAssocRspSanity(
 	}
 
 
-	return TRUE;
+	return true;
 }
 
 
@@ -284,7 +284,7 @@ BOOLEAN PeerAssocRspSanity(
 
     ==========================================================================
  */
-BOOLEAN GetTimBit(
+bool GetTimBit(
 	IN CHAR *Ptr,
 	IN USHORT Aid,
 	OUT u8 *TimLen,
@@ -314,16 +314,16 @@ BOOLEAN GetTimBit(
 	BitCntl = *IdxPtr;
 
 	if ((*DtimCount == 0) && (BitCntl & 0x01))
-		*BcastFlag = TRUE;
+		*BcastFlag = true;
 	else
-		*BcastFlag = FALSE;
+		*BcastFlag = false;
 
 	/* Parse Partial Virtual Bitmap from TIM element */
 	N1 = BitCntl & 0xfe;	/* N1 is the first bitmap byte# */
 	N2 = *TimLen - 4 + N1;	/* N2 is the last bitmap byte# */
 
 	if ((Aid < (N1 << 3)) || (Aid >= ((N2 + 1) << 3)))
-		*MessageToMe = FALSE;
+		*MessageToMe = false;
 	else {
 		MyByte = (Aid >> 3) - N1;	/* my byte position in the bitmap byte-stream */
 		MyBit = Aid % 16 - ((MyByte & 0x01) ? 8 : 0);
@@ -331,10 +331,10 @@ BOOLEAN GetTimBit(
 		IdxPtr += (MyByte + 1);
 
 		if (*IdxPtr & (0x01 << MyBit))
-			*MessageToMe = TRUE;
+			*MessageToMe = true;
 		else
-			*MessageToMe = FALSE;
+			*MessageToMe = false;
 	}
 
-	return TRUE;
+	return true;
 }

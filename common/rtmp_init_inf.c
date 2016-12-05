@@ -33,11 +33,11 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	int Status;
 
 	if (pAd == NULL)
-		return FALSE;
+		return false;
 
 #ifdef RT65xx
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
-		MT76x0_WLAN_ChipOnOff(pAd, TRUE, FALSE);
+		MT76x0_WLAN_ChipOnOff(pAd, true, false);
 #endif /* RT65xx */
 
 	/* reset Adapter flags*/
@@ -47,13 +47,13 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 #ifdef DOT11_N_SUPPORT
 	/* Allocate BA Reordering memory*/
-	if (ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != TRUE)
+	if (ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != true)
 		goto err1;
 #endif /* DOT11_N_SUPPORT */
 
 	/* Make sure MAC gets ready.*/
 	index = 0;
-	if (WaitForAsicReady(pAd) != TRUE)
+	if (WaitForAsicReady(pAd) != true)
 		goto err1;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("MAC[Ver:Rev=0x%08x : 0x%08x]\n",
@@ -140,7 +140,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	}
 
 	/* Init the hardware, we need to init asic before read registry, otherwise mac register will be reset*/
-	Status = NICInitializeAdapter(pAd, TRUE);
+	Status = NICInitializeAdapter(pAd, true);
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT_ERR(("NICInitializeAdapter failed, Status[=0x%08x]\n", Status));
@@ -178,7 +178,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
 
 #ifdef RTMP_MAC_USB
-	pAd->CommonCfg.bMultipleIRP = FALSE;
+	pAd->CommonCfg.bMultipleIRP = false;
 
 	if (pAd->CommonCfg.bMultipleIRP)
 		pAd->CommonCfg.NumOfBulkInIRP = RX_RING_SIZE;
@@ -252,7 +252,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	/* APInitialize(pAd);*/
 
 #ifdef RTMP_MAC_USB
-	AsicSendCommandToMcu(pAd, 0x31, 0xff, 0x00, 0x02, FALSE);
+	AsicSendCommandToMcu(pAd, 0x31, 0xff, 0x00, 0x02, false);
 	RTMPusecDelay(10000);
 #endif /* RTMP_MAC_USB */
 
@@ -349,7 +349,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	DBGPRINT_S(Status, ("<==== rt28xx_init, Status=%x\n", Status));
 
-	return TRUE;
+	return true;
 
 /*err7:
 	APStop(pAd);*/
@@ -393,7 +393,7 @@ err0:
 #endif /* ST */
 
 	DBGPRINT(RT_DEBUG_ERROR, ("!!! rt28xx init fail !!!\n"));
-	return FALSE;
+	return false;
 }
 
 
@@ -453,9 +453,9 @@ void RTMPDrvSTAClose(
 	IN struct rtmp_adapter *pAd,
 	IN struct net_device *net_dev)
 {
-	BOOLEAN Cancelled;
+	bool Cancelled;
 	u32 i = 0;
-	Cancelled = FALSE;
+	Cancelled = false;
 
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
@@ -463,7 +463,7 @@ void RTMPDrvSTAClose(
 		/* NICLoadFirmware will hang forever when interface is up again.*/
 		if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
         {
-		    AsicForceWakeup(pAd, TRUE);
+		    AsicForceWakeup(pAd, true);
         }
 
 #ifdef RTMP_MAC_USB
@@ -481,12 +481,12 @@ void RTMPDrvSTAClose(
 	pAd->CommonCfg.pChDesp = NULL;
 	pAd->CommonCfg.DfsType = MAX_RD_REGION;
 #endif /* EXT_BUILD_CHANNEL_LIST */
-	pAd->CommonCfg.bCountryFlag = FALSE;
+	pAd->CommonCfg.bCountryFlag = false;
 
 
 	for (i = 0 ; i < NUM_OF_TX_RING; i++)
 	{
-		while (pAd->DeQueueRunning[i] == TRUE)
+		while (pAd->DeQueueRunning[i] == true)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("Waiting for TxQueue[%d] done..........\n", i));
 			RTMPusecDelay(1000);
@@ -504,7 +504,7 @@ void RTMPDrvSTAClose(
 	{
 		MacTableReset(pAd);
 #if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB) && defined(WOW_IFDOWN_SUPPORT)
-		if (pAd->WOW_Cfg.bEnable == TRUE)
+		if (pAd->WOW_Cfg.bEnable == true)
 			RT28xxUsbAsicWOWEnable(pAd);
 		else
 #endif /* WOW_SUPPORT */
@@ -590,7 +590,7 @@ void RTMPInfClose(struct rtmp_adapter *pAd)
 				{
 					RTMPSendDLSTearDownFrame(pAd, pAd->StaCfg.DLSEntry[i].MacAddr);
 					pAd->StaCfg.DLSEntry[i].Status	= DLS_NONE;
-					pAd->StaCfg.DLSEntry[i].Valid	= FALSE;
+					pAd->StaCfg.DLSEntry[i].Valid	= false;
 				}
 			}
 
@@ -601,7 +601,7 @@ void RTMPInfClose(struct rtmp_adapter *pAd)
 				{
 					RTMPSendDLSTearDownFrame(pAd, pAd->StaCfg.DLSEntry[i].MacAddr);
 					pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-					pAd->StaCfg.DLSEntry[i].Valid	= FALSE;
+					pAd->StaCfg.DLSEntry[i].Valid	= false;
 				}
 			}
 			RTMP_MLME_HANDLER(pAd);
@@ -610,7 +610,7 @@ void RTMPInfClose(struct rtmp_adapter *pAd)
 
 		if (INFRA_ON(pAd) &&
 #if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB) && defined(WOW_IFDOWN_SUPPORT) /* In WOW state, can't issue disassociation reqeust */
-			pAd->WOW_Cfg.bEnable == FALSE &&
+			pAd->WOW_Cfg.bEnable == false &&
 #endif /* WOW_SUPPORT */
 			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
 		{

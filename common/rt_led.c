@@ -76,7 +76,7 @@ void RTMPSetLEDStatus(
 	u8 		LinkStatus = 0;
 	u8 		LedMode;
 	u8 		MCUCmd = 0;
-	BOOLEAN 		bIgnored = FALSE;
+	bool 		bIgnored = false;
 	INT LED_CMD = -1;
 
 #ifdef STATS_COUNT_SUPPORT
@@ -140,7 +140,7 @@ void RTMPSetLEDStatus(
 	/* Keep LED status for LED SiteSurvey mode. */
 	/* After SiteSurvey, we will set the LED mode to previous status. */
 	/* */
-	if ((Status != LED_ON_SITE_SURVEY) && (Status != LED_POWER_UP) && (bIgnored == FALSE))
+	if ((Status != LED_ON_SITE_SURVEY) && (Status != LED_POWER_UP) && (bIgnored == false))
 		pAd->LedCntl.LedStatus = Status;
 
 }
@@ -178,10 +178,10 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 		pLedCntl->LedPolarity = 0x5627;
 	}
 
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (u8)pLedCntl->LedAGCfg, (u8)(pLedCntl->LedAGCfg >> 8), FALSE);
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (u8)pLedCntl->LedACTCfg, (u8)(pLedCntl->LedACTCfg >> 8), FALSE);
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (u8)pLedCntl->LedPolarity, (u8)(pLedCntl->LedPolarity >> 8), FALSE);
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, 0, pLedCntl->MCULedCntl.field.Polarity, FALSE);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (u8)pLedCntl->LedAGCfg, (u8)(pLedCntl->LedAGCfg >> 8), false);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (u8)pLedCntl->LedACTCfg, (u8)(pLedCntl->LedACTCfg >> 8), false);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (u8)pLedCntl->LedPolarity, (u8)(pLedCntl->LedPolarity >> 8), false);
+	AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, 0, pLedCntl->MCULedCntl.field.Polarity, false);
 
 	RTMPStartLEDMode(pAd);
 }

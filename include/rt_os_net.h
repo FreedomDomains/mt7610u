@@ -72,7 +72,7 @@ void RtmpNetOpsSet(void *pNetOpsOrg);
 
 int RTMPAllocAdapterBlock(void *handle, struct rtmp_adapter **ppAdapter);
 void RTMPFreeAdapter(struct rtmp_adapter *pAd);
-BOOLEAN RtmpRaDevCtrlExit(struct rtmp_adapter *pAd);
+bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd);
 INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType);
 void RTMPHandleInterrupt(struct rtmp_adapter *pAd);
 
@@ -153,7 +153,7 @@ struct net_device *RtmpPhyNetDevInit(
 	IN void 					*pAd,
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetHook);
 
-BOOLEAN RtmpPhyNetDevExit(
+bool RtmpPhyNetDevExit(
 	IN void 					*pAd,
 	IN struct net_device *				net_dev);
 

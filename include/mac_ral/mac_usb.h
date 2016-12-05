@@ -122,7 +122,7 @@ typedef	struct __attribute__ ((packed)) _RXD_STRUC{
 	Management ring buffer format
 */
 typedef	struct _MGMT_STRUC	{
-	BOOLEAN		Valid;
+	bool 	Valid;
 	u8 *	pBuffer;
 	ULONG		Length;
 } MGMT_STRUC, *PMGMT_STRUC;
@@ -169,12 +169,12 @@ typedef struct _TX_CONTEXT
 	ULONG			BulkOutSize;
 	u8 		BulkOutPipeId;
 	u8 		SelfIdx;
-	BOOLEAN			InUse;
-	BOOLEAN			bWaitingBulkOut; /* at least one packet is in this TxContext, ready for making IRP anytime. */
-	BOOLEAN			bFullForBulkOut; /* all tx buffer are full , so waiting for tx bulkout. */
-	BOOLEAN			IRPPending;
-	BOOLEAN			LastOne;
-	BOOLEAN			bAggregatible;
+	bool 		InUse;
+	bool 		bWaitingBulkOut; /* at least one packet is in this TxContext, ready for making IRP anytime. */
+	bool 		bFullForBulkOut; /* all tx buffer are full , so waiting for tx bulkout. */
+	bool 		IRPPending;
+	bool 		LastOne;
+	bool 		bAggregatible;
 	u8 		Header_802_3[LENGTH_802_3];
 	u8 		Rsv[2];
 	ULONG			DataOffset;
@@ -194,11 +194,11 @@ typedef struct _HT_TX_CONTEXT
 	PHTTX_BUFFER	TransferBuffer;	/*Initialized in MiniportInitialize */
 	ULONG			BulkOutSize;	/* Indicate the total bulk-out size in bytes in one bulk-transmission */
 	u8 		BulkOutPipeId;
-	BOOLEAN			IRPPending;
-	BOOLEAN			LastOne;
-	BOOLEAN			bCurWriting;
-	BOOLEAN			bRingEmpty;
-	BOOLEAN			bCopySavePad;
+	bool 		IRPPending;
+	bool 		LastOne;
+	bool 		bCurWriting;
+	bool 		bRingEmpty;
+	bool 		bCopySavePad;
 	u8 		SavedPad[8];
 	u8 		Header_802_3[LENGTH_802_3];
 	ULONG			CurWritePosition;		/* Indicate the buffer offset which packet will be inserted start from. */
@@ -221,7 +221,7 @@ typedef struct _CMD_CONTEXT
 	struct urb *pUrb;
 	dma_addr_t data_dma;
 	u8 *TransferBuffer;
-	BOOLEAN IRPPending;
+	bool IRPPending;
 }  CMD_CONTEXT, *PCMD_CONTEXT, **PPCMD_CONTEXT;
 
 /* */
@@ -236,11 +236,11 @@ typedef struct _RX_CONTEXT
 	struct urb *			pUrb;
 	/*These 2 Boolean shouldn't both be 1 at the same time. */
 	ULONG				BulkInOffset;	/* number of packets waiting for reordering . */
-/*	BOOLEAN				ReorderInUse;	// At least one packet in this buffer are in reordering buffer and wait for receive indication */
-	BOOLEAN				bRxHandling;	/* Notify this packet is being process now. */
-	BOOLEAN				InUse;			/* USB Hardware Occupied. Wait for USB HW to put packet. */
-	BOOLEAN				Readable;		/* Receive Complete back. OK for driver to indicate receiving packet. */
-	BOOLEAN				IRPPending;		/* TODO: To be removed */
+/*	bool 			ReorderInUse;	// At least one packet in this buffer are in reordering buffer and wait for receive indication */
+	bool 			bRxHandling;	/* Notify this packet is being process now. */
+	bool 			InUse;			/* USB Hardware Occupied. Wait for USB HW to put packet. */
+	bool 			Readable;		/* Receive Complete back. OK for driver to indicate receiving packet. */
+	bool 			IRPPending;		/* TODO: To be removed */
 	/*atomic_t				IrpLock; */
 	spinlock_t		RxContextLock;
 	dma_addr_t			data_dma;		/* urb dma on linux */
@@ -252,9 +252,9 @@ typedef struct _CMD_RSP_CONTEXT
 	u8 *CmdRspBuffer;
 	void *pAd;
 	struct urb *pUrb;
-	BOOLEAN IRPPending;
-	BOOLEAN InUse;
-	BOOLEAN Readable;
+	bool IRPPending;
+	bool InUse;
+	bool Readable;
 	dma_addr_t data_dma;
 } CMD_RSP_CONTEXT, *PCMD_RSP_CONTEXT;
 
@@ -283,12 +283,12 @@ typedef struct _CMD_RSP_CONTEXT
 				if (pAd->DeQueueRunning[QueIdx])						\
 				{														\
 					RTMP_IRQ_UNLOCK(&pAd->DeQueueLock[QueIdx], irqFlags);\
-					DBGPRINT(RT_DEBUG_OFF, ("DeQueueRunning[%d]= TRUE!\n", QueIdx));		\
+					DBGPRINT(RT_DEBUG_OFF, ("DeQueueRunning[%d]= true!\n", QueIdx));		\
 					continue;											\
 				}														\
 				else													\
 				{														\
-					pAd->DeQueueRunning[QueIdx] = TRUE;					\
+					pAd->DeQueueRunning[QueIdx] = true;					\
 					RTMP_IRQ_UNLOCK(&pAd->DeQueueLock[QueIdx], irqFlags);\
 				}														\
 			}
@@ -296,7 +296,7 @@ typedef struct _CMD_RSP_CONTEXT
 #define RTMP_STOP_DEQUEUE(pAd, QueIdx, irqFlags)						\
 			do{															\
 				RTMP_IRQ_LOCK(&pAd->DeQueueLock[QueIdx], irqFlags);		\
-				pAd->DeQueueRunning[QueIdx] = FALSE;					\
+				pAd->DeQueueRunning[QueIdx] = false;					\
 				RTMP_IRQ_UNLOCK(&pAd->DeQueueLock[QueIdx], irqFlags);	\
 			}while(0)
 
@@ -353,7 +353,7 @@ typedef struct _CMD_RSP_CONTEXT
 #define RTMP_MLME_HANDLER(pAd)			RTUSBMlmeUp(&(pAd->mlmeTask))
 
 #define RTMP_MLME_PRE_SANITY_CHECK(pAd)								\
-	{	if ((pAd->StaCfg.bHardwareRadio == TRUE) && 					\
+	{	if ((pAd->StaCfg.bHardwareRadio == true) && 					\
 			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)) &&		\
 			(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS))) {	\
 			RTEnqueueInternalCmd(pAd, CMDTHREAD_CHECK_GPIO, NULL, 0); } }

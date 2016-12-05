@@ -866,8 +866,8 @@ void MlmeSetTxRate(
 			OperationMode = HT_RTSCTS_6M;
 
 		if (OperationMode != 0xffff)
-			AsicUpdateProtect(pAd, OperationMode , ALLN_SETPROTECT, TRUE,
-							(BOOLEAN)pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent);
+			AsicUpdateProtect(pAd, OperationMode , ALLN_SETPROTECT, true,
+							(bool)pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent);
 #endif /* DOT11_N_SUPPORT */
 
 		pEntry->HTPhyMode.field.STBC	= pAd->StaCfg.HTPhyMode.field.STBC;
@@ -1367,7 +1367,7 @@ void MlmeSelectTxRateTable(
 						pAd->StaActive.SupportedPhyInfo.MCSSet[1]));
 		}
 #endif /* CONFIG_STA_SUPPORT */
-	} while(FALSE);
+	} while(false);
 
 	*pTableSize = RATE_TABLE_SIZE(*ppTable);
 	*pInitTxRateIdx = RATE_TABLE_INIT_INDEX(*ppTable);
@@ -1595,7 +1595,7 @@ void MlmeRAInit(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 	pEntry->perThrdAdj = PER_THRD_ADJ;
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-	pEntry->fLastSecAccordingRSSI = FALSE;
+	pEntry->fLastSecAccordingRSSI = false;
 	pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 	pEntry->CurrTxRateIndex = 0;
 	pEntry->CurrTxRateStableTime = 0;
@@ -1633,7 +1633,7 @@ void MlmeRALog(
 #endif /* DBG_CTRL_SUPPORT */
 	)
 	{
-		BOOLEAN stbc, csd=FALSE;
+		bool stbc, csd=false;
 		ULONG tp;
 
 		/*  Get STBC and StreamMode state */
@@ -1791,7 +1791,7 @@ INT rtmp_get_rate_from_rate_tb(u8 *table, INT idx, RTMP_TX_RATE *tx_rate)
 		tx_rate->nss = 0;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1906,62 +1906,62 @@ void RTMPSetSupportMCS(
 		switch((SupportedRates[idx] & 0x7F)*5)
 		{
 			case 10:
-				pEntry->SupportCCKMCS[MCS_0] = TRUE;
+				pEntry->SupportCCKMCS[MCS_0] = true;
 				pEntry->SupportRateMode |= SUPPORT_CCK_MODE;
 				break;
 
 			case 20:
-				pEntry->SupportCCKMCS[MCS_1] = TRUE;
+				pEntry->SupportCCKMCS[MCS_1] = true;
 				pEntry->SupportRateMode |= SUPPORT_CCK_MODE;
 				break;
 
 			case 55:
-				pEntry->SupportCCKMCS[MCS_2] = TRUE;
+				pEntry->SupportCCKMCS[MCS_2] = true;
 				pEntry->SupportRateMode |= SUPPORT_CCK_MODE;
 				break;
 
 			case 110:
-				pEntry->SupportCCKMCS[MCS_3] = TRUE;
+				pEntry->SupportCCKMCS[MCS_3] = true;
 				pEntry->SupportRateMode |= SUPPORT_CCK_MODE;
 				break;
 
 			case 60:
-				pEntry->SupportOFDMMCS[MCS_0] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_0] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 90:
-				pEntry->SupportOFDMMCS[MCS_1] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_1] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 120:
-				pEntry->SupportOFDMMCS[MCS_2] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_2] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 180:
-				pEntry->SupportOFDMMCS[MCS_3] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_3] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 240:
-				pEntry->SupportOFDMMCS[MCS_4] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_4] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 360:
-				pEntry->SupportOFDMMCS[MCS_5] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_5] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 480:
-				pEntry->SupportOFDMMCS[MCS_6] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_6] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 
 			case 540:
-				pEntry->SupportOFDMMCS[MCS_7] = TRUE;
+				pEntry->SupportOFDMMCS[MCS_7] = true;
 				pEntry->SupportRateMode |= SUPPORT_OFDM_MODE;
 				break;
 		}
@@ -1990,7 +1990,7 @@ void RTMPSetSupportMCS(
 			if ((pDesired_ht_phy->MCSSet[j] & bitmask)
 				&& (pHtCapability->MCSSet[j] & bitmask))
 			{
-				pEntry->SupportHTMCS[i] = TRUE;
+				pEntry->SupportHTMCS[i] = true;
 				pEntry->SupportRateMode |= SUPPORT_HT_MODE;
 			}
 		}
@@ -2006,25 +2006,25 @@ void RTMPSetSupportMCS(
 					if (vht_cap->mcs_set.rx_mcs_map.mcs_ss2 < VHT_MCS_CAP_NA)
 					{
 						for (i = 8; i < MAX_LEN_OF_VHT_RATES; i++)
-							pEntry->SupportVHTMCS[i] = TRUE;
+							pEntry->SupportVHTMCS[i] = true;
 						pEntry->SupportRateMode |= SUPPORT_VHT_MODE;
 					}
 				case 1:
 					if (vht_cap->mcs_set.rx_mcs_map.mcs_ss1 < VHT_MCS_CAP_NA)
 					{
 						for (i = 0; i <= 7; i++)
-							pEntry->SupportVHTMCS[i] = TRUE;
+							pEntry->SupportVHTMCS[i] = true;
 						/*
 							MT7650E2(1x1 AC) supports VHT_MCS8 & VHT_MCS9 @20120812
 						*/
 						if (vht_cap->mcs_set.rx_mcs_map.mcs_ss1 == VHT_MCS_CAP_8)
 						{
-							pEntry->SupportVHTMCS[8] = TRUE;
+							pEntry->SupportVHTMCS[8] = true;
 						}
 						else if (vht_cap->mcs_set.rx_mcs_map.mcs_ss1 == VHT_MCS_CAP_9)
 						{
-							pEntry->SupportVHTMCS[8] = TRUE;
-							pEntry->SupportVHTMCS[9] = TRUE;
+							pEntry->SupportVHTMCS[8] = true;
+							pEntry->SupportVHTMCS[9] = true;
 						}
 						pEntry->SupportRateMode |= SUPPORT_VHT_MODE;
 					}
@@ -2054,7 +2054,7 @@ INT	Set_RateAlg_Proc(
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR, ("%s: Set Alg = %d\n", __FUNCTION__, ra_alg));
-	return TRUE;
+	return true;
 }
 
 

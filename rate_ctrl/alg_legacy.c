@@ -92,7 +92,7 @@ void MlmeDynamicTxRateSwitching(
 			continue;
 
 		/* check if this entry need to switch rate automatically */
-		if (RTMPCheckEntryEnableAutoRateSwitch(pAd, pEntry) == FALSE)
+		if (RTMPCheckEntryEnableAutoRateSwitch(pAd, pEntry) == false)
 			continue;
 
 		MlmeSelectTxRateTable(pAd, pEntry, &pTable, &TableSize, &InitTxRateIdx);
@@ -255,7 +255,7 @@ void MlmeDynamicTxRateSwitching(
 			while(TmpIdx < TableSize)
 			{
 				pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-				if (pEntry->SupportCCKMCS[pTmpTxRate->CurrMCS] == TRUE)
+				if (pEntry->SupportCCKMCS[pTmpTxRate->CurrMCS] == true)
 				{
 					UpRateIdx = TmpIdx;
 					break;
@@ -267,7 +267,7 @@ void MlmeDynamicTxRateSwitching(
 			while(TmpIdx >= 0)
 			{
 				pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-				if (pEntry->SupportCCKMCS[pTmpTxRate->CurrMCS] == TRUE)
+				if (pEntry->SupportCCKMCS[pTmpTxRate->CurrMCS] == true)
 				{
 					DownRateIdx = TmpIdx;
 					break;
@@ -281,7 +281,7 @@ void MlmeDynamicTxRateSwitching(
 			while(TmpIdx < TableSize)
 			{
 				pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-				if (pEntry->SupportOFDMMCS[pTmpTxRate->CurrMCS] == TRUE)
+				if (pEntry->SupportOFDMMCS[pTmpTxRate->CurrMCS] == true)
 				{
 					UpRateIdx = TmpIdx;
 					break;
@@ -293,7 +293,7 @@ void MlmeDynamicTxRateSwitching(
 			while(TmpIdx >= 0)
 			{
 				pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-				if (pEntry->SupportOFDMMCS[pTmpTxRate->CurrMCS] == TRUE)
+				if (pEntry->SupportOFDMMCS[pTmpTxRate->CurrMCS] == true)
 				{
 					DownRateIdx = TmpIdx;
 					break;
@@ -310,7 +310,7 @@ void MlmeDynamicTxRateSwitching(
 				while(TmpIdx < TableSize)
 				{
 					pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == TRUE)
+					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == true)
 					{
 						UpRateIdx = TmpIdx;
 						break;
@@ -322,7 +322,7 @@ void MlmeDynamicTxRateSwitching(
 				while(TmpIdx >= 0)
 				{
 					pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == TRUE)
+					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == true)
 					{
 						DownRateIdx = TmpIdx;
 						break;
@@ -336,7 +336,7 @@ void MlmeDynamicTxRateSwitching(
 				while(TmpIdx < TableSize)
 				{
 					pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == TRUE)
+					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == true)
 					{
 						UpRateIdx = TmpIdx;
 						break;
@@ -354,7 +354,7 @@ void MlmeDynamicTxRateSwitching(
 				while(TmpIdx >= 0)
 				{
 					pTmpTxRate = PTX_RA_LEGACY_ENTRY(pTable, TmpIdx);
-					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == TRUE)
+					if (pEntry->SupportHTMCS[pTmpTxRate->CurrMCS] == true)
 					{
 						DownRateIdx = TmpIdx;
 						break;
@@ -428,7 +428,7 @@ void MlmeDynamicTxRateSwitching(
 			}
 
 			MlmeClearAllTxQuality(pEntry);
-			pEntry->fLastSecAccordingRSSI = TRUE;
+			pEntry->fLastSecAccordingRSSI = true;
 
 			/* reset all OneSecTx counters */
 			RESET_ONE_SEC_TX_CNT(pEntry);
@@ -437,9 +437,9 @@ void MlmeDynamicTxRateSwitching(
 			continue;
 		}
 
-		if (pEntry->fLastSecAccordingRSSI == TRUE)
+		if (pEntry->fLastSecAccordingRSSI == true)
 		{
-			pEntry->fLastSecAccordingRSSI = FALSE;
+			pEntry->fLastSecAccordingRSSI = false;
 			pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 			/* reset all OneSecTx counters */
 			RESET_ONE_SEC_TX_CNT(pEntry);
@@ -503,7 +503,7 @@ void StaQuickResponeForRateUpExec(
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
 #endif /* AGS_SUPPORT */
 
-	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = FALSE;
+	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = false;
 
     /* walk through MAC table, see if need to change AP's TX rate toward each entry */
 	for (i = 1; i < MAX_LEN_OF_MAC_TABLE; i++)
@@ -514,7 +514,7 @@ void StaQuickResponeForRateUpExec(
 			continue;
 
 		/* check if this entry need to switch rate automatically */
-		if (RTMPCheckEntryEnableAutoRateSwitch(pAd, pEntry) == FALSE)
+		if (RTMPCheckEntryEnableAutoRateSwitch(pAd, pEntry) == false)
 			continue;
 
 		/* Do nothing if this entry didn't change */
@@ -755,7 +755,7 @@ void StaQuickResponeForRateUpExec(
 				else
 					DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("   QuickDRS: (Down) keep rate-down (L:%ld, C:%ld)\n", pEntry->LastTxOkCount, OneSecTxNoRetryOKRationCount));
 			}
-		}while (FALSE);
+		}while (false);
 
 
 		/* If rate changed then update the history and set the new tx rate */
@@ -814,7 +814,7 @@ void MlmeOldRateAdapt(
 	IN ULONG			TrainDown,
 	IN ULONG			TxErrorRatio)
 {
-	BOOLEAN	bTrainUp = FALSE;
+	bool bTrainUp = false;
 
 	pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 
@@ -835,7 +835,7 @@ void MlmeOldRateAdapt(
 		/* Upgrade TX quality if PER <= Rate-Up threshold */
 		if (TxErrorRatio <= TrainUp)
 		{
-			bTrainUp = TRUE;
+			bTrainUp = true;
 			MlmeDecTxQuality(pEntry, CurrRateIdx);  /* quality very good in CurrRate */
 
 			if (pEntry->TxRateUpPenalty)
@@ -885,7 +885,7 @@ void MlmeOldRateAdapt(
 			if (!pAd->StaCfg.StaQuickResponeForRateUpTimerRunning)
 			{
 				RTMPSetTimer(&pAd->StaCfg.StaQuickResponeForRateUpTimer, pAd->ra_fast_interval);
-				pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = TRUE;
+				pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = true;
 			}
 		}
 #endif /* CONFIG_STA_SUPPORT */

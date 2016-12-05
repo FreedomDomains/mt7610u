@@ -619,7 +619,7 @@ typedef struct __attribute__ ((packed)) _NDIS_802_11_BSSID_LIST {
 } NDIS_802_11_BSSID_LIST, *PNDIS_802_11_BSSID_LIST;
 
 typedef struct {
-	BOOLEAN bValid;		/* 1: variable contains valid value */
+	bool bValid;		/* 1: variable contains valid value */
 	USHORT StaNum;
 	u8 ChannelUtilization;
 	USHORT RemainingAdmissionControl;	/* in unit of 32-us */
@@ -1064,7 +1064,7 @@ typedef struct _OID_BACAP_STRUC {
 	u8 AmsduEnable;	/*Enable AMSDU transmisstion */
 	u8 AmsduSize;	/* 0:3839, 1:7935 bytes. UINT  MSDUSizeToBytes[]        = { 3839, 7935}; */
 	u8 MMPSmode;		/* MIMO power save more, 0:static, 1:dynamic, 2:rsv, 3:mimo enable */
-	BOOLEAN AutoBA;		/* Auto BA will automatically */
+	bool AutoBA;		/* Auto BA will automatically */
 } OID_BACAP_STRUC, *POID_BACAP_STRUC;
 
 typedef struct _RT_802_11_ACL_ENTRY {
@@ -1186,7 +1186,7 @@ typedef struct _RT_802_11_DLS_UI {
 	USHORT CountDownTimer;	/* unit: second , used by driver only */
 	NDIS_802_11_MAC_ADDRESS MacAddr;	/* set by UI */
 	u8 Status;		/* 0: none , 1: wait STAkey, 2: finish DLS setup , set by driver only */
-	BOOLEAN Valid;		/* 1: valid , 0: invalid , set by UI, use to setup or tear down DLS link */
+	bool Valid;		/* 1: valid , 0: invalid , set by UI, use to setup or tear down DLS link */
 } RT_802_11_DLS_UI, *PRT_802_11_DLS_UI;
 
 typedef struct _RT_802_11_DLS_INFO {
@@ -1232,7 +1232,7 @@ typedef struct _WSC_CREDENTIAL {
 	USHORT KeyLength;
 	u8 MacAddr[MAC_ADDR_LENGTH];	/* mandatory, AP MAC address */
 	u8 KeyIndex;		/* optional, default is 1 */
-	u8 bFromUPnP;	/* TRUE: This credential is from external UPnP registrar */
+	u8 bFromUPnP;	/* true: This credential is from external UPnP registrar */
 	u8 Rsvd[2];		/* Make alignment */
 } WSC_CREDENTIAL, *PWSC_CREDENTIAL;
 

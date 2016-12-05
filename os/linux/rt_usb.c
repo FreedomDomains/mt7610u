@@ -190,8 +190,8 @@ static void rtusb_dataout_complete(unsigned long data)
 	/*		pHTTXContext->NextBulkOutPosition, pHTTXContext->ENextBulkOutPosition, pHTTXContext->bCopySavePad)); */
 
 	RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-	pAd->BulkOutPending[BulkOutPipeId] = FALSE;
-	pHTTXContext->IRPPending = FALSE;
+	pAd->BulkOutPending[BulkOutPipeId] = false;
+	pHTTXContext->IRPPending = false;
 	pAd->watchDogTxPendingCnt[BulkOutPipeId] = 0;
 
 	if (Status == USB_ST_NOERROR)
@@ -236,8 +236,8 @@ static void rtusb_dataout_complete(unsigned long data)
 	}
 
 	/* */
-	/* bInUse = TRUE, means some process are filling TX data, after that must turn on bWaitingBulkOut */
-	/* bWaitingBulkOut = TRUE, means the TX data are waiting for bulk out. */
+	/* bInUse = true, means some process are filling TX data, after that must turn on bWaitingBulkOut */
+	/* bWaitingBulkOut = true, means the TX data are waiting for bulk out. */
 	/* */
 	/*RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags); */
 	if (((pHTTXContext->ENextBulkOutPosition != pHTTXContext->CurWritePosition) &&
@@ -277,16 +277,16 @@ static void rtusb_null_frame_done_tasklet(unsigned long data)
 
 	/* Reset Null frame context flags */
 	RTMP_IRQ_LOCK(&pAd->BulkOutLock[0], irqFlag);
-	pNullContext->IRPPending 	= FALSE;
-	pNullContext->InUse 		= FALSE;
-	pAd->BulkOutPending[0] = FALSE;
+	pNullContext->IRPPending 	= false;
+	pNullContext->InUse 		= false;
+	pAd->BulkOutPending[0] = false;
 	pAd->watchDogTxPendingCnt[0] = 0;
 
 	if (Status == USB_ST_NOERROR)
 	{
 		RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[0], irqFlag);
 
-		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 	else	/* STATUS_OTHER */
 	{
@@ -330,13 +330,13 @@ static void rtusb_pspoll_frame_done_tasklet(unsigned long data)
 /*	Status			= pUrb->status; */
 
 	/* Reset PsPoll context flags */
-	pPsPollContext->IRPPending	= FALSE;
-	pPsPollContext->InUse		= FALSE;
+	pPsPollContext->IRPPending	= false;
+	pPsPollContext->InUse		= false;
 	pAd->watchDogTxPendingCnt[0] = 0;
 
 	if (Status == USB_ST_NOERROR)
 	{
-		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 	else /* STATUS_OTHER */
 	{
@@ -353,7 +353,7 @@ static void rtusb_pspoll_frame_done_tasklet(unsigned long data)
 	}
 
 	RTMP_SEM_LOCK(&pAd->BulkOutLock[0]);
-	pAd->BulkOutPending[0] = FALSE;
+	pAd->BulkOutPending[0] = false;
 	RTMP_SEM_UNLOCK(&pAd->BulkOutLock[0]);
 
 	/* Always call Bulk routine, even reset bulk. */
@@ -394,8 +394,8 @@ static void rx_done_tasklet(unsigned long data)
 
 
 	RTMP_IRQ_LOCK(&pAd->BulkInLock, IrqFlags);
-	pRxContext->InUse = FALSE;
-	pRxContext->IRPPending = FALSE;
+	pRxContext->InUse = false;
+	pRxContext->IRPPending = false;
 	pRxContext->BulkInOffset += RTMP_USB_URB_LEN_GET(pUrb); /*pUrb->actual_length; */
 	/*NdisInterlockedDecrement(&pAd->PendingRx); */
 
@@ -409,7 +409,7 @@ static void rx_done_tasklet(unsigned long data)
 		pAd->NextRxBulkInPosition = 0;
 		if (pRxContext->BulkInOffset)	/* As jan's comment, it may bulk-in success but size is zero. */
 		{
-			pRxContext->Readable = TRUE;
+			pRxContext->Readable = true;
 			INC_RING_INDEX(pAd->NextRxBulkInIndex, RX_RING_SIZE);
 		}
 		RTMP_IRQ_UNLOCK(&pAd->BulkInLock, IrqFlags);
@@ -418,7 +418,7 @@ static void rx_done_tasklet(unsigned long data)
 	{
 		pAd->BulkInCompleteFail++;
 		/* Still read this packet although it may comtain wrong bytes. */
-		pRxContext->Readable = FALSE;
+		pRxContext->Readable = false;
 		RTMP_IRQ_UNLOCK(&pAd->BulkInLock, IrqFlags);
 
 		/* Parsing all packets. because after reset, the index will reset to all zero. */
@@ -443,7 +443,7 @@ static void rx_done_tasklet(unsigned long data)
 	if (ATE_ON(pAd))
 	{
 		/* If the driver is in ATE mode and Rx frame is set into here. */
-		if (pAd->ContinBulkIn == TRUE)
+		if (pAd->ContinBulkIn == true)
 		{
 			RTUSBBulkReceive(pAd);
 		}
@@ -504,14 +504,14 @@ static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
 		}
 	}
 
-	pAd->BulkOutPending[MGMTPIPEIDX] = FALSE;
+	pAd->BulkOutPending[MGMTPIPEIDX] = false;
 	RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[MGMTPIPEIDX], IrqFlags);
 
 	RTMP_IRQ_LOCK(&pAd->MLMEBulkOutLock, IrqFlags);
 	/* Reset MLME context flags */
-	pMLMEContext->IRPPending = FALSE;
-	pMLMEContext->InUse = FALSE;
-	pMLMEContext->bWaitingBulkOut = FALSE;
+	pMLMEContext->IRPPending = false;
+	pMLMEContext->InUse = false;
+	pMLMEContext->bWaitingBulkOut = false;
 	pMLMEContext->BulkOutSize = 0;
 
 	pPacket = pAd->MgmtRing.Cell[index].pNdisPacket;
@@ -545,7 +545,7 @@ static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
 
 			/* Always call Bulk routine, even reset bulk. */
 			/* The protectioon of rest bulk should be in BulkOut routine */
-			if (pAd->MgmtRing.TxSwFreeIdx < MGMT_RING_SIZE /* pMLMEContext->bWaitingBulkOut == TRUE */)
+			if (pAd->MgmtRing.TxSwFreeIdx < MGMT_RING_SIZE /* pMLMEContext->bWaitingBulkOut == true */)
 			{
 				RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_MLME);
 			}
@@ -593,10 +593,10 @@ static void rtusb_hcca_dma_done_tasklet(unsigned long data)
 		{	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 			if ((pAd->TxSwQueue[BulkOutPipeId].Number > 0) &&
 				/*((pHTTXContext->CurWritePosition > (pHTTXContext->NextBulkOutPosition + 0x6000)) || (pHTTXContext->NextBulkOutPosition > pHTTXContext->CurWritePosition + 0x6000)) && */
-				(pAd->DeQueueRunning[BulkOutPipeId] == FALSE) &&
-				(pHTTXContext->bCurWriting == FALSE))
+				(pAd->DeQueueRunning[BulkOutPipeId] == false) &&
+				(pHTTXContext->bCurWriting == false))
 			{
-				RTMPDeQueuePacket(pAd, FALSE, BulkOutPipeId, MAX_TX_PROCESS);
+				RTMPDeQueuePacket(pAd, false, BulkOutPipeId, MAX_TX_PROCESS);
 			}
 
 			RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NORMAL);
@@ -641,10 +641,10 @@ static void rtusb_ac3_dma_done_tasklet(unsigned long data)
 		{	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 			if ((pAd->TxSwQueue[BulkOutPipeId].Number > 0) &&
 				/*((pHTTXContext->CurWritePosition > (pHTTXContext->NextBulkOutPosition + 0x6000)) || (pHTTXContext->NextBulkOutPosition > pHTTXContext->CurWritePosition + 0x6000)) && */
-				(pAd->DeQueueRunning[BulkOutPipeId] == FALSE) &&
-				(pHTTXContext->bCurWriting == FALSE))
+				(pAd->DeQueueRunning[BulkOutPipeId] == false) &&
+				(pHTTXContext->bCurWriting == false))
 			{
-				RTMPDeQueuePacket(pAd, FALSE, BulkOutPipeId, MAX_TX_PROCESS);
+				RTMPDeQueuePacket(pAd, false, BulkOutPipeId, MAX_TX_PROCESS);
 			}
 
 			RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NORMAL<<3);
@@ -688,10 +688,10 @@ static void rtusb_ac2_dma_done_tasklet(unsigned long data)
 		{	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 			if ((pAd->TxSwQueue[BulkOutPipeId].Number > 0) &&
 				/*((pHTTXContext->CurWritePosition > (pHTTXContext->NextBulkOutPosition + 0x6000)) || (pHTTXContext->NextBulkOutPosition > pHTTXContext->CurWritePosition + 0x6000)) && */
-				(pAd->DeQueueRunning[BulkOutPipeId] == FALSE) &&
-				(pHTTXContext->bCurWriting == FALSE))
+				(pAd->DeQueueRunning[BulkOutPipeId] == false) &&
+				(pHTTXContext->bCurWriting == false))
 			{
-				RTMPDeQueuePacket(pAd, FALSE, BulkOutPipeId, MAX_TX_PROCESS);
+				RTMPDeQueuePacket(pAd, false, BulkOutPipeId, MAX_TX_PROCESS);
 			}
 
 			RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NORMAL<<2);
@@ -735,10 +735,10 @@ static void rtusb_ac1_dma_done_tasklet(unsigned long data)
 		{	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 			if ((pAd->TxSwQueue[BulkOutPipeId].Number > 0) &&
 				/*((pHTTXContext->CurWritePosition > (pHTTXContext->NextBulkOutPosition + 0x6000)) || (pHTTXContext->NextBulkOutPosition > pHTTXContext->CurWritePosition + 0x6000)) && */
-				(pAd->DeQueueRunning[BulkOutPipeId] == FALSE) &&
-				(pHTTXContext->bCurWriting == FALSE))
+				(pAd->DeQueueRunning[BulkOutPipeId] == false) &&
+				(pHTTXContext->bCurWriting == false))
 			{
-				RTMPDeQueuePacket(pAd, FALSE, BulkOutPipeId, MAX_TX_PROCESS);
+				RTMPDeQueuePacket(pAd, false, BulkOutPipeId, MAX_TX_PROCESS);
 			}
 
 			RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NORMAL<<1);
@@ -781,10 +781,10 @@ static void rtusb_ac0_dma_done_tasklet(unsigned long data)
 		{	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 			if ((pAd->TxSwQueue[BulkOutPipeId].Number > 0) &&
 				/*  ((pHTTXContext->CurWritePosition > (pHTTXContext->NextBulkOutPosition + 0x6000)) || (pHTTXContext->NextBulkOutPosition > pHTTXContext->CurWritePosition + 0x6000)) && */
-				(pAd->DeQueueRunning[BulkOutPipeId] == FALSE) &&
-				(pHTTXContext->bCurWriting == FALSE))
+				(pAd->DeQueueRunning[BulkOutPipeId] == false) &&
+				(pHTTXContext->bCurWriting == false))
 			{
-				RTMPDeQueuePacket(pAd, FALSE, BulkOutPipeId, MAX_TX_PROCESS);
+				RTMPDeQueuePacket(pAd, false, BulkOutPipeId, MAX_TX_PROCESS);
 			}
 
 			RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NORMAL);
@@ -814,8 +814,8 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 	pAd = pNullContext->pAd;
 
 	/* Reset Null frame context flags */
-	pNullContext->IRPPending = FALSE;
-	pNullContext->InUse = FALSE;
+	pNullContext->IRPPending = false;
+	pNullContext->InUse = false;
 	Status = RTMP_USB_URB_STATUS_GET(pURB);/*pURB->rtusb_urb_status; */
 
 	/* Store BulkOut PipeId. */
@@ -825,7 +825,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 	if (Status == USB_ST_NOERROR)
 	{
 #ifdef RALINK_QA
-		if ((ATE_ON(pAd)) && (pAd->ate.bQATxStart == TRUE))
+		if ((ATE_ON(pAd)) && (pAd->ate.bQATxStart == true))
 		{
 			if (pAd->ate.QID == BulkOutPipeId)
 			{
@@ -857,7 +857,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 
 		/* Don't worry about the queue is empty or not. This function will check itself. */
 		/* In RT28xx, SendTxWaitQueue == TxSwQueue  */
-		RTMPDeQueuePacket(pAd, TRUE, BulkOutPipeId, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, true, BulkOutPipeId, MAX_TX_PROCESS);
 
 	}
 	else
@@ -879,7 +879,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 
 			/* check */
 			BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-			pAd->BulkOutPending[BulkOutPipeId] = FALSE;
+			pAd->BulkOutPending[BulkOutPipeId] = false;
 			pAd->bulkResetPipeid = BulkOutPipeId;
 			BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 
@@ -893,10 +893,10 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->TransferBuffer = 0x%lx\n", (ULONG)&pNullContext->TransferBuffer));
 	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->BulkOutPipeId = %d\n", pNullContext->BulkOutPipeId));
 	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->BulkOutSize = %ld\n", pNullContext->BulkOutSize));
-	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->InUse = %d\n", (pNullContext->InUse==TRUE)));
-	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->bWaitingBulkOut = %d\n", (pNullContext->bWaitingBulkOut==TRUE)));
-	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->IRPPending = %d\n", (pNullContext->IRPPending==TRUE)));
-	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->LastOne = %d\n", (pNullContext->LastOne==TRUE)));
+	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->InUse = %d\n", (pNullContext->InUse==true)));
+	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->bWaitingBulkOut = %d\n", (pNullContext->bWaitingBulkOut==true)));
+	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->IRPPending = %d\n", (pNullContext->IRPPending==true)));
+	DBGPRINT(RT_DEBUG_INFO, ("pNullContext->LastOne = %d\n", (pNullContext->LastOne==true)));
 #endif /* RELASE_EXCLUDE */
 
 
@@ -917,7 +917,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 		pAd->WlanCounters.TransmittedFragmentCount.u.HighPart++;
 	}
 
-	if (((pAd->ContinBulkOut == TRUE ) ||(atomic_read(&pAd->BulkOutRemained) > 0))
+	if (((pAd->ContinBulkOut == true ) ||(atomic_read(&pAd->BulkOutRemained) > 0))
 		&& (pAd->ate.Mode & ATE_TXFRAME))
 	{
 #ifdef RELASE_EXCLUDE
@@ -934,7 +934,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
 	}
 
 	BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-	pAd->BulkOutPending[BulkOutPipeId] = FALSE;
+	pAd->BulkOutPending[BulkOutPipeId] = false;
 	BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 
 	/* Always call Bulk routine, even reset bulk. */
@@ -1023,7 +1023,7 @@ INT MlmeThread(
 
 	while(!RTMP_OS_TASK_IS_KILLED(pTask))
 	{
-		if (RtmpOSTaskWait(pAd, pTask, &status) == FALSE)
+		if (RtmpOSTaskWait(pAd, pTask, &status) == false)
 		{
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 			break;
@@ -1094,7 +1094,7 @@ INT RTUSBCmdThread(
 
 	while (pAd->CmdQ.CmdQState == RTMP_TASK_STAT_RUNNING)
 	{
-		if (RtmpOSTaskWait(pAd, pTask, &status) == FALSE)
+		if (RtmpOSTaskWait(pAd, pTask, &status) == false)
 		{
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 			break;
@@ -1118,7 +1118,7 @@ INT RTUSBCmdThread(
 			RTThreadDequeueCmd(&pAd->CmdQ, &pCmdQElmt);
 			if (pCmdQElmt)
 			{
-				if (pCmdQElmt->CmdFromNdis == TRUE)
+				if (pCmdQElmt->CmdFromNdis == true)
 				{
 					if (pCmdQElmt->buffer != NULL)
 						kfree(pCmdQElmt->buffer);

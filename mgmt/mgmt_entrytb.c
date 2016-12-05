@@ -101,26 +101,26 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 	IN  u8 *		pAddr,
 	IN	u8 		apidx,
 	IN	u8 		OpMode,
-	IN BOOLEAN	CleanAll)
+	IN bool CleanAll)
 {
 	u8 HashIdx;
 	int i, FirstWcid;
 	MAC_TABLE_ENTRY *pEntry = NULL, *pCurrEntry;
 /*	USHORT	offset;*/
 /*	ULONG	addr;*/
-	BOOLEAN Cancelled;
+	bool Cancelled;
 	u32 MaxWcidNum = MAX_LEN_OF_MAC_TABLE;
 #ifdef MAC_REPEATER_SUPPORT
-	BOOLEAN bAPCLI = FALSE;
+	bool bAPCLI = false;
 #endif /* MAC_REPEATER_SUPPORT */
 
 #ifdef MAC_REPEATER_SUPPORT
 	if ((apidx >= MIN_NET_DEVICE_FOR_APCLI) &&
 		(apidx < MIN_NET_DEVICE_FOR_MESH) &&
-		(pAd->ApCfg.bMACRepeaterEn == TRUE))
+		(pAd->ApCfg.bMACRepeaterEn == true))
 	{
 		MaxWcidNum = MAX_LEN_OF_MAC_TABLE + (MAX_EXT_MAC_ADDR_SIZE * MAX_APCLI_NUM);
-		bAPCLI = TRUE;
+		bAPCLI = true;
 	}
 #endif /* MAC_REPEATER_SUPPORT */
 
@@ -172,7 +172,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
-			if (CleanAll == TRUE)
+			if (CleanAll == true)
 			{
 				pEntry->MaxSupportedRate = RATE_11;
 				pEntry->CurrTxRate = RATE_11;
@@ -188,7 +188,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			if (apidx >= MIN_NET_DEVICE_FOR_DLS)
 			{
 				SET_ENTRY_DLS(pEntry);
-				pEntry->isCached = FALSE;
+				pEntry->isCached = false;
 				break;
 			}
 			else
@@ -199,17 +199,17 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 
 						SET_ENTRY_CLIENT(pEntry);
 
-		} while (FALSE);
+		} while (false);
 
-			pEntry->bIAmBadAtheros = FALSE;
+			pEntry->bIAmBadAtheros = false;
 
-			RTMPInitTimer(pAd, &pEntry->EnqueueStartForPSKTimer, GET_TIMER_FUNCTION(EnqueueStartForPSKExec), pEntry, FALSE);
+			RTMPInitTimer(pAd, &pEntry->EnqueueStartForPSKTimer, GET_TIMER_FUNCTION(EnqueueStartForPSKExec), pEntry, false);
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
 			pEntry->pAd = pAd;
-			pEntry->CMTimerRunning = FALSE;
+			pEntry->CMTimerRunning = false;
 			pEntry->EnqueueEapolStartTimerRunning = EAPOL_START_DISABLE;
 			pEntry->RSNIE_Len = 0;
 			memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
@@ -243,7 +243,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 					pEntry->PrivacyFilter = Ndis802_11PrivFilterAcceptAll;
 				}
 #endif /* CONFIG_STA_SUPPORT */
-			} while (FALSE);
+			} while (false);
 
 			pEntry->GTKState = REKEY_NEGOTIATING;
 			pEntry->PairwiseKey.KeyLen = 0;
@@ -279,7 +279,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 					break;
 				}
 #endif // CONFIG_STA_SUPPORT //
-			} while (FALSE);
+			} while (false);
 
 			pEntry->Sst = SST_NOT_AUTH;
 			pEntry->AuthState = AS_NOT_AUTH;
@@ -339,19 +339,19 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 		Delete a specified client from MAC table
 	==========================================================================
  */
-BOOLEAN MacTableDeleteEntry(
+bool MacTableDeleteEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
 	IN u8 *pAddr)
 {
 	USHORT HashIdx;
 	MAC_TABLE_ENTRY *pEntry, *pPrevEntry, *pProbeEntry;
-	BOOLEAN Cancelled;
+	bool Cancelled;
 	/*USHORT	offset;	 unused variable*/
 	/*u8 j;			 unused variable*/
 
 	if (wcid >= MAX_LEN_OF_MAC_TABLE)
-		return FALSE;
+		return false;
 
 	NdisAcquireSpinLock(&pAd->MacTabLock);
 
@@ -413,7 +413,7 @@ BOOLEAN MacTableDeleteEntry(
 
 #ifdef WFA_VHT_PF
 #ifdef IP_ASSEMBLY
-			if (pAd->ip_assemble == TRUE)
+			if (pAd->ip_assemble == true)
 			{
 				if (pEntry->ip_queue_inited)
 				{
@@ -477,11 +477,11 @@ BOOLEAN MacTableDeleteEntry(
 #ifdef DOT11_N_SUPPORT
 		pAd->CommonCfg.AddHTInfo.AddHtInfo2.OperaionMode = 0;
 #endif /* DOT11_N_SUPPORT */
-		RTMP_UPDATE_PROTECT(pAd, 0, ALLN_SETPROTECT, TRUE, 0);
+		RTMP_UPDATE_PROTECT(pAd, 0, ALLN_SETPROTECT, true, 0);
 	}
 
 	pAd->chipCap.pWeakestEntry = NULL;
-	return TRUE;
+	return true;
 }
 
 
@@ -496,7 +496,7 @@ void MacTableReset(
 	IN  struct rtmp_adapter * pAd)
 {
 	int         i;
-	BOOLEAN     Cancelled;
+	bool     Cancelled;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("MacTableReset\n"));
 	/*NdisAcquireSpinLock(&pAd->MacTabLock);*/

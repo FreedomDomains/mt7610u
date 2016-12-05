@@ -96,7 +96,7 @@ static int rt2870_probe(
 /*extern int rt28xx_close(IN struct net_device *net_dev); */
 /*extern int rt28xx_open(struct net_device *net_dev); */
 
-static BOOLEAN USBDevConfigInit(
+static bool USBDevConfigInit(
 	IN struct usb_device 	*dev,
 	IN struct usb_interface *intf,
 	IN void 				*pAd);
@@ -129,7 +129,7 @@ static int rtusb_probe (struct usb_interface *intf,
 						const struct usb_device_id *id);
 static void rtusb_disconnect(struct usb_interface *intf);
 
-static BOOLEAN USBDevConfigInit(
+static bool USBDevConfigInit(
 	IN struct usb_device 	*dev,
 	IN struct usb_interface *intf,
 	IN void 				*pAd)
@@ -191,7 +191,7 @@ static BOOLEAN USBDevConfigInit(
 	if (!(pConfig->BulkInEpAddr && pConfig->BulkOutEpAddr[0]))
 	{
 		printk("%s: Could not find both bulk-in and bulk-out endpoints\n", __FUNCTION__);
-		return FALSE;
+		return false;
 	}
 
 	pConfig->pConfig = &dev->config->desc;
@@ -199,7 +199,7 @@ static BOOLEAN USBDevConfigInit(
 	RTMP_DRIVER_USB_CONFIG_INIT(pAd, pConfig);
 	RT28XXVendorSpecificCheck(dev, pAd);
 
-	return TRUE;
+	return true;
 
 }
 
@@ -285,7 +285,7 @@ static int rt2870_suspend(
 	DBGPRINT(RT_DEBUG_ERROR, ("autosuspend===> rt2870_suspend()\n"));
 #ifdef WOW_SUPPORT
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_STATUS(pAd, &Flag);
-	if (Flag == TRUE)
+	if (Flag == true)
 		RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_ENABLE(pAd);
 	else
 #endif /* WOW_SUPPORT */
@@ -342,7 +342,7 @@ static int rt2870_resume(
 
 #ifdef WOW_SUPPORT
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_STATUS(pAd, &Flag);
-	if (Flag == TRUE)
+	if (Flag == true)
 		RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_DISABLE(pAd);
 	else
 #endif /* WOW_SUPPORT */
@@ -508,7 +508,7 @@ static int rt2870_probe(struct usb_interface *intf, struct usb_device *usb_dev,
 	}
 
 /*USBDevInit============================================== */
-	if (USBDevConfigInit(usb_dev, intf, pAd) == FALSE)
+	if (USBDevConfigInit(usb_dev, intf, pAd) == false)
 		goto err_out_free_radev;
 
 	RtmpRaDevCtrlInit(pAd, RTMP_DEV_INF_USB);

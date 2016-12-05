@@ -221,7 +221,7 @@ INT vht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, VHT_CAP_IE
 {
 	pEntry->MaxHTPhyMode.field.MODE = MODE_VHT;
 	pAd->CommonCfg.AddHTInfo.AddHtInfo2.NonGfPresent = 1;
-	pAd->MacTab.fAnyStationNonGF = TRUE;
+	pAd->MacTab.fAnyStationNonGF = true;
 
 	if (op->vht_op_info.ch_width >= 1 && pEntry->MaxHTPhyMode.field.BW == BW_40)
 	{
@@ -230,14 +230,14 @@ INT vht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, VHT_CAP_IE
 		pEntry->MaxHTPhyMode.field.STBC = (cap->vht_cap.rx_stbc > 1 ? 1 : 0);
 	}
 
-	return TRUE;
+	return true;
 }
 
 
 INT get_vht_op_ch_width(struct rtmp_adapter*pAd)
 {
 
-	return TRUE;
+	return true;
 }
 
 

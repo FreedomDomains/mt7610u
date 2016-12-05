@@ -184,8 +184,8 @@ void dump_bw_info(struct rtmp_adapter *pAd);
 
 void MT76x0_WLAN_ChipOnOff(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN bOn,
-	IN BOOLEAN bResetWLAN);
+	IN bool bOn,
+	IN bool bResetWLAN);
 
 
 void MT76x0_AntennaSelCtrl(
@@ -201,9 +201,9 @@ void MT76x0_VCO_CalibrationMode3(
 void MT76x0_Calibration(
 	IN struct rtmp_adapter *pAd,
 	IN u8 Channel,
-	IN BOOLEAN bPowerOn,
-	IN BOOLEAN bDoTSSI,
-	IN BOOLEAN bFullCal);
+	IN bool bPowerOn,
+	IN bool bDoTSSI,
+	IN bool bFullCal);
 
 void MT76x0_TempSensor(
 	IN struct rtmp_adapter *pAd);

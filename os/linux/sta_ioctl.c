@@ -680,7 +680,7 @@ int rt_ioctl_giwscan(struct net_device *dev,
 
 	{
 		RT_CMD_STA_IOCTL_BSS_TABLE *pBssEntry=&pIoctlScan->pBssTable[i];
-		BOOLEAN isGonly=FALSE;
+		bool isGonly=false;
 		int rateCnt=0;
 
 		if (pBssEntry->Channel>14)
@@ -701,26 +701,26 @@ int rt_ioctl_giwscan(struct net_device *dev,
 					6Mbps(140) 9Mbps(146) and >=12Mbps(152) are supported rate , it mean G only.
 				*/
 				if (pBssEntry->SupRate[rateCnt]==140 || pBssEntry->SupRate[rateCnt]==146 || pBssEntry->SupRate[rateCnt]>=152)
-					isGonly=TRUE;
+					isGonly=true;
 			}
 
 			for (rateCnt=0;rateCnt<pBssEntry->ExtRateLen;rateCnt++)
 			{
 				if (pBssEntry->ExtRate[rateCnt]==140 || pBssEntry->ExtRate[rateCnt]==146 || pBssEntry->ExtRate[rateCnt]>=152)
-					isGonly=TRUE;
+					isGonly=true;
 			}
 
 
 			if (pBssEntry->HtCapabilityLen!=0)
 			{
-				if (isGonly==TRUE)
+				if (isGonly==true)
 					strcpy(iwe.u.name,"802.11g/n");
 				else
 					strcpy(iwe.u.name,"802.11b/g/n");
 			}
 			else
 			{
-				if (isGonly==TRUE)
+				if (isGonly==true)
 					strcpy(iwe.u.name,"802.11g");
 				else
 				{
@@ -986,7 +986,7 @@ int rt_ioctl_giwscan(struct net_device *dev,
 	}
 
 	data->length = current_ev - extra;
-/*    pAd->StaCfg.bScanReqIsFromWebUI = FALSE; */
+/*    pAd->StaCfg.bScanReqIsFromWebUI = false; */
 /*	DBGPRINT(RT_DEBUG_ERROR ,("===>rt_ioctl_giwscan. %d(%d) BSS returned, data->length = %d\n",i , pAd->ScanTab.BssNr, data->length)); */
 
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SCAN_END, 0,
@@ -1950,7 +1950,7 @@ INT rt28xx_sta_ioctl(
 	void        		*pAd = NULL;
 	struct iwreq        *wrqin = (struct iwreq *) rq;
 	RTMP_IOCTL_INPUT_STRUCT rt_wrq, *wrq = &rt_wrq;
-/*	BOOLEAN				StateMachineTouched = FALSE; */
+/*	bool 			StateMachineTouched = false; */
 	INT					Status = NDIS_STATUS_SUCCESS;
 	USHORT				subcmd;
 	u32				org_len;

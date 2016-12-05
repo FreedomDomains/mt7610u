@@ -125,7 +125,7 @@ loadfw_protect:
 		}
 	}
 
-	RTUSBWriteMACRegister(ad, 0x1004, 0x2c, FALSE);
+	RTUSBWriteMACRegister(ad, 0x1004, 0x2c, false);
 
 	/* Enable USB_DMA_CFG */
 	USB_CFG_READ(ad, &UsbCfg.word);
@@ -168,19 +168,19 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
 
 	/* Enable FCE */
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, FALSE);
+	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, false);
 
 	/* FCE tx_fs_base_ptr */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230, FALSE);
+	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230, false);
 
 	/* FCE tx_fs_max_cnt */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01, FALSE);
+	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01, false);
 
 	/* FCE pdma enable */
-	RTUSBWriteMACRegister(ad, FCE_PDMA_GLOBAL_CONF, 0x44, FALSE);
+	RTUSBWriteMACRegister(ad, FCE_PDMA_GLOBAL_CONF, 0x44, false);
 
 	/* FCE skip_fs_en */
-	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03, FALSE);
+	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03, false);
 
 	if (IS_MT76x0(ad)) {
 		USB_CFG_READ(ad, &cfg.word);
@@ -338,7 +338,7 @@ loadfw_protect:
 
 			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, FALSE);
+			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, false);
 
 			RtmpOsMsDelay(5);
 		} else {
@@ -471,7 +471,7 @@ loadfw_protect:
 
 			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, FALSE);
+			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, false);
 			RtmpOsMsDelay(5);
 		} else 	{
 			break;
@@ -512,9 +512,9 @@ error0:
 	release_firmware(fw);
 
 	if (cap->IsComboChip)
-		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1, FALSE);
+		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1, false);
 
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, FALSE);
+	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, false);
 
 	return ret;
 }
@@ -575,8 +575,8 @@ error0:
 	return NULL;
 }
 
-static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, BOOLEAN need_wait, u16 timeout,
-							   BOOLEAN need_retransmit, BOOLEAN need_rsp, u16 rsp_payload_len,
+static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wait, u16 timeout,
+							   bool need_retransmit, bool need_rsp, u16 rsp_payload_len,
 							   char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
 	msg->type = type;
@@ -586,7 +586,7 @@ static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, BOOLEAN need_wait, 
 	if (need_wait)
 		RTMP_OS_INIT_COMPLETION(&msg->ack_done);
 
-	msg->need_retransmit = FALSE;
+	msg->need_retransmit = false;
 
 	if (need_retransmit)
 		msg->retransmit_times = CMD_MSG_RETRANSMIT_TIMES;
@@ -624,9 +624,9 @@ void andes_free_cmd_msg(struct cmd_msg *msg)
 	ctl->free_cmd_msg++;
 }
 
-BOOLEAN is_inband_cmd_processing(struct rtmp_adapter*ad)
+bool is_inband_cmd_processing(struct rtmp_adapter*ad)
 {
-	BOOLEAN ret = 0;
+	bool ret = 0;
 
 	return ret;
 }
@@ -1273,7 +1273,7 @@ int andes_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	int ret = 0;
-	BOOLEAN need_wait = msg->need_wait;
+	bool need_wait = msg->need_wait;
 
 	RTMP_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
 
@@ -1384,7 +1384,7 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	BOOLEAN last_packet = FALSE;
+	bool last_packet = false;
 
 	if (!data)
 		return -1;
@@ -1401,7 +1401,7 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 									? cap->InbandPacketMaxLen : (var_len - cur_len);
 
 		if ((sent_len < cap->InbandPacketMaxLen) || ((cur_len + cap->InbandPacketMaxLen) == var_len))
-			last_packet = TRUE;
+			last_packet = true;
 
 		msg = andes_alloc_cmd_msg(ad, sent_len);
 
@@ -1411,9 +1411,9 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 		}
 
 		if (last_packet) {
-			andes_init_cmd_msg(msg, CMD_BURST_WRITE, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_BURST_WRITE, true, 0, true, true, 0, NULL, NULL);
 		}else {
-			andes_init_cmd_msg(msg, CMD_BURST_WRITE, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_BURST_WRITE, false, 0, false, false, 0, NULL, NULL);
 		}
 
 
@@ -1478,7 +1478,7 @@ int andes_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *data)
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_BURST_READ, TRUE, 0, TRUE, TRUE, receive_len,
+		andes_init_cmd_msg(msg, CMD_BURST_READ, true, 0, true, true, receive_len,
 									(char *)(&data[cur_index]), andes_burst_read_callback);
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
@@ -1537,7 +1537,7 @@ int andes_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_RANDOM_READ, TRUE, 0, TRUE, TRUE, receive_len,
+		andes_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
 									(char *)&reg_pair[cur_index], andes_random_read_callback);
 
 		for (i = 0; i < receive_len / 8; i++) {
@@ -1592,7 +1592,7 @@ int andes_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_RANDOM_READ, TRUE, 0, TRUE, TRUE, receive_len,
+		andes_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
 									(char *)&reg_pair[cur_index], andes_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
@@ -1631,7 +1631,7 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	BOOLEAN last_packet = FALSE;
+	bool last_packet = false;
 
 	if (!reg_pair)
 		return -1;
@@ -1641,7 +1641,7 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 									? cap->InbandPacketMaxLen : (var_len - cur_len);
 
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
-			last_packet = TRUE;
+			last_packet = true;
 
 		msg = andes_alloc_cmd_msg(ad, sent_len);
 
@@ -1651,9 +1651,9 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 12); i++) {
 			/* Address */
@@ -1687,7 +1687,7 @@ int andes_rf_read_modify_write(struct rtmp_adapter*ad, RF_R_M_W_REG *reg_pair, u
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	BOOLEAN last_packet = FALSE;
+	bool last_packet = false;
 
 	if (!reg_pair)
 		return -1;
@@ -1697,7 +1697,7 @@ int andes_rf_read_modify_write(struct rtmp_adapter*ad, RF_R_M_W_REG *reg_pair, u
 									? cap->InbandPacketMaxLen : (var_len - cur_len);
 
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
-			last_packet = TRUE;
+			last_packet = true;
 
 		msg = andes_alloc_cmd_msg(ad, sent_len);
 
@@ -1707,9 +1707,9 @@ int andes_rf_read_modify_write(struct rtmp_adapter*ad, RF_R_M_W_REG *reg_pair, u
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < sent_len / 12; i++) {
 			value = 0;
@@ -1755,7 +1755,7 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	BOOLEAN last_packet = FALSE;
+	bool last_packet = false;
 
 	if (!reg_pair)
 		return -1;
@@ -1765,7 +1765,7 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 									? cap->InbandPacketMaxLen : (var_len - cur_len);
 
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
-			last_packet = TRUE;
+			last_packet = true;
 
 		msg = andes_alloc_cmd_msg(ad, sent_len);
 
@@ -1775,9 +1775,9 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++)
 		{
@@ -1808,7 +1808,7 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	BOOLEAN last_packet = FALSE;
+	bool last_packet = false;
 
 	if (!reg_pair)
 		return -1;
@@ -1818,7 +1818,7 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 									? cap->InbandPacketMaxLen : (var_len - cur_len);
 
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
-			last_packet = TRUE;
+			last_packet = true;
 
 		msg = andes_alloc_cmd_msg(ad, sent_len);
 
@@ -1828,9 +1828,9 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			value = 0;
@@ -1888,7 +1888,7 @@ int andes_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_POWER_SAVING_OP, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+	andes_init_cmd_msg(msg, CMD_POWER_SAVING_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Power operation */
 	value = cpu2le32(op);
@@ -1936,9 +1936,9 @@ int andes_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 	}
 
 	if (fun_id != Q_SELECT)
-		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0, true, true, 0, NULL, NULL);
 	else
-		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Function ID */
 	value = cpu2le32(fun_id);
@@ -1970,7 +1970,7 @@ int andes_calibration(struct rtmp_adapter*ad, u32 cal_id, u32 param)
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_CALIBRATION_OP, TRUE, 0, TRUE, TRUE, 0, NULL, NULL);
+	andes_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true, true, 0, NULL, NULL);
 
 	/* Calibration ID */
 	value = cpu2le32(cal_id);
@@ -1999,7 +1999,7 @@ int andes_led_op(struct rtmp_adapter*ad, u32 led_idx, u32 link_status)
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_LED_MODE_OP, FALSE, 0, FALSE, FALSE, 0, NULL, NULL);
+	andes_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Led index */
 	value = cpu2le32(led_idx);

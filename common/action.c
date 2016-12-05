@@ -420,7 +420,7 @@ ULONG BuildIntolerantChannelRep(
 		/* Find Channel report with the same regulatory class in 2.4GHz.*/
 		for ( i = 0;i < pAd->CommonCfg.TriggerEventTab.EventANo;i++)
 		{
-			if (pAd->CommonCfg.TriggerEventTab.EventA[i].bValid == TRUE)
+			if (pAd->CommonCfg.TriggerEventTab.EventA[i].bValid == true)
 			{
 				if (pAd->CommonCfg.TriggerEventTab.EventA[i].RegClass == TmpRegClass)
 				{
@@ -434,7 +434,7 @@ ULONG BuildIntolerantChannelRep(
 						ChannelList[idx] = (u8)pAd->CommonCfg.TriggerEventTab.EventA[i].Channel;
 						idx++;
 					}
-					pAd->CommonCfg.TriggerEventTab.EventA[i].bValid = FALSE;
+					pAd->CommonCfg.TriggerEventTab.EventA[i].bValid = false;
 				}
 				DBGPRINT(RT_DEBUG_ERROR,("ACT - BuildIntolerantChannelRep , Total Channel number = %d \n", idx));
 			}
@@ -472,7 +472,7 @@ ULONG BuildIntolerantChannelRep(
 void Update2040CoexistFrameAndNotify(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
-	IN	BOOLEAN	bAddIntolerantCha)
+	IN	bool bAddIntolerantCha)
 {
 	BSS_2040_COEXIST_IE		OldValue;
 
@@ -499,7 +499,7 @@ Description : Send 20/40 BSS Coexistence Action frame If one trigger event is tr
 void Send2040CoexistAction(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
-	IN	BOOLEAN	bAddIntolerantCha)
+	IN	bool bAddIntolerantCha)
 {
 	u8 *		pOutBuffer = NULL;
 	FRAME_ACTION_HDR	Frame;
@@ -527,7 +527,7 @@ void Send2040CoexistAction(
 				  1,                                &pAd->CommonCfg.BSSCoexist2040.word,
 				  END_OF_ARGS);
 
-	if (bAddIntolerantCha == TRUE)
+	if (bAddIntolerantCha == true)
 		IntolerantChaRepLen = BuildIntolerantChannelRep(pAd, pOutBuffer + FrameLen);
 
 	/*2009 PF#3: IOT issue with Motorola AP. It will not check the field of BSSCoexist2040.*/
@@ -609,7 +609,7 @@ void UpdateBssScanParm(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-BOOLEAN ChannelSwitchSanityCheck(
+bool ChannelSwitchSanityCheck(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
 	IN    u8  NewChannel,
@@ -618,13 +618,13 @@ BOOLEAN ChannelSwitchSanityCheck(
 	u8 	i;
 
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
-		return FALSE;
+		return false;
 
 	if ((NewChannel > 7) && (Secondary == 1))
-		return FALSE;
+		return false;
 
 	if ((NewChannel < 5) && (Secondary == 3))
-		return FALSE;
+		return false;
 
 	/* 0. Check if new channel is in the channellist.*/
 	for (i = 0;i < pAd->ChannelListNum;i++)
@@ -636,9 +636,9 @@ BOOLEAN ChannelSwitchSanityCheck(
 	}
 
 	if (i == pAd->ChannelListNum)
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -654,7 +654,7 @@ void ChannelSwitchAction(
 	DBGPRINT(RT_DEBUG_TRACE,("%s(): NewChannel=%d, Secondary=%d\n",
 				__FUNCTION__, NewChannel, Secondary));
 
-	if (ChannelSwitchSanityCheck(pAd, Wcid, NewChannel, Secondary) == FALSE)
+	if (ChannelSwitchSanityCheck(pAd, Wcid, NewChannel, Secondary) == false)
 		return;
 
 	pAd->CommonCfg.Channel = NewChannel;
@@ -684,7 +684,7 @@ void ChannelSwitchAction(
 	}
 
 	if (rf_channel != 0) {
-		AsicSetChannel(pAd, rf_channel, rf_bw, Secondary, FALSE);
+		AsicSetChannel(pAd, rf_channel, rf_bw, Secondary, false);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d \n",
 					__FUNCTION__, (rf_bw == BW_40 ? 40 : 20),
@@ -730,7 +730,7 @@ void PeerPublicAction(
 					pIntolerantReport = (BSS_2040_INTOLERANT_CH_REPORT *)((u8 *)pCoexistInfo + sizeof(BSS_2040_COEXIST_ELEMENT));
 				}
 
-				if(pAd->CommonCfg.bBssCoexEnable == FALSE || (pAd->CommonCfg.bForty_Mhz_Intolerant == TRUE))
+				if(pAd->CommonCfg.bBssCoexEnable == false || (pAd->CommonCfg.bForty_Mhz_Intolerant == true))
 				{
 					DBGPRINT(RT_DEBUG_TRACE, ("20/40 BSS CoexMgmt=%d, bForty_Mhz_Intolerant=%d, ignore this action!!\n",
 												pAd->CommonCfg.bBssCoexEnable,
@@ -859,7 +859,7 @@ void PeerHTAction(
 		case NOTIFY_BW_ACTION:
 			DBGPRINT(RT_DEBUG_TRACE,("ACTION - HT Notify Channel bandwidth action----> \n"));
 #ifdef CONFIG_STA_SUPPORT
-			if(pAd->StaActive.SupportedPhyInfo.bHtEnable == FALSE)
+			if(pAd->StaActive.SupportedPhyInfo.bHtEnable == false)
 			{
 				/* Note, this is to patch DIR-1353 AP. When the AP set to Wep, it will use legacy mode. But AP still keeps */
 				/* sending BW_Notify Action frame, and cause us to linkup and linkdown. */
@@ -927,8 +927,8 @@ void PeerHTAction(
 	Parametrs:
 	p8023Header: if this is already 802.3 format, p8023Header is NULL
 
-	Return	: TRUE if put into rx reordering buffer, shouldn't indicaterxhere.
-				FALSE , then continue indicaterx at this moment.
+	Return	: true if put into rx reordering buffer, shouldn't indicaterxhere.
+				false , then continue indicaterx at this moment.
 	==========================================================================
  */
 void ORIBATimerTimeout(

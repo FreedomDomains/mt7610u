@@ -52,7 +52,7 @@ void DisplayTxAgg (struct rtmp_adapter*pAd)
 }
 #endif /* DOT11_N_SUPPORT */
 
-static BOOLEAN RT_isLegalCmdBeforeInfUp(
+static bool RT_isLegalCmdBeforeInfUp(
        IN char *SetCmd);
 
 
@@ -77,7 +77,7 @@ INT ComputeChecksum(
 
 UINT GenerateWpsPinCode(
 	IN	struct rtmp_adapter *pAd,
-    IN  BOOLEAN         bFromApcli,
+    IN  bool         bFromApcli,
 	IN	u8 		apidx)
 {
 	u8 macAddr[ETH_ALEN];
@@ -130,7 +130,7 @@ char* get_bw_str(int bandwidth)
         This command will not work, if the field of CountryRegion in eeprom is programmed.
 
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
     ==========================================================================
 */
 INT RT_CfgSetCountryRegion(
@@ -155,7 +155,7 @@ INT RT_CfgSetCountryRegion(
     if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE) && (*pCountryRegion & EEPROM_IS_PROGRAMMED))
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("CfgSetCountryRegion():CountryRegion in eeprom was programmed\n"));
-		return FALSE;
+		return false;
 	}
 
 	if((region >= 0) &&
@@ -169,10 +169,10 @@ INT RT_CfgSetCountryRegion(
 	else
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("CfgSetCountryRegion():region(%ld) out of range!\n", region));
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 
 }
 
@@ -246,26 +246,26 @@ u8 cfgmode_2_wmode(u8 cfg_mode)
 }
 
 
-static BOOLEAN wmode_valid(struct rtmp_adapter*pAd, enum WIFI_MODE wmode)
+static bool wmode_valid(struct rtmp_adapter*pAd, enum WIFI_MODE wmode)
 {
 	if ((WMODE_CAP_5G(wmode) && (!PHY_CAP_5G(pAd->chipCap.phy_caps))) ||
 		(WMODE_CAP_2G(wmode) && (!PHY_CAP_2G(pAd->chipCap.phy_caps))) ||
 		(WMODE_CAP_N(wmode) && RTMP_TEST_MORE_FLAG(pAd, fRTMP_ADAPTER_DISABLE_DOT_11N))
 	)
-		return FALSE;
+		return false;
 	else
-		return TRUE;
+		return true;
 }
 
 
-BOOLEAN wmode_band_equal(u8 smode, u8 tmode)
+bool wmode_band_equal(u8 smode, u8 tmode)
 {
-	BOOLEAN eq = FALSE;
+	bool eq = false;
 	u8 *str1, *str2;
 
 	if ((WMODE_CAP_5G(smode) == WMODE_CAP_5G(tmode)) &&
 		(WMODE_CAP_2G(smode) == WMODE_CAP_2G(tmode)))
-		eq = TRUE;
+		eq = true;
 
 	str1 = wmode_2_str(smode);
 	str2 = wmode_2_str(tmode);
@@ -290,7 +290,7 @@ BOOLEAN wmode_band_equal(u8 smode, u8 tmode)
     Description:
         Set Wireless Mode
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
     ==========================================================================
 */
 INT RT_CfgSetWirelessMode(struct rtmp_adapter*pAd, char *arg)
@@ -308,10 +308,10 @@ INT RT_CfgSetWirelessMode(struct rtmp_adapter*pAd, char *arg)
 				("%s(): Invalid wireless mode(%ld, wmode=0x%x), ChipCap(%s)\n",
 				__FUNCTION__, cfg_mode, wmode,
 				BAND_STR[pAd->chipCap.phy_caps & 0x3]));
-		return FALSE;
+		return false;
 	}
 
-	if (wmode_band_equal(pAd->CommonCfg.PhyMode, wmode) == TRUE)
+	if (wmode_band_equal(pAd->CommonCfg.PhyMode, wmode) == true)
 		DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Equal!\n"));
 	else
 		DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Not Equal!\n"));
@@ -327,17 +327,17 @@ INT RT_CfgSetWirelessMode(struct rtmp_adapter*pAd, char *arg)
 		kfree(mode_str);
 	}
 
-	return TRUE;
+	return true;
 }
 
 
 /* maybe can be moved to GPL code, ap_mbss.c, but the code will be open */
 
 
-static BOOLEAN RT_isLegalCmdBeforeInfUp(
+static bool RT_isLegalCmdBeforeInfUp(
        IN char *SetCmd)
 {
-		BOOLEAN TestFlag;
+		bool TestFlag;
 		TestFlag =	!strcmp(SetCmd, "Debug") ||
 #ifdef EXT_BUILD_CHANNEL_LIST
 					!strcmp(SetCmd, "CountryCode") ||
@@ -346,7 +346,7 @@ static BOOLEAN RT_isLegalCmdBeforeInfUp(
 					!strcmp(SetCmd, "ChannelListShow") ||
 					!strcmp(SetCmd, "ChannelListDel") ||
 #endif /* EXT_BUILD_CHANNEL_LIST */
-					FALSE; /* default */
+					false; /* default */
        return TestFlag;
 }
 
@@ -360,13 +360,13 @@ INT RT_CfgSetShortSlot(
 	ShortSlot = simple_strtol(arg, 0, 10);
 
 	if (ShortSlot == 1)
-		pAd->CommonCfg.bUseShortSlotTime = TRUE;
+		pAd->CommonCfg.bUseShortSlotTime = true;
 	else if (ShortSlot == 0)
-		pAd->CommonCfg.bUseShortSlotTime = FALSE;
+		pAd->CommonCfg.bUseShortSlotTime = false;
 	else
-		return FALSE;  /*Invalid argument */
+		return false;  /*Invalid argument */
 
-	return TRUE;
+	return true;
 }
 
 
@@ -375,7 +375,7 @@ INT RT_CfgSetShortSlot(
     Description:
         Set WEP KEY base on KeyIdx
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
     ==========================================================================
 */
 INT	RT_CfgSetWepKey(
@@ -387,7 +387,7 @@ INT	RT_CfgSetWepKey(
 	INT				KeyLen;
 	INT				i;
 	/*u8 		CipherAlg = CIPHER_NONE;*/
-	BOOLEAN			bKeyIsHex = FALSE;
+	bool 		bKeyIsHex = false;
 
 	/* TODO: Shall we do memset for the original key info??*/
 	memset(pSharedKey, 0, sizeof(CIPHER_KEY));
@@ -396,7 +396,7 @@ INT	RT_CfgSetWepKey(
 	{
 		case 5: /*wep 40 Ascii type*/
 		case 13: /*wep 104 Ascii type*/
-			bKeyIsHex = FALSE;
+			bKeyIsHex = false;
 			pSharedKey->KeyLen = KeyLen;
 			memmove(pSharedKey->Key, keyString, KeyLen);
 			break;
@@ -406,23 +406,23 @@ INT	RT_CfgSetWepKey(
 			for(i=0; i < KeyLen; i++)
 			{
 				if( !isxdigit(*(keyString+i)) )
-					return FALSE;  /*Not Hex value;*/
+					return false;  /*Not Hex value;*/
 			}
-			bKeyIsHex = TRUE;
+			bKeyIsHex = true;
 			pSharedKey->KeyLen = KeyLen/2 ;
 			AtoH(keyString, pSharedKey->Key, pSharedKey->KeyLen);
 			break;
 
 		default: /*Invalid argument */
 			DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetWepKey(keyIdx=%d):Invalid argument (arg=%s)\n", keyIdx, keyString));
-			return FALSE;
+			return false;
 	}
 
 	pSharedKey->CipherAlg = ((KeyLen % 5) ? CIPHER_WEP128 : CIPHER_WEP64);
 	DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetWepKey:(KeyIdx=%d,type=%s, Alg=%s)\n",
-						keyIdx, (bKeyIsHex == FALSE ? "Ascii" : "Hex"), CipherName[pSharedKey->CipherAlg]));
+						keyIdx, (bKeyIsHex == false ? "Ascii" : "Hex"), CipherName[pSharedKey->CipherAlg]));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -439,7 +439,7 @@ INT	RT_CfgSetWepKey(
         pPMKBuf		Output buffer of WPAPSK key
 
     Return:
-        TRUE if all parameters are OK, FALSE otherwise
+        true if all parameters are OK, false otherwise
     ==========================================================================
 */
 INT RT_CfgSetWPAPSKKey(
@@ -456,7 +456,7 @@ INT RT_CfgSetWPAPSKKey(
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("WPAPSK Key length(%d) error, required 8 ~ 64 characters!(keyStr=%s)\n",
 									keyStringLen, keyString));
-		return FALSE;
+		return false;
 	}
 
 	memset(pPMKBuf, 0, 32);
@@ -470,7 +470,7 @@ INT RT_CfgSetWPAPSKKey(
 	    memmove(pPMKBuf, keyMaterial, 32);
 	}
 
-	return TRUE;
+	return true;
 }
 
 INT	RT_CfgSetFixedTxPhyMode(char *arg)
@@ -479,13 +479,13 @@ INT	RT_CfgSetFixedTxPhyMode(char *arg)
 	ULONG value;
 
 
-	if (rtstrcasecmp(arg, "OFDM") == TRUE)
+	if (rtstrcasecmp(arg, "OFDM") == true)
 		fix_tx_mode = FIXED_TXMODE_OFDM;
-	else if (rtstrcasecmp(arg, "CCK") == TRUE)
+	else if (rtstrcasecmp(arg, "CCK") == true)
 	    fix_tx_mode = FIXED_TXMODE_CCK;
-	else if (rtstrcasecmp(arg, "HT") == TRUE)
+	else if (rtstrcasecmp(arg, "HT") == true)
 	    fix_tx_mode = FIXED_TXMODE_HT;
-	else if (rtstrcasecmp(arg, "VHT") == TRUE)
+	else if (rtstrcasecmp(arg, "VHT") == true)
 		fix_tx_mode = FIXED_TXMODE_VHT;
 	else
 	{
@@ -517,13 +517,13 @@ INT	RT_CfgSetMacAddress(
 	if(mac_len != 17)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : invalid length (%d)\n", __FUNCTION__, mac_len));
-		return FALSE;
+		return false;
 	}
 
 	if(strcmp(arg, "00:00:00:00:00:00") == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : invalid mac setting \n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	for (i = 0; i < ETH_ALEN; i++)
@@ -532,11 +532,11 @@ INT	RT_CfgSetMacAddress(
 		arg = arg + 3;
 	}
 
-	pAd->bLocalAdminMAC = TRUE;
-	return TRUE;
+	pAd->bLocalAdminMAC = true;
+	return true;
 }
 
-INT	RT_CfgSetTxMCSProc(char *arg, BOOLEAN *pAutoRate)
+INT	RT_CfgSetTxMCSProc(char *arg, bool *pAutoRate)
 {
 	INT	Value = simple_strtol(arg, 0, 10);
 	INT	TxMcs;
@@ -544,12 +544,12 @@ INT	RT_CfgSetTxMCSProc(char *arg, BOOLEAN *pAutoRate)
 	if ((Value >= 0 && Value <= 23) || (Value == 32)) /* 3*3*/
 	{
 		TxMcs = Value;
-		*pAutoRate = FALSE;
+		*pAutoRate = false;
 	}
 	else
 	{
 		TxMcs = MCS_AUTO;
-		*pAutoRate = TRUE;
+		*pAutoRate = true;
 	}
 
 	return TxMcs;
@@ -567,7 +567,7 @@ INT	RT_CfgSetAutoFallBack(
 	tx_rty_cfg.field.TxautoFBEnable = (AutoFallBack) ? 1 : 0;
 	RTMP_IO_WRITE32(pAd, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetAutoFallBack::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
-	return TRUE;
+	return true;
 }
 
 
@@ -768,7 +768,7 @@ INT RTMP_COM_IoctlHandle(
 		/* sanity check before IOCTL */
 			if ((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)))
 			{
-				if(pData == NULL ||	RT_isLegalCmdBeforeInfUp((char *) pData) == FALSE)
+				if(pData == NULL ||	RT_isLegalCmdBeforeInfUp((char *) pData) == false)
 				return NDIS_STATUS_FAILURE;
 			}
 			break;
@@ -1130,14 +1130,14 @@ INT Set_SiteSurvey_Proc(
 			Ssid.SsidLength = strlen(arg);
 		}
 
-		pAd->StaCfg.bSkipAutoScanConn = TRUE;
+		pAd->StaCfg.bSkipAutoScanConn = true;
 		StaSiteSurvey(pAd, &Ssid, SCAN_ACTIVE);
 	}
 #endif // CONFIG_STA_SUPPORT //
 
 	DBGPRINT(RT_DEBUG_TRACE, ("Set_SiteSurvey_Proc\n"));
 
-    return TRUE;
+    return true;
 }
 
 INT	Set_Antenna_Proc(
@@ -1174,7 +1174,7 @@ INT	Set_Antenna_Proc(
 			break;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1185,17 +1185,17 @@ INT set_temp_sensor_proc(
 	IN char *		arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0) {
-		pAd->chipCap.bDoTemperatureSensor = FALSE;
+		pAd->chipCap.bDoTemperatureSensor = false;
 		pAd->chipCap.LastTemperatureforVCO = 0x7FFF;
 		pAd->chipCap.LastTemperatureforCal = 0x7FFF;
 		pAd->chipCap.NowTemperature = 0x7FFF;
 	}
 	else
-		pAd->chipCap.bDoTemperatureSensor = TRUE;
+		pAd->chipCap.bDoTemperatureSensor = true;
 
 	DBGPRINT(RT_DEBUG_OFF, ("%s:: bDoTemperatureSensor = %d \n", __FUNCTION__, pAd->chipCap.bDoTemperatureSensor));
 
-	return TRUE;
+	return true;
 }
 #endif /* MT76x0 */
 

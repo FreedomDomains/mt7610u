@@ -191,7 +191,7 @@ typedef struct completion RTMP_OS_COMPLETION;
 /***********************************************************************************
  *	Others
  ***********************************************************************************/
-#define APCLI_IF_UP_CHECK(pAd, ifidx) (RtmpOSNetDevIsUp((pAd)->ApCfg.ApCliTab[(ifidx)].dev) == TRUE)
+#define APCLI_IF_UP_CHECK(pAd, ifidx) (RtmpOSNetDevIsUp((pAd)->ApCfg.ApCliTab[(ifidx)].dev) == true)
 
 
 #define RTMP_OS_NETDEV_SET_PRIV		RtmpOsSetNetDevPriv

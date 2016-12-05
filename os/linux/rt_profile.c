@@ -135,7 +135,7 @@ int	RTMPReadParametersHook(
 #ifdef HOSTAPD_SUPPORT
 		for (i = 0; i < pAd->ApCfg.BssidNum; i++)
 		{
-			pAd->ApCfg.MBSSID[i].Hostapd=FALSE;
+			pAd->ApCfg.MBSSID[i].Hostapd=false;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset ra%d hostapd support=FLASE", i));
 
 		}
@@ -266,7 +266,7 @@ void RTMPFreeAdapter(struct rtmp_adapter *pAd)
 		kfree(pAd->BeaconBuf);
 
 	for (index =0 ; index < NUM_OF_TX_RING; index++) {
-		pAd->DeQueueRunning[index] = FALSE;
+		pAd->DeQueueRunning[index] = false;
 	}
 
 #ifdef UAPSD_SUPPORT
@@ -371,7 +371,7 @@ struct net_device *get_netdev_from_bssid(
 			dev_p = pAd->net_dev;
 		}
 
-	} while (FALSE);
+	} while (false);
 
 	ASSERT(dev_p);
 	return dev_p; /* return one of MBSS */

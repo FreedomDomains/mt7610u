@@ -94,7 +94,7 @@ typedef struct _RTMP_OS_TASK_ {
 #ifdef KTHREAD_SUPPORT
 	struct task_struct *kthread_task;
 	wait_queue_head_t kthread_q;
-	BOOLEAN kthread_running;
+	bool kthread_running;
 #endif
 } OS_TASK;
 

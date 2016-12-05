@@ -128,9 +128,9 @@ struct cmd_msg {
 	u8 seq;
 	u16 timeout;
 	u16 rsp_payload_len;
-	BOOLEAN need_wait;
-	BOOLEAN need_rsp;
-	BOOLEAN need_retransmit;
+	bool need_wait;
+	bool need_rsp;
+	bool need_retransmit;
 	RTMP_OS_COMPLETION ack_done;
 	char *rsp_payload;
 	MSG_RSP_HANDLER rsp_handler;
@@ -265,7 +265,7 @@ int andes_pwr_saving(struct rtmp_adapter *ad, u32 op, u32 level,
 					 u8 tim_byte_offset, u8 tim_byte_pattern);
 int andes_calibration(struct rtmp_adapter *ad, u32 cal_id, u32 param);
 int andes_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status);
-BOOLEAN is_inband_cmd_processing(struct rtmp_adapter *ad);
+bool is_inband_cmd_processing(struct rtmp_adapter *ad);
 void andes_cmd_msg_bh(unsigned long param);
 int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad);
 int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad);

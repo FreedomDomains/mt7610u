@@ -47,13 +47,13 @@ void AsicUpdateAutoFallBackTable(
 
 #ifdef AGS_SUPPORT
 	RTMP_RA_AGS_TB *pCurrTxRate_AGS, *pNextTxRate_AGS;
-	BOOLEAN					bUseAGS = FALSE;
+	bool 				bUseAGS = false;
 
 	if (AGS_IS_USING(pAd, pRateTable))
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: Use AGS\n", __FUNCTION__));
 
-		bUseAGS = TRUE;
+		bUseAGS = true;
 
 		Ht3SSCfg0.word = 0x1211100f;
 		Ht3SSCfg1.word = 0x16151413;
@@ -209,7 +209,7 @@ void AsicUpdateAutoFallBackTable(
 						}
 						else
 #ifdef AGS_SUPPORT
-						if ((bUseAGS == TRUE) &&
+						if ((bUseAGS == true) &&
 							(pCurrTxRate->CurrMCS >= 16) && (pCurrTxRate->CurrMCS <= 23))
 						{
 							switch(pCurrTxRate->CurrMCS)
@@ -253,7 +253,7 @@ void AsicUpdateAutoFallBackTable(
 	}
 
 #ifdef AGS_SUPPORT
-	if (bUseAGS == TRUE)
+	if (bUseAGS == true)
 	{
 		Ht3SSCfg0.field.HTMCS16FBK = 0x8; // MCS 16 -> MCS 8
 		HtCfg1.field.HTMCS8FBK = 0x0; // MCS 8 -> MCS 0
@@ -276,7 +276,7 @@ skipUpdate:
 #ifdef DOT11N_SS3_SUPPORT
 	if (IS_RT2883(pAd) || IS_RT3883(pAd)
 #ifdef AGS_SUPPORT
-		|| (bUseAGS == TRUE)
+		|| (bUseAGS == true)
 #endif /* AGS_SUPPORT */
 	)
 	{
@@ -321,8 +321,8 @@ void AsicUpdateProtect(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT OperationMode,
 	IN u8 SetMask,
-	IN BOOLEAN bDisableBGProtect,
-	IN BOOLEAN bNonGFExist)
+	IN bool bDisableBGProtect,
+	IN bool bNonGFExist)
 {
 	PROT_CFG_STRUC	ProtCfg, ProtCfg4;
 	u32 Protect[6];
@@ -355,7 +355,7 @@ void AsicUpdateProtect(
 #ifdef DOT11_N_SUPPORT
 			(pAd->CommonCfg.BACapability.field.AmsduEnable) ||
 #endif /* DOT11_N_SUPPORT */
-			(pAd->CommonCfg.bAggregationCapable == TRUE))
+			(pAd->CommonCfg.bAggregationCapable == true))
             && pAd->CommonCfg.RtsThreshold == MAX_RTS_THRESHOLD)
         {
 			MacReg |= (0x1000 << 8);
@@ -503,7 +503,7 @@ void AsicUpdateProtect(
 					Protect[REG_IDX_GF40] = 0x03f54084;
 #endif
 				}
-				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = FALSE;
+				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 #ifdef DOT11_VHT_AC
 #ifdef RT65xx
@@ -552,7 +552,7 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_MM40] = ProtCfg4.word;
 				Protect[REG_IDX_GF20] = ProtCfg.word;
 				Protect[REG_IDX_GF40] = ProtCfg4.word;
-				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = TRUE;
+				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 #ifdef DOT11_VHT_AC
 #ifdef RT65xx
@@ -609,7 +609,7 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_GF20] = ProtCfg.word;
 				Protect[REG_IDX_GF40] = ProtCfg4.word;
 
-				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = FALSE;
+				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 #ifdef DOT11_VHT_AC
 #ifdef RT65xx
@@ -661,7 +661,7 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_MM40] = ProtCfg4.word;
 				Protect[REG_IDX_GF20] = ProtCfg.word;
 				Protect[REG_IDX_GF40] = ProtCfg4.word;
-				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = TRUE;
+				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 #ifdef DOT11_VHT_AC
 #ifdef RT65xx
@@ -709,7 +709,7 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_MM40] = ProtCfg4.word; /*0x03f54084;*/
 				Protect[REG_IDX_GF20] = ProtCfg.word; 	/*0x01754004;*/
 				Protect[REG_IDX_GF40] = ProtCfg4.word; /*0x03f54084;*/
-				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = TRUE;
+				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 				break;
 		}
 	}
@@ -756,7 +756,7 @@ void AsicUpdateProtect(
 void AsicSwitchChannel(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Channel,
-	IN BOOLEAN bScan)
+	IN bool bScan)
 {
 	u8 bw;
 #ifdef CONFIG_STA_SUPPORT
@@ -899,7 +899,7 @@ void AsicForceSleep(
  */
 void AsicForceWakeup(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN    bFromTx)
+	IN bool    bFromTx)
 {
     DBGPRINT(RT_DEBUG_INFO, ("--> AsicForceWakeup \n"));
     RTMP_STA_FORCE_WAKEUP(pAd, bFromTx);
@@ -1011,7 +1011,7 @@ void AsicDisableRDG(
 #endif
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
 #ifdef DOT11_N_SUPPORT
-		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
+		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == false)
 #endif /* DOT11_N_SUPPORT */
 	)
 	{
@@ -1195,7 +1195,7 @@ void AsicSetEdcaParm(
 	Ac1Cfg.word = 0;
 	Ac2Cfg.word = 0;
 	Ac3Cfg.word = 0;
-	if ((pEdcaParm == NULL) || (pEdcaParm->bValid == FALSE))
+	if ((pEdcaParm == NULL) || (pEdcaParm->bValid == false))
 	{
 		DBGPRINT(RT_DEBUG_TRACE,("AsicSetEdcaParm\n"));
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_WMM_INUSED);
@@ -1483,14 +1483,14 @@ void AsicSetEdcaParm(
  */
 void 	AsicSetSlotTime(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN bUseShortSlotTime)
+	IN bool bUseShortSlotTime)
 {
 	ULONG	SlotTime;
 	u32	RegValue = 0;
 
 #ifdef CONFIG_STA_SUPPORT
 	if (pAd->CommonCfg.Channel > 14)
-		bUseShortSlotTime = TRUE;
+		bUseShortSlotTime = true;
 #endif /* CONFIG_STA_SUPPORT */
 
 	if (bUseShortSlotTime && OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_SHORT_SLOT_INUSED))
@@ -1509,14 +1509,14 @@ void 	AsicSetSlotTime(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
 		/* force using short SLOT time for FAE to demo performance when TxBurst is ON*/
-		if (((pAd->StaActive.SupportedPhyInfo.bHtEnable == FALSE) && (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED)))
+		if (((pAd->StaActive.SupportedPhyInfo.bHtEnable == false) && (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED)))
 #ifdef DOT11_N_SUPPORT
-			|| ((pAd->StaActive.SupportedPhyInfo.bHtEnable == TRUE) && (pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE))
+			|| ((pAd->StaActive.SupportedPhyInfo.bHtEnable == true) && (pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE))
 #endif /* DOT11_N_SUPPORT */
 			)
 		{
 			/* In this case, we will think it is doing Wi-Fi test*/
-			/* And we will not set to short slot when bEnableTxBurst is TRUE.*/
+			/* And we will not set to short slot when bEnableTxBurst is true.*/
 		}
 		else if (pAd->CommonCfg.bEnableTxBurst)
 		{
@@ -1610,18 +1610,18 @@ void AsicAddSharedKeyEntry(
 
 #ifdef RTMP_MAC_USB
 {
-	RTUSBMultiWrite(pAd, offset, pKey, MAX_LEN_OF_SHARE_KEY, FALSE);
+	RTUSBMultiWrite(pAd, offset, pKey, MAX_LEN_OF_SHARE_KEY, false);
 
 	offset += MAX_LEN_OF_SHARE_KEY;
 	if (pTxMic)
 	{
-		RTUSBMultiWrite(pAd, offset, pTxMic, 8, FALSE);
+		RTUSBMultiWrite(pAd, offset, pTxMic, 8, false);
 	}
 
 	offset += 8;
 	if (pRxMic)
 	{
-		RTUSBMultiWrite(pAd, offset, pRxMic, 8, FALSE);
+		RTUSBMultiWrite(pAd, offset, pRxMic, 8, false);
 	}
 }
 #endif /* RTMP_MAC_USB */
@@ -1877,7 +1877,7 @@ void AsicAddPairwiseKeyEntry(
 	/* EKEY*/
 	offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
 #ifdef RTMP_MAC_USB
-	RTUSBMultiWrite(pAd, offset, &pCipherKey->Key[0], MAX_LEN_OF_PEER_KEY, FALSE);
+	RTUSBMultiWrite(pAd, offset, &pCipherKey->Key[0], MAX_LEN_OF_PEER_KEY, false);
 #endif /* RTMP_MAC_USB */
 	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
 	{
@@ -1891,14 +1891,14 @@ void AsicAddPairwiseKeyEntry(
 	if (pTxMic)
 	{
 #ifdef RTMP_MAC_USB
-		RTUSBMultiWrite(pAd, offset, &pCipherKey->TxMic[0], 8, FALSE);
+		RTUSBMultiWrite(pAd, offset, &pCipherKey->TxMic[0], 8, false);
 #endif /* RTMP_MAC_USB */
 	}
 	offset += 8;
 	if (pRxMic)
 	{
 #ifdef RTMP_MAC_USB
-		RTUSBMultiWrite(pAd, offset, &pCipherKey->RxMic[0], 8, FALSE);
+		RTUSBMultiWrite(pAd, offset, &pCipherKey->RxMic[0], 8, false);
 #endif /* RTMP_MAC_USB */
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("AsicAddPairwiseKeyEntry: WCID #%d Alg=%s\n",WCID, CipherName[CipherAlg]));
@@ -1939,46 +1939,46 @@ void AsicRemovePairwiseKeyEntry(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s : Wcid #%d \n", __FUNCTION__, Wcid));
 }
 
-BOOLEAN AsicSendCommandToMcu(
+bool AsicSendCommandToMcu(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Command,
 	IN u8 Token,
 	IN u8 Arg0,
 	IN u8 Arg1,
-	IN BOOLEAN in_atomic)
+	IN bool in_atomic)
 {
 #ifdef RT65xx
 	// TODO: shiang-6590, fix me, currently firmware is not ready yet, so ignore it!
 	if (IS_RT65XX(pAd))
-		return TRUE;
+		return true;
 #endif /* RT65xx */
 
 	if (pAd->chipOps.sendCommandToMcu)
 		return pAd->chipOps.sendCommandToMcu(pAd, Command, Token, Arg0, Arg1, in_atomic);
 	else
-		return FALSE;
+		return false;
 }
 
 
-BOOLEAN AsicSendCommandToMcuBBP(
+bool AsicSendCommandToMcuBBP(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	 Command,
 	IN u8 	 Token,
 	IN u8 	 Arg0,
 	IN u8 	 Arg1,
-	IN BOOLEAN		FlgIsNeedLocked)
+	IN bool 	FlgIsNeedLocked)
 {
 #ifdef RT65xx
 	// TODO: shiang-6590, fix me, currently firmware is not ready yet, so ignore it!
 	if (IS_RT65XX(pAd)) {
-		return TRUE;
+		return true;
 	}
 #endif /* RT65xx */
 
 	if (pAd->chipOps.sendCommandToMcu)
 		return pAd->chipOps.sendCommandToMcu(pAd, Command, Token, Arg0, Arg1, FlgIsNeedLocked);
 	else
-		return FALSE;
+		return false;
 }
 
 /*
@@ -2036,7 +2036,7 @@ void AsicTurnOffRFClk(
 
 						/* Program R1b13 to 1, R3/b18,19 to 0, R2b18 to 0. */
 						/* Set RF R2 bit18=0, R3 bit[18:19]=0*/
-						/*if (pAd->StaCfg.bRadio == FALSE)*/
+						/*if (pAd->StaCfg.bRadio == false)*/
 						if (1)
 						{
 							RTMP_RF_IO_WRITE32(pAd, R3);
@@ -2100,7 +2100,7 @@ void AsicDisableRalinkBurstMode(
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
 #ifdef DOT11_N_SUPPORT
-		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
+		&& (pAd->MacTab.fAnyStationMIMOPSDynamic == false)
 #endif // DOT11_N_SUPPORT //
 	)
 	{
@@ -2123,12 +2123,12 @@ void AsicDisableRalinkBurstMode(
 */
 void AsicLoadWOWFirmware(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN WOW)
+	IN bool WOW)
 {
 	if (WOW)
-		pAd->WOW_Cfg.bWOWFirmware = TRUE;
+		pAd->WOW_Cfg.bWOWFirmware = true;
 	else
-		pAd->WOW_Cfg.bWOWFirmware = FALSE;
+		pAd->WOW_Cfg.bWOWFirmware = false;
 
 	RtmpAsicLoadFirmware(pAd);
 }
@@ -2138,7 +2138,7 @@ void AsicLoadWOWFirmware(
 void AsicWOWSendNullFrame(
 	IN struct rtmp_adapter *pAd,
 	IN u8 TxRate,
-	IN BOOLEAN bQosNull)
+	IN bool bQosNull)
 {
 
 	struct txwi_nmac *TxWI;
@@ -2197,7 +2197,7 @@ void AsicWOWSendNullFrame(
 #endif /* WOW_SUPPORT */
 
 
-INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, BOOLEAN enable)
+INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, bool enable)
 {
 	u32 val;
 
@@ -2210,11 +2210,11 @@ INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, BOOLEAN enable)
 	val |=0x1;
 	RTMP_IO_WRITE32(pAd, INT_TIMER_EN, val);
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us)
+bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us)
 {
 	INT i = 0;
 	WPDMA_GLO_CFG_STRUC GloCfg;
@@ -2224,16 +2224,16 @@ BOOLEAN AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us)
 		RTMP_IO_READ32(pAd, WPDMA_GLO_CFG, &GloCfg.word);
 		if ((GloCfg.field.TxDMABusy == 0)  && (GloCfg.field.RxDMABusy == 0)) {
 			DBGPRINT(RT_DEBUG_TRACE, ("==>  DMAIdle, GloCfg=0x%x\n", GloCfg.word));
-			return TRUE;
+			return true;
 		}
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-			return FALSE;
+			return false;
 		RTMPusecDelay(wait_us);
 	}while ((i++) < round);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==>  DMABusy, GloCfg=0x%x\n", GloCfg.word));
 
-	return FALSE;
+	return false;
 }
 
 
@@ -2283,13 +2283,13 @@ INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 #endif /* DOT11_N_SUPPORT */
 
 
-INT AsicSetChannel(struct rtmp_adapter*pAd, u8 ch, u8 bw, u8 ext_ch, BOOLEAN bScan)
+INT AsicSetChannel(struct rtmp_adapter*pAd, u8 ch, u8 bw, u8 ext_ch, bool bScan)
 {
 	rtmp_bbp_set_bw(pAd, bw);
 

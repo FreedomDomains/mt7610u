@@ -61,7 +61,7 @@ struct _RTMP_RA_LEGACY_TB;
 struct rtmp_adapter;
 
 typedef struct _UAPSD_INFO {
-	BOOLEAN bAPSDCapable;
+	bool bAPSDCapable;
 } UAPSD_INFO;
 
 #include "mcu/mcu.h"
@@ -297,11 +297,11 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
 #define STA_TKIP_ON(_p)                 (_p->StaCfg.WepStatus == Ndis802_11Encryption2Enabled)
 #define STA_AES_ON(_p)                  (_p->StaCfg.WepStatus == Ndis802_11Encryption3Enabled)
 
-#define STA_TGN_WIFI_ON(_p)             (_p->StaCfg.bTGnWifiTest == TRUE)
+#define STA_TGN_WIFI_ON(_p)             (_p->StaCfg.bTGnWifiTest == true)
 #endif /* CONFIG_STA_SUPPORT */
 
-#define CKIP_KP_ON(_p)				((((_p)->StaCfg.CkipFlag) & 0x10) && ((_p)->StaCfg.bCkipCmicOn == TRUE))
-#define CKIP_CMIC_ON(_p)			((((_p)->StaCfg.CkipFlag) & 0x08) && ((_p)->StaCfg.bCkipCmicOn == TRUE))
+#define CKIP_KP_ON(_p)				((((_p)->StaCfg.CkipFlag) & 0x10) && ((_p)->StaCfg.bCkipCmicOn == true))
+#define CKIP_CMIC_ON(_p)			((((_p)->StaCfg.CkipFlag) & 0x08) && ((_p)->StaCfg.bCkipCmicOn == true))
 
 #define INC_RING_INDEX(_idx, _RingSize)    \
 {                                          \
@@ -388,7 +388,7 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 
 /* Check LEAP & CCKM flags */
 #define LEAP_ON(_p)                 (((_p)->StaCfg.LeapAuthMode) == CISCO_AuthModeLEAP)
-#define LEAP_CCKM_ON(_p)            ((((_p)->StaCfg.LeapAuthMode) == CISCO_AuthModeLEAP) && ((_p)->StaCfg.LeapAuthInfo.CCKM == TRUE))
+#define LEAP_CCKM_ON(_p)            ((((_p)->StaCfg.LeapAuthMode) == CISCO_AuthModeLEAP) && ((_p)->StaCfg.LeapAuthInfo.CCKM == true))
 
 /* if orginal Ethernet frame contains no LLC/SNAP, then an extra LLC/SNAP encap is required */
 #define EXTRA_LLCSNAP_ENCAP_FROM_PKT_START(_pBufVA, _pExtraLlcSnapEncap)		\
@@ -500,7 +500,7 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 
 #define STA_PORT_SECURED(_pAd) \
 { \
-	BOOLEAN	Cancelled; \
+	bool Cancelled; \
 	(_pAd)->StaCfg.PortSecured = WPA_802_1X_PORT_SECURED; \
 	RTMP_IndicateMediaState(_pAd, NdisMediaStateConnected); \
 	NdisAcquireSpinLock(&((_pAd)->MacTabLock)); \
@@ -613,7 +613,7 @@ typedef struct _COUNTER_802_11 {
 #ifdef RT3290
 typedef struct _ANT_DIVERSITY
 {
-	BOOLEAN		RateUp;
+	bool 	RateUp;
 	ULONG		TrainCounter;
 	ULONG		AntennaDiversityState;	// 0->Stable state 1->training state
 	ULONG		AntennaDiversityPER[2];  // 0 ->main 1->aux
@@ -703,8 +703,8 @@ typedef struct _COUNTER_DRS {
 	u8 PER[MAX_TX_RATE_INDEX+1];
 	u8 TxRateUpPenalty;	/* extra # of second penalty due to last unstable condition */
 	ULONG CurrTxRateStableTime;	/* # of second in current TX rate */
-	/*BOOLEAN         fNoisyEnvironment; */
-	BOOLEAN fLastSecAccordingRSSI;
+	/*bool         fNoisyEnvironment; */
+	bool fLastSecAccordingRSSI;
 	u8 LastSecTxRateChangeAction;	/* 0: no change, 1:rate UP, 2:rate down */
 	u8 LastTimeTxRateChangeAction;	/*Keep last time value of LastSecTxRateChangeAction */
 	ULONG LastTxOkCount;
@@ -751,7 +751,7 @@ typedef struct {
 	/*00 02-Authentication timeout */
 	/*00 03-Challenge from AP failed */
 	/*00 04-Challenge to AP failed */
-	BOOLEAN Reported;
+	bool Reported;
 } ROGUEAP_ENTRY, *PROGUEAP_ENTRY;
 
 typedef struct {
@@ -807,12 +807,12 @@ typedef struct __PRIVATE_STRUC {
   **************************************************************************/
 /* structure to tune BBP R66 (BBP TUNING) */
 typedef struct _BBP_R66_TUNING {
-	BOOLEAN bEnable;
+	bool bEnable;
 	USHORT FalseCcaLowerThreshold;	/* default 100 */
 	USHORT FalseCcaUpperThreshold;	/* default 512 */
 	u8 R66Delta;
 	u8 R66CurrentValue;
-	BOOLEAN R66LowerUpperSelect;	/*Before LinkUp, Used LowerBound or UpperBound as R66 value. */
+	bool R66LowerUpperSelect;	/*Before LinkUp, Used LowerBound or UpperBound as R66 value. */
 } BBP_R66_TUNING, *PBBP_R66_TUNING;
 
 
@@ -829,7 +829,7 @@ typedef struct _CHANNEL_TX_POWER {
 	USHORT RemainingTimeForUse;	/*unit: sec */
 	u8 Channel;
 #ifdef DOT11N_DRAFT3
-	BOOLEAN bEffectedChannel;	/* For BW 40 operating in 2.4GHz , the "effected channel" is the channel that is covered in 40Mhz. */
+	bool bEffectedChannel;	/* For BW 40 operating in 2.4GHz , the "effected channel" is the channel that is covered in 40Mhz. */
 #endif /* DOT11N_DRAFT3 */
 	CHAR Power;
 	CHAR Power2;
@@ -883,7 +883,7 @@ typedef struct _SOFT_RX_ANT_DIVERSITY_STRUCT {
 	SHORT Pair1LastAvgRssi;	/* */
 	SHORT Pair2LastAvgRssi;	/* */
 	ULONG RcvPktNumWhenEvaluate;
-	BOOLEAN FirstPktArrivedWhenEvaluate;
+	bool FirstPktArrivedWhenEvaluate;
 } SOFT_RX_ANT_DIVERSITY, *PSOFT_RX_ANT_DIVERSITY;
 
 typedef enum _ABGBAND_STATE_ {
@@ -934,7 +934,7 @@ typedef struct _MLME_STRUCT {
 	ULONG Now32;		/* latch the value of NdisGetSystemUpTime() */
 	ULONG LastSendNULLpsmTime;
 
-	BOOLEAN bRunning;
+	bool bRunning;
 	spinlock_t TaskLock;
 	MLME_QUEUE Queue;
 
@@ -949,14 +949,14 @@ typedef struct _MLME_STRUCT {
 	ULONG OneSecPeriodicRound;
 
 	u8 RealRxPath;
-	BOOLEAN bLowThroughput;
-	BOOLEAN bEnableAutoAntennaCheck;
+	bool bLowThroughput;
+	bool bEnableAutoAntennaCheck;
 	RALINK_TIMER_STRUCT RxAntEvalTimer;
 
 
 #ifdef RTMP_MAC_USB
 	RALINK_TIMER_STRUCT AutoWakeupTimer;
-	BOOLEAN AutoWakeupTimerRunning;
+	bool AutoWakeupTimerRunning;
 #endif /* RTMP_MAC_USB */
 } MLME_STRUCT, *PMLME_STRUCT;
 
@@ -968,7 +968,7 @@ struct reordering_mpdu {
 	struct reordering_mpdu *next;
 	struct sk_buff * pPacket;	/* coverted to 802.3 frame */
 	int Sequence;		/* sequence number of MPDU */
-	BOOLEAN bAMSDU;
+	bool bAMSDU;
 	u8 				OpMode;
 };
 
@@ -1101,12 +1101,12 @@ typedef union _BACAP_STRUC {
 } BACAP_STRUC, *PBACAP_STRUC;
 
 typedef struct {
-	BOOLEAN IsRecipient;
+	bool IsRecipient;
 	u8 MACAddr[ETH_ALEN];
 	u8 TID;
 	u8 nMSDU;
 	USHORT TimeOut;
-	BOOLEAN bAllTid;	/* If True, delete all TID for BA sessions with this MACaddr. */
+	bool bAllTid;	/* If True, delete all TID for BA sessions with this MACaddr. */
 } OID_ADD_BA_ENTRY, *POID_ADD_BA_ENTRY;
 
 #ifdef DOT11N_DRAFT3
@@ -1138,13 +1138,13 @@ typedef struct _BssCoexChRange_ {
 
 /*This structure is for all 802.11n card InterOptibilityTest action. Reset all Num every n second.  (Details see MLMEPeriodic) */
 typedef struct _IOT_STRUC {
-	BOOLEAN bRTSLongProtOn;
+	bool bRTSLongProtOn;
 #ifdef CONFIG_STA_SUPPORT
-	BOOLEAN bLastAtheros;
-	BOOLEAN bCurrentAtheros;
-	BOOLEAN bNowAtherosBurstOn;
-	BOOLEAN bNextDisableRxBA;
-	BOOLEAN bToggle;
+	bool bLastAtheros;
+	bool bCurrentAtheros;
+	bool bNowAtherosBurstOn;
+	bool bNextDisableRxBA;
+	bool bToggle;
 #endif /* CONFIG_STA_SUPPORT */
 } IOT_STRUC, *PIOT_STRUC;
 
@@ -1222,9 +1222,9 @@ struct wifi_dev{
 
 	RT_PHY_INFO DesiredHtPhyInfo;
 	DESIRED_TRANSMIT_SETTING DesiredTransmitSetting;	/* Desired transmit setting. this is for reading registry setting only. not useful. */
-	BOOLEAN bAutoTxRateSwitch;
+	bool bAutoTxRateSwitch;
 
-	BOOLEAN bWmmCapable;	/* 0:disable WMM, 1:enable WMM */
+	bool bWmmCapable;	/* 0:disable WMM, 1:enable WMM */
 
 	HTTRANSMIT_SETTING HTPhyMode, MaxHTPhyMode, MinHTPhyMode;
 };
@@ -1240,7 +1240,7 @@ typedef struct _BEACON_SYNC_STRUCT_ {
 	u8 *BeaconTxWI[HW_BEACON_MAX_NUM];
 	ULONG TimIELocationInBeacon[HW_BEACON_MAX_NUM];
 	ULONG CapabilityInfoLocationInBeacon[HW_BEACON_MAX_NUM];
-	BOOLEAN EnableBeacon;	/* trigger to enable beacon transmission. */
+	bool EnableBeacon;	/* trigger to enable beacon transmission. */
 	u8 BeaconBitMap;	/* NOTE: If the MAX_MBSSID_NUM is larger than 8, this parameter need to change. */
 	u8 DtimBitOn;	/* NOTE: If the MAX_MBSSID_NUM is larger than 8, this parameter need to change. */
 } BEACON_SYNC_STRUCT;
@@ -1277,7 +1277,7 @@ typedef struct _BEACON_SYNC_STRUCT_ {
 
 /* configuration common to OPMODE_AP as well as OPMODE_STA */
 struct common_config {
-	BOOLEAN bCountryFlag;
+	bool bCountryFlag;
 	u8 CountryCode[3];
 #ifdef EXT_BUILD_CHANNEL_LIST
 	u8 Geography;
@@ -1315,24 +1315,24 @@ struct common_config {
 	ULONG BasicRateBitmap;	/* backup basic ratebitmap */
 	ULONG BasicRateBitmapOld;	/* backup basic ratebitmap */
 
-	BOOLEAN bInServicePeriod;
+	bool bInServicePeriod;
 
 
-	BOOLEAN bAPSDAC_BE;
-	BOOLEAN bAPSDAC_BK;
-	BOOLEAN bAPSDAC_VI;
-	BOOLEAN bAPSDAC_VO;
+	bool bAPSDAC_BE;
+	bool bAPSDAC_BK;
+	bool bAPSDAC_VI;
+	bool bAPSDAC_VO;
 
 
 	/* because TSPEC can modify the APSD flag, we need to keep the APSD flag
 	   requested in association stage from the station;
 	   we need to recover the APSD flag after the TSPEC is deleted. */
-	BOOLEAN bACMAPSDBackup[4];	/* for delivery-enabled & trigger-enabled both */
-	BOOLEAN bACMAPSDTr[4];	/* no use */
+	bool bACMAPSDBackup[4];	/* for delivery-enabled & trigger-enabled both */
+	bool bACMAPSDTr[4];	/* no use */
 	u8 MaxSPLength;
 
-	BOOLEAN bNeedSendTriggerFrame;
-	BOOLEAN bAPSDForcePowerSave;	/* Force power save mode, should only use in APSD-STAUT */
+	bool bNeedSendTriggerFrame;
+	bool bAPSDForcePowerSave;	/* Force power save mode, should only use in APSD-STAUT */
 	ULONG TriggerTimerCount;
 	u8 BBPCurrentBW;	/* BW_10, BW_20, BW_40, BW_80 */
 	REG_TRANSMIT_SETTING RegTransmitSetting;	/*registry transmit setting. this is for reading registry setting only. not useful. */
@@ -1359,7 +1359,7 @@ struct common_config {
 #endif /* DOT11_N_SUPPORT */
 
 #ifdef DOT11_VHT_AC
-	BOOLEAN force_vht;
+	bool force_vht;
 	u8 vht_bw;
 	u8 vht_sgi_80;
 	u8 vht_stbc;
@@ -1370,34 +1370,34 @@ struct common_config {
 
 	IOT_STRUC IOTestParm;	/* 802.11n InterOpbility Test Parameter; */
 	ULONG TxPreamble;	/* Rt802_11PreambleLong, Rt802_11PreambleShort, Rt802_11PreambleAuto */
-	BOOLEAN bUseZeroToDisableFragment;	/* Microsoft use 0 as disable */
+	bool bUseZeroToDisableFragment;	/* Microsoft use 0 as disable */
 	ULONG UseBGProtection;	/* 0: auto, 1: always use, 2: always not use */
-	BOOLEAN bUseShortSlotTime;	/* 0: disable, 1 - use short slot (9us) */
-	BOOLEAN bEnableTxBurst;	/* 1: enble TX PACKET BURST (when BA is established or AP is not a legacy WMM AP), 0: disable TX PACKET BURST */
-	BOOLEAN bAggregationCapable;	/* 1: enable TX aggregation when the peer supports it */
-	BOOLEAN bPiggyBackCapable;	/* 1: enable TX piggy-back according MAC's version */
-	BOOLEAN bIEEE80211H;	/* 1: enable IEEE802.11h spec. */
+	bool bUseShortSlotTime;	/* 0: disable, 1 - use short slot (9us) */
+	bool bEnableTxBurst;	/* 1: enble TX PACKET BURST (when BA is established or AP is not a legacy WMM AP), 0: disable TX PACKET BURST */
+	bool bAggregationCapable;	/* 1: enable TX aggregation when the peer supports it */
+	bool bPiggyBackCapable;	/* 1: enable TX piggy-back according MAC's version */
+	bool bIEEE80211H;	/* 1: enable IEEE802.11h spec. */
 	u8 RDDurRegion; /* Region of radar detection */
 	ULONG DisableOLBCDetect;	/* 0: enable OLBC detect; 1 disable OLBC detect */
 
 #ifdef DOT11_N_SUPPORT
-	BOOLEAN bRdg;
+	bool bRdg;
 #endif /* DOT11_N_SUPPORT */
-	BOOLEAN bWmmCapable;	/* 0:disable WMM, 1:enable WMM */
+	bool bWmmCapable;	/* 0:disable WMM, 1:enable WMM */
 	QOS_CAPABILITY_PARM APQosCapability;	/* QOS capability of the current associated AP */
 	EDCA_PARM APEdcaParm;	/* EDCA parameters of the current associated AP */
 	QBSS_LOAD_PARM APQbssLoad;	/* QBSS load of the current associated AP */
 	u8 AckPolicy[4];	/* ACK policy of the specified AC. see ACK_xxx */
 #ifdef CONFIG_STA_SUPPORT
-	BOOLEAN bDLSCapable;	/* 0:disable DLS, 1:enable DLS */
+	bool bDLSCapable;	/* 0:disable DLS, 1:enable DLS */
 #endif /* CONFIG_STA_SUPPORT */
-	/* a bitmap of BOOLEAN flags. each bit represent an operation status of a particular */
-	/* BOOLEAN control, either ON or OFF. These flags should always be accessed via */
+	/* a bitmap of bool flags. each bit represent an operation status of a particular */
+	/* bool control, either ON or OFF. These flags should always be accessed via */
 	/* OPSTATUS_TEST_FLAG(), OPSTATUS_SET_FLAG(), OP_STATUS_CLEAR_FLAG() macros. */
 	/* see fOP_STATUS_xxx in RTMP_DEF.C for detail bit definition */
 	ULONG OpStatusFlags;
 
-	BOOLEAN NdisRadioStateOff;	/*For HCT 12.0, set this flag to TRUE instead of called MlmeRadioOff. */
+	bool NdisRadioStateOff;	/*For HCT 12.0, set this flag to true instead of called MlmeRadioOff. */
 
 #ifdef DFS_SUPPORT
 	/* IEEE802.11H--DFS. */
@@ -1416,7 +1416,7 @@ struct common_config {
 	EXT_CAP_INFO_ELEMENT ExtCapIE;	/* this is the extened capibility IE appreed in MGMT frames. Doesn't need to update once set in Init. */
 
 #ifdef DOT11N_DRAFT3
-	BOOLEAN bBssCoexEnable;
+	bool bBssCoexEnable;
 	/*
 	   Following two paramters now only used for the initial scan operation. the AP only do
 	   bandwidth fallback when BssCoexApCnt > BssCoexApCntThr
@@ -1448,22 +1448,22 @@ struct common_config {
 	TRIGGER_EVENT_TAB TriggerEventTab;
 	u8 ChannelListIdx;
 
-	BOOLEAN bOverlapScanning;
-	BOOLEAN bBssCoexNotify;
+	bool bOverlapScanning;
+	bool bBssCoexNotify;
 #endif /* DOT11N_DRAFT3 */
 
-	BOOLEAN bHTProtect;
-	BOOLEAN bMIMOPSEnable;
-	BOOLEAN bBADecline;
-	BOOLEAN bDisableReordering;
-	BOOLEAN bForty_Mhz_Intolerant;
-	BOOLEAN bExtChannelSwitchAnnouncement;
-	BOOLEAN bRcvBSSWidthTriggerEvents;
+	bool bHTProtect;
+	bool bMIMOPSEnable;
+	bool bBADecline;
+	bool bDisableReordering;
+	bool bForty_Mhz_Intolerant;
+	bool bExtChannelSwitchAnnouncement;
+	bool bRcvBSSWidthTriggerEvents;
 	ULONG LastRcvBSSWidthTriggerEventsTime;
 
 	u8 TxBASize;
 
-	BOOLEAN bRalinkBurstMode;
+	bool bRalinkBurstMode;
 	u32 RestoreBurstMode;
 #endif /* DOT11_N_SUPPORT */
 
@@ -1472,7 +1472,7 @@ struct common_config {
 	VHT_CAP_INFO vht_info;
 #endif /* DOT11_VHT_AC */
 
-	BOOLEAN bWiFiTest;	/* Enable this parameter for WiFi test */
+	bool bWiFiTest;	/* Enable this parameter for WiFi test */
 
 	/* Tx & Rx Stream number selection */
 	u8 TxStream;
@@ -1484,17 +1484,17 @@ struct common_config {
 	u8 McastTransmitPhyMode;
 #endif /* MCAST_RATE_SPECIFIC */
 
-	BOOLEAN bHardwareRadio;	/* Hardware controlled Radio enabled */
+	bool bHardwareRadio;	/* Hardware controlled Radio enabled */
 
 #ifdef RTMP_MAC_USB
-	BOOLEAN bMultipleIRP;	/* Multiple Bulk IN flag */
-	u8 NumOfBulkInIRP;	/* if bMultipleIRP == TRUE, NumOfBulkInIRP will be 4 otherwise be 1 */
+	bool bMultipleIRP;	/* Multiple Bulk IN flag */
+	u8 NumOfBulkInIRP;	/* if bMultipleIRP == true, NumOfBulkInIRP will be 4 otherwise be 1 */
 	RT_HT_CAPABILITY SupportedHtPhy;
 	ULONG MaxPktOneTxBulk;
 	u8 TxBulkFactor;
 	u8 RxBulkFactor;
 
-	BOOLEAN IsUpdateBeacon;
+	bool IsUpdateBeacon;
 	BEACON_SYNC_STRUCT *pBeaconSync;
 	RALINK_TIMER_STRUCT BeaconUpdateTimer;
 	u32 BeaconAdjust;
@@ -1515,9 +1515,9 @@ struct common_config {
 	HTTRANSMIT_SETTING MCastPhyMode;
 #endif /* MCAST_RATE_SPECIFIC */
 
-	BOOLEAN HT_DisallowTKIP;	/* Restrict the encryption type in 11n HT mode */
+	bool HT_DisallowTKIP;	/* Restrict the encryption type in 11n HT mode */
 
-	BOOLEAN HT_Disable;	/* 1: disable HT function; 0: enable HT function */
+	bool HT_Disable;	/* 1: disable HT function; 0: enable HT function */
 
 
 #ifdef CFO_TRACK
@@ -1526,7 +1526,7 @@ struct common_config {
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	USHORT	lowTrafficThrd;		/* Threshold for reverting to default MCS when traffic is low */
-	BOOLEAN	TrainUpRule;		/* QuickDRS train up criterion: 0=>Throughput, 1=>PER, 2=> Throughput & PER */
+	bool TrainUpRule;		/* QuickDRS train up criterion: 0=>Throughput, 1=>PER, 2=> Throughput & PER */
 	SHORT	TrainUpRuleRSSI;	/* If TrainUpRule=2 then use Hybrid rule when RSSI < TrainUpRuleRSSI */
 	USHORT	TrainUpLowThrd;		/* QuickDRS Hybrid train up low threshold */
 	USHORT	TrainUpHighThrd;	/* QuickDRS Hybrid train up high threshold */
@@ -1614,10 +1614,10 @@ typedef struct _STA_ADMIN_CONFIG {
 	USHORT DefaultListenCount;	/* default listen count; */
 	ULONG WindowsPowerMode;	/* Power mode for AC power */
 	ULONG WindowsBatteryPowerMode;	/* Power mode for battery if exists */
-	BOOLEAN bWindowsACCAMEnable;	/* Enable CAM power mode when AC on */
+	bool bWindowsACCAMEnable;	/* Enable CAM power mode when AC on */
 	ULONG WindowsPowerProfile;	/* Windows power profile, for NDIS5.1 PnP */
 
-	BOOLEAN	 FlgPsmCanNotSleep; /* TRUE: can not switch ASIC to sleep */
+	bool  FlgPsmCanNotSleep; /* true: can not switch ASIC to sleep */
 	/* MIB:ieee802dot11.dot11smt(1).dot11StationConfigTable(1) */
 	USHORT Psm;		/* power management mode   (PWR_ACTIVE|PWR_SAVE) */
 	USHORT DisassocReason;
@@ -1634,7 +1634,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* Add to support different cipher suite for WPA2/WPA mode */
 	NDIS_802_11_ENCRYPTION_STATUS GroupCipher;	/* Multicast cipher suite */
 	NDIS_802_11_ENCRYPTION_STATUS PairCipher;	/* Unicast cipher suite */
-	BOOLEAN bMixCipher;	/* Indicate current Pair & Group use different cipher suites */
+	bool bMixCipher;	/* Indicate current Pair & Group use different cipher suites */
 	USHORT RsnCapability;
 
 	NDIS_802_11_WEP_STATUS GroupKeyWepStatus;
@@ -1659,7 +1659,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* For WPA countermeasures */
 	ULONG LastMicErrorTime;	/* record last MIC error time */
 	ULONG MicErrCnt;	/* Should be 0, 1, 2, then reset to zero (after disassoiciation). */
-	BOOLEAN bBlockAssoc;	/* Block associate attempt for 60 seconds after counter measure occurred. */
+	bool bBlockAssoc;	/* Block associate attempt for 60 seconds after counter measure occurred. */
 	/* For WPA-PSK supplicant state */
 	u8 WpaState;		/* Default is SS_NOTUSE and handled by microsoft 802.1x */
 	u8 ReplayCounter[8];
@@ -1681,12 +1681,12 @@ typedef struct _STA_ADMIN_CONFIG {
 	ULONG Last20NBeaconRxTime;	/* OS's timestamp of the last 20MHz N BEACON RX time */
 
 	ULONG LastScanTime;	/* Record last scan time for issue BSSID_SCAN_LIST */
-	BOOLEAN bNotFirstScan;	/* Sam add for ADHOC flag to do first scan when do initialization */
-	BOOLEAN bSwRadio;	/* Software controlled Radio On/Off, TRUE: On */
-	BOOLEAN bHwRadio;	/* Hardware controlled Radio On/Off, TRUE: On */
-	BOOLEAN bRadio;		/* Radio state, And of Sw & Hw radio state */
-	BOOLEAN bHardwareRadio;	/* Hardware controlled Radio enabled */
-	BOOLEAN bShowHiddenSSID;	/* Show all known SSID in SSID list get operation */
+	bool bNotFirstScan;	/* Sam add for ADHOC flag to do first scan when do initialization */
+	bool bSwRadio;	/* Software controlled Radio On/Off, true: On */
+	bool bHwRadio;	/* Hardware controlled Radio On/Off, true: On */
+	bool bRadio;		/* Radio state, And of Sw & Hw radio state */
+	bool bHardwareRadio;	/* Hardware controlled Radio enabled */
+	bool bShowHiddenSSID;	/* Show all known SSID in SSID list get operation */
 
 	/* New for WPA, windows want us to to keep association information and */
 	/* Fixed IEs from last association response */
@@ -1704,7 +1704,7 @@ typedef struct _STA_ADMIN_CONFIG {
 
 	u8 RMReqCnt;		/* Number of measurement request saved. */
 	u8 CurrentRMReqIdx;	/* Number of measurement request saved. */
-	BOOLEAN ParallelReq;	/* Parallel measurement, only one request performed, */
+	bool ParallelReq;	/* Parallel measurement, only one request performed, */
 	/* It must be the same channel with maximum duration */
 	USHORT ParallelDuration;	/* Maximum duration for parallel measurement */
 	u8 ParallelChannel;	/* Only one channel with parallel measurement */
@@ -1714,7 +1714,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	u8 CLFactor;		/* Parameter for channel load */
 
 	RALINK_TIMER_STRUCT StaQuickResponeForRateUpTimer;
-	BOOLEAN StaQuickResponeForRateUpTimerRunning;
+	bool StaQuickResponeForRateUpTimerRunning;
 
 	u8 DtimCount;	/* 0.. DtimPeriod-1 */
 	u8 DtimPeriod;	/* default = 3 */
@@ -1727,12 +1727,12 @@ typedef struct _STA_ADMIN_CONFIG {
 
 	RALINK_TIMER_STRUCT WpaDisassocAndBlockAssocTimer;
 	/* Fast Roaming */
-	BOOLEAN bAutoRoaming;	/* 0:disable auto roaming by RSSI, 1:enable auto roaming by RSSI */
+	bool bAutoRoaming;	/* 0:disable auto roaming by RSSI, 1:enable auto roaming by RSSI */
 	CHAR dBmToRoam;		/* the condition to roam when receiving Rssi less than this value. It's negative value. */
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-	BOOLEAN IEEE8021X;
-	BOOLEAN IEEE8021x_required_keys;
+	bool IEEE8021X;
+	bool IEEE8021x_required_keys;
 	CIPHER_KEY DesireSharedKey[4];	/* Record user desired WEP keys */
 	u8 DesireSharedKeyId;
 
@@ -1742,8 +1742,8 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* 0x80: wpa_supplicant trigger driver to do WPS */
 	u8 WpaSupplicantUP;
 	u8 WpaSupplicantScanCount;
-	BOOLEAN bRSN_IE_FromWpaSupplicant;
-	BOOLEAN bLostAp;
+	bool bRSN_IE_FromWpaSupplicant;
+	bool bLostAp;
 	u8 *pWpsProbeReqIe;
 	UINT WpsProbeReqIeLen;
 	u8 *pWpaAssocIe;
@@ -1753,13 +1753,13 @@ typedef struct _STA_ADMIN_CONFIG {
 	CHAR dev_name[16];
 	USHORT OriDevType;
 
-	BOOLEAN bTGnWifiTest;
-	BOOLEAN bSkipAutoScanConn;
+	bool bTGnWifiTest;
+	bool bSkipAutoScanConn;
 
 	HTTRANSMIT_SETTING HTPhyMode, MaxHTPhyMode, MinHTPhyMode;	/* For transmit phy setting in TXWI. */
 	DESIRED_TRANSMIT_SETTING DesiredTransmitSetting;
 	RT_PHY_INFO DesiredHtPhyInfo;
-	BOOLEAN bAutoTxRateSwitch;
+	bool bAutoTxRateSwitch;
 
 
 #ifdef EXT_BUILD_CHANNEL_LIST
@@ -1772,36 +1772,36 @@ typedef struct _STA_ADMIN_CONFIG {
 
 
 
-	BOOLEAN bAutoConnectByBssid;
+	bool bAutoConnectByBssid;
 	ULONG BeaconLostTime;	/* seconds */
-	BOOLEAN bForceTxBurst;	/* 1: force enble TX PACKET BURST, 0: disable */
+	bool bForceTxBurst;	/* 1: force enble TX PACKET BURST, 0: disable */
 #ifdef XLINK_SUPPORT
-	BOOLEAN PSPXlink;	/* 0: Disable. 1: Enable */
+	bool PSPXlink;	/* 0: Disable. 1: Enable */
 #endif /* XLINK_SUPPORT */
-	BOOLEAN bAutoConnectIfNoSSID;
+	bool bAutoConnectIfNoSSID;
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3
 	u8 RegClass;		/*IE_SUPP_REG_CLASS: 2009 PF#3: For 20/40 Intolerant Channel Report */
 #endif /* DOT11N_DRAFT3 */
-	BOOLEAN bAdhocN;
+	bool bAdhocN;
 #endif /* DOT11_N_SUPPORT */
-	BOOLEAN bAdhocCreator;	/*TRUE indicates divice is Creator. */
+	bool bAdhocCreator;	/*true indicates divice is Creator. */
 
 
 	/*
 	   Enhancement Scanning Mechanism
 	   To decrease the possibility of ping loss
 	 */
-	BOOLEAN bImprovedScan;
-	BOOLEAN BssNr;
+	bool bImprovedScan;
+	bool BssNr;
 	u8 ScanChannelCnt;	/* 0 at the beginning of scan, stop at 7 */
 	u8 LastScanChannel;
 	/************************************/
 
-	BOOLEAN bFastConnect;
+	bool bFastConnect;
 
 /*connectinfo  for tmp store connect info from UI*/
-	BOOLEAN Connectinfoflag;
+	bool Connectinfoflag;
 	u8   ConnectinfoBssid[ETH_ALEN];
 	u8   ConnectinfoChannel;
 	u8   ConnectinfoSsidLen;
@@ -1834,7 +1834,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	this STA had agreed upon joining the network. Which means these parameters
 	are usually decided by the BSS/IBSS creator instead of user configuration.
 	Data in this data structurre is valid only when either ADHOC_ON()/INFRA_ON()
-	is TRUE. Normally, after SCAN or failed roaming attempts, we need to
+	is true. Normally, after SCAN or failed roaming attempts, we need to
 	recover back to the current active settings
 */
 typedef struct _STA_ACTIVE_CONFIG {
@@ -1889,8 +1889,8 @@ typedef struct _MAC_TABLE_ENTRY {
 	 */
 	u32 EntryType;
 
-	BOOLEAN isCached;
-	BOOLEAN bIAmBadAtheros;	/* Flag if this is Atheros chip that has IOT problem.  We need to turn on RTS/CTS protection. */
+	bool isCached;
+	bool bIAmBadAtheros;	/* Flag if this is Atheros chip that has IOT problem.  We need to turn on RTS/CTS protection. */
 	u8 wcid;
 
 	/* WPA/WPA2 4-way database */
@@ -1932,7 +1932,7 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 VirtualTimeout; /* peer power save virtual timeout */
 	SST Sst;
 	AUTH_STATE AuthState;	/* for SHARED KEY authentication state machine used only */
-	BOOLEAN IsReassocSta;	/* Indicate whether this is a reassociation procedure */
+	bool IsReassocSta;	/* Indicate whether this is a reassociation procedure */
 	USHORT Aid;
 	USHORT CapabilityInfo;
 	u8 LastRssi;
@@ -1947,32 +1947,32 @@ typedef struct _MAC_TABLE_ENTRY {
 #ifdef UAPSD_SUPPORT
 	/* these UAPSD states are used on the fly */
 	/* 0:AC_BK, 1:AC_BE, 2:AC_VI, 3:AC_VO */
-	BOOLEAN bAPSDCapablePerAC[4];	/* for trigger-enabled */
-	BOOLEAN bAPSDDeliverEnabledPerAC[4];	/* for delivery-enabled */
+	bool bAPSDCapablePerAC[4];	/* for trigger-enabled */
+	bool bAPSDDeliverEnabledPerAC[4];	/* for delivery-enabled */
 
 
 	u8 MaxSPLength;
 
-	BOOLEAN bAPSDAllAC;	/* 1: all AC are delivery-enabled U-APSD */
+	bool bAPSDAllAC;	/* 1: all AC are delivery-enabled U-APSD */
 
 	QUEUE_HEADER UAPSDQueue[WMM_NUM_OF_AC];	/* queue for each U-APSD */
 	USHORT UAPSDQIdleCount;	/* U-APSD queue timeout */
 
 	PQUEUE_ENTRY pUAPSDEOSPFrame;	/* the last U-APSD frame */
 	USHORT UAPSDTxNum;	/* total U-APSD frame number */
-	BOOLEAN bAPSDFlagEOSPOK;	/* 1: EOSP frame is tx by ASIC */
-	BOOLEAN bAPSDFlagSPStart;	/* 1: SP is started */
+	bool bAPSDFlagEOSPOK;	/* 1: EOSP frame is tx by ASIC */
+	bool bAPSDFlagSPStart;	/* 1: SP is started */
 
 	/* need to use unsigned long, because time parameters in OS is defined as
 	   unsigned long */
 	unsigned long UAPSDTimeStampLast;	/* unit: 1000000/OS_HZ */
-	BOOLEAN bAPSDFlagSpRoughUse;	/* 1: use rough SP (default: accurate) */
+	bool bAPSDFlagSpRoughUse;	/* 1: use rough SP (default: accurate) */
 
 	/* we will set the flag when PS-poll frame is received and
 	   clear it when statistics handle.
 	   if the flag is set when PS-poll frame is received then calling
 	   statistics handler to clear it. */
-	BOOLEAN bAPSDFlagLegacySent;	/* 1: Legacy PS sent but
+	bool bAPSDFlagLegacySent;	/* 1: Legacy PS sent but
 					   yet statistics handle */
 
 #ifdef RTMP_MAC_USB
@@ -1981,7 +1981,7 @@ typedef struct _MAC_TABLE_ENTRY {
 #endif /* UAPSD_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
-	BOOLEAN bSendBAR;
+	bool bSendBAR;
 	USHORT NoBADataCountDown;
 
 	u32 CachedBuf[16];	/* UINT (4 bytes) for alignment */
@@ -1991,11 +1991,11 @@ typedef struct _MAC_TABLE_ENTRY {
 	UINT FIFOCount;
 	UINT DebugFIFOCount;
 	UINT DebugTxCount;
-	BOOLEAN bDlsInit;
+	bool bDlsInit;
 
 /*==================================================== */
 /* WDS entry needs these */
-/* If ValidAsWDS==TRUE, MatchWDSTabIdx is the index in WdsTab.MacTab */
+/* If ValidAsWDS==true, MatchWDSTabIdx is the index in WdsTab.MacTab */
 	UINT MatchWDSTabIdx;
 	u8 MaxSupportedRate;
 	u8 CurrTxRate;
@@ -2006,24 +2006,24 @@ typedef struct _MAC_TABLE_ENTRY {
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	u8 lowTrafficCount;
 	u8 fewPktsCnt;
-	BOOLEAN perThrdAdj;
+	bool perThrdAdj;
 	u8 mcsGroup;/* the mcs group to be tried */
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 	enum RATE_ADAPT_ALG rateAlg;
 
 #ifdef MFB_SUPPORT
 	u8 lastLegalMfb;	/* last legal mfb which is used to set rate */
-	BOOLEAN isMfbChanged;	/* purpose: true when mfb has changed but the new mfb is not adopted for Tx */
+	bool isMfbChanged;	/* purpose: true when mfb has changed but the new mfb is not adopted for Tx */
 	struct _RTMP_RA_LEGACY_TB *LegalMfbRS;
-	BOOLEAN fLastChangeAccordingMfb;
+	bool fLastChangeAccordingMfb;
 	spinlock_t fLastChangeAccordingMfbLock;
 /* Tx MRQ */
-	BOOLEAN toTxMrq;
+	bool toTxMrq;
 	u8 msiToTx, mrqCnt;	/*mrqCnt is used to count down the inverted-BF mrq to be sent */
 /* Rx mfb */
 	u8 pendingMfsi;
 /* Tx MFB */
-	BOOLEAN toTxMfb;
+	bool toTxMfb;
 	u8 mfbToTx;
 	u8 mfb0, mfb1;
 #endif	/* MFB_SUPPORT */
@@ -2042,7 +2042,7 @@ typedef struct _MAC_TABLE_ENTRY {
 #endif /* FIFO_EXT_SUPPORT */
 
 
-	BOOLEAN fLastSecAccordingRSSI;
+	bool fLastSecAccordingRSSI;
 	u8 LastSecTxRateChangeAction;	/* 0: no change, 1:rate UP, 2:rate down */
 	CHAR LastTimeTxRateChangeAction;	/* Keep last time value of LastSecTxRateChangeAction */
 	ULONG LastTxOkCount; /* TxSuccess count in last Rate Adaptation interval */
@@ -2065,8 +2065,8 @@ typedef struct _MAC_TABLE_ENTRY {
 #endif /* CONFIG_STA_SUPPORT */
 
 	/*
-		A bitmap of BOOLEAN flags. each bit represent an operation status of a particular
-		BOOLEAN control, either ON or OFF. These flags should always be accessed via
+		A bitmap of bool flags. each bit represent an operation status of a particular
+		bool control, either ON or OFF. These flags should always be accessed via
 		CLIENT_STATUS_TEST_FLAG(), CLIENT_STATUS_SET_FLAG(), CLIENT_STATUS_CLEAR_FLAG() macros.
 		see fOP_STATUS_xxx in RTMP_DEF.C for detail bit definition. fCLIENT_STATUS_AMSDU_INUSED
 	*/
@@ -2094,7 +2094,7 @@ typedef struct _MAC_TABLE_ENTRY {
 
 #ifdef DOT11N_DRAFT3
 	u8 BSS2040CoexistenceMgmtSupport;
-	BOOLEAN bForty_Mhz_Intolerant;
+	bool bForty_Mhz_Intolerant;
 #endif /* DOT11N_DRAFT3 */
 
 #ifdef DOT11_VHT_AC
@@ -2104,7 +2104,7 @@ typedef struct _MAC_TABLE_ENTRY {
 #endif /* DOT11_N_SUPPORT */
 
 
-	BOOLEAN bAutoTxRateSwitch;
+	bool bAutoTxRateSwitch;
 
 	u8 RateLen;
 	struct _MAC_TABLE_ENTRY *pNext;
@@ -2117,7 +2117,7 @@ typedef struct _MAC_TABLE_ENTRY {
 	SHORT freqOffsetValid;	/* Set when freqOffset field has been updated */
 
 
-	BOOLEAN bWscCapable;
+	bool bWscCapable;
 	u8 Receive_EapolStart_EapRspId;
 
 	u32 TXMCSExpected[MAX_MCS_SET];
@@ -2151,17 +2151,17 @@ typedef struct _MAC_TABLE_ENTRY {
 #endif /* AGS_SUPPORT */
 
 #ifdef WFD_SUPPORT
-	BOOLEAN bWfdClient;
+	bool bWfdClient;
 #endif /* WFD_SUPPORT */
 
 u8 SupportRateMode; /* 1: CCK 2:OFDM 4: HT, 8:VHT */
-BOOLEAN SupportCCKMCS[MAX_LEN_OF_CCK_RATES];
-BOOLEAN SupportOFDMMCS[MAX_LEN_OF_OFDM_RATES];
-BOOLEAN SupportHTMCS[MAX_LEN_OF_HT_RATES];
+bool SupportCCKMCS[MAX_LEN_OF_CCK_RATES];
+bool SupportOFDMMCS[MAX_LEN_OF_OFDM_RATES];
+bool SupportHTMCS[MAX_LEN_OF_HT_RATES];
 
 
 #ifdef DOT11_VHT_AC
-	BOOLEAN SupportVHTMCS[MAX_LEN_OF_VHT_RATES];
+	bool SupportVHTMCS[MAX_LEN_OF_VHT_RATES];
 #endif /* DOT11_VHT_AC */
 
 #ifdef WFA_VHT_PF
@@ -2177,14 +2177,14 @@ BOOLEAN SupportHTMCS[MAX_LEN_OF_HT_RATES];
 	ULONG ip_pkt2_jiffies[4];
 
 	struct ip_frag_q ip_fragQ[2];
-	BOOLEAN ip_queue_inited;
+	bool ip_queue_inited;
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 #ifdef MAC_REPEATER_SUPPORT
 	u8 ExtAid;
 	u8 ClientType; /* 0x00: apcli, 0x01: wireless station, 0x02: ethernet entry */
-	BOOLEAN bConnToRootAP;
+	bool bConnToRootAP;
 #endif /* MAC_REPEATER_SUPPORT */
 } MAC_TABLE_ENTRY, *PMAC_TABLE_ENTRY;
 
@@ -2195,18 +2195,18 @@ typedef struct _MAC_TABLE {
 	USHORT Size;
 	QUEUE_HEADER McastPsQueue;
 	ULONG PsQIdleCount;
-	BOOLEAN fAnyStationInPsm;
-	BOOLEAN fAnyStationBadAtheros;	/* Check if any Station is atheros 802.11n Chip.  We need to use RTS/CTS with Atheros 802,.11n chip. */
-	BOOLEAN fAnyTxOPForceDisable;	/* Check if it is necessary to disable BE TxOP */
-	BOOLEAN fAllStationAsRalink;	/* Check if all stations are ralink-chipset */
+	bool fAnyStationInPsm;
+	bool fAnyStationBadAtheros;	/* Check if any Station is atheros 802.11n Chip.  We need to use RTS/CTS with Atheros 802,.11n chip. */
+	bool fAnyTxOPForceDisable;	/* Check if it is necessary to disable BE TxOP */
+	bool fAllStationAsRalink;	/* Check if all stations are ralink-chipset */
 #ifdef DOT11_N_SUPPORT
-	BOOLEAN fAnyStationIsLegacy;	/* Check if I use legacy rate to transmit to my BSS Station/ */
-	BOOLEAN fAnyStationNonGF;	/* Check if any Station can't support GF. */
-	BOOLEAN fAnyStation20Only;	/* Check if any Station can't support GF. */
-	BOOLEAN fAnyStationMIMOPSDynamic;	/* Check if any Station is MIMO Dynamic */
-	BOOLEAN fAnyBASession;	/* Check if there is BA session.  Force turn on RTS/CTS */
-	BOOLEAN fAnyStaFortyIntolerant;	/* Check if still has any station set the Intolerant bit on! */
-	BOOLEAN fAllStationGainGoodMCS; /* Check if all stations more than MCS threshold */
+	bool fAnyStationIsLegacy;	/* Check if I use legacy rate to transmit to my BSS Station/ */
+	bool fAnyStationNonGF;	/* Check if any Station can't support GF. */
+	bool fAnyStation20Only;	/* Check if any Station can't support GF. */
+	bool fAnyStationMIMOPSDynamic;	/* Check if any Station is MIMO Dynamic */
+	bool fAnyBASession;	/* Check if there is BA session.  Force turn on RTS/CTS */
+	bool fAnyStaFortyIntolerant;	/* Check if still has any station set the Intolerant bit on! */
+	bool fAllStationGainGoodMCS; /* Check if all stations more than MCS threshold */
 
 #endif				/* DOT11_N_SUPPORT */
 
@@ -2218,15 +2218,15 @@ typedef struct _MAC_TABLE {
 
 #ifdef BLOCK_NET_IF
 typedef struct _BLOCK_QUEUE_ENTRY {
-	BOOLEAN SwTxQueueBlockFlag;
+	bool SwTxQueueBlockFlag;
 	LIST_HEADER NetIfList;
 } BLOCK_QUEUE_ENTRY, *PBLOCK_QUEUE_ENTRY;
 #endif /* BLOCK_NET_IF */
 
 
 struct wificonf {
-	BOOLEAN bShortGI;
-	BOOLEAN bGreenField;
+	bool bShortGI;
+	bool bGreenField;
 };
 
 typedef struct _RTMP_DEV_INFO_ {
@@ -2280,8 +2280,8 @@ typedef struct _RtmpDiagStrcut_ {	/* Diagnosis Related element */
 #endif /* RT8592 */
 
 typedef struct _TX_POWER_CONTROL {
-	BOOLEAN bInternalTxALC; /* Internal Tx ALC */
-	BOOLEAN bExtendedTssiMode; /* The extended TSSI mode (each channel has different Tx power if needed) */
+	bool bInternalTxALC; /* Internal Tx ALC */
+	bool bExtendedTssiMode; /* The extended TSSI mode (each channel has different Tx power if needed) */
 	CHAR PerChTxPwrOffset[NUM_OF_CH_FOR_PER_CH_TX_PWR_OFFSET + 1]; /* Per-channel Tx power offset */
 	CHAR idxTxPowerTable; /* The index of the Tx power table for ant0 */
 	CHAR idxTxPowerTable2; /* The index of the Tx power table for ant1 */
@@ -2401,8 +2401,8 @@ typedef struct _TX_POWER_CONTROL_EXT_OVER_MAC {
 #ifdef WOW_SUPPORT
 #ifdef RTMP_MAC_USB
 typedef struct _WOW_CFG_STRUCT {
-	BOOLEAN			bEnable;		/* Enable WOW function*/
-	BOOLEAN			bWOWFirmware;	/* Enable WOW function, trigger to reload WOW-support firmware */
+	bool 		bEnable;		/* Enable WOW function*/
+	bool 		bWOWFirmware;	/* Enable WOW function, trigger to reload WOW-support firmware */
 	u8			nSelectedGPIO;	/* Side band signal to wake up system */
 	u8			nDelay;			/* Delay number is multiple of 3 secs, and it used to postpone the WOW function */
 	u8           nHoldTime;      /* GPIO puls hold time, unit: 10ms */
@@ -2478,12 +2478,12 @@ typedef struct _BBP_RESET_CTL
 {
 #define BBP_RECORD_NUM	47
 	REG_PAIR BBPRegDB[BBP_RECORD_NUM];
-	BOOLEAN	AsicCheckEn;
+	bool AsicCheckEn;
 } BBP_RESET_CTL, *PBBP_RESET_CTL;
 
 
 typedef struct tx_agc_ctrl{
-	BOOLEAN bAutoTxAgc;	/* Enable driver auto Tx Agc control */
+	bool bAutoTxAgc;	/* Enable driver auto Tx Agc control */
 	u8 TssiRef;		/* Store Tssi reference value as 25 temperature. */
 	u8 TssiPlusBoundary[5];	/* Tssi boundary for increase Tx power to compensate. */
 	u8 TssiMinusBoundary[5];	/* Tssi boundary for decrease Tx power to compensate. */
@@ -2500,7 +2500,7 @@ struct rtmp_adapter {
 	struct net_device *net_dev;
 	ULONG VirtualIfCnt;
 
-	//BOOLEAN PollIdle;
+	//bool PollIdle;
 
 	struct rtmp_chip_ops  chipOps;
 	struct rtmp_chip_cap chipCap;
@@ -2535,7 +2535,7 @@ struct rtmp_adapter {
 
 	/*======Control Flags */
 	ULONG BulkFlags;
-	BOOLEAN bUsbTxBulkAggre;	/* Flags for bulk out data priority */
+	bool bUsbTxBulkAggre;	/* Flags for bulk out data priority */
 
 	/*======Cmd Thread */
 /*	CmdQ					CmdQ; */
@@ -2584,7 +2584,7 @@ struct rtmp_adapter {
 /*****************************************************************************************/
 /*      Tx related parameters                                                           */
 /*****************************************************************************************/
-	BOOLEAN DeQueueRunning[NUM_OF_TX_RING];	/* for ensuring RTUSBDeQueuePacket get call once */
+	bool DeQueueRunning[NUM_OF_TX_RING];	/* for ensuring RTUSBDeQueuePacket get call once */
 	spinlock_t DeQueueLock[NUM_OF_TX_RING];
 
 #ifdef RTMP_MAC_USB
@@ -2602,9 +2602,9 @@ struct rtmp_adapter {
 	 */
 	u8 NextBulkOutIndex[NUM_OF_TX_RING];	/* only used for 4 EDCA bulkout pipe */
 
-	BOOLEAN BulkOutPending[6];	/* used for total 6 bulkout pipe */
+	bool BulkOutPending[6];	/* used for total 6 bulkout pipe */
 	u8 bulkResetPipeid;
-	BOOLEAN MgmtBulkPending;
+	bool MgmtBulkPending;
 	ULONG bulkResetReq[6];
 
 #ifdef CONFIG_STA_SUPPORT
@@ -2663,7 +2663,7 @@ struct rtmp_adapter {
 	ULONG FirmwareVersion;	/* byte 0: Minor version, byte 1: Major version, otherwise unused. */
 	USHORT EEPROMDefaultValue[NUM_EEPROM_BBP_PARMS];
 	u8 EEPROMAddressNum;	/* 93c46=6  93c66=8 */
-	BOOLEAN EepromAccess;
+	bool EepromAccess;
 	u8 EFuseTag;
 
 	/* --------------------------- */
@@ -2699,7 +2699,7 @@ struct rtmp_adapter {
 
 	u8 ChannelListNum;	/* number of channel in ChannelList[] */
 	u8 Bbp94;
-	BOOLEAN BbpForCCK;
+	bool BbpForCCK;
 	ULONG Tx20MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE];
 	ULONG Tx20MPwrCfgGBand[MAX_TXPOWER_ARRAY_SIZE];
 	ULONG Tx40MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE];
@@ -2709,14 +2709,14 @@ struct rtmp_adapter {
 #endif /* DOT11_VHT_AC */
 
 
-	BOOLEAN bAutoTxAgcA;	/* Enable driver auto Tx Agc control */
+	bool bAutoTxAgcA;	/* Enable driver auto Tx Agc control */
 	u8 TssiRefA;		/* Store Tssi reference value as 25 temperature. */
 	u8 TssiPlusBoundaryA[2][8];	/* Tssi boundary for increase Tx power to compensate. [Group][Boundary Index]*/
 	u8 TssiMinusBoundaryA[2][8];	/* Tssi boundary for decrease Tx power to compensate. [Group][Boundary Index]*/
 	u8 TxAgcStepA;	/* Store Tx TSSI delta increment / decrement value */
 	CHAR TxAgcCompensateA;	/* Store the compensation (TxAgcStep * (idx-1)) */
 
-	BOOLEAN bAutoTxAgcG;	/* Enable driver auto Tx Agc control */
+	bool bAutoTxAgcG;	/* Enable driver auto Tx Agc control */
 	u8 TssiRefG;		/* Store Tssi reference value as 25 temperature. */
 	u8 TssiPlusBoundaryG[8];	/* Tssi boundary for increase Tx power to compensate. */
 	u8 TssiMinusBoundaryG[8];	/* Tssi boundary for decrease Tx power to compensate. */
@@ -2777,7 +2777,7 @@ struct rtmp_adapter {
 	WLAN_FUN_INFO_STRUC WlanFunInfo;
 	BT_FUN_CTRL_STRUC BtFunCtrl;
 	WLAN_BT_COEX_SETTING WlanBTCoexInfo;
-	BOOLEAN RateUp;
+	bool RateUp;
 	ULONG AntennaDiversityState;/* 0->Stable state 1->training state */
 	ULONG AntennaDiversityPER[2];  // 0 ->main 1->aux
 	ULONG AntennaDiversityTxPacketCount[2];  // 0 ->main 1->aux
@@ -2812,7 +2812,7 @@ struct rtmp_adapter {
 
 #ifdef UAPSD_SUPPORT
 	spinlock_t UAPSDEOSPLock;	/* EOSP frame access lock use */
-	BOOLEAN bAPSDFlagSPSuspend;	/* 1: SP is suspended; 0: SP is not */
+	bool bAPSDFlagSPSuspend;	/* 1: SP is suspended; 0: SP is not */
 #endif /* UAPSD_SUPPORT */
 
 /*=======STA=========== */
@@ -2846,7 +2846,7 @@ struct rtmp_adapter {
 	u32			ra_fast_interval;
 
 	/* configuration: read from Registry & E2PROM */
-	BOOLEAN bLocalAdminMAC;	/* Use user changed MAC */
+	bool bLocalAdminMAC;	/* Use user changed MAC */
 	u8 PermanentAddress[ETH_ALEN];	/* Factory default MAC address */
 	u8 CurrentAddress[ETH_ALEN];	/* User changed MAC address */
 
@@ -2903,13 +2903,13 @@ struct rtmp_adapter {
 	ULONG LastRxRate;
 	ULONG LastTxRate;
 	/*+++Used only for Station */
-	BOOLEAN bConfigChanged;	/* Config Change flag for the same SSID setting */
+	bool bConfigChanged;	/* Config Change flag for the same SSID setting */
 	/*--- */
 
 	ULONG ExtraInfo;	/* Extra information for displaying status */
 	ULONG SystemErrorBitmap;	/* b0: E2PROM version error */
 
-	BOOLEAN HTCEnable;
+	bool HTCEnable;
 
 	/*****************************************************************************************/
 	/*      Statistic related parameters                                                     */
@@ -2923,7 +2923,7 @@ struct rtmp_adapter {
 	ULONG watchDogTxPendingCnt[NUM_OF_TX_RING];
 #endif /* RTMP_MAC_USB */
 
-	BOOLEAN bUpdateBcnCntDone;
+	bool bUpdateBcnCntDone;
 
 	ULONG macwd;
 	/* ---------------------------- */
@@ -2939,15 +2939,15 @@ struct rtmp_adapter {
 	/*ULONG         bacontent[16]; */
 	/*ULONG         rxint[RX_RING_SIZE+1]; */
 	/*u8         rcvba[60]; */
-	BOOLEAN bLinkAdapt;
-	BOOLEAN bForcePrintTX;
-	BOOLEAN bForcePrintRX;
-	/*BOOLEAN               bDisablescanning;               //defined in RT2870 USB */
-	BOOLEAN bStaFifoTest;
-	BOOLEAN bProtectionTest;
-	BOOLEAN bHCCATest;
-	BOOLEAN bGenOneHCCA;
-	BOOLEAN bBroadComHT;
+	bool bLinkAdapt;
+	bool bForcePrintTX;
+	bool bForcePrintRX;
+	/*bool               bDisablescanning;               //defined in RT2870 USB */
+	bool bStaFifoTest;
+	bool bProtectionTest;
+	bool bHCCATest;
+	bool bGenOneHCCA;
+	bool bBroadComHT;
 	/*+++Following add from RT2870 USB. */
 	ULONG BulkOutReq;
 	ULONG BulkOutComplete;
@@ -2964,8 +2964,8 @@ struct rtmp_adapter {
 #ifdef RALINK_ATE
 	ATE_INFO ate;
 #ifdef RTMP_MAC_USB
-	BOOLEAN ContinBulkOut;	/*ATE bulk out control */
-	BOOLEAN ContinBulkIn;	/*ATE bulk in control */
+	bool ContinBulkOut;	/*ATE bulk out control */
+	bool ContinBulkIn;	/*ATE bulk in control */
 	RTMP_OS_ATOMIC BulkOutRemained;
 	RTMP_OS_ATOMIC BulkInRemained;
 #endif /* RTMP_MAC_USB */
@@ -2986,7 +2986,7 @@ struct rtmp_adapter {
 
 	ULONG TbttTickCount;	/* beacon timestamp work-around */
 #ifdef PCI_MSI_SUPPORT
-	BOOLEAN HaveMsi;
+	bool HaveMsi;
 #endif /* PCI_MSI_SUPPORT */
 
 
@@ -3013,9 +3013,9 @@ struct rtmp_adapter {
 	u8 PM_FlgSuspend;
 
 #ifdef RTMP_EFUSE_SUPPORT
-	BOOLEAN bUseEfuse;
-	BOOLEAN bEEPROMFile;
-	BOOLEAN bFroceEEPROMBuffer;
+	bool bUseEfuse;
+	bool bEEPROMFile;
+	bool bFroceEEPROMBuffer;
 	u8 EEPROMImage[1024];
 #endif /* RTMP_EFUSE_SUPPORT */
 
@@ -3034,8 +3034,8 @@ struct rtmp_adapter {
 	void *pCfgDev;
 	void *pCfg80211_CB;
 
-	BOOLEAN FlgCfg80211Scanning;
-	BOOLEAN FlgCfg80211Connecting;
+	bool FlgCfg80211Scanning;
+	bool FlgCfg80211Connecting;
 	u8 Cfg80211_Alpha2[2];
 #endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
@@ -3075,19 +3075,19 @@ struct rtmp_adapter {
 #endif /* WLAN_SKB_RECYCLE */
 
 #ifdef WFA_VHT_PF
-	BOOLEAN force_amsdu;
-	BOOLEAN force_noack;
-	BOOLEAN vht_force_sgi;
-	BOOLEAN vht_force_tx_stbc;
+	bool force_amsdu;
+	bool force_noack;
+	bool vht_force_sgi;
+	bool vht_force_tx_stbc;
 #ifdef IP_ASSEMBLY
-	BOOLEAN ip_assemble;
+	bool ip_assemble;
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 	u8 bloopBackTest;
-	BOOLEAN bHwTxLookupRate;
+	bool bHwTxLookupRate;
 	struct txwi_nmac NullTxWI;
-	BOOLEAN TestMulMac;
+	bool TestMulMac;
 
 	struct MCU_CTRL MCUCtrl;
 };
@@ -3252,8 +3252,8 @@ typedef struct _RX_BLK_
 	u8 mcs;
 	u8 U2M;
 #ifdef HDR_TRANS_SUPPORT
-	BOOLEAN	bHdrRxTrans;	/* this packet's header is translated to 802.3 by HW  */
-	BOOLEAN bHdrVlanTaged;	/* VLAN tag is added to this header */
+	bool bHdrRxTrans;	/* this packet's header is translated to 802.3 by HW  */
+	bool bHdrVlanTaged;	/* VLAN tag is added to this header */
 	u8 *pTransData;
 	USHORT TransDataSize;
 #endif /* HDR_TRANS_SUPPORT */
@@ -3345,7 +3345,7 @@ typedef struct _TX_BLK_
 	u8 			OpMode;
 
 #ifdef HDR_TRANS_SUPPORT
-	BOOLEAN				NeedTrans;	/* indicate the packet needs to do hw header translate */
+	bool 			NeedTrans;	/* indicate the packet needs to do hw header translate */
 #endif /* HDR_TRANS_SUPPORT */
 
 } TX_BLK, *PTX_BLK;
@@ -3472,7 +3472,7 @@ static inline void RTMPFrameEndianChange(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pData,
 	IN	ULONG			Dir,
-	IN	BOOLEAN 		FromRxDoneInt)
+	IN	bool 		FromRxDoneInt)
 {
 	PHEADER_802_11 pFrame;
 	u8 *pMacHdr;
@@ -3680,7 +3680,7 @@ INT RTMPGetKeyParameter(
     OUT char *dest,
     IN INT destsize,
     IN char *buffer,
-    IN BOOLEAN bTrimSpace);
+    IN bool bTrimSpace);
 
 
 
@@ -3707,11 +3707,11 @@ void NICInitAsicFromEEPROM(
 
 int NICInitializeAdapter(
 	IN  struct rtmp_adapter *  pAd,
-	IN   BOOLEAN    bHardReset);
+	IN   bool    bHardReset);
 
 int NICInitializeAsic(
 	IN  struct rtmp_adapter *  pAd,
-	IN  BOOLEAN		bHardReset);
+	IN  bool 	bHardReset);
 
 
 void RTMPRingCleanUp(
@@ -3737,7 +3737,7 @@ void NICUpdateRawCounters(
 	IN  struct rtmp_adapter *  pAd);
 
 #ifdef FIFO_EXT_SUPPORT
-BOOLEAN NicGetMacFifoTxCnt(
+bool NicGetMacFifoTxCnt(
 	IN struct rtmp_adapter*pAd,
 	IN MAC_TABLE_ENTRY *pEntry);
 
@@ -3781,7 +3781,7 @@ void RTMPInitTimer(
 	IN  PRALINK_TIMER_STRUCT    pTimer,
 	IN  void *                  pTimerFunc,
 	IN	void *				pData,
-	IN  BOOLEAN                 Repeat);
+	IN  bool                 Repeat);
 
 void RTMPSetTimer(
 	IN  PRALINK_TIMER_STRUCT    pTimer,
@@ -3794,11 +3794,11 @@ void RTMPModTimer(
 
 void RTMPCancelTimer(
 	IN  PRALINK_TIMER_STRUCT    pTimer,
-	OUT BOOLEAN                 *pCancelled);
+	OUT bool                 *pCancelled);
 
 void RTMPReleaseTimer(
 	IN  PRALINK_TIMER_STRUCT    pTimer,
-	OUT BOOLEAN                 *pCancelled);
+	OUT bool                 *pCancelled);
 
 void RTMPEnableRxTx(
 	IN struct rtmp_adapter *pAd);
@@ -3932,7 +3932,7 @@ void SendNotifyBWActionFrame(
 	IN u8  Wcid,
 	IN u8 apidx);
 
-BOOLEAN ChannelSwitchSanityCheck(
+bool ChannelSwitchSanityCheck(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
 	IN    u8  NewChannel,
@@ -3951,12 +3951,12 @@ ULONG BuildIntolerantChannelRep(
 void Update2040CoexistFrameAndNotify(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
-	IN	BOOLEAN	bAddIntolerantCha);
+	IN	bool bAddIntolerantCha);
 
 void Send2040CoexistAction(
 	IN	struct rtmp_adapter *pAd,
 	IN    u8  Wcid,
-	IN	BOOLEAN	bAddIntolerantCha);
+	IN	bool bAddIntolerantCha);
 
 void UpdateBssScanParm(
 	IN struct rtmp_adapter *pAd,
@@ -3990,9 +3990,9 @@ void InsertActField(
 	IN u8 Category,
 	IN u8 ActCode);
 
-BOOLEAN QosBADataParse(
+bool QosBADataParse(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN bAMSDU,
+	IN bool bAMSDU,
 	IN u8 *p8023Header,
 	IN u8 WCID,
 	IN u8 TID,
@@ -4002,7 +4002,7 @@ BOOLEAN QosBADataParse(
 	IN UINT   CurRxIndex);
 
 #ifdef DOT11_N_SUPPORT
-BOOLEAN CntlEnqueueForRecv(
+bool CntlEnqueueForRecv(
     IN	struct rtmp_adapter *pAd,
 	IN ULONG Wcid,
     IN ULONG MsgLen,
@@ -4019,7 +4019,7 @@ void HTIOTCheck(
 /* */
 /* Private routines in rtmp_data.c */
 /* */
-BOOLEAN RTMPHandleTxRingDmaDoneInterrupt(
+bool RTMPHandleTxRingDmaDoneInterrupt(
 	IN struct rtmp_adapter *pAd,
 	IN u32 int_reg);
 
@@ -4050,7 +4050,7 @@ void STASendPackets(
 
 void RTMPDeQueuePacket(
 	IN struct rtmp_adapter*pAd,
-   	IN BOOLEAN bIntContext,
+   	IN bool bIntContext,
 	IN u8 QueIdx,
 	IN INT Max_Tx_Packets);
 
@@ -4081,8 +4081,8 @@ int MlmeHardTransmit(
 	IN  struct rtmp_adapter *  pAd,
 	IN  u8 QueIdx,
 	IN  struct sk_buff *    pPacket,
-	IN	BOOLEAN			FlgDataQForce,
-	IN	BOOLEAN			FlgIsLocked);
+	IN	bool 		FlgDataQForce,
+	IN	bool 		FlgIsLocked);
 
 int MlmeHardTransmitMgmtRing(
 	IN  struct rtmp_adapter *  pAd,
@@ -4098,12 +4098,12 @@ USHORT RTMPCalcDuration(
 void RTMPWriteTxWI(
 	IN struct rtmp_adapter*pAd,
 	IN struct txwi_nmac *pTxWI,
-	IN BOOLEAN FRAG,
-	IN BOOLEAN CFACK,
-	IN BOOLEAN InsTimestamp,
-	IN BOOLEAN AMPDU,
-	IN BOOLEAN Ack,
-	IN BOOLEAN NSeq, /* HW new a sequence. */
+	IN bool FRAG,
+	IN bool CFACK,
+	IN bool InsTimestamp,
+	IN bool AMPDU,
+	IN bool Ack,
+	IN bool NSeq, /* HW new a sequence. */
 	IN u8 BASize,
 	IN u8 WCID,
 	IN ULONG Length,
@@ -4111,7 +4111,7 @@ void RTMPWriteTxWI(
 	IN u8 TID,
 	IN u8 TxRate,
 	IN u8 Txopmode,
-	IN BOOLEAN CfAck,
+	IN bool CfAck,
 	IN HTTRANSMIT_SETTING *pTransmit);
 
 
@@ -4141,7 +4141,7 @@ int MiniportMMRequest(
 void RTMPSendNullFrame(
 	IN struct rtmp_adapter*pAd,
 	IN u8 TxRate,
-	IN BOOLEAN bQosNull,
+	IN bool bQosNull,
 	IN USHORT PwrMgmt);
 
 #ifdef CONFIG_STA_SUPPORT
@@ -4173,11 +4173,11 @@ void    WpaSendEapolStart(
 
 
 
-BOOLEAN RTMPFreeTXDUponTxDmaDone(
+bool RTMPFreeTXDUponTxDmaDone(
 	IN struct rtmp_adapter *   pAd,
 	IN u8            QueIdx);
 
-BOOLEAN RTMPCheckEtherType(
+bool RTMPCheckEtherType(
 	IN	struct rtmp_adapter *pAd,
 	IN	struct sk_buff *	pPacket,
 	IN	PMAC_TABLE_ENTRY pMacEntry,
@@ -4224,20 +4224,20 @@ void 	AsicUpdateProtect(
 	IN		struct rtmp_adapter *pAd,
 	IN 		USHORT			OperaionMode,
 	IN 		u8 		SetMask,
-	IN		BOOLEAN			bDisableBGProtect,
-	IN		BOOLEAN			bNonGFExist);
+	IN		bool 		bDisableBGProtect,
+	IN		bool 		bNonGFExist);
 
 void AsicSwitchChannel(
 	IN  struct rtmp_adapter *  pAd,
 	IN	u8 		Channel,
-	IN	BOOLEAN			bScan);
+	IN	bool 		bScan);
 
 INT AsicSetChannel(
 	IN struct rtmp_adapter*pAd,
 	IN u8 ch,
 	IN u8 bw,
 	IN u8 ext_ch,
-	IN BOOLEAN bScan);
+	IN bool bScan);
 
 void AsicLockChannel(
 	IN struct rtmp_adapter *pAd,
@@ -4260,7 +4260,7 @@ void AsicForceSleep(
 
 void AsicForceWakeup(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN    bFromTx);
+	IN bool    bFromTx);
 #endif /* CONFIG_STA_SUPPORT */
 
 void AsicSetBssid(
@@ -4306,7 +4306,7 @@ void AsicSetEdcaParm(
 
 void AsicSetSlotTime(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN bUseShortSlotTime);
+	IN bool bUseShortSlotTime);
 
 void AsicAddSharedKeyEntry(
 	IN struct rtmp_adapter *pAd,
@@ -4347,21 +4347,21 @@ void AsicRemovePairwiseKeyEntry(
 	IN struct rtmp_adapter * pAd,
 	IN u8 	 Wcid);
 
-BOOLEAN AsicSendCommandToMcu(
+bool AsicSendCommandToMcu(
 	IN struct rtmp_adapter *pAd,
 	IN u8         Command,
 	IN u8         Token,
 	IN u8         Arg0,
 	IN u8         Arg1,
-	IN BOOLEAN in_atomic);
+	IN bool in_atomic);
 
-BOOLEAN AsicSendCommandToMcuBBP(
+bool AsicSendCommandToMcuBBP(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	 Command,
 	IN u8 	 Token,
 	IN u8 	 Arg0,
 	IN u8 	 Arg1,
-	IN BOOLEAN		FlgIsNeedLocked);
+	IN bool 	FlgIsNeedLocked);
 
 #ifdef WOW_SUPPORT
 #ifdef RTMP_MAC_USB
@@ -4369,11 +4369,11 @@ BOOLEAN AsicSendCommandToMcuBBP(
 void AsicWOWSendNullFrame(
     IN struct rtmp_adapter *pAd,
     IN u8 TxRate,
-    IN BOOLEAN bQosNull);
+    IN bool bQosNull);
 
 void AsicLoadWOWFirmware(
     IN struct rtmp_adapter *pAd,
-    IN BOOLEAN WOW);
+    IN bool WOW);
 #endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
@@ -4455,7 +4455,7 @@ void BATableInsertEntry(
     IN u8 TID,
 	IN u8 BAWinSize,
 	IN u8 OriginatorStatus,
-    IN BOOLEAN IsRecipient);
+    IN bool IsRecipient);
 
 #ifdef DOT11N_DRAFT3
 void Bss2040CoexistTimeOut(
@@ -4499,7 +4499,7 @@ int  MlmeQueueInit(
 void  MlmeQueueDestroy(
 	IN MLME_QUEUE *Queue);
 
-BOOLEAN MlmeEnqueue(
+bool MlmeEnqueue(
 	IN struct rtmp_adapter *pAd,
 	IN ULONG Machine,
 	IN ULONG MsgType,
@@ -4507,7 +4507,7 @@ BOOLEAN MlmeEnqueue(
 	IN void *Msg,
 	IN ULONG Priv);
 
-BOOLEAN MlmeEnqueueForRecv(
+bool MlmeEnqueueForRecv(
 	IN  struct rtmp_adapter *  pAd,
 	IN ULONG Wcid,
 	IN ULONG TimeStampHigh,
@@ -4521,21 +4521,21 @@ BOOLEAN MlmeEnqueueForRecv(
 	IN u8 OpMode);
 
 
-BOOLEAN MlmeDequeue(
+bool MlmeDequeue(
 	IN MLME_QUEUE *Queue,
 	OUT MLME_QUEUE_ELEM **Elem);
 
 void    MlmeRestartStateMachine(
 	IN  struct rtmp_adapter *  pAd);
 
-BOOLEAN  MlmeQueueEmpty(
+bool  MlmeQueueEmpty(
 	IN MLME_QUEUE *Queue);
 
-BOOLEAN  MlmeQueueFull(
+bool  MlmeQueueFull(
 	IN MLME_QUEUE *Queue,
 	IN u8 SendId);
 
-BOOLEAN  MsgTypeSubst(
+bool  MsgTypeSubst(
 	IN struct rtmp_adapter *pAd,
 	IN PFRAME_802_11 pFrame,
 	OUT INT *Machine,
@@ -4766,7 +4766,7 @@ void PeerDlsTearDownAction(
 void RTMPCheckDLSTimeOut(
 	IN struct rtmp_adapter *pAd);
 
-BOOLEAN RTMPRcvFrameDLSCheck(
+bool RTMPRcvFrameDLSCheck(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN ULONG Len,
@@ -4794,7 +4794,7 @@ void DlsTimeoutAction(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3);
 
-BOOLEAN MlmeDlsReqSanity(
+bool MlmeDlsReqSanity(
 	IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
@@ -4810,7 +4810,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 	IN  u8 *pAddr,
 	IN  UINT	DlsEntryIdx);
 
-BOOLEAN MacTableDeleteDlsEntry(
+bool MacTableDeleteDlsEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
 	IN u8 *pAddr);
@@ -4818,13 +4818,13 @@ BOOLEAN MacTableDeleteDlsEntry(
 MAC_TABLE_ENTRY *DlsEntryTableLookup(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pAddr,
-	IN BOOLEAN	bResetIdelCount);
+	IN bool bResetIdelCount);
 
 MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 	IN struct rtmp_adapter *pAd,
 	IN u8 wcid,
 	IN u8 *pAddr,
-	IN BOOLEAN	bResetIdelCount);
+	IN bool bResetIdelCount);
 
 INT	Set_DlsAddEntry_Proc(
 	IN	struct rtmp_adapter *pAd,
@@ -4837,7 +4837,7 @@ INT	Set_DlsTearDownEntry_Proc(
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef QOS_DLS_SUPPORT
-BOOLEAN PeerDlsReqSanity(
+bool PeerDlsReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
@@ -4850,7 +4850,7 @@ BOOLEAN PeerDlsReqSanity(
     OUT u8 *pHtCapabilityLen,
     OUT HT_CAPABILITY_IE *pHtCapability);
 
-BOOLEAN PeerDlsRspSanity(
+bool PeerDlsRspSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
@@ -4863,7 +4863,7 @@ BOOLEAN PeerDlsRspSanity(
     OUT u8 *pHtCapabilityLen,
     OUT HT_CAPABILITY_IE *pHtCapability);
 
-BOOLEAN PeerDlsTearDownSanity(
+bool PeerDlsTearDownSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
@@ -4872,14 +4872,14 @@ BOOLEAN PeerDlsTearDownSanity(
     OUT USHORT *pReason);
 #endif /* QOS_DLS_SUPPORT */
 
-BOOLEAN PeerProbeReqSanity(
+bool PeerProbeReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
     OUT u8 *pAddr2,
     OUT CHAR Ssid[],
     OUT u8 *SsidLen,
-    OUT BOOLEAN *bRequestRssi);
+    OUT bool *bRequestRssi);
 
 /*======================================== */
 
@@ -4923,7 +4923,7 @@ void PeerBeacon(
 void EnqueueProbeRequest(
 	IN struct rtmp_adapter *pAd);
 
-BOOLEAN ScanRunning(
+bool ScanRunning(
 		IN struct rtmp_adapter *pAd);
 /*========================================= */
 
@@ -4998,7 +4998,7 @@ void LinkUp(
 
 void LinkDown(
 	IN  struct rtmp_adapter *  pAd,
-	IN  BOOLEAN         IsReqFromAP);
+	IN  bool         IsReqFromAP);
 
 void IterateOnBssTab(
 	IN  struct rtmp_adapter *  pAd);
@@ -5111,12 +5111,12 @@ void AdjustChannelRelatedValue(
 	IN struct rtmp_adapter *pAd,
 	OUT u8 *pBwFallBack,
 	IN USHORT ifIndex,
-	IN BOOLEAN BandWidth,
+	IN bool BandWidth,
 	IN u8 PriCh,
 	IN u8 ExtraCh);
 #endif /* CONFIG_STA_SUPPORT */
 
-BOOLEAN MlmeScanReqSanity(
+bool MlmeScanReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5126,7 +5126,7 @@ BOOLEAN MlmeScanReqSanity(
 	OUT u8 *ScanType);
 
 
-BOOLEAN PeerBeaconAndProbeRspSanity_Old(
+bool PeerBeaconAndProbeRspSanity_Old(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5171,7 +5171,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
 	OUT PNDIS_802_11_VARIABLE_IEs pVIE);
 
 
-BOOLEAN PeerBeaconAndProbeRspSanity(
+bool PeerBeaconAndProbeRspSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
@@ -5183,7 +5183,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3
-BOOLEAN PeerBeaconAndProbeRspSanity2(
+bool PeerBeaconAndProbeRspSanity2(
 	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
@@ -5192,24 +5192,24 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
 #endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
-BOOLEAN PeerAddBAReqActionSanity(
+bool PeerAddBAReqActionSanity(
     IN struct rtmp_adapter *pAd,
     IN void *pMsg,
     IN ULONG MsgLen,
 	OUT u8 *pAddr2);
 
-BOOLEAN PeerAddBARspActionSanity(
+bool PeerAddBARspActionSanity(
     IN struct rtmp_adapter *pAd,
     IN void *pMsg,
     IN ULONG MsgLen);
 
-BOOLEAN PeerDelBAActionSanity(
+bool PeerDelBAActionSanity(
     IN struct rtmp_adapter *pAd,
     IN u8 Wcid,
     IN void *pMsg,
     IN ULONG MsgLen);
 
-BOOLEAN MlmeAssocReqSanity(
+bool MlmeAssocReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5218,7 +5218,7 @@ BOOLEAN MlmeAssocReqSanity(
 	OUT ULONG *Timeout,
 	OUT USHORT *ListenIntv);
 
-BOOLEAN MlmeAuthReqSanity(
+bool MlmeAuthReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5226,14 +5226,14 @@ BOOLEAN MlmeAuthReqSanity(
 	OUT ULONG *Timeout,
 	OUT USHORT *Alg);
 
-BOOLEAN MlmeStartReqSanity(
+bool MlmeStartReqSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
 	OUT CHAR Ssid[],
 	OUT u8 *Ssidlen);
 
-BOOLEAN PeerAuthSanity(
+bool PeerAuthSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5243,7 +5243,7 @@ BOOLEAN PeerAuthSanity(
 	OUT USHORT *Status,
 	OUT CHAR ChlgText[]);
 
-BOOLEAN PeerAssocRspSanity(
+bool PeerAssocRspSanity(
 	IN  struct rtmp_adapter *  pAd,
     IN void *pMsg,
 	IN  ULONG MsgLen,
@@ -5265,14 +5265,14 @@ BOOLEAN PeerAssocRspSanity(
 	OUT u8 *pCkipFlag,
 	OUT IE_LISTS *ie_list);
 
-BOOLEAN PeerDisassocSanity(
+bool PeerDisassocSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
 	OUT u8 *pAddr2,
 	OUT USHORT *Reason);
 
-BOOLEAN PeerDeauthSanity(
+bool PeerDeauthSanity(
 	IN  struct rtmp_adapter *  pAd,
 	IN  void *Msg,
 	IN  ULONG MsgLen,
@@ -5281,7 +5281,7 @@ BOOLEAN PeerDeauthSanity(
 	OUT u8 *pAddr3,
 	OUT USHORT *Reason);
 
-BOOLEAN GetTimBit(
+bool GetTimBit(
 	IN  CHAR *Ptr,
 	IN  USHORT Aid,
 	OUT u8 *TimLen,
@@ -5297,12 +5297,12 @@ u8 ChannelSanity(
 NDIS_802_11_NETWORK_TYPE NetworkTypeInUseSanity(
 	IN PBSS_ENTRY pBss);
 
-BOOLEAN MlmeDelBAReqSanity(
+bool MlmeDelBAReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen);
 
-BOOLEAN MlmeAddBAReqSanity(
+bool MlmeAddBAReqSanity(
     IN struct rtmp_adapter *pAd,
     IN void *Msg,
     IN ULONG MsgLen,
@@ -5348,7 +5348,7 @@ void STAMlmePeriodicExec(
 void MlmeAutoScan(
 	IN struct rtmp_adapter *pAd);
 
-BOOLEAN MlmeValidateSSID(
+bool MlmeValidateSSID(
 	IN u8 *pSsid,
 	IN u8  SsidLen);
 
@@ -5356,7 +5356,7 @@ void MlmeCheckForRoaming(
 	IN struct rtmp_adapter *pAd,
 	IN ULONG    Now32);
 
-BOOLEAN MlmeCheckForFastRoaming(
+bool MlmeCheckForFastRoaming(
 	IN  struct rtmp_adapter *  pAd);
 
 #ifdef AGS_SUPPORT
@@ -5406,7 +5406,7 @@ void UpdateBasicRateBitmap(
 
 void MlmeUpdateTxRates(
 	IN struct rtmp_adapter *	pAd,
-	IN 	BOOLEAN		 	bLinkUp,
+	IN 	bool 	 	bLinkUp,
 	IN	u8 		apidx);
 
 #ifdef DOT11_N_SUPPORT
@@ -5421,20 +5421,20 @@ void    RTMPCheckRates(
 	IN OUT  u8           *SupRateLen);
 
 #ifdef CONFIG_STA_SUPPORT
-BOOLEAN RTMPCheckChannel(
+bool RTMPCheckChannel(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	CentralChannel,
 	IN u8 	Channel);
 #endif /* CONFIG_STA_SUPPORT */
 
-BOOLEAN RTMPCheckHt(
+bool RTMPCheckHt(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Wcid,
 	INOUT HT_CAPABILITY_IE *pHtCapability,
 	INOUT ADD_HT_INFO_IE *pAddHtInfo);
 
 #ifdef DOT11_VHT_AC
-BOOLEAN RTMPCheckVht(
+bool RTMPCheckVht(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Wcid,
 	IN VHT_CAP_IE *vht_cap,
@@ -5500,7 +5500,7 @@ void APSDPeriodicExec(
 	IN void *SystemSpecific2,
 	IN void *SystemSpecific3);
 
-BOOLEAN RTMPCheckEntryEnableAutoRateSwitch(
+bool RTMPCheckEntryEnableAutoRateSwitch(
 	IN struct rtmp_adapter *   pAd,
 	IN PMAC_TABLE_ENTRY	pEntry);
 
@@ -5512,7 +5512,7 @@ void RTMPUpdateLegacyTxSetting(
 		u8 			fixed_tx_mode,
 		PMAC_TABLE_ENTRY	pEntry);
 
-BOOLEAN RTMPAutoRateSwitchCheck(
+bool RTMPAutoRateSwitchCheck(
 	IN struct rtmp_adapter *   pAd);
 
 int MlmeInit(
@@ -5556,7 +5556,7 @@ void    RTMPInitMICEngine(
 	IN  u8           UserPriority,
 	IN  u8 *         pMICKey);
 
-BOOLEAN RTMPTkipCompareMICValue(
+bool RTMPTkipCompareMICValue(
 	IN  struct rtmp_adapter *  pAd,
 	IN  u8 *         pSrc,
 	IN  u8 *         pDA,
@@ -5627,7 +5627,7 @@ INT	RT_CfgSetMacAddress(
 
 INT	RT_CfgSetTxMCSProc(
 	IN	char *		arg,
-	OUT	BOOLEAN			*pAutoRate);
+	OUT	bool 		*pAutoRate);
 
 INT	RT_CfgSetAutoFallBack(
 	IN 	struct rtmp_adapter *	pAd,
@@ -5649,7 +5649,7 @@ int RTMPWPARemoveKeyProc(
 void    RTMPWPARemoveAllKeys(
 	IN  struct rtmp_adapter *  pAd);
 
-BOOLEAN RTMPCheckStrPrintAble(
+bool RTMPCheckStrPrintAble(
     IN  CHAR *pInPutStr,
     IN  u8 strLen);
 
@@ -5824,7 +5824,7 @@ void MlmeDeAuthAction(
 	IN  struct rtmp_adapter *   pAd,
 	IN  PMAC_TABLE_ENTRY pEntry,
 	IN  USHORT           Reason,
-	IN  BOOLEAN          bDataFrameFirst);
+	IN  bool          bDataFrameFirst);
 
 
 void GREKEYPeriodicExec(
@@ -5876,7 +5876,7 @@ void RTMPResetTxRxRingMemory(
 void RTMPFreeTxRxRingMemory(
     IN  struct rtmp_adapter *  pAd);
 
-BOOLEAN RTMP_FillTxBlkInfo(
+bool RTMP_FillTxBlkInfo(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk);
 
@@ -5910,7 +5910,7 @@ void BAOriSessionSetUp(
 			IN u8 		TID,
 			IN USHORT			TimeOut,
 			IN ULONG			DelayTime,
-			IN BOOLEAN		isForced);
+			IN bool 	isForced);
 
 void BASessionTearDownALL(
 	IN OUT	struct rtmp_adapter *pAd,
@@ -5920,17 +5920,17 @@ void BAOriSessionTearDown(
 	IN OUT	struct rtmp_adapter *pAd,
 	IN		u8 		Wcid,
 	IN		u8 		TID,
-	IN		BOOLEAN			bPassive,
-	IN		BOOLEAN			bForceSend);
+	IN		bool 		bPassive,
+	IN		bool 		bForceSend);
 
 void BARecSessionTearDown(
 	IN OUT	struct rtmp_adapter *pAd,
 	IN		u8 		Wcid,
 	IN		u8 		TID,
-	IN		BOOLEAN			bPassive);
+	IN		bool 		bPassive);
 #endif /* DOT11_N_SUPPORT */
 
-BOOLEAN ba_reordering_resource_init(struct rtmp_adapter *pAd, int num);
+bool ba_reordering_resource_init(struct rtmp_adapter *pAd, int num);
 void ba_reordering_resource_release(struct rtmp_adapter *pAd);
 
 INT ComputeChecksum(
@@ -5938,7 +5938,7 @@ INT ComputeChecksum(
 
 UINT GenerateWpsPinCode(
 	IN	struct rtmp_adapter *pAd,
-    IN  BOOLEAN         bFromApcli,
+    IN  bool         bFromApcli,
 	IN	u8 apidx);
 
 
@@ -5972,11 +5972,11 @@ void RTMPIoctlNintendoSetTable(
 
 #endif /* NINTENDO_AP */
 
-BOOLEAN rtstrmactohex(
+bool rtstrmactohex(
 	IN char *s1,
 	IN char *s2);
 
-BOOLEAN rtstrcasecmp(
+bool rtstrcasecmp(
 	IN char *s1,
 	IN char *s2);
 
@@ -6322,9 +6322,9 @@ void assoc_ht_info_debugshow(
 	IN HT_CAPABILITY_IE *pHTCapability);
 #endif /* DOT11_N_SUPPORT */
 
-BOOLEAN APRxDoneInterruptHandle(struct rtmp_adapter*pAd);
-BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc);
-BOOLEAN RxDoneInterruptHandle(struct rtmp_adapter*pAd);
+bool APRxDoneInterruptHandle(struct rtmp_adapter*pAd);
+bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc);
+bool RxDoneInterruptHandle(struct rtmp_adapter*pAd);
 
 #ifdef DOT11_N_SUPPORT
 /* AMPDU packet indication */
@@ -6375,7 +6375,7 @@ UINT deaggregate_AMSDU_announce(
 	IN	ULONG			DataSize,
 	IN	u8 		OpMode);
 
-BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, u8 *pRspBuffer);
+bool CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, u8 *pRspBuffer);
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -6412,7 +6412,7 @@ BOOLEAN CmdRspEventCallbackHandle(struct rtmp_adapter *pAd, u8 *pRspBuffer);
 #endif /* CONFIG_STA_SUPPORT */
 
 
-BOOLEAN APFowardWirelessStaToWirelessSta(
+bool APFowardWirelessStaToWirelessSta(
 	IN	struct rtmp_adapter *pAd,
 	IN	struct sk_buff *	pPacket,
 	IN	ULONG			FromWhichBSSID);
@@ -6464,9 +6464,9 @@ void Update_Rssi_Sample(
 struct sk_buff * GetPacketFromRxRing(
 	IN struct rtmp_adapter*pAd,
 	OUT RX_BLK *pRxBlk,
-	OUT BOOLEAN	 *pbReschedule,
+	OUT bool  *pbReschedule,
 	INOUT u32 *pRxPending,
-	BOOLEAN *bCmdRspPacket);
+	bool *bCmdRspPacket);
 
 struct sk_buff * RTMPDeFragmentDataFrame(
 	IN struct rtmp_adapter*pAd,
@@ -6619,7 +6619,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 	IN struct rtmp_adapter*pAd,
 	IN RALINK_TIMER_STRUCT *pTimer);
 
-BOOLEAN RtmpTimerQRemove(
+bool RtmpTimerQRemove(
 	IN struct rtmp_adapter*pAd,
 	IN RALINK_TIMER_STRUCT *pTimer);
 
@@ -6638,7 +6638,7 @@ int RTUSBMultiWrite(
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
 	IN	USHORT			length,
-	IN	BOOLEAN			bWriteHigh);
+	IN	bool 		bWriteHigh);
 
 int RTUSBMultiWrite_nBytes(
         IN      struct rtmp_adapter *  pAd,
@@ -6719,7 +6719,7 @@ int RTUSBWriteMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u32			Value,
-	IN	BOOLEAN			bWriteHigh);
+	IN	bool 		bWriteHigh);
 
 int RTUSBReadMACRegister(
 	IN	struct rtmp_adapter *pAd,
@@ -6730,7 +6730,7 @@ int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
 	IN	USHORT			Value,
-	IN	BOOLEAN			bWriteHigh);
+	IN	bool 		bWriteHigh);
 
 int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd);
@@ -6785,7 +6785,7 @@ int	RTUSBFreeDescRequest(
 	IN u32 req_cnt);
 
 
-BOOLEAN	RTUSBNeedQueueBackForAgg(
+bool RTUSBNeedQueueBackForAgg(
 	IN struct rtmp_adapter*pAd,
 	IN u8 	BulkOutPipeId);
 
@@ -6793,7 +6793,7 @@ BOOLEAN	RTUSBNeedQueueBackForAgg(
 USHORT RtmpUSB_WriteSingleTxResource(
 	IN	struct rtmp_adapter *pAd,
 	IN	TX_BLK			*pTxBlk,
-	IN	BOOLEAN			bIsLast,
+	IN	bool 		bIsLast,
 	OUT	USHORT			*FreeNumber);
 
 USHORT	RtmpUSB_WriteFragTxResource(
@@ -6845,7 +6845,7 @@ void RtmpUsbStaAsicForceWakeupTimeout(
 
 void RT28xxUsbStaAsicForceWakeup(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN       bFromTx);
+	IN bool       bFromTx);
 
 void RT28xxUsbStaAsicSleepThenAutoWakeup(
 	IN struct rtmp_adapter *pAd,
@@ -6863,7 +6863,7 @@ void RT28xxUsbAsicRadioOff(
 void RT28xxUsbAsicRadioOn(
 	IN struct rtmp_adapter *pAd);
 
-BOOLEAN AsicCheckCommandOk(
+bool AsicCheckCommandOk(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	 Command);
 
@@ -6897,10 +6897,10 @@ void QBSS_LoadAlarmResume(
 u32 QBSS_LoadBusyTimeGet(
  	IN		struct rtmp_adapter*pAd);
 
-BOOLEAN QBSS_LoadIsAlarmIssued(
+bool QBSS_LoadIsAlarmIssued(
  	IN		struct rtmp_adapter*pAd);
 
-BOOLEAN QBSS_LoadIsBusyTimeAccepted(
+bool QBSS_LoadIsBusyTimeAccepted(
  	IN		struct rtmp_adapter*pAd,
 	IN		u32			BusyTime);
 
@@ -6938,7 +6938,7 @@ char *RTMPGetRalinkEncryModeStr(
 void AsicStaBbpTuning(
 	IN struct rtmp_adapter *pAd);
 
-BOOLEAN StaAddMacTableEntry(
+bool StaAddMacTableEntry(
 	IN  struct rtmp_adapter *	pAd,
 	IN  PMAC_TABLE_ENTRY	pEntry,
 	IN  u8 			MaxSupportedRateIn500Kbps,
@@ -6950,7 +6950,7 @@ BOOLEAN StaAddMacTableEntry(
 	IN  USHORT        		CapabilityInfo);
 
 
-BOOLEAN	AUTH_ReqSend(
+bool AUTH_ReqSend(
 	IN  struct rtmp_adapter *		pAd,
 	IN  PMLME_QUEUE_ELEM	pElem,
 	IN  PRALINK_TIMER_STRUCT pAuthTimer,
@@ -7058,7 +7058,7 @@ void RTUSBBulkRxHandle(
 
 
 #ifdef SOFT_ENCRYPT
-BOOLEAN RTMPExpandPacketForSwEncrypt(
+bool RTMPExpandPacketForSwEncrypt(
 	IN  struct rtmp_adapter *  pAd,
 	IN	PTX_BLK			pTxBlk);
 
@@ -7109,7 +7109,7 @@ INT AsicGetMacVersion(
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd);
 
-BOOLEAN CHAN_PropertyCheck(
+bool CHAN_PropertyCheck(
 	IN struct rtmp_adapter *pAd,
 	IN u32			ChanNum,
 	IN u8 		Property);
@@ -7280,7 +7280,7 @@ void    ApcliWpaSendEapolStart(
 void ApCliRTMPSendNullFrame(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 		TxRate,
-	IN	BOOLEAN 		bQosNull,
+	IN	bool 		bQosNull,
 	IN PMAC_TABLE_ENTRY pMacEntry);
 
 #endif/*APCLI_WPA_SUPPLICANT_SUPPORT*/
@@ -7320,8 +7320,8 @@ void RtmpEnqueueNullFrame(
 	IN u8         TxRate,
 	IN u8         PID,
 	IN u8         apidx,
-    IN BOOLEAN       bQosNull,
-    IN BOOLEAN       bEOSP,
+    IN bool       bQosNull,
+    IN bool       bEOSP,
     IN u8         OldUP);
 
 void RtmpCleanupPsQueue(
@@ -7329,7 +7329,7 @@ void RtmpCleanupPsQueue(
 	IN  PQUEUE_HEADER   pQueue);
 
 #ifdef CONFIG_STA_SUPPORT
-BOOLEAN RtmpPktPmBitCheck(
+bool RtmpPktPmBitCheck(
     IN  struct rtmp_adapter *      pAd);
 
 void RtmpPsActiveExtendCheck(
@@ -7347,13 +7347,13 @@ void mgmt_tb_set_mcast_entry(struct rtmp_adapter*pAd);
 void set_entry_phy_cfg(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry);
 void MacTableReset(struct rtmp_adapter*pAd);
 MAC_TABLE_ENTRY *MacTableLookup(struct rtmp_adapter*pAd, u8 *pAddr);
-BOOLEAN MacTableDeleteEntry(struct rtmp_adapter*pAd, USHORT wcid, u8 *pAddr);
+bool MacTableDeleteEntry(struct rtmp_adapter*pAd, USHORT wcid, u8 *pAddr);
 MAC_TABLE_ENTRY *MacTableInsertEntry(
     IN struct rtmp_adapter*pAd,
     IN u8 *pAddr,
 	IN u8 apidx,
 	IN u8 OpMode,
-	IN BOOLEAN CleanAll);
+	IN bool CleanAll);
 
 #ifdef MAC_REPEATER_SUPPORT
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
@@ -7386,7 +7386,7 @@ INT set_rf(struct rtmp_adapter*pAd, char *arg);
 #endif /* RLT_RF */
 
 #ifdef RTMP_MAC_USB
-BOOLEAN CmdRspEventHandle(struct rtmp_adapter*pAd);
+bool CmdRspEventHandle(struct rtmp_adapter*pAd);
 #endif /* RTMP_MAC_USB */
 
 #endif  /* __RTMP_H__ */

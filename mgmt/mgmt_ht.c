@@ -41,7 +41,7 @@ INT ht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILI
 	{
 		pEntry->MaxHTPhyMode.field.MODE = MODE_HTMIX;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo2.NonGfPresent = 1;
-		pAd->MacTab.fAnyStationNonGF = TRUE;
+		pAd->MacTab.fAnyStationNonGF = true;
 	}
 
 	if ((peer->HtCapInfo.ChannelWidth) && (my->ChannelWidth))
@@ -53,10 +53,10 @@ INT ht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILI
 	{
 		pEntry->MaxHTPhyMode.field.BW = BW_20;
 		pEntry->MaxHTPhyMode.field.ShortGI = ((my->ShortGIfor20) & (peer->HtCapInfo.ShortGIfor20));
-		pAd->MacTab.fAnyStation20Only = TRUE;
+		pAd->MacTab.fAnyStation20Only = true;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -77,7 +77,7 @@ INT set_ht_fixed_mcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, u8 fixed_
 		pEntry->MaxHTPhyMode.field.MCS = mcs_bound;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -126,10 +126,10 @@ INT get_ht_cent_ch(struct rtmp_adapter*pAd, u8 *rf_bw, u8 *ext_ch)
 		else
 			pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel - 2;
 	} else {
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -356,9 +356,9 @@ void RTMPSetHT(
 	/* 1, the extension channel above the control channel. */
 
 	/* EDCA parameters used for AP's own transmission*/
-	if (pAd->CommonCfg.APEdcaParm.bValid == FALSE)
+	if (pAd->CommonCfg.APEdcaParm.bValid == false)
 	{
-		pAd->CommonCfg.APEdcaParm.bValid = TRUE;
+		pAd->CommonCfg.APEdcaParm.bValid = true;
 		pAd->CommonCfg.APEdcaParm.Aifsn[0] = 3;
 		pAd->CommonCfg.APEdcaParm.Aifsn[1] = 7;
 		pAd->CommonCfg.APEdcaParm.Aifsn[2] = 1;
@@ -426,7 +426,7 @@ void RTMPSetIndividualHT(
 			break;
 		}
 #endif /* CONFIG_STA_SUPPORT */
-	} while (FALSE);
+	} while (false);
 
 	if (pDesired_ht_phy == NULL)
 	{
@@ -468,13 +468,13 @@ void RTMPSetIndividualHT(
 	if (pAd->CommonCfg.HT_Disable)
 	{
 #ifdef CONFIG_STA_SUPPORT
-		pAd->StaCfg.bAdhocN = FALSE;
+		pAd->StaCfg.bAdhocN = false;
 #endif /* CONFIG_STA_SUPPORT */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s : HT is disabled\n", __FUNCTION__));
 		return;
 	}
 
-	pDesired_ht_phy->bHtEnable = TRUE;
+	pDesired_ht_phy->bHtEnable = true;
 
 	/* Decide desired Tx MCS*/
 	switch (TxStream)
@@ -537,7 +537,7 @@ void RTMPSetIndividualHT(
 
 #ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode)) {
-		pDesired_ht_phy->bVhtEnable = TRUE;
+		pDesired_ht_phy->bVhtEnable = true;
 		rtmp_set_vht(pAd, pDesired_ht_phy);
 	}
 #endif /* DOT11_VHT_AC */
@@ -575,7 +575,7 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 	{
 		/* Clear previous HT information */
 		RTMPDisableDesiredHtInfo(pAd);
-		return FALSE;
+		return false;
 	}
 
 #ifdef DOT11_VHT_AC
@@ -604,7 +604,7 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 	}
 #endif /* DOT11N_DRAFT3 */
 
-	return TRUE;
+	return true;
 }
 
 /*

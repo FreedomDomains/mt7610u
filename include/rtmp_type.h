@@ -63,7 +63,6 @@ typedef signed long long LONGLONG;
 
 typedef unsigned long long ULONGLONG;
 
-typedef unsigned char BOOLEAN;
 #ifdef LINUX
 #endif /* LINUX */
 

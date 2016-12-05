@@ -130,15 +130,15 @@ Arguments:
 	pFSM			- TDLS Finite State Machine
 
 Return Value:
-	TRUE			- init ok
-	FALSE			- init fail
+	true			- init ok
+	false			- init fail
 
 Note:
 	Peer U-APSD Sleep STA is default feature in spec.
 	Peer U-APSD Buffer STA is optional feature in spec.
 ========================================================================
 */
-BOOLEAN TDLS_UAPSDP_Init(
+bool TDLS_UAPSDP_Init(
 	IN	struct rtmp_adapter *			pAd,
     IN	STATE_MACHINE				*pFSM)
 {
@@ -152,7 +152,7 @@ BOOLEAN TDLS_UAPSDP_Init(
 	spin_lock_init(pAd, &pAd->StaCfg.TdlsInfo.TDLSUapsdLock);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("tdls uapsd> initialization ok!\n"));
-	return TRUE;
+	return true;
 }
 
 
@@ -165,18 +165,18 @@ Arguments:
 	pAd				- WLAN control block pointer
 
 Return Value:
-	TRUE			- release ok
-	FALSE			- release fail
+	true			- release ok
+	false			- release fail
 
 Note:
 ========================================================================
 */
-BOOLEAN TDLS_UAPSDP_Release(
+bool TDLS_UAPSDP_Release(
 	IN	struct rtmp_adapter *			pAd)
 {
 	/* free lock */
 
-	return TRUE;
+	return true;
 }
 
 
@@ -235,15 +235,15 @@ Return Value:
 	None
 
 Note:
-	Check all TDLS entries and return TRUE if all SPs are closed.
+	Check all TDLS entries and return true if all SPs are closed.
 ========================================================================
 */
-BOOLEAN TDLS_UAPSDP_AsicCanSleep(
+bool TDLS_UAPSDP_AsicCanSleep(
 	IN	struct rtmp_adapter *			pAd)
 {
 	RT_802_11_TDLS *pTDLS;
 	u32 IdEntry;
-	BOOLEAN FlgAllSpClosed = TRUE;
+	bool FlgAllSpClosed = true;
 
 
 	TDLS_SEMLOCK(pAd);
@@ -253,7 +253,7 @@ BOOLEAN TDLS_UAPSDP_AsicCanSleep(
 	{
 		pTDLS = (PRT_802_11_TDLS)&pAd->StaCfg.TdlsInfo.TDLSEntry[IdEntry];
 
-		if ((pTDLS->Valid == TRUE) &&
+		if ((pTDLS->Valid == true) &&
 			(pTDLS->Status == TDLS_MODE_CONNECTED))
 		{
 			u32 Wcid = pTDLS->MacTabMatchWCID;
@@ -269,13 +269,13 @@ BOOLEAN TDLS_UAPSDP_AsicCanSleep(
 				2. A traffic indication is sent and no response is received.
 			*/
 			if ((pEntry->bAPSDFlagSPStart != 0) ||
-				(pTDLS->FlgIsWaitingUapsdTraRsp == TRUE))
+				(pTDLS->FlgIsWaitingUapsdTraRsp == true))
 			{
 				DBGPRINT(RT_DEBUG_TRACE,
 						("tdls uapsd> SP not close or Ind sent (%d %d)!\n",
 						pEntry->bAPSDFlagSPStart,
 						pTDLS->FlgIsWaitingUapsdTraRsp));
-				FlgAllSpClosed = FALSE;
+				FlgAllSpClosed = false;
 				break;
 			}
 		}
@@ -323,7 +323,7 @@ void TDLS_UAPSDP_PsmModeChange(
          (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) ||
          (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK)
 #ifdef WPA_SUPPLICANT_SUPPORT
-			  || (pAd->StaCfg.IEEE8021X == TRUE)
+			  || (pAd->StaCfg.IEEE8021X == true)
 #endif
         ) &&
        (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED))
@@ -359,7 +359,7 @@ void TDLS_UAPSDP_PsmModeChange(
 
 				RtmpEnqueueNullFrame(pAd, pMacEntry->Addr,
 									pAd->CommonCfg.TxRate, pMacEntry->Aid,
-									pMacEntry->apidx, TRUE, FALSE, 0);
+									pMacEntry->apidx, true, false, 0);
 				continue;
 			}
 
@@ -694,12 +694,12 @@ INT TDLS_Ioctl(
 			pAd->Mlme.ChannelQuality = 0;
 
 			if (pAd->StaCfg.bAutoConnectByBssid)
-			   pAd->StaCfg.bAutoConnectByBssid = FALSE;
+			   pAd->StaCfg.bAutoConnectByBssid = false;
 
-			pAd->MlmeAux.CurrReqIsFromNdis = FALSE;
+			pAd->MlmeAux.CurrReqIsFromNdis = false;
 
 			/* Lost AP, send disconnect & link down event*/
-			LinkDown(pAd, FALSE);
+			LinkDown(pAd, false);
 			break;
 #endif /* TDLS_UAPSD_DEBUG */
 
@@ -764,7 +764,7 @@ static ULONG TDLS_UAPSD_TrafficIndBuild(
 	u8 TDLS_ETHERTYPE[] = {0x89, 0x0d};
 	ULONG	FrameLen = 0;
 	INT32	LinkId;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
@@ -791,13 +791,13 @@ static ULONG TDLS_UAPSD_TrafficIndBuild(
 		goto LabelExit;
 	}
 
-	if (pTDLS->FlgIsWaitingUapsdTraRsp == TRUE)
+	if (pTDLS->FlgIsWaitingUapsdTraRsp == true)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("tdls uapsd> traffic ind was sent before!\n"));
 		goto LabelExit; /* has sent it */
 	}
 
-	pTDLS->FlgIsWaitingUapsdTraRsp = TRUE;
+	pTDLS->FlgIsWaitingUapsdTraRsp = true;
 
 	/* init packet header */
 	MAKE_802_3_HEADER(pHeader802_3, pTDLS->MacAddr,
@@ -1186,7 +1186,7 @@ static void TDLS_UAPSD_PeerTrafficRspAction(
 	u8 PeerAddr1[6];
 	RT_802_11_TDLS *pTDLS;
 	INT32 LinkId = 0xff;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	PFRAME_802_11 pFrame = (PFRAME_802_11)pElem->Msg;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("tdls uapsd> ====> %s\n", __FUNCTION__));
@@ -1233,7 +1233,7 @@ static void TDLS_UAPSD_PeerTrafficRspAction(
 
 	/* cancel waiting flag to avoid tear down the link */
 	pTDLS = TDLS_UAPSD_ENTRY_GET(pAd, LinkId);
-	pTDLS->FlgIsWaitingUapsdTraRsp = FALSE;
+	pTDLS->FlgIsWaitingUapsdTraRsp = false;
 	RTMPCancelTimer(&pTDLS->Timer, &TimerCancelled);
 
 	/* check if we can sleep if we are sleep mode */
@@ -1575,7 +1575,7 @@ static void TDLS_UAPSD_CmdSimTrafficRspRcv(
 
 	/* cancel waiting flag to avoid tear down the link */
 	pTDLS = TDLS_UAPSD_ENTRY_GET(pAd, LinkId);
-	pTDLS->FlgIsWaitingUapsdTraRsp = FALSE;
+	pTDLS->FlgIsWaitingUapsdTraRsp = false;
 
 	/* handle UAPSD SP */
 	/*

@@ -32,12 +32,12 @@
 
 
 
-BOOLEAN UpdateFromGlobal = FALSE;
+bool UpdateFromGlobal = false;
 
 void VideoTurbineUpdate(
 	IN struct rtmp_adapter *pAd)
 {
-	if (UpdateFromGlobal == TRUE)
+	if (UpdateFromGlobal == true)
 	{
 		pAd->VideoTurbine.Enable = GLOBAL_AP_VIDEO_CONFIG.Enable;
 		pAd->VideoTurbine.ClassifierEnable = GLOBAL_AP_VIDEO_CONFIG.ClassifierEnable;
@@ -87,7 +87,7 @@ void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN u32 qLen)
 void VideoTurbineDynamicTune(
 	IN struct rtmp_adapter *pAd)
 {
-	if (pAd->VideoTurbine.Enable == TRUE)
+	if (pAd->VideoTurbine.Enable == true)
 	{
 			u32 MacReg = 0;
 
@@ -158,7 +158,7 @@ u8 GetAsicVideoTxBA(
 void VideoConfigInit(
 	IN struct rtmp_adapter *pAd)
 {
-	pAd->VideoTurbine.Enable = FALSE;
+	pAd->VideoTurbine.Enable = false;
 	pAd->VideoTurbine.TxRetryLimit = 0x2F1F;
 	pAd->VideoTurbine.TxBASize = pAd->CommonCfg.TxBASize;
 }

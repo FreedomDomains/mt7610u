@@ -76,12 +76,12 @@ INT CFG80211DRV_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_80211_CHAN_SET:
-			if (CFG80211DRV_OpsSetChannel(pAd, pData) != TRUE)
+			if (CFG80211DRV_OpsSetChannel(pAd, pData) != true)
 				return NDIS_STATUS_FAILURE;
 			break;
 
 		case CMD_RTPRIV_IOCTL_80211_VIF_CHG:
-			if (CFG80211DRV_OpsChgVirtualInf(pAd, pData, Data) != TRUE)
+			if (CFG80211DRV_OpsChgVirtualInf(pAd, pData, Data) != true)
 				return NDIS_STATUS_FAILURE;
 			break;
 
@@ -98,7 +98,7 @@ INT CFG80211DRV_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_80211_STA_GET:
-			if (CFG80211DRV_StaGet(pAd, pData) != TRUE)
+			if (CFG80211DRV_StaGet(pAd, pData) != true)
 				return NDIS_STATUS_FAILURE;
 			break;
 
@@ -120,7 +120,7 @@ INT CFG80211DRV_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_80211_RFKILL:
 		{
 			u32 data = 0;
-			BOOLEAN active;
+			bool active;
 
 			/* Read GPIO pin2 as Hardware controlled radio state */
 			RTMP_IO_READ32(pAd, GPIO_CTRL_CFG, &data);
@@ -170,7 +170,7 @@ INT CFG80211DRV_IoctlHandle(
 }
 
 
-BOOLEAN CFG80211DRV_OpsSetChannel(
+bool CFG80211DRV_OpsSetChannel(
 	void 					*pAdOrg,
 	void 					*pData)
 {
@@ -182,7 +182,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	STRING ChStr[5] = { 0 };
 #ifdef DOT11_N_SUPPORT
 	u8 BW_Old;
-	BOOLEAN FlgIsChanged;
+	bool FlgIsChanged;
 #endif /* DOT11_N_SUPPORT */
 
 
@@ -196,14 +196,14 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	if (IfType != RT_CMD_80211_IFTYPE_MONITOR)
 	{
 		/* get channel BW */
-		FlgIsChanged = FALSE;
+		FlgIsChanged = false;
 		BW_Old = pAd->CommonCfg.RegTransmitSetting.field.BW;
 
 		/* set to new channel BW */
 		if (ChannelType == RT_CMD_80211_CHANTYPE_HT20)
 		{
 			pAd->CommonCfg.RegTransmitSetting.field.BW = BW_20;
-			FlgIsChanged = TRUE;
+			FlgIsChanged = true;
 		}
 		else if ((ChannelType == RT_CMD_80211_CHANTYPE_HT40MINUS) ||
 				(ChannelType == RT_CMD_80211_CHANTYPE_HT40PLUS))
@@ -211,7 +211,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 			/* not support NL80211_CHAN_HT40MINUS or NL80211_CHAN_HT40PLUS */
 			/* i.e. primary channel = 36, secondary channel must be 40 */
 			pAd->CommonCfg.RegTransmitSetting.field.BW = BW_40;
-			FlgIsChanged = TRUE;
+			FlgIsChanged = true;
 		} /* End of if */
 
 		CFG80211DBG(RT_DEBUG_ERROR, ("80211> New BW = %d\n",
@@ -229,7 +229,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 				pAd->CommonCfg.HT_Disable = 0;
 			/* End of if */
 
-			FlgIsChanged = TRUE;
+			FlgIsChanged = true;
 			CFG80211DBG(RT_DEBUG_ERROR, ("80211> HT Disable = %d\n",
 						pAd->CommonCfg.HT_Disable));
 		} /* End of if */
@@ -237,26 +237,26 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	else
 	{
 		/* for monitor mode */
-		FlgIsChanged = TRUE;
+		FlgIsChanged = true;
 		pAd->CommonCfg.HT_Disable = 0;
 		pAd->CommonCfg.RegTransmitSetting.field.BW = BW_40;
 	} /* End of if */
 
-	if (FlgIsChanged == TRUE)
+	if (FlgIsChanged == true)
 		SetCommonHT(pAd);
 	/* End of if */
 #endif /* DOT11_N_SUPPORT */
 
 	/* switch to the channel */
 	sprintf(ChStr, "%d", ChanId);
-	if (Set_Channel_Proc(pAd, ChStr) == FALSE)
+	if (Set_Channel_Proc(pAd, ChStr) == false)
 	{
 		CFG80211DBG(RT_DEBUG_ERROR, ("80211> Change channel fail!\n"));
 	} /* End of if */
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef DOT11_N_SUPPORT
-	if ((IfType == RT_CMD_80211_IFTYPE_STATION) && (FlgIsChanged == TRUE))
+	if ((IfType == RT_CMD_80211_IFTYPE_STATION) && (FlgIsChanged == true))
 	{
 		/*
 			1. Station mode;
@@ -272,7 +272,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	if (IfType == RT_CMD_80211_IFTYPE_ADHOC)
 	{
 		/* update IBSS beacon */
-		MlmeUpdateTxRates(pAd, FALSE, 0);
+		MlmeUpdateTxRates(pAd, false, 0);
 		MakeIbssBeacon(pAd);
 		AsicEnableIbssSync(pAd);
 
@@ -287,11 +287,11 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 	} /* End of if */
 #endif /* CONFIG_STA_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_OpsChgVirtualInf(
+bool CFG80211DRV_OpsChgVirtualInf(
 	void 					*pAdOrg,
 	void 					*pFlgFilter,
 	u8						IfType)
@@ -358,34 +358,34 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 			*(u32 *)pFlgFilter = Filter;
 		} /* End of if */
 
-		return TRUE; /* not need to set SSID */
+		return true; /* not need to set SSID */
 	} /* End of if */
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> SSID = %s\n", pAd->CommonCfg.Ssid));
 	Set_SSID_Proc(pAd, (char *)pAd->CommonCfg.Ssid);
 #endif /* CONFIG_STA_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_OpsScan(
+bool CFG80211DRV_OpsScan(
 	void 					*pAdOrg)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
 
 
-	if (pAd->FlgCfg80211Scanning == TRUE)
-		return FALSE; /* scanning */
+	if (pAd->FlgCfg80211Scanning == true)
+		return false; /* scanning */
 	/* End of if */
 
 	/* do scan */
-	pAd->FlgCfg80211Scanning = TRUE;
-	return TRUE;
+	pAd->FlgCfg80211Scanning = true;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_OpsJoinIbss(
+bool CFG80211DRV_OpsJoinIbss(
 	void 					*pAdOrg,
 	void 					*pData)
 {
@@ -399,25 +399,25 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
 	pAd->CommonCfg.BeaconPeriod = pIbssInfo->BeaconInterval;
 	Set_SSID_Proc(pAd, pIbssInfo->Ssid);
 #endif /* CONFIG_STA_SUPPORT */
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_OpsLeave(
+bool CFG80211DRV_OpsLeave(
 	void 					*pAdOrg)
 {
 #ifdef CONFIG_STA_SUPPORT
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdOrg;
 
 
-	pAd->FlgCfg80211Connecting = FALSE;
-	LinkDown(pAd, FALSE);
+	pAd->FlgCfg80211Connecting = false;
+	LinkDown(pAd, false);
 #endif /* CONFIG_STA_SUPPORT */
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_StaGet(
+bool CFG80211DRV_StaGet(
 	void 					*pAdOrg,
 	void 					*pData)
 {
@@ -472,11 +472,11 @@ BOOLEAN CFG80211DRV_StaGet(
 }
 #endif /* CONFIG_STA_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_KeyAdd(
+bool CFG80211DRV_KeyAdd(
 	void 					*pAdOrg,
 	void 					*pData)
 {
@@ -532,7 +532,7 @@ BOOLEAN CFG80211DRV_KeyAdd(
 		else if (pAd->StaCfg.wdev.WepStatus == Ndis802_11Encryption3Enabled)
 			IoctlSec.Alg = RT_CMD_STA_IOCTL_SECURITY_ALG_CCMP;
 		IoctlSec.flags = RT_CMD_STA_IOCTL_SECURITY_ENABLED;
-		if (pKeyInfo->bPairwise == FALSE )
+		if (pKeyInfo->bPairwise == false )
 		{
 			if (pAd->StaCfg.GroupCipher == Ndis802_11Encryption2Enabled)
 				IoctlSec.Alg = RT_CMD_STA_IOCTL_SECURITY_ALG_TKIP;
@@ -560,11 +560,11 @@ BOOLEAN CFG80211DRV_KeyAdd(
 
 #endif /* CONFIG_STA_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
-BOOLEAN CFG80211DRV_Connect(
+bool CFG80211DRV_Connect(
 	void 					*pAdOrg,
 	void 					*pData)
 {
@@ -608,7 +608,7 @@ BOOLEAN CFG80211DRV_Connect(
 		Set_EncrypType_Proc(pAd, "NONE");
 		Set_SSID_Proc(pAd, (char *)SSID);
 
-		return TRUE;
+		return true;
 	}
 	else
 	{
@@ -620,7 +620,7 @@ BOOLEAN CFG80211DRV_Connect(
 	/* set authentication mode */
 	if (pConnInfo->WpaVer == 2)
 	{
-		if (pConnInfo->FlgIs8021x == TRUE) {
+		if (pConnInfo->FlgIs8021x == true) {
 			DBGPRINT(RT_DEBUG_TRACE, ("WPA2\n"));
 			Set_AuthMode_Proc(pAd, "WPA2");
 		}
@@ -632,7 +632,7 @@ BOOLEAN CFG80211DRV_Connect(
 	}
 	else if (pConnInfo->WpaVer == 1)
 	{
-		if (pConnInfo->FlgIs8021x == TRUE) {
+		if (pConnInfo->FlgIs8021x == true) {
 			DBGPRINT(RT_DEBUG_TRACE, ("WPA\n"));
 			Set_AuthMode_Proc(pAd, "WPA");
 		}
@@ -714,7 +714,7 @@ BOOLEAN CFG80211DRV_Connect(
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; // base 0
 		if (pConnInfo->KeyLen >= sizeof(KeyBuf))
-			return FALSE;
+			return false;
 		memcpy(KeyBuf, pConnInfo->pKey, pConnInfo->KeyLen);
 		KeyBuf[pConnInfo->KeyLen] = 0x00;
 
@@ -762,7 +762,7 @@ BOOLEAN CFG80211DRV_Connect(
 
 		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; /* base 0 */
 		if (pConnInfo->KeyLen >= sizeof(KeyBuf))
-			return FALSE;
+			return false;
 
 		memcpy(KeyBuf, pConnInfo->Key, pConnInfo->KeyLen);
 		KeyBuf[pConnInfo->KeyLen] = 0x00;
@@ -776,9 +776,9 @@ BOOLEAN CFG80211DRV_Connect(
 	} /* End of if */
 
 	/* TODO: We need to provide a command to set BSSID to associate a AP */
-	//pAd->cfg80211_ctrl.FlgCfg80211Connecting = TRUE;
+	//pAd->cfg80211_ctrl.FlgCfg80211Connecting = true;
 
-	pAd->FlgCfg80211Connecting = TRUE;
+	pAd->FlgCfg80211Connecting = true;
 
 	/*SSIDLen = pConnInfo->SsidLen;
 	if (SSIDLen > NDIS_802_11_LENGTH_SSID)
@@ -796,7 +796,7 @@ BOOLEAN CFG80211DRV_Connect(
 
 #endif /* CONFIG_STA_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1002,7 +1002,7 @@ void CFG80211_RegRuleApply(
 	void *pBand24G, *pBand5G;
 	u32 IdBand, IdChan, IdPwr;
 	u32 ChanNum, ChanId, Power, RecId, DfsType;
-	BOOLEAN FlgIsRadar;
+	bool FlgIsRadar;
 	ULONG IrqFlags;
 #ifdef DFS_SUPPORT
 	RADAR_DETECT_STRUCT	*pRadarDetect;
@@ -1036,7 +1036,7 @@ void CFG80211_RegRuleApply(
 	pBand24G = NULL;
 	pBand5G = NULL;
 
-	if (CFG80211OS_BandInfoGet(CFG80211CB, pWiphy, &pBand24G, &pBand5G) == FALSE)
+	if (CFG80211OS_BandInfoGet(CFG80211CB, pWiphy, &pBand24G, &pBand5G) == false)
 		return;
 
 #ifdef AUTO_CH_SELECT_ENHANCE
@@ -1094,7 +1094,7 @@ void CFG80211_RegRuleApply(
 		for(IdChan=0; IdChan<ChanNum; IdChan++)
 		{
 			if (CFG80211OS_ChanInfoGet(CFG80211CB, pWiphy, IdBand, IdChan,
-									&ChanId, &Power, &FlgIsRadar) == FALSE)
+									&ChanId, &Power, &FlgIsRadar) == false)
 			{
 				/* the channel is not allowed in the regulatory domain */
 				/* get next channel information */
@@ -1131,10 +1131,10 @@ void CFG80211_RegRuleApply(
 					pAd->ChannelList[RecId].MaxTxPwr = Power;
 
 					/* keep DFS flag */
-					if (FlgIsRadar == TRUE)
-						pAd->ChannelList[RecId].DfsReq = TRUE;
+					if (FlgIsRadar == true)
+						pAd->ChannelList[RecId].DfsReq = true;
 					else
-						pAd->ChannelList[RecId].DfsReq = FALSE;
+						pAd->ChannelList[RecId].DfsReq = false;
 					/* End of if */
 
 					/* keep DFS type */
@@ -1147,7 +1147,7 @@ void CFG80211_RegRuleApply(
 								("Chan %03d:\tpower %d dBm, "
 								"DFS %d, DFS Type %d\n",
 								ChanId, Power,
-								((FlgIsRadar == TRUE)?1:0),
+								((FlgIsRadar == true)?1:0),
 								DfsType));
 
 					/* change to record next channel info. */
@@ -1191,7 +1191,7 @@ void CFG80211_Scaning(
 #ifdef CONFIG_STA_SUPPORT
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
 	void *pCfg80211_CB = pAd->pCfg80211_CB;
-	BOOLEAN FlgIsNMode;
+	bool FlgIsNMode;
 	u8 BW;
 
 
@@ -1207,8 +1207,8 @@ void CFG80211_Scaning(
 		In connect function, we also need to report BSS information to cfg80211;
 		Not only scan function.
 	*/
-	if ((pAd->FlgCfg80211Scanning == FALSE) &&
-		(pAd->FlgCfg80211Connecting == FALSE))
+	if ((pAd->FlgCfg80211Scanning == false) &&
+		(pAd->FlgCfg80211Connecting == false))
 	{
 		return; /* no scan is running */
 	} /* End of if */
@@ -1216,9 +1216,9 @@ void CFG80211_Scaning(
 	/* init */
 	/* Note: Can not use local variable to do pChan */
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode))
-		FlgIsNMode = TRUE;
+		FlgIsNMode = true;
 	else
-		FlgIsNMode = FALSE;
+		FlgIsNMode = false;
 
 	if (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_20)
 		BW = 0;
@@ -1253,7 +1253,7 @@ Note:
 */
 void CFG80211_ScanEnd(
 	IN void 					*pAdCB,
-	IN BOOLEAN					FlgIsAborted)
+	IN bool 				FlgIsAborted)
 {
 #ifdef CONFIG_STA_SUPPORT
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;
@@ -1265,13 +1265,13 @@ void CFG80211_ScanEnd(
 		return;
 	} /* End of if */
 
-	if (pAd->FlgCfg80211Scanning == FALSE)
+	if (pAd->FlgCfg80211Scanning == false)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("80211> No scan is running!\n"));
 		return; /* no scan is running */
 	} /* End of if */
 
-	if (FlgIsAborted == TRUE)
+	if (FlgIsAborted == true)
 		FlgIsAborted = 1;
 	else
 		FlgIsAborted = 0;
@@ -1279,7 +1279,7 @@ void CFG80211_ScanEnd(
 
 	CFG80211OS_ScanEnd(CFG80211CB, FlgIsAborted);
 
-	pAd->FlgCfg80211Scanning = FALSE;
+	pAd->FlgCfg80211Scanning = false;
 #endif /* CONFIG_STA_SUPPORT */
 } /* End of CFG80211_ScanEnd */
 
@@ -1326,7 +1326,7 @@ void CFG80211_ConnectResultInform(
 								RspIeLen,
 								FlgIsSuccess);
 
-	pAd->FlgCfg80211Connecting = FALSE;
+	pAd->FlgCfg80211Connecting = false;
 } /* End of CFG80211_ConnectResultInform */
 
 
@@ -1339,8 +1339,8 @@ Arguments:
 	pAdCB			- WLAN control block pointer
 
 Return Value:
-	TRUE			- re-init successfully
-	FALSE			- re-init fail
+	true			- re-init successfully
+	false			- re-init fail
 
 Note:
 	CFG80211_SupBandInit() is called in xx_probe().
@@ -1348,7 +1348,7 @@ Note:
 	need to re-init bands in xx_open().
 ========================================================================
 */
-BOOLEAN CFG80211_SupBandReInit(
+bool CFG80211_SupBandReInit(
 	IN void 					*pAdCB)
 {
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)pAdCB;

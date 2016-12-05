@@ -73,7 +73,7 @@ void DlsStateMachineInit(
 	for (i = 0; i < MAX_NUM_OF_DLS_ENTRY; i++) {
 		pAd->StaCfg.DLSEntry[i].pAd = pAd;
 		RTMPInitTimer(pAd, &pAd->StaCfg.DLSEntry[i].Timer,
-			      GET_TIMER_FUNCTION(DlsTimeoutAction), pAd, FALSE);
+			      GET_TIMER_FUNCTION(DlsTimeoutAction), pAd, false);
 	}
 }
 
@@ -99,7 +99,7 @@ void MlmeDlsReqAction(
 	ULONG tmp;
 	USHORT reason;
 	ULONG Timeout;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 
 	if (!MlmeDlsReqSanity(pAd, Elem->Msg, Elem->MsgLen, &pDLS, &reason))
 		return;
@@ -201,7 +201,7 @@ void PeerDlsReqAction(
 	USHORT DLSTimeOut;
 	SHORT i;
 	ULONG Timeout;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	PRT_802_11_DLS pDLS = NULL;
 	u8 MaxSupportedRateIn500Kbps = 0;
 	u8 SupportedRatesLen;
@@ -259,9 +259,9 @@ void PeerDlsReqAction(
 				pAd->StaCfg.DLSEntry[i].CountDownTimer =
 				    DLSTimeOut;
 				if (HtCapabilityLen != 0)
-					pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
+					pAd->StaCfg.DLSEntry[i].bHTCap = true;
 				else
-					pAd->StaCfg.DLSEntry[i].bHTCap = FALSE;
+					pAd->StaCfg.DLSEntry[i].bHTCap = false;
 				pDLS = &pAd->StaCfg.DLSEntry[i];
 				break;
 			}
@@ -285,14 +285,14 @@ void PeerDlsReqAction(
 					}
 
 					pAd->StaCfg.DLSEntry[i].Sequence = 0;
-					pAd->StaCfg.DLSEntry[i].Valid = TRUE;
+					pAd->StaCfg.DLSEntry[i].Valid = true;
 					pAd->StaCfg.DLSEntry[i].TimeOut = DLSTimeOut;
 					pAd->StaCfg.DLSEntry[i].CountDownTimer = DLSTimeOut;
 					memmove(pAd->StaCfg.DLSEntry[i].MacAddr, SA, ETH_ALEN);
 					if (HtCapabilityLen != 0)
-						pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
+						pAd->StaCfg.DLSEntry[i].bHTCap = true;
 					else
-						pAd->StaCfg.DLSEntry[i].bHTCap = FALSE;
+						pAd->StaCfg.DLSEntry[i].bHTCap = false;
 					pDLS = &pAd->StaCfg.DLSEntry[i];
 					pEntry = MacTableInsertDlsEntry(pAd, SA, i);
 
@@ -362,7 +362,7 @@ void PeerDlsReqAction(
 					pEntry->CurrTxRate = pEntry->MaxSupportedRate;
 					CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_WMM_CAPABLE);
 
-					if (pAd->StaCfg.bAutoTxRateSwitch == TRUE) {
+					if (pAd->StaCfg.bAutoTxRateSwitch == true) {
 						u8 TableSize = 0;
 
 						MlmeSelectTxRateTable(pAd,
@@ -370,11 +370,11 @@ void PeerDlsReqAction(
 								      &pEntry->pTable,
 								      &TableSize,
 								      &pEntry->CurrTxRateIndex);
-						pEntry->bAutoTxRateSwitch = TRUE;
+						pEntry->bAutoTxRateSwitch = true;
 					} else {
 						pEntry->HTPhyMode.field.MODE = pAd->StaCfg.HTPhyMode.field.MODE;
 						pEntry->HTPhyMode.field.MCS = pAd->StaCfg.HTPhyMode.field.MCS;
-						pEntry->bAutoTxRateSwitch = FALSE;
+						pEntry->bAutoTxRateSwitch = false;
 
 						RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
 					}
@@ -490,7 +490,7 @@ void PeerDlsRspAction(
 	u8 DA[ETH_ALEN], SA[ETH_ALEN];
 	USHORT StatusCode;
 	SHORT i;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	u8 MaxSupportedRateIn500Kbps = 0;
 	u8 SupportedRatesLen;
 	u8 SupportedRates[MAX_LEN_OF_SUPPORTED_RATES];
@@ -585,18 +585,18 @@ void PeerDlsRspAction(
 				CLIENT_STATUS_SET_FLAG(pEntry,
 						       fCLIENT_STATUS_WMM_CAPABLE);
 
-				if (pAd->StaCfg.bAutoTxRateSwitch == TRUE) {
+				if (pAd->StaCfg.bAutoTxRateSwitch == true) {
 					u8 TableSize = 0;
 
 					MlmeSelectTxRateTable(pAd, pEntry,
 							      &pEntry->pTable,
 							      &TableSize,
 							      &pEntry->CurrTxRateIndex);
-					pEntry->bAutoTxRateSwitch = TRUE;
+					pEntry->bAutoTxRateSwitch = true;
 				} else {
 					pEntry->HTPhyMode.field.MODE = pAd->StaCfg.HTPhyMode.field.MODE;
 					pEntry->HTPhyMode.field.MCS = pAd->StaCfg.HTPhyMode.field.MCS;
-					pEntry->bAutoTxRateSwitch = FALSE;
+					pEntry->bAutoTxRateSwitch = false;
 
 					RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode,
 								  pEntry);
@@ -621,7 +621,7 @@ void PeerDlsRspAction(
 							    sizeof(MLME_DLS_REQ_STRUCT),
 							    &MlmeDlsReq, 0);
 						pAd->StaCfg.DLSEntry[i].Status =DLS_NONE;
-						pAd->StaCfg.DLSEntry[i].Valid =FALSE;
+						pAd->StaCfg.DLSEntry[i].Valid =false;
 						DBGPRINT(RT_DEBUG_ERROR,
 							 ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest \n"));
 					} else {
@@ -640,13 +640,13 @@ void PeerDlsRspAction(
 				/*initialize seq no for DLS frames. */
 				pAd->StaCfg.DLSEntry[i].Sequence = 0;
 				if (HtCapabilityLen != 0)
-					pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
+					pAd->StaCfg.DLSEntry[i].bHTCap = true;
 				else
-					pAd->StaCfg.DLSEntry[i].bHTCap = FALSE;
+					pAd->StaCfg.DLSEntry[i].bHTCap = false;
 			} else {
 				/* DLS setup procedure failed. */
 				pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-				pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+				pAd->StaCfg.DLSEntry[i].Valid = false;
 				RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer,
 						&TimerCancelled);
 				DBGPRINT(RT_DEBUG_ERROR,
@@ -692,7 +692,7 @@ void PeerDlsRspAction(
 							pEntry->MaxHTPhyMode.field.MODE = MODE_HTGREENFIELD;
 						} else {
 							pEntry->MaxHTPhyMode.field.MODE = MODE_HTMIX;
-							pAd->MacTab.fAnyStationNonGF = TRUE;
+							pAd->MacTab.fAnyStationNonGF = true;
 							pAd->CommonCfg.AddHTInfo.AddHtInfo2.NonGfPresent = 1;
 						}
 
@@ -702,7 +702,7 @@ void PeerDlsRspAction(
 						} else {
 							pEntry->MaxHTPhyMode.field.BW = BW_20;
 							pEntry->MaxHTPhyMode.field.ShortGI = ((pAd->CommonCfg.DesiredHtPhy.ShortGIfor20) & (HtCapability.HtCapInfo.ShortGIfor20));
-							pAd->MacTab.fAnyStation20Only = TRUE;
+							pAd->MacTab.fAnyStation20Only = true;
 						}
 
 						/* find max fixed rate */
@@ -747,7 +747,7 @@ void PeerDlsRspAction(
 					pEntry->CurrTxRate = pEntry->MaxSupportedRate;
 					CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_WMM_CAPABLE);
 
-					if (pAd->StaCfg.bAutoTxRateSwitch == TRUE) {
+					if (pAd->StaCfg.bAutoTxRateSwitch == true) {
 						u8 TableSize = 0;
 
 						MlmeSelectTxRateTable(pAd,
@@ -755,11 +755,11 @@ void PeerDlsRspAction(
 								      &pEntry->pTable,
 								      &TableSize,
 								      &pEntry->CurrTxRateIndex);
-						pEntry->bAutoTxRateSwitch = TRUE;
+						pEntry->bAutoTxRateSwitch = true;
 					} else {
 						pEntry->HTPhyMode.field.MODE = pAd->StaCfg.HTPhyMode.field.MODE;
 						pEntry->HTPhyMode.field.MCS = pAd->StaCfg.HTPhyMode.field.MCS;
-						pEntry->bAutoTxRateSwitch = FALSE;
+						pEntry->bAutoTxRateSwitch = false;
 
 						RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
 					}
@@ -784,7 +784,7 @@ void PeerDlsRspAction(
 								    &MlmeDlsReq,
 								    0);
 							pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-							pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+							pAd->StaCfg.DLSEntry[i].Valid = false;
 							DBGPRINT(RT_DEBUG_ERROR,
 								 ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest \n"));
 						} else {
@@ -801,13 +801,13 @@ void PeerDlsRspAction(
 					}
 					pAd->StaCfg.DLSEntry[i].Sequence = 0;
 					if (HtCapabilityLen != 0)
-						pAd->StaCfg.DLSEntry[i].bHTCap = TRUE;
+						pAd->StaCfg.DLSEntry[i].bHTCap = true;
 					else
-						pAd->StaCfg.DLSEntry[i].bHTCap = FALSE;
+						pAd->StaCfg.DLSEntry[i].bHTCap = false;
 				} else {
 					/* DLS setup procedure failed. */
 					pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-					pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+					pAd->StaCfg.DLSEntry[i].Valid = false;
 					RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer, &TimerCancelled);
 					DBGPRINT(RT_DEBUG_ERROR,
 						 ("DLS - PeerDlsRspAction failed with StatusCode=%d \n",
@@ -838,7 +838,7 @@ void MlmeDlsTearDownAction(
 	USHORT ReasonCode = REASON_QOS_UNSPECIFY;
 	HEADER_802_11 DlsTearDownHdr;
 	PRT_802_11_DLS pDLS;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	u8 i;
 
 	if (!MlmeDlsReqSanity(pAd, Elem->Msg, Elem->MsgLen, &pDLS, &ReasonCode))
@@ -885,7 +885,7 @@ void MlmeDlsTearDownAction(
 		if (MAC_ADDR_EQUAL
 		    (pDLS->MacAddr, pAd->StaCfg.DLSEntry[i].MacAddr)) {
 			pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-			pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+			pAd->StaCfg.DLSEntry[i].Valid = false;
 			RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer,
 					&TimerCancelled);
 			MacTableDeleteDlsEntry(pAd,
@@ -910,7 +910,7 @@ void PeerDlsTearDownAction(
 	u8 DA[ETH_ALEN], SA[ETH_ALEN];
 	USHORT ReasonCode;
 	UINT i;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 
 	if (!pAd->CommonCfg.bDLSCapable)
 		return;
@@ -931,7 +931,7 @@ void PeerDlsTearDownAction(
 		if (pAd->StaCfg.DLSEntry[i].Valid
 		    && MAC_ADDR_EQUAL(SA, pAd->StaCfg.DLSEntry[i].MacAddr)) {
 			pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-			pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+			pAd->StaCfg.DLSEntry[i].Valid = false;
 			RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer,
 					&TimerCancelled);
 			/*AsicDelWcidTab(pAd, pAd->StaCfg.DLSEntry[i].MacTabMatchWCID); */
@@ -947,7 +947,7 @@ void PeerDlsTearDownAction(
 		if (pAd->StaCfg.DLSEntry[i].Valid
 		    && MAC_ADDR_EQUAL(SA, pAd->StaCfg.DLSEntry[i].MacAddr)) {
 			pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
-			pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+			pAd->StaCfg.DLSEntry[i].Valid = false;
 			RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer,
 					&TimerCancelled);
 			/*AsicDelWcidTab(pAd, pAd->StaCfg.DLSEntry[i].MacTabMatchWCID); */
@@ -991,7 +991,7 @@ void RTMPCheckDLSTimeOut(
 
 			if (pAd->StaCfg.DLSEntry[i].CountDownTimer == 0) {
 				reason = REASON_QOS_REQUEST_TIMEOUT;
-				pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+				pAd->StaCfg.DLSEntry[i].Valid = false;
 				pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
 				DlsParmFill(pAd, &MlmeDlsReq,
 					    &pAd->StaCfg.DLSEntry[i], reason);
@@ -1012,7 +1012,7 @@ void RTMPCheckDLSTimeOut(
 
 			if (pAd->StaCfg.DLSEntry[i].CountDownTimer == 0) {
 				reason = REASON_QOS_REQUEST_TIMEOUT;
-				pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+				pAd->StaCfg.DLSEntry[i].Valid = false;
 				pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
 				DlsParmFill(pAd, &MlmeDlsReq,
 					    &pAd->StaCfg.DLSEntry[i], reason);
@@ -1033,15 +1033,15 @@ void RTMPCheckDLSTimeOut(
 
     ==========================================================================
  */
-BOOLEAN RTMPRcvFrameDLSCheck(
+bool RTMPRcvFrameDLSCheck(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN ULONG Len,
 	IN RXD_STRUC *pRxD)
 {
 	ULONG i;
-	BOOLEAN bFindEntry = FALSE;
-	BOOLEAN bSTAKeyFrame = FALSE;
+	bool bFindEntry = false;
+	bool bSTAKeyFrame = false;
 	PEAPOL_PACKET pEap;
 	u8 *pProto, pAddr = NULL;
 	u8 *pSTAKey = NULL;
@@ -1050,7 +1050,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 	u8 digest[80];
 	u8 DlsPTK[80];
 	u8 temp[64];
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	CIPHER_KEY PairwiseKey;
 
 	if (!pAd->CommonCfg.bDLSCapable)
@@ -1189,7 +1189,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 					  PRINT_MAC(pAddr), Len,
 					  pEap->KeyDesc.KeyData[1]));
 
-				bSTAKeyFrame = TRUE;
+				bSTAKeyFrame = true;
 			}
 
 		}
@@ -1236,7 +1236,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 					PairwiseKey.CipherAlg = CIPHER_AES;
 
 				pEntry = DlsEntryTableLookup(pAd,
-							pAd->StaCfg.DLSEntry[i].MacAddr, TRUE);
+							pAd->StaCfg.DLSEntry[i].MacAddr, true);
 
 				/* Add Pair-wise key to Asic */
 				RTMP_ASIC_PAIRWISE_KEY_TABLE(pAd,
@@ -1267,7 +1267,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 				}
 			}
 
-			bFindEntry = TRUE;
+			bFindEntry = true;
 		}
 	}
 
@@ -1298,8 +1298,8 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 
 				pEntry =
 				    DlsEntryTableLookup(pAd,
-							pAd->StaCfg.DLSEntry[i].MacAddr, TRUE);
-				/*AsicAddKeyEntry(pAd, (USHORT)(i + 2), BSS0, 0, &PairwiseKey, TRUE, TRUE);     // reserve 0 for multicast, 1 for unicast */
+							pAd->StaCfg.DLSEntry[i].MacAddr, true);
+				/*AsicAddKeyEntry(pAd, (USHORT)(i + 2), BSS0, 0, &PairwiseKey, true, true);     // reserve 0 for multicast, 1 for unicast */
 				/*AsicUpdateRxWCIDTable(pAd, (USHORT)(i + 2), pAddr); */
 
 				/* Add Pair-wise key to Asic */
@@ -1326,7 +1326,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 					MLME_DLS_REQ_STRUCT MlmeDlsReq;
 					USHORT reason = REASON_QOS_CIPHER_NOT_SUPPORT;
 
-					pAd->StaCfg.DLSEntry[i].Valid = FALSE;
+					pAd->StaCfg.DLSEntry[i].Valid = false;
 					pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
 					DlsParmFill(pAd, &MlmeDlsReq,
 						    &pAd->StaCfg.DLSEntry[i],
@@ -1346,7 +1346,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
 				}
 			}
 
-			bFindEntry = TRUE;
+			bFindEntry = true;
 		}
 	}
 
@@ -1403,7 +1403,7 @@ INT RTMPCheckDLSFrame(
 				break;
 			}
 		}
-	} while (FALSE);
+	} while (false);
 
 	return rval;
 }
@@ -1601,7 +1601,7 @@ int RTMPSendSTAKeyRequest(
 	if (NStatus == NDIS_STATUS_SUCCESS) {
 		RTMP_SET_PACKET_WCID(pNdisPacket, BSSID_WCID);
 		STASendPacket(pAd, pNdisPacket);
-		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
 	kfree(pOutBuffer);
@@ -1737,7 +1737,7 @@ int RTMPSendSTAKeyHandShake(
 	if (NStatus == NDIS_STATUS_SUCCESS) {
 		RTMP_SET_PACKET_WCID(pNdisPacket, BSSID_WCID);
 		STASendPacket(pAd, pNdisPacket);
-		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 	}
 
 	kfree(pOutBuffer);
@@ -1772,7 +1772,7 @@ void DlsTimeoutAction(
 
 	if ((pDLS) && (pDLS->Valid)) {
 		reason = REASON_QOS_REQUEST_TIMEOUT;
-		pDLS->Valid = FALSE;
+		pDLS->Valid = false;
 		pDLS->Status = DLS_NONE;
 		DlsParmFill(pAd, &MlmeDlsReq, pDLS, reason);
 		MlmeEnqueue(pAd, DLS_STATE_MACHINE, MT2_MLME_DLS_TEAR_DOWN,
@@ -1803,7 +1803,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 		return NULL;
 
 	do {
-		if ((pEntry = DlsEntryTableLookup(pAd, pAddr, TRUE)) != NULL)
+		if ((pEntry = DlsEntryTableLookup(pAd, pAddr, true)) != NULL)
 			break;
 
 		/* allocate one MAC entry */
@@ -1811,7 +1811,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 		    MacTableInsertEntry(pAd, pAddr,
 					DlsEntryIdx + MIN_NET_DEVICE_FOR_DLS,
 					OPMODE_STA,
-					TRUE);
+					true);
 		if (pEntry) {
 			pAd->StaCfg.DLSEntry[DlsEntryIdx].MacTabMatchWCID = pEntry->Aid;
 			pEntry->MatchDlsEntryIdx = DlsEntryIdx;
@@ -1840,7 +1840,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 
 			break;
 		}
-	} while (FALSE);
+	} while (false);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==== MacTableInsertDlsEntry\n"));
 
@@ -1853,7 +1853,7 @@ MAC_TABLE_ENTRY *MacTableInsertDlsEntry(
 		Delete all Mesh Entry in pAd->MacTab
 	==========================================================================
  */
-BOOLEAN MacTableDeleteDlsEntry(
+bool MacTableDeleteDlsEntry(
 	IN struct rtmp_adapter *pAd,
 	IN USHORT wcid,
 	IN u8 *pAddr)
@@ -1861,19 +1861,19 @@ BOOLEAN MacTableDeleteDlsEntry(
 	DBGPRINT(RT_DEBUG_TRACE, ("====> MacTableDeleteDlsEntry\n"));
 
 	if (!VALID_WCID(wcid))
-		return FALSE;
+		return false;
 
 	MacTableDeleteEntry(pAd, wcid, pAddr);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==== MacTableDeleteDlsEntry\n"));
 
-	return TRUE;
+	return true;
 }
 
 MAC_TABLE_ENTRY *DlsEntryTableLookup(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pAddr,
-	IN BOOLEAN bResetIdelCount)
+	IN bool bResetIdelCount)
 {
 	ULONG HashIdx;
 	MAC_TABLE_ENTRY *pEntry = NULL;
@@ -1900,7 +1900,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 	IN struct rtmp_adapter *pAd,
 	IN u8 wcid,
 	IN u8 *pAddr,
-	IN BOOLEAN bResetIdelCount)
+	IN bool bResetIdelCount)
 {
 	ULONG DLsIndex;
 	PMAC_TABLE_ENTRY pCurEntry = NULL;
@@ -1928,7 +1928,7 @@ MAC_TABLE_ENTRY *DlsEntryTableLookupByWcid(
 			pEntry = pCurEntry;
 			break;
 		}
-	} while (FALSE);
+	} while (false);
 
 	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
 
@@ -2005,7 +2005,7 @@ INT Set_DlsEntryInfo_Display_Proc(
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 INT Set_DlsAddEntry_Proc(
@@ -2020,7 +2020,7 @@ INT Set_DlsAddEntry_Proc(
 	RT_802_11_DLS Dls;
 
 	if (strlen(arg) < 19)	/*Mac address acceptable format 01:02:03:04:05:06 length 17 plus the "-" and timeout value in decimal format. */
-		return FALSE;
+		return false;
 
 	token = strchr(arg, DASH);
 	if ((token != NULL) && (strlen(token) > 1)) {
@@ -2031,11 +2031,11 @@ INT Set_DlsAddEntry_Proc(
 		     token = rstrtok(NULL, &sepValue[0]), i++) {
 			if ((strlen(token) != 2) || (!isxdigit(*token))
 			    || (!isxdigit(*(token + 1))))
-				return FALSE;
+				return false;
 			AtoH(token, (&mac[i]), 1);
 		}
 		if (i != 6)
-			return FALSE;
+			return false;
 
 		DBGPRINT(RT_DEBUG_OFF,
 			 ("\n%02x:%02x:%02x:%02x:%02x:%02x-%d", mac[0], mac[1],
@@ -2051,10 +2051,10 @@ INT Set_DlsAddEntry_Proc(
 			    RT_OID_802_11_SET_DLS_PARAM,
 			    sizeof (RT_802_11_DLS), &Dls, 0);
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 
 }
 
@@ -2068,13 +2068,13 @@ INT Set_DlsTearDownEntry_Proc(
 	RT_802_11_DLS Dls;
 
 	if (strlen(arg) != 17)	/*Mac address acceptable format 01:02:03:04:05:06 length 17 */
-		return FALSE;
+		return false;
 
 	for (i = 0, value = rstrtok(arg, ":"); value;
 	     value = rstrtok(NULL, ":")) {
 		if ((strlen(value) != 2) || (!isxdigit(*value))
 		    || (!isxdigit(*(value + 1))))
-			return FALSE;	/*Invalid */
+			return false;	/*Invalid */
 
 		AtoH(value, &macAddr[i++], 2);
 	}
@@ -2090,5 +2090,5 @@ INT Set_DlsTearDownEntry_Proc(
 		    RT_OID_802_11_SET_DLS_PARAM,
 		    sizeof (RT_802_11_DLS), &Dls, 0);
 
-	return TRUE;
+	return true;
 }

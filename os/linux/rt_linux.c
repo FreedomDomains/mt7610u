@@ -46,10 +46,10 @@ int RTDebugFunc = 0;
  * the lock will not be used in TX/RX
  * path so throughput should not be impacted
  */
-BOOLEAN FlgIsUtilInit = FALSE;
+bool FlgIsUtilInit = false;
 
-BOOLEAN RTMP_OS_Alloc_RscOnly(void *pRscSrc, u32 RscLen);
-BOOLEAN RTMP_OS_Remove_Rsc(LIST_HEADER *pRscList, void *pRscSrc);
+bool RTMP_OS_Alloc_RscOnly(void *pRscSrc, u32 RscLen);
+bool RTMP_OS_Remove_Rsc(LIST_HEADER *pRscList, void *pRscSrc);
 /*
 ========================================================================
 Routine Description:
@@ -66,8 +66,8 @@ Note:
 */
 void RtmpUtilInit(void)
 {
-	if (FlgIsUtilInit == FALSE) {
-		FlgIsUtilInit = TRUE;
+	if (FlgIsUtilInit == false) {
+		FlgIsUtilInit = true;
 	}
 }
 
@@ -117,12 +117,12 @@ static inline void __RTMP_OS_Mod_Timer(
 
 static inline void __RTMP_OS_Del_Timer(
 	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	OUT BOOLEAN *pCancelled)
+	OUT bool *pCancelled)
 {
 	if (timer_pending(pTimer))
 		*pCancelled = del_timer_sync(pTimer);
 	else
-		*pCancelled = TRUE;
+		*pCancelled = true;
 }
 
 static inline void __RTMP_OS_Release_Timer(
@@ -416,7 +416,7 @@ struct sk_buff * duplicate_pkt_with_TKIP_MIC(
 
 	========================================================================
 */
-BOOLEAN RTMPL2FrameTxAction(
+bool RTMPL2FrameTxAction(
 	IN void * pCtrlBkPtr,
 	IN struct net_device *pNetDev,
 	IN RTMP_CB_8023_PACKET_ANNOUNCE _announce_802_3_packet,
@@ -430,7 +430,7 @@ BOOLEAN RTMPL2FrameTxAction(
 	if (!skb) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s : Error! Can't allocate a skb.\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	/*get_netdev_from_bssid(pAd, apidx)); */
@@ -449,7 +449,7 @@ BOOLEAN RTMPL2FrameTxAction(
 
 	_announce_802_3_packet(pCtrlBkPtr, skb, OpMode);
 
-	return TRUE;
+	return true;
 
 }
 
@@ -887,7 +887,7 @@ int RtmpOSFileWrite(RTMP_OS_FD osfd, char *pDataPtr, int writeLen)
 	return osfd->f_op->write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
 }
 
-static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, BOOLEAN bSet)
+static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, bool bSet)
 {
 	if (bSet) {
 		/* Save uid and gid used for filesystem access. */
@@ -1037,7 +1037,7 @@ static inline int __RtmpOSTaskInit(
 	return NDIS_STATUS_SUCCESS;
 }
 
-BOOLEAN __RtmpOSTaskWait(
+bool __RtmpOSTaskWait(
 	IN void *pReserved,
 	IN OS_TASK *pTask,
 	IN INT32 *pStatus)
@@ -1046,7 +1046,7 @@ BOOLEAN __RtmpOSTaskWait(
 	RTMP_WAIT_EVENT_INTERRUPTIBLE((*pStatus), pTask);
 
 	if ((pTask->task_killed == 1) || ((*pStatus) != 0))
-		return FALSE;
+		return false;
 #else
 
 	RTMP_SEM_EVENT_WAIT(&(pTask->taskSema), (*pStatus));
@@ -1054,11 +1054,11 @@ BOOLEAN __RtmpOSTaskWait(
 	/* unlock the device pointers */
 	if ((*pStatus) != 0) {
 /*		RTMP_SET_FLAG_(*pFlags, fRTMP_ADAPTER_HALT_IN_PROGRESS); */
-		return FALSE;
+		return false;
 	}
 #endif /* KTHREAD_SUPPORT */
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1329,7 +1329,7 @@ void RtmpOSNetDevDetach(struct net_device *pNetDev)
 	vfree(pNetDevOps);
 }
 
-void RtmpOSNetDevProtect(BOOLEAN lock_it)
+void RtmpOSNetDevProtect(bool lock_it)
 {
 
 /*
@@ -1361,7 +1361,7 @@ int RtmpOSNetDevAttach(
 	IN RTMP_OS_NETDEV_OP_HOOK *pDevOpHook)
 {
 	int ret,
-	 rtnl_locked = FALSE;
+	 rtnl_locked = false;
 
 	struct net_device_ops *pNetDevOps = (struct net_device_ops *)pNetDev->netdev_ops;
 
@@ -1626,14 +1626,14 @@ Return Value:
 Note:
 ========================================================================
 */
-BOOLEAN RtmpOSNetDevIsUp(void *pDev)
+bool RtmpOSNetDevIsUp(void *pDev)
 {
 	struct net_device *pNetDev = (struct net_device *)pDev;
 
 	if ((pNetDev == NULL) || !(pNetDev->flags & IFF_UP))
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1655,7 +1655,7 @@ void RtmpOsCmdUp(RTMP_OS_TASK *pCmdQTask)
 {
 	OS_TASK *pTask = RTMP_OS_TASK_GET(pCmdQTask);
 #ifdef KTHREAD_SUPPORT
-	pTask->kthread_running = TRUE;
+	pTask->kthread_running = true;
 	wake_up(&pTask->kthread_q);
 #else
 	CHECK_PID_LEGALITY(pTask->taskPID) {
@@ -1686,7 +1686,7 @@ void RtmpOsMlmeUp(IN RTMP_OS_TASK *pMlmeQTask)
 
 #ifdef KTHREAD_SUPPORT
 	if ((pTask != NULL) && (pTask->kthread_task)) {
-		pTask->kthread_running = TRUE;
+		pTask->kthread_running = true;
 		wake_up(&pTask->kthread_q);
 	}
 #else
@@ -1724,7 +1724,7 @@ int RtmpOSIRQRelease(
 	IN struct net_device *pNetDev,
 	IN u32 infType,
 	IN PPCI_DEV pci_dev,
-	IN BOOLEAN *pHaveMsi)
+	IN bool *pHaveMsi)
 {
 	struct net_device *net_dev = (struct net_device *)pNetDev;
 
@@ -1741,7 +1741,7 @@ Routine Description:
 
 Arguments:
 	pReserved		- Reserved
-	FlgIsWEntSup	- TRUE or FALSE
+	FlgIsWEntSup	- true or false
 
 Return Value:
 	None
@@ -1751,8 +1751,8 @@ Note:
 */
 void RtmpOsWlanEventSet(
 	IN void *pReserved,
-	IN BOOLEAN *pCfgWEnt,
-	IN BOOLEAN FlgIsWEntSup)
+	IN bool *pCfgWEnt,
+	IN bool FlgIsWEntSup)
 {
 /*	pAd->CommonCfg.bWirelessEvent = FlgIsWEntSup; */
 	*pCfgWEnt = FlgIsWEntSup;
@@ -1837,23 +1837,23 @@ void RtmpOsPktProtocolAssign(struct sk_buff * pNetPkt)
 }
 
 
-BOOLEAN RtmpOsStatsAlloc(
+bool RtmpOsStatsAlloc(
 	IN void **ppStats,
 	IN void **ppIwStats)
 {
 	*ppStats = kmalloc(sizeof (struct net_device_stats), GFP_ATOMIC);
 	if ((*ppStats) == NULL)
-		return FALSE;
+		return false;
 	memset((u8 *) *ppStats, 0, sizeof (struct net_device_stats));
 
 	*ppIwStats = kmalloc(sizeof (struct iw_statistics), GFP_ATOMIC);
 	if ((*ppIwStats) == NULL) {
 		kfree(*ppStats);
-		return FALSE;
+		return false;
 	}
 	memset((u8 *)* ppIwStats, 0, sizeof (struct iw_statistics));
 
-	return TRUE;
+	return true;
 }
 
 /*
@@ -2120,8 +2120,8 @@ Arguments:
 	pRates			- Current rate info
 
 Return Value:
-	TRUE			- init successfully
-	FALSE			- init fail
+	true			- init successfully
+	false			- init fail
 
 Note:
 	TX Power related:
@@ -2138,7 +2138,7 @@ Note:
 	2. Maximum TX power limitation in the regulatory domain.
 ========================================================================
 */
-BOOLEAN CFG80211_SupBandInit(
+bool CFG80211_SupBandInit(
 	IN void *pCB,
 	IN CFG80211_BAND *pBandInfo,
 	IN void *pWiphyOrg,
@@ -2168,7 +2168,7 @@ BOOLEAN CFG80211_SupBandInit(
 	else
 		NumOfChan = CFG80211_NUM_OF_CHAN_2GHZ;
 
-	if (pBandInfo->FlgIsBMode == TRUE)
+	if (pBandInfo->FlgIsBMode == true)
 		NumOfRate = 4;
 	else
 		NumOfRate = 4 + 8;
@@ -2179,7 +2179,7 @@ BOOLEAN CFG80211_SupBandInit(
 		if (!pChannels)
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("80211> ieee80211_channel allocation fail!\n"));
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -2193,7 +2193,7 @@ BOOLEAN CFG80211_SupBandInit(
 		{
 			kfree(pChannels);
 			DBGPRINT(RT_DEBUG_ERROR, ("80211> ieee80211_rate allocation fail!\n"));
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -2337,7 +2337,7 @@ BOOLEAN CFG80211_SupBandInit(
 	pCfg80211_CB->pCfg80211_Channels = pChannels;
 	pCfg80211_CB->pCfg80211_Rates = pRates;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -2351,8 +2351,8 @@ Arguments:
 	pBandInfo		- Band information
 
 Return Value:
-	TRUE			- re-init successfully
-	FALSE			- re-init fail
+	true			- re-init successfully
+	false			- re-init fail
 
 Note:
 	CFG80211_SupBandInit() is called in xx_probe().
@@ -2360,7 +2360,7 @@ Note:
 	need to re-init bands in xx_open().
 ========================================================================
 */
-BOOLEAN CFG80211OS_SupBandReInit(
+bool CFG80211OS_SupBandReInit(
 	IN void *pCB,
 	IN CFG80211_BAND *pBandInfo)
 {
@@ -2369,7 +2369,7 @@ BOOLEAN CFG80211OS_SupBandReInit(
 
 
 	if ((pCfg80211_CB == NULL) || (pCfg80211_CB->pCfg80211_Wdev == NULL))
-		return FALSE;
+		return false;
 
 	pWiphy = pCfg80211_CB->pCfg80211_Wdev->wiphy;
 
@@ -2388,10 +2388,10 @@ BOOLEAN CFG80211OS_SupBandReInit(
 		pWiphy->retry_short = pBandInfo->RetryMaxCnt & 0xff;
 		pWiphy->retry_long = (pBandInfo->RetryMaxCnt & 0xff00)>>8;
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 
@@ -2462,7 +2462,7 @@ void CFG80211OS_RegHint11D(
 }
 
 
-BOOLEAN CFG80211OS_BandInfoGet(
+bool CFG80211OS_BandInfoGet(
 	IN void *pCB,
 	IN void *pWiphyOrg,
 	OUT void **ppBand24,
@@ -2479,11 +2479,11 @@ BOOLEAN CFG80211OS_BandInfoGet(
 	}
 
 	if (pWiphy == NULL)
-		return FALSE;
+		return false;
 
 	*ppBand24 = pWiphy->bands[NL80211_BAND_2GHZ];
 	*ppBand5 = pWiphy->bands[NL80211_BAND_5GHZ];
-	return TRUE;
+	return true;
 }
 
 
@@ -2512,14 +2512,14 @@ u32 CFG80211OS_ChanNumGet(
 }
 
 
-BOOLEAN CFG80211OS_ChanInfoGet(
+bool CFG80211OS_ChanInfoGet(
 	IN void 					*pCB,
 	IN void 					*pWiphyOrg,
 	IN u32					IdBand,
 	IN u32					IdChan,
 	OUT u32					*pChanId,
 	OUT u32					*pPower,
-	OUT BOOLEAN					*pFlgIsRadar)
+	OUT bool 				*pFlgIsRadar)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	struct wiphy *pWiphy = (struct wiphy *)pWiphyOrg;
@@ -2534,7 +2534,7 @@ BOOLEAN CFG80211OS_ChanInfoGet(
 	}
 
 	if (pWiphy == NULL)
-		return FALSE;
+		return false;
 
 	pSband = pWiphy->bands[IdBand];
 	pChan = &pSband->channels[IdChan];
@@ -2546,17 +2546,17 @@ BOOLEAN CFG80211OS_ChanInfoGet(
 		CFG80211DBG(RT_DEBUG_ERROR,
 					("Chan %03d (frq %d):\tnot allowed!\n",
 					(*pChanId), pChan->center_freq));
-		return FALSE;
+		return false;
 	}
 
 	*pPower = pChan->max_power;
 
 	if (pChan->flags & IEEE80211_CHAN_RADAR)
-		*pFlgIsRadar = TRUE;
+		*pFlgIsRadar = true;
 	else
-		*pFlgIsRadar = FALSE;
+		*pFlgIsRadar = false;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -2568,26 +2568,26 @@ Routine Description:
 Arguments:
 
 Return Value:
-	TRUE		- Successful
-	FALSE		- Fail
+	true		- Successful
+	false		- Fail
 
 Note:
 ========================================================================
 */
-BOOLEAN CFG80211OS_ChanInfoInit(
+bool CFG80211OS_ChanInfoInit(
 	IN void 					*pCB,
 	IN u32					InfoIndex,
 	IN u8 				ChanId,
 	IN u8 				MaxTxPwr,
-	IN BOOLEAN					FlgIsNMode,
-	IN BOOLEAN					FlgIsBW20M)
+	IN bool 				FlgIsNMode,
+	IN bool 				FlgIsBW20M)
 {
 	CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 	struct ieee80211_channel *pChan;
 
 
 	if (InfoIndex >= MAX_NUM_OF_CHANNELS)
-		return FALSE;
+		return false;
 
 	pChan = (struct ieee80211_channel *)&(pCfg80211_CB->ChanInfo[InfoIndex]);
 	memset(pChan, 0, sizeof(*pChan));
@@ -2604,7 +2604,7 @@ BOOLEAN CFG80211OS_ChanInfoInit(
 /*	if (ieee80211_is_beacon(((struct ieee80211_mgmt *)pFrame)->frame_control)) */
 /*		pChan->beacon_found = 1; */
 
-	return TRUE;
+	return true;
 }
 
 
@@ -2629,7 +2629,7 @@ void CFG80211OS_Scaning(
 	IN u8 				*pFrame,
 	IN u32					FrameLen,
 	IN INT32					RSSI,
-	IN BOOLEAN					FlgIsNMode,
+	IN bool 				FlgIsNMode,
 	IN u8					BW)
 {
 	struct cfg80211_bss *ret;
@@ -2686,7 +2686,7 @@ Note:
 */
 void CFG80211OS_ScanEnd(
 	IN void *pCB,
-	IN BOOLEAN FlgIsAborted)
+	IN bool FlgIsAborted)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0))
 	struct cfg80211_scan_info info = {
@@ -2915,7 +2915,7 @@ void OS_CLEAR_BIT(int bit, unsigned long *flags)
 }
 
 
-void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, BOOLEAN bSet)
+void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, bool bSet)
 {
 	__RtmpOSFSInfoChange(pOSFSInfoOrg, bSet);
 }
@@ -2952,7 +2952,7 @@ void RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
 }
 
 
-void RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, BOOLEAN *pCancelled)
+void RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, bool *pCancelled)
 {
 	__RTMP_OS_Del_Timer(pTimerOrg, pCancelled);
 }
@@ -3002,7 +3002,7 @@ int RtmpOSTaskInit(
 }
 
 
-BOOLEAN RtmpOSTaskWait(void *pReserved, RTMP_OS_TASK * pTask, INT32 *pStatus)
+bool RtmpOSTaskWait(void *pReserved, RTMP_OS_TASK * pTask, INT32 *pStatus)
 {
 	return __RtmpOSTaskWait(pReserved, pTask, pStatus);
 }

@@ -684,7 +684,7 @@ static int CFG80211_OpsKeyAdd(
 	{
 			KeyInfo.KeyType = RT_CMD_80211_KEY_AES_CMAC;
 			KeyInfo.KeyId = KeyIdx;
-			KeyInfo.bPairwise = FALSE;
+			KeyInfo.bPairwise = false;
 			KeyInfo.KeyLen = pParams->key_len;
 	}
 #endif /* DOT11W_PMF_SUPPORT */
@@ -899,14 +899,14 @@ static int CFG80211_OpsConnect(
 		ConnInfo.WpaVer = 0;
 
 	if (Keymgmt & WLAN_AKM_SUITE_8021X)
-		ConnInfo.FlgIs8021x = TRUE;
+		ConnInfo.FlgIs8021x = true;
 	else
-		ConnInfo.FlgIs8021x = FALSE;
+		ConnInfo.FlgIs8021x = false;
 
 	if (pSme->auth_type == NL80211_AUTHTYPE_SHARED_KEY)
-		ConnInfo.FlgIsAuthOpen = FALSE;
+		ConnInfo.FlgIsAuthOpen = false;
 	else
-		ConnInfo.FlgIsAuthOpen = TRUE;
+		ConnInfo.FlgIsAuthOpen = true;
 
 	if (Pairwise & WLAN_CIPHER_SUITE_CCMP)
 		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_CCMP;
@@ -939,9 +939,9 @@ static int CFG80211_OpsConnect(
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("Keymgmt %x\n", Keymgmt));
 	if (Keymgmt ==  WLAN_AKM_SUITE_8021X)
-		ConnInfo.FlgIs8021x = TRUE;
+		ConnInfo.FlgIs8021x = true;
 	else
-		ConnInfo.FlgIs8021x = FALSE;
+		ConnInfo.FlgIs8021x = false;
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("Auth_type %x\n", pSme->auth_type));
 	if (pSme->auth_type == NL80211_AUTHTYPE_SHARED_KEY)
@@ -1001,7 +1001,7 @@ static int CFG80211_OpsConnect(
 	ConnInfo.SsidLen = pSme->ssid_len;
 	ConnInfo.KeyIdx = pSme->key_idx;
 	/* YF@20120328: Reset to default */
-	ConnInfo.bWpsConnection= FALSE;
+	ConnInfo.bWpsConnection= false;
 
 	/* YF@20120328: Use SIOCSIWGENIE to make out the WPA/WPS IEs in AssocReq. */
 	{
@@ -1021,7 +1021,7 @@ static int CFG80211_OpsConnect(
 		pSme->ie[2] == 0x00 && pSme->ie[3] == 0x50 && pSme->ie[4] == 0xf2 &&
 		pSme->ie[5] == 0x04))
 	{
-		ConnInfo.bWpsConnection= TRUE;
+		ConnInfo.bWpsConnection= true;
 	}
 
 	/* %NULL if not specified (auto-select based on scan)*/
@@ -1079,7 +1079,7 @@ static int CFG80211_OpsRFKill(
 	IN struct wiphy						*pWiphy)
 {
 	struct rtmp_adapter *pAd;
-	BOOLEAN		active;
+	bool 	active;
 
 
 	MAC80211_PAD_GET(pAd, pWiphy);
@@ -1092,7 +1092,7 @@ static int CFG80211_OpsRFKill(
 
 void CFG80211_RFKillStatusUpdate(
 	IN void *						pAd,
-	IN BOOLEAN							active)
+	IN bool 						active)
 {
 	struct wiphy *pWiphy;
 	CFG80211_CB *pCfg80211_CB;
@@ -1500,7 +1500,7 @@ Note:
 	Can not use pNetDev to replace pDev; Or kernel panic.
 ========================================================================
 */
-BOOLEAN CFG80211_Register(
+bool CFG80211_Register(
 	IN void 					*pAd,
 	IN struct device			*pDev,
 	IN struct net_device		*pNetDev)
@@ -1514,7 +1514,7 @@ BOOLEAN CFG80211_Register(
 	if (pCfg80211_CB == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("80211> Allocate MAC80211 CB fail!\n"));
-		return FALSE;
+		return false;
 	} /* End of if */
 
 	/* allocate wireless device */
@@ -1526,7 +1526,7 @@ BOOLEAN CFG80211_Register(
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("80211> Allocate Wdev fail!\n"));
 		kfree(pCfg80211_CB);
-		return FALSE;
+		return false;
 	} /* End of if */
 
 	/* bind wireless device with net device */
@@ -1547,7 +1547,7 @@ BOOLEAN CFG80211_Register(
 	RTMP_DRIVER_80211_CB_SET(pAd, pCfg80211_CB);
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> CFG80211_Register\n"));
-	return TRUE;
+	return true;
 } /* End of CFG80211_Register */
 
 

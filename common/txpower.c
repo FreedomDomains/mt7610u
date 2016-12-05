@@ -134,7 +134,7 @@ void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN char *					pDeltaPowerByBbpR1)
 {
 	BBP_R49_STRUC	BbpR49;
-	BOOLEAN			bAutoTxAgc = FALSE;
+	bool 		bAutoTxAgc = false;
 	u8 		TssiRef, *pTssiMinusBoundary, *pTssiPlusBoundary, TxAgcStep, idx;
 	char *		pTxAgcCompensate = NULL;
 	CHAR    			DeltaPwr = 0;
@@ -443,7 +443,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 	USHORT		value_1, value_2, value_3, value_4;
 	INT			Apwrdelta, Gpwrdelta;
 	u8 	t1,t2,t3,t4;
-	BOOLEAN		bApwrdeltaMinus = TRUE, bGpwrdeltaMinus = TRUE;
+	bool 	bApwrdeltaMinus = true, bGpwrdeltaMinus = true;
 
 
 
@@ -479,9 +479,9 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 				Gpwrdelta = (value2&0xf);
 
 			if ((value2 & 0x40))
-				bGpwrdeltaMinus = FALSE;
+				bGpwrdeltaMinus = false;
 			else
-				bGpwrdeltaMinus = TRUE;
+				bGpwrdeltaMinus = true;
 		}
 		if ((value2 & 0xff00) != 0xff00)
 		{
@@ -489,9 +489,9 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 				Apwrdelta = ((value2&0xf00)>>8);
 
 			if ((value2 & 0x4000))
-				bApwrdeltaMinus = FALSE;
+				bApwrdeltaMinus = false;
 			else
-				bApwrdeltaMinus = TRUE;
+				bApwrdeltaMinus = true;
 		}
 		DBGPRINT(RT_DEBUG_TRACE, ("Gpwrdelta = %x, Apwrdelta = %x .\n", Gpwrdelta, Apwrdelta));
 
@@ -509,7 +509,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 			value_3 = (value&0xf00)>>8;
 			value_4 = (value&0xf000)>>12;
 
-			if (bApwrdeltaMinus == FALSE)
+			if (bApwrdeltaMinus == false)
 			{
 				t1 = value_1+(Apwrdelta);
 				if (t1 > 0xf)
@@ -544,7 +544,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 					t4 = 0;
 			}
 			Adata = t1 + (t2<<4) + (t3<<8) + (t4<<12);
-			if (bGpwrdeltaMinus == FALSE)
+			if (bGpwrdeltaMinus == false)
 			{
 				t1 = value_1+(Gpwrdelta);
 				if (t1 > 0xf)
@@ -588,7 +588,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 			value_3 = (value&0xf00)>>8;
 			value_4 = (value&0xf000)>>12;
 
-			if (bApwrdeltaMinus == FALSE)
+			if (bApwrdeltaMinus == false)
 			{
 				t1 = value_1+(Apwrdelta);
 				if (t1 > 0xf)
@@ -623,7 +623,7 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 					t4 = 0;
 			}
 			Adata |= ((t1<<16) + (t2<<20) + (t3<<24) + (t4<<28));
-			if (bGpwrdeltaMinus == FALSE)
+			if (bGpwrdeltaMinus == false)
 			{
 				t1 = value_1+(Gpwrdelta);
 				if (t1 > 0xf)

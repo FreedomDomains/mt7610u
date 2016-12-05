@@ -63,7 +63,7 @@ int wl_proc_exit(void);
 extern struct proc_dir_entry *procRegDir;
 
 #ifdef VIDEO_TURBINE_SUPPORT
-extern BOOLEAN UpdateFromGlobal;
+extern bool UpdateFromGlobal;
 AP_VIDEO_STRUCT GLOBAL_AP_VIDEO_CONFIG;
 /*struct proc_dir_entry *proc_ralink_platform, *proc_ralink_wl, *proc_ralink_wl_video; */
 struct proc_dir_entry *proc_ralink_wl, *proc_ralink_wl_video;
@@ -369,14 +369,14 @@ ssize_t video_TxRetryLimit_set(struct file *file, const char __user * buffer,
 
 int wl_video_proc_init(void)
 {
-	GLOBAL_AP_VIDEO_CONFIG.Enable = FALSE;
-	GLOBAL_AP_VIDEO_CONFIG.ClassifierEnable = FALSE;
-	GLOBAL_AP_VIDEO_CONFIG.HighTxMode = FALSE;
+	GLOBAL_AP_VIDEO_CONFIG.Enable = false;
+	GLOBAL_AP_VIDEO_CONFIG.ClassifierEnable = false;
+	GLOBAL_AP_VIDEO_CONFIG.HighTxMode = false;
 	GLOBAL_AP_VIDEO_CONFIG.TxPwr = 0;
-	GLOBAL_AP_VIDEO_CONFIG.VideoMCSEnable = FALSE;
+	GLOBAL_AP_VIDEO_CONFIG.VideoMCSEnable = false;
 	GLOBAL_AP_VIDEO_CONFIG.VideoMCS = 0;
 	GLOBAL_AP_VIDEO_CONFIG.TxBASize = 0;
-	GLOBAL_AP_VIDEO_CONFIG.TxLifeTimeMode = FALSE;
+	GLOBAL_AP_VIDEO_CONFIG.TxLifeTimeMode = false;
 	GLOBAL_AP_VIDEO_CONFIG.TxLifeTime = 0;
 	GLOBAL_AP_VIDEO_CONFIG.TxRetryLimit = 0;
 

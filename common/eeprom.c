@@ -49,7 +49,7 @@ INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 	}
 	else
 	{
-		pAd->bFroceEEPROMBuffer = FALSE;
+		pAd->bFroceEEPROMBuffer = false;
 		DBGPRINT(RT_DEBUG_OFF, ("NVM is EEPROM\n"));
 	}
 #endif /* RTMP_EFUSE_SUPPORT */

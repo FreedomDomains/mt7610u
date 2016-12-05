@@ -78,7 +78,7 @@ Note:
 	Can not use pNetDev to replace pDev; Or kernel panic.
 ========================================================================
 */
-BOOLEAN CFG80211_Register(
+bool CFG80211_Register(
 	void 					*pAd,
 	struct device				*pDev,
 	struct net_device			*pNetDev);

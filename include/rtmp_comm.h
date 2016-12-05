@@ -75,14 +75,6 @@ typedef enum{
 }RT_DEBUG_FUNC;
 
 
-/* ======================== Definition ====================================== */
-#ifndef TRUE
-#define TRUE						1
-#endif
-#ifndef FALSE
-#define FALSE						0
-#endif
-
 /* definition of pAd->OpMode */
 #define OPMODE_STA                  0
 #define OPMODE_AP                   1

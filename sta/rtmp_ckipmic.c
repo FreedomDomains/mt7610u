@@ -562,7 +562,7 @@ void RTMPCkipInsertCMIC(
         }
         else
             break;
-    } while (TRUE);
+    } while (true);
 
     RTMPMicFinal(&mic_ctx, pMIC);                          /* update MIC */
 }

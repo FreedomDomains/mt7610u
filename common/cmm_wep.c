@@ -224,7 +224,7 @@ void RTMPConstructWEPIVHdr(
 
 	========================================================================
 */
-BOOLEAN	RTMPSoftEncryptWEP(
+bool RTMPSoftEncryptWEP(
 	IN 		struct rtmp_adapter *	pAd,
 	IN 		u8 *		pIvHdr,
 	IN 		PCIPHER_KEY		pKey,
@@ -238,13 +238,13 @@ BOOLEAN	RTMPSoftEncryptWEP(
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	if (pKey->KeyLen == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : The key is empty !\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	/* Initialize WEP key stream */
@@ -267,7 +267,7 @@ BOOLEAN	RTMPSoftEncryptWEP(
 	if (ARC4_CTX != NULL)
 		kfree(ARC4_CTX);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -283,14 +283,14 @@ BOOLEAN	RTMPSoftEncryptWEP(
 		Len         the length of the received data
 
 	Return Value:
-		TRUE        Decrypt WEP data success
-		FALSE       Decrypt WEP data failed
+		true        Decrypt WEP data success
+		false       Decrypt WEP data failed
 
 	Note:
 
 	========================================================================
 */
-BOOLEAN	RTMPSoftDecryptWEP(
+bool RTMPSoftDecryptWEP(
 	IN 		struct rtmp_adapter *	pAd,
 	IN 		PCIPHER_KEY		pKey,
 	INOUT 	u8 *		pData,
@@ -309,13 +309,13 @@ BOOLEAN	RTMPSoftDecryptWEP(
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	if (pKey->KeyLen == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : The key is not available !\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	/* Initialize WEP key stream */
@@ -350,7 +350,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
     if(crc32 != cpu2le32(trailfcs))
     {
 		DBGPRINT(RT_DEBUG_ERROR, ("! WEP Data CRC Error !\n"));	 /*CRC error.*/
-		return FALSE;
+		return false;
 	}
 
 	/* Update the total data length */
@@ -359,6 +359,6 @@ BOOLEAN	RTMPSoftDecryptWEP(
 	if (ARC4_CTX != NULL)
 		kfree(ARC4_CTX);
 
-	return TRUE;
+	return true;
 }
 

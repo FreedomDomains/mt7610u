@@ -290,7 +290,7 @@ int rt28xx_open(struct net_device *net_dev)
 	RTMP_DRIVER_IRQ_INIT(pAd);
 
 	/* Chip & other init */
-	if (rt28xx_init(pAd) == FALSE)
+	if (rt28xx_init(pAd) == false)
 		goto err;
 
 #ifdef MBSS_SUPPORT
@@ -349,7 +349,7 @@ struct net_device *RtmpPhyNetDevInit(
 	pNetDevHook->priv_flags = INT_MAIN; /*INT_MAIN; */
 	pNetDevHook->get_stats = RT28xx_get_ether_stats;
 
-	pNetDevHook->needProtcted = FALSE;
+	pNetDevHook->needProtcted = false;
 
 	RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
 
@@ -581,7 +581,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 }
 
 
-BOOLEAN RtmpPhyNetDevExit(
+bool RtmpPhyNetDevExit(
 	IN void 		*pAd,
 	IN struct net_device *	net_dev)
 {
@@ -592,7 +592,7 @@ BOOLEAN RtmpPhyNetDevExit(
 		RtmpOSNetDevDetach(net_dev);
 	}
 
-	return TRUE;
+	return true;
 
 }
 

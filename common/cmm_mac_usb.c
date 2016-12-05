@@ -342,16 +342,16 @@ int	NICInitRecv(
 
 		pRxContext->pAd	= pAd;
 		pRxContext->pIrp = NULL;
-		pRxContext->InUse = FALSE;
-		pRxContext->IRPPending = FALSE;
-		pRxContext->Readable	= FALSE;
-		pRxContext->bRxHandling = FALSE;
+		pRxContext->InUse = false;
+		pRxContext->IRPPending = false;
+		pRxContext->Readable	= false;
+		pRxContext->bRxHandling = false;
 		pRxContext->BulkInOffset = 0;
 	}
 
 	pCmdRspEventContext->pAd = pAd;
-	pCmdRspEventContext->InUse = FALSE;
-	pCmdRspEventContext->Readable = FALSE;
+	pCmdRspEventContext->InUse = false;
+	pCmdRspEventContext->Readable = false;
 	memset(pCmdRspEventContext->CmdRspBuffer, 0, CMD_RSP_BULK_SIZE);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitRecv()\n"));
@@ -400,7 +400,7 @@ int	NICInitTransmit(
 
 		/* Next Local tx ring pointer waiting for buck out*/
 		pAd->NextBulkOutIndex[acidx] = acidx;
-		pAd->BulkOutPending[acidx] = FALSE; /* Buck Out control flag	*/
+		pAd->BulkOutPending[acidx] = false; /* Buck Out control flag	*/
 	}
 
 
@@ -429,10 +429,10 @@ int	NICInitTransmit(
 
 			pHTTXContext->pAd = pAd;
 			pHTTXContext->BulkOutPipeId = acidx;
-			pHTTXContext->bRingEmpty = TRUE;
-			pHTTXContext->bCopySavePad = FALSE;
+			pHTTXContext->bRingEmpty = true;
+			pHTTXContext->bCopySavePad = false;
 
-			pAd->BulkOutPending[acidx] = FALSE;
+			pAd->BulkOutPending[acidx] = false;
 		}
 
 
@@ -500,9 +500,9 @@ int	NICInitTransmit(
 		pPsPollContext->pUrb = pUrb;
 		pPsPollContext->data_dma = data_dma;
 		pPsPollContext->pAd = pAd;
-		pPsPollContext->LastOne = TRUE;
+		pPsPollContext->LastOne = true;
 
-	}   while (FALSE);
+	}   while (false);
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitTransmit(Status=%d)\n", Status));
@@ -666,7 +666,7 @@ int	RTMPAllocTxRxRingMemory(
 		{
 			Status = NDIS_STATUS_RESOURCES;
 		}
-	} while (FALSE);
+	} while (false);
 
 	DBGPRINT_S(Status, ("<-- RTMPAllocTxRxRingMemory, Status=%x\n", Status));
 	return Status;
@@ -782,17 +782,17 @@ int	NICInitRecv(
 
 		pRxContext->pAd	= pAd;
 		pRxContext->pIrp = NULL;
-		pRxContext->InUse		= FALSE;
-		pRxContext->IRPPending	= FALSE;
-		pRxContext->Readable	= FALSE;
-		/*pRxContext->ReorderInUse = FALSE;*/
-		pRxContext->bRxHandling = FALSE;
+		pRxContext->InUse		= false;
+		pRxContext->IRPPending	= false;
+		pRxContext->Readable	= false;
+		/*pRxContext->ReorderInUse = false;*/
+		pRxContext->bRxHandling = false;
 		pRxContext->BulkInOffset = 0;
 	}
 
 	pCmdRspEventContext->pAd = pAd;
-	pCmdRspEventContext->InUse = FALSE;
-	pCmdRspEventContext->Readable	= FALSE;
+	pCmdRspEventContext->InUse = false;
+	pCmdRspEventContext->Readable	= false;
 	memset(pCmdRspEventContext->TransferBuffer, 0, CMD_RSP_BULK_SIZE);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitRecv(Status=%d)\n", Status));
@@ -860,7 +860,7 @@ int	NICInitTransmit(
 
 		/* Next Local tx ring pointer waiting for buck out*/
 		pAd->NextBulkOutIndex[acidx] = acidx;
-		pAd->BulkOutPending[acidx] = FALSE; /* Buck Out control flag	*/
+		pAd->BulkOutPending[acidx] = false; /* Buck Out control flag	*/
 	}
 
 
@@ -887,16 +887,16 @@ int	NICInitTransmit(
 			memset(pHTTXContext->TransferBuffer->Aggregation, 0, 4);
 			pHTTXContext->pAd = pAd;
 			pHTTXContext->pIrp = NULL;
-			pHTTXContext->IRPPending = FALSE;
+			pHTTXContext->IRPPending = false;
 			pHTTXContext->NextBulkOutPosition = 0;
 			pHTTXContext->ENextBulkOutPosition = 0;
 			pHTTXContext->CurWritePosition = 0;
 			pHTTXContext->CurWriteRealPos = 0;
 			pHTTXContext->BulkOutSize = 0;
 			pHTTXContext->BulkOutPipeId = acidx;
-			pHTTXContext->bRingEmpty = TRUE;
-			pHTTXContext->bCopySavePad = FALSE;
-			pAd->BulkOutPending[acidx] = FALSE;
+			pHTTXContext->bRingEmpty = true;
+			pHTTXContext->bCopySavePad = false;
+			pAd->BulkOutPending[acidx] = false;
 		}
 
 
@@ -937,9 +937,9 @@ int	NICInitTransmit(
 			pMLMEContext->pAd = pAd;
 			pMLMEContext->pIrp = NULL;
 			pMLMEContext->TransferBuffer = NULL;
-			pMLMEContext->InUse = FALSE;
-			pMLMEContext->IRPPending = FALSE;
-			pMLMEContext->bWaitingBulkOut = FALSE;
+			pMLMEContext->InUse = false;
+			pMLMEContext->IRPPending = false;
+			pMLMEContext->bWaitingBulkOut = false;
 			pMLMEContext->BulkOutSize = 0;
 			pMLMEContext->SelfIdx = i;
 
@@ -968,8 +968,8 @@ int	NICInitTransmit(
 
 		pNullContext->pAd = pAd;
 		pNullContext->pIrp = NULL;
-		pNullContext->InUse = FALSE;
-		pNullContext->IRPPending = FALSE;
+		pNullContext->InUse = false;
+		pNullContext->IRPPending = false;
 
 
 		/* PsPollContext URB and usb buffer*/
@@ -985,12 +985,12 @@ int	NICInitTransmit(
 
 		pPsPollContext->pAd = pAd;
 		pPsPollContext->pIrp = NULL;
-		pPsPollContext->InUse = FALSE;
-		pPsPollContext->IRPPending = FALSE;
-		pPsPollContext->bAggregatible = FALSE;
-		pPsPollContext->LastOne = TRUE;
+		pPsPollContext->InUse = false;
+		pPsPollContext->IRPPending = false;
+		pPsPollContext->bAggregatible = false;
+		pPsPollContext->LastOne = true;
 
-	}while (FALSE);
+	}while (false);
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitTransmit(Status=%d)\n", Status));
@@ -1130,7 +1130,7 @@ int	RTMPAllocTxRxRingMemory(
 		{
 			Status = NDIS_STATUS_RESOURCES;
 		}
-	} while (FALSE);
+	} while (false);
 
 	DBGPRINT_S(Status, ("<-- RTMPAllocTxRxRingMemory, Status=%x\n", Status));
 	return Status;
@@ -1305,8 +1305,8 @@ int	RTUSBWriteHWMACAddress(
 			pAd->CurrentAddress[0], pAd->CurrentAddress[1], pAd->CurrentAddress[2],
 			pAd->CurrentAddress[3], pAd->CurrentAddress[4], pAd->CurrentAddress[5]));
 
-	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW0, StaMacReg0.word, FALSE);
-	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW1, StaMacReg1.word, FALSE);
+	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW0, StaMacReg0.word, false);
+	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW1, StaMacReg1.word, false);
 	return Status;
 }
 
@@ -1338,7 +1338,7 @@ void RT28XXDMAEnable(
 
 	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x4);
 
-	if (AsicWaitPDMAIdle(pAd, 200, 1000) == FALSE) {
+	if (AsicWaitPDMAIdle(pAd, 200, 1000) == false) {
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return;
 	}
@@ -1358,7 +1358,7 @@ void RT28XXDMAEnable(
 	UsbCfg.field.TxBulkEn = 1;
 
 	USB_CFG_WRITE(pAd, UsbCfg.word);
-	//RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word, FALSE);
+	//RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word, false);
 }
 
 /********************************************************************
@@ -1393,7 +1393,7 @@ void RT28xx_UpdateBeaconToAsic(
 	BEACON_SYNC_STRUCT	*pBeaconSync = pAd->CommonCfg.pBeaconSync;
 	u32			longValue;
 /*	USHORT			shortValue;*/
-	BOOLEAN			bBcnReq = FALSE;
+	bool 		bBcnReq = false;
 	u8 		bcn_idx = 0;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
@@ -1410,7 +1410,7 @@ void RT28xx_UpdateBeaconToAsic(
 		return;
 	}
 
-	if (bBcnReq == FALSE)
+	if (bBcnReq == false)
 	{
 		/* when the ra interface is down, do not send its beacon frame */
 		/* clear all zero */
@@ -1473,7 +1473,7 @@ void RTUSBBssBeaconStop(
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, offset;
-	BOOLEAN	Cancelled = TRUE;
+	bool Cancelled = true;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 	pBeaconSync = pAd->CommonCfg.pBeaconSync;
@@ -1544,7 +1544,7 @@ void RTUSBBssBeaconStart(
 		}
 		pBeaconSync->BeaconBitMap = 0;
 		pBeaconSync->DtimBitOn = 0;
-		pAd->CommonCfg.BeaconUpdateTimer.Repeat = TRUE;
+		pAd->CommonCfg.BeaconUpdateTimer.Repeat = true;
 
 		pAd->CommonCfg.BeaconAdjust = 0;
 		pAd->CommonCfg.BeaconFactor = 0xffffffff / (pAd->CommonCfg.BeaconPeriod << 10);
@@ -1583,8 +1583,8 @@ void RTUSBBssBeaconInit(
 		}
 		pBeaconSync->BeaconBitMap = 0;
 
-		/*RTMPInitTimer(pAd, &pAd->CommonCfg.BeaconUpdateTimer, GET_TIMER_FUNCTION(BeaconUpdateExec), pAd, TRUE);*/
-		pBeaconSync->EnableBeacon = TRUE;
+		/*RTMPInitTimer(pAd, &pAd->CommonCfg.BeaconUpdateTimer, GET_TIMER_FUNCTION(BeaconUpdateExec), pAd, true);*/
+		pBeaconSync->EnableBeacon = true;
 	}else
 		goto error1;
 
@@ -1605,13 +1605,13 @@ void RTUSBBssBeaconExit(
 	IN struct rtmp_adapter*pAd)
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
-	BOOLEAN	Cancelled = TRUE;
+	bool Cancelled = true;
 	int i;
 
 	if (pAd->CommonCfg.pBeaconSync)
 	{
 		pBeaconSync = pAd->CommonCfg.pBeaconSync;
-		pBeaconSync->EnableBeacon = FALSE;
+		pBeaconSync->EnableBeacon = false;
 		RTMPCancelTimer(&pAd->CommonCfg.BeaconUpdateTimer, &Cancelled);
 		pBeaconSync->BeaconBitMap = 0;
 
@@ -1656,9 +1656,9 @@ void BeaconUpdateExec(
 	struct rtmp_adapter *pAd = (struct rtmp_adapter *)FunctionContext;
 	LARGE_INTEGER	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
 	u32			delta, delta2MS, period2US, remain, remain_low, remain_high;
-/*	BOOLEAN			positive;*/
+/*	bool 		positive;*/
 
-	if (pAd->CommonCfg.IsUpdateBeacon==TRUE)
+	if (pAd->CommonCfg.IsUpdateBeacon==true)
 	{
 		ReSyncBeaconTime(pAd);
 
@@ -1718,12 +1718,12 @@ void BeaconUpdateExec(
 	if (delta2MS > 150)
 	{
 		pAd->CommonCfg.BeaconUpdateTimer.TimerValue = 100;
-		pAd->CommonCfg.IsUpdateBeacon=FALSE;
+		pAd->CommonCfg.IsUpdateBeacon=false;
 	}
 	else
 	{
 		pAd->CommonCfg.BeaconUpdateTimer.TimerValue = delta2MS + 10;
-		pAd->CommonCfg.IsUpdateBeacon=TRUE;
+		pAd->CommonCfg.IsUpdateBeacon=true;
 	}
 }
 
@@ -1808,7 +1808,7 @@ void RT28xxUsbMlmeRadioOFF(
 	{
 		/* Link down first if any association exists*/
 		if (INFRA_ON(pAd) || ADHOC_ON(pAd))
-			LinkDown(pAd, FALSE);
+			LinkDown(pAd, false);
 		RTMPusecDelay(10000);
 
 		/*==========================================*/
@@ -1829,7 +1829,7 @@ void RT28xxUsbMlmeRadioOFF(
 }
 
 
-BOOLEAN AsicCheckCommandOk(
+bool AsicCheckCommandOk(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	 Command)
 {
@@ -1844,7 +1844,7 @@ BOOLEAN AsicCheckCommandOk(
 		RTMP_SEM_EVENT_WAIT(&pAd->reg_atomic, ret);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-			return FALSE;
+			return false;
 		}
 	}
 #endif /* RTMP_MAC_USB */
@@ -1878,16 +1878,16 @@ BOOLEAN AsicCheckCommandOk(
 		i++;
 	}while (i < 200);
 
-	ret = FALSE;
+	ret = false;
 	RTUSBReadMACRegister(pAd, H2M_MAILBOX_STATUS, &CmdStatus);
 	if (i < 200)
 	{
 		if (((CmdStatus & ThisCIDMask) == 0x1) || ((CmdStatus & ThisCIDMask) == 0x100)
 			|| ((CmdStatus & ThisCIDMask) == 0x10000) || ((CmdStatus & ThisCIDMask) == 0x1000000))
-			ret = TRUE;
+			ret = true;
 	}
-			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_STATUS, 0xffffffff, FALSE);
-			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_CID, 0xffffffff, FALSE);
+			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_STATUS, 0xffffffff, false);
+			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_CID, 0xffffffff, false);
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
@@ -1909,11 +1909,11 @@ void RT28xxUsbAsicWOWEnable(
 	u32 Value;
 
 	/* load WOW-enable firmware */
-	AsicLoadWOWFirmware(pAd, TRUE);
+	AsicLoadWOWFirmware(pAd, true);
 	/* put null frame data to MCU memory from 0x7780 */
-	AsicWOWSendNullFrame(pAd, pAd->CommonCfg.TxRate, (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? TRUE:FALSE));
+	AsicWOWSendNullFrame(pAd, pAd->CommonCfg.TxRate, (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? true:false));
 	/* send WOW enable command to MCU. */
-	AsicSendCommandToMcu(pAd, 0x33, 0xff, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nDelay, FALSE);
+	AsicSendCommandToMcu(pAd, 0x33, 0xff, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nDelay, false);
 	/* set GPIO pulse hold time at MSB (Byte) */
 	RTMP_IO_READ32(pAd, GPIO_HOLDTIME_OFFSET, &Value);
 	Value &= 0x00FFFFFF;
@@ -1929,12 +1929,12 @@ void RT28xxUsbAsicWOWDisable(
 {
 	u32 Value;
 	/* load normal firmware */
-	AsicLoadWOWFirmware(pAd, FALSE);
+	AsicLoadWOWFirmware(pAd, false);
 	/* for suspend/resume, needs to restore RX Queue operation mode to auto mode */
 	RTMP_IO_READ32(pAd, PBF_CFG, &Value);
 	Value &= ~0x2200;
 	RTMP_IO_WRITE32(pAd, PBF_CFG, Value);
-    //AsicSendCommandToMcu(pAd, 0x34, 0xff, 0x00, 0x00, FALSE);   /* send WOW disable command to MCU*/
+    //AsicSendCommandToMcu(pAd, 0x34, 0xff, 0x00, 0x00, false);   /* send WOW disable command to MCU*/
     DBGPRINT(RT_DEBUG_OFF, ("MCU back to normal mode (%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO));
 }
 #endif /* WOW_SUPPORT */

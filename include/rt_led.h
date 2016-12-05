@@ -115,7 +115,7 @@ typedef struct _LED_CONTROL
 	USHORT				LedAGCfg;	/* LED A/G Configuration EEPROM 0x3c */
 	USHORT				LedACTCfg;	/* LED ACT Configuration EEPROM 0x3e */
 	USHORT				LedPolarity;/* LED A/G/ACT polarity EEPROM 0x40 */
-	BOOLEAN				bLedOnScanning;
+	bool 			bLedOnScanning;
 	u8 			LedStatus;
 }LED_CONTROL, *PLED_CONTROL;
 

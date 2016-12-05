@@ -160,8 +160,8 @@ u8 MlmeSelectUpRate(
 		if (PTX_RA_GRP_ENTRY(pEntry->pTable, UpRateIdx)->CurrMCS == 32)
 		{
 			/*  If not allowed then skip over it */
-			BOOLEAN mcs32Supported = 0;
-			BOOLEAN mcs0Fallback = 0;
+			bool mcs32Supported = 0;
+			bool mcs0Fallback = 0;
 
 			if ((pEntry->HTCapability.MCSSet[4] & 0x1)
 #ifdef DBG_CTRL_SUPPORT
@@ -244,14 +244,14 @@ u8 MlmeSelectDownRate(
 		}
 		else if (pDownRate->CurrMCS == MCS_32)
 		{
-			BOOLEAN valid_mcs32 = FALSE;
+			bool valid_mcs32 = false;
 
 			if ((pEntry->MaxHTPhyMode.field.BW == BW_40 && pAd->CommonCfg.BBPCurrentBW == BW_40)
 #ifdef DOT11_VHT_AC
 				|| (pEntry->MaxHTPhyMode.field.BW == BW_80 && pAd->CommonCfg.BBPCurrentBW == BW_80)
 #endif /* DOT11_VHT_AC */
 			)
-				valid_mcs32 = TRUE;
+				valid_mcs32 = true;
 
 			/*  If 20MHz MCS0 fallback enabled and in 40MHz then MCS32 is valid and will be mapped to 20MHz MCS0 */
 			if (valid_mcs32
@@ -766,9 +766,9 @@ static ULONG MlmeRAEstimateThroughput(
 		NewTxOkCount - normalized count of Tx packets for new up rate
 		TxErrorRatio - the PER
 	returns
-		TRUE if old rate should be used
+		true if old rate should be used
 */
-BOOLEAN MlmeRAHybridRule(
+bool MlmeRAHybridRule(
 	IN struct rtmp_adapter *	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
 	IN RTMP_RA_GRP_TB *pCurrTxRate,
@@ -778,10 +778,10 @@ BOOLEAN MlmeRAHybridRule(
 	ULONG newTP, oldTP;
 
 	if (100*NewTxOkCount < pAd->CommonCfg.TrainUpLowThrd*pEntry->LastTxOkCount)
-		return TRUE;
+		return true;
 
 	if (100*NewTxOkCount > pAd->CommonCfg.TrainUpHighThrd*pEntry->LastTxOkCount)
-		return FALSE;
+		return false;
 
 	newTP = MlmeRAEstimateThroughput(pAd, pEntry, pCurrTxRate, TxErrorRatio);
 	oldTP = MlmeRAEstimateThroughput(pAd, pEntry, PTX_RA_GRP_ENTRY(pEntry->pTable, pEntry->lastRateIdx), pEntry->LastTxPER);
@@ -811,7 +811,7 @@ void MlmeNewRateAdapt(
 	IN ULONG			TxErrorRatio)
 {
 	USHORT		phyRateLimit20 = 0;
-	BOOLEAN		bTrainUp = FALSE;
+	bool 	bTrainUp = false;
 	u8 *pTable = pEntry->pTable;
 	u8 CurrRateIdx = pEntry->CurrTxRateIndex;
 	RTMP_RA_GRP_TB *pCurrTxRate = PTX_RA_GRP_ENTRY(pTable, CurrRateIdx);
@@ -840,7 +840,7 @@ void MlmeNewRateAdapt(
 		/*  Upgrade TX quality if PER <= Rate-Up threshold */
 		if (TxErrorRatio <= TrainUp)
 		{
-			bTrainUp = TRUE;
+			bTrainUp = true;
 			MlmeDecTxQuality(pEntry, CurrRateIdx);  /*  quality very good in CurrRate */
 
 			if (pEntry->TxRateUpPenalty) /* always == 0, always go to else */
@@ -873,7 +873,7 @@ void MlmeNewRateAdapt(
 		else if (pEntry->mcsGroup > 0) /* even if TxErrorRatio > TrainUp */
 		{
 			/*  Moderate PER but some groups are not tried */
-			bTrainUp = TRUE;
+			bTrainUp = true;
 
 			/* TxQuality[CurrRateIdx] must be decremented so that mcs won't decrease wrongly */
 			MlmeDecTxQuality(pEntry, CurrRateIdx);  /*  quality very good in CurrRate */
@@ -925,7 +925,7 @@ void MlmeNewRateAdapt(
 			if (!pAd->StaCfg.StaQuickResponeForRateUpTimerRunning)
 			{
 				RTMPSetTimer(&pAd->StaCfg.StaQuickResponeForRateUpTimer, pAd->ra_fast_interval);
-				pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = TRUE;
+				pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = true;
 			}
 		}
 #endif /*  CONFIG_STA_SUPPORT */
@@ -954,7 +954,7 @@ void StaQuickResponeForRateUpExecAdapt(
 	CHAR					ratio;
 	ULONG					TxSuccess, TxRetransmit, TxFailCount;
 	ULONG					OneSecTxNoRetryOKRationCount;
-	BOOLEAN					rateChanged;
+	bool 				rateChanged;
 
 
 	pEntry = &pAd->MacTab.Content[i];
@@ -984,9 +984,9 @@ void StaQuickResponeForRateUpExecAdapt(
 		TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
 
 #ifdef MFB_SUPPORT
-	if (pEntry->fLastChangeAccordingMfb == TRUE)
+	if (pEntry->fLastChangeAccordingMfb == true)
 	{
-		pEntry->fLastChangeAccordingMfb = FALSE;
+		pEntry->fLastChangeAccordingMfb = false;
 		pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 		DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: MCS is according to MFB, and ignore tuning this sec \n"));
 
@@ -1063,7 +1063,7 @@ void StaQuickResponeForRateUpExecAdapt(
 	/* Perform DRS - consider TxRate Down first, then rate up. */
 	if (pEntry->LastSecTxRateChangeAction == RATE_UP)
 	{
-		BOOLEAN useOldRate;
+		bool useOldRate;
 
 		// TODO: gaa - Finalize the decision criterion
 		/*
@@ -1286,9 +1286,9 @@ void MlmeDynamicTxRateSwitchingAdapt(
 #endif /* DBG_CTRL_SUPPORT */
 
 #ifdef MFB_SUPPORT
-	if (pEntry->fLastChangeAccordingMfb == TRUE)
+	if (pEntry->fLastChangeAccordingMfb == true)
 	{
-		pEntry->fLastChangeAccordingMfb = FALSE;
+		pEntry->fLastChangeAccordingMfb = false;
 		pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 		DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to MFB, and ignore tuning this sec \n"));
 
@@ -1367,7 +1367,7 @@ void MlmeDynamicTxRateSwitchingAdapt(
 			}
 
 			MlmeClearAllTxQuality(pEntry);	/* clear all history */
-			pEntry->fLastSecAccordingRSSI = TRUE;
+			pEntry->fLastSecAccordingRSSI = true;
 		}
 
 		/* reset all OneSecTx counters */
@@ -1378,9 +1378,9 @@ void MlmeDynamicTxRateSwitchingAdapt(
 
 	pEntry->lowTrafficCount = 0;
 
-	if (pEntry->fLastSecAccordingRSSI == TRUE)
+	if (pEntry->fLastSecAccordingRSSI == true)
 	{
-		pEntry->fLastSecAccordingRSSI = FALSE;
+		pEntry->fLastSecAccordingRSSI = false;
 		pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
 		/* DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to RSSI, and ignore tuning this sec \n")); */
 
@@ -1430,7 +1430,7 @@ INT Set_RateTable_Proc(struct rtmp_adapter*pAd, char *arg)
 	if (i==MAX_LEN_OF_MAC_TABLE)
 	{
 	    DBGPRINT(RT_DEBUG_ERROR, ("Set_RateTable_Proc: Empty MAC Table\n"));
-		return FALSE;
+		return false;
 	}
 
 	/* Get peer's rate table */
@@ -1439,7 +1439,7 @@ INT Set_RateTable_Proc(struct rtmp_adapter*pAd, char *arg)
 	/* Get rate index */
 	itemNo = simple_strtol(arg, &arg, 10);
 	if (itemNo<0 || itemNo>=RATE_TABLE_SIZE(pTable))
-		return FALSE;
+		return false;
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	if (ADAPT_RATE_TABLE(pTable))
@@ -1458,10 +1458,10 @@ INT Set_RateTable_Proc(struct rtmp_adapter*pAd, char *arg)
 			arg++;
 		rtIndex = simple_strtol(arg, &arg, 10);
 		if (rtIndex<0 || rtIndex>9)
-			return FALSE;
+			return false;
 
 		if (*arg!=':')
-			return FALSE;
+			return false;
 		while (*arg<'0' || *arg>'9')
 			arg++;
 		value = simple_strtol(arg, &arg, 10);
@@ -1473,7 +1473,7 @@ INT Set_RateTable_Proc(struct rtmp_adapter*pAd, char *arg)
 		pRateEntry[0], pRateEntry[1], pRateEntry[2], pRateEntry[3], pRateEntry[4],
 		pRateEntry[5], pRateEntry[6], pRateEntry[7], pRateEntry[8], pRateEntry[9]));
 
-	return TRUE;
+	return true;
 }
 
 
@@ -1485,7 +1485,7 @@ INT	Set_PerThrdAdj_Proc(
 	for (i=0; i<MAX_LEN_OF_MAC_TABLE; i++){
 		pAd->MacTab.Content[i].perThrdAdj = simple_strtol(arg, 0, 10);
 	}
-	return TRUE;
+	return true;
 }
 
 /* Set_LowTrafficThrd_Proc - set threshold for reverting to default MCS based on RSSI */
@@ -1495,7 +1495,7 @@ INT	Set_LowTrafficThrd_Proc(
 {
 	pAd->CommonCfg.lowTrafficThrd = simple_strtol(arg, 0, 10);
 
-	return TRUE;
+	return true;
 }
 
 /* Set_TrainUpRule_Proc - set rule for Quick DRS train up */
@@ -1505,7 +1505,7 @@ INT	Set_TrainUpRule_Proc(
 {
 	pAd->CommonCfg.TrainUpRule = simple_strtol(arg, 0, 10);
 
-	return TRUE;
+	return true;
 }
 
 /* Set_TrainUpRuleRSSI_Proc - set RSSI threshold for Quick DRS Hybrid train up */
@@ -1515,7 +1515,7 @@ INT	Set_TrainUpRuleRSSI_Proc(
 {
 	pAd->CommonCfg.TrainUpRuleRSSI = simple_strtol(arg, 0, 10);
 
-	return TRUE;
+	return true;
 }
 
 /* Set_TrainUpLowThrd_Proc - set low threshold for Quick DRS Hybrid train up */
@@ -1525,7 +1525,7 @@ INT	Set_TrainUpLowThrd_Proc(
 {
 	pAd->CommonCfg.TrainUpLowThrd = simple_strtol(arg, 0, 10);
 
-	return TRUE;
+	return true;
 }
 
 /* Set_TrainUpHighThrd_Proc - set high threshold for Quick DRS Hybrid train up */
@@ -1535,7 +1535,7 @@ INT	Set_TrainUpHighThrd_Proc(
 {
 	pAd->CommonCfg.TrainUpHighThrd = simple_strtol(arg, 0, 10);
 
-	return TRUE;
+	return true;
 }
 
 #endif /* NEW_RATE_ADAPT_SUPPORT */

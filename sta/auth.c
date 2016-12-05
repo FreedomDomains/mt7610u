@@ -76,7 +76,7 @@ void AuthStateMachineInit(
 			      (STATE_MACHINE_FUNC) AuthTimeoutAction);
 
 	RTMPInitTimer(pAd, &pAd->MlmeAux.AuthTimer,
-		      GET_TIMER_FUNCTION(AuthTimeout), pAd, FALSE);
+		      GET_TIMER_FUNCTION(AuthTimeout), pAd, false);
 }
 
 /*
@@ -155,7 +155,7 @@ void PeerAuthRspAtSeq2Action(
 	u8 *CyperChlgText = NULL;
 	ULONG c_len = 0;
 	HEADER_802_11 AuthHdr;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0;
 	USHORT Status2;
@@ -250,7 +250,7 @@ void PeerAuthRspAtSeq2Action(
 					if (RTMPSoftEncryptWEP(pAd,
 							       iv_hdr,
 							       &pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId],
-							       CyperChlgText, c_len) == FALSE) {
+							       CyperChlgText, c_len) == false) {
 						kfree(pOutBuffer);
 						pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
 						Status2 = MLME_FAIL_NO_RESOURCE;
@@ -317,7 +317,7 @@ void PeerAuthRspAtSeq4Action(
 	USHORT Alg, Seq, Status;
 /*    CHAR          ChlgText[CIPHER_TEXT_LEN]; */
 	CHAR *ChlgText = NULL;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 
 	/* allocate memory */
 	ChlgText = kmalloc(CIPHER_TEXT_LEN, GFP_ATOMIC);
@@ -484,7 +484,7 @@ void Cls2errAction(
 	memcpy(pAd->StaCfg.DeauthSta, pAddr, ETH_ALEN);
 }
 
-BOOLEAN AUTH_ReqSend(
+bool AUTH_ReqSend(
 	IN struct rtmp_adapter *pAd,
 	IN PMLME_QUEUE_ELEM pElem,
 	IN PRALINK_TIMER_STRUCT pAuthTimer,
@@ -497,12 +497,12 @@ BOOLEAN AUTH_ReqSend(
 	u8 Addr[6];
 	ULONG Timeout;
 	HEADER_802_11 AuthHdr;
-	BOOLEAN TimerCancelled;
+	bool TimerCancelled;
 	u8 *pOutBuffer = NULL;
 	ULONG FrameLen = 0, tmp = 0;
 
 	/* Block all authentication request durning WPA block period */
-	if (pAd->StaCfg.bBlockAssoc == TRUE) {
+	if (pAd->StaCfg.bBlockAssoc == true) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("%s - Block Auth request durning WPA block period!\n",
 			  pSMName));
@@ -530,7 +530,7 @@ BOOLEAN AUTH_ReqSend(
 			Status = MLME_FAIL_NO_RESOURCE;
 			MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_AUTH_CONF,
 				    2, &Status, 0);
-			return FALSE;
+			return false;
 		}
 
 		DBGPRINT(RT_DEBUG_TRACE,
@@ -552,12 +552,12 @@ BOOLEAN AUTH_ReqSend(
 		kfree(pOutBuffer);
 
 		RTMPSetTimer(pAuthTimer, Timeout);
-		return TRUE;
+		return true;
 	} else {
 		DBGPRINT_ERR(("%s - MlmeAuthReqAction() sanity check failed\n",
 			      pSMName));
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 }

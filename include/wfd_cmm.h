@@ -164,27 +164,27 @@ typedef	struct __attribute__ ((packed)) _WFD_SESSION_INFO
 
 typedef struct _WFD_SERV_DISC_QUERY_INFO
 {
-	BOOLEAN	bWfd_device_info_ie;
+	bool bWfd_device_info_ie;
 	u8 wfd_device_info_ie[SUBID_WFD_DEVICE_INFO_LEN];
-	BOOLEAN bWfd_associate_bssid_ie;
+	bool bWfd_associate_bssid_ie;
 	u8 wfd_associate_bssid_ie[SUBID_WFD_ASSOCIATED_BSSID_LEN];
-	BOOLEAN bWfd_audio_format_ie;
+	bool bWfd_audio_format_ie;
 	u8 wfd_audio_format_ie[SUBID_WFD_AUDIO_FORMATS_LEN];
-	BOOLEAN bWfd_video_format_ie;
+	bool bWfd_video_format_ie;
 	u8 wfd_video_format_ie[SUBID_WFD_VIDEO_FORMATS_LEN];
-	BOOLEAN bWfd_3d_video_format_ie;
+	bool bWfd_3d_video_format_ie;
 	u8 wfd_3d_video_format_ie[SUBID_WFD_3D_VIDEO_FORMATS_LEN];
-	BOOLEAN bWfd_content_proctection;
+	bool bWfd_content_proctection;
 	u8 wfd_content_proctection[SUBID_WFD_CONTENT_PROTECTION_LEN];
-	BOOLEAN bWfd_couple_sink_info_ie;
+	bool bWfd_couple_sink_info_ie;
 	u8 wfd_couple_sink_info_ie[SUBID_WFD_COUPLED_SINK_INFO_LEN];
-	BOOLEAN bWfd_extent_capability_ie;
+	bool bWfd_extent_capability_ie;
 	u8 wfd_extent_capability_ie[SUBID_WFD_EXTENDED_CAP_LEN];
-	BOOLEAN bWfd_local_ip_ie;
+	bool bWfd_local_ip_ie;
 	u8 wfd_local_ip_ie[SUBID_WFD_LOCAL_IP_ADDR_LEN];
-	BOOLEAN bWfd_session_info_ie;
+	bool bWfd_session_info_ie;
 	u8 wfd_session_info_ie[120];
-	BOOLEAN bWfd_alternate_mac_addr_ie;
+	bool bWfd_alternate_mac_addr_ie;
 	u8 wfd_alternate_mac_addr_ie[SUBID_WFD_ALTERNATE_MAC_ADDR_LEN];
 } WFD_SERV_DISC_QUERY_INFO, *PWFD_SERV_DISC_QUERY_INFO;
 
@@ -215,10 +215,10 @@ typedef struct _WFD_ENTRY_INFO
 /* Store for WFD Configuration */
 typedef struct _RT_WFD_CONFIG
 {
-	BOOLEAN bWfdEnable;
+	bool bWfdEnable;
 #ifdef RT_CFG80211_SUPPORT
-	BOOLEAN bSuppInsertWfdIe;		/* Insert WFD IE to management frames from wpa_supplicant */
-	BOOLEAN bSuppGoOn;				/* wpa_supplicant P2P GO is on */
+	bool bSuppInsertWfdIe;		/* Insert WFD IE to management frames from wpa_supplicant */
+	bool bSuppGoOn;				/* wpa_supplicant P2P GO is on */
 #endif /* RT_CFG80211_SUPPORT */
 	u8  	DeviceType;
 	u8  	SourceCoupled;

@@ -174,7 +174,7 @@
 /* check whether we can do DFS detection or not */
 #define DFS_CHECK_FLAGS(_pAd, _pRadarDetect)					\
 		!((_pAd->Dot11_H.RDMode == RD_SWITCHING_MODE) ||		\
-		(_pRadarDetect->bDfsInit == FALSE) ||						\
+		(_pRadarDetect->bDfsInit == false) ||						\
 		(_pRadarDetect->DFSAPRestart == 1))
 
 #ifdef RTMP_MAC_USB
@@ -182,7 +182,7 @@
 {																						\
 	UINT32 i = 0;																			\
 	for (i = _StartOffset; i < _StartOffset + (_NumOfPages*384); i++)							\
-		RTUSBSingleWrite(_pAd, i, _InitVal, FALSE);											\
+		RTUSBSingleWrite(_pAd, i, _InitVal, false);											\
 																						\
 	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID, 0x01010101);							\
 	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID + 4, 0x01010101);						\
@@ -229,7 +229,7 @@ typedef struct _NewDFSMPeriod {
 
 
 typedef struct _NewDFSParam {
-	BOOLEAN valid;
+	bool valid;
 	u8 mode;
 	USHORT avgLen;
 	USHORT ELow;
@@ -347,30 +347,30 @@ typedef struct _RADAR_DETECT_STRUCT {
 	ULONG TimeStamp; /*unit: 1us*/
 	u8 ChirpCheck; /* anounce on second detection of chirp radar */
 	u8 bChannelSwitchInProgress; /* RDMode could cover this*/
-	BOOLEAN bDfsSwDisable; /* disable sotfwre check */
-	BOOLEAN bDfsInit;		/* to indicate if dfs regs has been initialized */
+	bool bDfsSwDisable; /* disable sotfwre check */
+	bool bDfsInit;		/* to indicate if dfs regs has been initialized */
 	USHORT PollTime;
 	INT DfsRssiHigh;
 	INT DfsRssiLow;
-	BOOLEAN DfsRssiHighFromCfg;
-	BOOLEAN DfsRssiLowFromCfg;
-	BOOLEAN DfsRssiHighCfgValid;
-	BOOLEAN DfsRssiLowCfgValid;
-	BOOLEAN DFSParamFromConfig;
-	BOOLEAN use_tasklet;
+	bool DfsRssiHighFromCfg;
+	bool DfsRssiLowFromCfg;
+	bool DfsRssiHighCfgValid;
+	bool DfsRssiLowCfgValid;
+	bool DFSParamFromConfig;
+	bool use_tasklet;
 	DFS_VERSION dfs_func;
-	BOOLEAN DFSWatchDogIsRunning;
+	bool DFSWatchDogIsRunning;
 	u8 radarDeclared;
-	BOOLEAN SymRoundFromCfg;
-	BOOLEAN SymRoundCfgValid;
+	bool SymRoundFromCfg;
+	bool SymRoundCfgValid;
 	ULONG idle_time;
 	ULONG busy_time;
 	u8 ch_busy;
 	CHAR	ch_busy_countdown;
 	u8 busy_channel;
 	u8 ch_busy_idle_ratio;
-	BOOLEAN BusyIdleFromCfg;
-	BOOLEAN BusyIdleCfgValid;
+	bool BusyIdleFromCfg;
+	bool BusyIdleCfgValid;
 	u8 print_ch_busy_sta;
 	ULONG ch_busy_sta[CH_BUSY_SAMPLE];
 	ULONG ch_idle_sta[CH_BUSY_SAMPLE];

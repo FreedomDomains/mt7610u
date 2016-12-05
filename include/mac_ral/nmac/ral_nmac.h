@@ -613,9 +613,9 @@ typedef	union _BT_FUN_INFO_STRUC	{
 // TODO: shiang, this data structure is not defined for register. may can move to other place
 typedef struct _WLAN_BT_COEX_SETTING
 {
-	BOOLEAN					ampduOff;
-	BOOLEAN					coexSettingRunning;
-	BOOLEAN					RateSelectionForceToUseRSSI;
+	bool 				ampduOff;
+	bool 				coexSettingRunning;
+	bool 				RateSelectionForceToUseRSSI;
 	u8 				TxQualityFlag;
 	ULONG					alc;
 	ULONG					slna;
@@ -943,8 +943,8 @@ typedef union _RF_MISC_STRUC{
 
 void ral_wlan_chip_onoff(
 	IN struct rtmp_adapter *pAd,
-	IN BOOLEAN bOn,
-	IN BOOLEAN bResetWLAN);
+	IN bool bOn,
+	IN bool bResetWLAN);
 
 #define AUX_CLK_CFG		0x120C
 #define BB_PA_MODE_CFG0	0x1214

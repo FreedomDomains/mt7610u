@@ -430,7 +430,7 @@ void construct_ctr_preload(
 
 }
 
-BOOLEAN RTMPSoftDecryptAES(
+bool RTMPSoftDecryptAES(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pData,
 	IN ULONG	DataByteCnt,
@@ -463,7 +463,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	u8 		TrailMIC[8];
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, false);
 #endif
 
 	fc0 = *pData;
@@ -495,7 +495,7 @@ BOOLEAN RTMPSoftDecryptAES(
 	if (pWpaKey->KeyLen == 0)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("RTMPSoftDecryptAES failed!(the Length can not be 0)\n"));
-		return FALSE;
+		return false;
 	}
 
 	PN[0] = *(pData+ HeaderLen);
@@ -632,14 +632,14 @@ BOOLEAN RTMPSoftDecryptAES(
 	if (memcmp(MIC, TrailMIC, 8) != 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("RTMPSoftDecryptAES, MIC Error !\n"));	 /* MIC error. */
-		return FALSE;
+		return false;
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pData, DIR_READ, false);
 #endif
 
-	return TRUE;
+	return true;
 }
 
 
@@ -661,7 +661,7 @@ BOOLEAN RTMPSoftDecryptAES(
 */
 void RTMPConstructCCMPAAD(
 	IN u8 *pHdr,
-	IN BOOLEAN isDataFrame,
+	IN bool isDataFrame,
 	IN u8 a4_exists,
 	IN u8 qc_exists,
 	OUT u8 *aad_hdr,
@@ -742,7 +742,7 @@ void RTMPConstructCCMPNonce(
 	IN u8 *pHdr,
 	IN u8 a4_exists,
 	IN u8 qc_exists,
-	IN BOOLEAN isMgmtFrame,
+	IN bool isMgmtFrame,
 	IN u8 *pn,
 	OUT u8 *nonce_hdr,
 	OUT UINT *nonce_hdr_len)
@@ -822,7 +822,7 @@ void RTMPConstructCCMPHdr(
 
 	========================================================================
 */
-BOOLEAN RTMPSoftEncryptCCMP(
+bool RTMPSoftEncryptCCMP(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pHdr,
 	IN u8 *pIV,
@@ -840,7 +840,7 @@ BOOLEAN RTMPSoftEncryptCCMP(
 	u32 out_len = DataLen + 8;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, false);
 #endif
 
 	/* Initial variable */
@@ -891,13 +891,13 @@ BOOLEAN RTMPSoftEncryptCCMP(
 					nonce_hdr, nonce_hdr_len,
 					aad_hdr, aad_len, LEN_CCMP_MIC,
 					pData, &out_len))
-		return FALSE;
+		return false;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, false);
 #endif
 
-	return TRUE;
+	return true;
 }
 
 /*
@@ -914,7 +914,7 @@ BOOLEAN RTMPSoftEncryptCCMP(
 
 	========================================================================
 */
-BOOLEAN RTMPSoftDecryptCCMP(
+bool RTMPSoftDecryptCCMP(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pHdr,
 	IN PCIPHER_KEY pKey,
@@ -934,14 +934,14 @@ BOOLEAN RTMPSoftDecryptCCMP(
 	u32 out_len = *DataLen;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, false);
 #endif
 
 	/* Check the key is valid */
 	if (pKey->KeyLen == 0)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s : The key is not available !\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 
 	/* Initial variable */
@@ -1004,15 +1004,15 @@ BOOLEAN RTMPSoftDecryptCCMP(
 					nonce_hdr, nonce_hdr_len,
 					aad_hdr, aad_len, LEN_CCMP_MIC,
 					pData, &out_len))
-		return FALSE;
+		return false;
 
 	*DataLen = out_len;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (u8 *)pHdr, DIR_READ, false);
 #endif
 
-	return TRUE;
+	return true;
 }
 
 /*
@@ -1064,7 +1064,7 @@ void CCMP_test_vector(
 	/* Check AAD */
 	memset(res_buf, 0, 100);
 	res_len = 0;
-	RTMPConstructCCMPAAD(HDR, TRUE, 0, 0, res_buf, &res_len);
+	RTMPConstructCCMPAAD(HDR, true, 0, 0, res_buf, &res_len);
 	if (res_len == 22 && memcmp(res_buf, AAD, res_len) == 0)
 		printk("Construct AAD is OK!!!\n");
 	else
@@ -1074,7 +1074,7 @@ void CCMP_test_vector(
 	/* Check NONCE */
 	memset(res_buf, 0, 100);
 	res_len = 0;
-	RTMPConstructCCMPNonce(HDR, 0, 0, FALSE, PN, res_buf, &res_len);
+	RTMPConstructCCMPNonce(HDR, 0, 0, false, PN, res_buf, &res_len);
 	if (res_len == 13 && memcmp(res_buf, CCM_NONCE, res_len) == 0)
 		printk("Construct NONCE is OK!!!\n");
 	else

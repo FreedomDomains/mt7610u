@@ -126,7 +126,7 @@ void RtmpHandleRxPsPoll(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pAddr,
 	IN	USHORT			Aid,
-    IN	BOOLEAN			isActive)
+    IN	bool 		isActive)
 {
 	PQUEUE_ENTRY	  pEntry;
 	PMAC_TABLE_ENTRY  pMacEntry;
@@ -177,7 +177,7 @@ void RtmpHandleRxPsPoll(
 		/*NdisAcquireSpinLock(&pAd->MacTabLock); */
 		/*NdisAcquireSpinLock(&pAd->TxSwQueueLock); */
 		RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
-		if (isActive == FALSE)
+		if (isActive == false)
 		{
 			if (pMacEntry->PsQueue.Head)
 			{
@@ -219,13 +219,13 @@ void RtmpHandleRxPsPoll(
 					In addtion, in Station Keep Alive mechanism, we need to
 					send a QoS Null frame to detect the station live status.
 				*/
-				BOOLEAN bQosNull = FALSE;
+				bool bQosNull = false;
 
 				if (CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_WMM_CAPABLE))
-					bQosNull = TRUE;
+					bQosNull = true;
 
 				RtmpEnqueueNullFrame(pAd, pMacEntry->Addr, pMacEntry->CurrTxRate,
-										Aid, pMacEntry->apidx, bQosNull, TRUE, 0);
+										Aid, pMacEntry->apidx, bQosNull, true, 0);
 			}
 		}
 		else
@@ -269,7 +269,7 @@ void RtmpHandleRxPsPoll(
 		/* RTMPDeQueue process doesn't guarantee to de-queue the desired MSDU from the corresponding */
 		/* TxSwQueue/PsQueue when QOS in-used. We should consider "HardTransmt" this MPDU */
 		/* using MGMT queue or things like that. */
-		RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+		RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 
 	}
 	else
@@ -289,7 +289,7 @@ void RtmpHandleRxPsPoll(
 		this client once IdleCount exceeds a threshold.
 	==========================================================================
  */
-BOOLEAN RtmpPsIndicate(
+bool RtmpPsIndicate(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *pAddr,
 	IN ULONG Wcid,
@@ -334,7 +334,7 @@ BOOLEAN RtmpPsIndicate(
 					pAddr[0],pAddr[1],pAddr[2],pAddr[3],pAddr[4],pAddr[5]));
 
 			/* sleep station awakes, move all pending frames from PSQ to TXQ if any */
-			RtmpHandleRxPsPoll(pAd, pAddr, pEntry->Aid, TRUE);
+			RtmpHandleRxPsPoll(pAd, pAddr, pEntry->Aid, true);
 		}
 
 		/* move to above section */
@@ -359,23 +359,23 @@ Arguments:
 	pAd		Pointer to our adapter
 
 Return Value:
-    TRUE	can set
-	FALSE	can not set
+    true	can set
+	false	can not set
 
 Note:
 ========================================================================
 */
-BOOLEAN RtmpPktPmBitCheck(
+bool RtmpPktPmBitCheck(
     IN  struct rtmp_adapter *      pAd)
 {
-	BOOLEAN FlgCanPmBitSet = TRUE;
+	bool FlgCanPmBitSet = true;
 
 
 
-	if (FlgCanPmBitSet == TRUE)
+	if (FlgCanPmBitSet == true)
 		return (pAd->StaCfg.Psm == PWR_SAVE);
 
-	return FALSE;
+	return false;
 }
 
 
@@ -399,7 +399,7 @@ void RtmpPsModeChange(
 			// to exclude certain situations.
 			//	   MlmeSetPsm(pAd, PWR_SAVE);
 			OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
-			if (pAd->StaCfg.bWindowsACCAMEnable == FALSE)
+			if (pAd->StaCfg.bWindowsACCAMEnable == false)
 				pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeMAX_PSP;
 			pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeMAX_PSP;
 			pAd->StaCfg.DefaultListenCount = 5;
@@ -409,7 +409,7 @@ void RtmpPsModeChange(
 			// do NOT turn on PSM bit here, wait until MlmeCheckForPsmChange()
 			// to exclude certain situations.
 			OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
-			if (pAd->StaCfg.bWindowsACCAMEnable == FALSE)
+			if (pAd->StaCfg.bWindowsACCAMEnable == false)
 				pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeFast_PSP;
 			pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeFast_PSP;
 			pAd->StaCfg.DefaultListenCount = 3;
@@ -419,7 +419,7 @@ void RtmpPsModeChange(
 			// do NOT turn on PSM bit here, wait until MlmeCheckForPsmChange()
 			// to exclude certain situations.
 			OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
-			if (pAd->StaCfg.bWindowsACCAMEnable == FALSE)
+			if (pAd->StaCfg.bWindowsACCAMEnable == false)
 				pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeLegacy_PSP;
 			pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeLegacy_PSP;
 			pAd->StaCfg.DefaultListenCount = 3;
@@ -429,13 +429,13 @@ void RtmpPsModeChange(
 			// clear PSM bit immediately
 			RTMP_SET_PSM_BIT(pAd, PWR_ACTIVE);
 			OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
-			if (pAd->StaCfg.bWindowsACCAMEnable == FALSE)
+			if (pAd->StaCfg.bWindowsACCAMEnable == false)
 				pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeCAM;
 			pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeCAM;
 		}
 
 		/* change ps mode */
-		RTMPSendNullFrame(pAd, pAd->CommonCfg.TxRate, TRUE, FALSE);
+		RTMPSendNullFrame(pAd, pAd->CommonCfg.TxRate, true, false);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("PSMode=%ld\n", pAd->StaCfg.WindowsPowerMode));
 	}

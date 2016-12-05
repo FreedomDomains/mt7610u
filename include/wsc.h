@@ -79,7 +79,7 @@ typedef	struct __attribute__ ((packed)) _EAP_FRAME	{
 	u8 Type;						/* 1 = Identity, 0xfe = reserved, used by WSC */
 }	EAP_FRAME, *PEAP_FRAME;
 
-static inline BOOLEAN WscCheckWSCHeader(
+static inline bool WscCheckWSCHeader(
     IN  u8 *             pData)
 {
     PWSC_FRAME			pWsc;
@@ -90,16 +90,16 @@ static inline BOOLEAN WscCheckWSCHeader(
 	if (((pWsc->SMI[0] * 256 + pWsc->SMI[1]) * 256 + pWsc->SMI[2]) != WSC_SMI)
 	{
 		/* Wrong WSC SMI Vendor ID, Update WSC status */
-		return  FALSE;
+		return  false;
 	}
 
     /* Verify Vendor Type */
 	if (cpu2be32(get_unaligned32(&pWsc->VendorType)) != WSC_VENDOR_TYPE)
 	{
 		/* Wrong WSC Vendor Type, Update WSC status */
-		return  FALSE;
+		return  false;
 	}
-    return TRUE;
+    return true;
 }
 
 #endif	/* __WSC_H__ */

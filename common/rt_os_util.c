@@ -113,29 +113,29 @@ char *rtstrchr(const char * s, int c)
 
 void RtmpMeshDown(
 	IN void *pDrvCtrlBK,
-	IN BOOLEAN WaitFlag,
-	IN BOOLEAN	 (*RtmpMeshLinkCheck)(IN void *pAd))
+	IN bool WaitFlag,
+	IN bool  (*RtmpMeshLinkCheck)(IN void *pAd))
 {
 }
 
 
 
 
-BOOLEAN RtmpOsCmdDisplayLenCheck(
+bool RtmpOsCmdDisplayLenCheck(
 	IN u32 LenSrc,
 	IN u32 Offset)
 {
 	if (LenSrc > (IW_PRIV_SIZE_MASK - Offset))
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 
 #if defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
 void WpaSendMicFailureToWpaSupplicant(
 	IN struct net_device *pNetDev,
-	IN BOOLEAN bUnicast)
+	IN bool bUnicast)
 {
 	char custom[IW_CUSTOM_MAX] = {0};
 

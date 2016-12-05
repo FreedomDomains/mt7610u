@@ -41,14 +41,14 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, u8 OpMode)
 	{
 		rtmp_bbp_set_bw(pAd, pAd->hw_cfg.bbp_bw);
 
-		AsicSwitchChannel(pAd, pAd->CommonCfg.CentralChannel, FALSE);
+		AsicSwitchChannel(pAd, pAd->CommonCfg.CentralChannel, false);
 		AsicLockChannel(pAd, pAd->CommonCfg.CentralChannel);
 
 		ch = pAd->CommonCfg.CentralChannel;
 	}
 	else
 	{
-		AsicSwitchChannel(pAd, pAd->CommonCfg.Channel, FALSE);
+		AsicSwitchChannel(pAd, pAd->CommonCfg.Channel, false);
 		AsicLockChannel(pAd, pAd->CommonCfg.Channel);
 		ch = pAd->CommonCfg.Channel;
 
@@ -98,7 +98,7 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, u8 OpMode)
 		{
 			RTMPSendNullFrame(pAd,
 								pAd->CommonCfg.TxRate,
-								(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? TRUE:FALSE),
+								(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? true:false),
 								pAd->CommonCfg.bAPSDForcePowerSave ? PWR_SAVE : pAd->StaCfg.Psm);
 			DBGPRINT(RT_DEBUG_TRACE, ("%s -- Send null frame\n", __FUNCTION__));
 		}
@@ -121,7 +121,7 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, u8 OpMode)
 		else
 		{
 			pAd->StaCfg.BssNr = pAd->ScanTab.BssNr;
-			pAd->StaCfg.bImprovedScan = FALSE;
+			pAd->StaCfg.bImprovedScan = false;
 
 			pAd->Mlme.SyncMachine.CurrState = SYNC_IDLE;
 			Status = MLME_SUCCESS;
@@ -139,7 +139,7 @@ static INT scan_ch_restore(struct rtmp_adapter*pAd, u8 OpMode)
 
 
 
-	return TRUE;
+	return true;
 }
 
 
@@ -167,7 +167,7 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 		}
 #endif /* CONFIG_STA_SUPPORT */
 
-		return FALSE;
+		return false;
 	}
 
 #ifdef DOT11_N_SUPPORT
@@ -225,7 +225,7 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 #ifdef RT_BIG_ENDIAN
 		HT_CAPABILITY_IE HtCapabilityTmp;
 #endif
-		if (pAd->bBroadComHT == TRUE)
+		if (pAd->bBroadComHT == true)
 		{
 			HtLen = pAd->MlmeAux.HtCapabilityLen + 4;
 #ifdef RT_BIG_ENDIAN
@@ -292,7 +292,7 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 		FrameLen += Tmp;
 
 #ifdef DOT11N_DRAFT3
-		if ((pAd->MlmeAux.Channel <= 14) && (pAd->CommonCfg.bBssCoexEnable == TRUE))
+		if ((pAd->MlmeAux.Channel <= 14) && (pAd->CommonCfg.bBssCoexEnable == true))
 		{
 			ULONG Tmp;
 			HtLen = 1;
@@ -348,7 +348,7 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 		{
 			RTMPSendNullFrame(pAd,
 						  pAd->CommonCfg.TxRate,
-						  (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? TRUE:FALSE),
+						  (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED) ? true:false),
 						  PWR_SAVE);
 			DBGPRINT(RT_DEBUG_TRACE, ("ScanNextChannel():Send PWA NullData frame to notify the associated AP!\n"));
 		}
@@ -357,7 +357,7 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 
 	kfree(frm_buf);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -373,7 +373,7 @@ void ScanNextChannel(
 {
 	u8 ScanType = pAd->MlmeAux.ScanType;
 	UINT ScanTimeIn5gChannel = SHORT_CHANNEL_TIME;
-	BOOLEAN ScanPending = FALSE;
+	bool ScanPending = false;
 	RALINK_TIMER_STRUCT *sc_timer;
 	UINT stay_time = 0;
 	u8 ImprovedScan_MaxScanChannelCnt;
@@ -423,7 +423,7 @@ void ScanNextChannel(
 		{
 			/* BBP and RF are not accessible in PS mode, we has to wake them up first*/
 			if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
-				AsicForceWakeup(pAd, TRUE);
+				AsicForceWakeup(pAd, true);
 
 			/* leave PSM during scanning. otherwise we may lost ProbeRsp & BEACON*/
 			if (pAd->StaCfg.Psm == PWR_SAVE)
@@ -431,18 +431,18 @@ void ScanNextChannel(
 		}
 #endif /* CONFIG_STA_SUPPORT */
 
-		AsicSwitchChannel(pAd, pAd->MlmeAux.Channel, TRUE);
+		AsicSwitchChannel(pAd, pAd->MlmeAux.Channel, true);
 		AsicLockChannel(pAd, pAd->MlmeAux.Channel);
 
 #ifdef CONFIG_STA_SUPPORT
 		if (OpMode == OPMODE_STA)
 		{
-			BOOLEAN bScanPassive = FALSE;
+			bool bScanPassive = false;
 			if (pAd->MlmeAux.Channel > 14)
 			{
 				if ((pAd->CommonCfg.bIEEE80211H == 1)
 					&& RadarChannelCheck(pAd, pAd->MlmeAux.Channel))
-					bScanPassive = TRUE;
+					bScanPassive = true;
 			}
 
 			if (bScanPassive)
@@ -455,7 +455,7 @@ void ScanNextChannel(
 #endif /* CONFIG_STA_SUPPORT */
 
 		/* Check if channel if passive scan under current regulatory domain */
-		if (CHAN_PropertyCheck(pAd, pAd->MlmeAux.Channel, CHANNEL_PASSIVE_SCAN) == TRUE)
+		if (CHAN_PropertyCheck(pAd, pAd->MlmeAux.Channel, CHANNEL_PASSIVE_SCAN) == true)
 			ScanType = SCAN_PASSIVE;
 
 
@@ -495,7 +495,7 @@ void ScanNextChannel(
 
 		if (SCAN_MODE_ACT(ScanType))
 		{
-			if (scan_active(pAd, OpMode, ScanType) == FALSE)
+			if (scan_active(pAd, OpMode, ScanType) == false)
 				return;
 		}
 
@@ -509,16 +509,16 @@ void ScanNextChannel(
 }
 
 
-BOOLEAN ScanRunning(
+bool ScanRunning(
 		IN struct rtmp_adapter *pAd)
 {
-	BOOLEAN	rv = FALSE;
+	bool rv = false;
 
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
 			if ((pAd->Mlme.SyncMachine.CurrState == SCAN_LISTEN) || (pAd->Mlme.SyncMachine.CurrState == SCAN_PENDING))
-				rv = TRUE;
+				rv = true;
 		}
 #endif /* CONFIG_STA_SUPPORT */
 

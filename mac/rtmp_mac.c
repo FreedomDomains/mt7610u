@@ -57,12 +57,12 @@
 void RTMPWriteTxWI(
 	IN struct rtmp_adapter*pAd,
 	IN struct txwi_nmac *pOutTxWI,
-	IN BOOLEAN FRAG,
-	IN BOOLEAN CFACK,
-	IN BOOLEAN InsTimestamp,
-	IN BOOLEAN AMPDU,
-	IN BOOLEAN Ack,
-	IN BOOLEAN NSeq,		/* HW new a sequence.*/
+	IN bool FRAG,
+	IN bool CFACK,
+	IN bool InsTimestamp,
+	IN bool AMPDU,
+	IN bool Ack,
+	IN bool NSeq,		/* HW new a sequence.*/
 	IN u8 BASize,
 	IN u8 WCID,
 	IN ULONG Length,
@@ -70,7 +70,7 @@ void RTMPWriteTxWI(
 	IN u8 TID,
 	IN u8 TxRate,
 	IN u8 Txopmode,
-	IN BOOLEAN CfAck,
+	IN bool CfAck,
 	IN HTTRANSMIT_SETTING *pTransmit)
 {
 	PMAC_TABLE_ENTRY pMac = NULL;
@@ -215,7 +215,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	pTxWI->TxWICFACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bPiggyBack);
 
 #ifdef WFA_VHT_PF
-	if (pAd->force_noack == TRUE)
+	if (pAd->force_noack == true)
 		pTxWI->TxWIACK = 0;
 #endif /* WFA_VHT_PF */
 
@@ -232,7 +232,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 #endif /* DOT11N_DRAFT3 */
 
-	pTxWI->TxWIAMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? TRUE : FALSE);
+	pTxWI->TxWIAMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? true : false);
 	BASize = pAd->CommonCfg.TxBASize;
 	if((pTxBlk->TxFrameType == TX_AMPDU_FRAME) && (pMacEntry))
 	{
@@ -283,7 +283,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 #ifdef MCS_LUT_SUPPORT
 	if ((RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT)) &&
 		(pTxWI->TxWIWirelessCliID < 128) &&
-		(pMacEntry && pMacEntry->bAutoTxRateSwitch == TRUE))
+		(pMacEntry && pMacEntry->bAutoTxRateSwitch == true))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
 
@@ -334,7 +334,7 @@ void RTMPWriteTxWI_Cache(
 	}
 
 #ifdef DOT11_N_SUPPORT
-	pTxWI->TxWIAMPDU = ((pMacEntry->NoBADataCountDown == 0) ? TRUE: FALSE);
+	pTxWI->TxWIAMPDU = ((pMacEntry->NoBADataCountDown == 0) ? true: false);
 
 	pTxWI->TxWIMIMOps = 0;
 
@@ -376,7 +376,7 @@ void RTMPWriteTxWI_Cache(
 
 
 #ifdef WFA_VHT_PF
-	if (pAd->force_noack == TRUE)
+	if (pAd->force_noack == true)
 		pTxWI->TxWIACK = 0;
 	else
 #endif /* WFA_VHT_PF */
@@ -385,7 +385,7 @@ void RTMPWriteTxWI_Cache(
 #ifdef MCS_LUT_SUPPORT
 	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) &&
 		(pTxWI->TxWIWirelessCliID < 128) &&
-		(pMacEntry && pMacEntry->bAutoTxRateSwitch == TRUE))
+		(pMacEntry && pMacEntry->bAutoTxRateSwitch == true))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
 
@@ -424,7 +424,7 @@ INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
 	if (val != band_cfg)
 		RTMP_IO_WRITE32(pAd, TX_BAND_CFG, val);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -451,7 +451,7 @@ INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
 	if (val != band_cfg)
 		RTMP_IO_WRITE32(pAd, TX_BAND_CFG, val);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -469,6 +469,6 @@ INT rtmp_mac_set_mmps(struct rtmp_adapter*pAd, INT ReduceCorePower)
 	if (mac_val != org_val)
 		RTMP_IO_WRITE32(pAd, 0x1210, mac_val);
 
-	return TRUE;
+	return true;
 }
 

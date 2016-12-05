@@ -43,7 +43,7 @@ void STARxEAPOLFrameIndicate(
 		/* TBD : process fragmented EAPol frames */
 		{
 			/* In 802.1x mode, if the received frame is EAP-SUCCESS packet, turn on the PortSecured variable */
-			if ((pAd->StaCfg.IEEE8021X == TRUE) &&
+			if ((pAd->StaCfg.IEEE8021X == true) &&
 			    (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) &&
 			    (EAP_CODE_SUCCESS ==
 			     WpaCheckEapCode(pAd, pRxBlk->pData,
@@ -57,7 +57,7 @@ void STARxEAPOLFrameIndicate(
 					     ("Receive EAP-SUCCESS Packet\n"));
 				STA_PORT_SECURED(pAd);
 
-				if (pAd->StaCfg.IEEE8021x_required_keys == FALSE) {
+				if (pAd->StaCfg.IEEE8021x_required_keys == false) {
 					idx = pAd->StaCfg.DesireSharedKeyId;
 					CipherAlg = pAd->StaCfg.DesireSharedKey[idx].CipherAlg;
 					Key = pAd->StaCfg.DesireSharedKey[idx].Key;
@@ -278,7 +278,7 @@ void STARxDataFrameAnnounce_Hdr_Trns(
 
 
 /* For TKIP frame, calculate the MIC value	*/
-BOOLEAN STACheckTkipMICValue(
+bool STACheckTkipMICValue(
 	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN RX_BLK * pRxBlk)
@@ -304,15 +304,15 @@ BOOLEAN STACheckTkipMICValue(
 				    pDA,
 				    pSA,
 				    pWpaKey->RxMic,
-				    UserPriority, DataSize) == FALSE) {
+				    UserPriority, DataSize) == false) {
 		DBGPRINT_RAW(RT_DEBUG_ERROR, ("Rx MIC Value error 2\n"));
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 		if (pAd->StaCfg.WpaSupplicantUP) {
 			WpaSendMicFailureToWpaSupplicant(pAd->net_dev,
 							 (pWpaKey->Type ==
-							  PAIRWISEKEY) ? TRUE :
-							 FALSE);
+							  PAIRWISEKEY) ? true :
+							 false);
 		} else
 #endif /* WPA_SUPPLICANT_SUPPORT */
 		{
@@ -321,10 +321,10 @@ BOOLEAN STACheckTkipMICValue(
 
 		/* release packet */
 		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -344,7 +344,7 @@ void STAHandleRxDataFrame(
 	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
-	BOOLEAN bFragment = FALSE;
+	bool bFragment = false;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	u8 FromWhichBSSID = BSS0;
 	u8 UserPriority = 0;
@@ -400,7 +400,7 @@ void STAHandleRxDataFrame(
  				{
 				DBGPRINT(RT_DEBUG_INFO,
 					 ("RxDone- Rcv EOSP frame, driver may fall into sleep\n"));
-				pAd->CommonCfg.bInServicePeriod = FALSE;
+				pAd->CommonCfg.bInServicePeriod = false;
 
 				/* Force driver to fall into sleep mode when rcv EOSP frame */
 					if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
@@ -483,13 +483,13 @@ void STAHandleRxDataFrame(
 #ifndef WFA_VHT_PF
 		// TODO: shiang@PF#2, is this atheros protection still necessary here???
 		/* check Atheros Client */
-		if ((pEntry->bIAmBadAtheros == FALSE) && (pRxInfo->AMPDU == 1)
+		if ((pEntry->bIAmBadAtheros == false) && (pRxInfo->AMPDU == 1)
 		    && (pHeader->FC.Retry)) {
-			pEntry->bIAmBadAtheros = TRUE;
-			pAd->CommonCfg.IOTestParm.bCurrentAtheros = TRUE;
-			pAd->CommonCfg.IOTestParm.bLastAtheros = TRUE;
+			pEntry->bIAmBadAtheros = true;
+			pAd->CommonCfg.IOTestParm.bCurrentAtheros = true;
+			pAd->CommonCfg.IOTestParm.bLastAtheros = true;
 			if (!STA_AES_ON(pAd))
-				RTMP_UPDATE_PROTECT(pAd, 8 , ALLN_SETPROTECT, TRUE, FALSE);
+				RTMP_UPDATE_PROTECT(pAd, 8 , ALLN_SETPROTECT, true, false);
 		}
 #endif /* WFA_VHT_PF */
 #endif /* DOT11_VHT_AC */
@@ -533,7 +533,7 @@ void STAHandleRxDataFrame(
 
 	/* check if need to resend PS Poll when received packet with MoreData = 1 */
 		{
-			if ((RtmpPktPmBitCheck(pAd) == TRUE) && (pHeader->FC.MoreData == 1)) {
+			if ((RtmpPktPmBitCheck(pAd) == true) && (pHeader->FC.MoreData == 1)) {
 				if ((((UserPriority == 0) || (UserPriority == 3)) && pAd->CommonCfg.bAPSDAC_BE == 0) ||
 		    			(((UserPriority == 1) || (UserPriority == 2)) && pAd->CommonCfg.bAPSDAC_BK == 0) ||
 					(((UserPriority == 4) || (UserPriority == 5)) && pAd->CommonCfg.bAPSDAC_VI == 0) ||
@@ -712,7 +712,7 @@ void STAHandleRxDataFrame(
 			pEntry->LastRxRate = pAd->LastRxRate;
 
 			pEntry->freqOffset = (CHAR)(pRxWI->RxWIFOFFSET);
-			pEntry->freqOffsetValid = TRUE;
+			pEntry->freqOffsetValid = true;
 
 		}
 
@@ -726,7 +726,7 @@ void STAHandleRxDataFrame(
 		if (!((pHeader->Frag == 0) && (pHeader->FC.MoreFrag == 0))) {
 			/* re-assemble the fragmented packets */
 			/* return complete frame (pRxPacket) or NULL */
-			bFragment = TRUE;
+			bFragment = true;
 			pRxPacket = RTMPDeFragmentDataFrame(pAd, pRxBlk);
 		}
 
@@ -740,7 +740,7 @@ void STAHandleRxDataFrame(
 				pRxBlk->DataSize -= 8;
 
 				/* For TKIP frame, calculate the MIC value */
-				if (STACheckTkipMICValue(pAd, pEntry, pRxBlk) == FALSE) {
+				if (STACheckTkipMICValue(pAd, pEntry, pRxBlk) == false) {
 					return;
 				}
 			}
@@ -778,7 +778,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
-	BOOLEAN bFragment = FALSE;
+	bool bFragment = false;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	u8 FromWhichBSSID = BSS0;
 	u8 UserPriority = 0;
@@ -827,7 +827,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 			if ((*pData >> 4) & 0x01) {
 				DBGPRINT(RT_DEBUG_INFO,
 					 ("RxDone- Rcv EOSP frame, driver may fall into sleep\n"));
-				pAd->CommonCfg.bInServicePeriod = FALSE;
+				pAd->CommonCfg.bInServicePeriod = false;
 
 				/* Force driver to fall into sleep mode when rcv EOSP frame */
 				if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE)) {
@@ -903,13 +903,13 @@ void STAHandleRxDataFrame_Hdr_Trns(
 		}
 
 		/* check Atheros Client */
-		if ((pEntry->bIAmBadAtheros == FALSE) && (pRxInfo->AMPDU == 1)
+		if ((pEntry->bIAmBadAtheros == false) && (pRxInfo->AMPDU == 1)
 		    && (pHeader->FC.Retry)) {
-			pEntry->bIAmBadAtheros = TRUE;
-			pAd->CommonCfg.IOTestParm.bCurrentAtheros = TRUE;
-			pAd->CommonCfg.IOTestParm.bLastAtheros = TRUE;
+			pEntry->bIAmBadAtheros = true;
+			pAd->CommonCfg.IOTestParm.bCurrentAtheros = true;
+			pAd->CommonCfg.IOTestParm.bLastAtheros = true;
 			if (!STA_AES_ON(pAd))
-				RTMP_UPDATE_PROTECT(pAd, 8 , ALLN_SETPROTECT, TRUE, FALSE);
+				RTMP_UPDATE_PROTECT(pAd, 8 , ALLN_SETPROTECT, true, false);
 		}
 	}
 
@@ -927,12 +927,12 @@ void STAHandleRxDataFrame_Hdr_Trns(
 /*
 			if ( (pRxFceInfo->ip_err) || (pRxFceInfo->tcp_err)
 				|| (pRxFceInfo->udp_err) ) {
-				RTMP_SET_TCP_CHKSUM_FAIL(pRxPacket, TRUE);
+				RTMP_SET_TCP_CHKSUM_FAIL(pRxPacket, true);
 			}
 */
 			// Linux always do IP header chksum
 			if (  (pRxFceInfo->tcp_err) || (pRxFceInfo->udp_err) ) {
-				RTMP_SET_TCP_CHKSUM_FAIL(pRxPacket, TRUE);
+				RTMP_SET_TCP_CHKSUM_FAIL(pRxPacket, true);
 			}
 		}
 	}
@@ -1133,7 +1133,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 			pEntry->LastRxRate = pAd->LastRxRate;
 
 			pEntry->freqOffset = (CHAR)(pRxWI->RxWIFOFFSET);
-			pEntry->freqOffsetValid = TRUE;
+			pEntry->freqOffsetValid = true;
 
 		}
 
@@ -1146,7 +1146,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 		if (!((pHeader->Frag == 0) && (pHeader->FC.MoreFrag == 0))) {
 			/* re-assemble the fragmented packets */
 			/* return complete frame (pRxPacket) or NULL */
-			bFragment = TRUE;
+			bFragment = true;
 			pRxPacket = RTMPDeFragmentDataFrame(pAd, pRxBlk);
 		}
 
@@ -1160,7 +1160,7 @@ void STAHandleRxDataFrame_Hdr_Trns(
 				pRxBlk->DataSize -= 8;
 
 				/* For TKIP frame, calculate the MIC value */
-				if (STACheckTkipMICValue(pAd, pEntry, pRxBlk) == FALSE) {
+				if (STACheckTkipMICValue(pAd, pEntry, pRxBlk) == false) {
 					return;
 				}
 			}
@@ -1202,7 +1202,7 @@ void STAHandleRxMgmtFrame(
 
 
 		/* check if need to resend PS Poll when received packet with MoreData = 1 */
-		if ((RtmpPktPmBitCheck(pAd) == TRUE)
+		if ((RtmpPktPmBitCheck(pAd) == true)
 		    && (pHeader->FC.MoreData == 1)) {
 			/* for UAPSD, all management frames will be VO priority */
 			if (pAd->CommonCfg.bAPSDAC_VO == 0) {
@@ -1251,7 +1251,7 @@ void STAHandleRxMgmtFrame(
 					  pRxWI->RxWIRSSI2, MinSNR,
 					  OPMODE_STA);
 
-	} while (FALSE);
+	} while (false);
 
 	RTMPFreeNdisPacket(pAd, pRxPacket);
 }
@@ -1266,7 +1266,7 @@ void STAHandleRxControlFrame(
 #endif /* DOT11_N_SUPPORT */
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
-	BOOLEAN retStatus;
+	bool retStatus;
 	int status = NDIS_STATUS_FAILURE;
 
 	switch (pHeader->FC.SubType) {
@@ -1274,7 +1274,7 @@ void STAHandleRxControlFrame(
 #ifdef DOT11_N_SUPPORT
 		{
 			retStatus = CntlEnqueueForRecv(pAd, pRxWI->RxWIWirelessCliID, (pRxWI->RxWIMPDUByteCnt), (PFRAME_BA_REQ) pHeader);
-			status = (retStatus == TRUE) ? NDIS_STATUS_SUCCESS : NDIS_STATUS_FAILURE;
+			status = (retStatus == true) ? NDIS_STATUS_SUCCESS : NDIS_STATUS_FAILURE;
 		}
 		break;
 #endif /* DOT11_N_SUPPORT */
@@ -1307,11 +1307,11 @@ void STAHandleRxControlFrame(
 		Need to consider QOS DATA format when converting to 802.3
 	========================================================================
 */
-BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
+bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 {
 	int Status;
 	u32 RxProcessed, RxPending;
-	BOOLEAN bReschedule = FALSE;
+	bool bReschedule = false;
 	RXD_STRUC *pRxD;
 	struct rxwi_nmac *pRxWI;
 	struct rtmp_rxinfo *pRxInfo;
@@ -1321,7 +1321,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 	RX_BLK RxBlk;
 	u8 RXWISize = sizeof(struct rxwi_nmac);
 	RXFCE_INFO *pFceInfo;
-	BOOLEAN bCmdRspPacket = FALSE;
+	bool bCmdRspPacket = false;
 
 	RxProcessed = RxPending = 0;
 
@@ -1380,7 +1380,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 #endif /* !HDR_TRANS_SUPPORT */
 
 #ifdef RT_BIG_ENDIAN
-		RTMPFrameEndianChange(pAd, (u8 *) pHeader, DIR_READ, TRUE);
+		RTMPFrameEndianChange(pAd, (u8 *) pHeader, DIR_READ, true);
 		RTMPWIEndianChange(pRxWI, sizeof(*pRxWI));
 #endif
 
@@ -1427,7 +1427,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 			pAd->ate.RxCntPerSec++;
 			ATESampleRssi(pAd, pRxWI);
 #ifdef RALINK_QA
-			if (pAd->ate.bQARxStart == TRUE) {
+			if (pAd->ate.bQARxStart == true) {
 				/* (*pRxD) has been swapped in GetPacketFromRxRing() */
 				ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
 			}
@@ -1489,7 +1489,7 @@ BOOLEAN STARxDoneInterruptHandle(struct rtmp_adapter*pAd, BOOLEAN argc)
 }
 
 
-BOOLEAN STAHandleRxDonePacket(
+bool STAHandleRxDonePacket(
 	IN struct rtmp_adapter*pAd,
 	IN struct sk_buff * pRxPacket,
 	IN RX_BLK *pRxBlk)
@@ -1498,7 +1498,7 @@ BOOLEAN STAHandleRxDonePacket(
 	struct rxwi_nmac *pRxWI;
 	struct rtmp_rxinfo *pRxInfo;
 	PHEADER_802_11 pHeader;
-	BOOLEAN bReschedule = FALSE;
+	bool bReschedule = false;
 	int Status;
 
 	pRxWI = pRxBlk->pRxWI;
@@ -1522,7 +1522,7 @@ BOOLEAN STAHandleRxDonePacket(
 		pAd->ate.RxCntPerSec++;
 		ATESampleRssi(pAd, pRxWI);
 #ifdef RALINK_QA
-		if (pAd->ate.bQARxStart == TRUE)
+		if (pAd->ate.bQARxStart == true)
 		{
 			/* (*pRxD) has been swapped in GetPacketFromRxRing() */
 			ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
@@ -1585,7 +1585,7 @@ BOOLEAN STAHandleRxDonePacket(
 void RTMPHandleTwakeupInterrupt(
 	IN struct rtmp_adapter *pAd)
 {
-	AsicForceWakeup(pAd, FALSE);
+	AsicForceWakeup(pAd, false);
 }
 
 
@@ -1611,7 +1611,7 @@ void STASendPackets(
 	IN struct rtmp_adapter *pAd,
 	IN struct sk_buff *pPacket)
 {
-	BOOLEAN allowToSend = FALSE;
+	bool allowToSend = false;
 
 	do {
 
@@ -1651,17 +1651,17 @@ void STASendPackets(
 			NDIS_SET_PACKET_STATUS(pPacket, NDIS_STATUS_PENDING);
 			pAd->RalinkCounters.PendingNdisPacketCount++;
 
-			allowToSend = TRUE;
+			allowToSend = true;
 		}
-	} while (FALSE);
+	} while (false);
 
-	if (allowToSend == TRUE)
+	if (allowToSend == true)
 		STASendPacket(pAd, pPacket);
 	else
 		RTMPFreeNdisPacket(pAd, pPacket);
 
 	/* Dequeue outgoing frames from TxSwQueue[] and process it */
-	RTMPDeQueuePacket(pAd, FALSE, NUM_OF_TX_RING, MAX_TX_PROCESS);
+	RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
 
 }
 
@@ -1793,12 +1793,12 @@ int STASendPacket(
 	     (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) ||
 	     (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK)
 #ifdef WPA_SUPPLICANT_SUPPORT
-	     || (pAd->StaCfg.IEEE8021X == TRUE)
+	     || (pAd->StaCfg.IEEE8021X == true)
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	    )
 	    && ((pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED)
 		|| (pAd->StaCfg.MicErrCnt >= 2))
-	    && (RTMP_GET_PACKET_EAPOL(pPacket) == FALSE)
+	    && (RTMP_GET_PACKET_EAPOL(pPacket) == false)
 	    ) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("STASendPacket --> Drop packet before port secured !!!\n"));
@@ -1894,7 +1894,7 @@ int STASendPacket(
 	}
 
 #ifdef DOT11_N_SUPPORT
-	if ((pAd->CommonCfg.BACapability.field.AutoBA == TRUE) &&
+	if ((pAd->CommonCfg.BACapability.field.AutoBA == true) &&
 	    (pEntry->NoBADataCountDown == 0) && IS_HT_STA(pEntry)) {
 		if (((pEntry->TXBAbitmap & (1 << UserPriority)) == 0) &&
 		    ((pEntry->BADeclineBitmap & (1 << UserPriority)) == 0) &&
@@ -1908,7 +1908,7 @@ int STASendPacket(
 		    )
 		{
 			BAOriSessionSetUp(pAd, pEntry, UserPriority, 0, 10,
-					  FALSE);
+					  false);
 		}
 	}
 #endif /* DOT11_N_SUPPORT */
@@ -1970,7 +1970,7 @@ int RTMPFreeTXDRequest(
 				      IrqFlags);
 			if ((pHTTXContext->CurWritePosition !=
 			     pHTTXContext->ENextBulkOutPosition)
-			    || (pHTTXContext->IRPPending == TRUE)) {
+			    || (pHTTXContext->IRPPending == true)) {
 				Status = NDIS_STATUS_FAILURE;
 			} else {
 				Status = NDIS_STATUS_SUCCESS;
@@ -2002,7 +2002,7 @@ int RTMPFreeTXDRequest(
 void RTMPSendNullFrame(
 	IN struct rtmp_adapter *pAd,
 	IN u8 TxRate,
-	IN BOOLEAN bQosNull,
+	IN bool bQosNull,
 	IN USHORT PwrMgmt)
 {
 	u8 NullFrame[48];
@@ -2021,7 +2021,7 @@ void RTMPSendNullFrame(
 	     (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2) ||
 	     (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK)
 #ifdef WPA_SUPPLICANT_SUPPORT
-	     || (pAd->StaCfg.IEEE8021X == TRUE)
+	     || (pAd->StaCfg.IEEE8021X == true)
 #endif
 	    ) && (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_NOT_SECURED)) {
 		return;
@@ -2042,10 +2042,10 @@ void RTMPSendNullFrame(
 	if (pAd->CommonCfg.bAPSDForcePowerSave) {
 		pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
 	} else {
-		BOOLEAN FlgCanPmBitSet = TRUE;
+		bool FlgCanPmBitSet = true;
 
 
-		if (FlgCanPmBitSet == TRUE)
+		if (FlgCanPmBitSet == true)
 		pHeader_802_11->FC.PwrMgmt = PwrMgmt;
 		else
 			pHeader_802_11->FC.PwrMgmt = PWR_ACTIVE;
@@ -2135,7 +2135,7 @@ void STAFindCipherAlgorithm(
 #ifdef WPA_SUPPLICANT_SUPPORT
 		else if (pAd->StaCfg.WpaSupplicantUP &&
 			 (Cipher == Ndis802_11Encryption1Enabled) &&
-			 (pAd->StaCfg.IEEE8021X == TRUE) &&
+			 (pAd->StaCfg.IEEE8021X == true) &&
 			 (pAd->StaCfg.PortSecured ==
 			  WPA_802_1X_PORT_NOT_SECURED))
 			CipherAlg = CIPHER_NONE;
@@ -2159,7 +2159,7 @@ void STABuildWifiInfo(
 {
 	PWIFI_INFO_STRUC pWI;
 #ifdef QOS_DLS_SUPPORT
-	BOOLEAN bDLSFrame = FALSE;
+	bool bDLSFrame = false;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
 	u8 TXWISize = pAd->chipCap.TXWISize;
@@ -2179,9 +2179,9 @@ void STABuildWifiInfo(
 		/* If packet can be sent through DLS, then force aggregation disable. (Hard to determine peer STA's capability) */
 		DlsEntryIndex = RTMPCheckDLSFrame(pAd, pTxBlk->pSrcBufHeader);
 		if (DlsEntryIndex >= 0)
-			bDLSFrame = TRUE;
+			bDLSFrame = true;
 		else
-			bDLSFrame = FALSE;
+			bDLSFrame = false;
 	}
 #endif /* QOS_DLS_SUPPORT */
 
@@ -2250,14 +2250,14 @@ void STABuildCacheWifiInfo(
 		/* Check if the frame can be sent through DLS direct link interface
 		   If packet can be sent through DLS, then force aggregation disable. (Hard to determine peer STA's capability) */
 #ifdef QOS_DLS_SUPPORT
-		BOOLEAN bDLSFrame = FALSE;
+		bool bDLSFrame = false;
 		INT DlsEntryIndex = 0;
 
 		DlsEntryIndex = RTMPCheckDLSFrame(pAd, pTxBlk->pSrcBufHeader);
 		if (DlsEntryIndex >= 0)
-			bDLSFrame = TRUE;
+			bDLSFrame = true;
 		else
-			bDLSFrame = FALSE;
+			bDLSFrame = false;
 #endif /* QOS_DLS_SUPPORT */
 
 		/* The addr3 of normal packet send from DS is Dest Mac address. */
@@ -2290,7 +2290,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 {
 	HEADER_802_11 *wifi_hdr;
 #ifdef QOS_DLS_SUPPORT
-	BOOLEAN bDLSFrame = FALSE;
+	bool bDLSFrame = false;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
 	u8 TXWISize = sizeof(struct txwi_nmac);
@@ -2312,9 +2312,9 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		/* If packet can be sent through DLS, then force aggregation disable. (Hard to determine peer STA's capability) */
 		DlsEntryIndex = RTMPCheckDLSFrame(pAd, pTxBlk->pSrcBufHeader);
 		if (DlsEntryIndex >= 0)
-			bDLSFrame = TRUE;
+			bDLSFrame = true;
 		else
-			bDLSFrame = FALSE;
+			bDLSFrame = false;
 	}
 #endif /* QOS_DLS_SUPPORT */
 
@@ -2387,7 +2387,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	if (pAd->CommonCfg.bAPSDForcePowerSave)
 		wifi_hdr->FC.PwrMgmt = PWR_SAVE;
 	else
-		wifi_hdr->FC.PwrMgmt = (RtmpPktPmBitCheck(pAd) == TRUE);
+		wifi_hdr->FC.PwrMgmt = (RtmpPktPmBitCheck(pAd) == true);
 }
 
 
@@ -2420,14 +2420,14 @@ void STABuildCache802_11Header(
 		/* Check if the frame can be sent through DLS direct link interface
 		   If packet can be sent through DLS, then force aggregation disable. (Hard to determine peer STA's capability) */
 #ifdef QOS_DLS_SUPPORT
-		BOOLEAN bDLSFrame = FALSE;
+		bool bDLSFrame = false;
 		INT DlsEntryIndex = 0;
 
 		DlsEntryIndex = RTMPCheckDLSFrame(pAd, pTxBlk->pSrcBufHeader);
 		if (DlsEntryIndex >= 0)
-			bDLSFrame = TRUE;
+			bDLSFrame = true;
 		else
-			bDLSFrame = FALSE;
+			bDLSFrame = false;
 #endif /* QOS_DLS_SUPPORT */
 
 		/* The addr3 of normal packet send from DS is Dest Mac address. */
@@ -2464,7 +2464,7 @@ void STABuildCache802_11Header(
 	if (pAd->CommonCfg.bAPSDForcePowerSave)
 		pHeader80211->FC.PwrMgmt = PWR_SAVE;
 	else
-		pHeader80211->FC.PwrMgmt = (RtmpPktPmBitCheck(pAd) == TRUE);
+		pHeader80211->FC.PwrMgmt = (RtmpPktPmBitCheck(pAd) == true);
 }
 #endif /* DOT11_N_SUPPORT */
 
@@ -2580,9 +2580,9 @@ void STA_AMPDU_Frame_Tx(
 	u8 *pHeaderBufPtr;
 	USHORT FreeNumber = 0;
 	MAC_TABLE_ENTRY *pMacEntry;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	BOOLEAN			bHTCPlus;
+	bool 		bHTCPlus;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
@@ -2591,12 +2591,12 @@ void STA_AMPDU_Frame_Tx(
 	while (pTxBlk->TxPacketList.Head) {
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			continue;
 		}
 
-		bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+		bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 		pMacEntry = pTxBlk->pMacEntry;
 		if ((pMacEntry->isCached)
@@ -2625,7 +2625,7 @@ void STA_AMPDU_Frame_Tx(
 		if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
 			/* Check if the original data has enough buffer
 			   to insert or append WPI related field. */
-			if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == FALSE) {
+			if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
 				RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 				continue;
 			}
@@ -2683,13 +2683,13 @@ void STA_AMPDU_Frame_Tx(
 			   build HTC+
 			   HTC control field following QoS field
 			 */
-			bHTCPlus = FALSE;
+			bHTCPlus = false;
 
-			if ((pAd->CommonCfg.bRdg == TRUE)
+			if ((pAd->CommonCfg.bRdg == true)
 			    && CLIENT_STATUS_TEST_FLAG(pTxBlk->pMacEntry, fCLIENT_STATUS_RDG_CAPABLE)
 			)
 			{
-				if (pMacEntry->isCached == FALSE)
+				if (pMacEntry->isCached == false)
 				{
 					/* mark HTC bit */
 					pHeader_802_11->FC.Order = 1;
@@ -2698,7 +2698,7 @@ void STA_AMPDU_Frame_Tx(
 					((PHT_CONTROL)pHeaderBufPtr)->RDG = 1;
 				}
 
-				bHTCPlus = TRUE;
+				bHTCPlus = true;
 			}
 
 
@@ -2822,7 +2822,7 @@ void STA_AMPDU_Frame_Tx(
 				       (u8 *) (&pTxBlk->HeaderBuf[0]),
 				       (pHeaderBufPtr - (u8 *) (&pTxBlk->HeaderBuf[0])));
 
-			pMacEntry->isCached = TRUE;
+			pMacEntry->isCached = true;
 		}
 
 #ifdef STATS_COUNT_SUPPORT
@@ -2832,7 +2832,7 @@ void STA_AMPDU_Frame_Tx(
 			pAd->RalinkCounters.TransmittedOctetsInAMPDUCount.QuadPart += pTxBlk->SrcBufLen;
 		}
 #endif /* STATS_COUNT_SUPPORT */
-		HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
+		HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
@@ -2859,9 +2859,9 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 	u8 *pWiBufPtr;
 	USHORT FreeNumber = 0;
 	MAC_TABLE_ENTRY *pMacEntry;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	BOOLEAN			bHTCPlus;
+	bool 		bHTCPlus;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 	PWIFI_INFO_STRUC pWI;
 
@@ -2870,12 +2870,12 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 	while (pTxBlk->TxPacketList.Head) {
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			continue;
 		}
 
-		bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+		bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 		pMacEntry = pTxBlk->pMacEntry;
 
@@ -2904,7 +2904,7 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 		pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader;
 
 		if (bVLANPkt)
-			pWI->field.VLAN = TRUE;
+			pWI->field.VLAN = true;
 
 		pWI->field.TID = (pTxBlk->UserPriority & 0x0F);
 
@@ -2914,19 +2914,19 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 			   build HTC+
 			   HTC control field following QoS field
 			 */
-			bHTCPlus = FALSE;
+			bHTCPlus = false;
 
-			if ((pAd->CommonCfg.bRdg == TRUE)
+			if ((pAd->CommonCfg.bRdg == true)
 			    && CLIENT_STATUS_TEST_FLAG(pTxBlk->pMacEntry, fCLIENT_STATUS_RDG_CAPABLE)
 			)
 			{
-				if (pMacEntry->isCached == FALSE)
+				if (pMacEntry->isCached == false)
 				{
 					/* mark HTC bit */
 					pWI->field.RDG = 1;
 				}
 
-				bHTCPlus = TRUE;
+				bHTCPlus = true;
 			}
 
 		}
@@ -2948,7 +2948,7 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 				       TXWISize + WIFI_INFO_SIZE);
 
 
-			pMacEntry->isCached = TRUE;
+			pMacEntry->isCached = true;
 		}
 
 #ifdef STATS_COUNT_SUPPORT
@@ -2958,8 +2958,8 @@ void STA_AMPDU_Frame_Tx_Hdr_Trns(
 			pAd->RalinkCounters.TransmittedOctetsInAMPDUCount.QuadPart += pTxBlk->SrcBufLen;
 		}
 #endif /* STATS_COUNT_SUPPORT */
-		pTxBlk->NeedTrans = TRUE;
-		HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
+		pTxBlk->NeedTrans = true;
+		HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
@@ -2990,7 +2990,7 @@ void STA_AMSDU_Frame_Tx(
 	u8 *subFrameHeader;
 	u8 padding = 0;
 	USHORT FirstTx = 0, LastTxIdx = 0;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	int frameNum = 0;
 	PQUEUE_ENTRY pQEntry;
 
@@ -3002,13 +3002,13 @@ void STA_AMSDU_Frame_Tx(
 	while (pTxBlk->TxPacketList.Head) {
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			continue;
 		}
 
 		bVLANPkt =
-		    (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+		    (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 		/* skip 802.3 header */
 		pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader + LENGTH_802_3;
@@ -3115,7 +3115,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	HEADER_802_11 *wifi_hdr;
 	u8 *pHeaderBufPtr;
 	USHORT FreeNumber = 0;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
@@ -3123,7 +3123,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 
 	pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 	pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 		return;
 	}
@@ -3148,7 +3148,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
 		/* Check if the original data has enough buffer
 		   to insert or append WPI related field. */
-		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == FALSE) {
+		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			return;
 		}
@@ -3160,7 +3160,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	pTxBlk->SrcBufLen -= LENGTH_802_3;
 
 	/* skip vlan tag */
-	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 	if (bVLANPkt) {
 		pTxBlk->pSrcBufData += LENGTH_802_1Q;
 		pTxBlk->SrcBufLen -= LENGTH_802_1Q;
@@ -3264,7 +3264,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 
 	RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
-	HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
+	HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
@@ -3290,7 +3290,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 {
 	u8 *pHeaderBufPtr;
 	USHORT FreeNumber = 0;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	u8 TXWISize = pAd->chipCap.TXWISize;
 	PWIFI_INFO_STRUC pWI;
@@ -3301,7 +3301,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 
 	pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 	pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 		return;
 	}
@@ -3318,7 +3318,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 	else
 		TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bRtsRequired);
 
-	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 	if (pTxBlk->TxRate < pAd->CommonCfg.MinTxRate)
 		pTxBlk->TxRate = pAd->CommonCfg.MinTxRate;
@@ -3333,7 +3333,7 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 	pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader;
 
 	if(bVLANPkt)
-		pWI->field.VLAN = TRUE;
+		pWI->field.VLAN = true;
 
 	pWI->field.TID = (pTxBlk->UserPriority & 0x0F);
 
@@ -3346,8 +3346,8 @@ void STA_Legacy_Frame_Tx_Hdr_Trns(
 
 	RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
-	pTxBlk->NeedTrans = TRUE;
-	HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
+	pTxBlk->NeedTrans = true;
+	HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
@@ -3375,7 +3375,7 @@ void STA_ARalink_Frame_Tx(
 	USHORT totalMPDUSize = 0;
 	USHORT FirstTx, LastTxIdx;
 	int frameNum = 0;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 
 	ASSERT(pTxBlk);
@@ -3387,13 +3387,13 @@ void STA_ARalink_Frame_Tx(
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 
-		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			continue;
 		}
 
 		bVLANPkt =
-		    (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+		    (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 		/* skip 802.3 header */
 		pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader + LENGTH_802_3;
@@ -3502,7 +3502,7 @@ void STA_Fragment_Frame_Tx(
 	u32 FreeMpduSize, SrcRemainingBytes;
 	USHORT AckDuration;
 	UINT NextMpduSize;
-	BOOLEAN bVLANPkt;
+	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	HTTRANSMIT_SETTING *pTransmit;
 #ifdef SOFT_ENCRYPT
@@ -3515,13 +3515,13 @@ void STA_Fragment_Frame_Tx(
 
 	pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 	pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
-	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != TRUE) {
+	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
 		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 		return;
 	}
 
 	ASSERT(TX_BLK_TEST_FLAG(pTxBlk, fTX_bAllowFrag));
-	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? TRUE : FALSE);
+	bVLANPkt = (RTMP_GET_PACKET_VLAN(pTxBlk->pPacket) ? true : false);
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -3532,7 +3532,7 @@ void STA_Fragment_Frame_Tx(
 	   to insert or append extended field.
 	 */
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
-		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == FALSE) {
+		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
 			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 			return;
 		}
@@ -3867,7 +3867,7 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 	PQUEUE_ENTRY pQEntry;
 
 #ifdef HDR_TRANS_SUPPORT
-		BOOLEAN bDoHdrTrans = TRUE;
+		bool bDoHdrTrans = true;
 #endif /* HDR_TRANS_SUPPORT */
 
 	/*
@@ -3910,10 +3910,10 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 	if ((!
 	     (pAd->StaCfg.UapsdInfo.bAPSDCapable
 	      && pAd->CommonCfg.APEdcaParm.bAPSDCapable)
-	     && (pAd->CommonCfg.bAPSDForcePowerSave == FALSE))
+	     && (pAd->CommonCfg.bAPSDForcePowerSave == false))
 	    || (RTMP_GET_PACKET_EAPOL(pTxBlk->pPacket))
 	    || (RTMP_GET_PACKET_WAI(pTxBlk->pPacket))) {
-		if ((RtmpPktPmBitCheck(pAd) == TRUE) &&
+		if ((RtmpPktPmBitCheck(pAd) == true) &&
 		    (pAd->StaCfg.WindowsPowerMode ==
 		     Ndis802_11PowerModeFast_PSP))
 			RTMP_SET_PSM_BIT(pAd, PWR_ACTIVE);
@@ -3922,19 +3922,19 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 #ifdef HDR_TRANS_SUPPORT
 #ifdef SOFT_ENCRYPT
 	if ( TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) /* need LLC, not yet generated */
-		bDoHdrTrans = FALSE;
+		bDoHdrTrans = false;
 	else
 #endif /* SOFT_ENCRYPT */
 #ifdef XLINK_SUPPORT
 	if ( pAd->StaCfg.PSPXlink ) /* Use SA as Address 2 */
-		bDoHdrTrans = FALSE;
+		bDoHdrTrans = false;
 	else
 #endif /* XLINK_SUPPORT */
 #ifdef CLIENT_WDS
 	if (!MAC_ADDR_EQUAL		/* 4 MAC Addresses */
 			((pTxBlk->pSrcBufHeader + ETH_ALEN),
 			pAd->CurrentAddress))
-		bDoHdrTrans = FALSE;
+		bDoHdrTrans = false;
 	else
 #endif /* CLIENT_WDS */
 	{
@@ -4002,7 +4002,7 @@ void Sta_Announce_or_Forward_802_3_Packet(
 	IN struct sk_buff * pPacket,
 	IN u8 FromWhichBSSID)
 {
-	if (TRUE
+	if (true
 	    ) {
 		announce_802_3_packet(pAd, pPacket, OPMODE_STA);
 	} else {

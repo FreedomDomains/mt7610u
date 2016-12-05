@@ -43,7 +43,7 @@
 {									\
 	BBP_CSR_CFG_STRUC  BbpCsr;					\
 	int	i, k;							\
-	if ((_A)->bPCIclkOff == FALSE)                     		\
+	if ((_A)->bPCIclkOff == false)                     		\
 	{                                                   		\
 		for (i=0; i<MAX_BUSY_COUNT; i++)                    	\
 		{                                                   	\
@@ -56,7 +56,7 @@
 			BbpCsr.field.Busy = 1;                          \
 			BbpCsr.field.RegNum = _I;                       \
 			RTMP_IO_WRITE32(_A, H2M_BBP_AGENT, BbpCsr.word);\
-			AsicSendCommandToMcu(_A, 0x80, 0xff, 0x0, 0x0, FALSE);	\
+			AsicSendCommandToMcu(_A, 0x80, 0xff, 0x0, 0x0, false);	\
 			RTMPusecDelay(10);				\
 			for (k=0; k<MAX_BUSY_COUNT; k++)		\
 			{                                               \

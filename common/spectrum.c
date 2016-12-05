@@ -416,7 +416,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 			NdisGetSystemUpTime(&Now);
 			pEntry = &pTab->Content[i];
 
-			if ((pEntry->Valid == TRUE)
+			if ((pEntry->Valid == true)
 				&& RTMP_TIME_AFTER((unsigned long)Now, (unsigned long)(pEntry->lastTime + MQ_REQ_AGE_OUT)))
 			{
 				PMEASURE_REQ_ENTRY pPrevEntry = NULL;
@@ -449,7 +449,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 				break;
 			}
 
-			if (pEntry->Valid == FALSE)
+			if (pEntry->Valid == false)
 				break;
 		}
 
@@ -457,7 +457,7 @@ PMEASURE_REQ_ENTRY MeasureReqInsert(
 		{
 			NdisGetSystemUpTime(&Now);
 			pEntry->lastTime = Now;
-			pEntry->Valid = TRUE;
+			pEntry->Valid = true;
 			pEntry->DialogToken = DialogToken;
 			pTab->Size++;
 		}
@@ -640,7 +640,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 			NdisGetSystemUpTime(&Now);
 			pEntry = &pTab->Content[i];
 
-			if ((pEntry->Valid == TRUE)
+			if ((pEntry->Valid == true)
 				&& RTMP_TIME_AFTER((unsigned long)Now, (unsigned long)(pEntry->lastTime + TPC_REQ_AGE_OUT)))
 			{
 				PTPC_REQ_ENTRY pPrevEntry = NULL;
@@ -673,7 +673,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 				break;
 			}
 
-			if (pEntry->Valid == FALSE)
+			if (pEntry->Valid == false)
 				break;
 		}
 
@@ -681,7 +681,7 @@ static PTPC_REQ_ENTRY TpcReqInsert(
 		{
 			NdisGetSystemUpTime(&Now);
 			pEntry->lastTime = Now;
-			pEntry->Valid = TRUE;
+			pEntry->Valid = true;
 			pEntry->DialogToken = DialogToken;
 			pTab->Size++;
 		}
@@ -1284,11 +1284,11 @@ void EnqueueTPCRep(
 	return;
 }
 
-static BOOLEAN DfsRequirementCheck(
+static bool DfsRequirementCheck(
 	IN struct rtmp_adapter *pAd,
 	IN u8 Channel)
 {
-	BOOLEAN Result = FALSE;
+	bool Result = false;
 	INT i;
 
 	do
@@ -1297,7 +1297,7 @@ static BOOLEAN DfsRequirementCheck(
 		/* make sure DFS procedure won't start twice.*/
 		if (pAd->Dot11_H.RDMode != RD_NORMAL_MODE)
 		{
-			Result = FALSE;
+			Result = false;
 			break;
 		}
 
@@ -1309,11 +1309,11 @@ static BOOLEAN DfsRequirementCheck(
 			{
 				/* found radar signal in the channel. the channel can't use at least for 30 minutes.*/
 				pAd->ChannelList[i].RemainingTimeForUse = 1800;/*30 min = 1800 sec*/
-				Result = TRUE;
+				Result = true;
 				break;
 			}
 		}
-	} while(FALSE);
+	} while(false);
 
 	return Result;
 }
@@ -1363,7 +1363,7 @@ static void StartDFSProcedure(
   +----+-----+-----------+------------+-----------+
     1    1        1           1            1
 */
-static BOOLEAN PeerChSwAnnSanity(
+static bool PeerChSwAnnSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -1371,7 +1371,7 @@ static BOOLEAN PeerChSwAnnSanity(
 {
 	PFRAME_802_11 Fr = (PFRAME_802_11)pMsg;
 	u8 *pFramePtr = Fr->Octet;
-	BOOLEAN result = FALSE;
+	bool result = false;
 	PEID_STRUCT eid_ptr;
 
 	/* skip 802.11 header.*/
@@ -1394,7 +1394,7 @@ static BOOLEAN PeerChSwAnnSanity(
 				memmove(&pChSwAnnInfo->Channel, eid_ptr->Octet + 1, 1);
 				memmove(&pChSwAnnInfo->ChSwCnt, eid_ptr->Octet + 2, 1);
 
-				result = TRUE;
+				result = true;
                 break;
 
 			default:
@@ -1419,7 +1419,7 @@ static BOOLEAN PeerChSwAnnSanity(
 	Return	: None.
 	==========================================================================
  */
-static BOOLEAN PeerMeasureReqSanity(
+static bool PeerMeasureReqSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -1429,7 +1429,7 @@ static BOOLEAN PeerMeasureReqSanity(
 {
 	PFRAME_802_11 Fr = (PFRAME_802_11)pMsg;
 	u8 *pFramePtr = Fr->Octet;
-	BOOLEAN result = FALSE;
+	bool result = false;
 	PEID_STRUCT eid_ptr;
 	u8 *ptr;
 	UINT64 MeasureStartTime;
@@ -1465,7 +1465,7 @@ static BOOLEAN PeerMeasureReqSanity(
 				memmove(&MeasureDuration, ptr + 9, 2);
 				pMeasureReq->MeasureDuration = SWAP16(MeasureDuration);
 
-				result = TRUE;
+				result = true;
 				break;
 
 			default:
@@ -1511,7 +1511,7 @@ static BOOLEAN PeerMeasureReqSanity(
   +-----+---------------+---------------------+-------+------------+----------+
      0          1                  2              3         4          5-7
 */
-static BOOLEAN PeerMeasureReportSanity(
+static bool PeerMeasureReportSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -1521,7 +1521,7 @@ static BOOLEAN PeerMeasureReportSanity(
 {
 	PFRAME_802_11 Fr = (PFRAME_802_11)pMsg;
 	u8 *pFramePtr = Fr->Octet;
-	BOOLEAN result = FALSE;
+	bool result = false;
 	PEID_STRUCT eid_ptr;
 	u8 *ptr;
 
@@ -1577,7 +1577,7 @@ static BOOLEAN PeerMeasureReportSanity(
 					memmove(&pReport->MeasureDuration, ptr + 9, 2);
 					memmove(&pReport->RPI_Density, ptr + 11, 8);
 				}
-				result = TRUE;
+				result = true;
                 break;
 
 			default:
@@ -1602,7 +1602,7 @@ static BOOLEAN PeerMeasureReportSanity(
 	Return	: None.
 	==========================================================================
  */
-static BOOLEAN PeerTpcReqSanity(
+static bool PeerTpcReqSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -1610,7 +1610,7 @@ static BOOLEAN PeerTpcReqSanity(
 {
 	PFRAME_802_11 Fr = (PFRAME_802_11)pMsg;
 	u8 *pFramePtr = Fr->Octet;
-	BOOLEAN result = FALSE;
+	bool result = false;
 	PEID_STRUCT eid_ptr;
 
 	MsgLen -= sizeof(HEADER_802_11);
@@ -1632,7 +1632,7 @@ static BOOLEAN PeerTpcReqSanity(
 		switch(eid_ptr->Eid)
 		{
 			case IE_TPC_REQUEST:
-				result = TRUE;
+				result = true;
                 break;
 
 			default:
@@ -1658,7 +1658,7 @@ static BOOLEAN PeerTpcReqSanity(
 	Return	: None.
 	==========================================================================
  */
-static BOOLEAN PeerTpcRepSanity(
+static bool PeerTpcRepSanity(
 	IN struct rtmp_adapter *pAd,
 	IN void *pMsg,
 	IN ULONG MsgLen,
@@ -1667,7 +1667,7 @@ static BOOLEAN PeerTpcRepSanity(
 {
 	PFRAME_802_11 Fr = (PFRAME_802_11)pMsg;
 	u8 *pFramePtr = Fr->Octet;
-	BOOLEAN result = FALSE;
+	bool result = false;
 	PEID_STRUCT eid_ptr;
 
 	MsgLen -= sizeof(HEADER_802_11);
@@ -1691,7 +1691,7 @@ static BOOLEAN PeerTpcRepSanity(
 			case IE_TPC_REPORT:
 				memmove(&pTpcRepInfo->TxPwr, eid_ptr->Octet, 1);
 				memmove(&pTpcRepInfo->LinkMargin, eid_ptr->Octet + 1, 1);
-				result = TRUE;
+				result = true;
                 break;
 
 			default:
@@ -1752,9 +1752,9 @@ static void PeerChSwAnnAction(
 		{
 			/* Switching to channel 1 can prevent from rescanning the current channel immediately (by auto reconnection).*/
 			/* In addition, clear the MLME queue and the scan table to discard the RX packets and previous scanning results.*/
-			AsicSwitchChannel(pAd, 1, FALSE);
+			AsicSwitchChannel(pAd, 1, false);
 			AsicLockChannel(pAd, 1);
-			LinkDown(pAd, FALSE);
+			LinkDown(pAd, false);
 			MlmeQueueInit(pAd, &pAd->Mlme.Queue);
 		    RTMPusecDelay(1000000);		/* use delay to prevent STA do reassoc*/
 
@@ -1765,7 +1765,7 @@ static void PeerChSwAnnAction(
 				{
 					pAd->ScanTab.BssEntry[Bssidx].Channel = NewChannel;
 					pAd->CommonCfg.Channel = NewChannel;
-					AsicSwitchChannel(pAd, pAd->CommonCfg.Channel, FALSE);
+					AsicSwitchChannel(pAd, pAd->CommonCfg.Channel, false);
 					AsicLockChannel(pAd, pAd->CommonCfg.Channel);
 					DBGPRINT(RT_DEBUG_TRACE, ("&&&&&&&&&&&&&&&&PeerChSwAnnAction - STA receive channel switch announcement IE (New Channel =%d)\n", NewChannel));
 					break;
@@ -1835,7 +1835,7 @@ static void PeerMeasureReportAction(
 	u8 DialogToken;
 	u8 * pMeasureReportInfo;
 
-/*	if (pAd->CommonCfg.bIEEE80211H != TRUE)*/
+/*	if (pAd->CommonCfg.bIEEE80211H != true)*/
 /*		return;*/
 
 	pMeasureReportInfo = kmalloc(sizeof(MEASURE_RPI_REPORT), GFP_ATOMIC);
@@ -1867,13 +1867,13 @@ static void PeerMeasureReportAction(
 			{
 				PMEASURE_BASIC_REPORT pBasicReport = (PMEASURE_BASIC_REPORT)pMeasureReportInfo;
 				if ((pBasicReport->Map.field.Radar)
-					&& (DfsRequirementCheck(pAd, pBasicReport->ChNum) == TRUE))
+					&& (DfsRequirementCheck(pAd, pBasicReport->ChNum) == true))
 				{
 					NotifyChSwAnnToPeerAPs(pAd, pFr->Hdr.Addr1, pFr->Hdr.Addr2, 1, pBasicReport->ChNum);
 					StartDFSProcedure(pAd, pBasicReport->ChNum, 1);
 				}
 			}
-		} while (FALSE);
+		} while (false);
 	}
 	else
 		DBGPRINT(RT_DEBUG_TRACE, ("Invalid Measurement Report Frame.\n"));
@@ -1979,7 +1979,7 @@ void PeerSpectrumAction(
 
 	u8 Action = Elem->Msg[LENGTH_802_11+1];
 
-	if (pAd->CommonCfg.bIEEE80211H != TRUE)
+	if (pAd->CommonCfg.bIEEE80211H != true)
 		return;
 
 	switch(Action)
@@ -2140,7 +2140,7 @@ INT Set_MeasureReq_Proc(
 END_OF_MEASURE_REQ:
 	kfree(pOutBuffer);
 
-	return TRUE;
+	return true;
 }
 
 INT Set_TpcReq_Proc(
@@ -2157,14 +2157,14 @@ INT Set_TpcReq_Proc(
 	if (!VALID_WCID(Aid))
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: unknow sta of Aid(%d)\n", __FUNCTION__, Aid));
-		return TRUE;
+		return true;
 	}
 
 	TpcReqInsert(pAd, TpcReqToken);
 
 	EnqueueTPCReq(pAd, pAd->MacTab.Content[Aid].Addr, TpcReqToken);
 
-	return TRUE;
+	return true;
 }
 
 

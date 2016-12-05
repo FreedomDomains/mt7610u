@@ -69,9 +69,9 @@
 	(__pBandInfo)->RxStream = __pAd->CommonCfg.RxStream;					\
 	(__pBandInfo)->MaxTxPwr = 0;											\
 	if (WMODE_EQUAL(__pAd->CommonCfg.PhyMode, WMODE_B))				\
-		(__pBandInfo)->FlgIsBMode = TRUE;									\
+		(__pBandInfo)->FlgIsBMode = true;									\
 	else																	\
-		(__pBandInfo)->FlgIsBMode = FALSE;									\
+		(__pBandInfo)->FlgIsBMode = false;									\
 	(__pBandInfo)->MaxBssTable = MAX_LEN_OF_BSS_TABLE;						\
 	(__pBandInfo)->RtsThreshold = pAd->CommonCfg.RtsThreshold;				\
 	(__pBandInfo)->FragmentThreshold = pAd->CommonCfg.FragmentThreshold;	\
@@ -89,34 +89,34 @@ INT CFG80211DRV_IoctlHandle(
 	IN	void 				*pData,
 	IN	ULONG					Data);
 
-BOOLEAN CFG80211DRV_OpsSetChannel(
+bool CFG80211DRV_OpsSetChannel(
 	void 					*pAdOrg,
 	void 					*pData);
 
-BOOLEAN CFG80211DRV_OpsChgVirtualInf(
+bool CFG80211DRV_OpsChgVirtualInf(
 	void 					*pAdOrg,
 	void 					*pFlgFilter,
 	u8						IfType);
 
-BOOLEAN CFG80211DRV_OpsScan(
+bool CFG80211DRV_OpsScan(
 	void 					*pAdOrg);
 
-BOOLEAN CFG80211DRV_OpsJoinIbss(
+bool CFG80211DRV_OpsJoinIbss(
 	void 					*pAdOrg,
 	void 					*pData);
 
-BOOLEAN CFG80211DRV_OpsLeave(
+bool CFG80211DRV_OpsLeave(
 	void 					*pAdOrg);
 
-BOOLEAN CFG80211DRV_StaGet(
+bool CFG80211DRV_StaGet(
 	void 					*pAdOrg,
 	void 					*pData);
 
-BOOLEAN CFG80211DRV_Connect(
+bool CFG80211DRV_Connect(
 	void 					*pAdOrg,
 	void 					*pData);
 
-BOOLEAN CFG80211DRV_KeyAdd(
+bool CFG80211DRV_KeyAdd(
 	void 					*pAdOrg,
 	void 					*pData);
 
@@ -144,7 +144,7 @@ void CFG80211_RegHint11D(
 
 void CFG80211_ScanEnd(
 	IN void 					*pAdCB,
-	IN BOOLEAN					FlgIsAborted);
+	IN bool 				FlgIsAborted);
 
 void CFG80211_ConnectResultInform(
 	IN void 					*pAdCB,
@@ -155,7 +155,7 @@ void CFG80211_ConnectResultInform(
 	IN u32					RspIeLen,
 	IN u8 				FlgIsSuccess);
 
-BOOLEAN CFG80211_SupBandReInit(
+bool CFG80211_SupBandReInit(
 	IN void 					*pAdCB);
 
 void CFG80211_RegRuleApply(
@@ -174,7 +174,7 @@ void CFG80211_Scaning(
 #ifdef RFKILL_HW_SUPPORT
 void CFG80211_RFKillStatusUpdate(
 	IN void *				pAd,
-	IN BOOLEAN					active);
+	IN bool 				active);
 #endif /* RFKILL_HW_SUPPORT */
 
 void CFG80211_UnRegister(

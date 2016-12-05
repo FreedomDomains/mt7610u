@@ -291,7 +291,7 @@ void RtmpChipBcnInit(
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
 
-	pChipCap->FlgIsSupSpecBcnBuf = FALSE;
+	pChipCap->FlgIsSupSpecBcnBuf = false;
 	pChipCap->BcnMaxHwNum = 8;
 	pChipCap->BcnMaxNum = (pChipCap->BcnMaxHwNum - MAX_MESH_NUM - MAX_APCLI_NUM);
 	pChipCap->BcnMaxHwSize = 0x1000;
@@ -340,7 +340,7 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 {
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
-	pChipCap->FlgIsSupSpecBcnBuf = FALSE;
+	pChipCap->FlgIsSupSpecBcnBuf = false;
 	pChipCap->BcnMaxHwNum = 16;
 	pChipCap->WcidHwRsvNum = 255;
 
@@ -414,16 +414,16 @@ void RtmpChipWriteHighMemory(
 	switch(Unit)
 	{
 		case 1:
-			RTUSBSingleWrite(pAd, Offset, Value, TRUE);
+			RTUSBSingleWrite(pAd, Offset, Value, true);
 			break;
 		case 2:
 		{
 			UINT16 ShortVal = (UINT16)Value;
-			RTUSBMultiWrite(pAd, Offset, (u8 *) &ShortVal, 2, TRUE);
+			RTUSBMultiWrite(pAd, Offset, (u8 *) &ShortVal, 2, true);
 			break;
 		}
 		case 4:
-			RTUSBWriteMACRegister(pAd, Offset, Value, TRUE);
+			RTUSBWriteMACRegister(pAd, Offset, Value, true);
 		default:
 			break;
 	}
@@ -546,11 +546,11 @@ INT WaitForAsicReady(
 	do
 	{
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-			return FALSE;
+			return false;
 
 		RTMP_IO_READ32(pAd, reg, &mac_val);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
-			return TRUE;
+			return true;
 
 		RtmpOsMsDelay(5);
 	} while (idx++ < 500);
@@ -560,7 +560,7 @@ INT WaitForAsicReady(
 				__FUNCTION__, mac_val));
 
 
-	return FALSE;
+	return false;
 }
 
 
@@ -573,17 +573,17 @@ INT AsicGetMacVersion(
 	RTMP_IO_READ32(pAd, ASIC_VERSION, &pAd->MacIcVersion);
 #endif /* RT65xx */
 
-	if (WaitForAsicReady(pAd) == TRUE)
+	if (WaitForAsicReady(pAd) == true)
 	{
 		RTMP_IO_READ32(pAd, reg, &pAd->MACVersion);
 		DBGPRINT(RT_DEBUG_OFF, ("MACVersion[Ver:Rev]=0x%08x : 0x%08x\n",
 					pAd->MACVersion, pAd->MacIcVersion));
-		return TRUE;
+		return true;
 	}
 	else
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s() failed!\n", __FUNCTION__));
-		return FALSE;
+		return false;
 	}
 }
 
@@ -612,7 +612,7 @@ int RtmpChipOpsHook(void *pCB)
 
 
 	/* sanity check */
-	if (WaitForAsicReady(pAd) == FALSE)
+	if (WaitForAsicReady(pAd) == false)
 		return -1;
 
 	RTMP_IO_READ32(pAd, MAC_CSR0, &MacValue);
