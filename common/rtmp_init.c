@@ -1060,9 +1060,6 @@ void NICInitAsicFromEEPROM(
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	RTMP_EEPROM_ASIC_INIT(pAd);
-
-
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 	DBGPRINT(RT_DEBUG_TRACE, ("TxPath = %d, RxPath = %d, RFIC=%d\n",

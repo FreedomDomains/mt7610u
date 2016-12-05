@@ -1802,12 +1802,6 @@ static void MT76x0_ChipSwitchChannel(
 	return;
 }
 
-void MT76x0_NICInitAsicFromEEPROM(
-	IN struct rtmp_adapter *	pAd)
-{
-	// TODO: wait TC6008 EEPROM format
-}
-
 /*
 	NOTE: MAX_NUM_OF_CHANNELS shall  equal sizeof(txpwr_chlist))
 */
@@ -2439,8 +2433,6 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 
 	/* MAC */
 
-	/* EEPROM */
-	pChipOps->NICInitAsicFromEEPROM = MT76x0_NICInitAsicFromEEPROM;
 
 	/* Antenna */
 	pChipOps->AsicAntennaDefaultReset = MT76x0_AsicAntennaDefaultReset;
