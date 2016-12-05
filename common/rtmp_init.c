@@ -369,11 +369,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	/* if not return early. cause fail at emulation.*/
 	/* Init the channel number for TX channel power*/
-#ifdef RT8592
-	if (IS_RT8592(pAd))
-		RT85592_ReadChannelPwr(pAd);
-	else
-#endif /* RT8592 */
 #ifdef MT76x0
 	if (IS_MT76x0(pAd))
 		MT76x0_ReadChannelPwr(pAd);
@@ -437,20 +432,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	else
 #endif /* MT76x0 */
 	Antenna.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
-
-#ifdef RT65xx
-	if (IS_RT8592(pAd)) {
-		DBGPRINT(RT_DEBUG_OFF, ("RT85592: Antenna.RfIcType=%d, TxPath=%d, RxPath=%d\n",
-					Antenna.field.RfIcType, Antenna.field.TxPath, Antenna.field.RxPath));
-		// TODO: fix me!!
-		Antenna.word = 0;
-		Antenna.field.BoardType = 0;
-		Antenna.field.RfIcType = 0xf;
-		Antenna.field.TxPath = 2;
-		Antenna.field.RxPath = 2;
-	}
-#endif /* RT65xx */
-
 
 	/* must be put here, because RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET() will clear *
 	 * EPROM 0x34~3 */
@@ -527,15 +508,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->RfIcType = RFIC_7610U;
 
 #endif /* MT76x0 */
-
-
-#ifdef RT65xx
-	// TODO: shiang-6590, currently we don't have eeprom value, so directly force to set it as 0xff
-	if (IS_RT8592(pAd)) {
-		pAd->Mlme.RealRxPath = 2;
-		pAd->RfIcType = RFIC_UNKNOWN;
-	}
-#endif /* RT65xx */
 
 	/* check if the chip supports 5G band */
 	if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode))
@@ -2993,8 +2965,6 @@ void RTMPEnableRxTx(
 //			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x2c);
 //---Add by shiang for debug
 //+++Add by shiang for debug invalid RxWI->WCID
-#ifdef RT8592
-#endif /* RT8592 */
 //---Add by shiang for  debug invalid RxWI->WCID
 
 

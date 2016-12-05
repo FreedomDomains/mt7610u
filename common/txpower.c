@@ -446,15 +446,6 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 	bool 	bApwrdeltaMinus = true, bGpwrdeltaMinus = true;
 
 
-
-
-#ifdef RT8592
-	if (IS_RT8592(pAd)) {
-		RT85592ReadTxPwrPerRate(pAd);
-		return;
-	}
-#endif /* RT8592 */
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
 		mt76x0_read_per_rate_tx_pwr(pAd);

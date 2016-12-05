@@ -105,8 +105,6 @@ struct _RSSI_SAMPLE;
 #define IS_MT76x0E(_pAd)	(IS_MT7650E(_pAd) || IS_MT7630E(_pAd) || IS_MT7610E(_pAd))
 #define IS_MT76x0U(_pAd)	(IS_MT7650U(_pAd) || IS_MT7630U(_pAd) || IS_MT7610U(_pAd))
 #define IS_MT76xx(_pAd)		(IS_MT76x0(_pAd) || IS_MT76x2(_pAd))
-#define IS_RT8592(_pAd)		(((_pAd)->MACVersion & 0xffff0000) == 0x85590000)
-
 
 /* RT3592BC8 (WiFi + BT) */
 
@@ -193,9 +191,9 @@ struct _RSSI_SAMPLE;
 #define EEPROM_LEDAG_CONF_OFFSET	0x3c
 #define EEPROM_LEDACT_CONF_OFFSET	0x3e
 #define EEPROM_LED_POLARITY_OFFSET	0x40
-#if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592)
+#if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290)
 #define	EEPROM_NIC3_OFFSET			0x42
-#endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592) */
+#endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) */
 
 #define EEPROM_LNA_OFFSET			0x44
 

@@ -119,11 +119,6 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 	else if(rxpath == 1)
 		agc |= (0x0);
 
-#ifdef RT85592
-	if (IS_RT8592(pAd))
-		agc |= (0x8);
-#endif /* RT85592 */
-
 	if (agc != agc_r0)
 		RTMP_BBP_IO_WRITE32(pAd, AGC1_R0, agc);
 

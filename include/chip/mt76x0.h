@@ -74,13 +74,6 @@ typedef struct _TSO_INFO_{
  * mod: R9[7:5], R11[3:2] (eg. mod=8 => 0x0, mod=10 => 0x2)
  * R: R11[1:0] (eg. R=1 => 0x0, R=3 => 0x2)
  */
-typedef struct _RT8592_FREQ_ITEM {
-	u8 Channel;
-	UINT16 N;
-	u8 K;
-	u8 mod;
-	u8 R;
-} RT8592_FREQ_ITEM;
 
 /*
 	R37
@@ -176,8 +169,6 @@ void MT76x0_ShowDmaIndexCupIndex(
 	struct rtmp_adapter *pAd);
 #endif /* DBG */
 
-#ifdef RT8592
-#endif /* RT8592 */
 void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd);
 
 void dump_bw_info(struct rtmp_adapter *pAd);
