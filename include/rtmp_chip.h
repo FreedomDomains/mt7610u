@@ -503,9 +503,6 @@ struct rtmp_chip_cap {
 	u8 EFUSE_USAGE_MAP_SIZE;
 #endif /* RTMP_EFUSE_SUPPORT */
 
-#ifdef RTMP_FLASH_SUPPORT
-	u8 *eebuf;
-#endif /* RTMP_FLASH_SUPPORT */
 #ifdef DFS_SUPPORT
 	u8 DfsEngineNum;
 #endif /* DFS_SUPPORT */
