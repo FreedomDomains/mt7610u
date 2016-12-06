@@ -2913,10 +2913,6 @@ void CntlChannelWidth(
 		AsicSwitchChannel(pAd, rf_channel, false);
 		AsicLockChannel(pAd, rf_channel);
 
-#ifdef RT28xx
-		RT28xx_ch_tunning(pAd, rf_bw);
-#endif /* RT28xx */
-
 		DBGPRINT(RT_DEBUG_TRACE, ("!!!40MHz Lower !!! Control Channel at Below. Central = %d \n", pAd->CommonCfg.CentralChannel ));
 
 		rtmp_bbp_get_agc(pAd, &pAd->BbpTuning.R66CurrentValue, RX_CHAIN_0);

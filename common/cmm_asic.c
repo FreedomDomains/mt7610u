@@ -1990,53 +1990,9 @@ void AsicTurnOffRFClk(
 	IN struct rtmp_adapter *pAd,
 	IN	u8 	Channel)
 {
-#if defined(RT28xx) || defined(RT2880) || defined(RT2883)
-		/* RF R2 bit 18 = 0*/
-		u32			R1 = 0, R2 = 0, R3 = 0;
-		u8 		index;
-		RTMP_RF_REGS	*RFRegTable;
-
-		RFRegTable = RF2850RegTable;
-#endif /* defined(RT28xx) || defined(RT2880) || defined(RT2883) */
 
 		switch (pAd->RfIcType)
 		{
-#if defined(RT28xx) || defined(RT2880) || defined(RT2883)
-#if defined(RT28xx) || defined(RT2880)
-			case RFIC_2820:
-			case RFIC_2850:
-			case RFIC_2720:
-			case RFIC_2750:
-#endif /* defined(RT28xx) || defined(RT2880) */
-				for (index = 0; index < NUM_OF_2850_CHNL; index++)
-				{
-					if (Channel == RFRegTable[index].Channel)
-					{
-						R1 = RFRegTable[index].R1 & 0xffffdfff;
-						R2 = RFRegTable[index].R2 & 0xfffbffff;
-						R3 = RFRegTable[index].R3 & 0xfff3ffff;
-
-						RTMP_RF_IO_WRITE32(pAd, R1);
-						RTMP_RF_IO_WRITE32(pAd, R2);
-
-						/* Program R1b13 to 1, R3/b18,19 to 0, R2b18 to 0. */
-						/* Set RF R2 bit18=0, R3 bit[18:19]=0*/
-						/*if (pAd->StaCfg.bRadio == false)*/
-						if (1)
-						{
-							RTMP_RF_IO_WRITE32(pAd, R3);
-
-							DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x,  R3 = 0x%08x \n",
-								Channel, pAd->RfIcType, R2, R3));
-						}
-						else
-							DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x \n",
-								Channel, pAd->RfIcType, R2));
-						break;
-					}
-				}
-				break;
-#endif /* defined(RT28xx) || defined(RT2880) || defined(RT2883) */
 			default:
 				DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d : Unkonwn RFIC=%d\n",
 											Channel, pAd->RfIcType));
@@ -2201,10 +2157,6 @@ INT AsicSetChannel(struct rtmp_adapter*pAd, u8 ch, u8 bw, u8 ext_ch, bool bScan)
 	/* Let BBP register at 20MHz to do scan */
 	AsicSwitchChannel(pAd, ch, bScan);
 	AsicLockChannel(pAd, ch);
-
-#ifdef RT28xx
-	RT28xx_ch_tunning(pAd, bw);
-#endif /* RT28xx */
 
 	return 0;
 }
