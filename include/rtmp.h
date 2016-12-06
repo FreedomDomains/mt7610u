@@ -6577,10 +6577,10 @@ int RTUSB_VendorRequest(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 		ReservedBits,
 	IN	u8 		Request,
-	IN	USHORT			Value,
-	IN	USHORT			Index,
+	IN	u16		Value,
+	IN	u16		Index,
 	IN	void *		TransferBuffer,
-	IN	u32			TransferBufferLength);
+	IN	u32		TransferBufferLength);
 
 void RTUSBPutToSleep(
 	IN	struct rtmp_adapter *pAd);

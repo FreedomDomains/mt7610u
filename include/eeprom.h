@@ -269,15 +269,11 @@ struct rtmp_adapter;
 
 
 #ifdef RTMP_USB_SUPPORT
-int RTUSBReadEEPROM16(
-	IN struct rtmp_adapter *pAd,
-	IN USHORT offset,
-	OUT	USHORT *pData);
+int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
+	u16 offset, u16 *pData);
 
-int RTUSBWriteEEPROM16(
-	IN struct rtmp_adapter *pAd,
-	IN USHORT offset,
-	IN USHORT value);
+int RTUSBWriteEEPROM16(struct rtmp_adapter *pAd,
+	u16 offset, u16 value);
 #endif /* RTMP_USB_SUPPORT */
 
 #ifdef RTMP_EFUSE_SUPPORT

@@ -601,13 +601,11 @@ done:
 	========================================================================
 */
 
-int RTUSBReadEEPROM16(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			offset,
-	OUT	PUSHORT			pData)
+int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
+	u16 offset, u16 *pData)
 {
 	int status;
-	USHORT  localData;
+	u16 localData;
 
 	status = RTUSB_VendorRequest(
 			pAd,
@@ -627,10 +625,10 @@ int RTUSBReadEEPROM16(
 
 int RTUSBWriteEEPROM16(
 	IN struct rtmp_adapter*pAd,
-	IN USHORT offset,
-	IN USHORT value)
+	IN u16 offset,
+	IN u16 value)
 {
-	USHORT tmpVal;
+	u16 tmpVal;
 
 	tmpVal = cpu2le16(value);
 
@@ -743,8 +741,8 @@ int RTUSB_VendorRequest(
 	struct rtmp_adapter *pAd,
 	u8 RequestType,
 	u8 Request,
-	USHORT Value,
-	USHORT Index,
+	u16 Value,
+	u16 Index,
 	void *TransferBuffer,
 	u32 TransferBufferLength)
 {

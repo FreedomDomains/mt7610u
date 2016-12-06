@@ -617,8 +617,8 @@ typedef enum _CHIP_SPEC_ID
 
 struct rtmp_chip_ops {
 	/*  Calibration access related callback functions */
-	int (*ee_read)(struct rtmp_adapter *pAd, USHORT offset, PUSHORT pValue);
-	int (*ee_write)(struct rtmp_adapter *pAd, USHORT offset, USHORT value);
+	int (*ee_read)(struct rtmp_adapter *pAd, u16  offset, u16 *pValue);
+	int (*ee_write)(struct rtmp_adapter *pAd, u16 offset, u16 value);
 
 	/* MCU related callback functions */
 	int (*MCU_loadFirmware)(struct rtmp_adapter *pAd);
