@@ -931,12 +931,6 @@ void RtmpChipBcnInit(struct rtmp_adapter *pAd);
 void RtmpChipBcnSpecInit(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
-void RtmpChipWriteHighMemory(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u32			Value,
-	IN	u8			Unit);
-
 void RtmpChipWriteMemory(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,

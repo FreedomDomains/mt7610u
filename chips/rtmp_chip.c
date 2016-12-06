@@ -302,52 +302,6 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 
 }
 
-
-/*
-========================================================================
-Routine Description:
-	write high memory.
-	if firmware do not support auto high/low memory switching, we should switch to high memory by ourself.
-
-Arguments:
-	pAd				- WLAN control block pointer
-	Offset			- Memory offsets
-	Value			- Written value
-	Unit				- Unit in "Byte"
-
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
-void RtmpChipWriteHighMemory(
-	IN struct rtmp_adapter*pAd,
-	IN USHORT Offset,
-	IN u32 Value,
-	IN u8 Unit)
-{
-#ifdef RTMP_MAC_USB
-	switch(Unit)
-	{
-		case 1:
-			RTUSBSingleWrite(pAd, Offset, Value, true);
-			break;
-		case 2:
-		{
-			UINT16 ShortVal = (UINT16)Value;
-			RTUSBMultiWrite(pAd, Offset, (u8 *) &ShortVal, 2, true);
-			break;
-		}
-		case 4:
-			RTUSBWriteMACRegister(pAd, Offset, Value, true);
-		default:
-			break;
-	}
-#endif /* RTMP_MAC_USB */
-}
-
-
 /*
 ========================================================================
 Routine Description:
