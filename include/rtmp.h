@@ -6546,13 +6546,6 @@ int RTUSBMultiWrite(
 	IN	u8 *		pData,
 	IN	USHORT			length);
 
-int RTUSBMultiWrite_nBytes(
-        IN      struct rtmp_adapter *  pAd,
-        IN      USHORT                  Offset,
-        IN      u8 *                 pData,
-        IN      USHORT                  length,
-        IN      USHORT                  batchLen);
-
 int RTUSBMultiWrite_OneByte(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,

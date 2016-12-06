@@ -177,61 +177,6 @@ int	RTUSBVenderReset(
 /*
 	========================================================================
 
-	Routine Description: Write various length data to RT USB Wifi device, the maxima length should not large than 65535 bytes.
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-		Use this funciton carefully cause it may not stable in some special USB host controllers.
-
-	========================================================================
-*/
-int RTUSBMultiWrite_nBytes(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData,
-	IN	USHORT			length,
-	IN	USHORT			batchLen)
-{
-	int Status = STATUS_SUCCESS;
-	USHORT index = Offset, actLen = batchLen, leftLen = length;
-	u8 *pSrc = pData;
-
-
-	do
-	{
-		actLen = (actLen > batchLen ? batchLen : actLen);
-		Status = RTUSB_VendorRequest(
-			pAd,
-			DEVICE_VENDOR_REQUEST_OUT,
-			0x6,
-			0,
-			index,
-			pSrc,
-			actLen);
-
-		if (Status != STATUS_SUCCESS)
-		{
-			DBGPRINT(RT_DEBUG_ERROR, ("VendrCmdMultiWrite_nBytes failed!\n"));
-			break;
-		}
-
-		index += actLen;
-		leftLen -= actLen;
-		pSrc = pSrc + actLen;
-	}while(leftLen > 0);
-
-	return Status;
-}
-
-
-/*
-	========================================================================
-
 	Routine Description: Write various length data to RT2573
 
 	Arguments:
@@ -382,7 +327,15 @@ int RTUSBWriteMACRegister(
 
 	/* MT76xx HW has 4 byte alignment constrained */
 	/* ULLI : ralink/mediatek MESS about ENDIANESS */
-	Status = RTUSBMultiWrite_nBytes(pAd, Offset, (u8 *) &Value, 4, 4);
+
+	Status = RTUSB_VendorRequest(
+			pAd,
+			DEVICE_VENDOR_REQUEST_OUT,
+			0x6,
+			0,
+			Offset,
+			&Value,
+			4);
 
 	return Status;
 }
