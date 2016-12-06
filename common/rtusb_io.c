@@ -600,27 +600,6 @@ done:
 
 	========================================================================
 */
-int RTUSBWriteEEPROM(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData,
-	IN	USHORT			length)
-{
-	int Status = STATUS_SUCCESS;
-	USHORT Value;
-
-	Status = RTUSB_VendorRequest(
-				pAd,
-				DEVICE_VENDOR_REQUEST_OUT,
-				0x8,
-				0,
-				Offset,
-				pData,
-				length);
-
-	return Status;
-}
-
 
 int RTUSBReadEEPROM16(
 	IN	struct rtmp_adapter *pAd,
@@ -654,7 +633,15 @@ int RTUSBWriteEEPROM16(
 	USHORT tmpVal;
 
 	tmpVal = cpu2le16(value);
-	return RTUSBWriteEEPROM(pAd, offset, (u8 *)&(tmpVal), 2);
+
+	return RTUSB_VendorRequest(
+			       pAd,
+			       DEVICE_VENDOR_REQUEST_OUT,
+			       0x8,
+			       0,
+			       offset,
+			       &tmpVal,
+			       2);
 }
 
 /*

@@ -6582,12 +6582,6 @@ int RTUSB_VendorRequest(
 	IN	void *		TransferBuffer,
 	IN	u32			TransferBufferLength);
 
-int RTUSBWriteEEPROM(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData,
-	IN	USHORT			length);
-
 void RTUSBPutToSleep(
 	IN	struct rtmp_adapter *pAd);
 
