@@ -6623,8 +6623,7 @@ int RTUSBReadMACRegister(
 int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
-	IN	USHORT			Value,
-	IN	bool 		bWriteHigh);
+	IN	USHORT			Value);
 
 int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd);

@@ -277,8 +277,6 @@ int	RTUSBMultiWrite(
 	IN	USHORT			length)
 {
 	int	Status;
-	bool bWriteHigh = false;
-
 
 	USHORT          index = 0,Value;
 	u8 *         pSrc = pData;
@@ -289,7 +287,7 @@ int	RTUSBMultiWrite(
 	do
 	{
 			Value =(USHORT)( *pSrc  | (*(pSrc + 1) << 8));
-		Status = RTUSBSingleWrite(pAd,Offset + index, Value, bWriteHigh);
+		Status = RTUSBSingleWrite(pAd,Offset + index, Value);
             index +=2;
             length -= 2;
             pSrc = pSrc + 2;
@@ -302,10 +300,10 @@ int	RTUSBMultiWrite(
 int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
 	IN	USHORT			Offset,
-	IN	USHORT			Value,
-	IN	bool 		WriteHigh)
+	IN	USHORT			Value)
 {
 	int	Status;
+	bool 	WriteHigh = false;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
