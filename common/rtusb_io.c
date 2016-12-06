@@ -585,42 +585,6 @@ done:
 	return status;
 }
 
-
-/*
-	========================================================================
-
-	Routine Description:
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int RTUSBReadEEPROM(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	OUT	u8 *		pData,
-	IN	USHORT			length)
-{
-	int	Status = STATUS_SUCCESS;
-
-		Status = RTUSB_VendorRequest(
-			pAd,
-			DEVICE_VENDOR_REQUEST_IN,
-			0x9,
-			0,
-			Offset,
-			pData,
-			length);
-
-	return Status;
-}
-
 /*
 	========================================================================
 
@@ -666,7 +630,15 @@ int RTUSBReadEEPROM16(
 	int status;
 	USHORT  localData;
 
-	status = RTUSBReadEEPROM(pAd, offset, (u8 *)(&localData), 2);
+	status = RTUSB_VendorRequest(
+			pAd,
+			DEVICE_VENDOR_REQUEST_IN,
+			0x9,
+			0,
+			offset,
+			&localData,
+			2);
+
 	if (status == STATUS_SUCCESS)
 		*pData = le2cpu16(localData);
 
