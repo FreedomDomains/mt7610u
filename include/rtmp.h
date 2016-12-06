@@ -6544,8 +6544,7 @@ int RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
-	IN	USHORT			length,
-	IN	bool 		bWriteHigh);
+	IN	USHORT			length);
 
 int RTUSBMultiWrite_nBytes(
         IN      struct rtmp_adapter *  pAd,

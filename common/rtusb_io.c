@@ -149,7 +149,7 @@ int RTUSBFirmwareWrite(
 	RTUSBMultiWrite_nBytes(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen, MULTIWRITE_BYTES);
 #else
 	DBGPRINT(RT_DEBUG_TRACE, ("USB_FIRMWARE_MULTIBYTE_WRITE not defined!\n"));
-	RTUSBMultiWrite(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen, false);
+	RTUSBMultiWrite(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen);
 #endif
 	Status = RTUSBWriteMACRegister(pAd, 0x7014, 0xffffffff, false);
 	Status = RTUSBWriteMACRegister(pAd, 0x701c, 0xffffffff, false);
@@ -274,10 +274,10 @@ int	RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u8 *		pData,
-	IN	USHORT			length,
-	IN	bool 		bWriteHigh)
+	IN	USHORT			length)
 {
 	int	Status;
+	bool bWriteHigh = false;
 
 
 	USHORT          index = 0,Value;
