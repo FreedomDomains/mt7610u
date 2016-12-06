@@ -303,12 +303,11 @@ int RTUSBSingleWrite(
 	IN	USHORT			Value)
 {
 	int	Status;
-	bool 	WriteHigh = false;
 
 	Status = RTUSB_VendorRequest(
 		pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
-		(WriteHigh == true) ? 0x10 : 0x2,
+		0x2,
 		Value,
 		Offset,
 		NULL,
