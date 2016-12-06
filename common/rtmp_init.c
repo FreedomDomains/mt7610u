@@ -299,18 +299,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters\n"));
 
-	if (pAd->chipOps.ee_init)
-	{
-		pAd->chipOps.ee_init(pAd);
-#ifdef RTMP_EFUSE_SUPPORT
-		if(!pAd->bFroceEEPROMBuffer && pAd->bEEPROMFile)
-		{
-			DBGPRINT(RT_DEBUG_OFF, ("--> NICReadEEPROMParameters::(Efuse)Load to EEPROM Buffer Mode\n"));
-			eFuseLoadEEPROM(pAd);
-		}
-#endif /* RTMP_EFUSE_SUPPORT */
-	}
-
 	/* Read MAC setting from EEPROM and record as permanent MAC address */
 	DBGPRINT(RT_DEBUG_TRACE, ("Initialize MAC Address from E2PROM \n"));
 
