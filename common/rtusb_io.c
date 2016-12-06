@@ -144,13 +144,7 @@ int RTUSBFirmwareWrite(
 
 	/* write firmware */
 	writeLen = FwLen;
-#ifdef USB_FIRMWARE_MULTIBYTE_WRITE
-	DBGPRINT(RT_DEBUG_TRACE, ("USB_FIRMWARE_MULTIBYTE_WRITE defined! Write_Bytes = %d\n", MULTIWRITE_BYTES));
-	RTUSBMultiWrite_nBytes(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen, MULTIWRITE_BYTES);
-#else
-	DBGPRINT(RT_DEBUG_TRACE, ("USB_FIRMWARE_MULTIBYTE_WRITE not defined!\n"));
 	RTUSBMultiWrite(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen);
-#endif
 	Status = RTUSBWriteMACRegister(pAd, 0x7014, 0xffffffff, false);
 	Status = RTUSBWriteMACRegister(pAd, 0x701c, 0xffffffff, false);
 
