@@ -93,7 +93,7 @@ void MT76x0_ral_wlan_chip_onoff(
 	}
 
 	DBGPRINT(RT_DEBUG_ERROR, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-	RTMP_IO_FORCE_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 	pAd->WlanFunCtrl.word = WlanFunCtrl.word;
 	RTMPusecDelay(2);
 
