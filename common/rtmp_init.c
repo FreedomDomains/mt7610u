@@ -1183,7 +1183,7 @@ int	NICInitializeAsic(
 	RtmpOsMsDelay(200);
 
 #ifdef RTMP_MAC_USB
-	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
+	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
 
 	/* USB1.1 do not use bulk in aggregation */
 	if (pAd->BulkInMaxPacketSize == 512)
@@ -1200,9 +1200,9 @@ int	NICInitializeAsic(
 
 
 	/* check MCU if ready */
-	RTUSBReadMACRegister(pAd, COM_REG0, &MACValue);
+	mt7610u_read32(pAd, COM_REG0, &MACValue);
 
-	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
+	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
 
 	if (IS_MT76x0(pAd)) {
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;

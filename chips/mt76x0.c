@@ -1017,7 +1017,7 @@ void InitFce(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: -->\n", __FUNCTION__));
 
-	RTUSBReadMACRegister(pAd, FCE_L2_STUFF, &L2Stuffing.word);
+	mt7610u_read32(pAd, FCE_L2_STUFF, &L2Stuffing.word);
 	L2Stuffing.field.FS_WR_MPDU_LEN_EN = 0;
 	RTUSBWriteMACRegister(pAd, FCE_L2_STUFF, L2Stuffing.word);
 

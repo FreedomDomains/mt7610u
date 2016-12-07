@@ -2557,7 +2557,7 @@ void StopDmaRx(
 	{
 
 #ifdef  RTMP_MAC_USB
-		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MacReg);
+		mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if ((MacReg & 0x40000000) && (IdleNums < 10))
 		{
@@ -2608,7 +2608,7 @@ void StopDmaTx(
 	{
 
 #ifdef RTMP_MAC_USB
-		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MacReg);
+		mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if (((MacReg & 0x80000000) == 0) && IdleNums > 10)
 		{

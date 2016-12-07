@@ -129,7 +129,7 @@ int RTUSBFirmwareWrite(
 	/*ULONG		FMode = 0;*/
 
 
-	Status = RTUSBReadMACRegister(pAd, MAC_CSR0, &MacReg);
+	Status = mt7610u_read32(pAd, MAC_CSR0, &MacReg);
 
 
 	/* write firmware */
@@ -262,7 +262,7 @@ int RTUSBSingleWrite(
 
 	========================================================================
 */
-int	RTUSBReadMACRegister(
+int	mt7610u_read32(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	OUT	u32 			*pValue)
@@ -362,7 +362,7 @@ int	RTUSBReadBBPRegister(
 
 	for (i=0; i<MAX_BUSY_COUNT; i++)
 	{
-		RTUSBReadMACRegister(pAd, H2M_BBP_AGENT, &BbpCsr.word);
+		mt7610u_read32(pAd, H2M_BBP_AGENT, &BbpCsr.word);
 		if (BbpCsr.field.Busy == BUSY)
 			continue;
 
@@ -375,7 +375,7 @@ int	RTUSBReadBBPRegister(
 		AsicSendCommandToMcu(pAd, 0x80, 0xff, 0x0, 0x0, true);
 		for (k=0; k<MAX_BUSY_COUNT; k++)
 		{
-			RTUSBReadMACRegister(pAd, H2M_BBP_AGENT, &BbpCsr.word);
+			mt7610u_read32(pAd, H2M_BBP_AGENT, &BbpCsr.word);
 			if (BbpCsr.field.Busy == IDLE)
 				break;
 		}
@@ -492,7 +492,7 @@ int	RTUSBWriteRFRegister(
 	status = STATUS_UNSUCCESSFUL;
 	do
 	{
-		status = RTUSBReadMACRegister(pAd, RF_CSR_CFG0, &PhyCsr4.word);
+		status = mt7610u_read32(pAd, RF_CSR_CFG0, &PhyCsr4.word);
 		if (status >= 0)
 		{
 		if (!(PhyCsr4.field.Busy))
@@ -799,7 +799,7 @@ int CheckGPIOHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 			u32 data;
 			/* Read GPIO pin2 as Hardware controlled radio state*/
 
-			RTUSBReadMACRegister( pAd, GPIO_CTRL_CFG, &data);
+			mt7610u_read32( pAd, GPIO_CTRL_CFG, &data);
 
 			if (data & 0x04)
 			{
@@ -858,7 +858,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 		if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			break;
 
-		RTUSBReadMACRegister(pAd, TXRXQ_PCNT, &MACValue);
+		mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 		if ((MACValue & 0xf00000/*0x800000*/) == 0)
 			break;
 
@@ -866,15 +866,15 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 		RTMPusecDelay(10000);
 	}while(Index < 100);
 
-	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MACValue);
+	mt7610u_read32(pAd, USB_DMA_CFG, &MACValue);
 
 	/* 2nd, to prevent Read Register error, we check the validity.*/
 	if ((MACValue & 0xc00000) == 0)
-		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MACValue);
+		mt7610u_read32(pAd, USB_DMA_CFG, &MACValue);
 
 	/* 3rd, to prevent Read Register error, we check the validity.*/
 	if ((MACValue & 0xc00000) == 0)
-		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MACValue);
+		mt7610u_read32(pAd, USB_DMA_CFG, &MACValue);
 
 	MACValue |= 0x80000;
 	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, MACValue);
@@ -1029,7 +1029,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 
 	/* Wait 10ms before reading register.*/
 	RTMPusecDelay(10000);
-	ntStatus = RTUSBReadMACRegister(pAd, MAC_CSR0, &MACValue);
+	ntStatus = mt7610u_read32(pAd, MAC_CSR0, &MACValue);
 
 	/* It must be removed. Or ATE will have no RX success. */
 	if ((NT_SUCCESS(ntStatus) == true) &&
@@ -1138,7 +1138,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("1-MACValue= %x,\n", MACValue));
 	RTUSBWriteMACRegister(pAd, offset, MACValue);
 	/* Read bitmask*/
-	RTUSBReadMACRegister(pAd, offset+4, &MACRValue);
+	mt7610u_read32(pAd, offset+4, &MACRValue);
 	if ( SetAsicWcid.DeleteTid != 0xffffffff)
 		MACRValue &= (~SetAsicWcid.DeleteTid);
 	if (SetAsicWcid.SetTid != 0xffffffff)

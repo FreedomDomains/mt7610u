@@ -111,7 +111,7 @@ int andes_usb_loadfw(struct rtmp_adapter*ad)
 
 	if (cap->IsComboChip) {
 loadfw_protect:
-		RTUSBReadMACRegister(ad, SEMAPHORE_00, &mac_value);
+		mt7610u_read32(ad, SEMAPHORE_00, &mac_value);
 		loop++;
 
 		if (((mac_value & 0x01) == 0) && (loop < GET_SEMAPHORE_RETRY_MAX)) {
@@ -128,7 +128,7 @@ loadfw_protect:
 	RTUSBWriteMACRegister(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
-	RTUSBReadMACRegister(ad, USB_DMA_CFG, &UsbCfg.word);
+	mt7610u_read32(ad, USB_DMA_CFG, &UsbCfg.word);
 	UsbCfg.field.RxBulkAggTOut = 0x20;
 	UsbCfg.field.TxBulkEn = 1;
 	UsbCfg.field.RxBulkEn = 1;
@@ -136,7 +136,7 @@ loadfw_protect:
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
-	RTUSBReadMACRegister(ad, COM_REG0, &mac_value);
+	mt7610u_read32(ad, COM_REG0, &mac_value);
 
 	if (((mac_value & 0x01) == 0x01) && (cap->IsComboChip)) {
 		goto error0;
@@ -183,7 +183,7 @@ loadfw_protect:
 	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03);
 
 	if (IS_MT76x0(ad)) {
-		RTUSBReadMACRegister(ad, USB_DMA_CFG, &UsbCfg.word);
+		mt7610u_read32(ad, USB_DMA_CFG, &UsbCfg.word);
 
 		cfg.field.UDMA_TX_WL_DROP = 1;
 
@@ -336,7 +336,7 @@ loadfw_protect:
 			}
 			DBGPRINT(RT_DEBUG_OFF, ("."));
 
-			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
+			mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
 			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
@@ -469,7 +469,7 @@ loadfw_protect:
 			}
 			DBGPRINT(RT_DEBUG_OFF, ("."));
 
-			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
+			mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
 			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 			RtmpOsMsDelay(5);
@@ -488,7 +488,7 @@ loadfw_protect:
 	/* Check MCU if ready */
 	loop = 0;
 	do {
-		RTUSBReadMACRegister(ad, COM_REG0, &mac_value);
+		mt7610u_read32(ad, COM_REG0, &mac_value);
 		if ((mac_value & 0x01) == 0x01)
 			break;
 		RtmpOsMsDelay(10);

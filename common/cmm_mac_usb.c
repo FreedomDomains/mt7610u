@@ -1343,7 +1343,7 @@ void RT28XXDMAEnable(
 
 	RTMPusecDelay(50);
 
-	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
+	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
 
 
 	UsbCfg.field.UDMA_TX_WL_DROP = 0;
@@ -1852,7 +1852,7 @@ bool AsicCheckCommandOk(
 	i = 0;
 	do
 	{
-		RTUSBReadMACRegister(pAd, H2M_MAILBOX_CID, &CID);
+		mt7610u_read32(pAd, H2M_MAILBOX_CID, &CID);
 		if ((CID & CID0MASK) == Command)
 		{
 			ThisCIDMask = CID0MASK;
@@ -1879,7 +1879,7 @@ bool AsicCheckCommandOk(
 	}while (i < 200);
 
 	ret = false;
-	RTUSBReadMACRegister(pAd, H2M_MAILBOX_STATUS, &CmdStatus);
+	mt7610u_read32(pAd, H2M_MAILBOX_STATUS, &CmdStatus);
 	if (i < 200)
 	{
 		if (((CmdStatus & ThisCIDMask) == 0x1) || ((CmdStatus & ThisCIDMask) == 0x100)
