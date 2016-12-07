@@ -1303,8 +1303,8 @@ int	RTUSBWriteHWMACAddress(
 			pAd->CurrentAddress[0], pAd->CurrentAddress[1], pAd->CurrentAddress[2],
 			pAd->CurrentAddress[3], pAd->CurrentAddress[4], pAd->CurrentAddress[5]));
 
-	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW0, StaMacReg0.word, false);
-	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW1, StaMacReg1.word, false);
+	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW0, StaMacReg0.word);
+	RTUSBWriteMACRegister(pAd, MAC_ADDR_DW1, StaMacReg1.word);
 	return Status;
 }
 
@@ -1356,7 +1356,7 @@ void RT28XXDMAEnable(
 	UsbCfg.field.TxBulkEn = 1;
 
 	USB_CFG_WRITE(pAd, UsbCfg.word);
-	//RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word, false);
+	//RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
 }
 
 /********************************************************************
@@ -1884,8 +1884,8 @@ bool AsicCheckCommandOk(
 			|| ((CmdStatus & ThisCIDMask) == 0x10000) || ((CmdStatus & ThisCIDMask) == 0x1000000))
 			ret = true;
 	}
-			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_STATUS, 0xffffffff, false);
-			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_CID, 0xffffffff, false);
+			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_STATUS, 0xffffffff);
+			RTUSBWriteMACRegister(pAd, H2M_MAILBOX_CID, 0xffffffff);
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))

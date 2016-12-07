@@ -125,7 +125,7 @@ loadfw_protect:
 		}
 	}
 
-	RTUSBWriteMACRegister(ad, 0x1004, 0x2c, false);
+	RTUSBWriteMACRegister(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
 	USB_CFG_READ(ad, &UsbCfg.word);
@@ -168,19 +168,19 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
 
 	/* Enable FCE */
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, false);
+	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01);
 
 	/* FCE tx_fs_base_ptr */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230, false);
+	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230);
 
 	/* FCE tx_fs_max_cnt */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01, false);
+	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01);
 
 	/* FCE pdma enable */
-	RTUSBWriteMACRegister(ad, FCE_PDMA_GLOBAL_CONF, 0x44, false);
+	RTUSBWriteMACRegister(ad, FCE_PDMA_GLOBAL_CONF, 0x44);
 
 	/* FCE skip_fs_en */
-	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03, false);
+	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03);
 
 	if (IS_MT76x0(ad)) {
 		USB_CFG_READ(ad, &cfg.word);
@@ -338,7 +338,7 @@ loadfw_protect:
 
 			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, false);
+			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
 			RtmpOsMsDelay(5);
 		} else {
@@ -471,7 +471,7 @@ loadfw_protect:
 
 			RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value, false);
+			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 			RtmpOsMsDelay(5);
 		} else 	{
 			break;
@@ -512,9 +512,9 @@ error0:
 	release_firmware(fw);
 
 	if (cap->IsComboChip)
-		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1, false);
+		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1);
 
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, false);
+	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01);
 
 	return ret;
 }

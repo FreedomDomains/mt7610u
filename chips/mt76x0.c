@@ -1019,7 +1019,7 @@ void InitFce(
 
 	RTUSBReadMACRegister(pAd, FCE_L2_STUFF, &L2Stuffing.word);
 	L2Stuffing.field.FS_WR_MPDU_LEN_EN = 0;
-	RTUSBWriteMACRegister(pAd, FCE_L2_STUFF, L2Stuffing.word, false);
+	RTUSBWriteMACRegister(pAd, FCE_L2_STUFF, L2Stuffing.word);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: <--\n", __FUNCTION__));
 }

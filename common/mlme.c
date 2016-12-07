@@ -1008,7 +1008,7 @@ void STAMlmePeriodicExec(
 				if (Ac2Cfg.field.Aifsn!=0xc)
 				{
 					Ac2Cfg.field.Aifsn = 0xc;
-					RTUSBWriteMACRegister(pAd, EDCA_AC2_CFG, Ac2Cfg.word, false);
+					RTUSBWriteMACRegister(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
 				}
 			}
 			else if ((pAd->RalinkCounters.OneSecOsTxCount[QID_AC_VO] == 0) &&
@@ -1023,14 +1023,14 @@ void STAMlmePeriodicExec(
 						Ac0Cfg.field.Aifsn = 3;
 					if(Ac0Cfg.field.AcTxop!=0)
 						Ac0Cfg.field.AcTxop = 0;
-					RTUSBWriteMACRegister(pAd, EDCA_AC0_CFG, Ac0Cfg.word, false);
+					RTUSBWriteMACRegister(pAd, EDCA_AC0_CFG, Ac0Cfg.word);
 				}
 
 			/* restore default parameter of VI*/
 				if (Ac2Cfg.field.Aifsn!=0x3)
 				{
 					Ac2Cfg.field.Aifsn = 0x3;
-					RTUSBWriteMACRegister(pAd, EDCA_AC2_CFG, Ac2Cfg.word, false);
+					RTUSBWriteMACRegister(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
 				}
 
 			}

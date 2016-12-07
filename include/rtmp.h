@@ -6572,8 +6572,7 @@ void RTUSBWatchDog(
 int RTUSBWriteMACRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
-	IN	u32			Value,
-	IN	bool 		bWriteHigh);
+	IN	u32			Value);
 
 int RTUSBReadMACRegister(
 	IN	struct rtmp_adapter *pAd,
