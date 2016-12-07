@@ -92,21 +92,6 @@
 #include "igmp_snoop.h"
 #endif /* IGMP_SNOOP_SUPPORT */
 
-#ifdef RALINK_QA
-#include "rt_qa.h"
-#endif /* RALINK_QA */
-
-#ifdef RALINK_QA
-#ifndef RALINK_ATE
-#error "For supporting QA GUI, please set HAS_ATE=y and HAS_QA_SUPPORT=y."
-#endif /* RALINK_ATE */
-#endif /* RALINK_QA */
-
-
-
-
-
-
 #if defined(AP_WSC_INCLUDED) || defined(STA_WSC_INCLUDED)
 #define WSC_INCLUDED
 #endif
