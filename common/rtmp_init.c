@@ -2434,14 +2434,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	}
 #endif /* defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT) */
 
-
-
-
-
-#ifdef WFD_SUPPORT
-	WfdCfgInit(pAd);
-#endif /* WFD_SUPPORT */
-
 	/* 802.11H and DFS related params*/
 	pAd->Dot11_H.CSCount = 0;
 	pAd->Dot11_H.CSPeriod = 10;

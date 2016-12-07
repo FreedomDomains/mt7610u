@@ -114,10 +114,6 @@
 
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef WFD_SUPPORT
-#include "wfd.h"
-#endif /* WFD_SUPPORT */
-
 #ifdef DOT11_VHT_AC
 #include "vht.h"
 #endif /* DOT11_VHT_AC */

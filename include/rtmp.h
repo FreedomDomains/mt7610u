@@ -47,13 +47,6 @@
 #include "client_wds_cmm.h"
 #endif /* CLIENT_WDS */
 
-
-
-
-#ifdef WFD_SUPPORT
-#include "wfd_cmm.h"
-#endif /* WFD_SUPPORT */
-
 #include "drs_extr.h"
 
 struct _RTMP_RA_LEGACY_TB;
@@ -1808,10 +1801,6 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* UAPSD information: such as enable or disable, do not remove */
 	UAPSD_INFO UapsdInfo;
 
-#ifdef WFD_SUPPORT
-	RT_WFD_CONFIG WfdCfg;
-#endif /* WFD_SUPPORT */
-
 #ifdef RT3290
 	// TODO: shiang, check the purpose of following parameters
 	ULONG AntS;
@@ -2143,10 +2132,6 @@ typedef struct _MAC_TABLE_ENTRY {
 #ifdef AGS_SUPPORT
 	AGS_CONTROL AGSCtrl;	/* AGS control */
 #endif /* AGS_SUPPORT */
-
-#ifdef WFD_SUPPORT
-	bool bWfdClient;
-#endif /* WFD_SUPPORT */
 
 u8 SupportRateMode; /* 1: CCK 2:OFDM 4: HT, 8:VHT */
 bool SupportCCKMCS[MAX_LEN_OF_CCK_RATES];

@@ -299,21 +299,6 @@ void MlmeForceJoinReqAction(
 			FrameLen += WpsTmpLen;
 		}
 #endif /* WPA_SUPPLICANT_SUPPORT */
-#ifdef WFD_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-		if (pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
-		{
-			ULONG	WfdIeLen, WfdIeBitmap;
-			u8 *ptr;
-
-			ptr = pOutBuffer + FrameLen;
-			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
-				(0x1 << SUBID_WFD_COUPLED_SINK_INFO);
-			WfdMakeWfdIE(pAd, WfdIeBitmap, ptr, &WfdIeLen);
-			FrameLen += WfdIeLen;
-		}
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* WFD_SUPPORT */
 
 		MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
 		kfree(pOutBuffer);
@@ -748,21 +733,6 @@ void MlmeJoinReqAction(
 				FrameLen += WpsTmpLen;
 			}
 #endif /* WPA_SUPPLICANT_SUPPORT */
-#ifdef WFD_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-		if (pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
-		{
-			ULONG	WfdIeLen, WfdIeBitmap;
-			u8 *ptr;
-
-			ptr = pOutBuffer + FrameLen;
-			WfdIeBitmap = (0x1 << SUBID_WFD_DEVICE_INFO) | (0x1 << SUBID_WFD_ASSOCIATED_BSSID) |
-				(0x1 << SUBID_WFD_COUPLED_SINK_INFO);
-			WfdMakeWfdIE(pAd, WfdIeBitmap, ptr, &WfdIeLen);
-			FrameLen += WfdIeLen;
-		}
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* WFD_SUPPORT */
 
 			MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
 			kfree(pOutBuffer);

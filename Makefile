@@ -73,13 +73,6 @@ HAS_RT2880_RT2860_COEXIST=n
 
 HAS_KTHREAD_SUPPORT=n
 
-
-
-
-
-#Support for WiFi Display
-HAS_WFD_SUPPORT=n
-
 #Support for Auto channel select enhance
 HAS_AUTO_CH_SELECT_ENHANCE=n
 
@@ -230,13 +223,6 @@ endif
 
 endif
 
-
-ifeq ($(HAS_WFD_SUPPORT),y)
-HAS_P2P_SUPPORT=y
-HAS_P2P_SPECIFIC_WIRELESS_EVENT=y
-WFLAGS += -DWFD_SUPPORT
-endif
-
 ifeq ($(HAS_STATS_COUNT),y)
 WFLAGS += -DSTATS_COUNT_SUPPORT
 endif
@@ -259,16 +245,6 @@ endif
 
 ifeq ($(HAS_WIDI_SUPPORT),y)
 WFLAGS += -DWIDI_SUPPORT
-
-ifeq ($(HAS_P2P_SUPPORT),y)
-ifeq ($(HAS_INTEL_WFD_SUPPORT),y)
-WFLAGS += -DINTEL_WFD_SUPPORT
-endif
-
-ifeq ($(HAS_WFA_WFD_SUPPORT),y)
-WFLAGS += -DWFA_WFD_SUPPORT
-endif
-endif
 
 endif
 
@@ -528,15 +504,6 @@ ifeq ($(HAS_QOS_DLS_SUPPORT),y)
 $(MOD_NAME)-objs += \
 		sta/dls.o
 endif
-
-
-#ifdef WFD_SUPPORT
-ifeq ($(HAS_WFD_SUPPORT),y)
-$(MOD_NAME)-objs += \
-		common/wfd.o
-endif
-#endif // WFD_SUPPORT //
-
 
 #ifdef LED_CONTROL_SUPPORT
 ifeq ($(HAS_LED_CONTROL_SUPPORT),y)
