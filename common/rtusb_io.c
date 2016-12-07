@@ -556,25 +556,6 @@ int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
 
 }
 
-int RTUSBWriteEEPROM16(
-	IN struct rtmp_adapter*pAd,
-	IN u16 offset,
-	IN u16 value)
-{
-	u16 tmpVal;
-
-	tmpVal = cpu2le16(value);
-
-	return RTUSB_VendorRequest(
-			       pAd,
-			       DEVICE_VENDOR_REQUEST_OUT,
-			       0x8,
-			       0,
-			       offset,
-			       &tmpVal,
-			       2);
-}
-
 /*
 	========================================================================
 

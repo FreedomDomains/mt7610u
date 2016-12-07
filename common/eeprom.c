@@ -33,7 +33,6 @@ INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
 	pChipOps->ee_read = RTUSBReadEEPROM16;
-	pChipOps->ee_write = RTUSBWriteEEPROM16;
 	DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
 	DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
 
