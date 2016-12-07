@@ -329,66 +329,6 @@ int mt7610u_write32(
 	return Status;
 }
 
-
-/*
-	========================================================================
-
-	Routine Description: Write 8-bit BBP register via firmware
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int RTUSBWriteBBPRegister(
-	IN struct rtmp_adapter *pAd,
-	IN u8 Id,
-	IN u8 Value)
-{
-	BBP_CSR_CFG_STRUC BbpCsr;
-	int BusyCnt;
-	int ret;
-
-	RTMP_SEM_EVENT_WAIT(&pAd->reg_atomic, ret);
-	if (ret != 0)
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-		return STATUS_UNSUCCESSFUL;
-	}
-
-	for (BusyCnt=0; BusyCnt<MAX_BUSY_COUNT; BusyCnt++)
-	{
-		mt7610u_read32(pAd, H2M_BBP_AGENT, &BbpCsr.word);
-		if (BbpCsr.field.Busy == BUSY)
-			continue;
-		BbpCsr.word = 0;
-		BbpCsr.field.fRead = 0;
-		BbpCsr.field.BBP_RW_MODE = 1;
-		BbpCsr.field.Busy = 1;
-		BbpCsr.field.Value = Value;
-		BbpCsr.field.RegNum = Id;
-		mt7610u_write32(pAd, H2M_BBP_AGENT, BbpCsr.word);
-		AsicSendCommandToMcu(pAd, 0x80, 0xff, 0x0, 0x0, true);
-		pAd->BbpWriteLatch[Id] = Value;
-		break;
-	}
-
-	RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
-
-	if (BusyCnt == MAX_BUSY_COUNT)
-	{
-		DBGPRINT_ERR(("BBP write R%d=0x%x fail\n", Id, BbpCsr.word));
-		return STATUS_UNSUCCESSFUL;
-	}
-	return STATUS_SUCCESS;
-}
-
-
 /*
 	========================================================================
 
