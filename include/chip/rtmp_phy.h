@@ -586,22 +586,6 @@ typedef union _BBP_R182_STRUC {
 	Generate PER to test BA
  *****************************************************************************/
 
-#ifdef DFS_SUPPORT
-#define RTMP_DFS_IO_READ8(_A, _I, _V)                   \
-{                                                       \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R140, _I);          \
-	RTMP_BBP_IO_READ8_BY_REG_ID(_A, BBP_R141, _V);           \
-}
-
-#define RTMP_DFS_IO_WRITE8(_A, _I, _V)                  \
-{                                                       \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R140, _I);          \
-	RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, BBP_R141, _V);          \
-}
-#endif /*DFS_SUPPORT*/
-
-
-
 struct _RMTP_ADAPTER;
 
 INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw);
