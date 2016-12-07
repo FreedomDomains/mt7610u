@@ -672,7 +672,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 }
 
 //BURST_READ(_A, _R, 1, _pV);
-#define RTMP_IO_READ32(_A, _R, _pV)								\
+#define mt7610u_read32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (_pV))
 
 #define RTMP_IO_WRITE32(_A, _R, _V)								\

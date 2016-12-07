@@ -1321,7 +1321,7 @@ void SetRfChFreqParametersMT76x0(
 		}
 	}
 
-	RTMP_IO_READ32(pAd, RF_MISC, &MacReg);
+	mt7610u_read32(pAd, RF_MISC, &MacReg);
 	MacReg &= ~(0xC); /* Clear 0x518[3:2] */
 	RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
 
@@ -1357,13 +1357,13 @@ void SetRfChFreqParametersMT76x0(
 		*/
 		if (RfBand & RF_A_BAND)
 		{
-			RTMP_IO_READ32(pAd, RF_MISC, &MacReg);
+			mt7610u_read32(pAd, RF_MISC, &MacReg);
 			MacReg |= (0x4);
 			RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
 		}
 		else
 		{
-			RTMP_IO_READ32(pAd, RF_MISC, &MacReg);
+			mt7610u_read32(pAd, RF_MISC, &MacReg);
 			MacReg |= (0x8);
 			RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
 		}
@@ -1391,7 +1391,7 @@ void SetRfChFreqParametersMT76x0(
 	{
 		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
 		/* Set Atten mode = 2 for G band and disable Tx Inc DCOC Cal by Chee's comment */
-		RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &MacReg);
+		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
 		MacReg &= 0x896400FF;
 		RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, MacReg);
 	}
@@ -1399,7 +1399,7 @@ void SetRfChFreqParametersMT76x0(
 	{
 		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
 		/* Set Atten mode = 0 For Ext A band and disable Tx Inc DCOC Cal by Chee's comment */
-		RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &MacReg);
+		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
 		MacReg &= 0x890400FF;
 		RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, MacReg);
 	}
@@ -1520,7 +1520,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 		Release BBP and MAC reset
 		MAC_SYS_CTRL[1:0] = 0x0
 	*/
-	RTMP_IO_READ32(pAd, MAC_SYS_CTRL, &MacReg);
+	mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 	MacReg &= ~(0x3);
 	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
 
@@ -1528,7 +1528,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 	/*
 		Set 0x141C[15:12]=0xF
 	*/
-	RTMP_IO_READ32(pAd, EXT_CCA_CFG, &MacReg);
+	mt7610u_read32(pAd, EXT_CCA_CFG, &MacReg);
 	MacReg |= (0x0000F000);
 	RTMP_IO_WRITE32(pAd, EXT_CCA_CFG, MacReg);
 
@@ -1540,13 +1540,13 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 		WMM_RG0_TXQMA: This register setting is for FCE to define the rule of TxRing 9.
 		WMM_RG1_TXQMA: This register setting is for FCE to define the rule of TxRing 8.
 	*/
-	RTMP_IO_READ32(pAd, WMM_CTRL, &MacReg);
+	mt7610u_read32(pAd, WMM_CTRL, &MacReg);
 	MacReg &= ~(0x000003FF);
 	MacReg |= (0x00000201);
 	RTMP_IO_WRITE32(pAd, WMM_CTRL, MacReg);
 
 #ifdef MCS_LUT_SUPPORT
-	RTMP_IO_READ32(pAd, TX_FBK_LIMIT, &MacReg);
+	mt7610u_read32(pAd, TX_FBK_LIMIT, &MacReg);
 	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT))
 		MacReg |= 0x40000;
 	else
@@ -1645,7 +1645,7 @@ static void MT76x0_ChipSwitchChannel(
 	}
 #endif /* RTMP_MAC_USB */
 
-	RTMP_IO_READ32(pAd, EXT_CCA_CFG, &RegValue);
+	mt7610u_read32(pAd, EXT_CCA_CFG, &RegValue);
 	RegValue &= ~(0xFFF);
 	if (pAd->CommonCfg.BBPCurrentBW == BW_80)
 	{
@@ -1763,7 +1763,7 @@ static void MT76x0_ChipSwitchChannel(
 	RTMPusecDelay(1000);
 
 #ifndef MT76x0_TSSI_CAL_COMPENSATION
-	RTMP_IO_READ32(pAd, TX_ALC_CFG_0, &Value);
+	mt7610u_read32(pAd, TX_ALC_CFG_0, &Value);
 	Value = Value & (~0x3F3F);
 	Value |= TxPwer;
 	Value |= (0x2F2F << 16);
@@ -1939,9 +1939,9 @@ void MT76x0_AsicExtraPowerOverMAC(
 		bit 21:16 -> HT/VHT MCS 7
 		bit 5:0 -> OFDM 54
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &ExtraPwrOverMAC);
+	mt7610u_read32(pAd, TX_PWR_CFG_1, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for OFDM 54 */
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);
+	mt7610u_read32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) << 8; /* Get Tx power for HT MCS 7 */
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
 
@@ -1951,7 +1951,7 @@ void MT76x0_AsicExtraPowerOverMAC(
 		bit 21:16 -> VHT 1SS MCS 8
 		bit 5:0 -> HT MCS 15
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);
+	mt7610u_read32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);
 #ifdef DOT11_VHT_AC
 	ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
 #else
@@ -1963,7 +1963,7 @@ void MT76x0_AsicExtraPowerOverMAC(
 		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC
 		bit 5:0 -> STBC MCS 7
 	*/
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);
+	mt7610u_read32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg9 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for STBC MCS 7 */
 	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
 
@@ -2310,7 +2310,7 @@ void MT76x0_Init(struct rtmp_adapter*pAd)
 	/*
 		Init chip capabilities
 	*/
-	RTMP_IO_READ32(pAd, 0x00, &Value);
+	mt7610u_read32(pAd, 0x00, &Value);
 	pChipCap->ChipID = Value;
 
 	pChipCap->MaxNss = 1;
@@ -2459,10 +2459,10 @@ void MT76x0_AntennaSelCtrl(
 	}
 #endif /* RTMP_MAC_USB */
 
-	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl);
-	RTMP_IO_READ32(pAd, CMB_CTRL, &CmbCtrl);
-	RTMP_IO_READ32(pAd, COEXCFG0, &CoexCfg0);
-	RTMP_IO_READ32(pAd, COEXCFG3, &CoexCfg3);
+	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl);
+	mt7610u_read32(pAd, CMB_CTRL, &CmbCtrl);
+	mt7610u_read32(pAd, COEXCFG0, &CoexCfg0);
+	mt7610u_read32(pAd, COEXCFG3, &CoexCfg3);
 
 	CoexCfg0 &= ~BIT(2);
 	CmbCtrl &= ~(BIT(14) | BIT(12));
@@ -2542,7 +2542,7 @@ void MT76x0_dynamic_vga_tuning(
 	else if ((rssi <= -60) && (rssi > -70))
 		init_vga -= 0x10;
 
-	RTMP_IO_READ32(pAd, AGC1_R8, &reg_val);
+	mt7610u_read32(pAd, AGC1_R8, &reg_val);
 	reg_val &= 0xFFFF80FF;
 	reg_val |= (init_vga << 8);
 	RTMP_IO_WRITE32(pAd, AGC1_R8, reg_val);
@@ -2676,11 +2676,11 @@ void MT76x0_Calibration(
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 	}
 
-	RTMP_IO_READ32(pAd, TX_ALC_CFG_0, &reg_tx_alc); /* We need to restore 0x13b0 after calibration. */
+	mt7610u_read32(pAd, TX_ALC_CFG_0, &reg_tx_alc); /* We need to restore 0x13b0 after calibration. */
 	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_0, 0x0);
 	RTMPusecDelay(500);
 
-	RTMP_IO_READ32(pAd, 0x2124, &reg_val); /* We need to restore 0x2124 after calibration. */
+	mt7610u_read32(pAd, 0x2124, &reg_val); /* We need to restore 0x2124 after calibration. */
 	MacReg = 0xFFFFFF7E; /* Disable 0x2704, 0x2708 controlled by MAC. */
 	RTMP_IO_WRITE32(pAd, 0x2124, MacReg);
 
@@ -3014,7 +3014,7 @@ void MT76x0_MakeUpRatePwrTable(
 {
 	u32 reg_val;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_0, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_0, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_0, reg_val));
 	pAd->chipCap.rate_pwr_table.CCK[0].MCS_Power = (CHAR)(reg_val & 0x3F); /* CCK 1M */
 	if (pAd->chipCap.rate_pwr_table.CCK[0].MCS_Power & 0x20)
@@ -3048,7 +3048,7 @@ void MT76x0_MakeUpRatePwrTable(
 	if (pAd->chipCap.rate_pwr_table.OFDM[3].MCS_Power & 0x20)
 		pAd->chipCap.rate_pwr_table.OFDM[3].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_1, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_1, reg_val));
 	pAd->chipCap.rate_pwr_table.OFDM[4].MCS_Power = (CHAR)(reg_val & 0x3F); /* OFDM 24M */
 	if (pAd->chipCap.rate_pwr_table.OFDM[4].MCS_Power & 0x20)
@@ -3086,7 +3086,7 @@ void MT76x0_MakeUpRatePwrTable(
 		pAd->chipCap.rate_pwr_table.HT[3].MCS_Power -= 64;
 	pAd->chipCap.rate_pwr_table.VHT[3].MCS_Power = pAd->chipCap.rate_pwr_table.HT[3].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_2, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_2, reg_val));
 	pAd->chipCap.rate_pwr_table.HT[4].MCS_Power = (CHAR)(reg_val & 0x3F); /* HT/VHT MCS4 */
 	if (pAd->chipCap.rate_pwr_table.HT[4].MCS_Power & 0x20)
@@ -3103,7 +3103,7 @@ void MT76x0_MakeUpRatePwrTable(
 		pAd->chipCap.rate_pwr_table.HT[6].MCS_Power -= 64;
 	pAd->chipCap.rate_pwr_table.VHT[6].MCS_Power = pAd->chipCap.rate_pwr_table.HT[6].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_3, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_3, reg_val));
 	pAd->chipCap.rate_pwr_table.STBC[0].MCS_Power = (CHAR)((reg_val&0x3F0000) >> 16); /* STBC MCS0 */
 	if (pAd->chipCap.rate_pwr_table.STBC[0].MCS_Power & 0x20)
@@ -3121,7 +3121,7 @@ void MT76x0_MakeUpRatePwrTable(
 	if (pAd->chipCap.rate_pwr_table.STBC[3].MCS_Power & 0x20)
 		pAd->chipCap.rate_pwr_table.STBC[3].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_4, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_4, reg_val));
 	pAd->chipCap.rate_pwr_table.STBC[4].MCS_Power = (CHAR)(reg_val & 0x3F); /* STBC MCS4 */
 	if (pAd->chipCap.rate_pwr_table.STBC[4].MCS_Power & 0x20)
@@ -3135,7 +3135,7 @@ void MT76x0_MakeUpRatePwrTable(
 	if (pAd->chipCap.rate_pwr_table.STBC[6].MCS_Power & 0x20)
 		pAd->chipCap.rate_pwr_table.STBC[6].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_7, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_7, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_7, reg_val));
 	pAd->chipCap.rate_pwr_table.OFDM[7].MCS_Power = (CHAR)(reg_val & 0x3F); /* OFDM 54M */
 	if (pAd->chipCap.rate_pwr_table.OFDM[7].MCS_Power & 0x20)
@@ -3146,7 +3146,7 @@ void MT76x0_MakeUpRatePwrTable(
 		pAd->chipCap.rate_pwr_table.HT[7].MCS_Power -= 64;
 	pAd->chipCap.rate_pwr_table.VHT[7].MCS_Power = pAd->chipCap.rate_pwr_table.HT[7].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_8, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_8, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_8, reg_val));
 	pAd->chipCap.rate_pwr_table.VHT[8].MCS_Power = (CHAR)((reg_val & 0x3F0000) >> 16); /* VHT MCS8 */
 	if (pAd->chipCap.rate_pwr_table.VHT[8].MCS_Power & 0x20)
@@ -3156,7 +3156,7 @@ void MT76x0_MakeUpRatePwrTable(
 	if ( pAd->chipCap.rate_pwr_table.VHT[9].MCS_Power & 0x20)
 		pAd->chipCap.rate_pwr_table.VHT[9].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_9, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_9, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_9, reg_val));
 	pAd->chipCap.rate_pwr_table.STBC[7].MCS_Power = (CHAR)(reg_val & 0x3F); /* STBC MCS7 */
 	if (pAd->chipCap.rate_pwr_table.STBC[7].MCS_Power & 0x20)
@@ -3209,7 +3209,7 @@ void MT76x0_MakeUpRatePwrTable(
 	DBGPRINT(RT_DEBUG_TRACE, ("rate_pwr_table.MCS32.MCS_Power = %d\n", pAd->chipCap.rate_pwr_table.MCS32.MCS_Power));
 
 	// PA MODE
-	RTMP_IO_READ32(pAd, RF_PA_MODE_CFG0, &reg_val);
+	mt7610u_read32(pAd, RF_PA_MODE_CFG0, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", RF_PA_MODE_CFG0, reg_val));
 	pAd->chipCap.rate_pwr_table.CCK[0].RF_PA_Mode = (u8)(reg_val & 0x00000003);
 	pAd->chipCap.rate_pwr_table.CCK[1].RF_PA_Mode = (u8)((reg_val & 0x0000000C) >> 2);
@@ -3225,7 +3225,7 @@ void MT76x0_MakeUpRatePwrTable(
 	pAd->chipCap.rate_pwr_table.OFDM[7].RF_PA_Mode = (u8)((reg_val & 0x00C00000) >> 22);
 	pAd->chipCap.rate_pwr_table.MCS32.RF_PA_Mode = (u8)((reg_val & 0xC0000000) >> 30);
 
-	RTMP_IO_READ32(pAd, RF_PA_MODE_CFG1, &reg_val);
+	mt7610u_read32(pAd, RF_PA_MODE_CFG1, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", RF_PA_MODE_CFG1, reg_val));
 	pAd->chipCap.rate_pwr_table.HT[0].RF_PA_Mode = (u8)(reg_val & 0x00000003);
 	pAd->chipCap.rate_pwr_table.VHT[0].RF_PA_Mode = pAd->chipCap.rate_pwr_table.HT[0].RF_PA_Mode;
@@ -3375,7 +3375,7 @@ void MT76x0_MakeUpTssiTable(
 	u32 reg_val;
 
 	// MCS POWER
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_0, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_0, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_0, reg_val));
 	pAd->chipCap.tssi_table.CCK[0].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.CCK[0].MCS_Power & 0x20 ) // > 32
@@ -3402,7 +3402,7 @@ void MT76x0_MakeUpTssiTable(
 	if ( pAd->chipCap.tssi_table.OFDM[3].MCS_Power & 0x20 ) // > 32
 		pAd->chipCap.tssi_table.OFDM[3].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_1, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_1, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_1, reg_val));
 	pAd->chipCap.tssi_table.OFDM[4].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.OFDM[4].MCS_Power & 0x20 ) // > 32
@@ -3433,7 +3433,7 @@ void MT76x0_MakeUpTssiTable(
 		pAd->chipCap.tssi_table.HT[3].MCS_Power -= 64;
 	pAd->chipCap.tssi_table.VHT[3].MCS_Power = pAd->chipCap.tssi_table.HT[3].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_2, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_2, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_2, reg_val));
 	pAd->chipCap.tssi_table.HT[4].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.HT[4].MCS_Power & 0x20 ) // > 32
@@ -3448,7 +3448,7 @@ void MT76x0_MakeUpTssiTable(
 		pAd->chipCap.tssi_table.HT[6].MCS_Power -= 64;
 	pAd->chipCap.tssi_table.VHT[6].MCS_Power = pAd->chipCap.tssi_table.HT[6].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_3, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_3, reg_val));
 	pAd->chipCap.tssi_table.STBC[0].MCS_Power = (CHAR)((reg_val&0x3F0000)>>16);
 	if ( pAd->chipCap.tssi_table.STBC[0].MCS_Power & 0x20 ) // > 32
@@ -3463,7 +3463,7 @@ void MT76x0_MakeUpTssiTable(
 	if ( pAd->chipCap.tssi_table.STBC[3].MCS_Power & 0x20 ) // > 32
 		pAd->chipCap.tssi_table.STBC[3].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_4, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_4, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_4, reg_val));
 	pAd->chipCap.tssi_table.STBC[4].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.STBC[4].MCS_Power & 0x20 ) // > 32
@@ -3475,7 +3475,7 @@ void MT76x0_MakeUpTssiTable(
 	if ( pAd->chipCap.tssi_table.STBC[6].MCS_Power & 0x20 ) // > 32
 		pAd->chipCap.tssi_table.STBC[6].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_7, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_7, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_7, reg_val));
 	pAd->chipCap.tssi_table.OFDM[7].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.OFDM[7].MCS_Power & 0x20 ) // > 32
@@ -3485,7 +3485,7 @@ void MT76x0_MakeUpTssiTable(
 		pAd->chipCap.tssi_table.HT[7].MCS_Power -= 64;
 	pAd->chipCap.tssi_table.VHT[0].MCS_Power = pAd->chipCap.tssi_table.HT[7].MCS_Power;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_8, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_8, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_8, reg_val));
 	pAd->chipCap.tssi_table.VHT[8].MCS_Power = (CHAR)((reg_val&0x3F0000)>>16);;
 	if ( pAd->chipCap.tssi_table.VHT[8].MCS_Power & 0x20 ) // > 32
@@ -3494,7 +3494,7 @@ void MT76x0_MakeUpTssiTable(
 	if ( pAd->chipCap.tssi_table.VHT[9].MCS_Power & 0x20 ) // > 32
 		pAd->chipCap.tssi_table.VHT[9].MCS_Power -= 64;
 
-	RTMP_IO_READ32(pAd, TX_PWR_CFG_9, &reg_val);
+	mt7610u_read32(pAd, TX_PWR_CFG_9, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", TX_PWR_CFG_9, reg_val));
 	pAd->chipCap.tssi_table.STBC[7].MCS_Power = (CHAR)(reg_val&0x3F);
 	if ( pAd->chipCap.tssi_table.STBC[7].MCS_Power & 0x20 ) // > 32
@@ -3547,7 +3547,7 @@ void MT76x0_MakeUpTssiTable(
 	DBGPRINT(RT_DEBUG_TRACE, ("TSSI: TssiTable.MCS32.MCS_Power = %d\n", pAd->chipCap.tssi_table.MCS32.MCS_Power));
 
 	// PA MODE
-	RTMP_IO_READ32(pAd, RF_PA_MODE_CFG0, &reg_val);
+	mt7610u_read32(pAd, RF_PA_MODE_CFG0, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", RF_PA_MODE_CFG0, reg_val));
 	pAd->chipCap.tssi_table.CCK[0].RF_PA_Mode = (u8)(reg_val&0x00000003);
 	pAd->chipCap.tssi_table.CCK[1].RF_PA_Mode = (u8)((reg_val&0x0000000C)>>2);
@@ -3563,7 +3563,7 @@ void MT76x0_MakeUpTssiTable(
 	pAd->chipCap.tssi_table.OFDM[7].RF_PA_Mode = (u8)((reg_val&0x00C00000)>>22);
 	pAd->chipCap.tssi_table.MCS32.RF_PA_Mode = (u8)((reg_val&0x03000000)>>24);
 
-	RTMP_IO_READ32(pAd, RF_PA_MODE_CFG1, &reg_val);
+	mt7610u_read32(pAd, RF_PA_MODE_CFG1, &reg_val);
 	DBGPRINT(RT_DEBUG_TRACE, ("0x%x: 0x%x\n", RF_PA_MODE_CFG1, reg_val));
 	pAd->chipCap.tssi_table.HT[0].RF_PA_Mode = (u8)(reg_val&0x00000003);
 	pAd->chipCap.tssi_table.VHT[0].RF_PA_Mode = pAd->chipCap.tssi_table.HT[0].RF_PA_Mode;
@@ -3656,13 +3656,13 @@ void MT76x0_TSSI_DC_Calibration(
 
 		//********************************************************************//
 		// BBP Soft Reset
-		RTMP_IO_READ32(pAd, CORE_R4, &BBP_Value);
+		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value |= 0x00000001;
 		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
 
 		RTMPusecDelay(1);
 
-		RTMP_IO_READ32(pAd, CORE_R4, &BBP_Value);
+		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value &= 0xFFFFFFFE;
 		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
 		//********************************************************************//
@@ -3688,7 +3688,7 @@ void MT76x0_TSSI_DC_Calibration(
 		// Wait until avg done
 		do
 		{
-			RTMP_IO_READ32(pAd, CORE_R34, &BBP_Value);
+			mt7610u_read32(pAd, CORE_R34, &BBP_Value);
 
 			if ( (BBP_Value&0x10) == 0 )
 				break;
@@ -3702,7 +3702,7 @@ void MT76x0_TSSI_DC_Calibration(
 		} while (true);
 
 		// Read TSSI value
-		RTMP_IO_READ32(pAd, CORE_R35, &BBP_Value);
+		mt7610u_read32(pAd, CORE_R35, &BBP_Value);
 		pAd->chipCap.tssi_current_DC = (CHAR)(BBP_Value&0xFF);
 
 		// stop bypass ADDA
@@ -3717,13 +3717,13 @@ void MT76x0_TSSI_DC_Calibration(
 
 		//********************************************************************//
 		// BBP Soft Reset
-		RTMP_IO_READ32(pAd, CORE_R4, &BBP_Value);
+		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value |= 0x00000001;
 		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
 
 		RTMPusecDelay(1);
 
-		RTMP_IO_READ32(pAd, CORE_R4, &BBP_Value);
+		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value &= 0xFFFFFFFE;
 		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
 		//********************************************************************//
@@ -3863,7 +3863,7 @@ bool MT76x0_GetTargetPower(
 	u32 reg_val = 0;
 	CHAR Eas_power_adj = 0;
 
-	RTMP_IO_READ32(pAd, TX_ALC_CFG_0, &reg_val);
+	mt7610u_read32(pAd, TX_ALC_CFG_0, &reg_val);
 	CurrentPower0 = (u8)(reg_val&0x3F);
 
 	*pTSSI_Tx_Mode = (pAd->chipCap.tssi_info_1 & 0x7);
@@ -4195,7 +4195,7 @@ void MT76x0_IntTxAlcProcess(
 		return;
 	}
 
-	RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &reg_val);
+	mt7610u_read32(pAd, TX_ALC_CFG_1, &reg_val);
 	DBGPRINT(RT_DEBUG_ERROR, ("(0x13B4) Before compensation 0x%08X\n", reg_val));
 	tssi_delta0 = (CHAR)(reg_val&0x3F);
 	if ( (tssi_delta0 &0x20) )
@@ -4209,7 +4209,7 @@ void MT76x0_IntTxAlcProcess(
 	reg_val |= (tssi_write&0x3F);
 	DBGPRINT(RT_DEBUG_ERROR, ("%s ==> reg_val = 0x%08X\n", __FUNCTION__, reg_val));
 	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, reg_val);
-	RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &reg_val);
+	mt7610u_read32(pAd, TX_ALC_CFG_1, &reg_val);
 	DBGPRINT(RT_DEBUG_ERROR, ("(0x13B4) After compensation 0x%08X\n", reg_val));
 }
 
@@ -4421,7 +4421,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 			else
 				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr;
 
-			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
+			mt7610u_read32(pAd, TX_ALC_CFG_1, &mac_val);
 			/* 6-bit representation ==> 8-bit representation (2's complement) */
 			pAd->DeltaPwrBeforeTempComp = (mac_val & 0x20) ? \
 											((mac_val & 0x3F) | 0xC0): (mac_val & 0x3f);
@@ -4437,7 +4437,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 				Write compensation value into TX_ALC_CFG_1,
 				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1
 			*/
-			RTMP_IO_READ32(pAd, TX_ALC_CFG_1, &mac_val);
+			mt7610u_read32(pAd, TX_ALC_CFG_1, &mac_val);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
 			RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, mac_val);
 

@@ -64,7 +64,7 @@ int rlt_rf_write(
 		ret = STATUS_UNSUCCESSFUL;
 		do
 		{
-			RTMP_IO_READ32(pAd, RF_CSR_CFG, &rfcsr.word);
+			mt7610u_read32(pAd, RF_CSR_CFG, &rfcsr.word);
 
 			if (!rfcsr.field.RF_CSR_KICK)
 				break;
@@ -152,7 +152,7 @@ int rlt_rf_read(
 			if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 				goto done;
 
-			RTMP_IO_READ32(pAd, RF_CSR_CFG, &rfcsr.word);
+			mt7610u_read32(pAd, RF_CSR_CFG, &rfcsr.word);
 
 			if (rfcsr.field.RF_CSR_KICK == BUSY)
 					continue;
@@ -169,7 +169,7 @@ int rlt_rf_read(
 				if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 					goto done;
 
-				RTMP_IO_READ32(pAd, RF_CSR_CFG, &rfcsr.word);
+				mt7610u_read32(pAd, RF_CSR_CFG, &rfcsr.word);
 
 				if (rfcsr.field.RF_CSR_KICK == IDLE)
 					break;

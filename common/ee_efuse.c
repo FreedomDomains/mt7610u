@@ -152,7 +152,7 @@ u8 eFuseReadRegisters(
 		efuse_ctrl_reg = EFUSE_CTRL_3290;
 #endif
 
-	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+	mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 	/*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
 	/*Use the eeprom logical address and covert to address to block number*/
@@ -175,7 +175,7 @@ u8 eFuseReadRegisters(
 			return 0;
 
 		/*rtmp.HwMemoryReadDword(EFUSE_CTRL, (DWORD *) &eFuseCtrlStruc, 4);*/
-		RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+		mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 		if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
 		{
 			break;
@@ -201,7 +201,7 @@ u8 eFuseReadRegisters(
 		efuseDataOffset =  EFUSE_DATA3 - (Offset & 0xC);
 		/*data hold 4 bytes data.*/
 		/*In RTMP_IO_READ32 will automatically execute 32-bytes swapping*/
-		RTMP_IO_READ32(pAd, efuseDataOffset, &data);
+		mt7610u_read32(pAd, efuseDataOffset, &data);
 		/*Decide the upper 2 bytes or the bottom 2 bytes.*/
 		/* Little-endian		S	|	S	Big-endian*/
 		/* addr	3	2	1	0	|	0	1	2	3*/
@@ -254,7 +254,7 @@ void eFusePhysicalReadRegisters(
 		efuse_ctrl_reg = EFUSE_CTRL_3290;
 #endif /* defined(RT65xx) */
 
-	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+	mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 	/*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
 	eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
@@ -276,7 +276,7 @@ void eFusePhysicalReadRegisters(
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return;
 
-		RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruc.word);
+		mt7610u_read32(pAd, EFUSE_CTRL, &eFuseCtrlStruc.word);
 		if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
 			break;
 		RTMPusecDelay(2);
@@ -298,7 +298,7 @@ void eFusePhysicalReadRegisters(
 #endif /* defined(RT65xx) */
 	efuseDataOffset =  EFUSE_DATA3 - (Offset & 0xC)  ;
 
-	RTMP_IO_READ32(pAd, efuseDataOffset, &data);
+	mt7610u_read32(pAd, efuseDataOffset, &data);
 
 #ifdef RT_BIG_ENDIAN
 		data = data << (8*((Offset & 0x3)^0x2));
@@ -408,7 +408,7 @@ static void eFusePhysicalWriteRegisters(
 	/*Step0. Write 16-byte of data to EFUSE_DATA0-3 (0x590-0x59C), where EFUSE_DATA0 is the LSB DW, EFUSE_DATA3 is the MSB DW.*/
 
 	/*read current values of 16-byte block	*/
-	RTMP_IO_READ32(pAd, efuse_ctrl_reg,  &eFuseCtrlStruc.word);
+	mt7610u_read32(pAd, efuse_ctrl_reg,  &eFuseCtrlStruc.word);
 
 	/*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
 	eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
@@ -426,7 +426,7 @@ static void eFusePhysicalWriteRegisters(
 	i = 0;
 	while (i < 500)
 	{
-		RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+		mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 		if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
 			break;
@@ -438,7 +438,7 @@ static void eFusePhysicalWriteRegisters(
 	efuseDataOffset =  efuse_data;
 	for(i=0; i< 4; i++)
 	{
-		RTMP_IO_READ32(pAd, efuseDataOffset, &eFuseDataBuffer[i]);
+		mt7610u_read32(pAd, efuseDataOffset, &eFuseDataBuffer[i]);
 #if defined(RT65xx)
 		if (IS_RT65XX(pAd))
 			efuseDataOffset += 4;
@@ -474,7 +474,7 @@ static void eFusePhysicalWriteRegisters(
 
 	/*Step1. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
 	// TODO: shiang, for below line, windows driver didn't have this read, why we have ??
-	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+	mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 	eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
 
@@ -492,7 +492,7 @@ static void eFusePhysicalWriteRegisters(
 
 	while (i < 500)
 	{
-		RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+		mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 		if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
 			break;
@@ -1168,7 +1168,7 @@ INT eFuse_init(struct rtmp_adapter*pAd)
 	/* of this efuse is empty and change to the buffer mode in odrder to */
 	/*bring up interfaces successfully.*/
 
-	RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+	mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("EFUSE_CTRL=0x%x:: (0x%x) on_time = %d, off_time = %d \n",
 		efuse_ctrl_reg, eFuseCtrlStruc.word, eFuseCtrlStruc.field.EFSROM_LDO_ON_TIME, eFuseCtrlStruc.field.EFSROM_LDO_OFF_TIME));
@@ -1204,7 +1204,7 @@ INT efuse_probe(struct rtmp_adapter*pAd)
 #endif /* RT65xx */
 		ctrl_reg = EFUSE_CTRL;
 
-	RTMP_IO_READ32(pAd, ctrl_reg, &eFuseCtrl);
+	mt7610u_read32(pAd, ctrl_reg, &eFuseCtrl);
 
 	pAd->bUseEfuse = ( (eFuseCtrl & 0x80000000) == 0x80000000) ? 1 : 0;
 	return 0;

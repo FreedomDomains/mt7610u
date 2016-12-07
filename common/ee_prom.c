@@ -56,7 +56,7 @@ static inline USHORT ShiftInBits(
 	u32		x,i;
 	USHORT      data=0;
 
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 
 	x &= ~( EEDO | EEDI);
 
@@ -65,7 +65,7 @@ static inline USHORT ShiftInBits(
 		data = data << 1;
 		RaiseClock(pAd, &x);
 
-		RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+		mt7610u_read32(pAd, E2PROM_CSR, &x);
 		LowerClock(pAd, &x); /*prevent read failed*/
 
 		x &= ~(EEDI);
@@ -86,7 +86,7 @@ static inline void ShiftOutBits(
 	u32       x,mask;
 
 	mask = 0x01 << (count - 1);
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 
 	x &= ~(EEDO | EEDI);
 
@@ -114,7 +114,7 @@ static inline void EEpromCleanup(
 {
 	u32 x;
 
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 
 	x &= ~(EECS | EEDI);
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
@@ -130,7 +130,7 @@ static inline void EWEN(
 	u32	x;
 
 	/* reset bits and set EECS*/
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
@@ -153,7 +153,7 @@ static inline void EWDS(
 	u32	x;
 
 	/* reset bits and set EECS*/
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
@@ -183,7 +183,7 @@ int rtmp_ee_prom_read16(
 
 	Offset /= 2;
 	/* reset bits and set EECS*/
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
@@ -218,7 +218,7 @@ int rtmp_ee_prom_write16(
 	EWEN(pAd);
 
 	/* reset bits and set EECS*/
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
 	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
@@ -229,7 +229,7 @@ int rtmp_ee_prom_write16(
 	ShiftOutBits(pAd, Data, 16);		/* 16-bit access*/
 
 	/* read DO status*/
-	RTMP_IO_READ32(pAd, E2PROM_CSR, &x);
+	mt7610u_read32(pAd, E2PROM_CSR, &x);
 
 	EEpromCleanup(pAd);
 

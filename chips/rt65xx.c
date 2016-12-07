@@ -70,7 +70,7 @@ void MT76x0_ral_wlan_chip_onoff(
 	}
 #endif /* RTMP_MAC_USB */
 
-	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
+	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
 				__FUNCTION__, bOn, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
@@ -97,7 +97,7 @@ void MT76x0_ral_wlan_chip_onoff(
 	pAd->WlanFunCtrl.word = WlanFunCtrl.word;
 	RTMPusecDelay(2);
 
-	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
+	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 				DBGPRINT(RT_DEBUG_ERROR,
 		("<== %s():  pAd->WlanFunCtrl.word = 0x%x, Reg->WlanFunCtrl=0x%x!\n",
 		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
@@ -124,7 +124,7 @@ void dump_bw_info(struct rtmp_adapter*pAd)
 		RTMP_BBP_IO_READ32(pAd, CORE_R1, &core_r1);
 		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc_r0);
 		RTMP_BBP_IO_READ32(pAd, TXBE_R0, &be_r0);
-		RTMP_IO_READ32(pAd, TX_BAND_CFG, &band_cfg);
+		mt7610u_read32(pAd, TX_BAND_CFG, &band_cfg);
 
 		/*  Tx/RX : control channel setting */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s():RegisterSetting: TX_BAND_CFG=0x%x, CORE_R1=0x%x, AGC1_R0=0x%x, TXBE_R0=0x%x\n",
@@ -315,13 +315,13 @@ void MT76x0DisableTxRx(
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
 		bFree = true;
-		RTMP_IO_READ32(pAd, 0x438, &MacReg);
+		mt7610u_read32(pAd, 0x438, &MacReg);
 		if (MacReg != 0)
 			bFree = false;
-		RTMP_IO_READ32(pAd, 0xa30, &MacReg);
+		mt7610u_read32(pAd, 0xa30, &MacReg);
 		if (MacReg & 0x000000FF)
 			bFree = false;
-		RTMP_IO_READ32(pAd, 0xa34, &MacReg);
+		mt7610u_read32(pAd, 0xa34, &MacReg);
 		if (MacReg & 0xFF00FF00)
 			bFree = false;
 		if (bFree)
@@ -336,13 +336,13 @@ void MT76x0DisableTxRx(
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check TxQ page count max\n"));
-		RTMP_IO_READ32(pAd, 0x0a30, &MacReg);
+		mt7610u_read32(pAd, 0x0a30, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a30 = 0x%08x\n", MacReg));
 
-		RTMP_IO_READ32(pAd, 0x0a34, &MacReg);
+		mt7610u_read32(pAd, 0x0a34, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a34 = 0x%08x\n", MacReg));
 
-		RTMP_IO_READ32(pAd, 0x438, &MacReg);
+		mt7610u_read32(pAd, 0x438, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x438 = 0x%08x\n", MacReg));
 		bResetWLAN = true;
 	}
@@ -352,7 +352,7 @@ void MT76x0DisableTxRx(
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
-		RTMP_IO_READ32(pAd, MAC_STATUS_CFG, &MacReg);
+		mt7610u_read32(pAd, MAC_STATUS_CFG, &MacReg);
 		if (MacReg & 0x1)
 			RTMPusecDelay(50);
 		else
@@ -378,7 +378,7 @@ void MT76x0DisableTxRx(
 			/*
 				Disable MAC TX/RX
 			*/
-			RTMP_IO_READ32(pAd, MAC_SYS_CTRL, &MacReg);
+			mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 			MacReg &= ~(0x0000000c);
 			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
 		}
@@ -387,7 +387,7 @@ void MT76x0DisableTxRx(
 			/*
 				Disable MAC RX
 			*/
-			RTMP_IO_READ32(pAd, MAC_SYS_CTRL, &MacReg);
+			mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 			MacReg &= ~(0x00000008);
 			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
 		}
@@ -399,17 +399,17 @@ void MT76x0DisableTxRx(
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
 		bFree = true;
-		RTMP_IO_READ32(pAd, 0x430, &MacReg);
+		mt7610u_read32(pAd, 0x430, &MacReg);
 
 		if (MacReg & (0x00FF0000))
 			bFree = false;
 
-		RTMP_IO_READ32(pAd, 0xa30, &MacReg);
+		mt7610u_read32(pAd, 0xa30, &MacReg);
 
 		if (MacReg != 0)
 			bFree = false;
 
-		RTMP_IO_READ32(pAd, 0xa34, &MacReg);
+		mt7610u_read32(pAd, 0xa34, &MacReg);
 
 		if (MacReg != 0)
 			bFree = false;
@@ -438,13 +438,13 @@ void MT76x0DisableTxRx(
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Check RxQ page count max\n"));
 
-		RTMP_IO_READ32(pAd, 0x0a30, &MacReg);
+		mt7610u_read32(pAd, 0x0a30, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a30 = 0x%08x\n", MacReg));
 
-		RTMP_IO_READ32(pAd, 0x0a34, &MacReg);
+		mt7610u_read32(pAd, 0x0a34, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a34 = 0x%08x\n", MacReg));
 
-		RTMP_IO_READ32(pAd, 0x0430, &MacReg);
+		mt7610u_read32(pAd, 0x0430, &MacReg);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0430 = 0x%08x\n", MacReg));
 		bResetWLAN = true;
 	}
@@ -454,7 +454,7 @@ void MT76x0DisableTxRx(
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
-		RTMP_IO_READ32(pAd, MAC_STATUS_CFG, &MacReg);
+		mt7610u_read32(pAd, MAC_STATUS_CFG, &MacReg);
 		if (MacReg & 0x2)
 			RTMPusecDelay(50);
 		else
@@ -516,7 +516,7 @@ void MT76x0_WLAN_ChipOnOff(
 	}
 #endif /* RTMP_MAC_USB */
 
-	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
+	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
 				__FUNCTION__, bOn, bResetWLAN, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
@@ -566,7 +566,7 @@ void MT76x0_WLAN_ChipOnOff(
 
 	if (bOn)
 	{
-		RTMP_IO_READ32(pAd, MAC_CSR0, &pAd->MACVersion);
+		mt7610u_read32(pAd, MAC_CSR0, &pAd->MACVersion);
 		DBGPRINT(RT_DEBUG_TRACE, ("MACVersion = 0x%08x\n", pAd->MACVersion));
 	}
 
@@ -581,7 +581,7 @@ void MT76x0_WLAN_ChipOnOff(
 		{
 			do
 			{
-				RTMP_IO_READ32(pAd, CMB_CTRL, &CmbCtrl.word);
+				mt7610u_read32(pAd, CMB_CTRL, &CmbCtrl.word);
 
 				/*
 					Check status of PLL_LD & XTAL_RDY.
@@ -618,7 +618,7 @@ void MT76x0_WLAN_ChipOnOff(
 	}
 
 	pAd->WlanFunCtrl.word = WlanFunCtrl.word;
-	RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
+	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 	DBGPRINT(RT_DEBUG_TRACE,
 		("<== %s():  pAd->WlanFunCtrl.word = 0x%x, Reg->WlanFunCtrl=0x%x!\n",
 		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));

@@ -1727,7 +1727,7 @@ void MlmeCheckRDG(
 #endif
 
 		pTempTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1)*TableStep]);
-		RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
+		mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 		if (pAd->RalinkCounters.OneSecReceivedByteCount > (pAd->RalinkCounters.OneSecTransmittedByteCount * 5) &&
 				pTempTxRate->CurrMCS != 23 && pTempTxRate->ShortGI != 1)
 		{
@@ -1735,7 +1735,7 @@ void MlmeCheckRDG(
 			{
 				TxLinkCfg.field.TxRDGEn = 0;
 				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
-				RTMP_IO_READ32(pAd, TXOP_THRES_CFG, &TxOpThres);
+				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
 				TxOpThres |= 0xff00;
 				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxOpThres);
 				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG off!\n"));
@@ -1747,7 +1747,7 @@ void MlmeCheckRDG(
 			{
 				TxLinkCfg.field.TxRDGEn = 1;
 				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
-				RTMP_IO_READ32(pAd, TXOP_THRES_CFG, &TxOpThres);
+				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
 				TxOpThres &= 0xffff00ff;
 				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxOpThres);
 				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG on!\n"));

@@ -62,9 +62,9 @@
 #define UAPSD_TIMESTAMP_GET(__pAd, __TimeStamp)			\
 	{													\
 		u32 __CSR=0;	UINT64 __Value64;				\
-		RTMP_IO_READ32((__pAd), TSF_TIMER_DW0, &__CSR);	\
+		mt7610u_read32((__pAd), TSF_TIMER_DW0, &__CSR);	\
 		__TimeStamp = (UINT64)__CSR;					\
-		RTMP_IO_READ32((__pAd), TSF_TIMER_DW1, &__CSR);	\
+		mt7610u_read32((__pAd), TSF_TIMER_DW1, &__CSR);	\
 		__Value64 = (UINT64)__CSR;						\
 		__TimeStamp |= (__Value64 << 32);				\
 	}

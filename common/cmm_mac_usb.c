@@ -1665,8 +1665,8 @@ void BeaconUpdateExec(
 
 	}
 
-	RTMP_IO_READ32(pAd, TSF_TIMER_DW0, &tsfTime_a.u.LowPart);
-	RTMP_IO_READ32(pAd, TSF_TIMER_DW1, &tsfTime_a.u.HighPart);
+	mt7610u_read32(pAd, TSF_TIMER_DW0, &tsfTime_a.u.LowPart);
+	mt7610u_read32(pAd, TSF_TIMER_DW1, &tsfTime_a.u.HighPart);
 
 
 	/*

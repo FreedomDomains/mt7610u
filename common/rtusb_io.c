@@ -432,7 +432,7 @@ int RTUSBWriteBBPRegister(
 
 	for (BusyCnt=0; BusyCnt<MAX_BUSY_COUNT; BusyCnt++)
 	{
-		RTMP_IO_READ32(pAd, H2M_BBP_AGENT, &BbpCsr.word);
+		mt7610u_read32(pAd, H2M_BBP_AGENT, &BbpCsr.word);
 		if (BbpCsr.field.Busy == BUSY)
 			continue;
 		BbpCsr.word = 0;
@@ -1569,14 +1569,14 @@ void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 #endif /* CONFIG_STA_SUPPORT */
 
 	idx = 0;
-	RTMP_IO_READ32(pAd, TXRXQ_PCNT, &MACValue);
+	mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 	if ((MACValue & 0xff) !=0 )
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("TX QUEUE 0 Not EMPTY(Value=0x%0x). !!!!!!!!!!!!!!!\n", MACValue));
 		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40012);
 		while((MACValue &0xff) != 0 && (idx++ < 10))
 		{
-		        RTMP_IO_READ32(pAd, TXRXQ_PCNT, &MACValue);
+		        mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 		        RTMPusecDelay(1);
 		}
 		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40006);
@@ -1589,7 +1589,7 @@ void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf4000a);
 		while((MACValue &0xff00) != 0 && (idx++ < 10))
 		{
-			RTMP_IO_READ32(pAd, TXRXQ_PCNT, &MACValue);
+			mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 			RTMPusecDelay(1);
 		}
 		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40006);

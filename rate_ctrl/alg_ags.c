@@ -814,11 +814,11 @@ void MlmeDynamicTxRateSwitchingAGS(
 			     (pNextTxRate->CurrMCS != MCS_23) &&
 			     ((pAd->RalinkCounters.OneSecReceivedByteCount + pAd->RalinkCounters.OneSecTransmittedByteCount) >= (50 * 1024)))
 			{
-				RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
+				mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 				TxLinkCfg.field.TxRDGEn = 0;
 				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
-				RTMP_IO_READ32(pAd, TXOP_THRES_CFG, &TxopThCfg.word);
+				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxopThCfg.word);
 				TxopThCfg.field.RDG_IN_THRES = 0xFF; /* Similar to diable Rx RDG */
 				TxopThCfg.field.RDG_OUT_THRES = 0x00;
 				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxopThCfg.word);
@@ -827,11 +827,11 @@ void MlmeDynamicTxRateSwitchingAGS(
 			}
 			else
 			{
-				RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
+				mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 				TxLinkCfg.field.TxRDGEn = 1;
 				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
-				RTMP_IO_READ32(pAd, TXOP_THRES_CFG, &TxopThCfg.word);
+				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxopThCfg.word);
 				TxopThCfg.field.RDG_IN_THRES = 0x00;
 				TxopThCfg.field.RDG_OUT_THRES = 0x00;
 				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxopThCfg.word);

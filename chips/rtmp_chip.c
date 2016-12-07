@@ -412,7 +412,7 @@ INT WaitForAsicReady(
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return false;
 
-		RTMP_IO_READ32(pAd, reg, &mac_val);
+		mt7610u_read32(pAd, reg, &mac_val);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return true;
 
@@ -434,12 +434,12 @@ INT AsicGetMacVersion(
 	u32 reg = MAC_CSR0;
 
 #ifdef RT65xx
-	RTMP_IO_READ32(pAd, ASIC_VERSION, &pAd->MacIcVersion);
+	mt7610u_read32(pAd, ASIC_VERSION, &pAd->MacIcVersion);
 #endif /* RT65xx */
 
 	if (WaitForAsicReady(pAd) == true)
 	{
-		RTMP_IO_READ32(pAd, reg, &pAd->MACVersion);
+		mt7610u_read32(pAd, reg, &pAd->MACVersion);
 		DBGPRINT(RT_DEBUG_OFF, ("MACVersion[Ver:Rev]=0x%08x : 0x%08x\n",
 					pAd->MACVersion, pAd->MacIcVersion));
 		return true;
@@ -479,7 +479,7 @@ int RtmpChipOpsHook(void *pCB)
 	if (WaitForAsicReady(pAd) == false)
 		return -1;
 
-	RTMP_IO_READ32(pAd, MAC_CSR0, &MacValue);
+	mt7610u_read32(pAd, MAC_CSR0, &MacValue);
 	pAd->MACVersion = MacValue;
 
 	if (pAd->MACVersion == 0xffffffff)

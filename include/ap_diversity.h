@@ -47,7 +47,7 @@
 	{                                                   		\
 		for (i=0; i<MAX_BUSY_COUNT; i++)                    	\
 		{                                                   	\
-			RTMP_IO_READ32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
+			mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
 			if (BbpCsr.field.Busy == BUSY)			\
 				continue;                               \
 			BbpCsr.word = 0;                                \
@@ -60,7 +60,7 @@
 			RTMPusecDelay(10);				\
 			for (k=0; k<MAX_BUSY_COUNT; k++)		\
 			{                                               \
-				RTMP_IO_READ32(_A, H2M_BBP_AGENT, &BbpCsr.word);			\
+				mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);			\
 				if (BbpCsr.field.Busy == IDLE)          \
 					break;                          \
 				else					\
@@ -77,7 +77,7 @@
 		{                                                   	\
 			DBGPRINT_ERR(("BBP read R%d=0x%x fail\n", _I, BbpCsr.word));	\
 			*(_pV) = (_A)->BbpWriteLatch[_I];               \
-			RTMP_IO_READ32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
+			mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
 			BbpCsr.field.Busy = 0;                          \
 			RTMP_IO_WRITE32(_A, H2M_BBP_AGENT, BbpCsr.word);\
 		}                                                   \

@@ -466,7 +466,7 @@ void MlmeHalt(
 #ifdef RTMP_MAC_USB
 		{
 			LED_CFG_STRUC LedCfg;
-			RTMP_IO_READ32(pAd, LED_CFG, &LedCfg.word);
+			mt7610u_read32(pAd, LED_CFG, &LedCfg.word);
 			LedCfg.field.LedPolar = 0;
 			LedCfg.field.RLedMode = 0;
 			LedCfg.field.GLedMode = 0;
@@ -763,7 +763,7 @@ void MlmePeriodicExec(
 
 			u32	MacReg = 0;
 
-			RTMP_IO_READ32(pAd, 0x10F4, &MacReg);
+			mt7610u_read32(pAd, 0x10F4, &MacReg);
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
 			{
 				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x1);
@@ -1631,7 +1631,7 @@ void MlmeSetTxPreamble(
 
 	/*TxPreamble = Rt802_11PreambleLong;*/
 
-	RTMP_IO_READ32(pAd, AUTO_RSP_CFG, &csr4.word);
+	mt7610u_read32(pAd, AUTO_RSP_CFG, &csr4.word);
 	if (TxPreamble == Rt802_11PreambleLong)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("MlmeSetTxPreamble (= LONG PREAMBLE)\n"));
@@ -4217,9 +4217,9 @@ u8 RandomByte2(
 	u8 value, seed = 0;
 
 	/*MAC statistic related*/
-	RTMP_IO_READ32(pAd, RX_STA_CNT1, &a);
+	mt7610u_read32(pAd, RX_STA_CNT1, &a);
 	a &= 0x0000ffff;
-	RTMP_IO_READ32(pAd, RX_STA_CNT0, &b);
+	mt7610u_read32(pAd, RX_STA_CNT0, &b);
 	b &= 0x0000ffff;
 	value = (a<<16)|b;
 
@@ -4919,7 +4919,7 @@ void RTMPSetPiggyBack(
 {
 	TX_LINK_CFG_STRUC  TxLinkCfg;
 
-	RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
+	mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 
 	TxLinkCfg.field.TxCFAckEn = bPiggyBack;
 	RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);

@@ -123,7 +123,7 @@ INT CFG80211DRV_IoctlHandle(
 			bool active;
 
 			/* Read GPIO pin2 as Hardware controlled radio state */
-			RTMP_IO_READ32(pAd, GPIO_CTRL_CFG, &data);
+			mt7610u_read32(pAd, GPIO_CTRL_CFG, &data);
 			active = !!(data & 0x04);
 
 			if (!active)
@@ -316,7 +316,7 @@ bool CFG80211DRV_OpsChgVirtualInf(
 			u32 Filter;
 
 
-			RTMP_IO_READ32(pAd, RX_FILTR_CFG, &Filter);
+			mt7610u_read32(pAd, RX_FILTR_CFG, &Filter);
 
 			if ((FlgFilter & RT_CMD_80211_FILTER_FCSFAIL) == \
 												RT_CMD_80211_FILTER_FCSFAIL)
