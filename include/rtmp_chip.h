@@ -790,7 +790,7 @@ do {	\
 		DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));	\
 		mt7610u_read32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
 		BbpCsr.field.Busy = 0;	\
-		RTMP_IO_WRITE32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
+		mt7610u_write32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
 } while (0)
 
 #define RTMP_CHIP_UPDATE_BEACON(__pAd, Offset, Value, Unit)	\

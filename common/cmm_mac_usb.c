@@ -1334,7 +1334,7 @@ void RT28XXDMAEnable(
 	USB_DMA_CFG_STRUC	UsbCfg;
 
 
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x4);
+	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x4);
 
 	if (AsicWaitPDMAIdle(pAd, 200, 1000) == false) {
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))

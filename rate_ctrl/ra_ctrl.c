@@ -670,8 +670,8 @@ void asic_mcs_lut_update(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 
 		wcid_offset = MAC_MCS_LUT_BASE + (pEntry->Aid * 8);
 
-		RTMP_IO_WRITE32(pAd, wcid_offset, pEntry->HTPhyMode.word);
-		RTMP_IO_WRITE32(pAd, wcid_offset + 4, 0x00);
+		mt7610u_write32(pAd, wcid_offset, pEntry->HTPhyMode.word);
+		mt7610u_write32(pAd, wcid_offset + 4, 0x00);
 
 		DBGPRINT(RT_DEBUG_INFO, ("%s():MCS_LUT update, write to MAC=0x%08x, Value=0x%04x, WCID=%d\n",
 					__FUNCTION__, wcid_offset, pEntry->HTPhyMode.word, pEntry->Aid));
@@ -1734,10 +1734,10 @@ void MlmeCheckRDG(
 			if (TxLinkCfg.field.TxRDGEn == 1)
 			{
 				TxLinkCfg.field.TxRDGEn = 0;
-				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+				mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
 				TxOpThres |= 0xff00;
-				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxOpThres);
+				mt7610u_write32(pAd, TXOP_THRES_CFG, TxOpThres);
 				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG off!\n"));
 			}
 		}
@@ -1746,10 +1746,10 @@ void MlmeCheckRDG(
 			if (TxLinkCfg.field.TxRDGEn == 0)
 			{
 				TxLinkCfg.field.TxRDGEn = 1;
-				RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+				mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
 				TxOpThres &= 0xffff00ff;
-				RTMP_IO_WRITE32(pAd, TXOP_THRES_CFG, TxOpThres);
+				mt7610u_write32(pAd, TXOP_THRES_CFG, TxOpThres);
 				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG on!\n"));
 			}
 		}

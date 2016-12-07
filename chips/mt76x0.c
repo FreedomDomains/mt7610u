@@ -1047,8 +1047,8 @@ void SelectBandMT76x0(
 
 		rtmp_mac_set_band(pAd, BAND_24G);
 
-		RTMP_IO_WRITE32(pAd, TX_ALC_VGA3, 0x00050007);
-		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
+		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00050007);
+		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
 	}
 	else
 	{
@@ -1062,8 +1062,8 @@ void SelectBandMT76x0(
 
 		rtmp_mac_set_band(pAd, BAND_5G);
 
-		RTMP_IO_WRITE32(pAd, TX_ALC_VGA3, 0x00000005);
-		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_CORR, 0x01010102);
+		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00000005);
+		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x01010102);
 	}
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
@@ -1323,7 +1323,7 @@ void SetRfChFreqParametersMT76x0(
 
 	mt7610u_read32(pAd, RF_MISC, &MacReg);
 	MacReg &= ~(0xC); /* Clear 0x518[3:2] */
-	RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
+	mt7610u_write32(pAd, RF_MISC, MacReg);
 
 	DBGPRINT(RT_DEBUG_INFO, ("\n\n*********** PAType = %d ***********\n\n", pAd->chipCap.PAType));
 	if ((pAd->chipCap.PAType == INT_PA_2G_5G) ||
@@ -1359,13 +1359,13 @@ void SetRfChFreqParametersMT76x0(
 		{
 			mt7610u_read32(pAd, RF_MISC, &MacReg);
 			MacReg |= (0x4);
-			RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
+			mt7610u_write32(pAd, RF_MISC, MacReg);
 		}
 		else
 		{
 			mt7610u_read32(pAd, RF_MISC, &MacReg);
 			MacReg |= (0x8);
-			RTMP_IO_WRITE32(pAd, RF_MISC, MacReg);
+			mt7610u_write32(pAd, RF_MISC, MacReg);
 		}
 
 		/* External PA */
@@ -1389,19 +1389,19 @@ void SetRfChFreqParametersMT76x0(
 
 	if (RfBand & RF_G_BAND)
 	{
-		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
+		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
 		/* Set Atten mode = 2 for G band and disable Tx Inc DCOC Cal by Chee's comment */
 		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
 		MacReg &= 0x896400FF;
-		RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, MacReg);
+		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
 	}
 	else
 	{
-		RTMP_IO_WRITE32(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
+		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
 		/* Set Atten mode = 0 For Ext A band and disable Tx Inc DCOC Cal by Chee's comment */
 		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
 		MacReg &= 0x890400FF;
-		RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, MacReg);
+		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
 	}
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
@@ -1512,7 +1512,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 
 	RT28xx_EEPROM_READ16(pAd, 0x24, trsw_mode);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
-		RTMP_IO_WRITE32(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
+		mt7610u_write32(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
 	}
 
@@ -1522,7 +1522,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 	*/
 	mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 	MacReg &= ~(0x3);
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
+	mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
 
 
 	/*
@@ -1530,7 +1530,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 	*/
 	mt7610u_read32(pAd, EXT_CCA_CFG, &MacReg);
 	MacReg |= (0x0000F000);
-	RTMP_IO_WRITE32(pAd, EXT_CCA_CFG, MacReg);
+	mt7610u_write32(pAd, EXT_CCA_CFG, MacReg);
 
 	InitFce(pAd);
 
@@ -1543,7 +1543,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 	mt7610u_read32(pAd, WMM_CTRL, &MacReg);
 	MacReg &= ~(0x000003FF);
 	MacReg |= (0x00000201);
-	RTMP_IO_WRITE32(pAd, WMM_CTRL, MacReg);
+	mt7610u_write32(pAd, WMM_CTRL, MacReg);
 
 #ifdef MCS_LUT_SUPPORT
 	mt7610u_read32(pAd, TX_FBK_LIMIT, &MacReg);
@@ -1551,7 +1551,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter*pAd)
 		MacReg |= 0x40000;
 	else
 		MacReg &= (~0x40000);
-	RTMP_IO_WRITE32(pAd, TX_FBK_LIMIT, MacReg);
+	mt7610u_write32(pAd, TX_FBK_LIMIT, MacReg);
 #endif /* MCS_LUT_SUPPORT */
 
 	return;
@@ -1690,7 +1690,7 @@ static void MT76x0_ChipSwitchChannel(
 		RegValue |= 0x1e4;
 
 	}
-	RTMP_IO_WRITE32(pAd, EXT_CCA_CFG, RegValue);
+	mt7610u_write32(pAd, EXT_CCA_CFG, RegValue);
 
 
 	/*
@@ -1767,7 +1767,7 @@ static void MT76x0_ChipSwitchChannel(
 	Value = Value & (~0x3F3F);
 	Value |= TxPwer;
 	Value |= (0x2F2F << 16);
-	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_0, Value);
+	mt7610u_write32(pAd, TX_ALC_CFG_0, Value);
 #endif /* !MT76x0_TSSI_CAL_COMPENSATION */
 
 #ifdef RTMP_MAC_USB
@@ -1777,9 +1777,9 @@ static void MT76x0_ChipSwitchChannel(
 #endif /* RTMP_MAC_USB */
 
 	if (Channel > 14) {
-		RTMP_IO_WRITE32(pAd, XIFS_TIME_CFG, 0x33a41010);
+		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a41010);
 	} else {
-		RTMP_IO_WRITE32(pAd, XIFS_TIME_CFG, 0x33a4100A);
+		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a4100A);
 	}
 
 	RTMP_GetCurrentSystemTick(&New);
@@ -1943,7 +1943,7 @@ void MT76x0_AsicExtraPowerOverMAC(
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for OFDM 54 */
 	mt7610u_read32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) << 8; /* Get Tx power for HT MCS 7 */
-	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
+	mt7610u_write32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
 
 	/*
 		For HT_MCS_15, extra fill the corresponding register value into MAC 0x13D8
@@ -1957,7 +1957,7 @@ void MT76x0_AsicExtraPowerOverMAC(
 #else
 	ExtraPwrOverTxPwrCfg8 |= (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
 #endif /* DOT11_VHT_AC */
-	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
+	mt7610u_write32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
 
 	/*
 		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC
@@ -1965,7 +1965,7 @@ void MT76x0_AsicExtraPowerOverMAC(
 	*/
 	mt7610u_read32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);
 	ExtraPwrOverTxPwrCfg9 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for STBC MCS 7 */
-	RTMP_IO_WRITE32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
+	mt7610u_write32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
 
 	DBGPRINT(RT_DEBUG_INFO, ("0x13D4 = 0x%08X, 0x13D8 = 0x%08X, 0x13D4 = 0x%08X\n",
 			(UINT)ExtraPwrOverTxPwrCfg7, (UINT)ExtraPwrOverTxPwrCfg8, (UINT)ExtraPwrOverTxPwrCfg9));
@@ -2509,10 +2509,10 @@ void MT76x0_AntennaSelCtrl(
 		DBGPRINT(RT_DEBUG_TRACE, ("%s - Single antenna mode\n", __FUNCTION__));
 	}
 
-	RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl);
-	RTMP_IO_WRITE32(pAd, CMB_CTRL, CmbCtrl);
-	RTMP_IO_WRITE32(pAd, COEXCFG0, CoexCfg0);
-	RTMP_IO_WRITE32(pAd, COEXCFG3, CoexCfg3);
+	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl);
+	mt7610u_write32(pAd, CMB_CTRL, CmbCtrl);
+	mt7610u_write32(pAd, COEXCFG0, CoexCfg0);
+	mt7610u_write32(pAd, COEXCFG3, CoexCfg3);
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
@@ -2545,7 +2545,7 @@ void MT76x0_dynamic_vga_tuning(
 	mt7610u_read32(pAd, AGC1_R8, &reg_val);
 	reg_val &= 0xFFFF80FF;
 	reg_val |= (init_vga << 8);
-	RTMP_IO_WRITE32(pAd, AGC1_R8, reg_val);
+	mt7610u_write32(pAd, AGC1_R8, reg_val);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): RSSI=%d, BBP 2320=0x%x\n", __FUNCTION__, rssi, reg_val));
 }
@@ -2671,18 +2671,18 @@ void MT76x0_Calibration(
 		if (bPowerOn && pAd->chipCap.bInternalTxALC)
 		{
 			MT76x0_TSSI_DC_Calibration(pAd);
-			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0xc);
+			mt7610u_write32(pAd, MAC_SYS_CTRL, 0xc);
 		}
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 	}
 
 	mt7610u_read32(pAd, TX_ALC_CFG_0, &reg_tx_alc); /* We need to restore 0x13b0 after calibration. */
-	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_0, 0x0);
+	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
 	RTMPusecDelay(500);
 
 	mt7610u_read32(pAd, 0x2124, &reg_val); /* We need to restore 0x2124 after calibration. */
 	MacReg = 0xFFFFFF7E; /* Disable 0x2704, 0x2708 controlled by MAC. */
-	RTMP_IO_WRITE32(pAd, 0x2124, MacReg);
+	mt7610u_write32(pAd, 0x2124, MacReg);
 
 	/*
 		Do calibration.
@@ -2873,8 +2873,8 @@ void MT76x0_Calibration(
 	}
 
 	/* Restore 0x2124 & TX_ALC_CFG_0 after calibration completed */
-	RTMP_IO_WRITE32(pAd, 0x2124, reg_val);
-	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_0, reg_tx_alc);
+	mt7610u_write32(pAd, 0x2124, reg_val);
+	mt7610u_write32(pAd, TX_ALC_CFG_0, reg_tx_alc);
 	RTMPusecDelay(100000); // TODO: check response packet from FW
 
 RXDC_Calibration:
@@ -3650,21 +3650,21 @@ void MT76x0_TSSI_DC_Calibration(
 	{
 		// Bypass ADDA controls
 		MAC_Value = 0x60002237;
-		RTMP_IO_WRITE32(pAd, RF_SETTING_0, MAC_Value);
+		mt7610u_write32(pAd, RF_SETTING_0, MAC_Value);
 		MAC_Value = 0xFFFFFFFF;
-		RTMP_IO_WRITE32(pAd, RF_BYPASS_0, MAC_Value);
+		mt7610u_write32(pAd, RF_BYPASS_0, MAC_Value);
 
 		//********************************************************************//
 		// BBP Soft Reset
 		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value |= 0x00000001;
-		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
+		mt7610u_write32(pAd, CORE_R4, BBP_Value);
 
 		RTMPusecDelay(1);
 
 		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value &= 0xFFFFFFFE;
-		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
+		mt7610u_write32(pAd, CORE_R4, BBP_Value);
 		//********************************************************************//
 
 		if( pAd->hw_cfg.cent_ch > 14 )
@@ -3672,18 +3672,18 @@ void MT76x0_TSSI_DC_Calibration(
 			// EXT TSSI
 			// Set avg mode on Q channel
 			BBP_Value = 0x00080055;
-			RTMP_IO_WRITE32(pAd, CORE_R34, BBP_Value);
+			mt7610u_write32(pAd, CORE_R34, BBP_Value);
 		}
 		else
 		{
 			// Set avg mode on I channel
 			BBP_Value = 0x00080050;
-			RTMP_IO_WRITE32(pAd, CORE_R34, BBP_Value);
+			mt7610u_write32(pAd, CORE_R34, BBP_Value);
 		}
 
         // Enable TX with 0 DAC inputs
         BBP_Value = 0x80000000;
-		RTMP_IO_WRITE32(pAd, TXBE_R6, BBP_Value);
+		mt7610u_write32(pAd, TXBE_R6, BBP_Value);
 
 		// Wait until avg done
 		do
@@ -3709,23 +3709,23 @@ void MT76x0_TSSI_DC_Calibration(
 		//              MAC_Value = 0x0;
 		//              rtmp.HwMemoryWriteDword(RA_RF_SETTING_0, MAC_Value, 4);
 		MAC_Value = 0x0;
-		RTMP_IO_WRITE32(pAd, RF_BYPASS_0, MAC_Value);
+		mt7610u_write32(pAd, RF_BYPASS_0, MAC_Value);
 
 		// Stop TX
 		BBP_Value = 0x0;
-		RTMP_IO_WRITE32(pAd, TXBE_R6, BBP_Value);
+		mt7610u_write32(pAd, TXBE_R6, BBP_Value);
 
 		//********************************************************************//
 		// BBP Soft Reset
 		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value |= 0x00000001;
-		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
+		mt7610u_write32(pAd, CORE_R4, BBP_Value);
 
 		RTMPusecDelay(1);
 
 		mt7610u_read32(pAd, CORE_R4, &BBP_Value);
 		BBP_Value &= 0xFFFFFFFE;
-		RTMP_IO_WRITE32(pAd, CORE_R4, BBP_Value);
+		mt7610u_write32(pAd, CORE_R4, BBP_Value);
 		//********************************************************************//
 	}
 
@@ -4208,7 +4208,7 @@ void MT76x0_IntTxAlcProcess(
 	reg_val &= 0xFFFFFFC0;
 	reg_val |= (tssi_write&0x3F);
 	DBGPRINT(RT_DEBUG_ERROR, ("%s ==> reg_val = 0x%08X\n", __FUNCTION__, reg_val));
-	RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, reg_val);
+	mt7610u_write32(pAd, TX_ALC_CFG_1, reg_val);
 	mt7610u_read32(pAd, TX_ALC_CFG_1, &reg_val);
 	DBGPRINT(RT_DEBUG_ERROR, ("(0x13B4) After compensation 0x%08X\n", reg_val));
 }
@@ -4439,7 +4439,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 			*/
 			mt7610u_read32(pAd, TX_ALC_CFG_1, &mac_val);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
-			RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, mac_val);
+			mt7610u_write32(pAd, TX_ALC_CFG_1, mac_val);
 
 			DBGPRINT(RT_DEBUG_TRACE,
 				("%s - delta_pwr = %d, TssiCalibratedOffset = %d, TssiMpOffset = %d, 0x13B4 = 0x%08x, %s = %d, DeltaPwrBeforeTempComp = %d, LastTempCompDeltaPwr =%d\n",

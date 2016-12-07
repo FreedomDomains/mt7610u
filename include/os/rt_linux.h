@@ -675,7 +675,7 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define mt7610u_read32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (_pV))
 
-#define RTMP_IO_WRITE32(_A, _R, _V)								\
+#define mt7610u_write32(_A, _R, _V)								\
 	RTUSBWriteMACRegister((_A), (_R), (u32) (_V))
 
 #define RTMP_IO_WRITE8(_A, _R, _V)								\

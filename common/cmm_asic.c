@@ -268,10 +268,10 @@ void AsicUpdateAutoFallBackTable(
 skipUpdate:
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-	RTMP_IO_WRITE32(pAd, HT_FBK_CFG0, HtCfg0.word);
-	RTMP_IO_WRITE32(pAd, HT_FBK_CFG1, HtCfg1.word);
-	RTMP_IO_WRITE32(pAd, LG_FBK_CFG0, LgCfg0.word);
-	RTMP_IO_WRITE32(pAd, LG_FBK_CFG1, LgCfg1.word);
+	mt7610u_write32(pAd, HT_FBK_CFG0, HtCfg0.word);
+	mt7610u_write32(pAd, HT_FBK_CFG1, HtCfg1.word);
+	mt7610u_write32(pAd, LG_FBK_CFG0, LgCfg0.word);
+	mt7610u_write32(pAd, LG_FBK_CFG1, LgCfg1.word);
 
 #ifdef DOT11N_SS3_SUPPORT
 	if (IS_RT2883(pAd) || IS_RT3883(pAd)
@@ -280,8 +280,8 @@ skipUpdate:
 #endif /* AGS_SUPPORT */
 	)
 	{
-		RTMP_IO_WRITE32(pAd, TX_FBK_CFG_3S_0, Ht3SSCfg0.word);
-		RTMP_IO_WRITE32(pAd, TX_FBK_CFG_3S_1, Ht3SSCfg1.word);
+		mt7610u_write32(pAd, TX_FBK_CFG_3S_0, Ht3SSCfg0.word);
+		mt7610u_write32(pAd, TX_FBK_CFG_3S_1, Ht3SSCfg1.word);
 		DBGPRINT(RT_DEBUG_TRACE, ("AsicUpdateAutoFallBackTable: Ht3SSCfg0=0x%x, Ht3SSCfg1=0x%x\n", Ht3SSCfg0.word, Ht3SSCfg1.word));
 	}
 #endif /* DOT11N_SS3_SUPPORT */
@@ -360,7 +360,7 @@ void AsicUpdateProtect(
 			MacReg |= (pAd->CommonCfg.RtsThreshold << 8);
         }
 
-	RTMP_IO_WRITE32(pAd, TX_RTS_CFG, MacReg);
+	mt7610u_write32(pAd, TX_RTS_CFG, MacReg);
 
 	/* Initial common protection settings*/
 	memset(Protect, 0, sizeof(Protect));
@@ -509,15 +509,15 @@ void AsicUpdateProtect(
 
 					mt7610u_read32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -560,17 +560,17 @@ void AsicUpdateProtect(
 					mt7610u_read32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -615,17 +615,17 @@ void AsicUpdateProtect(
 
 					mt7610u_read32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -669,17 +669,17 @@ void AsicUpdateProtect(
 					mt7610u_read32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG7, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					mt7610u_read32(pAd, TX_PROT_CFG8, &vht_port_cfg.word);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -715,7 +715,7 @@ void AsicUpdateProtect(
 	{
 		if ((SetMask & (1<< i)))
 		{
-			RTMP_IO_WRITE32(pAd, offset + i*4, Protect[i]);
+			mt7610u_write32(pAd, offset + i*4, Protect[i]);
 		}
 	}
 
@@ -732,7 +732,7 @@ void AsicUpdateProtect(
 			else if (pAd->CommonCfg.vht_bw_signal == 2)/* dynamic */
 				MacReg |= 0x18000000;
 		}
-		RTMP_IO_WRITE32(pAd, TX_PROT_CFG8, MacReg);
+		mt7610u_write32(pAd, TX_PROT_CFG8, MacReg);
 	}
 #endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
@@ -924,7 +924,7 @@ void AsicSetBssid(
 			(ULONG)(pBssid[1] << 8)  |
 			(ULONG)(pBssid[2] << 16) |
 			(ULONG)(pBssid[3] << 24);
-	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW0, Addr4);
+	mt7610u_write32(pAd, MAC_BSSID_DW0, Addr4);
 
 
 	Addr4 = 0;
@@ -932,7 +932,7 @@ void AsicSetBssid(
 	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
 
 
-	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW1, Addr4);
+	mt7610u_write32(pAd, MAC_BSSID_DW1, Addr4);
 }
 
 
@@ -953,12 +953,12 @@ void AsicEnableRDG(
 
 	mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 	TxLinkCfg.field.TxRDGEn = 1;
-	RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
 	mt7610u_read32(pAd, EDCA_AC0_CFG, &Data);
 	Data  &= 0xFFFFFF00;
 	Data  |= 0x80;
-	RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
+	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 }
 
 /*
@@ -979,7 +979,7 @@ void AsicDisableRDG(
 
 	mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 	TxLinkCfg.field.TxRDGEn = 0;
-	RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
 	mt7610u_read32(pAd, EDCA_AC0_CFG, &Data);
 
@@ -999,7 +999,7 @@ void AsicDisableRDG(
 		if (pAd->CommonCfg.bEnableTxBurst)
 		Data |= 0x20;
 	}
-	RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
+	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 
 }
 #endif /* DOT11_N_SUPPORT */
@@ -1029,7 +1029,7 @@ void AsicDisableSync(
 	csr.field.bTBTTEnable = 0;
 	csr.field.TsfSyncMode = 0;
 	csr.field.bTsfTicking = 0;
-	RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr.word);
+	mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
 
 }
 
@@ -1049,7 +1049,7 @@ void AsicEnableBssSync(
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableBssSync(INFRA mode)\n"));
 
 	mt7610u_read32(pAd, BCN_TIME_CFG, &csr.word);
-/*	RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, 0x00000000);*/
+/*	mt7610u_write32(pAd, BCN_TIME_CFG, 0x00000000);*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
@@ -1060,7 +1060,7 @@ void AsicEnableBssSync(
 		csr.field.bTBTTEnable = 1;
 	}
 #endif /* CONFIG_STA_SUPPORT */
-	RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr.word);
+	mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
 }
 
 /*
@@ -1105,7 +1105,7 @@ void AsicEnableIbssSync(
 	csr9.field.bBeaconGen = 0;
 	csr9.field.bTBTTEnable = 0;
 	csr9.field.bTsfTicking = 0;
-	RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr9.word);
+	mt7610u_write32(pAd, BCN_TIME_CFG, csr9.word);
 	beaconBaseLocation = HW_BEACON_BASE0(pAd);
 
 
@@ -1135,7 +1135,7 @@ void AsicEnableIbssSync(
 	/* For Wi-Fi faily generated beacons between participating stations. */
 	/* Set TBTT phase adaptive adjustment step to 8us (default 16us)*/
 	/* don't change settings 2006-5- by Jerry*/
-	/*RTMP_IO_WRITE32(pAd, TBTT_SYNC_CFG, 0x00001010);*/
+	/*mt7610u_write32(pAd, TBTT_SYNC_CFG, 0x00001010);*/
 
 	/* start sending BEACON*/
 	csr9.field.BeaconInterval = pAd->CommonCfg.BeaconPeriod << 4; /* ASIC register in units of 1/16 TU*/
@@ -1147,7 +1147,7 @@ void AsicEnableIbssSync(
 	csr9.field.TsfSyncMode = 2; /* sync TSF in IBSS mode*/
 	csr9.field.bTBTTEnable = 1;
 	csr9.field.bBeaconGen = 1;
-	RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr9.word);
+	mt7610u_write32(pAd, BCN_TIME_CFG, csr9.word);
 }
 
 /*
@@ -1202,13 +1202,13 @@ void AsicSetEdcaParm(
 		Ac0Cfg.field.Cwmin = CW_MIN_IN_BITS;
 		Ac0Cfg.field.Cwmax = CW_MAX_IN_BITS;
 		Ac0Cfg.field.Aifsn = 2;
-		RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Ac0Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC0_CFG, Ac0Cfg.word);
 
 		Ac1Cfg.field.AcTxop = 0;	/* QID_AC_BK*/
 		Ac1Cfg.field.Cwmin = CW_MIN_IN_BITS;
 		Ac1Cfg.field.Cwmax = CW_MAX_IN_BITS;
 		Ac1Cfg.field.Aifsn = 2;
-		RTMP_IO_WRITE32(pAd, EDCA_AC1_CFG, Ac1Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC1_CFG, Ac1Cfg.word);
 
 		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
 		{
@@ -1223,18 +1223,18 @@ void AsicSetEdcaParm(
 		Ac2Cfg.field.Cwmin = CW_MIN_IN_BITS;
 		Ac2Cfg.field.Cwmax = CW_MAX_IN_BITS;
 		Ac2Cfg.field.Aifsn = 2;
-		RTMP_IO_WRITE32(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
 		Ac3Cfg.field.Cwmin = CW_MIN_IN_BITS;
 		Ac3Cfg.field.Cwmax = CW_MAX_IN_BITS;
 		Ac3Cfg.field.Aifsn = 2;
-		RTMP_IO_WRITE32(pAd, EDCA_AC3_CFG, Ac3Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC3_CFG, Ac3Cfg.word);
 
 		/*========================================================*/
 		/*      DMA Register has a copy too.*/
 		/*========================================================*/
 		csr0.field.Ac0Txop = 0;		/* QID_AC_BE*/
 		csr0.field.Ac1Txop = 0;		/* QID_AC_BK*/
-		RTMP_IO_WRITE32(pAd, WMM_TXOP0_CFG, csr0.word);
+		mt7610u_write32(pAd, WMM_TXOP0_CFG, csr0.word);
 		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
 		{
 			csr1.field.Ac2Txop = 192;		/* AC_VI: 192*32us ~= 6ms*/
@@ -1245,23 +1245,23 @@ void AsicSetEdcaParm(
 			csr1.field.Ac2Txop = 96;		/* AC_VI: 96*32us ~= 3ms*/
 			csr1.field.Ac3Txop = 48;		/* AC_VO: 48*32us ~= 1.5ms*/
 		}
-		RTMP_IO_WRITE32(pAd, WMM_TXOP1_CFG, csr1.word);
+		mt7610u_write32(pAd, WMM_TXOP1_CFG, csr1.word);
 
 		CwminCsr.word = 0;
 		CwminCsr.field.Cwmin0 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin1 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin2 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin3 = CW_MIN_IN_BITS;
-		RTMP_IO_WRITE32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
+		mt7610u_write32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
 
 		CwmaxCsr.word = 0;
 		CwmaxCsr.field.Cwmax0 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax1 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax2 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax3 = CW_MAX_IN_BITS;
-		RTMP_IO_WRITE32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
+		mt7610u_write32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
 
-		RTMP_IO_WRITE32(pAd, WMM_AIFSN_CFG, 0x00002222);
+		mt7610u_write32(pAd, WMM_AIFSN_CFG, 0x00002222);
 
 		memset(&pAd->CommonCfg.APEdcaParm, 0, sizeof(EDCA_PARM));
 
@@ -1339,10 +1339,10 @@ void AsicSetEdcaParm(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-		RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Ac0Cfg.word);
-		RTMP_IO_WRITE32(pAd, EDCA_AC1_CFG, Ac1Cfg.word);
-		RTMP_IO_WRITE32(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
-		RTMP_IO_WRITE32(pAd, EDCA_AC3_CFG, Ac3Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC0_CFG, Ac0Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC1_CFG, Ac1Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg.word);
+		mt7610u_write32(pAd, EDCA_AC3_CFG, Ac3Cfg.word);
 
 
 		/*========================================================*/
@@ -1350,11 +1350,11 @@ void AsicSetEdcaParm(
 		/*========================================================*/
 		csr0.field.Ac0Txop = Ac0Cfg.field.AcTxop;
 		csr0.field.Ac1Txop = Ac1Cfg.field.AcTxop;
-		RTMP_IO_WRITE32(pAd, WMM_TXOP0_CFG, csr0.word);
+		mt7610u_write32(pAd, WMM_TXOP0_CFG, csr0.word);
 
 		csr1.field.Ac2Txop = Ac2Cfg.field.AcTxop;
 		csr1.field.Ac3Txop = Ac3Cfg.field.AcTxop;
-		RTMP_IO_WRITE32(pAd, WMM_TXOP1_CFG, csr1.word);
+		mt7610u_write32(pAd, WMM_TXOP1_CFG, csr1.word);
 
 		CwminCsr.word = 0;
 		CwminCsr.field.Cwmin0 = pEdcaParm->Cwmin[QID_AC_BE];
@@ -1364,14 +1364,14 @@ void AsicSetEdcaParm(
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 			CwminCsr.field.Cwmin3 = pEdcaParm->Cwmin[QID_AC_VO] - 1; /*for TGn wifi test*/
 #endif /* CONFIG_STA_SUPPORT */
-		RTMP_IO_WRITE32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
+		mt7610u_write32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
 
 		CwmaxCsr.word = 0;
 		CwmaxCsr.field.Cwmax0 = pEdcaParm->Cwmax[QID_AC_BE];
 		CwmaxCsr.field.Cwmax1 = pEdcaParm->Cwmax[QID_AC_BK];
 		CwmaxCsr.field.Cwmax2 = pEdcaParm->Cwmax[QID_AC_VI];
 		CwmaxCsr.field.Cwmax3 = pEdcaParm->Cwmax[QID_AC_VO];
-		RTMP_IO_WRITE32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
+		mt7610u_write32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
 
 		AifsnCsr.word = 0;
 		AifsnCsr.field.Aifsn0 = Ac0Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_BE];*/
@@ -1415,7 +1415,7 @@ void AsicSetEdcaParm(
 			AifsnCsr.field.Aifsn3 = Ac3Cfg.field.Aifsn - 1; /*pEdcaParm->Aifsn[QID_AC_VO]; for TGn wifi test*/
 		}
 #endif /* CONFIG_STA_SUPPORT */
-		RTMP_IO_WRITE32(pAd, WMM_AIFSN_CFG, AifsnCsr.word);
+		mt7610u_write32(pAd, WMM_AIFSN_CFG, AifsnCsr.word);
 
 		memmove(&pAd->CommonCfg.APEdcaParm, pEdcaParm, sizeof(EDCA_PARM));
 		if (!ADHOC_ON(pAd))
@@ -1525,7 +1525,7 @@ void 	AsicSetSlotTime(
 
 	RegValue |= SlotTime;
 
-	RTMP_IO_WRITE32(pAd, BKOFF_SLOT_CFG, RegValue);
+	mt7610u_write32(pAd, BKOFF_SLOT_CFG, RegValue);
 }
 
 /*
@@ -1633,7 +1633,7 @@ void AsicAddSharedKeyEntry(
 			csr1.field.Bss1Key3CipherAlg = CipherAlg;
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
-	RTMP_IO_WRITE32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
+	mt7610u_write32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
 
 }
 
@@ -1685,7 +1685,7 @@ void AsicRemoveSharedKeyEntry(
 			csr1.field.Bss1Key3CipherAlg = 0;
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
-	RTMP_IO_WRITE32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
+	mt7610u_write32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
 	ASSERT(BssIndex < 4);
 	ASSERT(KeyIdx < 4);
 
@@ -1701,8 +1701,8 @@ void AsicUpdateWCIDIVEIV(
 
 	offset = MAC_IVEIV_TABLE_BASE + (WCID * HW_IVEIV_ENTRY_SIZE);
 
-	RTMP_IO_WRITE32(pAd, offset, uIV);
-	RTMP_IO_WRITE32(pAd, offset + 4, uEIV);
+	mt7610u_write32(pAd, offset, uIV);
+	mt7610u_write32(pAd, offset + 4, uEIV);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx \n",
 									__FUNCTION__, WCID, uIV, uEIV));
@@ -1719,9 +1719,9 @@ void AsicUpdateRxWCIDTable(
 
 	offset = MAC_WCID_BASE + (WCID * HW_WCID_ENTRY_SIZE);
 	Addr = pAddr[0] + (pAddr[1] << 8) +(pAddr[2] << 16) +(pAddr[3] << 24);
-	RTMP_IO_WRITE32(pAd, offset, Addr);
+	mt7610u_write32(pAd, offset, Addr);
 	Addr = pAddr[4] + (pAddr[5] << 8);
-	RTMP_IO_WRITE32(pAd, offset + 4, Addr);
+	mt7610u_write32(pAd, offset + 4, Addr);
 }
 
 
@@ -1780,7 +1780,7 @@ void AsicUpdateWcidAttributeEntry(
 
 	/* Update related information to ASIC */
 	offset = MAC_WCID_ATTRIBUTE_BASE + (Wcid * HW_WCID_ATTRI_SIZE);
-	RTMP_IO_WRITE32(pAd, offset, WCIDAttri.word);
+	mt7610u_write32(pAd, offset, WCIDAttri.word);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s : WCID #%d, KeyIndex #%d, Alg=%s\n", __FUNCTION__, Wcid, KeyIdx, CipherName[CipherAlg]));
 	DBGPRINT(RT_DEBUG_TRACE, ("		WCIDAttri = 0x%x \n", WCIDAttri.word));
@@ -1819,13 +1819,13 @@ void AsicDelWcidTab(struct rtmp_adapter*pAd, u8 wcid_idx)
 	for (cnt = cnt_s; cnt_s <= cnt_e; cnt_s++)
 	{
 		offset = MAC_WCID_BASE + cnt * HW_WCID_ENTRY_SIZE;
-		RTMP_IO_WRITE32(pAd, offset, 0x0);
-		RTMP_IO_WRITE32(pAd, offset + 4, 0x0);
+		mt7610u_write32(pAd, offset, 0x0);
+		mt7610u_write32(pAd, offset + 4, 0x0);
 #ifdef MCS_LUT_SUPPORT
 		if (mcs_tb_offset) {
 			offset += mcs_tb_offset;
-			RTMP_IO_WRITE32(pAd, offset, 0x0);
-			RTMP_IO_WRITE32(pAd, offset + 4, 0x0);
+			mt7610u_write32(pAd, offset, 0x0);
+			mt7610u_write32(pAd, offset + 4, 0x0);
 		}
 #endif /* MCS_LUT_SUPPORT */
 	}
@@ -2013,7 +2013,7 @@ void AsicEnableRalinkBurstMode(
 	pAd->CommonCfg.RestoreBurstMode = Data;
 	Data  &= 0xFFF00000;
 	Data  |= 0x86380;
-	RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
+	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 }
 
 /*
@@ -2045,7 +2045,7 @@ void AsicDisableRalinkBurstMode(
 		else if (pAd->CommonCfg.bEnableTxBurst)
 			Data |= 0x20;
 	}
-	RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
+	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 }
 #endif // DOT11_N_SUPPORT //
 
@@ -2056,11 +2056,11 @@ INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, bool enable)
 	mt7610u_read32(pAd, INT_TIMER_CFG, &val);
 	val &= 0xffff0000;
 	val |= 6 << 4; /* Pre-TBTT is 6ms before TBTT interrupt. 1~10 ms is reasonable. */
-	RTMP_IO_WRITE32(pAd, INT_TIMER_CFG, val);
+	mt7610u_write32(pAd, INT_TIMER_CFG, val);
 	/* Enable pre-tbtt interrupt */
 	mt7610u_read32(pAd, INT_TIMER_EN, &val);
 	val |=0x1;
-	RTMP_IO_WRITE32(pAd, INT_TIMER_EN, val);
+	mt7610u_write32(pAd, INT_TIMER_EN, val);
 
 	return true;
 }
@@ -2179,14 +2179,14 @@ void AsicSetApCliBssid(
 			(u32)(pBssid[1] << 8)  |
 			(u32)(pBssid[2] << 16) |
 			(u32)(pBssid[3] << 24);
-	RTMP_IO_WRITE32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
+	mt7610u_write32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
 
 	Addr4 = 0;
 	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 
-	RTMP_IO_WRITE32(pAd, MAC_APCLI_BSSID_DW1, Addr4);
+	mt7610u_write32(pAd, MAC_APCLI_BSSID_DW1, Addr4);
 }
 
 #ifdef MAC_REPEATER_SUPPORT
@@ -2213,14 +2213,14 @@ void AsicSetExtendedMacAddr(
 			(u32)(pMacAddr[1] << 8)  |
 			(u32)(pMacAddr[2] << 16) |
 			(u32)(pMacAddr[3] << 24);
-	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
+	mt7610u_write32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
 
 	Addr4 = 0;
 	Addr4 = (ULONG)(pMacAddr[4]) | (ULONG)(pMacAddr[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 
-	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_47_32 + (Idx*8), Addr4);
+	mt7610u_write32(pAd, MAC_ADDR_EXT0_47_32 + (Idx*8), Addr4);
 }
 #endif /* MAC_REPEATER_SUPPORT */
 

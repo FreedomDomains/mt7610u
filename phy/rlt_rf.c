@@ -85,7 +85,7 @@ int rlt_rf_write(
 
 
 		rfcsr.field.RF_CSR_DATA = value;
-		RTMP_IO_WRITE32(pAd, RF_CSR_CFG, rfcsr.word);
+		mt7610u_write32(pAd, RF_CSR_CFG, rfcsr.word);
 
 		ret = NDIS_STATUS_SUCCESS;
 
@@ -162,7 +162,7 @@ int rlt_rf_read(
 			rfcsr.field.RF_CSR_KICK = 1;
 			rfcsr.field.RF_CSR_REG_ID = regID;
 			rfcsr.field.RF_CSR_REG_BANK = bank;
-			RTMP_IO_WRITE32(pAd, RF_CSR_CFG, rfcsr.word);
+			mt7610u_write32(pAd, RF_CSR_CFG, rfcsr.word);
 
 			for (k=0; k<MAX_BUSY_COUNT; k++)
 			{

@@ -471,7 +471,7 @@ void MlmeHalt(
 			LedCfg.field.RLedMode = 0;
 			LedCfg.field.GLedMode = 0;
 			LedCfg.field.YLedMode = 0;
-			RTMP_IO_WRITE32(pAd, LED_CFG, LedCfg.word);
+			mt7610u_write32(pAd, LED_CFG, LedCfg.word);
 		}
 #endif /* RTMP_MAC_USB */
 #endif /* LED_CONTROL_SUPPORT */
@@ -585,7 +585,7 @@ void MlmePeriodicExec(
 				txop_cfg = 0x243f;
 				pAd->CommonCfg.IOTestParm.bToggle = false;
 			}
-			RTMP_IO_WRITE32(pAd, TXOP_CTRL_CFG, txop_cfg);
+			mt7610u_write32(pAd, TXOP_CTRL_CFG, txop_cfg);
 		}
 	}
 #endif /* CONFIG_STA_SUPPORT */
@@ -766,7 +766,7 @@ void MlmePeriodicExec(
 			mt7610u_read32(pAd, 0x10F4, &MacReg);
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
 			{
-				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x1);
+				mt7610u_write32(pAd, MAC_SYS_CTRL, 0x1);
 				RTMPusecDelay(1);
 				MacReg = 0;
 				{
@@ -774,7 +774,7 @@ void MlmePeriodicExec(
 				}
 
 				if (MacReg)
-					RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
+					mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
 
 				DBGPRINT(RT_DEBUG_WARN,("Warning, MAC specific condition occurs \n"));
 			}
@@ -1646,7 +1646,7 @@ void MlmeSetTxPreamble(
 		csr4.field.AutoResponderPreamble = 1;
 	}
 
-	RTMP_IO_WRITE32(pAd, AUTO_RSP_CFG, csr4.word);
+	mt7610u_write32(pAd, AUTO_RSP_CFG, csr4.word);
 }
 
 /*
@@ -1883,7 +1883,7 @@ void MlmeUpdateTxRates(
 			MinSupport = Rate;
 	}
 
-	RTMP_IO_WRITE32(pAd, LEGACY_BASIC_RATE, BasicRateBitmap);
+	mt7610u_write32(pAd, LEGACY_BASIC_RATE, BasicRateBitmap);
 
 	for (i=0; i<MAX_LEN_OF_SUPPORTED_RATES; i++)
 	{
@@ -4922,7 +4922,7 @@ void RTMPSetPiggyBack(
 	mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 
 	TxLinkCfg.field.TxCFAckEn = bPiggyBack;
-	RTMP_IO_WRITE32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 }
 
 /*

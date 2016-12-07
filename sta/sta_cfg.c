@@ -192,10 +192,10 @@ INT Set_NetworkType_Proc(
 			pAd->bConfigChanged = true;
             if (MONITOR_ON(pAd))
             {
-                RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, STANORMAL);
+                mt7610u_write32(pAd, RX_FILTR_CFG, STANORMAL);
                 mt7610u_read32(pAd, MAC_SYS_CTRL, &Value);
 				Value &= (~0x80);
-				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, Value);
+				mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
                 LinkDown(pAd, false);
             }
@@ -228,10 +228,10 @@ INT Set_NetworkType_Proc(
 			pAd->bConfigChanged = true;
             if (MONITOR_ON(pAd))
             {
-                RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, STANORMAL);
+                mt7610u_write32(pAd, RX_FILTR_CFG, STANORMAL);
                 mt7610u_read32(pAd, MAC_SYS_CTRL, &Value);
 				Value &= (~0x80);
-				RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, Value);
+				mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
                 LinkDown(pAd, false);
             }
@@ -332,18 +332,18 @@ INT Set_NetworkType_Proc(
 
 
 		/* Enable Rx with promiscuous reception */
-		RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, 0x3);
+		mt7610u_write32(pAd, RX_FILTR_CFG, 0x3);
 		/* ASIC supporsts sniffer function with replacing RSSI with timestamp. */
 		/*mt7610u_read32(pAdapter, MAC_SYS_CTRL, &Value); */
 		/*Value |= (0x80); */
-		/*RTMP_IO_WRITE32(pAdapter, MAC_SYS_CTRL, Value); */
+		/*mt7610u_write32(pAdapter, MAC_SYS_CTRL, Value); */
 
 		/* disable sync */
 		mt7610u_read32(pAd, BCN_TIME_CFG, &csr.word);
 		csr.field.bBeaconGen = 0;
 		csr.field.bTBTTEnable = 0;
 		csr.field.TsfSyncMode = 0;
-		RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr.word);
+		mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
 
 		pAd->StaCfg.BssType = BSS_MONITOR;
 		RTMP_OS_NETDEV_SET_TYPE_MONITOR(pAd->net_dev);
@@ -1178,11 +1178,11 @@ INT Set_XlinkMode_Proc(
 		Value = PSPXLINK;
 	else
 		Value = STANORMAL;
-	RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, Value);
+	mt7610u_write32(pAd, RX_FILTR_CFG, Value);
 	Value = 0;
 	mt7610u_read32(pAd, MAC_SYS_CTRL, &Value);
 	Value &= (~0x80);
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, Value);
+	mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
 
     DBGPRINT(RT_DEBUG_TRACE, ("IF Set_XlinkMode_Proc::(PSPXlink=%d)\n", pAd->StaCfg.PSPXlink));
 	return true;
@@ -1620,7 +1620,7 @@ DBGPRINT(RT_DEBUG_OFF, ("%s():wrq->u.data.length=%d, wrq->u.data.pointer=%s!\n",
 
 			DBGPRINT(RT_DEBUG_TRACE, ("MacAddr=0x%04x, MacValue=0x%x\n", macAddr, macValue));
 
-			RTMP_IO_WRITE32(pAd, macAddr, macValue);
+			mt7610u_write32(pAd, macAddr, macValue);
 			sprintf(msg+strlen(msg), "[0x%04x]:%08x  ", macAddr, macValue);
 		}
 	}

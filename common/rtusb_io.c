@@ -441,7 +441,7 @@ int RTUSBWriteBBPRegister(
 		BbpCsr.field.Busy = 1;
 		BbpCsr.field.Value = Value;
 		BbpCsr.field.RegNum = Id;
-		RTMP_IO_WRITE32(pAd, H2M_BBP_AGENT, BbpCsr.word);
+		mt7610u_write32(pAd, H2M_BBP_AGENT, BbpCsr.word);
 		AsicSendCommandToMcu(pAd, 0x80, 0xff, 0x0, 0x0, true);
 		pAd->BbpWriteLatch[Id] = Value;
 		break;
@@ -1573,26 +1573,26 @@ void RTUSBWatchDog(IN struct rtmp_adapter*pAd)
 	if ((MACValue & 0xff) !=0 )
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("TX QUEUE 0 Not EMPTY(Value=0x%0x). !!!!!!!!!!!!!!!\n", MACValue));
-		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40012);
+		mt7610u_write32(pAd, PBF_CFG, 0xf40012);
 		while((MACValue &0xff) != 0 && (idx++ < 10))
 		{
 		        mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 		        RTMPusecDelay(1);
 		}
-		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40006);
+		mt7610u_write32(pAd, PBF_CFG, 0xf40006);
 	}
 
 	idx = 0;
 	if ((MACValue & 0xff00) !=0 )
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("TX QUEUE 1 Not EMPTY(Value=0x%0x). !!!!!!!!!!!!!!!\n", MACValue));
-		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf4000a);
+		mt7610u_write32(pAd, PBF_CFG, 0xf4000a);
 		while((MACValue &0xff00) != 0 && (idx++ < 10))
 		{
 			mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
 			RTMPusecDelay(1);
 		}
-		RTMP_IO_WRITE32(pAd, PBF_CFG, 0xf40006);
+		mt7610u_write32(pAd, PBF_CFG, 0xf40006);
 	}
 
 

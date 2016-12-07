@@ -333,7 +333,7 @@ void RtmpChipWriteMemory(
 			RTMP_IO_WRITE16(pAd, Offset, Value);
 			break;
 		case 4:
-			RTMP_IO_WRITE32(pAd, Offset, Value);
+			mt7610u_write32(pAd, Offset, Value);
 		default:
 			break;
 	}

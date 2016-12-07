@@ -239,8 +239,8 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 		rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
 
 
-	RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x0c);
+	mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
+	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
 
 	/* 4. Clear idle flag*/
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF);
@@ -265,7 +265,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 		}
 	}
 
-	RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x0c);
+	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
 
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_UP(&pAd->hw_atomic);
@@ -380,7 +380,7 @@ void MT76x0DisableTxRx(
 			*/
 			mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 			MacReg &= ~(0x0000000c);
-			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
+			mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
 		}
 		else
 		{
@@ -389,7 +389,7 @@ void MT76x0DisableTxRx(
 			*/
 			mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
 			MacReg &= ~(0x00000008);
-			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
+			mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
 		}
 	}
 
@@ -533,12 +533,12 @@ void MT76x0_WLAN_ChipOnOff(
 			WlanFunCtrl.field.WLAN_RESET = 1;
 			WlanFunCtrl.field.WLAN_RESET_RF = 1;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 			RTMPusecDelay(20);
 			WlanFunCtrl.field.WLAN_RESET = 0;
 			WlanFunCtrl.field.WLAN_RESET_RF = 0;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(2) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-			RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 			RTMPusecDelay(20);
 		}
 	}
@@ -561,7 +561,7 @@ void MT76x0_WLAN_ChipOnOff(
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-	RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 	RTMPusecDelay(20);
 
 	if (bOn)
@@ -602,11 +602,11 @@ void MT76x0_WLAN_ChipOnOff(
 					Disable WLAN then enable WLAN again
 				*/
 				DISABLE_WLAN_FUN(WlanFunCtrl);
-				RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 				RTMPusecDelay(20);
 
 				ENABLE_WLAN_FUN(WlanFunCtrl);
-				RTMP_IO_WRITE32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 				RTMPusecDelay(20);
 			}
 			else

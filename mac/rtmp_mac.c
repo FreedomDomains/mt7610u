@@ -422,7 +422,7 @@ INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
 	}
 
 	if (val != band_cfg)
-		RTMP_IO_WRITE32(pAd, TX_BAND_CFG, val);
+		mt7610u_write32(pAd, TX_BAND_CFG, val);
 
 	return true;
 }
@@ -449,7 +449,7 @@ INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
 	}
 
 	if (val != band_cfg)
-		RTMP_IO_WRITE32(pAd, TX_BAND_CFG, val);
+		mt7610u_write32(pAd, TX_BAND_CFG, val);
 
 	return true;
 }
@@ -467,7 +467,7 @@ INT rtmp_mac_set_mmps(struct rtmp_adapter*pAd, INT ReduceCorePower)
 		mac_val &= ~0x09;
 
 	if (mac_val != org_val)
-		RTMP_IO_WRITE32(pAd, 0x1210, mac_val);
+		mt7610u_write32(pAd, 0x1210, mac_val);
 
 	return true;
 }

@@ -327,14 +327,14 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	csr2.field.Byte1 = pAd->CurrentAddress[1];
 	csr2.field.Byte2 = pAd->CurrentAddress[2];
 	csr2.field.Byte3 = pAd->CurrentAddress[3];
-	RTMP_IO_WRITE32(pAd, MAC_ADDR_DW0, csr2.word);
+	mt7610u_write32(pAd, MAC_ADDR_DW0, csr2.word);
 	csr3.word = 0;
 	csr3.field.Byte4 = pAd->CurrentAddress[4];
 	{
 		csr3.field.Byte5 = pAd->CurrentAddress[5];
 		csr3.field.U2MeMask = 0xff;
 	}
-	RTMP_IO_WRITE32(pAd, MAC_ADDR_DW1, csr3.word);
+	mt7610u_write32(pAd, MAC_ADDR_DW1, csr3.word);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE,("Current MAC: =%02x:%02x:%02x:%02x:%02x:%02x\n",
 					PRINT_MAC(pAd->CurrentAddress)));
@@ -915,7 +915,7 @@ void NICInitAsicFromEEPROM(
 			{
 				pAd->StaCfg.bHwRadio = false;
 				pAd->StaCfg.bRadio = false;
-/*				RTMP_IO_WRITE32(pAd, PWR_PIN_CFG, 0x00001818);*/
+/*				mt7610u_write32(pAd, PWR_PIN_CFG, 0x00001818);*/
 				RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 			}
 		}
@@ -1057,7 +1057,7 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 		};
 		for (idx = 0; idx < 4; idx ++)
 		{
-			RTMP_IO_WRITE32(pAd, (USHORT)bcn_mac_reg_tb[idx].Register,
+			mt7610u_write32(pAd, (USHORT)bcn_mac_reg_tb[idx].Register,
 									bcn_mac_reg_tb[idx].Value);
 		}
 	}
@@ -1178,7 +1178,7 @@ int	NICInitializeAsic(
 	/* turn on bit13 (set to zero) after rt2860D. This is to solve high-current issue.*/
 	mt7610u_read32(pAd, PBF_SYS_CTRL, &MACValue);
 	MACValue &= (~0x2000);
-	RTMP_IO_WRITE32(pAd, PBF_SYS_CTRL, MACValue);
+	mt7610u_write32(pAd, PBF_SYS_CTRL, MACValue);
 
 	RtmpOsMsDelay(200);
 
@@ -1222,8 +1222,8 @@ int	NICInitializeAsic(
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
-	RTMP_IO_WRITE32(pAd, HEADER_TRANS_CTRL_REG, 0x0);
-	RTMP_IO_WRITE32(pAd, TSO_CTRL, 0x0);
+	mt7610u_write32(pAd, HEADER_TRANS_CTRL_REG, 0x0);
+	mt7610u_write32(pAd, TSO_CTRL, 0x0);
 
 	/* Select Q2 to receive command response */
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
@@ -1299,7 +1299,7 @@ int	NICInitializeAsic(
 			csr &= 0xFFF;
 			csr |= 0x2000;
 		}
-		RTMP_IO_WRITE32(pAd, MAX_LEN_CFG, csr);
+		mt7610u_write32(pAd, MAX_LEN_CFG, csr);
 	}
 
 #ifdef RTMP_MAC_USB
@@ -1322,7 +1322,7 @@ int	NICInitializeAsic(
 	{
 		if (pAd->StaCfg.bRadio == false)
 		{
-/*			RTMP_IO_WRITE32(pAd, PWR_PIN_CFG, 0x00001818);*/
+/*			mt7610u_write32(pAd, PWR_PIN_CFG, 0x00001818);*/
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 			DBGPRINT(RT_DEBUG_TRACE, ("Set Radio Off\n"));
 		}
@@ -1376,7 +1376,7 @@ int	NICInitializeAsic(
 	mt7610u_read32(pAd, USB_CYC_CFG, &Counter);
 	Counter&=0xffffff00;
 	Counter|=0x000001e;
-	RTMP_IO_WRITE32(pAd, USB_CYC_CFG, Counter);
+	mt7610u_write32(pAd, USB_CYC_CFG, Counter);
 	RTUSBBulkReceive(pAd);
 #endif /* RTMP_MAC_USB */
 
@@ -1385,7 +1385,7 @@ int	NICInitializeAsic(
 	{
 		/* for rt2860E and after, init TXOP_CTRL_CFG with 0x583f. This is for extension channel overlapping IOT.*/
 		if ((pAd->MACVersion&0xffff) != 0x0101)
-			RTMP_IO_WRITE32(pAd, TXOP_CTRL_CFG, 0x583f);
+			mt7610u_write32(pAd, TXOP_CTRL_CFG, 0x583f);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -1585,8 +1585,8 @@ void AsicFifoExtSet(IN struct rtmp_adapter*pAd)
 {
 	if (pAd->chipCap.FlgHwFifoExtCap)
 	{
-		RTMP_IO_WRITE32(pAd, WCID_MAPPING_0, 0x04030201);
-		RTMP_IO_WRITE32(pAd, WCID_MAPPING_1, 0x08070605);
+		mt7610u_write32(pAd, WCID_MAPPING_0, 0x04030201);
+		mt7610u_write32(pAd, WCID_MAPPING_1, 0x08070605);
 	}
 }
 
@@ -2867,7 +2867,7 @@ void RTMPEnableRxTx(
 		rx_filter_flag = APNORMAL;
 
 
-		RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);     /* enable RX of DMA block*/
+		mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);     /* enable RX of DMA block*/
 	}
 #ifdef CONFIG_STA_SUPPORT
 	else
@@ -2878,14 +2878,14 @@ void RTMPEnableRxTx(
 		else
 #endif /* XLINK_SUPPORT */
 			rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
-		RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);
+		mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
 	{
-		RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0xc);
+		mt7610u_write32(pAd, MAC_SYS_CTRL, 0xc);
 //+++Add by shiang for debug for pbf_loopback
-//			RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x2c);
+//			mt7610u_write32(pAd, MAC_SYS_CTRL, 0x2c);
 //---Add by shiang for debug
 //+++Add by shiang for debug invalid RxWI->WCID
 //---Add by shiang for  debug invalid RxWI->WCID

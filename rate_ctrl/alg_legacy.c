@@ -177,7 +177,7 @@ void MlmeDynamicTxRateSwitching(
 				TxRtyCfgtmp.word = TxRtyCfg.word;
 				TxRtyCfg.field.LongRtyLimit = 0x0;
 				TxRtyCfg.field.ShortRtyLimit = 0x0;
-				RTMP_IO_WRITE32(pAd, TX_RTY_CFG, TxRtyCfg.word);
+				mt7610u_write32(pAd, TX_RTY_CFG, TxRtyCfg.word);
 
 				RTMPusecDelay(1);
 
@@ -195,7 +195,7 @@ void MlmeDynamicTxRateSwitching(
 				mt7610u_read32(pAd, TX_RTY_CFG, &TxRtyCfg.word);
 				TxRtyCfg.field.LongRtyLimit = TxRtyCfgtmp.field.LongRtyLimit;
 				TxRtyCfg.field.ShortRtyLimit = TxRtyCfgtmp.field.ShortRtyLimit;
-				RTMP_IO_WRITE32(pAd, TX_RTY_CFG, TxRtyCfg.word);
+				mt7610u_write32(pAd, TX_RTY_CFG, TxRtyCfg.word);
 			}
 
 		}

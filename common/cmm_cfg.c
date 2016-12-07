@@ -565,7 +565,7 @@ INT	RT_CfgSetAutoFallBack(
 
 	mt7610u_read32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);
 	tx_rty_cfg.field.TxautoFBEnable = (AutoFallBack) ? 1 : 0;
-	RTMP_IO_WRITE32(pAd, TX_RTY_CFG, tx_rty_cfg.word);
+	mt7610u_write32(pAd, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("RT_CfgSetAutoFallBack::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
 	return true;
 }

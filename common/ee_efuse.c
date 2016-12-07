@@ -165,7 +165,7 @@ u8 eFuseReadRegisters(
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
 	memmove(&data, &eFuseCtrlStruc, 4);
-	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
+	mt7610u_write32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
 	i = 0;
@@ -267,7 +267,7 @@ void eFusePhysicalReadRegisters(
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
 	memmove(&data, &eFuseCtrlStruc, 4);
-	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
+	mt7610u_write32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
 	i = 0;
@@ -420,7 +420,7 @@ static void eFusePhysicalWriteRegisters(
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
 	memmove(&data, &eFuseCtrlStruc, 4);
-	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
+	mt7610u_write32(pAd, efuse_ctrl_reg, data);
 
 	/*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
 	i = 0;
@@ -463,7 +463,7 @@ static void eFusePhysicalWriteRegisters(
 	efuseDataOffset =  efuse_data;
 	for(i=0; i< 4; i++)
 	{
-		RTMP_IO_WRITE32(pAd, efuseDataOffset, eFuseDataBuffer[i]);
+		mt7610u_write32(pAd, efuseDataOffset, eFuseDataBuffer[i]);
 #if defined(RT65xx)
 		if (IS_RT65XX(pAd))
 			efuseDataOffset += 4;
@@ -485,7 +485,7 @@ static void eFusePhysicalWriteRegisters(
 	eFuseCtrlStruc.field.EFSROM_KICK = 1;
 
 	memmove(&data, &eFuseCtrlStruc, 4);
-	RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
+	mt7610u_write32(pAd, efuse_ctrl_reg, data);
 
 	/*Step4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It¡¦s done.*/
 	i = 0;

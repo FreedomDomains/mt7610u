@@ -35,7 +35,7 @@ static inline void RaiseClock(
     IN  u32 *x)
 {
 	*x = *x | EESK;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, *x);
+	mt7610u_write32(pAd, E2PROM_CSR, *x);
 	RTMPusecDelay(1);				/* Max frequency = 1MHz in Spec. definition */
 }
 
@@ -45,7 +45,7 @@ static inline void LowerClock(
     IN  u32 *x)
 {
 	*x = *x & ~EESK;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, *x);
+	mt7610u_write32(pAd, E2PROM_CSR, *x);
 	RTMPusecDelay(1);
 }
 
@@ -95,7 +95,7 @@ static inline void ShiftOutBits(
 	    x &= ~EEDI;
 	    if(data & mask)		x |= EEDI;
 
-	    RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	    mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	    RaiseClock(pAd, &x);
 	    LowerClock(pAd, &x);
@@ -104,7 +104,7 @@ static inline void ShiftOutBits(
 	} while(mask);
 
 	x &= ~EEDI;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 }
 
 
@@ -117,7 +117,7 @@ static inline void EEpromCleanup(
 	mt7610u_read32(pAd, E2PROM_CSR, &x);
 
 	x &= ~(EECS | EEDI);
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	RaiseClock(pAd, &x);
 	LowerClock(pAd, &x);
@@ -133,7 +133,7 @@ static inline void EWEN(
 	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	/* kick a pulse*/
 	RaiseClock(pAd, &x);
@@ -156,7 +156,7 @@ static inline void EWDS(
 	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	/* kick a pulse*/
 	RaiseClock(pAd, &x);
@@ -186,7 +186,7 @@ int rtmp_ee_prom_read16(
 	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	/* output the read_opcode and register number in that order    */
 	ShiftOutBits(pAd, EEPROM_READ_OPCODE, 3);
@@ -221,7 +221,7 @@ int rtmp_ee_prom_write16(
 	mt7610u_read32(pAd, E2PROM_CSR, &x);
 	x &= ~(EEDI | EEDO | EESK);
 	x |= EECS;
-	RTMP_IO_WRITE32(pAd, E2PROM_CSR, x);
+	mt7610u_write32(pAd, E2PROM_CSR, x);
 
 	/* output the read_opcode ,register number and data in that order */
 	ShiftOutBits(pAd, EEPROM_WRITE_OPCODE, 3);

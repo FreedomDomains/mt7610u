@@ -321,13 +321,13 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* auto-fall back settings */
 #ifdef RANGE_EXTEND
-	RTMP_IO_WRITE32(pAd, HT_FBK_CFG1, 0xedcba980);
+	mt7610u_write32(pAd, HT_FBK_CFG1, 0xedcba980);
 #endif // RANGE_EXTEND //
 #ifdef DOT11N_SS3_SUPPORT
 	if (pAd->CommonCfg.TxStream >= 3)
 	{
-		RTMP_IO_WRITE32(pAd, TX_FBK_CFG_3S_0, 0x12111008);
-		RTMP_IO_WRITE32(pAd, TX_FBK_CFG_3S_1, 0x16151413);
+		mt7610u_write32(pAd, TX_FBK_CFG_3S_0, 0x12111008);
+		mt7610u_write32(pAd, TX_FBK_CFG_3S_1, 0x16151413);
 	}
 #endif /* DOT11N_SS3_SUPPORT */
 
@@ -406,7 +406,7 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 		andes_fun_set(pAd, Q_SELECT, pAd->chipCap.CmdRspRxRing);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-		RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x8);
+		mt7610u_write32(pAd, MAC_SYS_CTRL, 0x8);
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 	}
 #endif /* MT76x0 */
