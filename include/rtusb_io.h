@@ -180,9 +180,4 @@ typedef struct _RT_ASIC_PROTECT_INFO {
 			RTEnqueueInternalCmd((_pAd), CMDTHREAD_UPDATE_PROTECT, &AsicProtectInfo, sizeof(RT_ASIC_PROTECT_INFO));\
 		} while(0)
 
-void usb_cfg_read_v1(struct rtmp_adapter *ad, u32 *value);
-void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value);
-void usb_cfg_read_v2(struct rtmp_adapter *ad, u32 *value);
-void usb_cfg_write_v2(struct rtmp_adapter *ad, u32 value);
-
 #endif /* __RTUSB_IO_H__ */

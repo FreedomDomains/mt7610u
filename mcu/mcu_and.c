@@ -128,11 +128,11 @@ loadfw_protect:
 	RTUSBWriteMACRegister(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
-	USB_CFG_READ(ad, &UsbCfg.word);
+	RTUSBReadMACRegister(ad, USB_DMA_CFG, &UsbCfg.word);
 	UsbCfg.field.RxBulkAggTOut = 0x20;
 	UsbCfg.field.TxBulkEn = 1;
 	UsbCfg.field.RxBulkEn = 1;
-	USB_CFG_WRITE(ad, UsbCfg.word);
+	RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
@@ -183,15 +183,15 @@ loadfw_protect:
 	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03);
 
 	if (IS_MT76x0(ad)) {
-		USB_CFG_READ(ad, &cfg.word);
+		RTUSBReadMACRegister(ad, USB_DMA_CFG, &UsbCfg.word);
 
 		cfg.field.UDMA_TX_WL_DROP = 1;
 
-		USB_CFG_WRITE(ad, cfg.word);
+		RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
 
 		cfg.field.UDMA_TX_WL_DROP = 0;
 
-		USB_CFG_WRITE(ad, cfg.word);
+		RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
 	}
 
 	/* Allocate URB */

@@ -2557,7 +2557,7 @@ void StopDmaRx(
 	{
 
 #ifdef  RTMP_MAC_USB
-		USB_CFG_READ(pAd, &MacReg);
+		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MacReg);
 		//RTMP_IO_READ32(pAd, USB_DMA_CFG, &MacReg);
 		if ((MacReg & 0x40000000) && (IdleNums < 10))
 		{
@@ -2608,7 +2608,7 @@ void StopDmaTx(
 	{
 
 #ifdef RTMP_MAC_USB
-		USB_CFG_READ(pAd, &MacReg);
+		RTUSBReadMACRegister(pAd, USB_DMA_CFG, &MacReg);
 		//RTMP_IO_READ32(pAd, USB_DMA_CFG, &MacReg);
 		if (((MacReg & 0x80000000) == 0) && IdleNums > 10)
 		{

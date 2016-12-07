@@ -48,16 +48,6 @@
 	========================================================================
 */
 
-void usb_cfg_read_v1(struct rtmp_adapter *ad, u32 *value)
-{
-	RTUSBReadMACRegister(ad, USB_DMA_CFG, value);
-}
-
-void usb_cfg_write_v1(struct rtmp_adapter *ad, u32 value)
-{
-	RTUSBWriteMACRegister(ad, USB_DMA_CFG, value);
-}
-
 static int	RTUSBFirmwareRun(
 	IN	struct rtmp_adapter *pAd)
 {

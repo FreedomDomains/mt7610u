@@ -692,10 +692,6 @@ struct rtmp_chip_ops {
 	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
 
 	void (*MCU_CtrlExit)(struct rtmp_adapter *ad);
-
-	void (*usb_cfg_read)(struct rtmp_adapter *ad, u32 *value);
-
-	void (*usb_cfg_write)(struct rtmp_adapter *ad, u32 value);
 };
 
 #define RTMP_CHIP_ENABLE_AP_MIMOPS(__pAd, __ReduceCorePower)	\
@@ -912,18 +908,6 @@ do {	\
 do {	\
 	if (_pAd->chipOps.MCU_CtrlExit != NULL)	\
 		_pAd->chipOps.MCU_CtrlExit(_pAd);	\
-} while (0)
-
-#define USB_CFG_READ(_ad, _pvalue)	\
-do {	\
-	if (_ad->chipOps.usb_cfg_read != NULL)	\
-		_ad->chipOps.usb_cfg_read(_ad, _pvalue);	\
-} while (0)
-
-#define USB_CFG_WRITE(_ad, _value)	\
-do {	\
-	if (_ad->chipOps.usb_cfg_write != NULL)	\
-		_ad->chipOps.usb_cfg_write(_ad, _value);	\
 } while (0)
 
 int RtmpChipOpsHook(void *pCB);

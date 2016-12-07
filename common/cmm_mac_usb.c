@@ -1343,7 +1343,8 @@ void RT28XXDMAEnable(
 
 	RTMPusecDelay(50);
 
-	USB_CFG_READ(pAd, &UsbCfg.word);
+	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
+
 
 	UsbCfg.field.UDMA_TX_WL_DROP = 0;
 	/* usb version is 1.1,do not use bulk in aggregation */
@@ -1355,7 +1356,8 @@ void RT28XXDMAEnable(
 	UsbCfg.field.RxBulkEn = 1;
 	UsbCfg.field.TxBulkEn = 1;
 
-	USB_CFG_WRITE(pAd, UsbCfg.word);
+	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+
 	//RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
 }
 

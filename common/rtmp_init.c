@@ -1183,7 +1183,7 @@ int	NICInitializeAsic(
 	RtmpOsMsDelay(200);
 
 #ifdef RTMP_MAC_USB
-	USB_CFG_READ(pAd, &UsbCfg.word);
+	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
 
 	/* USB1.1 do not use bulk in aggregation */
 	if (pAd->BulkInMaxPacketSize == 512)
@@ -1196,24 +1196,28 @@ int	NICInitializeAsic(
 	UsbCfg.field.RxBulkEn = 1;
 	UsbCfg.field.TxBulkEn = 1;
 
-	USB_CFG_WRITE(pAd, UsbCfg.word);
+	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+
 
 	/* check MCU if ready */
 	RTUSBReadMACRegister(pAd, COM_REG0, &MACValue);
 
-	USB_CFG_READ(pAd, &UsbCfg.word);
+	RTUSBReadMACRegister(pAd, USB_DMA_CFG, &UsbCfg.word);
 
 	if (IS_MT76x0(pAd)) {
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;
 
-		USB_CFG_WRITE(pAd, UsbCfg.word);
+		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+
 
 		UsbCfg.field.RX_DROP_OR_PADDING = 0;
 
-		USB_CFG_WRITE(pAd, UsbCfg.word);
+		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+
 	} else if (IS_MT76x2(pAd)){
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;
-		USB_CFG_WRITE(pAd, UsbCfg.word);
+		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+
 	}
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
