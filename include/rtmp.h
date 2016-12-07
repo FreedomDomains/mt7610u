@@ -6569,7 +6569,7 @@ void RTUSBBssBeaconInit(
 void RTUSBWatchDog(
 	IN struct rtmp_adapter*pAd);
 
-int RTUSBWriteMACRegister(
+int mt7610u_write32(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u32			Value);

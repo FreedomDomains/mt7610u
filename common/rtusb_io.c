@@ -135,8 +135,8 @@ int RTUSBFirmwareWrite(
 	/* write firmware */
 	writeLen = FwLen;
 	RTUSBMultiWrite(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen);
-	Status = RTUSBWriteMACRegister(pAd, 0x7014, 0xffffffff);
-	Status = RTUSBWriteMACRegister(pAd, 0x701c, 0xffffffff);
+	Status = mt7610u_write32(pAd, 0x7014, 0xffffffff);
+	Status = mt7610u_write32(pAd, 0x701c, 0xffffffff);
 
 	/* change 8051 from ROM to RAM */
 	Status = RTUSBFirmwareRun(pAd);
@@ -304,7 +304,7 @@ int	mt7610u_read32(
 
 	========================================================================
 */
-int RTUSBWriteMACRegister(
+int mt7610u_write32(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
 	IN u32 Value)
@@ -371,7 +371,7 @@ int	RTUSBReadBBPRegister(
 		BbpCsr.field.BBP_RW_MODE = 1;
 		BbpCsr.field.Busy = 1;
 		BbpCsr.field.RegNum = Id;
-		RTUSBWriteMACRegister(pAd, H2M_BBP_AGENT, BbpCsr.word);
+		mt7610u_write32(pAd, H2M_BBP_AGENT, BbpCsr.word);
 		AsicSendCommandToMcu(pAd, 0x80, 0xff, 0x0, 0x0, true);
 		for (k=0; k<MAX_BUSY_COUNT; k++)
 		{
@@ -509,7 +509,7 @@ int	RTUSBWriteRFRegister(
 		goto done;
 	}
 
-	RTUSBWriteMACRegister(pAd, RF_CSR_CFG0, Value);
+	mt7610u_write32(pAd, RF_CSR_CFG0, Value);
 	status = STATUS_SUCCESS;
 
 done:
@@ -597,8 +597,8 @@ void RTUSBPutToSleep(
 
 	/* Timeout 0x40 x 50us*/
 	value = (SLEEPCID<<16)+(OWNERMCU<<24)+ (0x40<<8)+1;
-	RTUSBWriteMACRegister(pAd, 0x7010, value);
-	RTUSBWriteMACRegister(pAd, 0x404, 0x30);
+	mt7610u_write32(pAd, 0x7010, value);
+	mt7610u_write32(pAd, 0x404, 0x30);
 	/*RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);			*/
 	DBGPRINT_RAW(RT_DEBUG_ERROR, ("Sleep Mailbox testvalue %x\n", value));
 
@@ -877,13 +877,13 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 		mt7610u_read32(pAd, USB_DMA_CFG, &MACValue);
 
 	MACValue |= 0x80000;
-	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, MACValue);
+	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
 
 	/* Wait 1ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
 	RTMPusecDelay(1000);
 
 	MACValue &= (~0x80000);
-	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, MACValue);
+	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
 	DBGPRINT(RT_DEBUG_TRACE, ("\tSet 0x2a0 bit19. Clear USB DMA TX path\n"));
 
 	/* Wait 5ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
@@ -1136,7 +1136,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 	MACValue = (pAd->MacTab.Content[SetAsicWcid.WCID].Addr[3]<<24)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[2]<<16)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[1]<<8)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[0]);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("1-MACValue= %x,\n", MACValue));
-	RTUSBWriteMACRegister(pAd, offset, MACValue);
+	mt7610u_write32(pAd, offset, MACValue);
 	/* Read bitmask*/
 	mt7610u_read32(pAd, offset+4, &MACRValue);
 	if ( SetAsicWcid.DeleteTid != 0xffffffff)
@@ -1147,7 +1147,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, IN PCmdQElmt CMDQelmt)
 	MACRValue &= 0xffff0000;
 	MACValue = (pAd->MacTab.Content[SetAsicWcid.WCID].Addr[5]<<8)+pAd->MacTab.Content[SetAsicWcid.WCID].Addr[4];
 	MACValue |= MACRValue;
-	RTUSBWriteMACRegister(pAd, offset+4, MACValue);
+	mt7610u_write32(pAd, offset+4, MACValue);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("2-MACValue= %x,\n", MACValue));
 

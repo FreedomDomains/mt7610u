@@ -1196,7 +1196,7 @@ int	NICInitializeAsic(
 	UsbCfg.field.RxBulkEn = 1;
 	UsbCfg.field.TxBulkEn = 1;
 
-	RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+	mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
 
 
 	/* check MCU if ready */
@@ -1207,16 +1207,16 @@ int	NICInitializeAsic(
 	if (IS_MT76x0(pAd)) {
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;
 
-		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
 
 
 		UsbCfg.field.RX_DROP_OR_PADDING = 0;
 
-		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
 
 	} else if (IS_MT76x2(pAd)){
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;
-		RTUSBWriteMACRegister(pAd, USB_DMA_CFG, UsbCfg.word);
+		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
 
 	}
 
@@ -1268,9 +1268,9 @@ int	NICInitializeAsic(
 #ifdef RTMP_MAC_USB
 	/* The commands to firmware should be after these commands, these commands will init firmware*/
 	/* PCI and USB are not the same because PCI driver needs to wait for PCI bus ready*/
-		RTUSBWriteMACRegister(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
-		RTUSBWriteMACRegister(pAd,H2M_MAILBOX_CSR,0);
-		RTUSBWriteMACRegister(pAd, H2M_INT_SRC, 0);
+		mt7610u_write32(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
+		mt7610u_write32(pAd,H2M_MAILBOX_CSR,0);
+		mt7610u_write32(pAd, H2M_INT_SRC, 0);
 		AsicSendCommandToMcu(pAd, 0x72, 0x00, 0x00, 0x00, false); /* reset rf by MCU supported by new firmware */
 #endif /* RTMP_MAC_USB */
 

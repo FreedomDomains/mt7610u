@@ -125,14 +125,14 @@ loadfw_protect:
 		}
 	}
 
-	RTUSBWriteMACRegister(ad, 0x1004, 0x2c);
+	mt7610u_write32(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
 	mt7610u_read32(ad, USB_DMA_CFG, &UsbCfg.word);
 	UsbCfg.field.RxBulkAggTOut = 0x20;
 	UsbCfg.field.TxBulkEn = 1;
 	UsbCfg.field.RxBulkEn = 1;
-	RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
+	mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
@@ -168,30 +168,30 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
 
 	/* Enable FCE */
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01);
+	mt7610u_write32(ad, FCE_PSE_CTRL, 0x01);
 
 	/* FCE tx_fs_base_ptr */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230);
+	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230);
 
 	/* FCE tx_fs_max_cnt */
-	RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01);
+	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01);
 
 	/* FCE pdma enable */
-	RTUSBWriteMACRegister(ad, FCE_PDMA_GLOBAL_CONF, 0x44);
+	mt7610u_write32(ad, FCE_PDMA_GLOBAL_CONF, 0x44);
 
 	/* FCE skip_fs_en */
-	RTUSBWriteMACRegister(ad, FCE_SKIP_FS, 0x03);
+	mt7610u_write32(ad, FCE_SKIP_FS, 0x03);
 
 	if (IS_MT76x0(ad)) {
 		mt7610u_read32(ad, USB_DMA_CFG, &UsbCfg.word);
 
 		cfg.field.UDMA_TX_WL_DROP = 1;
 
-		RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
+		mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
 
 		cfg.field.UDMA_TX_WL_DROP = 0;
 
-		RTUSBWriteMACRegister(ad, USB_DMA_CFG, UsbCfg.word);
+		mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
 	}
 
 	/* Allocate URB */
@@ -338,7 +338,7 @@ loadfw_protect:
 
 			mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
+			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
 			RtmpOsMsDelay(5);
 		} else {
@@ -471,7 +471,7 @@ loadfw_protect:
 
 			mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
-			RTUSBWriteMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
+			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 			RtmpOsMsDelay(5);
 		} else 	{
 			break;
@@ -512,9 +512,9 @@ error0:
 	release_firmware(fw);
 
 	if (cap->IsComboChip)
-		RTUSBWriteMACRegister(ad, SEMAPHORE_00, 0x1);
+		mt7610u_write32(ad, SEMAPHORE_00, 0x1);
 
-	RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01);
+	mt7610u_write32(ad, FCE_PSE_CTRL, 0x01);
 
 	return ret;
 }
