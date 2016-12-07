@@ -343,13 +343,6 @@ void CntlOidScanProc(
 /*	BSS_ENTRY                  CurrBss; */
 	BSS_ENTRY *pCurrBss = NULL;
 
-#ifdef RALINK_ATE
-/* Disable scanning when ATE is running. */
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
-
-
 	/* allocate memory */
 	pCurrBss = kmalloc(sizeof (BSS_ENTRY), GFP_ATOMIC);
 	if (pCurrBss == NULL) {
@@ -594,14 +587,6 @@ void CntlOidRTBssidProc(
 	MLME_DISASSOC_REQ_STRUCT DisassocReq;
 	MLME_JOIN_REQ_STRUCT JoinReq;
 	PBSS_ENTRY pInBss = NULL;
-
-
-
-#ifdef RALINK_ATE
-/* No need to perform this routine when ATE is running. */
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
 
 	/* record user desired settings */
 	memcpy(pAd->MlmeAux.Bssid, pOidBssid, ETH_ALEN);
@@ -2086,12 +2071,6 @@ void LinkDown(
 	/* Do nothing if monitor mode is on */
 	if (MONITOR_ON(pAd))
 		return;
-
-#ifdef RALINK_ATE
-	/* Nothing to do in ATE mode. */
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK DOWN !!!\n"));
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_AGGREGATION_INUSED);

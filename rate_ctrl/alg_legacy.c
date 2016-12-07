@@ -68,13 +68,6 @@ void MlmeDynamicTxRateSwitching(
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
 #endif /* AGS_SUPPORT */
 
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-	{
-		return;
-	}
-#endif /* RALINK_ATE */
-
 	/* Update statistic counter */
 	NicGetTxRawCounters(pAd, &TxStaCnt0, &StaTx1);
 

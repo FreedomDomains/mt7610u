@@ -142,8 +142,4 @@ DECLARE_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
 
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef RALINK_ATE
-DECLARE_TIMER_FUNCTION(ATEPeriodicExec);
-#endif /* RALINK_ATE */
-
 #endif /* __RTMP_TIMER_H__ */

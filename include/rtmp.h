@@ -83,12 +83,6 @@ typedef struct _UAPSD_INFO {
 #include "rt_led.h"
 #endif /* LED_CONTROL_SUPPORT */
 
-
-#ifdef RALINK_ATE
-#include "rt_ate.h"
-#endif /* RALINK_ATE */
-
-
 /*#define DBG		1 */
 
 /*#define DBG_DIAGNOSE		1 */
@@ -2536,9 +2530,6 @@ struct rtmp_adapter {
 	void *wait;
 
 	/* lock for ATE */
-#ifdef RALINK_ATE
-	spinlock_t GenericLock;	/* ATE Tx/Rx generic spinlock */
-#endif /* RALINK_ATE */
 
 #endif /* RTMP_MAC_USB */
 
@@ -2934,15 +2925,6 @@ struct rtmp_adapter {
 	struct wificonf WIFItestbed;
 
 	u8 	TssiGain;
-#ifdef RALINK_ATE
-	ATE_INFO ate;
-#ifdef RTMP_MAC_USB
-	bool ContinBulkOut;	/*ATE bulk out control */
-	bool ContinBulkIn;	/*ATE bulk in control */
-	RTMP_OS_ATOMIC BulkOutRemained;
-	RTMP_OS_ATOMIC BulkInRemained;
-#endif /* RTMP_MAC_USB */
-#endif /* RALINK_ATE */
 
 #ifdef DOT11_N_SUPPORT
 	struct reordering_mpdu_pool mpdu_blk_pool;

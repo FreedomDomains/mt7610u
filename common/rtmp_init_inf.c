@@ -217,15 +217,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	NICInitAsicFromEEPROM(pAd); /* rt2860b */
 
-#ifdef RALINK_ATE
-	if (ATEInit(pAd) != NDIS_STATUS_SUCCESS)
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s(): ATE initialization failed !\n", __FUNCTION__));
-		goto err6;
-	}
-#endif /* RALINK_ATE */
-
-
 #ifdef RTMP_INTERNAL_TX_ALC
 	/* Initialize the desired TSSI table*/
 	RTMP_CHIP_ASIC_TSSI_TABLE_INIT(pAd);
@@ -255,10 +246,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	AsicSendCommandToMcu(pAd, 0x31, 0xff, 0x00, 0x02, false);
 	RTMPusecDelay(10000);
 #endif /* RTMP_MAC_USB */
-
-#ifdef RALINK_ATE
-#endif /* RALINK_ATE */
-
 
 	/*
 		Some modules init must be called before APStartUp().

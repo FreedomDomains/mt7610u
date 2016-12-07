@@ -921,23 +921,6 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 			continue;
 		}
 
-#ifdef RALINK_ATE
-		if (ATE_ON(pAd)) {
-			pAd->ate.RxCntPerSec++;
-			ATESampleRssi(pAd, pRxWI);
-#ifdef RALINK_QA
-			if (pAd->ate.bQARxStart == true) {
-				/* (*pRxD) has been swapped in GetPacketFromRxRing() */
-				ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
-			}
-
-#endif /* RALINK_QA */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
-			continue;
-		}
-#endif /* RALINK_ATE */
-
-
 		/* Check for all RxD errors */
 		Status = RTMPCheckRxError(pAd, pHeader, pRxWI, pRxInfo);
 
@@ -999,22 +982,6 @@ bool STAHandleRxDonePacket(
 	}
 
 	/* STARxDoneInterruptHandle() is called in rtusb_bulk.c */
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-	{
-		pAd->ate.RxCntPerSec++;
-		ATESampleRssi(pAd, pRxWI);
-#ifdef RALINK_QA
-		if (pAd->ate.bQARxStart == true)
-		{
-			/* (*pRxD) has been swapped in GetPacketFromRxRing() */
-			ATE_QA_Statistics(pAd, pRxWI, pRxInfo, pHeader);
-		}
-#endif /* RALINK_QA */
-		RTMPFreeNdisPacket(pAd, pRxPacket);
-		return bReschedule;
-	}
-#endif /* RALINK_ATE */
 
 	/* Check for all RxD errors */
 	Status = RTMPCheckRxError(pAd, pHeader, pRxWI, pRxInfo);
@@ -1491,12 +1458,6 @@ void RTMPSendNullFrame(
 	u8 NullFrame[48];
 	ULONG Length;
 	PHEADER_802_11 pHeader_802_11;
-
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd)) {
-		return;
-	}
-#endif /* RALINK_ATE */
 
 	/* WPA 802.1x secured port control */
 	if (((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA) ||

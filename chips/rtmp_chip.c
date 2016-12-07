@@ -346,13 +346,6 @@ static void RxSensitivityTuning(struct rtmp_adapter*pAd)
 {
 	u8 R66 = 0x26 + GET_LNA_GAIN(pAd);
 
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-	{
-		ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R66, R66);
-	}
-	else
-#endif /* RALINK_ATE */
 	{
 		rtmp_bbp_set_agc(pAd, R66, RX_CHAIN_ALL);
 	}

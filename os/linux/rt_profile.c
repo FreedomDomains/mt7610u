@@ -285,13 +285,6 @@ void RTMPFreeAdapter(struct rtmp_adapter *pAd)
 		pAd->stats = NULL;
 	}
 
-#ifdef RALINK_ATE
-#ifdef RTMP_MAC_USB
-	RTMP_OS_ATMOIC_DESTROY(&pAd->BulkOutRemained);
-	RTMP_OS_ATMOIC_DESTROY(&pAd->BulkInRemained);
-#endif /* RTMP_MAC_USB */
-#endif /* RALINK_ATE */
-
 	RTMP_OS_FREE_TIMER(pAd);
 	RTMP_OS_FREE_LOCK(pAd);
 	RTMP_OS_FREE_TASKLET(pAd);
@@ -315,12 +308,6 @@ int	RTMPSendPackets(
 		goto done;
 
 	/* RT2870STA does this in RTMPSendPackets() */
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd)) {
-		RTMPFreeNdisPacket(pAd, pPacket);
-		return 0;
-	}
-#endif /* RALINK_ATE */
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {

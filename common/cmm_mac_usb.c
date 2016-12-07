@@ -171,8 +171,6 @@ void RTMPResetTxRxRingMemory(
 		;
 	}
 
-#ifdef RALINK_ATE
-#endif /* RALINK_ATE */
 	/* Clear all pending bulk-out request flags.*/
 	RTUSB_CLEAR_BULK_FLAG(pAd, 0xffffffff);
 

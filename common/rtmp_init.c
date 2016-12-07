@@ -222,15 +222,6 @@ int RTMPAllocAdapterBlock(void *handle, struct rtmp_adapter **ppAdapter)
 		spin_lock_init(&TimerSemLock);
 
 
-
-#ifdef RALINK_ATE
-#ifdef RTMP_MAC_USB
-		RTMP_OS_ATMOIC_INIT(&pAd->BulkOutRemained, &pAd->RscAtomicMemList);
-		RTMP_OS_ATMOIC_INIT(&pAd->BulkInRemained, &pAd->RscAtomicMemList);
-#endif /* RTMP_MAC_USB */
-#endif /* RALINK_ATE */
-
-
 		/* assign function pointers*/
 	} while (false);
 
@@ -891,9 +882,6 @@ void NICInitAsicFromEEPROM(
 	u32 data = 0;
 #endif /* CONFIG_STA_SUPPORT */
 	USHORT i;
-#ifdef RALINK_ATE
-	USHORT value;
-#endif /* RALINK_ATE */
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitAsicFromEEPROM\n"));
@@ -1001,30 +989,6 @@ void NICInitAsicFromEEPROM(
 		__FUNCTION__,
 		pAd->TxPowerCtrl.bInternalTxALC));
 #endif /* RTMP_INTERNAL_TX_ALC */
-
-#ifdef RALINK_ATE
-	RT28xx_EEPROM_READ16(pAd, EEPROM_TSSI_GAIN_AND_ATTENUATION, value);
-	value = (value & 0x00FF);
-
-	if (IS_RT5390(pAd))
-	{
-		pAd->TssiGain = 0x02;	 /* RT5390 uses 2 as TSSI gain/attenuation default value */
-	}
-	else
-	{
-		pAd->TssiGain = 0x03; /* RT5392 uses 3 as TSSI gain/attenuation default value */
-	}
-
-	if ((value != 0x00) && (value != 0xFF))
-	{
-		pAd->TssiGain =  (u8) (value & 0x000F);
-	}
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_TSSI_GAIN_AND_ATTENUATION = 0x%X, pAd->TssiGain=0x%x\n",
-				__FUNCTION__,
-				value,
-				pAd->TssiGain));
-#endif // RALINK_ATE //
 
 	rtmp_bbp_set_rxpath(pAd, pAd->Antenna.field.RxPath);
 
@@ -1438,12 +1402,6 @@ void NICUpdateFifoStaCounters(
 	u8 			pid = 0, wcid = 0;
 	INT32				reTry;
 	u8 			succMCS;
-
-#ifdef RALINK_ATE
-	/* Nothing to do in ATE mode */
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
 
 #ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT

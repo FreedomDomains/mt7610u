@@ -330,11 +330,6 @@ void AsicUpdateProtect(
 	u32 i, PhyMode = 0x4000;
 	u32 MacReg = 0;
 
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
-
 #ifdef DOT11_N_SUPPORT
 	if (!(pAd->CommonCfg.bHTProtect) && (OperationMode != 8))
 		return;

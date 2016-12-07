@@ -92,10 +92,6 @@
 #include "igmp_snoop.h"
 #endif /* IGMP_SNOOP_SUPPORT */
 
-#ifdef RALINK_ATE
-#include "rt_ate.h"
-#endif /* RALINK_ATE */
-
 #ifdef RALINK_QA
 #include "rt_qa.h"
 #endif /* RALINK_QA */

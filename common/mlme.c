@@ -289,14 +289,6 @@ void MlmeHandler(struct rtmp_adapter*pAd)
 			break;
 		}
 
-#ifdef RALINK_ATE
-		if(ATE_ON(pAd))
-		{
-			DBGPRINT(RT_DEBUG_TRACE, ("The driver is in ATE mode now in MlmeHandler\n"));
-			break;
-		}
-#endif /* RALINK_ATE */
-
 		/*From message type, determine which state machine I should drive*/
 		if (MlmeDequeue(&pAd->Mlme.Queue, &Elem))
 		{
@@ -498,13 +490,10 @@ void MlmeResetRalinkCounters(
 {
 	pAd->RalinkCounters.LastOneSecRxOkDataCnt = pAd->RalinkCounters.OneSecRxOkDataCnt;
 
-#ifdef RALINK_ATE
-	if (!ATE_ON(pAd))
-#endif /* RALINK_ATE */
-		/* for performace enchanement */
-		memset(&pAd->RalinkCounters, 0,
-						(ULONG)&pAd->RalinkCounters.OneSecEnd -
-						(ULONG)&pAd->RalinkCounters.OneSecStart);
+	/* for performace enchanement */
+	memset(&pAd->RalinkCounters, 0,
+			(ULONG)&pAd->RalinkCounters.OneSecEnd -
+			(ULONG)&pAd->RalinkCounters.OneSecStart);
 
 	return;
 }
@@ -3725,12 +3714,6 @@ bool MlmeEnqueueForRecv(
 	INT		 MsgType = 0x0;
 	MLME_QUEUE	*Queue = (MLME_QUEUE *)&pAd->Mlme.Queue;
 
-#ifdef RALINK_ATE
-	/* Nothing to do in ATE mode */
-	if(ATE_ON(pAd))
-		return false;
-#endif /* RALINK_ATE */
-
 	/* Do nothing if the driver is starting halt state.*/
 	/* This might happen when timer already been fired before cancel timer with mlmehalt*/
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
@@ -4752,10 +4735,6 @@ CHAR RTMPMinSnr(
 void AsicEvaluateRxAnt(
 	IN struct rtmp_adapter *pAd)
 {
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
 
 #ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
@@ -4831,13 +4810,6 @@ void AsicRxAntEvalTimeout(
 #ifdef CONFIG_STA_SUPPORT
 	CHAR			larger = -127, rssi0, rssi1, rssi2;
 #endif /* CONFIG_STA_SUPPORT */
-
-
-
-#ifdef RALINK_ATE
-	if (ATE_ON(pAd))
-		return;
-#endif /* RALINK_ATE */
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS |
 							fRTMP_ADAPTER_HALT_IN_PROGRESS |

@@ -65,14 +65,6 @@ BUILD_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
 
 #endif /* CONFIG_STA_SUPPORT */
 
-
-
-
-
-#ifdef RALINK_ATE
-BUILD_TIMER_FUNCTION(ATEPeriodicExec);
-#endif /* RALINK_ATE */
-
 #ifdef RTMP_TIMER_TASK_SUPPORT
 static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 {
