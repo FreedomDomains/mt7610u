@@ -37,25 +37,6 @@
 #endif /* RTMP_MAC_USB */
 
 
-#ifdef RT_BIG_ENDIAN
-typedef	union _EEPROM_WORD_STRUC {
-	struct {
-		u8 Byte1;				// High Byte
-		u8 Byte0;				// Low Byte
-	} field;
-	USHORT	word;
-} EEPROM_WORD_STRUC;
-#else
-typedef	union _EEPROM_WORD_STRUC {
-	struct {
-		u8 Byte0;
-		u8 Byte1;
-	} field;
-	USHORT	word;
-} EEPROM_WORD_STRUC;
-#endif
-
-
 /* ------------------------------------------------------------------- */
 /*  E2PROM data layout */
 /* ------------------------------------------------------------------- */
