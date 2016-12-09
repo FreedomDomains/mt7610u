@@ -215,17 +215,6 @@ int rt28xx_open(struct net_device *net_dev)
 	int retval = 0;
 	ULONG OpMode;
 
-#ifdef CONFIG_STA_SUPPORT
-#ifdef CONFIG_PM
-#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	struct usb_interface *intf;
-	struct usb_device		*pUsb_Dev;
-	INT 		pm_usage_cnt;
-#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif /* CONFIG_PM */
-#endif /* CONFIG_STA_SUPPORT */
-
-
 	/* sanity check */
 	if (sizeof(dma_addr_t) < sizeof(dma_addr_t))
 		DBGPRINT(RT_DEBUG_ERROR, ("Fatal error for DMA address size!!!\n"));
@@ -243,30 +232,6 @@ int rt28xx_open(struct net_device *net_dev)
 	RTMP_DRIVER_MCU_SLEEP_CLEAR(pAd);
 
 	RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
-
-#ifdef CONFIG_STA_SUPPORT
-#ifdef CONFIG_PM
-#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-
-	RTMP_DRIVER_USB_DEV_GET(pAd, &pUsb_Dev);
-	RTMP_DRIVER_USB_INTF_GET(pAd, &intf);
-
-	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);
-	if (pm_usage_cnt == 0)
-	{
-		int res=1;
-
-		res = usb_autopm_get_interface(intf);
-		if (res)
-		{
-			DBGPRINT(RT_DEBUG_ERROR, ("rt28xx_open autopm_resume fail ------\n"));
-			return (-1);;
-		}
-	}
-
-#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif /* CONFIG_PM */
-#endif /* CONFIG_STA_SUPPORT */
 
 /*	if (RT_DEV_PRIV_FLAGS_GET(net_dev) == INT_MAIN) */
 	if (RTMP_DRIVER_MAIN_INF_CHECK(pAd, RT_DEV_PRIV_FLAGS_GET(net_dev)) == NDIS_STATUS_SUCCESS)

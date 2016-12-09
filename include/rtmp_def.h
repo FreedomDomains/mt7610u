@@ -238,9 +238,7 @@ enum WIFI_MODE{
 #define WMODE_VHT_ONLY(_x)		(((_x) & (~(WMODE_AC))) == 0)
 
 //#ifdef CONFIG_PM
-//#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 #define fRTMP_ADAPTER_SUSPEND 0x00800000
-//#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 //#endif /* CONFIG_PM */
 
 

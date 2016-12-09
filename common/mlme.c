@@ -828,11 +828,6 @@ void STAMlmePeriodicExec(
 	ULONG			    TxTotalCnt;
 	int 	i;
 	bool bCheckBeaconLost = true;
-#ifdef CONFIG_PM
-#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	struct os_cookie * pObj = pAd->OS_Cookie;
-#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif /* CONFIG_PM */
 
 	RTMP_CHIP_HIGH_POWER_TUNING(pAd, &pAd->StaCfg.RssiSample);
 
@@ -858,13 +853,6 @@ void STAMlmePeriodicExec(
 		)
 	{
 			ASIC_RADIO_OFF(pAd, MLME_RADIO_OFF);
-
-#ifdef CONFIG_PM
-#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-			if(!RTMP_Usb_AutoPM_Put_Interface(pObj->pUsb_Dev,pObj->intf))
-					RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_SUSPEND);
-#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif /* CONFIG_PM */
 
 		DBGPRINT(RT_DEBUG_TRACE, ("PSM - Issue Sleep command)\n"));
 	}
