@@ -2446,12 +2446,12 @@ struct rtmp_adapter {
 /*	RTMP_OS_TASK			cmdQTask; */
 
 	/*======Semaphores (event) */
-	RTMP_OS_SEM UsbVendorReq_semaphore;
-	RTMP_OS_SEM reg_atomic;
-	RTMP_OS_SEM hw_atomic;
-	RTMP_OS_SEM cal_atomic;
-	RTMP_OS_SEM wlan_en_atomic;
-	RTMP_OS_SEM mcu_atomic;
+	OS_SEM UsbVendorReq_semaphore;
+	OS_SEM reg_atomic;
+	OS_SEM hw_atomic;
+	OS_SEM cal_atomic;
+	OS_SEM wlan_en_atomic;
+	OS_SEM mcu_atomic;
 	void *UsbVendorReqBuf;
 /*	wait_queue_head_t	 *wait; */
 	void *wait;

@@ -401,11 +401,11 @@ void RtmpOsSetNetDevTypeMonitor(void *pDev);
 
 /* OS Semaphore */
 void RtmpOsCmdUp(RTMP_OS_TASK *pCmdQTask);
-bool RtmpOsSemaInitLocked(RTMP_OS_SEM *pSemOrg, LIST_HEADER *pSemList);
-bool RtmpOsSemaInit(RTMP_OS_SEM *pSemOrg, LIST_HEADER *pSemList);
-bool RtmpOsSemaDestroy(RTMP_OS_SEM *pSemOrg);
-INT RtmpOsSemaWaitInterruptible(RTMP_OS_SEM *pSemOrg);
-void RtmpOsSemaWakeUp(RTMP_OS_SEM *pSemOrg);
+bool RtmpOsSemaInitLocked(OS_SEM *pSemOrg, LIST_HEADER *pSemList);
+bool RtmpOsSemaInit(OS_SEM *pSemOrg, LIST_HEADER *pSemList);
+bool RtmpOsSemaDestroy(OS_SEM *pSemOrg);
+INT RtmpOsSemaWaitInterruptible(OS_SEM *pSemOrg);
+void RtmpOsSemaWakeUp(OS_SEM *pSemOrg);
 void RtmpOsMlmeUp(RTMP_OS_TASK *pMlmeQTask);
 
 void RtmpOsInitCompletion(RTMP_OS_COMPLETION *pCompletion);
