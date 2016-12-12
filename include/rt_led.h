@@ -112,9 +112,6 @@ do{								\
 typedef struct _LED_CONTROL
 {
 	MCU_LEDCS_STRUC		MCULedCntl; /* LED Mode EEPROM 0x3b */
-	USHORT				LedAGCfg;	/* LED A/G Configuration EEPROM 0x3c */
-	USHORT				LedACTCfg;	/* LED ACT Configuration EEPROM 0x3e */
-	USHORT				LedPolarity;/* LED A/G/ACT polarity EEPROM 0x40 */
 	bool 			bLedOnScanning;
 	u8 			LedStatus;
 }LED_CONTROL, *PLED_CONTROL;

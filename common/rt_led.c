@@ -110,12 +110,6 @@ void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 	// TODO: wait TC6008 EEPROM format
 	RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
 	pLedCntl->MCULedCntl.word = (Value >> 8);
-	RT28xx_EEPROM_READ16(pAd, EEPROM_LEDAG_CONF_OFFSET, Value);
-	pLedCntl->LedAGCfg= Value;
-	RT28xx_EEPROM_READ16(pAd, EEPROM_LEDACT_CONF_OFFSET, Value);
-	pLedCntl->LedACTCfg = Value;
-	RT28xx_EEPROM_READ16(pAd, EEPROM_LED_POLARITY_OFFSET, Value);
-	pLedCntl->LedPolarity = Value;
 }
 
 
@@ -130,9 +124,6 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 
 	if (pLedCntl->MCULedCntl.word == 0xFF) 	{
 		pLedCntl->MCULedCntl.word = 0x01;
-		pLedCntl->LedAGCfg = 0x5555;
-		pLedCntl->LedACTCfg= 0x2221;
-		pLedCntl->LedPolarity = 0x5627;
 	}
 
 	RTMPStartLEDMode(pAd);
