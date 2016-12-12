@@ -53,7 +53,6 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 	pChipOps->MCU_RandomRead = andes_random_read;
 	pChipOps->MCU_RFRandomRead = andes_rf_random_read;
 	pChipOps->MCU_ReadModifyWrite = andes_read_modify_write;
-	pChipOps->MCU_RFReadModifyWrite = andes_rf_read_modify_write;
 	pChipOps->MCU_RandomWrite = andes_random_write;
 	pChipOps->MCU_RFRandomWrite = andes_rf_random_write;
 	pChipOps->MCU_PwrSavingOP = andes_pwr_saving;

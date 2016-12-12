@@ -658,8 +658,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
-	int (*MCU_RFReadModifyWrite)(struct rtmp_adapter *ad, RF_R_M_W_REG *RegPair, u32 Num);
-
 	int (*MCU_RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
