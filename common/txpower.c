@@ -221,8 +221,5 @@ void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
 	INT			Apwrdelta, Gpwrdelta;
 	u8 	t1,t2,t3,t4;
 	bool 	bApwrdeltaMinus = true, bGpwrdeltaMinus = true;
-
-
-	mt76x0_read_per_rate_tx_pwr(pAd);
 }
 

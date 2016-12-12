@@ -155,8 +155,6 @@ void MT76x0_ShowDmaIndexCupIndex(
 	struct rtmp_adapter *pAd);
 #endif /* DBG */
 
-void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd);
-
 void dump_bw_info(struct rtmp_adapter *pAd);
 
 void MT76x0_WLAN_ChipOnOff(

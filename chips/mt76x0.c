@@ -1903,12 +1903,6 @@ static void calc_bw_delta_pwr(bool is_dec_delta, USHORT input_pwr,
 //
 #define EEPROM_VHT_BW80_TX_POWER_DELTA	(0xD3)
 
-//
-// Read per-rate Tx power
-//
-void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *Ad)
-{
-}
 
 /*
 ========================================================================
