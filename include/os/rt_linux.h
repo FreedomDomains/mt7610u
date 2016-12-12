@@ -298,44 +298,6 @@ struct os_lock  {
 #define OS_NdisAcquireSpinLock		OS_SEM_LOCK
 #define OS_NdisReleaseSpinLock		OS_SEM_UNLOCK
 
-/*
-	Following lock/unlock definition used for BBP/RF register read/write.
-	Currently we don't use it to protect MAC register access.
-
-	For USB:
-			we use binary semaphore to do the protection because all register
-			access done in kernel thread and should allow task go sleep when
-			in protected status.
-
-	For PCI/PCI-E/RBUS:
-			We use interrupt to do the protection because the register may accessed
-			in thread/tasklet/timer/inteerupt, so we use interrupt_disable to protect
-			the access.
-*/
-#define RTMP_MCU_RW_LOCK(_pAd, _irqflags)	\
-	do{								\
-		if (_pAd->infType == RTMP_DEV_INF_USB)	\
-		{\
-			down_interruptible(&_pAd->McuCmdSem, _irqflags);\
-		}\
-		else\
-		{\
-			RTMP_SEM_LOCK(&_pAd->McuCmdLock, _irqflags);\
-		}\
-	}while(0)
-
-#define RTMP_MCU_RW_UNLOCK(_pAd, _irqflags)	\
-	do{				\
-		if(_pAd->infType == RTMP_DEV_INF_USB)\
-		{	\
-			up(&_pAd->McuCmdSem);\
-		}		\
-		else\
-		{\
-			RTMP_SEM_UNLOCK(&_pAd->McuCmdLock, _irqflags);\
-		}\
-	}while(0)
-
 
 #ifndef wait_event_interruptible_timeout
 #define __wait_event_interruptible_timeout(wq, condition, ret) \
