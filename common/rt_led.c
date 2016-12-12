@@ -87,7 +87,7 @@ void RTMPSetLEDStatus(
 	LED_CMD = LED_Array[LedMode][Status];
 
 	if (LED_CMD != -1)
-		andes_led_op(pAd, 0, LED_CMD);
+		mt7610u_mcu_led_op(pAd, 0, LED_CMD);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: LED Mode:0x%x\n", __FUNCTION__, LedMode));
 

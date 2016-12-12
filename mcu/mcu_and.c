@@ -69,7 +69,7 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 	return Status;
 }
 
-int andes_usb_loadfw(struct rtmp_adapter*ad)
+int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
 {
 	const struct firmware *fw;
 	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
@@ -520,7 +520,7 @@ error0:
 }
 #endif
 
-static struct cmd_msg *andes_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int length)
+static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int length)
 {
 	struct cmd_msg *msg = NULL;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
@@ -575,7 +575,7 @@ error0:
 	return NULL;
 }
 
-static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wait, u16 timeout,
+static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wait, u16 timeout,
 							   bool need_retransmit, bool need_rsp, u16 rsp_payload_len,
 							   char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
@@ -597,7 +597,7 @@ static void andes_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wait, u16
 	msg->rsp_handler = rsp_handler;
 }
 
-static void andes_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int len)
+static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int len)
 {
 	struct sk_buff * net_pkt = msg->skb;
 
@@ -605,7 +605,7 @@ static void andes_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int l
 		memcpy(OS_PKT_TAIL_BUF_EXTEND(net_pkt, len), data, len);
 }
 
-void andes_free_cmd_msg(struct cmd_msg *msg)
+void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
 	struct sk_buff * net_pkt = msg->skb;
 	struct rtmp_adapter*ad = msg->priv;
@@ -638,7 +638,7 @@ u8 get_cmd_rsp_num(struct rtmp_adapter*ad)
 	return Num;
 }
 
-static inline void andes_inc_error_count(struct MCU_CTRL *ctl, enum cmd_msg_error_type type)
+static inline void mt7610u_mcu_inc_error_count(struct MCU_CTRL *ctl, enum cmd_msg_error_type type)
 {
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		switch (type) {
@@ -657,7 +657,7 @@ static inline void andes_inc_error_count(struct MCU_CTRL *ctl, enum cmd_msg_erro
 	}
 }
 
-static spinlock_t *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
+static spinlock_t *mt7610u_mcu_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	spinlock_t *lock = NULL;
 
@@ -679,7 +679,7 @@ static spinlock_t *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
 	return lock;
 }
 
-static inline u8 andes_get_cmd_msg_seq(struct rtmp_adapter*ad)
+static inline u8 mt7610u_mcu_get_cmd_msg_seq(struct rtmp_adapter*ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;
@@ -699,14 +699,14 @@ get_seq:
 	return ctl->cmd_seq;
 }
 
-static void _andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
+static void _mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	msg->state = state;
 	DlListAddTail(list, &msg->list);
 }
 
-static void andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
+static void mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	unsigned long flags;
@@ -714,21 +714,21 @@ static void andes_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	_andes_queue_tail_cmd_msg(list, msg, state);
+	_mt7610u_mcu_queue_tail_cmd_msg(list, msg, state);
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static void _andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
+static void _mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	msg->state = state;
 	DlListAdd(list, &msg->list);
 }
 
-static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
+static void mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 										enum cmd_msg_state state)
 {
 	unsigned long flags;
@@ -736,20 +736,20 @@ static void andes_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	_andes_queue_head_cmd_msg(list, msg, state);
+	_mt7610u_mcu_queue_head_cmd_msg(list, msg, state);
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static bool andes_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
+static bool mt7610u_mcu_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	unsigned long flags;
 	bool is_empty;
 	spinlock_t *lock;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
 	is_empty = DlListEmpty(list);
@@ -758,20 +758,20 @@ static bool andes_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 	return is_empty;
 }
 
-static void andes_queue_init(struct MCU_CTRL *ctl, DL_LIST *list)
+static void mt7610u_mcu_queue_init(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 
 	unsigned long flags;
 	spinlock_t *lock;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
 	DlListInit(list);
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static void _andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
+static void _mt7610u_mcu_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 {
 	if (!msg)
 		return;
@@ -779,47 +779,47 @@ static void _andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 	DlListDel(&msg->list);
 }
 
-static void andes_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
+static void mt7610u_mcu_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 {
 	unsigned long flags;
 	spinlock_t *lock;
 	struct rtmp_adapter*ad = msg->priv;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	_andes_unlink_cmd_msg(msg, list);
+	_mt7610u_mcu_unlink_cmd_msg(msg, list);
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static struct cmd_msg *_andes_dequeue_cmd_msg(DL_LIST *list)
+static struct cmd_msg *_mt7610u_mcu_dequeue_cmd_msg(DL_LIST *list)
 {
 	struct cmd_msg *msg;
 
 	msg = DlListFirst(list, struct cmd_msg, list);
 
-	_andes_unlink_cmd_msg(msg, list);
+	_mt7610u_mcu_unlink_cmd_msg(msg, list);
 
 	return msg;
 }
 
-static struct cmd_msg *andes_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list)
+static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg;
 	spinlock_t *lock;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	msg = _andes_dequeue_cmd_msg(list);
+	msg = _mt7610u_mcu_dequeue_cmd_msg(list);
 	spin_unlock_irqrestore(lock, flags);
 
 	return msg;
 }
 
-void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
+void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 {
 	struct sk_buff * net_pkt = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
@@ -844,7 +844,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 		spin_lock_irq(&ctl->ackq_lock);
 		DlListForEachSafe(msg, msg_tmp, &ctl->ackq, struct cmd_msg, list) {
 			if (msg->seq == rx_info->cmd_seq) {
-				_andes_unlink_cmd_msg(msg, &ctl->ackq);
+				_mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 				spin_unlock_irq(&ctl->ackq_lock);
 
 				if ((msg->rsp_payload_len == rx_info->pkt_len) && (msg->rsp_payload_len != 0)) {
@@ -859,7 +859,7 @@ void andes_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
 				if (msg->need_wait)
 					RTMP_OS_COMPLETE(&msg->ack_done);
 				else
-					andes_free_cmd_msg(msg);
+					mt7610u_mcu_free_cmd_msg(msg);
 
 				spin_lock_irq(&ctl->ackq_lock);
 				break;
@@ -882,7 +882,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	unsigned long flags;
 	int ret = 0;
 
-	andes_unlink_cmd_msg(msg, &ctl->rxq);
+	mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
 
 	OS_PKT_TAIL_BUF_EXTEND(net_pkt, RTMP_USB_URB_LEN_GET(urb));
 
@@ -890,16 +890,16 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 		state = rx_done;
 	} else {
 		state = rx_receive_fail;
-		andes_inc_error_count(ctl, error_rx_receive_fail);
+		mt7610u_mcu_inc_error_count(ctl, error_rx_receive_fail);
 		DBGPRINT(RT_DEBUG_ERROR, ("receive cmd msg fail(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
 	}
 
 	spin_lock_irqsave(&ctl->rx_doneq_lock, flags);
-	_andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, state);
+	_mt7610u_mcu_queue_tail_cmd_msg(&ctl->rx_doneq, msg, state);
 	spin_unlock_irqrestore(&ctl->rx_doneq_lock, flags);
 
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
-		msg = andes_alloc_cmd_msg(ad, 512);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, 512);
 
 		if (!msg) {
 			return;
@@ -911,20 +911,20 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 							usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
 							net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
 
-		andes_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
+		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
 
 		ret = RTUSB_SUBMIT_URB(msg->urb);
 
 		if (ret) {
-			andes_unlink_cmd_msg(msg, &ctl->rxq);
-			andes_inc_error_count(ctl, error_rx_receive_fail);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
+			mt7610u_mcu_inc_error_count(ctl, error_rx_receive_fail);
 			DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
-			andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
+			mt7610u_mcu_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
 		}
 
 	}
 
-	andes_bh_schedule(ad);
+	mt7610u_mcu_bh_schedule(ad);
 }
 
 int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
@@ -939,7 +939,7 @@ int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return ret;
 
-	msg =  andes_alloc_cmd_msg(ad, 512);
+	msg =  mt7610u_mcu_alloc_cmd_msg(ad, 512);
 
 	if (!msg) {
 		ret = NDIS_STATUS_RESOURCES;
@@ -952,15 +952,15 @@ int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 						usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
 						net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
 
-	andes_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
+	mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, rx_start);
 
 	ret = RTUSB_SUBMIT_URB(msg->urb);
 
 	if (ret) {
-		andes_unlink_cmd_msg(msg, &ctl->rxq);
-		andes_inc_error_count(ctl, error_rx_receive_fail);
+		mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
+		mt7610u_mcu_inc_error_count(ctl, error_rx_receive_fail);
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
-		andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
+		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
 	}
 
 	return ret;
@@ -972,7 +972,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 	int i;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	for (i = 0; (i < 1) && andes_queue_empty(ctl, &ctl->rxq); i++) {
+	for (i = 0; (i < 1) && mt7610u_mcu_queue_empty(ctl, &ctl->rxq); i++) {
 		ret = usb_rx_cmd_msg_submit(ad);
 		if (ret)
 			break;
@@ -981,32 +981,32 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 	return ret;
 }
 
-void andes_cmd_msg_bh(unsigned long param)
+void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 {
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)param;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 
-	while ((msg = andes_dequeue_cmd_msg(ctl, &ctl->rx_doneq))) {
+	while ((msg = mt7610u_mcu_dequeue_cmd_msg(ctl, &ctl->rx_doneq))) {
 		switch (msg->state) {
 		case rx_done:
-			andes_rx_process_cmd_msg(ad, msg);
-			andes_free_cmd_msg(msg);
+			mt7610u_mcu_rx_process_cmd_msg(ad, msg);
+			mt7610u_mcu_free_cmd_msg(msg);
 			continue;
 		case rx_receive_fail:
-			andes_free_cmd_msg(msg);
+			mt7610u_mcu_free_cmd_msg(msg);
 			continue;
 		default:
 			DBGPRINT(RT_DEBUG_ERROR, ("unknow msg state(%d)\n", msg->state));
 		}
 	}
 
-	while ((msg = andes_dequeue_cmd_msg(ctl, &ctl->tx_doneq))) {
+	while ((msg = mt7610u_mcu_dequeue_cmd_msg(ctl, &ctl->tx_doneq))) {
 		switch (msg->state) {
 		case tx_done:
 		case tx_kickout_fail:
 		case tx_timeout_fail:
-			andes_free_cmd_msg(msg);
+			mt7610u_mcu_free_cmd_msg(msg);
 			continue;
 		default:
 			DBGPRINT(RT_DEBUG_ERROR, ("unknow msg state(%d)\n", msg->state));
@@ -1014,20 +1014,20 @@ void andes_cmd_msg_bh(unsigned long param)
 	}
 
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
-		andes_bh_schedule(ad);
+		mt7610u_mcu_bh_schedule(ad);
 		usb_rx_cmd_msgs_receive(ad);
 	}
 }
 
-void andes_bh_schedule(struct rtmp_adapter*ad)
+void mt7610u_mcu_bh_schedule(struct rtmp_adapter*ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return;
 
-	if ((!andes_queue_empty(ctl, &ctl->rx_doneq) ||
-	     !andes_queue_empty(ctl, &ctl->tx_doneq)) &&
+	if ((!mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq) ||
+	     !mt7610u_mcu_queue_empty(ctl, &ctl->tx_doneq)) &&
 	    OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		RTMP_NET_TASK_DATA_ASSIGN(&ctl->cmd_msg_task, (unsigned long)(ad));
 		RTMP_OS_TASKLET_SCHE(&ctl->cmd_msg_task);
@@ -1046,27 +1046,27 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 
 	if (RTMP_USB_URB_STATUS_GET(urb) == 0) {
 		if (!msg->need_rsp) {
-			andes_unlink_cmd_msg(msg, &ctl->kickq);
-			andes_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_done);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->kickq);
+			mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_done);
 		} else {
 			msg->state = wait_ack;
 		}
 	} else {
 		if (!msg->need_rsp) {
-			andes_unlink_cmd_msg(msg, &ctl->kickq);
-			andes_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_kickout_fail);
-			andes_inc_error_count(ctl, error_tx_kickout_fail);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->kickq);
+			mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_kickout_fail);
+			mt7610u_mcu_inc_error_count(ctl, error_tx_kickout_fail);
 		} else {
-			andes_unlink_cmd_msg(msg, &ctl->ackq);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 			msg->state = tx_kickout_fail;
-			andes_inc_error_count(ctl, error_tx_kickout_fail);
+			mt7610u_mcu_inc_error_count(ctl, error_tx_kickout_fail);
 			RTMP_OS_COMPLETE(&msg->ack_done);
 		}
 
 		DBGPRINT(RT_DEBUG_ERROR, ("kick out cmd msg fail(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
 	}
 
-	andes_bh_schedule(ad);
+	mt7610u_mcu_bh_schedule(ad);
 }
 
 int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
@@ -1085,9 +1085,9 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 						net_pkt->data, net_pkt->len, usb_kick_out_cmd_msg_complete, net_pkt);
 
 	if (msg->need_rsp)
-		andes_queue_tail_cmd_msg(&ctl->ackq, msg, wait_cmd_out_and_ack);
+		mt7610u_mcu_queue_tail_cmd_msg(&ctl->ackq, msg, wait_cmd_out_and_ack);
 	else
-		andes_queue_tail_cmd_msg(&ctl->kickq, msg, wait_cmd_out);
+		mt7610u_mcu_queue_tail_cmd_msg(&ctl->kickq, msg, wait_cmd_out);
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return -1;
@@ -1096,13 +1096,13 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 
 	if (ret) {
 		if (!msg->need_rsp) {
-			andes_unlink_cmd_msg(msg, &ctl->kickq);
-			andes_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_kickout_fail);
-			andes_inc_error_count(ctl, error_tx_kickout_fail);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->kickq);
+			mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, tx_kickout_fail);
+			mt7610u_mcu_inc_error_count(ctl, error_tx_kickout_fail);
 		} else {
-			andes_unlink_cmd_msg(msg, &ctl->ackq);
+			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 			msg->state = tx_kickout_fail;
-			andes_inc_error_count(ctl, error_tx_kickout_fail);
+			mt7610u_mcu_inc_error_count(ctl, error_tx_kickout_fail);
 			RTMP_OS_COMPLETE(&msg->ack_done);
 		}
 
@@ -1112,14 +1112,14 @@ int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	return ret;
 }
 
-void andes_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
+void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
 	spinlock_t *lock;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
 	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
@@ -1135,25 +1135,25 @@ void andes_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 
 #endif
 
-void andes_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
+void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
 	spinlock_t *lock;
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
-	lock = andes_get_spin_lock(ctl, list);
+	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
 	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
-		_andes_unlink_cmd_msg(msg, list);
-		andes_free_cmd_msg(msg);
+		_mt7610u_mcu_unlink_cmd_msg(msg, list);
+		mt7610u_mcu_free_cmd_msg(msg);
 	}
 	DlListInit(list);
 	spin_unlock_irqrestore(lock, flags);
 }
 
-void andes_ctrl_init(struct rtmp_adapter*ad)
+void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	int ret = 0;
@@ -1161,19 +1161,19 @@ void andes_ctrl_init(struct rtmp_adapter*ad)
 	RTMP_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	ctl->cmd_seq = 0;
-	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, andes_cmd_msg_bh, (unsigned long)ad);
+	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
 	spin_lock_init(&ctl->txq_lock);
-	andes_queue_init(ctl, &ctl->txq);
+	mt7610u_mcu_queue_init(ctl, &ctl->txq);
 	spin_lock_init(&ctl->rxq_lock);
-	andes_queue_init(ctl, &ctl->rxq);
+	mt7610u_mcu_queue_init(ctl, &ctl->rxq);
 	spin_lock_init(&ctl->ackq_lock);
-	andes_queue_init(ctl, &ctl->ackq);
+	mt7610u_mcu_queue_init(ctl, &ctl->ackq);
 	spin_lock_init(&ctl->kickq_lock);
-	andes_queue_init(ctl, &ctl->kickq);
+	mt7610u_mcu_queue_init(ctl, &ctl->kickq);
 	spin_lock_init(&ctl->tx_doneq_lock);
-	andes_queue_init(ctl, &ctl->tx_doneq);
+	mt7610u_mcu_queue_init(ctl, &ctl->tx_doneq);
 	spin_lock_init(&ctl->rx_doneq_lock);
-	andes_queue_init(ctl, &ctl->rx_doneq);
+	mt7610u_mcu_queue_init(ctl, &ctl->rx_doneq);
 	ctl->tx_kickout_fail_count = 0;
 	ctl->tx_timeout_fail_count = 0;
 	ctl->rx_receive_fail_count = 0;
@@ -1184,7 +1184,7 @@ void andes_ctrl_init(struct rtmp_adapter*ad)
 	RTMP_SEM_EVENT_UP(&(ad->mcu_atomic));
 }
 
-void andes_ctrl_exit(struct rtmp_adapter*ad)
+void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	int ret = 0;
@@ -1192,17 +1192,17 @@ void andes_ctrl_exit(struct rtmp_adapter*ad)
 	RTMP_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	OS_CLEAR_BIT(MCU_INIT, &ctl->flags);
-	andes_usb_unlink_urb(ad, &ctl->txq);
-	andes_usb_unlink_urb(ad, &ctl->kickq);
-	andes_usb_unlink_urb(ad, &ctl->ackq);
-	andes_usb_unlink_urb(ad, &ctl->rxq);
+	mt7610u_mcu_usb_unlink_urb(ad, &ctl->txq);
+	mt7610u_mcu_usb_unlink_urb(ad, &ctl->kickq);
+	mt7610u_mcu_usb_unlink_urb(ad, &ctl->ackq);
+	mt7610u_mcu_usb_unlink_urb(ad, &ctl->rxq);
 	RTMP_OS_TASKLET_KILL(&ctl->cmd_msg_task);
-	andes_cleanup_cmd_msg(ad, &ctl->txq);
-	andes_cleanup_cmd_msg(ad, &ctl->ackq);
-	andes_cleanup_cmd_msg(ad, &ctl->rxq);
-	andes_cleanup_cmd_msg(ad, &ctl->kickq);
-	andes_cleanup_cmd_msg(ad, &ctl->tx_doneq);
-	andes_cleanup_cmd_msg(ad, &ctl->rx_doneq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->txq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->ackq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->rxq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->kickq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->tx_doneq);
+	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->rx_doneq);
 	DBGPRINT(RT_DEBUG_OFF, ("tx_kickout_fail_count = %ld\n", ctl->tx_kickout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
@@ -1211,7 +1211,7 @@ void andes_ctrl_exit(struct rtmp_adapter*ad)
 	RTMP_SEM_EVENT_UP(&(ad->mcu_atomic));
 }
 
-static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
+static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 {
 	struct cmd_msg *msg = NULL;
 	struct sk_buff * net_pkt = NULL;
@@ -1219,17 +1219,17 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 	int ret = NDIS_STATUS_SUCCESS;
 	struct txinfo_nmac_cmd *tx_info;
 
-	while ((msg = andes_dequeue_cmd_msg(ctl, &ctl->txq)) != NULL) {
+	while ((msg = mt7610u_mcu_dequeue_cmd_msg(ctl, &ctl->txq)) != NULL) {
 		if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
 			if (!msg->need_rsp)
-				andes_free_cmd_msg(msg);
+				mt7610u_mcu_free_cmd_msg(msg);
 			continue;
 		}
 
-		if (!andes_queue_empty(ctl, &ctl->ackq)) {
-			andes_queue_head_cmd_msg(&ctl->txq, msg, msg->state);
+		if (!mt7610u_mcu_queue_empty(ctl, &ctl->ackq)) {
+			mt7610u_mcu_queue_head_cmd_msg(&ctl->txq, msg, msg->state);
 			ret = NDIS_STATUS_FAILURE;
 			continue;
 		}
@@ -1237,7 +1237,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 		net_pkt = msg->skb;
 
 		if (msg->need_rsp)
-			msg->seq = andes_get_cmd_msg_seq(ad);
+			msg->seq = mt7610u_mcu_get_cmd_msg_seq(ad);
 		else
 			msg->seq = 0;
 
@@ -1264,12 +1264,12 @@ static int andes_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 		}
 	}
 
-	andes_bh_schedule(ad);
+	mt7610u_mcu_bh_schedule(ad);
 
 	return ret;
 }
 
-int andes_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
+int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	int ret = 0;
@@ -1280,15 +1280,15 @@ int andes_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
-		andes_free_cmd_msg(msg);
+		mt7610u_mcu_free_cmd_msg(msg);
 		RTMP_SEM_EVENT_UP(&(ad->mcu_atomic));
 		return NDIS_STATUS_FAILURE;
 	}
 
-	andes_queue_tail_cmd_msg(&ctl->txq, msg, tx_start);
+	mt7610u_mcu_queue_tail_cmd_msg(&ctl->txq, msg, tx_start);
 
 retransmit:
-	andes_dequeue_and_kick_out_cmd_msgs(ad);
+	mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(ad);
 
 	/* Wait for response */
 	if (need_wait)
@@ -1303,11 +1303,11 @@ retransmit:
 				if (msg->state == wait_cmd_out_and_ack) {
 					RTUSB_UNLINK_URB(msg->urb);
 				} else if (msg->state == wait_ack) {
-					andes_unlink_cmd_msg(msg, &ctl->ackq);
+					mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 				}
 			}
 
-			andes_inc_error_count(ctl, error_tx_timeout_fail);
+			mt7610u_mcu_inc_error_count(ctl, error_tx_timeout_fail);
 			state = tx_timeout_fail;
 			msg->retransmit_times--;
 			DBGPRINT(RT_DEBUG_ERROR, ("msg->retransmit_times = %d\n", msg->retransmit_times));
@@ -1326,13 +1326,13 @@ retransmit:
 				RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
 				RTMP_OS_INIT_COMPLETION(&msg->ack_done);
 				state = tx_retransmit;
-				andes_queue_head_cmd_msg(&ctl->txq, msg, state);
+				mt7610u_mcu_queue_head_cmd_msg(&ctl->txq, msg, state);
 				goto retransmit;
 			} else {
-				andes_queue_tail_cmd_msg(&ctl->tx_doneq, msg, state);
+				mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, state);
 			}
 		} else {
-			andes_free_cmd_msg(msg);
+			mt7610u_mcu_free_cmd_msg(msg);
 		}
 	}
 
@@ -1341,27 +1341,27 @@ retransmit:
 	return ret;
 }
 
-static void andes_pwr_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
+static void mt7610u_mcu_pwr_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
 {
 
 
 }
 
 
-static void andes_wow_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
+static void mt7610u_mcu_wow_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
 {
 
 
 }
 
-static void andes_carrier_detect_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
+static void mt7610u_mcu_carrier_detect_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
 {
 
 
 
 }
 
-static void andes_dfs_detect_event_handler(struct rtmp_adapter *ad, char *payload, u16 payload_len)
+static void mt7610u_mcu_dfs_detect_event_handler(struct rtmp_adapter *ad, char *payload, u16 payload_len)
 {
 
 
@@ -1370,14 +1370,14 @@ static void andes_dfs_detect_event_handler(struct rtmp_adapter *ad, char *payloa
 
 MSG_EVENT_HANDLER msg_event_handler_tb[] =
 {
-	andes_pwr_event_handler,
-	andes_wow_event_handler,
-	andes_carrier_detect_event_handler,
-	andes_dfs_detect_event_handler,
+	mt7610u_mcu_pwr_event_handler,
+	mt7610u_mcu_wow_event_handler,
+	mt7610u_mcu_carrier_detect_event_handler,
+	mt7610u_mcu_dfs_detect_event_handler,
 };
 
 
-int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
+int mt7610u_mcu_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len, offset_num, cur_len = 0, sent_len;
@@ -1403,7 +1403,7 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 		if ((sent_len < cap->InbandPacketMaxLen) || ((cur_len + cap->InbandPacketMaxLen) == var_len))
 			last_packet = true;
 
-		msg = andes_alloc_cmd_msg(ad, sent_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
@@ -1411,21 +1411,21 @@ int andes_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 		}
 
 		if (last_packet) {
-			andes_init_cmd_msg(msg, CMD_BURST_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true, 0, true, true, 0, NULL, NULL);
 		}else {
-			andes_init_cmd_msg(msg, CMD_BURST_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, false, 0, false, false, 0, NULL, NULL);
 		}
 
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
-		andes_append_cmd_msg(msg, (char *)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 		for (i = 0; i < ((sent_len - 4) / 4); i++) {
 			value = cpu2le32(data[i + cur_index]);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += ((sent_len - 4) / 4);
@@ -1436,7 +1436,7 @@ error:
 	return ret;
 }
 
-static void andes_burst_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
+static void mt7610u_mcu_burst_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
 	u32 *data;
@@ -1448,7 +1448,7 @@ static void andes_burst_read_callback(struct cmd_msg *msg, char *rsp_payload, u1
 	}
 }
 
-int andes_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *data)
+int mt7610u_mcu_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *data)
 {
 	struct cmd_msg *msg;
 	unsigned int cur_len = 0, rsp_len, offset_num, receive_len;
@@ -1471,23 +1471,23 @@ int andes_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *data)
 									   ? cap->InbandPacketMaxLen
 									   : (rsp_len - cur_len);
 
-		msg = andes_alloc_cmd_msg(ad, 8);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, 8);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_BURST_READ, true, 0, true, true, receive_len,
-									(char *)(&data[cur_index]), andes_burst_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_READ, true, 0, true, true, receive_len,
+									(char *)(&data[cur_index]), mt7610u_mcu_burst_read_callback);
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
-		andes_append_cmd_msg(msg, (char *)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 		value = cpu2le32((receive_len - 4) / 4);
-		andes_append_cmd_msg(msg, (char *)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 		if (ret) {
 			if (cnt == 1)
@@ -1502,7 +1502,7 @@ error:
 	return ret;
 }
 
-static void andes_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
+static void mt7610u_mcu_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
 	RTMP_REG_PAIR *reg_pair = (RTMP_REG_PAIR *)msg->rsp_payload;
@@ -1513,7 +1513,7 @@ static void andes_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u
 	}
 }
 
-int andes_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
@@ -1530,25 +1530,25 @@ int andes_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 									   ? cap->InbandPacketMaxLen
 									   : (var_len - cur_len);
 
-		msg = andes_alloc_cmd_msg(ad, receive_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
-									(char *)&reg_pair[cur_index], andes_random_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
+									(char *)&reg_pair[cur_index], mt7610u_mcu_random_read_callback);
 
 		for (i = 0; i < receive_len / 8; i++) {
 			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 			value = 0;
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += receive_len / 8;
@@ -1559,7 +1559,7 @@ error:
 	return ret;
 }
 
-static void andes_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
+static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
 	BANK_RF_REG_PAIR *reg_pair = (BANK_RF_REG_PAIR *)msg->rsp_payload;
@@ -1569,7 +1569,7 @@ static void andes_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload
 	}
 }
 
-int andes_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
@@ -1585,15 +1585,15 @@ int andes_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32
 									   ? cap->InbandPacketMaxLen
 									   : (var_len - cur_len);
 
-		msg = andes_alloc_cmd_msg(ad, receive_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
 			goto error;
 		}
 
-		andes_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
-									(char *)&reg_pair[cur_index], andes_rf_random_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
+									(char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
 			value = 0;
@@ -1608,12 +1608,12 @@ int andes_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32
 			value = (value & ~0x0000ffff) | reg_pair[i + cur_index].Register;
 
 			value = cpu2le32(value);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 			value = 0;
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += receive_len / 8;
@@ -1624,7 +1624,7 @@ error:
 	return ret;
 }
 
-int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num)
+int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 12, cur_len = 0, sent_len;
@@ -1643,7 +1643,7 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
-		msg = andes_alloc_cmd_msg(ad, sent_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
@@ -1651,25 +1651,25 @@ int andes_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 12); i++) {
 			/* Address */
 			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 			/* ClearBitMask */
 			value = cpu2le32(reg_pair[i + cur_index].ClearBitMask);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 			/* UpdateData */
 			value = cpu2le32(reg_pair[i + cur_index].Value);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += (sent_len / 12);
@@ -1680,7 +1680,7 @@ error:
 	return ret;
 }
 
-int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
@@ -1699,7 +1699,7 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
-		msg = andes_alloc_cmd_msg(ad, sent_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
@@ -1707,22 +1707,22 @@ int andes_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++)
 		{
 			/* Address */
 			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 			/* UpdateData */
 			value = cpu2le32(reg_pair[i + cur_index].Value);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		};
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += (sent_len / 8);
@@ -1733,7 +1733,7 @@ error:
 	return ret;
 }
 
-int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
@@ -1752,7 +1752,7 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
-		msg = andes_alloc_cmd_msg(ad, sent_len);
+		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
 
 		if (!msg) {
 			ret = NDIS_STATUS_RESOURCES;
@@ -1760,9 +1760,9 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 		}
 
 		if (last_packet)
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
 		else
-			andes_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			value = 0;
@@ -1776,16 +1776,16 @@ int andes_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u3
 			value = (value & ~0x000000ff) | reg_pair[i + cur_index].Register;
 
 			value = cpu2le32(value);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 			value = 0;
 			/* UpdateData */
 			value = (value & ~0x000000ff) | reg_pair[i + cur_index].Value;
 			value = cpu2le32(value);
-			andes_append_cmd_msg(msg, (char *)&value, 4);
+			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
-		ret = andes_send_cmd_msg(ad, msg);
+		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 
 		cur_index += (sent_len / 8);
@@ -1796,7 +1796,7 @@ error:
 	return ret;
 }
 
-int andes_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
+int mt7610u_mcu_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
 					 u32 listen_interval, u32 pre_tbtt_lead_time,
 					 u8 tim_byte_offset, u8 tim_byte_pattern)
 {
@@ -1813,54 +1813,54 @@ int andes_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
 		var_len += 12;
 	}
 
-	msg = andes_alloc_cmd_msg(ad, var_len);
+	msg = mt7610u_mcu_alloc_cmd_msg(ad, var_len);
 
 	if (!msg) {
 		ret = NDIS_STATUS_RESOURCES;
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_POWER_SAVING_OP, false, 0, false, false, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_POWER_SAVING_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Power operation */
 	value = cpu2le32(op);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 	/* Power Level */
 	value = cpu2le32(level);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 	if (op == RADIO_OFF_ADVANCE) {
 		/* Listen interval */
 		value = cpu2le32(listen_interval);
-		andes_append_cmd_msg(msg, (char *)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 
 		/* Pre TBTT lead time */
 		value = cpu2le32(pre_tbtt_lead_time);
-		andes_append_cmd_msg(msg, (char*)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char*)&value, 4);
 
 		/* TIM Info */
 		value = (value & ~0x000000ff) | tim_byte_pattern;
 		value = (value & ~0x0000ff00) | (tim_byte_offset << 8);
 		value = cpu2le32(value);
-		andes_append_cmd_msg(msg, (char *)&value, 4);
+		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 	}
 
-	ret = andes_send_cmd_msg(ad, msg);
+	ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 error:
 	return ret;
 }
 
-int andes_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
+int mt7610u_mcu_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 {
 	struct cmd_msg *msg;
 	u32 value;
 	int ret = 0;
 
 	/* Function ID and Parameter */
-	msg = andes_alloc_cmd_msg(ad, 8);
+	msg = mt7610u_mcu_alloc_cmd_msg(ad, 8);
 
 	if (!msg) {
 		ret = NDIS_STATUS_RESOURCES;
@@ -1868,25 +1868,25 @@ int andes_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 	}
 
 	if (fun_id != Q_SELECT)
-		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0, true, true, 0, NULL, NULL);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0, true, true, 0, NULL, NULL);
 	else
-		andes_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0, false, false, 0, NULL, NULL);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Function ID */
 	value = cpu2le32(fun_id);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 	/* Parameter */
 	value = cpu2le32(param);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
-	ret = andes_send_cmd_msg(ad, msg);
+	ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 error:
 	return ret;
 }
 
-int andes_calibration(struct rtmp_adapter*ad, u32 cal_id, u32 param)
+int mt7610u_mcu_calibration(struct rtmp_adapter*ad, u32 cal_id, u32 param)
 {
 	struct cmd_msg *msg;
 	u32 value;
@@ -1895,53 +1895,53 @@ int andes_calibration(struct rtmp_adapter*ad, u32 cal_id, u32 param)
 	//DBGPRINT(RT_DEBUG_OFF, ("%s:cal_id(%d)\n", __FUNCTION__, cal_id));
 
 	/* Calibration ID and Parameter */
-	msg = andes_alloc_cmd_msg(ad, 8);
+	msg = mt7610u_mcu_alloc_cmd_msg(ad, 8);
 
 	if (!msg) {
 		ret = NDIS_STATUS_RESOURCES;
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true, true, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true, true, 0, NULL, NULL);
 
 	/* Calibration ID */
 	value = cpu2le32(cal_id);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 	/* Parameter */
 	value = cpu2le32(param);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
-	ret = andes_send_cmd_msg(ad, msg);
+	ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 error:
 	return ret;
 }
 
-int andes_led_op(struct rtmp_adapter*ad, u32 led_idx, u32 link_status)
+int mt7610u_mcu_led_op(struct rtmp_adapter*ad, u32 led_idx, u32 link_status)
 {
 	struct cmd_msg *msg;
 	u32 value;
 	int ret = 0;
 
-	msg = andes_alloc_cmd_msg(ad, 8);
+	msg = mt7610u_mcu_alloc_cmd_msg(ad, 8);
 
 	if (!msg) {
 		ret = NDIS_STATUS_RESOURCES;
 		goto error;
 	}
 
-	andes_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false, false, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false, false, 0, NULL, NULL);
 
 	/* Led index */
 	value = cpu2le32(led_idx);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 	/* Link status */
 	value = cpu2le32(link_status);
-	andes_append_cmd_msg(msg, (char *)&value, 4);
+	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
-	ret = andes_send_cmd_msg(ad, msg);
+	ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 error:
 	return ret;

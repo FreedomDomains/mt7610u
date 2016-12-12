@@ -402,7 +402,7 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 	if (IS_MT76x0(pAd))
 	{
 		/* Select Q2 to receive command response */
-		andes_fun_set(pAd, Q_SELECT, pAd->chipCap.CmdRspRxRing);
+		mt7610u_mcu_fun_set(pAd, Q_SELECT, pAd->chipCap.CmdRspRxRing);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
 		mt7610u_write32(pAd, MAC_SYS_CTRL, 0x8);

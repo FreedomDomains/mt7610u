@@ -33,17 +33,17 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
 #ifdef RTMP_USB_SUPPORT
-	pChipOps->MCU_loadFirmware = andes_usb_loadfw;
+	pChipOps->MCU_loadFirmware = mt7610u_mcu_usb_loadfw;
 #endif
-	pChipOps->MCU_CtrlInit = andes_ctrl_init;
-	pChipOps->MCU_CtrlExit = andes_ctrl_exit;
-	pChipOps->MCU_Calibration = andes_calibration;
-	pChipOps->MCU_BurstWrite =  andes_burst_write;
-	pChipOps->MCU_BurstRead = andes_burst_read;
-	pChipOps->MCU_RandomRead = andes_random_read;
-	pChipOps->MCU_RFRandomRead = andes_rf_random_read;
-	pChipOps->MCU_ReadModifyWrite = andes_read_modify_write;
-	pChipOps->MCU_RandomWrite = andes_random_write;
-	pChipOps->MCU_RFRandomWrite = andes_rf_random_write;
-	pChipOps->MCU_PwrSavingOP = andes_pwr_saving;
+	pChipOps->MCU_CtrlInit = mt7610u_mcu_ctrl_init;
+	pChipOps->MCU_CtrlExit = mt7610u_mcu_ctrl_exit;
+	pChipOps->MCU_Calibration = mt7610u_mcu_calibration;
+	pChipOps->MCU_BurstWrite =  mt7610u_mcu_burst_write;
+	pChipOps->MCU_BurstRead = mt7610u_mcu_burst_read;
+	pChipOps->MCU_RandomRead = mt7610u_mcu_random_read;
+	pChipOps->MCU_RFRandomRead = mt7610u_mcu_rf_random_read;
+	pChipOps->MCU_ReadModifyWrite = mt7610u_mcu_read_modify_write;
+	pChipOps->MCU_RandomWrite = mt7610u_mcu_random_write;
+	pChipOps->MCU_RFRandomWrite = mt7610u_mcu_rf_random_write;
+	pChipOps->MCU_PwrSavingOP = mt7610u_mcu_pwr_saving;
 }

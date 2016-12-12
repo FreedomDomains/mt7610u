@@ -1209,7 +1209,7 @@ int	NICInitializeAsic(
 
 	/* Select Q2 to receive command response */
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
-	andes_fun_set(pAd, Q_SELECT, pChipCap->CmdRspRxRing);
+	mt7610u_mcu_fun_set(pAd, Q_SELECT, pChipCap->CmdRspRxRing);
 	usb_rx_cmd_msgs_receive(pAd);
 
 	//RTUSBBulkReceive(pAd);

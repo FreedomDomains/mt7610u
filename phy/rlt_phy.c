@@ -239,7 +239,7 @@ INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
 
 INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw)
 {
-	andes_fun_set(pAd, BW_SETTING, bw);
+	mt7610u_mcu_fun_set(pAd, BW_SETTING, bw);
 	pAd->CommonCfg.BBPCurrentBW = bw;
 	return true;
 }
