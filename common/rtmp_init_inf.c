@@ -217,11 +217,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	NICInitAsicFromEEPROM(pAd); /* rt2860b */
 
-#ifdef RTMP_INTERNAL_TX_ALC
-	/* Initialize the desired TSSI table*/
-	RTMP_CHIP_ASIC_TSSI_TABLE_INIT(pAd);
-#endif /* RTMP_INTERNAL_TX_ALC */
-
 	/* Set PHY to appropriate mode*/
 	RTMPSetPhyMode(pAd, pAd->CommonCfg.PhyMode);
 

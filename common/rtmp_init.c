@@ -682,31 +682,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 		RTMPReadTxPwrPerRate(pAd);
 
-#ifdef RTMP_INTERNAL_TX_ALC
-#ifdef RT65xx
-	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
-	{
-		; // TODO: wait TC6008 EEPROM format
-	}
-	else
-#endif /* RT65xx */
-	{
-		/*
-			Internal Tx ALC support is starting from RT3370 / RT3390, which combine PA / LNA in single chip.
-			The old chipset don't have this, add new feature flag RTMP_INTERNAL_TX_ALC.
-		*/
-		RTUSBReadEEPROM16(pAd, EEPROM_NIC2_OFFSET, &value);
-		if (value == 0xFFFF) /*EEPROM is empty*/
-		   	pAd->TxPowerCtrl.bInternalTxALC = false;
-		else if (value & 1<<13)
-		   	pAd->TxPowerCtrl.bInternalTxALC = true;
-		else
-		   	pAd->TxPowerCtrl.bInternalTxALC = false;
-
-	}
-	DBGPRINT(RT_DEBUG_TRACE, ("TXALC> bInternalTxALC = %d\n", pAd->TxPowerCtrl.bInternalTxALC));
-#endif /* RTMP_INTERNAL_TX_ALC */
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd))
 	{
@@ -829,50 +804,6 @@ void NICInitAsicFromEEPROM(
 		pAd->bAutoTxAgcA = pAd->bAutoTxAgcG = true;
 	else
 		pAd->bAutoTxAgcA = pAd->bAutoTxAgcG = false;
-
-#ifdef RTMP_INTERNAL_TX_ALC
-	/*
-	    Internal Tx ALC support is starting from RT3370 / RT3390, which combine PA / LNA in single chip.
-	    The old chipset don't have this, add new feature flag RTMP_INTERNAL_TX_ALC.
-	 */
-
-	/* Internal Tx ALC */
-	if (((NicConfig2.field.DynamicTxAgcControl == 1) &&
-            (NicConfig2.field.bInternalTxALC == 1)) ||
-            ((!IS_RT3390(pAd)) && (!IS_RT3350(pAd)) &&
-            (!IS_RT3352(pAd)) && (!IS_RT5350(pAd)) && (!IS_RT5390(pAd)) && (!IS_RT3290(pAd))))
-	{
-		/*
-			If both DynamicTxAgcControl and bInternalTxALC are enabled,
-			it is a wrong configuration.
-			If the chipset does not support Internal TX ALC, we shall disable it.
-		*/
-		pAd->TxPowerCtrl.bInternalTxALC = false;
-	}
-	else
-	{
-		if (NicConfig2.field.bInternalTxALC == 1)
-		{
-			pAd->TxPowerCtrl.bInternalTxALC = true;
-		}
-		else
-		{
-			pAd->TxPowerCtrl.bInternalTxALC = false;
-		}
-	}
-
-
-	/* Old 5390 NIC always disables the internal ALC */
-
-	if (pAd->MACVersion == 0x53900501)
-	{
-		pAd->TxPowerCtrl.bInternalTxALC = false;
-	}
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: pAd->TxPowerCtrl.bInternalTxALC = %d\n",
-		__FUNCTION__,
-		pAd->TxPowerCtrl.bInternalTxALC));
-#endif /* RTMP_INTERNAL_TX_ALC */
 
 	rtmp_bbp_set_rxpath(pAd, pAd->Antenna.field.RxPath);
 
@@ -1978,12 +1909,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 	pAd->bAutoTxAgcA = false;			/* Default is OFF*/
 	pAd->bAutoTxAgcG = false;			/* Default is OFF*/
-
-#if defined(RTMP_INTERNAL_TX_ALC)
-	pAd->TxPowerCtrl.bInternalTxALC = false; /* Off by default */
-	pAd->TxPowerCtrl.idxTxPowerTable = 0;
-	pAd->TxPowerCtrl.idxTxPowerTable2 = 0;
-#endif /* RTMP_INTERNAL_TX_ALC */
 
 	pAd->RfIcType = RFIC_2820;
 
