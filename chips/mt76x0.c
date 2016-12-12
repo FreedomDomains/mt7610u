@@ -2716,13 +2716,6 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 				Bit[8:15] (0:BW20, 1:BW40)
 				NOTE: disable DPD calibration for USB products
 		*/
-		if (IS_MT76x0E(pAd)) {
-			u32 dpd_val = 0;
-
-			dpd_val = (pAd->CommonCfg.BBPCurrentBW << 8) | Channel;
-			RTMP_CHIP_CALIBRATION(pAd, DPD_CALIBRATION, dpd_val);
-			DBGPRINT(RT_DEBUG_OFF, ("%s - DPD_CALIBRATION = 0x%x\n", __FUNCTION__, dpd_val));
-		}
 	}
 
 	/* Restore 0x2124 & TX_ALC_CFG_0 after calibration completed */

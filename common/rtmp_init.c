@@ -469,9 +469,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	if (IS_MT7630(pAd))
 		pAd->RfIcType = RFIC_7630;
 
-	if (IS_MT7610E(pAd))
-		pAd->RfIcType = RFIC_7610E;
-
 	if (IS_MT7610U(pAd))
 		pAd->RfIcType = RFIC_7610U;
 
@@ -499,21 +496,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	else
 	{
 #ifdef MT76x0
-		if (IS_MT7610E(pAd))
-		{
-			DBGPRINT_RAW(RT_DEBUG_ERROR,
-						("%s():Err! chip not support 2G band (%d)!\n",
-						__FUNCTION__, pAd->RfIcType));
-#ifdef DOT11_N_SUPPORT
-			/* change to an mode */
-			Set_WirelessMode_Proc(pAd, "8");
-#else
-			/* change to a mode */
-			Set_WirelessMode_Proc(pAd, "2");
-#endif /* DOT11_N_SUPPORT */
-			pAd->RFICType = RFIC_5GHZ;
-		}
-		else
 #endif /* RT65xx */
 		pAd->RFICType = RFIC_24GHZ;
 	}
