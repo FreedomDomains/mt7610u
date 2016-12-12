@@ -210,7 +210,4 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 
-void MT76x0_MakeUpRatePwrTable(
-	IN struct rtmp_adapter *pAd);
-
 #endif /* __MT76x0_H__ */
