@@ -404,9 +404,6 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 		/* Select Q2 to receive command response */
 		mt7610u_mcu_fun_set(pAd, Q_SELECT, pAd->chipCap.CmdRspRxRing);
 
-#ifdef MT76x0_TSSI_CAL_COMPENSATION
-		mt7610u_write32(pAd, MAC_SYS_CTRL, 0x8);
-#endif /* MT76x0_TSSI_CAL_COMPENSATION */
 	}
 #endif /* MT76x0 */
 

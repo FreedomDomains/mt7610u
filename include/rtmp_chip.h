@@ -562,24 +562,6 @@ struct rtmp_chip_cap {
 	u8 delta_tw_pwr_bw40_5G;
 	u8 delta_tw_pwr_bw40_2G;
 	u8 delta_tw_pwr_bw80;
-#ifdef MT76x0_TSSI_CAL_COMPENSATION
-	bool bInternalTxALC; /* Internal Tx ALC */
-	u8 tssi_info_1;
-	u8 tssi_info_2;
-	u8 tssi_info_3;
-	u8 tssi_2G_target_power;
-	u8 tssi_5G_target_power;
-	u8 efuse_2G_54M_tx_power;
-	u8 efuse_5G_54M_tx_power;
-	MT76x0_TSSI_Table tssi_table;
-	CHAR tssi_slope_2G;
-	CHAR tssi_offset_2G;
-	u8 tssi_slope_5G[8];
-	CHAR tssi_offset_5G[8];
-	u8 tssi_5G_channel_boundary[7];
-	CHAR tssi_current_DC;
-	INT tssi_pre_delta_pwr;
-#endif /* MT76x0_TSSI_CAL_COMPENSATION */
 #endif /* MT76x0 */
 };
 

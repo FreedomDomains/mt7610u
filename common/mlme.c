@@ -685,19 +685,6 @@ void MlmePeriodicExec(
 	*/
 #endif /* VIDEO_TURBINE_SUPPORT */
 
-#ifdef MT76x0_TSSI_CAL_COMPENSATION
-		if (IS_MT76x0(pAd) &&
-			(pAd->chipCap.bInternalTxALC) &&
-			(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF | fRTMP_ADAPTER_DISABLE_DEQUEUEPACKET) == false))
-		{
-			if ((pAd->Mlme.OneSecPeriodicRound % 4) == 0)
-			{
-				/* TSSI compensation */
-				MT76x0_IntTxAlcProcess(pAd);
-			}
-		}
-#endif /* MT76x0_TSSI_CAL_COMPENSATION */
-
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF | fRTMP_ADAPTER_DISABLE_DEQUEUEPACKET) == false)
 		{
 			if ((pAd->Mlme.OneSecPeriodicRound % 5) == 0)

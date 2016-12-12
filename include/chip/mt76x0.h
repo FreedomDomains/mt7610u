@@ -210,17 +210,6 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 
-#ifdef MT76x0_TSSI_CAL_COMPENSATION
-void MT76x0_TSSI_DC_Calibration(
-	IN  struct rtmp_adapter *pAd);
-
-void MT76x0_MakeUpTssiTable(
-	IN  struct rtmp_adapter *pAd);
-
-void MT76x0_IntTxAlcProcess(
-	IN  struct rtmp_adapter *pAd);
-#endif /* MT76x0_TSSI_CAL_COMPENSATION */
-
 void MT76x0_MakeUpRatePwrTable(
 	IN struct rtmp_adapter *pAd);
 
