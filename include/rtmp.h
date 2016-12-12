@@ -4260,14 +4260,6 @@ bool AsicSendCommandToMcu(
 	IN u8         Arg0,
 	IN u8         Arg1);
 
-bool AsicSendCommandToMcuBBP(
-	IN struct rtmp_adapter *pAd,
-	IN u8 	 Command,
-	IN u8 	 Token,
-	IN u8 	 Arg0,
-	IN u8 	 Arg1,
-	IN bool 	FlgIsNeedLocked);
-
 void MacAddrRandomBssid(
 	IN  struct rtmp_adapter *  pAd,
 	OUT u8 *pAddr);

@@ -1911,27 +1911,6 @@ bool AsicSendCommandToMcu(
 }
 
 
-bool AsicSendCommandToMcuBBP(
-	IN struct rtmp_adapter *pAd,
-	IN u8 	 Command,
-	IN u8 	 Token,
-	IN u8 	 Arg0,
-	IN u8 	 Arg1,
-	IN bool 	FlgIsNeedLocked)
-{
-#ifdef RT65xx
-	// TODO: shiang-6590, fix me, currently firmware is not ready yet, so ignore it!
-	if (IS_RT65XX(pAd)) {
-		return true;
-	}
-#endif /* RT65xx */
-
-	if (pAd->chipOps.sendCommandToMcu)
-		return pAd->chipOps.sendCommandToMcu(pAd, Command, Token, Arg0, Arg1, FlgIsNeedLocked);
-	else
-		return false;
-}
-
 /*
 	========================================================================
 	Description:
