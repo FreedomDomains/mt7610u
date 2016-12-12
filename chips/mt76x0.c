@@ -1544,7 +1544,7 @@ static void MT76x0_ChipSwitchChannel(
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->hw_atomic, ret);
+		ret = down_interruptible(&pAd->hw_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -1648,7 +1648,7 @@ static void MT76x0_ChipSwitchChannel(
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
-		OS_SEM_EVENT_UP(&pAd->hw_atomic);
+		up(&pAd->hw_atomic);
 
 #endif /* RTMP_MAC_USB */
 
@@ -2309,7 +2309,7 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
+		ret = down_interruptible(&pAd->wlan_en_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -2365,7 +2365,7 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
-		OS_SEM_EVENT_UP(&pAd->wlan_en_atomic);
+		up(&pAd->wlan_en_atomic);
 
 #endif /* RTMP_MAC_USB */
 
@@ -2474,7 +2474,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->cal_atomic, ret);
+		ret = down_interruptible(&pAd->cal_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -2708,7 +2708,7 @@ RXDC_Calibration:
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
-		OS_SEM_EVENT_UP(&pAd->cal_atomic);
+		up(&pAd->cal_atomic);
 
 #endif /* RTMP_MAC_USB */
 }
@@ -2727,7 +2727,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->cal_atomic, ret);
+		ret = down_interruptible(&pAd->cal_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -2822,7 +2822,7 @@ done:
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
-		OS_SEM_EVENT_UP(&pAd->cal_atomic);
+		up(&pAd->cal_atomic);
 
 #endif /* RTMP_MAC_USB */
 }

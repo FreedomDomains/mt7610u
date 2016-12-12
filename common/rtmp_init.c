@@ -2777,12 +2777,12 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 
 
 #ifdef RTMP_MAC_USB
-	OS_SEM_EVENT_INIT(&(pAd->UsbVendorReq_semaphore));
-	OS_SEM_EVENT_INIT(&(pAd->reg_atomic));
-	OS_SEM_EVENT_INIT(&(pAd->hw_atomic));
-	OS_SEM_EVENT_INIT(&(pAd->cal_atomic));
-	OS_SEM_EVENT_INIT(&(pAd->wlan_en_atomic));
-	OS_SEM_EVENT_INIT(&(pAd->mcu_atomic));
+	sema_init(&(pAd->UsbVendorReq_semaphore), 1);
+	sema_init(&(pAd->reg_atomic), 1);
+	sema_init(&(pAd->hw_atomic), 1);
+	sema_init(&(pAd->cal_atomic), 1);
+	sema_init(&(pAd->wlan_en_atomic), 1);
+	sema_init(&(pAd->mcu_atomic), 1);
 	pAd->UsbVendorReqBuf = kmalloc(MAX_PARAM_BUFFER_SIZE - 1, GFP_ATOMIC);
 	if (pAd->UsbVendorReqBuf == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate vendor request temp buffer failed!\n"));
@@ -2828,13 +2828,6 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 #endif /* RT65xx */
 
 #ifdef RTMP_MAC_USB
-	OS_SEM_EVENT_DESTROY(&(pAd->UsbVendorReq_semaphore));
-	OS_SEM_EVENT_DESTROY(&(pAd->reg_atomic));
-	OS_SEM_EVENT_DESTROY(&(pAd->hw_atomic));
-	OS_SEM_EVENT_DESTROY(&(pAd->cal_atomic));
-	OS_SEM_EVENT_DESTROY(&(pAd->wlan_en_atomic));
-	OS_SEM_EVENT_DESTROY(&(pAd->mcu_atomic));
-
 	if (pAd->UsbVendorReqBuf)
 		kfree(pAd->UsbVendorReqBuf);
 #endif /* RTMP_MAC_USB */

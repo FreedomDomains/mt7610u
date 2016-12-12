@@ -62,7 +62,7 @@ void MT76x0_ral_wlan_chip_onoff(
 	u32 ret;
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
+		ret = down_interruptible(&pAd->wlan_en_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -105,7 +105,7 @@ void MT76x0_ral_wlan_chip_onoff(
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_UP(&pAd->wlan_en_atomic);
+		up(&pAd->wlan_en_atomic);
 	}
 #endif /* RTMP_MAC_USB */
 }
@@ -157,7 +157,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 	DISABLE_TX_RX(pAd, RTMP_HALT);
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->hw_atomic, ret);
+		ret = down_interruptible(&pAd->hw_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -186,7 +186,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 	}
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_UP(&pAd->hw_atomic);
+		up(&pAd->hw_atomic);
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
@@ -236,7 +236,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	MCU_CTRL_INIT(pAd);
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->hw_atomic, ret);
+		ret = down_interruptible(&pAd->hw_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -246,7 +246,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_UP(&pAd->hw_atomic);
+		up(&pAd->hw_atomic);
 	}
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
@@ -486,7 +486,7 @@ void MT76x0_WLAN_ChipOnOff(
 	u32 ret;
 
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
+		ret = down_interruptible(&pAd->wlan_en_atomic);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
 			return;
@@ -604,7 +604,7 @@ void MT76x0_WLAN_ChipOnOff(
 
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
-		OS_SEM_EVENT_UP(&pAd->wlan_en_atomic);
+		up(&pAd->wlan_en_atomic);
 	}
 #endif /* RTMP_MAC_USB */
 }

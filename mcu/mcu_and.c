@@ -1158,7 +1158,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
 
-	OS_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
+	ret = down_interruptible(&(ad->mcu_atomic));
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	ctl->cmd_seq = 0;
 	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
@@ -1181,7 +1181,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	ctl->free_cmd_msg = 0;
 	OS_SET_BIT(MCU_INIT, &ctl->flags);
 	usb_rx_cmd_msgs_receive(ad);
-	OS_SEM_EVENT_UP(&(ad->mcu_atomic));
+	up(&(ad->mcu_atomic));
 }
 
 void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
@@ -1189,7 +1189,7 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
 
-	OS_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
+	ret = down_interruptible(&(ad->mcu_atomic));
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	OS_CLEAR_BIT(MCU_INIT, &ctl->flags);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->txq);
@@ -1208,7 +1208,7 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("alloc_cmd_msg = %ld\n", ctl->alloc_cmd_msg));
 	DBGPRINT(RT_DEBUG_OFF, ("free_cmd_msg = %ld\n", ctl->free_cmd_msg));
-	OS_SEM_EVENT_UP(&(ad->mcu_atomic));
+	up(&(ad->mcu_atomic));
 }
 
 static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
@@ -1275,13 +1275,13 @@ int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	int ret = 0;
 	bool need_wait = msg->need_wait;
 
-	OS_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
+	ret = down_interruptible(&(ad->mcu_atomic));
 
 	if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
 		mt7610u_mcu_free_cmd_msg(msg);
-		OS_SEM_EVENT_UP(&(ad->mcu_atomic));
+		up(&(ad->mcu_atomic));
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -1336,7 +1336,7 @@ retransmit:
 		}
 	}
 
-	OS_SEM_EVENT_UP(&(ad->mcu_atomic));
+	up(&(ad->mcu_atomic));
 
 	return ret;
 }

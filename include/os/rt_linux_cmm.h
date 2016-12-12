@@ -57,7 +57,7 @@ typedef struct _OS_RSTRUC  {
 	WAKE_UP(pTask);
 #else
 #define RTMP_OS_TASK_WAKE_UP(__pTask)						\
-	OS_SEM_EVENT_UP(&(pTask)->taskSema);
+	up(&(pTask)->taskSema);
 #endif /* KTHREAD_SUPPORT */
 
 #ifdef KTHREAD_SUPPORT

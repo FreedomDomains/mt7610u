@@ -326,7 +326,7 @@ int	RTUSBWriteRFRegister(
 
 	memset(&PhyCsr4, 0, sizeof(RF_CSR_CFG0_STRUC));
 
-	OS_SEM_EVENT_WAIT(&pAd->reg_atomic, status);
+	status = down_interruptible(&pAd->reg_atomic);
 	if (status != 0) {
 		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", status));
 		return STATUS_UNSUCCESSFUL;
@@ -356,7 +356,7 @@ int	RTUSBWriteRFRegister(
 	status = STATUS_SUCCESS;
 
 done:
-	OS_SEM_EVENT_UP(&pAd->reg_atomic);
+	up(&pAd->reg_atomic);
 
 	return status;
 }
@@ -522,7 +522,7 @@ int RTUSB_VendorRequest(
 		int RetryCount = 0; /* RTUSB_CONTROL_MSG retry counts*/
 		ASSERT(TransferBufferLength <MAX_PARAM_BUFFER_SIZE);
 
-		OS_SEM_EVENT_WAIT(&(pAd->UsbVendorReq_semaphore), ret);
+		ret = down_interruptible(&(pAd->UsbVendorReq_semaphore));
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("UsbVendorReq_semaphore get failed\n"));
 			return NDIS_STATUS_FAILURE;
@@ -561,7 +561,7 @@ int RTUSB_VendorRequest(
 		if ( (!(ret < 0)) && (TransferBufferLength > 0) && (RequestType == DEVICE_VENDOR_REQUEST_IN))
 			memmove(TransferBuffer, pAd->UsbVendorReqBuf, TransferBufferLength);
 
-		OS_SEM_EVENT_UP(&(pAd->UsbVendorReq_semaphore));
+		up(&(pAd->UsbVendorReq_semaphore));
 
 		if (ret < 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("RTUSB_VendorRequest failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
