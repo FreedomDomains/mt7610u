@@ -2208,11 +2208,6 @@ struct wificonf {
 	bool bGreenField;
 };
 
-typedef struct _RTMP_DEV_INFO_ {
-	u8 chipName[16];
-	RTMP_INF_TYPE infType;
-} RTMP_DEV_INFO;
-
 #ifdef DBG_DIAGNOSE
 #define DIAGNOSE_TIME	10	/* 10 sec */
 typedef struct _RtmpDiagStrcut_ {	/* Diagnosis Related element */
