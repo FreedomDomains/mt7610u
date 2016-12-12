@@ -1415,7 +1415,7 @@ Note:
 static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 {
 	u32 MacReg = 0;
-	USHORT trsw_mode = 0;
+	u16 trsw_mode = 0;
 
 	/*
 		Enable PBF and MAC clock
@@ -1423,7 +1423,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 	*/
 	RANDOM_WRITE(pAd, MT76x0_MACRegTable, MT76x0_NUM_MAC_REG_PARMS);
 
-	RT28xx_EEPROM_READ16(pAd, 0x24, trsw_mode);
+	RTUSBReadEEPROM16(pAd, 0x24, &trsw_mode);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
 		mt7610u_write32(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
@@ -1713,7 +1713,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ss_offset_g = EEPROM_G_TX_PWR_OFFSET;
 	for (i = 0; i < 7; i++) {
 		idx = i * 2;
-		RT28xx_EEPROM_READ16(pAd, ss_offset_g + idx, Power.word);
+		RTUSBReadEEPROM16(pAd, ss_offset_g + idx, &Power.word);
 
 		tx_pwr1 = tx_pwr2 = DEFAULT_RF_TX_POWER;
 
@@ -1734,7 +1734,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 36));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_A_TX_PWR_OFFSET + idx, Power.word);
+		RTUSBReadEEPROM16(pAd, EEPROM_A_TX_PWR_OFFSET + idx, &Power.word);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1750,7 +1750,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	for (i = 0; i < 8; i++) {
 
 		idx = i * 2;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, Power.word);
+		RTUSBReadEEPROM16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, &Power.word);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1765,7 +1765,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 149));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		RT28xx_EEPROM_READ16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, Power.word);
+		RTUSBReadEEPROM16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, &Power.word);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1922,7 +1922,7 @@ static void calc_bw_delta_pwr(bool is_dec_delta, USHORT input_pwr,
 void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 {
 	u32 data;
-	USHORT e2p_val = 0, e2p_val2 = 0;
+	u16 e2p_val = 0, e2p_val2 = 0;
 	u8 bw40_gband_delta = 0, bw40_aband_delta = 0, bw80_aband_delta = 0;
 	CHAR t1 = 0, t2 = 0, t3 = 0, t4 = 0;
 	bool dec_aband_bw40_delta = false, dec_aband_bw80_delta = false, dec_gband_bw40_delta = false;
@@ -1936,7 +1936,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	 *		     	0: decrease 40M BW TX power with the delta value
 	 *	bit 7 -> 	enableTX power compensation
 	*/
-	RT28xx_EEPROM_READ16(pAd, EEPROM_TXPOWER_DELTA, e2p_val);
+	RTUSBReadEEPROM16(pAd, EEPROM_TXPOWER_DELTA, &e2p_val);
 	pAd->chipCap.delta_tw_pwr_bw40_2G = (e2p_val & 0xFF) == 0xFF ? 0 : (e2p_val & 0xFF);
 	pAd->chipCap.delta_tw_pwr_bw40_5G = (e2p_val & 0xFF00) == 0xFF00 ? 0 : ((e2p_val >> 8) & 0xFF);
 
@@ -1970,7 +1970,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	 * word(u16) boundary, right for read16
 	 * So the higher byte here is needed
 	 */
-	RT28xx_EEPROM_READ16(pAd, EEPROM_VHT_BW80_TX_POWER_DELTA - 1, e2p_val);
+	RTUSBReadEEPROM16(pAd, EEPROM_VHT_BW80_TX_POWER_DELTA - 1, &e2p_val);
 	pAd->chipCap.delta_tw_pwr_bw80 =
 		((e2p_val & 0xFF00) == 0xFF00 ? 0 : (e2p_val & 0xFF00)) >> 8;
 
@@ -1991,9 +1991,9 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: dec_aband_bw80_delta = %d, bw80_aband_delta = %d\n",
 		__FUNCTION__, dec_aband_bw80_delta, bw80_aband_delta));
 
-	RT28xx_EEPROM_READ16(pAd, 0xDE, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xDE, &e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
-	RT28xx_EEPROM_READ16(pAd, 0xE0, e2p_val2);
+	RTUSBReadEEPROM16(pAd, 0xE0, &e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> OFDM 12M/18M
@@ -2008,9 +2008,9 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgGBand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xE2, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xE2, &e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
-	RT28xx_EEPROM_READ16(pAd, 0xE4, e2p_val2);
+	RTUSBReadEEPROM16(pAd, 0xE4, &e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> HT MCS=2,3, VHT 1SS MCS=2,3
@@ -2025,9 +2025,9 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgGBand[1] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xE6, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xE6, &e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
-	RT28xx_EEPROM_READ16(pAd, 0xE8, e2p_val2);
+	RTUSBReadEEPROM16(pAd, 0xE8, &e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> HT MCS=10,11 (no need)
@@ -2042,9 +2042,9 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgGBand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xEA, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xEA, &e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
-	RT28xx_EEPROM_READ16(pAd, 0xEC, e2p_val2);
+	RTUSBReadEEPROM16(pAd, 0xEC, &e2p_val2);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val2, bw40_gband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> HT/VHT STBC MCS=2, 3
@@ -2059,7 +2059,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgGBand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xEE, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xEE, &e2p_val);
 	calc_bw_delta_pwr(dec_gband_bw40_delta, e2p_val, bw40_gband_delta, &t1, &t2);
 	/*
 		bit 13:8 -> HT/VHT STBC MCS=6
@@ -2073,7 +2073,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgGBand[4](0x1324) = 0x%08X\n", __FUNCTION__, data));
 
 
-	RT28xx_EEPROM_READ16(pAd, 0x120, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0x120, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> OFDM 12M/18M
@@ -2087,9 +2087,9 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgABand[0] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[0](0x1314) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0x122, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0x122, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t1, &t2);
-	RT28xx_EEPROM_READ16(pAd, 0x124, e2p_val2);
+	RTUSBReadEEPROM16(pAd, 0x124, &e2p_val2);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val2, bw40_aband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> HT MCS=2,3, VHT 1SS MCS=2,3
@@ -2104,7 +2104,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgABand[1] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[1](0x1318) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0x126, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0x126, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t1, &t2);
 	/*
 		bit 13:8 -> HT MCS=6, VHT 1SS MCS=6
@@ -2117,7 +2117,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgABand[2] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[2](0x131C) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xEC, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xEC, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> HT/VHT STBC MCS=2, 3
@@ -2131,7 +2131,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgABand[3] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[3](0x1320) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0xEE, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0xEE, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw40_delta, e2p_val, bw40_aband_delta, &t1, &t2);
 	/*
 		bit 13:8 -> HT/VHT STBC MCS=6
@@ -2144,7 +2144,7 @@ void mt76x0_read_per_rate_tx_pwr(struct rtmp_adapter *pAd)
 	pAd->Tx40MPwrCfgABand[4] = data;
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("%s: Tx40MPwrCfgABand[4](0x1324) = 0x%08X\n", __FUNCTION__, data));
 
-	RT28xx_EEPROM_READ16(pAd, 0x12C, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0x12C, &e2p_val);
 	calc_bw_delta_pwr(dec_aband_bw80_delta, e2p_val, bw80_aband_delta, &t3, &t4);
 	/*
 		bit 29:24 -> VHT 1SS MCS=9
@@ -2349,7 +2349,7 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 		0x1: Chip is in dual antenna mode
 		0x0: Chip is in single antenna mode
 	*/
-	RT28xx_EEPROM_READ16(pAd, 0x22, e2p_val);
+	RTUSBReadEEPROM16(pAd, 0x22, &e2p_val);
 
 	if (e2p_val & 0x8000) {
 		if (pAd->NicConfig2.field.AntOpt == 0 &&
@@ -4276,7 +4276,7 @@ static void adjust_mp_temp(struct rtmp_adapter *pAd, char *temp_minus_bdy,
 	EEPROM_TX_PWR_STRUC e2p_value;
 	CHAR mp_temp, idx = 0, mp_offset = 0;
 
-	RT28xx_EEPROM_READ16(pAd, 0x10C, e2p_value);
+	RTUSBReadEEPROM16(pAd, 0x10C, (u16 *) &e2p_value);
 	mp_temp = e2p_value.field.Byte1;
 
 	if (mp_temp < temp_minus_bdy[1]) {
@@ -4324,7 +4324,7 @@ bool load_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 	USHORT e2p_start_addr, USHORT e2p_end_addr,
 	u8 *bdy_table, const INT start_idx, const u32 table_size)
 {
-	USHORT e2p_value;
+	u16 e2p_value;
 	INT e2p_idx = 0, table_idx = 0;
 	CHAR table_sign; /* +1 for plus table; -1 for minus table */
 
@@ -4352,7 +4352,7 @@ bool load_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 			e2p_idx--;
 		}
 
-		RT28xx_EEPROM_READ16(pAd, e2p_idx, e2p_value);
+		RTUSBReadEEPROM16(pAd, e2p_idx, &e2p_value);
 
 		if (e2p_idx == e2p_start_addr) {
 			if (table_sign > 0)
@@ -4423,10 +4423,10 @@ void mt76x0_temp_tx_alc_init(struct rtmp_adapter *pAd)
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 {
 	bool status = true;
-	USHORT e2p_value = 0;
+	u16 e2p_value = 0;
 
 	if (IS_MT76x0(pAd)) {
-		RT28xx_EEPROM_READ16(pAd, 0xD0, e2p_value);
+		RTUSBReadEEPROM16(pAd, 0xD0, &e2p_value);
 		e2p_value = (e2p_value & 0xFF00) >> 8;
 		DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
 			__FUNCTION__, e2p_value));
@@ -4445,11 +4445,11 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 
 #ifdef RTMP_TEMPERATURE_TX_ALC
 	if (pAd->bAutoTxAgcG | pAd->bAutoTxAgcA) {
-		RT28xx_EEPROM_READ16(pAd, 0xD0, e2p_value);
+		RTUSBReadEEPROM16(pAd, 0xD0, &e2p_value);
 		pAd->TssiCalibratedOffset = (e2p_value >> 8);
 
 		/* 5G Tx power compensation channel boundary index */
-		RT28xx_EEPROM_READ16(pAd, 0x10C, e2p_value);
+		RTUSBReadEEPROM16(pAd, 0x10C, &e2p_value);
 		pAd->ChBndryIdx = (u8)(e2p_value & 0xFF);
 		DBGPRINT(RT_DEBUG_OFF, ("%s(): channel boundary index = %u, temp reference offset = %d\n",
 			__FUNCTION__, pAd->ChBndryIdx, pAd->TssiCalibratedOffset));

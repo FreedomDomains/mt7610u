@@ -102,11 +102,11 @@ void RTMPSetLEDStatus(
 
 void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 {
-	USHORT Value;
+	u16 Value;
 	struct mt7610u_led_control *led_crtl = &pAd->LedCntl;
 
 	// TODO: wait TC6008 EEPROM format
-	RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
+	RTUSBReadEEPROM16(pAd, EEPROM_FREQ_OFFSET, &Value);
 	led_crtl->MCULedCntl.word = (Value >> 8);
 }
 

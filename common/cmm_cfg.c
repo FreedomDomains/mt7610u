@@ -614,7 +614,7 @@ INT RTMP_COM_IoctlHandle(
 	struct os_cookie *pObj = pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
 	u8 PermanentAddress[ETH_ALEN];
-	USHORT Addr01, Addr23, Addr45;
+	u16 Addr01, Addr23, Addr45;
 
 
 	pObj = pObj; /* avoid compile warning */
@@ -984,9 +984,9 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
 
-			RT28xx_EEPROM_READ16(pAd, 0x04, Addr01);
-			RT28xx_EEPROM_READ16(pAd, 0x06, Addr23);
-			RT28xx_EEPROM_READ16(pAd, 0x08, Addr45);
+			RTUSBReadEEPROM16(pAd, 0x04, &Addr01);
+			RTUSBReadEEPROM16(pAd, 0x06, &Addr23);
+			RTUSBReadEEPROM16(pAd, 0x08, &Addr45);
 
 			PermanentAddress[0] = (u8)(Addr01 & 0xff);
 			PermanentAddress[1] = (u8)(Addr01 >> 8);
