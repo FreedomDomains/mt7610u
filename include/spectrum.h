@@ -36,10 +36,6 @@ u8 GetRegulatoryMaxTxPwr(
 	IN struct rtmp_adapter *pAd,
 	IN u8 channel);
 
-CHAR RTMP_GetTxPwr(
-	IN struct rtmp_adapter *pAd,
-	IN HTTRANSMIT_SETTING HTTxMode);
-
 /*
 	==========================================================================
 	Description:
