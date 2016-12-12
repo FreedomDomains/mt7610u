@@ -596,22 +596,6 @@ typedef struct _COUNTER_802_11 {
 	LARGE_INTEGER TransmitCountFrmOs;
 } COUNTER_802_11, *PCOUNTER_802_11;
 
-
-#ifdef RT3290
-typedef struct _ANT_DIVERSITY
-{
-	bool 	RateUp;
-	ULONG		TrainCounter;
-	ULONG		AntennaDiversityState;	// 0->Stable state 1->training state
-	ULONG		AntennaDiversityPER[2];  // 0 ->main 1->aux
-	ULONG		AntennaDiversityTxPacketCount[2];  // 0 ->main 1->aux
-	ULONG		AntennaDiversityRxPacketCount[2];
-	CHAR		Rssi[2];
-	ULONG		AntennaDiversityCount;
-	ULONG		AntennaDiversityTrigger;
-}ANT_DIVERSITY, *PANT_DIVERSITY;
-#endif /* RT3290 */
-
 typedef struct _COUNTER_RALINK {
 	u32 OneSecStart;	/* for one sec count clear use */
 	u32 OneSecBeaconSentCnt;
@@ -635,10 +619,6 @@ typedef struct _COUNTER_RALINK {
 
 	ULONG TransmittedByteCount;	/* both successful and failure, used to calculate TX throughput */
 	ULONG ReceivedByteCount;	/* both CRC okay and CRC error, used to calculate RX throughput */
-#ifdef RT3290
-	// TODO: shiang, check the purpose of following parameter
-	ULONG OneSecRxOkCnt2; /* RX without error */
-#endif /* RT3290 */
 	ULONG BadCQIAutoRecoveryCount;
 	ULONG PoorCQIRoamingCount;
 	ULONG MgmtRingFullCount;
@@ -1801,14 +1781,6 @@ typedef struct _STA_ADMIN_CONFIG {
 	/* UAPSD information: such as enable or disable, do not remove */
 	UAPSD_INFO UapsdInfo;
 
-#ifdef RT3290
-	// TODO: shiang, check the purpose of following parameters
-	ULONG AntS;
-	ULONG AntSAuxDelta;
-	ULONG AntSRssiFactor;
-	ULONG AntSPERFactor;
-	CHAR Rssi[2];
-#endif /* RT3290 */
 } STA_ADMIN_CONFIG, *PSTA_ADMIN_CONFIG;
 
 
@@ -2634,9 +2606,9 @@ struct rtmp_adapter {
 
 	EEPROM_ANTENNA_STRUC Antenna;	/* Since ANtenna definition is different for a & g. We need to save it for future reference. */
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
-#if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290)
+#if defined(BT_COEXISTENCE_SUPPORT)
 	EEPROM_NIC_CONFIG3_STRUC NicConfig3;
-#endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) */
+#endif /* defined(BT_COEXISTENCE_SUPPORT) */
 
 	/* This soft Rx Antenna Diversity mechanism is used only when user set */
 	/* RX Antenna = DIVERSITY ON */
@@ -2706,26 +2678,10 @@ struct rtmp_adapter {
 	/* MAC control */
 	/* ---------------------------- */
 
-#if defined(RT3290) || defined(RT65xx)
+#if defined(RT65xx)
 
 	union rtmp_wlan_func_ctrl WlanFunCtrl;
-#endif /* defined(RT3290) || defined(RT65xx) */
-#ifdef RT3290
-	// TODO: shiang, check about the purpose of this parameter
-	CMB_CTRL_STRUC	CmbCtrl;
-	WLAN_FUN_INFO_STRUC WlanFunInfo;
-	BT_FUN_CTRL_STRUC BtFunCtrl;
-	WLAN_BT_COEX_SETTING WlanBTCoexInfo;
-	bool RateUp;
-	ULONG AntennaDiversityState;/* 0->Stable state 1->training state */
-	ULONG AntennaDiversityPER[2];  // 0 ->main 1->aux
-	ULONG AntennaDiversityTxPacketCount[2];  // 0 ->main 1->aux
-	ULONG AntennaDiversityRxPacketCount[2];
-	ULONG AntennaDiversityTrigger;
-	ULONG AntennaDiversityCount;
-	ULONG TrainCounter;
-	ANT_DIVERSITY AntennaDiversityInfo;
-#endif /* RT3290 */
+#endif /* defined(RT65xx) */
 
 	struct hw_setting hw_cfg;
 

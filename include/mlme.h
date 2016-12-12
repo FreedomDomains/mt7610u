@@ -42,11 +42,7 @@
 #define END_OF_ARGS                 -1
 #define LFSR_MASK                   0x80000057
 #define MLME_TASK_EXEC_INTV         100/*200*/       /* */
-#ifdef RT3290
-#define LEAD_TIME                   7
-#else
 #define LEAD_TIME                   5
-#endif /* RT3290 */
 
 #define MLME_TASK_EXEC_MULTIPLE       10  /*5*/       /* MLME_TASK_EXEC_MULTIPLE * MLME_TASK_EXEC_INTV = 1 sec */
 #define REORDER_EXEC_INTV         	100       /* 0.1 sec */

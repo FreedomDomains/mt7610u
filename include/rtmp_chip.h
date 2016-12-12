@@ -43,27 +43,6 @@ struct _RSSI_SAMPLE;
 #include "mac_ral/mac_usb.h"
 #endif /* RTMP_MAC_USB */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifdef RT3290
-#include "chip/rt3290.h"
-#endif /* RT3290 */
-
 #ifdef RT65xx
 #include "chip/rt65xx.h"
 #endif
@@ -180,9 +159,9 @@ struct _RSSI_SAMPLE;
 #define EEPROM_LEDAG_CONF_OFFSET	0x3c
 #define EEPROM_LEDACT_CONF_OFFSET	0x3e
 #define EEPROM_LED_POLARITY_OFFSET	0x40
-#if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290)
+#if defined(BT_COEXISTENCE_SUPPORT)
 #define	EEPROM_NIC3_OFFSET			0x42
-#endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) */
+#endif /* defined(BT_COEXISTENCE_SUPPORT) */
 
 #define EEPROM_LNA_OFFSET			0x44
 

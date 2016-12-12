@@ -1678,9 +1678,6 @@ enum WIFI_MODE{
 #define GUIRADIO_OFF		1
 #define RTMP_HALT		    2
 #define GUI_IDLE_POWER_SAVE		3
-#ifdef RT3290
-#define FROM_TX		4
-#endif /* RT3290 */
 /* -- */
 
 /* definition for WpaSupport flag */
