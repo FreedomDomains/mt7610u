@@ -27,16 +27,6 @@
 
 #include	"rt_config.h"
 
-INT MCURandomWrite(struct rtmp_adapter *pAd, RTMP_REG_PAIR *RegPair, u32 Num)
-{
-	u32 Index;
-
-	for (Index = 0; Index < Num; Index++)
-		mt7610u_write32(pAd, RegPair->Register, RegPair->Value);
-
-	return 0;
-}
-
 void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 {
 
