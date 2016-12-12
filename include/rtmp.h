@@ -2422,7 +2422,7 @@ struct rtmp_adapter {
 	spinlock_t irq_lock;
 
 	/*======Cmd Thread in PCI/RBUS/USB */
-	CmdQ CmdQ;
+	struct rtmp_command_queue CmdQ;
 	spinlock_t CmdQLock;	/* CmdQLock spinlock */
 	RTMP_OS_TASK cmdQTask;
 
@@ -6286,9 +6286,8 @@ void RTUSBPutToSleep(
 int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd);
 
-void RTUSBDequeueCmd(
-	IN	PCmdQ		cmdq,
-	OUT	PCmdQElmt	*pcmdqelmt);
+void RTUSBDequeueCmd(struct rtmp_command_queue *cmdq,
+	struct rtmp_queue_elem	*pcmdqelmt);
 
 INT RTUSBCmdThread(
 	IN ULONG Context);
@@ -6665,8 +6664,7 @@ void RTMPUpdateSwCacheCipherInfo(
 	TODO: Maybe we need to move these function prototypes to other proper place.
 */
 
-void RTInitializeCmdQ(
-	IN	PCmdQ	cmdq);
+void RTInitializeCmdQ(struct rtmp_command_queue *cmdq);
 
 INT RTPCICmdThread(
 	IN ULONG Context);
@@ -6674,9 +6672,8 @@ INT RTPCICmdThread(
 void CMDHandler(
     IN struct rtmp_adapter *pAd);
 
-void RTThreadDequeueCmd(
-	IN	PCmdQ		cmdq,
-	OUT	PCmdQElmt	*pcmdqelmt);
+void RTThreadDequeueCmd(struct rtmp_command_queue *cmdq,
+	struct rtmp_queue_elem **pcmdqelmt);
 
 int RTEnqueueInternalCmd(
 	IN struct rtmp_adapter *pAd,

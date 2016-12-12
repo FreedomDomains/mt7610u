@@ -927,10 +927,8 @@ INT RTUSBCmdThread(
 	pAd->CmdQ.CmdQState = RTMP_TASK_STAT_RUNNING;
 	NdisReleaseSpinLock(&pAd->CmdQLock);
 
-	while (pAd->CmdQ.CmdQState == RTMP_TASK_STAT_RUNNING)
-	{
-		if (RtmpOSTaskWait(pAd, pTask, &status) == false)
-		{
+	while (pAd->CmdQ.CmdQState == RTMP_TASK_STAT_RUNNING) {
+		if (RtmpOSTaskWait(pAd, pTask, &status) == false) {
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 			break;
 		}
@@ -942,28 +940,22 @@ INT RTUSBCmdThread(
 			CMDHandler(pAd);
 	}
 
-	if (!pAd->PM_FlgSuspend)
-	{	/* Clear the CmdQElements. */
-		CmdQElmt	*pCmdQElmt = NULL;
+	if (!pAd->PM_FlgSuspend) {	/* Clear the CmdQElements. */
+		struct rtmp_queue_elem *pCmdQElmt = NULL;
 
 		NdisAcquireSpinLock(&pAd->CmdQLock);
 		pAd->CmdQ.CmdQState = RTMP_TASK_STAT_STOPED;
-		while(pAd->CmdQ.size)
-		{
+		while(pAd->CmdQ.size) {
 			RTThreadDequeueCmd(&pAd->CmdQ, &pCmdQElmt);
-			if (pCmdQElmt)
-			{
-				if (pCmdQElmt->CmdFromNdis == true)
-				{
+			if (pCmdQElmt) {
+				if (pCmdQElmt->CmdFromNdis == true) {
 					if (pCmdQElmt->buffer != NULL)
 						kfree(pCmdQElmt->buffer);
-					kfree((u8 *)pCmdQElmt);
-				}
-				else
-				{
+					kfree(pCmdQElmt);
+				} else {
 					if ((pCmdQElmt->buffer != NULL) && (pCmdQElmt->bufferlength != 0))
 						kfree(pCmdQElmt->buffer);
-					kfree((u8 *)pCmdQElmt);
+					kfree(pCmdQElmt);
 				}
 			}
 		}

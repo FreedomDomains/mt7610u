@@ -45,8 +45,7 @@
 
 	========================================================================
 */
-void RTInitializeCmdQ(
-	IN	PCmdQ	cmdq)
+void RTInitializeCmdQ(struct rtmp_command_queue *cmdq)
 {
 	cmdq->head = NULL;
 	cmdq->tail = NULL;
@@ -70,9 +69,8 @@ void RTInitializeCmdQ(
 
 	========================================================================
 */
-void RTThreadDequeueCmd(
-	IN	PCmdQ		cmdq,
-	OUT	PCmdQElmt	*pcmdqelmt)
+void RTThreadDequeueCmd(struct rtmp_command_queue *cmdq,
+	struct rtmp_queue_elem **pcmdqelmt)
 {
 	*pcmdqelmt = cmdq->head;
 
@@ -108,13 +106,13 @@ int RTEnqueueInternalCmd(
 	IN u32			InformationBufferLength)
 {
 	int	status;
-	PCmdQElmt	cmdqelmt = NULL;
+	struct rtmp_queue_elem *cmdqelmt = NULL;
 
 
-	cmdqelmt = kmalloc(sizeof(CmdQElmt), GFP_ATOMIC);
+	cmdqelmt = kmalloc(sizeof(*cmdqelmt), GFP_ATOMIC);
 	if (!cmdqelmt)
 		return (NDIS_STATUS_RESOURCES);
-	memset(cmdqelmt, 0, sizeof(CmdQElmt));
+	memset(cmdqelmt, 0, sizeof(*cmdqelmt));
 
 	if(InformationBufferLength > 0) {
 		cmdqelmt->buffer = kmalloc(InformationBufferLength, GFP_ATOMIC);

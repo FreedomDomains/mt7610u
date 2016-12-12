@@ -30,21 +30,21 @@
 
 #include "rtmp_type.h"
 
-typedef struct _CmdQElmt {
+struct rtmp_queue_elem {
 	UINT command;
 	void *buffer;
 	ULONG bufferlength;
 	bool CmdFromNdis;
 	bool SetOperation;
-	struct _CmdQElmt *next;
-} CmdQElmt, *PCmdQElmt;
+	struct rtmp_queue_elem *next;
+};
 
-typedef struct _CmdQ {
+struct rtmp_command_queue {
 	UINT size;
-	CmdQElmt *head;
-	CmdQElmt *tail;
+	struct rtmp_queue_elem *head;
+	struct rtmp_queue_elem *tail;
 	u32 CmdQState;
-} CmdQ, *PCmdQ;
+};
 
 #define EnqueueCmd(cmdq, cmdqelmt)		\
 {										\
