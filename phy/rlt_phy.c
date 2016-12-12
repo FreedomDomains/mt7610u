@@ -210,25 +210,6 @@ INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw)
 }
 
 
-
-INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, bool ReduceCorePower)
-{
-	u32 bbp_val, org_val;
-
-	RTMP_BBP_IO_READ32(pAd, AGC1_R0, &org_val);
-	bbp_val = org_val;
-	if (ReduceCorePower)
-		bbp_val |= 0x04;
-	else
-		bbp_val &= ~0x04;
-
-	if (bbp_val != org_val)
-		RTMP_BBP_IO_WRITE32(pAd, AGC1_R0, bbp_val);
-
-	return true;
-}
-
-
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX chain)
 {
 	u8 idx, val;
