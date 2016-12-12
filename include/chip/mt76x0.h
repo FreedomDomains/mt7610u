@@ -145,20 +145,6 @@ typedef struct _MT76x0_BBP_Table {
 	RTMP_REG_PAIR RegDate;
 } MT76x0_BBP_Table, *PMT76x0_BBP_Table;
 
-typedef struct _MT76x0_RATE_PWR_ITEM {
-	CHAR MCS_Power;
-	u8 RF_PA_Mode;
-} MT76x0_RATE_PWR_ITEM, *PMT76x0_RATE_PWR_ITEM;
-
-typedef struct _MT76x0_RATE_PWR_TABLE {
-	MT76x0_RATE_PWR_ITEM CCK[4];
-	MT76x0_RATE_PWR_ITEM OFDM[8];
-	MT76x0_RATE_PWR_ITEM HT[8];
-	MT76x0_RATE_PWR_ITEM VHT[10];
-	MT76x0_RATE_PWR_ITEM STBC[8];
-	MT76x0_RATE_PWR_ITEM MCS32;
-} MT76x0_RATE_PWR_Table, *PMT76x0_RATE_PWR_Table;
-
 void MT76x0_Init(struct rtmp_adapter *pAd);
 INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd);
 

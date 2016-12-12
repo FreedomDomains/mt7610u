@@ -558,7 +558,6 @@ struct rtmp_chip_cap {
 	u8 a_band_mid_ch;
 	u8 a_band_high_ch;
 	u8 ext_pa_current_setting;
-	MT76x0_RATE_PWR_Table rate_pwr_table;
 	u8 delta_tw_pwr_bw40_5G;
 	u8 delta_tw_pwr_bw40_2G;
 	u8 delta_tw_pwr_bw80;
