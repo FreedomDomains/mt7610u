@@ -267,7 +267,6 @@ int mt7610u_mcu_calibration(struct rtmp_adapter *ad, u32 cal_id, u32 param);
 int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status);
 bool is_inband_cmd_processing(struct rtmp_adapter *ad);
 void mt7610u_mcu_cmd_msg_bh(unsigned long param);
-int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad);
 int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad);
 void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
 #endif

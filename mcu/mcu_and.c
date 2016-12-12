@@ -927,7 +927,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	mt7610u_mcu_bh_schedule(ad);
 }
 
-int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
+static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 {
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct os_cookie *pObj = ad->OS_Cookie;
@@ -1069,7 +1069,7 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 	mt7610u_mcu_bh_schedule(ad);
 }
 
-int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
+static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct os_cookie *pObj = ad->OS_Cookie;
