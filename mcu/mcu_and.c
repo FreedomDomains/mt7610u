@@ -1159,6 +1159,11 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	int ret = 0;
 
 	ret = down_interruptible(&(ad->mcu_atomic));
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return;
+	}
+
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	ctl->cmd_seq = 0;
 	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
@@ -1190,6 +1195,11 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	int ret = 0;
 
 	ret = down_interruptible(&(ad->mcu_atomic));
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return;
+	}
+
 	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	OS_CLEAR_BIT(MCU_INIT, &ctl->flags);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->txq);
@@ -1276,6 +1286,10 @@ int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	bool need_wait = msg->need_wait;
 
 	ret = down_interruptible(&(ad->mcu_atomic));
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return -1;
+	}
 
 	if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
 				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
