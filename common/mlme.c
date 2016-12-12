@@ -893,9 +893,7 @@ void STAMlmePeriodicExec(
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 		AsicAdjustTxPower(pAd);
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
 	mt76x0_temp_tx_alc(pAd);
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
 	/*
 		Driver needs to up date value of LastOneSecTotalTxCount here;

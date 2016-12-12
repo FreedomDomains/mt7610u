@@ -190,9 +190,7 @@ void MT76x0_DFS_CR_Init(
 	IN struct rtmp_adapter *pAd);
 #endif /* DFS_SUPPORT */
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
 void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 

@@ -2673,7 +2673,6 @@ struct rtmp_adapter {
 	u8 TxAgcStepG;	/* Store Tx TSSI delta increment / decrement value */
 	CHAR TxAgcCompensateG;	/* Store the compensation (TxAgcStep * (idx-1)) */
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
 	CHAR TssiCalibratedOffset;	/* reference temperature(e2p[D1h]) */
 	u8 ChBndryIdx;			/* 5G Channel Group Boundary Index for Temperature Compensation */
 
@@ -2681,7 +2680,6 @@ struct rtmp_adapter {
 	CHAR CurrTemperature;
 	CHAR DeltaPwrBeforeTempComp;
 	CHAR LastTempCompDeltaPwr;
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
 #if defined(RTMP_INTERNAL_TX_ALC)
 	TX_POWER_CONTROL TxPowerCtrl;	/* The Tx power control using the internal ALC */

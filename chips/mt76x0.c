@@ -2905,8 +2905,6 @@ done:
 	return status;
 }
 
-
-#ifdef RTMP_TEMPERATURE_TX_ALC
 bool get_temp_tx_alc_level(
 	IN struct rtmp_adapter *pAd,
 	IN bool enable_tx_alc,
@@ -3255,8 +3253,6 @@ void mt76x0_temp_tx_alc_init(struct rtmp_adapter *pAd)
 								pAd->TssiPlusBoundaryG, pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryG, pAd->TssiPlusBoundaryG);
 }
-#endif /* RTMP_TEMPERATURE_TX_ALC */
-
 
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 {
@@ -3281,7 +3277,6 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 			__FUNCTION__, pAd->chipCap.TemperatureOffset));
 	}
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
 	if (pAd->bAutoTxAgcG | pAd->bAutoTxAgcA) {
 		RTUSBReadEEPROM16(pAd, 0xD0, &e2p_value);
 		pAd->TssiCalibratedOffset = (e2p_value >> 8);
@@ -3312,7 +3307,6 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 
 		mt76x0_temp_tx_alc_init(pAd);
 	} else
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 		DBGPRINT(RT_DEBUG_ERROR, ("Temperature Tx ALC not enabled\n"));
 }
 
