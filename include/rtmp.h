@@ -2600,10 +2600,6 @@ struct rtmp_adapter {
 	u8 ChannelListNum;	/* number of channel in ChannelList[] */
 	u8 Bbp94;
 	bool BbpForCCK;
-	ULONG Tx20MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE];
-	ULONG Tx20MPwrCfgGBand[MAX_TXPOWER_ARRAY_SIZE];
-	ULONG Tx40MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE];
-	ULONG Tx40MPwrCfgGBand[MAX_TXPOWER_ARRAY_SIZE];
 #ifdef DOT11_VHT_AC
 	ULONG Tx80MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE]; // Per-rate Tx power control for VHT BW80 (5GHz only)
 #endif /* DOT11_VHT_AC */
