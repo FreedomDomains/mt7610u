@@ -6960,12 +6960,6 @@ INT Set_SSID_Proc(
     IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg);
 
-#ifdef WMM_SUPPORT
-INT	Set_WmmCapable_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-#endif
-
 INT Set_NetworkType_Proc(
     IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg);
