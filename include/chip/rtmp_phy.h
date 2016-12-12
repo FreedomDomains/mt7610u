@@ -594,7 +594,6 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath);
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);
 INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX idx);
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx);
-u8 rtmp_bbp_get_random_seed(struct rtmp_adapter *pAd);
 
 int NICInitBBP(struct rtmp_adapter *pAd);
 

@@ -280,20 +280,6 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 }
 
 
-u8 rtmp_bbp_get_random_seed(struct rtmp_adapter*pAd)
-{
-	u32 value, value2;
-	u8 seed;
-
-	RTMP_BBP_IO_READ32(pAd, AGC1_R16, &value);
-	seed = (u8)((value & 0xff) ^ ((value & 0xff00) >> 8)^
-					((value & 0xff0000) >> 16));
-	RTMP_BBP_IO_READ32(pAd, RXO_R9, &value2);
-
-	return (u8)(seed ^ (value2 & 0xff)^ ((value2 & 0xff00) >> 8));
-}
-
-
 INT rlt_bbp_is_ready(struct rtmp_adapter *pAd)
 {
 	INT idx = 0;
