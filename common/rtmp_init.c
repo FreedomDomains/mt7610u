@@ -1623,14 +1623,9 @@ void NicGetTxRawCounters(
 	pAd->RalinkCounters.OneSecTxRetryOkCount += pStaTxCnt1->field.TxRetransmit;
 	pAd->RalinkCounters.OneSecTxNoRetryOkCount += pStaTxCnt1->field.TxSuccess;
 	pAd->RalinkCounters.OneSecTxFailCount += pStaTxCnt0->field.TxFailCount;
-
-#ifdef STATS_COUNT_SUPPORT
 	pAd->WlanCounters.TransmittedFragmentCount.u.LowPart += pStaTxCnt1->field.TxSuccess;
 	pAd->WlanCounters.RetryCount.u.LowPart += pStaTxCnt1->field.TxRetransmit;
 	pAd->WlanCounters.FailedCount.u.LowPart += pStaTxCnt0->field.TxFailCount;
-#endif /* STATS_COUNT_SUPPORT */
-
-
 }
 
 
@@ -1690,7 +1685,6 @@ void NICUpdateRawCounters(
 	TX_STA_CNT0_STRUC 	 TxStaCnt0;
 	TX_STA_CNT1_STRUC	 StaTx1;
 	TX_STA_CNT2_STRUC	 StaTx2;
-#ifdef STATS_COUNT_SUPPORT
 	TX_NAG_AGG_CNT_STRUC	TxAggCnt;
 	TX_AGG_CNT0_STRUC	TxAggCnt0;
 	TX_AGG_CNT1_STRUC	TxAggCnt1;
@@ -1700,19 +1694,12 @@ void NICUpdateRawCounters(
 	TX_AGG_CNT5_STRUC	TxAggCnt5;
 	TX_AGG_CNT6_STRUC	TxAggCnt6;
 	TX_AGG_CNT7_STRUC	TxAggCnt7;
-#endif /* STATS_COUNT_SUPPORT */
 	COUNTER_RALINK		*pRalinkCounters;
 
 
 	pRalinkCounters = &pAd->RalinkCounters;
-#ifdef RTMP_MAC_USB
-#ifdef STATS_COUNT_SUPPORT
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
-#endif /* STATS_COUNT_SUPPORT */
-#endif /* RTMP_MAC_USB */
-
-
 
 	mt7610u_read32(pAd, RX_STA_CNT0, &RxStaCnt0.word);
 	mt7610u_read32(pAd, RX_STA_CNT2, &RxStaCnt2.word);
@@ -1728,13 +1715,11 @@ void NICUpdateRawCounters(
 		pAd->RalinkCounters.FalseCCACnt += RxStaCnt1.field.FalseCca;
 	}
 
-#ifdef STATS_COUNT_SUPPORT
 	/* Update FCS counters*/
 	OldValue= pAd->WlanCounters.FCSErrorCount.u.LowPart;
 	pAd->WlanCounters.FCSErrorCount.u.LowPart += (RxStaCnt0.field.CrcErr); /* >> 7);*/
 	if (pAd->WlanCounters.FCSErrorCount.u.LowPart < OldValue)
 		pAd->WlanCounters.FCSErrorCount.u.HighPart++;
-#endif /* STATS_COUNT_SUPPORT */
 
 	/* Add FCS error count to private counters*/
 	pRalinkCounters->OneSecRxFcsErrCnt += RxStaCnt0.field.CrcErr;
@@ -1745,9 +1730,7 @@ void NICUpdateRawCounters(
 
 	/* Update Duplicate Rcv check*/
 	pRalinkCounters->DuplicateRcv += RxStaCnt2.field.RxDupliCount;
-#ifdef STATS_COUNT_SUPPORT
 	pAd->WlanCounters.FrameDuplicateCount.u.LowPart += RxStaCnt2.field.RxDupliCount;
-#endif /* STATS_COUNT_SUPPORT */
 	/* Update RX Overflow counter*/
 	pAd->Counters8023.RxNoBuffer += (RxStaCnt2.field.RxFifoOverflowCount);
 
@@ -1779,66 +1762,62 @@ void NICUpdateRawCounters(
 
 
 	/*if (pAd->bStaFifoTest == true)*/
-#ifdef STATS_COUNT_SUPPORT
-	{
-		mt7610u_read32(pAd, TX_AGG_CNT, &TxAggCnt.word);
+	mt7610u_read32(pAd, TX_AGG_CNT, &TxAggCnt.word);
 	mt7610u_read32(pAd, TX_AGG_CNT0, &TxAggCnt0.word);
 	mt7610u_read32(pAd, TX_AGG_CNT1, &TxAggCnt1.word);
 	mt7610u_read32(pAd, TX_AGG_CNT2, &TxAggCnt2.word);
 	mt7610u_read32(pAd, TX_AGG_CNT3, &TxAggCnt3.word);
-		mt7610u_read32(pAd, TX_AGG_CNT4, &TxAggCnt4.word);
-		mt7610u_read32(pAd, TX_AGG_CNT5, &TxAggCnt5.word);
-		mt7610u_read32(pAd, TX_AGG_CNT6, &TxAggCnt6.word);
-		mt7610u_read32(pAd, TX_AGG_CNT7, &TxAggCnt7.word);
-		pRalinkCounters->TxAggCount += TxAggCnt.field.AggTxCount;
-		pRalinkCounters->TxNonAggCount += TxAggCnt.field.NonAggTxCount;
-		pRalinkCounters->TxAgg1MPDUCount += TxAggCnt0.field.AggSize1Count;
-		pRalinkCounters->TxAgg2MPDUCount += TxAggCnt0.field.AggSize2Count;
+	mt7610u_read32(pAd, TX_AGG_CNT4, &TxAggCnt4.word);
+	mt7610u_read32(pAd, TX_AGG_CNT5, &TxAggCnt5.word);
+	mt7610u_read32(pAd, TX_AGG_CNT6, &TxAggCnt6.word);
+	mt7610u_read32(pAd, TX_AGG_CNT7, &TxAggCnt7.word);
+	pRalinkCounters->TxAggCount += TxAggCnt.field.AggTxCount;
+	pRalinkCounters->TxNonAggCount += TxAggCnt.field.NonAggTxCount;
+	pRalinkCounters->TxAgg1MPDUCount += TxAggCnt0.field.AggSize1Count;
+	pRalinkCounters->TxAgg2MPDUCount += TxAggCnt0.field.AggSize2Count;
 
-		pRalinkCounters->TxAgg3MPDUCount += TxAggCnt1.field.AggSize3Count;
-		pRalinkCounters->TxAgg4MPDUCount += TxAggCnt1.field.AggSize4Count;
-		pRalinkCounters->TxAgg5MPDUCount += TxAggCnt2.field.AggSize5Count;
-		pRalinkCounters->TxAgg6MPDUCount += TxAggCnt2.field.AggSize6Count;
+	pRalinkCounters->TxAgg3MPDUCount += TxAggCnt1.field.AggSize3Count;
+	pRalinkCounters->TxAgg4MPDUCount += TxAggCnt1.field.AggSize4Count;
+	pRalinkCounters->TxAgg5MPDUCount += TxAggCnt2.field.AggSize5Count;
+	pRalinkCounters->TxAgg6MPDUCount += TxAggCnt2.field.AggSize6Count;
 
-		pRalinkCounters->TxAgg7MPDUCount += TxAggCnt3.field.AggSize7Count;
-		pRalinkCounters->TxAgg8MPDUCount += TxAggCnt3.field.AggSize8Count;
-		pRalinkCounters->TxAgg9MPDUCount += TxAggCnt4.field.AggSize9Count;
-		pRalinkCounters->TxAgg10MPDUCount += TxAggCnt4.field.AggSize10Count;
+	pRalinkCounters->TxAgg7MPDUCount += TxAggCnt3.field.AggSize7Count;
+	pRalinkCounters->TxAgg8MPDUCount += TxAggCnt3.field.AggSize8Count;
+	pRalinkCounters->TxAgg9MPDUCount += TxAggCnt4.field.AggSize9Count;
+	pRalinkCounters->TxAgg10MPDUCount += TxAggCnt4.field.AggSize10Count;
 
-		pRalinkCounters->TxAgg11MPDUCount += TxAggCnt5.field.AggSize11Count;
-		pRalinkCounters->TxAgg12MPDUCount += TxAggCnt5.field.AggSize12Count;
-		pRalinkCounters->TxAgg13MPDUCount += TxAggCnt6.field.AggSize13Count;
-		pRalinkCounters->TxAgg14MPDUCount += TxAggCnt6.field.AggSize14Count;
+	pRalinkCounters->TxAgg11MPDUCount += TxAggCnt5.field.AggSize11Count;
+	pRalinkCounters->TxAgg12MPDUCount += TxAggCnt5.field.AggSize12Count;
+	pRalinkCounters->TxAgg13MPDUCount += TxAggCnt6.field.AggSize13Count;
+	pRalinkCounters->TxAgg14MPDUCount += TxAggCnt6.field.AggSize14Count;
 
-		pRalinkCounters->TxAgg15MPDUCount += TxAggCnt7.field.AggSize15Count;
-		pRalinkCounters->TxAgg16MPDUCount += TxAggCnt7.field.AggSize16Count;
+	pRalinkCounters->TxAgg15MPDUCount += TxAggCnt7.field.AggSize15Count;
+	pRalinkCounters->TxAgg16MPDUCount += TxAggCnt7.field.AggSize16Count;
 
-		/* Calculate the transmitted A-MPDU count*/
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += TxAggCnt0.field.AggSize1Count;
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt0.field.AggSize2Count >> 1);
+	/* Calculate the transmitted A-MPDU count*/
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += TxAggCnt0.field.AggSize1Count;
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt0.field.AggSize2Count >> 1);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize3Count / 3);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize4Count >> 2);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize3Count / 3);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize4Count >> 2);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize5Count / 5);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize6Count / 6);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize5Count / 5);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize6Count / 6);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize7Count / 7);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize8Count >> 3);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize7Count / 7);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize8Count >> 3);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize9Count / 9);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize10Count / 10);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize9Count / 9);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize10Count / 10);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize11Count / 11);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize12Count / 12);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize11Count / 11);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize12Count / 12);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize13Count / 13);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize14Count / 14);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize13Count / 13);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize14Count / 14);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize15Count / 15);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize16Count >> 4);
-	}
-#endif /* STATS_COUNT_SUPPORT */
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize15Count / 15);
+	pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize16Count >> 4);
 
 #ifdef DBG_DIAGNOSE
 	{

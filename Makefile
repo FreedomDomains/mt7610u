@@ -76,9 +76,6 @@ HAS_KTHREAD_SUPPORT=n
 #Support for Auto channel select enhance
 HAS_AUTO_CH_SELECT_ENHANCE=n
 
-#Support statistics count
-HAS_STATS_COUNT=y
-
 #Support TSSI Antenna Variation
 HAS_TSSI_ANTENNA_VARIATION=n
 
@@ -218,10 +215,6 @@ ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 WFLAGS += -DNEW_RATE_ADAPT_SUPPORT
 endif
 
-endif
-
-ifeq ($(HAS_STATS_COUNT),y)
-WFLAGS += -DSTATS_COUNT_SUPPORT
 endif
 
 ifeq ($(HAS_TSSI_ANTENNA_VARIATION),y)

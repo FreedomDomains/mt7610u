@@ -567,12 +567,9 @@ void StaQuickResponeForRateUpExec(
 			pAd->RalinkCounters.OneSecTxRetryOkCount += StaTx1.field.TxRetransmit;
 			pAd->RalinkCounters.OneSecTxNoRetryOkCount += StaTx1.field.TxSuccess;
 			pAd->RalinkCounters.OneSecTxFailCount += TxStaCnt0.field.TxFailCount;
-
-#ifdef STATS_COUNT_SUPPORT
 			pAd->WlanCounters.TransmittedFragmentCount.u.LowPart += StaTx1.field.TxSuccess;
 			pAd->WlanCounters.RetryCount.u.LowPart += StaTx1.field.TxRetransmit;
 			pAd->WlanCounters.FailedCount.u.LowPart += TxStaCnt0.field.TxFailCount;
-#endif /* STATS_COUNT_SUPPORT */
 
 			if (TxTotalCnt)
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;

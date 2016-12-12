@@ -76,10 +76,8 @@ void RTMPSetLEDStatus(
 	u8 		LedMode;
 	INT LED_CMD = -1;
 
-#ifdef STATS_COUNT_SUPPORT
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
-#endif /* STATS_COUNT_SUPPORT */
 
 	LedMode = LED_MODE(pAd);
 

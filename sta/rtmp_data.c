@@ -536,9 +536,7 @@ void STAHandleRxDataFrame(
 
 	/* Case I  Process Broadcast & Multicast data frame */
 	if (pRxInfo->Bcast || pRxInfo->Mcast) {
-#ifdef STATS_COUNT_SUPPORT
 		INC_COUNTER64(pAd->WlanCounters.MulticastReceivedFrameCount);
-#endif /* STATS_COUNT_SUPPORT */
 
 		/* Drop Mcast/Bcast frame with fragment bit on */
 		if (pHeader->FC.MoreFrag) {
@@ -904,10 +902,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		pAd->RalinkCounters.ReceivedByteCount += pRxWI->RxWIMPDUByteCnt;
 		pAd->RalinkCounters.OneSecReceivedByteCount += pRxWI->RxWIMPDUByteCnt;
 		pAd->RalinkCounters.RxCount++;
-
-#ifdef STATS_COUNT_SUPPORT
 		INC_COUNTER64(pAd->WlanCounters.ReceivedFragmentCount);
-#endif /* STATS_COUNT_SUPPORT */
 
 		if (pRxWI->RxWIMPDUByteCnt < 14)
 		{
@@ -2134,13 +2129,10 @@ void STA_AMPDU_Frame_Tx(
 			pMacEntry->isCached = true;
 		}
 
-#ifdef STATS_COUNT_SUPPORT
 		/* calculate Transmitted AMPDU count and ByteCount  */
-		{
-			pAd->RalinkCounters.TransmittedMPDUsInAMPDUCount.u.LowPart++;
-			pAd->RalinkCounters.TransmittedOctetsInAMPDUCount.QuadPart += pTxBlk->SrcBufLen;
-		}
-#endif /* STATS_COUNT_SUPPORT */
+		pAd->RalinkCounters.TransmittedMPDUsInAMPDUCount.u.LowPart++;
+		pAd->RalinkCounters.TransmittedOctetsInAMPDUCount.QuadPart += pTxBlk->SrcBufLen;
+
 		HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
 #ifdef DBG_CTRL_SUPPORT
@@ -2306,11 +2298,9 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
 		return;
 	}
-#ifdef STATS_COUNT_SUPPORT
 	if (pTxBlk->TxFrameType == TX_MCAST_FRAME) {
 		INC_COUNTER64(pAd->WlanCounters.MulticastTransmittedFrameCount);
 	}
-#endif /* STATS_COUNT_SUPPORT */
 
 	if (RTMP_GET_PACKET_RTS(pTxBlk->pPacket))
 		TX_BLK_SET_FLAG(pTxBlk, fTX_bRtsRequired);
