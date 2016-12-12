@@ -180,16 +180,6 @@ void MlmeCntlMachinePerformAction(
 
 			}
 
-#ifdef LED_CONTROL_SUPPORT
-			/* */
-			/* Set LED status to previous status. */
-			/* */
-			if (pAd->LedCntl.bLedOnScanning) {
-				pAd->LedCntl.bLedOnScanning = false;
-				RTMPSetLED(pAd, pAd->LedCntl.LedStatus);
-			}
-#endif /* LED_CONTROL_SUPPORT */
-
 #ifdef DOT11N_DRAFT3
 			/* AP sent a 2040Coexistence mgmt frame, then station perform a scan, and then send back the respone. */
 			if ((pAd->CommonCfg.BSSCoexist2040.field.InfoReq == 1)
