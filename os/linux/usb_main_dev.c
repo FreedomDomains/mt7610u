@@ -96,11 +96,6 @@ static int rt2870_probe(
 /*extern int rt28xx_close(IN struct net_device *net_dev); */
 /*extern int rt28xx_open(struct net_device *net_dev); */
 
-static bool USBDevConfigInit(
-	IN struct usb_device 	*dev,
-	IN struct usb_interface *intf,
-	IN void 				*pAd);
-
 /**************************************************************************/
 /**************************************************************************/
 /*tested for kernel 2.6series */
@@ -117,10 +112,8 @@ static int rtusb_probe (struct usb_interface *intf,
 						const struct usb_device_id *id);
 static void rtusb_disconnect(struct usb_interface *intf);
 
-static bool USBDevConfigInit(
-	IN struct usb_device 	*dev,
-	IN struct usb_interface *intf,
-	IN void 				*pAd)
+static bool USBDevConfigInit(struct usb_device *dev,
+	struct usb_interface *intf, struct rtmp_adapter *pAd)
 {
 	struct usb_host_interface *iface_desc;
 	ULONG BulkOutIdx;
