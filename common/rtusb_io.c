@@ -117,34 +117,6 @@ int	RTUSBFirmwareOpmode(
 
 	========================================================================
 */
-int RTUSBFirmwareWrite(
-	IN struct rtmp_adapter *pAd,
-	IN u8 *	pFwImage,
-	IN ULONG		FwLen)
-{
-	u32		MacReg;
-	int 	Status;
-/*	ULONG 		i;*/
-	USHORT		writeLen;
-	/*ULONG		FMode = 0;*/
-
-
-	Status = mt7610u_read32(pAd, MAC_CSR0, &MacReg);
-
-
-	/* write firmware */
-	writeLen = FwLen;
-	RTUSBMultiWrite(pAd, FIRMWARE_IMAGE_BASE, pFwImage, writeLen);
-	Status = mt7610u_write32(pAd, 0x7014, 0xffffffff);
-	Status = mt7610u_write32(pAd, 0x701c, 0xffffffff);
-
-	/* change 8051 from ROM to RAM */
-	Status = RTUSBFirmwareRun(pAd);
-
-
-	return Status;
-}
-
 
 int	RTUSBVenderReset(
 	IN	struct rtmp_adapter *pAd)
