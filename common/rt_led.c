@@ -105,11 +105,11 @@ void RTMPSetLEDStatus(
 void RTMPGetLEDSetting(IN struct rtmp_adapter*pAd)
 {
 	USHORT Value;
-	PLED_CONTROL pLedCntl = &pAd->LedCntl;
+	struct mt7610u_led_control *led_crtl = &pAd->LedCntl;
 
 	// TODO: wait TC6008 EEPROM format
 	RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, Value);
-	pLedCntl->MCULedCntl.word = (Value >> 8);
+	led_crtl->MCULedCntl.word = (Value >> 8);
 }
 
 
@@ -120,10 +120,10 @@ void RTMPStartLEDMode(IN struct rtmp_adapter*pAd)
 
 void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 {
-	PLED_CONTROL pLedCntl = &pAd->LedCntl;
+	struct mt7610u_led_control *led_crtl = &pAd->LedCntl;
 
-	if (pLedCntl->MCULedCntl.word == 0xFF) 	{
-		pLedCntl->MCULedCntl.word = 0x01;
+	if (led_crtl->MCULedCntl.word == 0xFF) 	{
+		led_crtl->MCULedCntl.word = 0x01;
 	}
 
 	RTMPStartLEDMode(pAd);

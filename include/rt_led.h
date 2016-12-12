@@ -109,11 +109,10 @@ do{								\
 
 #endif /* RTMP_MAC_USB */
 
-typedef struct _LED_CONTROL
-{
+struct mt7610u_led_control {
 	MCU_LEDCS_STRUC		MCULedCntl; /* LED Mode EEPROM 0x3b */
 	u8 			LedStatus;
-}LED_CONTROL, *PLED_CONTROL;
+};
 
 void RTMPStartLEDMode(IN struct rtmp_adapter*pAd);
 

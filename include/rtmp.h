@@ -2701,7 +2701,7 @@ struct rtmp_adapter {
 
 #ifdef LED_CONTROL_SUPPORT
 	/* LED control */
-	LED_CONTROL LedCntl;
+	struct mt7610u_led_control LedCntl;
 #endif /* LED_CONTROL_SUPPORT */
 
 	/* ---------------------------- */
