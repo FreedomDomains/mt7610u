@@ -828,8 +828,6 @@ INT RTMP_COM_IoctlHandle(
 
 			for (i = 0; i < 2; i++)
 				pAd->BulkInEpAddr[i] = pConfig->BulkInEpAddr[i];
-
-			pAd->config = pConfig->pConfig;
 		}
 			break;
 

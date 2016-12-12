@@ -558,7 +558,6 @@ typedef struct __RT_CMD_USB_DEV_CONFIG {
 	IN USHORT BulkInMaxPacketSize;
 	IN u8 BulkOutEpAddr[6];
 	IN USHORT BulkOutMaxPacketSize;
-	IN void *pConfig;
 } RT_CMD_USB_DEV_CONFIG;
 
 typedef struct __RT_CMD_CFG80211_CONFIG {

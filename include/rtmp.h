@@ -2485,9 +2485,6 @@ struct rtmp_adapter {
 /*****************************************************************************************/
 /*      USB related parameters                                                           */
 /*****************************************************************************************/
-/*	struct usb_config_descriptor		*config; */
-	void *config;
-
 	UINT NumberOfPipes;
 	USHORT BulkOutMaxPacketSize;
 	USHORT BulkInMaxPacketSize;

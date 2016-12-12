@@ -182,7 +182,6 @@ static bool USBDevConfigInit(
 		return false;
 	}
 
-	pConfig->pConfig = &dev->config->desc;
 	usb_set_intfdata(intf, pAd);
 	RTMP_DRIVER_USB_CONFIG_INIT(pAd, pConfig);
 
