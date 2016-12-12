@@ -106,11 +106,6 @@ void RT28XXVendorSpecificCheck(
 	IN struct usb_device 	*dev,
 	IN void 				*pAd)
 {
-
-
-	RT_CMD_USB_MORE_FLAG_CONFIG Config = { dev->descriptor.idVendor,
-										dev->descriptor.idProduct };
-	RTMP_DRIVER_USB_MORE_FLAG_SET(pAd, &Config);
 }
 
 /**************************************************************************/
