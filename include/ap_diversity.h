@@ -37,52 +37,6 @@
  *  For shorter udelay().
  *  (ripped from rtmp.h)
  */
-/*#define RTMP_BBP_IO_READ8_BY_REG_ID(_A, _I, _pV)    {} */
-/* Read BBP register by register's ID. Generate PER to test BA */
-#define RTMP_BBP_IO_READ8_BY_REG_ID_SHORT_DELAY(_A, _I, _pV)		\
-{									\
-	BBP_CSR_CFG_STRUC  BbpCsr;					\
-	int	i, k;							\
-	if ((_A)->bPCIclkOff == false)                     		\
-	{                                                   		\
-		for (i=0; i<MAX_BUSY_COUNT; i++)                    	\
-		{                                                   	\
-			mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
-			if (BbpCsr.field.Busy == BUSY)			\
-				continue;                               \
-			BbpCsr.word = 0;                                \
-			BbpCsr.field.fRead = 1;                         \
-			BbpCsr.field.BBP_RW_MODE = 1;                   \
-			BbpCsr.field.Busy = 1;                          \
-			BbpCsr.field.RegNum = _I;                       \
-			mt7610u_write32(_A, H2M_BBP_AGENT, BbpCsr.word);\
-			RTMPusecDelay(10);				\
-			for (k=0; k<MAX_BUSY_COUNT; k++)		\
-			{                                               \
-				mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);			\
-				if (BbpCsr.field.Busy == IDLE)          \
-					break;                          \
-				else					\
-					printk("MCU busy\n");		\
-			}                                               \
-			if ((BbpCsr.field.Busy == IDLE) &&              \
-				(BbpCsr.field.RegNum == _I))            \
-			{                                               \
-				*(_pV) = (u8)BbpCsr.field.Value;     \
-				break;                                  \
-			}                                               \
-		}                                                   	\
-		if (BbpCsr.field.Busy == BUSY)                      	\
-		{                                                   	\
-			DBGPRINT_ERR(("BBP read R%d=0x%x fail\n", _I, BbpCsr.word));	\
-			*(_pV) = (_A)->BbpWriteLatch[_I];               \
-			mt7610u_read32(_A, H2M_BBP_AGENT, &BbpCsr.word);\
-			BbpCsr.field.Busy = 0;                          \
-			mt7610u_write32(_A, H2M_BBP_AGENT, BbpCsr.word);\
-		}                                                   \
-	}                   \
-}
-
 
 /*
  * proc fs related macros.
