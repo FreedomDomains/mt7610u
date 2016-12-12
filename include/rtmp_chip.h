@@ -777,8 +777,6 @@ void RtmpChipWriteMemory(
 	IN	u32			Value,
 	IN	u8			Unit);
 
-void RTMPReadTxPwrPerRate(struct rtmp_adapter *pAd);
-
 /* global variable */
 extern FREQUENCY_ITEM RtmpFreqItems3020[];
 extern FREQUENCY_ITEM FreqItems3020_Xtal20M[];

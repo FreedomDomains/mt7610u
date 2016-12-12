@@ -195,31 +195,3 @@ void AsicCompensatePowerViaBBP(
 }
 
 
-/*
-	========================================================================
-
-	Routine Description:
-		Read initial Tx power per MCS and BW from EEPROM
-
-	Arguments:
-		Adapter						Pointer to our adapter
-
-	Return Value:
-		None
-
-	IRQL = PASSIVE_LEVEL
-
-	Note:
-
-	========================================================================
-*/
-void RTMPReadTxPwrPerRate(struct rtmp_adapter*pAd)
-{
-	ULONG		data, Adata, Gdata;
-	USHORT		i, value, value2;
-	USHORT		value_1, value_2, value_3, value_4;
-	INT			Apwrdelta, Gpwrdelta;
-	u8 	t1,t2,t3,t4;
-	bool 	bApwrdeltaMinus = true, bGpwrdeltaMinus = true;
-}
-

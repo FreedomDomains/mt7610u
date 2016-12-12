@@ -680,8 +680,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	RTMPGetLEDSetting(pAd);
 #endif /* LED_CONTROL_SUPPORT */
 
-		RTMPReadTxPwrPerRate(pAd);
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd))
 	{
