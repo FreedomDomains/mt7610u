@@ -48,27 +48,6 @@ int NICInitBBP(struct rtmp_adapter*pAd)
 }
 
 
-INT 	rtmp_bbp_tx_comp_init(struct rtmp_adapter*pAd, INT adc_insel, INT tssi_mode)
-{
-	u32 bbp_val;
-	u8 rf_val;
-
-#if defined(RTMP_INTERNAL_TX_ALC)
-	RTMP_BBP_IO_READ32(pAd, CORE_R34, &bbp_val);
-	bbp_val = (bbp_val & 0xe7);
-	bbp_val = (bbp_val | 0x80);
-	RTMP_BBP_IO_WRITE32(pAd, CORE_R34, bbp_val);
-
-	RT30xxReadRFRegister(pAd, RF_R27, &rf_val);
-	rf_val = ((rf_val & 0x3f) | 0x40);
-	RT30xxWriteRFRegister(pAd, RF_R27, rf_val);
-
-	DBGPRINT(RT_DEBUG_TRACE, ("[temp. compensation] Set RF_R27 to 0x%x\n", rf_val));
-#endif
-	return 0;
-}
-
-
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 {
 	u32 txbe, txbe_r5 = 0;

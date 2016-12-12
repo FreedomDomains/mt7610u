@@ -591,7 +591,6 @@ struct _RMTP_ADAPTER;
 INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw);
 INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch);
 INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath);
-INT rtmp_bbp_tx_comp_init(struct rtmp_adapter *pAd, INT adc_insel, INT tssi_mode);
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);
 INT rtmp_bbp_set_mmps(struct rtmp_adapter *pAd, bool ReduceCorePower);
 INT rtmp_bbp_is_ready(struct rtmp_adapter *pAd);
