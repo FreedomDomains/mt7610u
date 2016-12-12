@@ -280,28 +280,6 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 }
 
 
-INT rtmp_bbp_set_filter_coefficient_ctrl(struct rtmp_adapter*pAd, u8 Channel)
-{
-	u32 bbp_val = 0, org_val = 0;
-
-	if (Channel == 14)
-	{
-		/* when Channel==14 && Mode==CCK && BandWidth==20M, BBP R4 bit5=1 */
-		RTMP_BBP_IO_READ32(pAd, CORE_R1, &org_val);
-		bbp_val = org_val;
-		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
-			bbp_val |= 0x20;
-		else
-			bbp_val &= (~0x20);
-
-		if (bbp_val != org_val)
-			RTMP_BBP_IO_WRITE32(pAd, CORE_R1, bbp_val);
-	}
-
-	return true;
-}
-
-
 u8 rtmp_bbp_get_random_seed(struct rtmp_adapter*pAd)
 {
 	u32 value, value2;
