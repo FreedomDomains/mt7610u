@@ -1086,45 +1086,6 @@ INT Set_SiteSurvey_Proc(
     return true;
 }
 
-INT	Set_Antenna_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg)
-{
-	ANT_DIVERSITY_TYPE UsedAnt;
-	int i;
-	DBGPRINT(RT_DEBUG_OFF, ("==> Set_Antenna_Proc *******************\n"));
-
-	for (i = 0; i < strlen(arg); i++)
-		if (!isdigit(arg[i]))
-			return -EINVAL;
-
-	UsedAnt = simple_strtol(arg, 0, 10);
-
-	switch (UsedAnt)
-	{
-		/* 2: Fix in the PHY Antenna CON1*/
-		case ANT_FIX_ANT0:
-			AsicSetRxAnt(pAd, 0);
-			DBGPRINT(RT_DEBUG_OFF, ("<== Set_Antenna_Proc(Fix in Ant CON1), (%d,%d)\n",
-					pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
-			break;
-    	/* 3: Fix in the PHY Antenna CON2*/
-		case ANT_FIX_ANT1:
-			AsicSetRxAnt(pAd, 1);
-			DBGPRINT(RT_DEBUG_OFF, ("<== %s(Fix in Ant CON2), (%d,%d)\n",
-							__FUNCTION__, pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
-			break;
-		default:
-			DBGPRINT(RT_DEBUG_ERROR, ("<== %s(N/A cmd: %d), (%d,%d)\n", __FUNCTION__, UsedAnt,
-					pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
-			break;
-	}
-
-	return true;
-}
-
-
-
 #ifdef MT76x0
 INT set_temp_sensor_proc(
 	IN struct rtmp_adapter	*pAd,

@@ -1922,14 +1922,6 @@ bool AsicSendCommandToMcu(
     Return:
 	========================================================================
  */
-void AsicSetRxAnt(
-	IN struct rtmp_adapter *pAd,
-	IN u8 		Ant)
-{
-	if (pAd->chipOps.SetRxAnt)
-		pAd->chipOps.SetRxAnt(pAd, Ant);
-}
-
 
 void AsicTurnOffRFClk(
 	IN struct rtmp_adapter *pAd,

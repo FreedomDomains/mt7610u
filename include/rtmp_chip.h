@@ -648,8 +648,6 @@ struct rtmp_chip_ops {
 
 	/* Antenna */
 	void (*AsicAntennaDefaultReset)(struct rtmp_adapter *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
-	void (*SetRxAnt)(struct rtmp_adapter *pAd, u8 Ant);
-
 	/* high power tuning */
 	void (*HighPowerTuning)(struct rtmp_adapter *pAd, struct _RSSI_SAMPLE *pRssi);
 

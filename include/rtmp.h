@@ -5343,10 +5343,6 @@ CHAR RTMPMinSnr(
 	IN CHAR				Snr0,
 	IN CHAR				Snr1);
 
-void AsicSetRxAnt(
-	IN struct rtmp_adapter *pAd,
-	IN u8 		Ant);
-
 #ifdef RTMP_EFUSE_SUPPORT
 INT set_eFuseGetFreeBlockCount_Proc(
    	IN	struct rtmp_adapter *pAd,
@@ -5515,12 +5511,6 @@ INT	RT_CfgSetTxMCSProc(
 INT	RT_CfgSetAutoFallBack(
 	IN 	struct rtmp_adapter *	pAd,
 	IN	char *		arg);
-
-
-INT	Set_Antenna_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
 
 /* */
 /* Prototypes of function definition in cmm_info.c */
