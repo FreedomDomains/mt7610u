@@ -81,7 +81,7 @@ enum cmd_msg_error_type {
 	error_rx_receive_fail,
 };
 
-struct MCU_CTRL {
+struct mt7610u_mcu_ctrl {
 	u8 cmd_seq;
 	unsigned long flags;
 	RTMP_NET_TASK_STRUCT cmd_msg_task;

@@ -524,7 +524,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 {
 	struct cmd_msg *msg = NULL;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 #ifdef RTMP_USB_SUPPORT
 	struct urb *urb = NULL;
 #endif
@@ -609,7 +609,7 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
 	struct sk_buff * net_pkt = msg->skb;
 	struct rtmp_adapter*ad = msg->priv;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	if (msg->need_wait)
 		RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
@@ -638,7 +638,7 @@ u8 get_cmd_rsp_num(struct rtmp_adapter*ad)
 	return Num;
 }
 
-static inline void mt7610u_mcu_inc_error_count(struct MCU_CTRL *ctl, enum cmd_msg_error_type type)
+static inline void mt7610u_mcu_inc_error_count(struct mt7610u_mcu_ctrl *ctl, enum cmd_msg_error_type type)
 {
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		switch (type) {
@@ -657,7 +657,7 @@ static inline void mt7610u_mcu_inc_error_count(struct MCU_CTRL *ctl, enum cmd_ms
 	}
 }
 
-static spinlock_t *mt7610u_mcu_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
+static spinlock_t *mt7610u_mcu_get_spin_lock(struct mt7610u_mcu_ctrl *ctl, DL_LIST *list)
 {
 	spinlock_t *lock = NULL;
 
@@ -681,7 +681,7 @@ static spinlock_t *mt7610u_mcu_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list
 
 static inline u8 mt7610u_mcu_get_cmd_msg_seq(struct rtmp_adapter*ad)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;
 
 	spin_lock_irq(&ctl->ackq_lock);
@@ -712,7 +712,7 @@ static void mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	unsigned long flags;
 	spinlock_t *lock;
 	struct rtmp_adapter*ad = msg->priv;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
@@ -734,7 +734,7 @@ static void mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	unsigned long flags;
 	spinlock_t *lock;
 	struct rtmp_adapter*ad = msg->priv;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
@@ -743,7 +743,7 @@ static void mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 	spin_unlock_irqrestore(lock, flags);
 }
 
-static bool mt7610u_mcu_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
+static bool mt7610u_mcu_queue_empty(struct mt7610u_mcu_ctrl *ctl, DL_LIST *list)
 {
 	unsigned long flags;
 	bool is_empty;
@@ -758,7 +758,7 @@ static bool mt7610u_mcu_queue_empty(struct MCU_CTRL *ctl, DL_LIST *list)
 	return is_empty;
 }
 
-static void mt7610u_mcu_queue_init(struct MCU_CTRL *ctl, DL_LIST *list)
+static void mt7610u_mcu_queue_init(struct mt7610u_mcu_ctrl *ctl, DL_LIST *list)
 {
 
 	unsigned long flags;
@@ -784,7 +784,7 @@ static void mt7610u_mcu_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 	unsigned long flags;
 	spinlock_t *lock;
 	struct rtmp_adapter*ad = msg->priv;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
@@ -804,7 +804,7 @@ static struct cmd_msg *_mt7610u_mcu_dequeue_cmd_msg(DL_LIST *list)
 	return msg;
 }
 
-static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct MCU_CTRL *ctl, DL_LIST *list)
+static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct mt7610u_mcu_ctrl *ctl, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg;
@@ -824,7 +824,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_m
 	struct sk_buff * net_pkt = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
 	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) net_pkt->data;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
 	RTMPDescriptorEndianChange((u8 *)rx_info, TYPE_RXINFO);
@@ -877,7 +877,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	struct rtmp_adapter*ad = msg->priv;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
 	unsigned long flags;
 	int ret = 0;
@@ -931,7 +931,7 @@ int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 {
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct os_cookie *pObj = ad->OS_Cookie;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 	struct sk_buff * net_pkt = NULL;
 	int ret = 0;
@@ -970,7 +970,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 {
 	int ret = 0;
 	int i;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	for (i = 0; (i < 1) && mt7610u_mcu_queue_empty(ctl, &ctl->rxq); i++) {
 		ret = usb_rx_cmd_msg_submit(ad);
@@ -984,7 +984,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 {
 	struct rtmp_adapter*ad = (struct rtmp_adapter*)param;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 
 	while ((msg = mt7610u_mcu_dequeue_cmd_msg(ctl, &ctl->rx_doneq))) {
@@ -1021,7 +1021,7 @@ void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 
 void mt7610u_mcu_bh_schedule(struct rtmp_adapter*ad)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return;
@@ -1039,7 +1039,7 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 	struct sk_buff * net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
 	struct rtmp_adapter*ad = msg->priv;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return;
@@ -1071,7 +1071,7 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 
 int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	int ret = 0;
 	struct sk_buff * net_pkt = msg->skb;
@@ -1117,7 +1117,7 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
 	spinlock_t *lock;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
@@ -1140,7 +1140,7 @@ void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
 	spinlock_t *lock;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
@@ -1155,7 +1155,7 @@ void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 
 void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
 
 	RTMP_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
@@ -1186,7 +1186,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 
 void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
 
 	RTMP_SEM_EVENT_WAIT(&(ad->mcu_atomic), ret);
@@ -1215,7 +1215,7 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 {
 	struct cmd_msg *msg = NULL;
 	struct sk_buff * net_pkt = NULL;
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = NDIS_STATUS_SUCCESS;
 	struct txinfo_nmac_cmd *tx_info;
 
@@ -1271,7 +1271,7 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 
 int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
-	struct MCU_CTRL *ctl = &ad->MCUCtrl;
+	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
 	bool need_wait = msg->need_wait;
 
