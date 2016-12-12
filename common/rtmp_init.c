@@ -1271,7 +1271,7 @@ int	NICInitializeAsic(
 		mt7610u_write32(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
 		mt7610u_write32(pAd,H2M_MAILBOX_CSR,0);
 		mt7610u_write32(pAd, H2M_INT_SRC, 0);
-		AsicSendCommandToMcu(pAd, 0x72, 0x00, 0x00, 0x00, false); /* reset rf by MCU supported by new firmware */
+		AsicSendCommandToMcu(pAd, 0x72, 0x00, 0x00, 0x00); /* reset rf by MCU supported by new firmware */
 #endif /* RTMP_MAC_USB */
 
 	/* Wait to be stable.*/
