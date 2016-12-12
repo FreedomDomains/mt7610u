@@ -5186,9 +5186,6 @@ ULONG MakeOutgoingFrame(
 u8 RandomByte(
 	IN  struct rtmp_adapter *  pAd);
 
-u8 RandomByte2(
-	IN  struct rtmp_adapter *  pAd);
-
 void AsicUpdateAutoFallBackTable(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pTxRate);

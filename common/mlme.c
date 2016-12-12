@@ -4198,26 +4198,6 @@ u8 RandomByte(
 }
 
 
-u8 RandomByte2(
-        IN struct rtmp_adapter *pAd)
-{
-	u32 a,b;
-	u8 value, seed = 0;
-
-	/*MAC statistic related*/
-	mt7610u_read32(pAd, RX_STA_CNT1, &a);
-	a &= 0x0000ffff;
-	mt7610u_read32(pAd, RX_STA_CNT0, &b);
-	b &= 0x0000ffff;
-	value = (a<<16)|b;
-
-	/*get seed by RSSI or SNR related info */
-	seed = rtmp_bbp_get_random_seed(pAd);
-
-	return value ^ seed ^ RandomByte(pAd);
-}
-
-
 /*
 	========================================================================
 
