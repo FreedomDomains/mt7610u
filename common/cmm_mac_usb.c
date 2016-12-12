@@ -1841,7 +1841,7 @@ bool AsicCheckCommandOk(
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 	{
-		RTMP_SEM_EVENT_WAIT(&pAd->reg_atomic, ret);
+		OS_SEM_EVENT_WAIT(&pAd->reg_atomic, ret);
 		if (ret != 0) {
 			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
 			return false;
@@ -1892,7 +1892,7 @@ bool AsicCheckCommandOk(
 #ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 	{
-		RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
+		OS_SEM_EVENT_UP(&pAd->reg_atomic);
 	}
 #endif /* RTMP_MAC_USB */
 

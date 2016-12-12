@@ -316,7 +316,7 @@ struct os_lock  {
 	do{								\
 		if (_pAd->infType == RTMP_DEV_INF_USB)	\
 		{\
-			RTMP_SEM_EVENT_WAIT(&_pAd->McuCmdSem, _irqflags);\
+			OS_SEM_EVENT_WAIT(&_pAd->McuCmdSem, _irqflags);\
 		}\
 		else\
 		{\
@@ -328,7 +328,7 @@ struct os_lock  {
 	do{				\
 		if(_pAd->infType == RTMP_DEV_INF_USB)\
 		{	\
-			RTMP_SEM_EVENT_UP(&_pAd->McuCmdSem);\
+			OS_SEM_EVENT_UP(&_pAd->McuCmdSem);\
 		}		\
 		else\
 		{\

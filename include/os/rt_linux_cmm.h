@@ -57,7 +57,7 @@ typedef struct _OS_RSTRUC  {
 	WAKE_UP(pTask);
 #else
 #define RTMP_OS_TASK_WAKE_UP(__pTask)						\
-	RTMP_SEM_EVENT_UP(&(pTask)->taskSema);
+	OS_SEM_EVENT_UP(&(pTask)->taskSema);
 #endif /* KTHREAD_SUPPORT */
 
 #ifdef KTHREAD_SUPPORT
@@ -117,12 +117,6 @@ typedef struct _OS_RSTRUC  {
 
 #define NdisAcquireSpinLock						RTMP_SEM_LOCK
 #define NdisReleaseSpinLock						RTMP_SEM_UNLOCK
-
-#define RTMP_SEM_EVENT_INIT_LOCKED(__pSema, __pSemaList)	OS_SEM_EVENT_INIT_LOCKED(__pSema)
-#define RTMP_SEM_EVENT_INIT(__pSema, __pSemaList)			OS_SEM_EVENT_INIT(__pSema)
-#define RTMP_SEM_EVENT_DESTROY					OS_SEM_EVENT_DESTROY
-#define RTMP_SEM_EVENT_WAIT						OS_SEM_EVENT_WAIT
-#define RTMP_SEM_EVENT_UP						OS_SEM_EVENT_UP
 
 #define RTUSBMlmeUp								OS_RTUSBMlmeUp
 
