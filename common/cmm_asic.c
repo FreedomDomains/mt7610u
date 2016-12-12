@@ -1891,22 +1891,6 @@ void AsicRemovePairwiseKeyEntry(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s : Wcid #%d \n", __FUNCTION__, Wcid));
 }
 
-bool AsicSendCommandToMcu(
-	IN struct rtmp_adapter*pAd,
-	IN u8 Command,
-	IN u8 Token,
-	IN u8 Arg0,
-	IN u8 Arg1)
-{
-#ifdef RT65xx
-	// TODO: shiang-6590, fix me, currently firmware is not ready yet, so ignore it!
-	if (IS_RT65XX(pAd))
-		return true;
-#endif /* RT65xx */
-
-	return false;
-}
-
 
 /*
 	========================================================================

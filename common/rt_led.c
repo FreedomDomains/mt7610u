@@ -135,11 +135,6 @@ void RTMPInitLEDMode(IN struct rtmp_adapter*pAd)
 		pLedCntl->LedPolarity = 0x5627;
 	}
 
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (u8)pLedCntl->LedAGCfg, (u8)(pLedCntl->LedAGCfg >> 8));
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_ACT_CFG, 0xff, (u8)pLedCntl->LedACTCfg, (u8)(pLedCntl->LedACTCfg >> 8));
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_POLARITY, 0xff, (u8)pLedCntl->LedPolarity, (u8)(pLedCntl->LedPolarity >> 8));
-	AsicSendCommandToMcu(pAd, MCU_SET_LED_GPIO_SIGNAL_CFG, 0xff, 0, pLedCntl->MCULedCntl.field.Polarity);
-
 	RTMPStartLEDMode(pAd);
 }
 

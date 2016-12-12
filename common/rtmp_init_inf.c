@@ -243,7 +243,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	/* APInitialize(pAd);*/
 
 #ifdef RTMP_MAC_USB
-	AsicSendCommandToMcu(pAd, 0x31, 0xff, 0x00, 0x02);
 	RTMPusecDelay(10000);
 #endif /* RTMP_MAC_USB */
 
