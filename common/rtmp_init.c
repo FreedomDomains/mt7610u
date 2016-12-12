@@ -3015,19 +3015,6 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 	if (ret)
 		return false;
 
-#ifdef RTMP_MAC_USB
-	for (i = 0; i < 6; i++) {
-		if (!PairEP(pAd, pAd->BulkOutEpAddr[i]))
-			DBGPRINT(RT_DEBUG_ERROR, ("Invalid bulk out ep(%x)\n", pAd->BulkOutEpAddr[i]));
-	}
-
-	for (i = 0; i < 2; i++) {
-		if (!PairEP(pAd, pAd->BulkInEpAddr[i]))
-			DBGPRINT(RT_DEBUG_ERROR, ("Invalid bulk in ep(%x)\n", pAd->BulkInEpAddr[i]));
-	}
-
-#endif
-
 #ifdef MCS_LUT_SUPPORT
 	if (pAd->chipCap.asic_caps & fASIC_CAP_MCS_LUT) {
 		if (MAX_LEN_OF_MAC_TABLE < 128) {
