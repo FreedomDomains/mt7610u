@@ -73,10 +73,7 @@ void RTMPSetLEDStatus(
 	IN u8 		Status)
 {
 	/*ULONG			data; */
-	u8 		LinkStatus = 0;
 	u8 		LedMode;
-	u8 		MCUCmd = 0;
-	bool 		bIgnored = false;
 	INT LED_CMD = -1;
 
 #ifdef STATS_COUNT_SUPPORT
@@ -91,56 +88,16 @@ void RTMPSetLEDStatus(
 
 	LED_CMD = LED_Array[LedMode][Status];
 
-	switch (Status) {
-		case LED_LINK_DOWN:
-			LinkStatus = LINK_STATUS_LINK_DOWN;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_LINK_UP:
-			if (pAd->CommonCfg.Channel > 14)
-				LinkStatus = LINK_STATUS_ABAND_LINK_UP;
-			else
-				LinkStatus = LINK_STATUS_GBAND_LINK_UP;
-
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_RADIO_ON:
-			LinkStatus = LINK_STATUS_RADIO_ON;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_HALT:
-			LedMode = 0; /* Driver sets MAC register and MAC controls LED */
-		case LED_RADIO_OFF:
-			LinkStatus = LINK_STATUS_RADIO_OFF;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_WPS:
-			LinkStatus = LINK_STATUS_WPS;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_ON_SITE_SURVEY:
-			LinkStatus = LINK_STATUS_ON_SITE_SURVEY;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		case LED_POWER_UP:
-			LinkStatus = LINK_STATUS_POWER_UP;
-			MCUCmd = MCU_SET_LED_MODE;
-			break;
-		default:
-			DBGPRINT(RT_DEBUG_WARN, ("RTMPSetLED::Unknown Status 0x%x\n", Status));
-			break;
-	}
-
 	if (LED_CMD != -1)
 		andes_led_op(pAd, 0, LED_CMD);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: MCUCmd:0x%x, LED Mode:0x%x, LinkStatus:0x%x\n", __FUNCTION__, MCUCmd, LedMode, LinkStatus));
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: LED Mode:0x%x\n", __FUNCTION__, LedMode));
 
     /* */
 	/* Keep LED status for LED SiteSurvey mode. */
 	/* After SiteSurvey, we will set the LED mode to previous status. */
 	/* */
-	if ((Status != LED_ON_SITE_SURVEY) && (Status != LED_POWER_UP) && (bIgnored == false))
+	if ((Status != LED_ON_SITE_SURVEY) && (Status != LED_POWER_UP))
 		pAd->LedCntl.LedStatus = Status;
 
 }
