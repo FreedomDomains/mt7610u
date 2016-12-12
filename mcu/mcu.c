@@ -45,7 +45,6 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 #ifdef RTMP_USB_SUPPORT
 	pChipOps->MCU_loadFirmware = andes_usb_loadfw;
 #endif
-	//pChipOps->sendCommandToMcu = andes_send_cmd_msg;
 	pChipOps->MCU_CtrlInit = andes_ctrl_init;
 	pChipOps->MCU_CtrlExit = andes_ctrl_exit;
 	pChipOps->MCU_Calibration = andes_calibration;

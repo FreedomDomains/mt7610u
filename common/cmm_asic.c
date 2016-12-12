@@ -1904,10 +1904,7 @@ bool AsicSendCommandToMcu(
 		return true;
 #endif /* RT65xx */
 
-	if (pAd->chipOps.sendCommandToMcu)
-		return pAd->chipOps.sendCommandToMcu(pAd, Command, Token, Arg0, Arg1, false);
-	else
-		return false;
+	return false;
 }
 
 
