@@ -101,13 +101,6 @@ static bool USBDevConfigInit(
 	IN struct usb_interface *intf,
 	IN void 				*pAd);
 
-
-void RT28XXVendorSpecificCheck(
-	IN struct usb_device 	*dev,
-	IN void 				*pAd)
-{
-}
-
 /**************************************************************************/
 /**************************************************************************/
 /*tested for kernel 2.6series */
@@ -192,7 +185,6 @@ static bool USBDevConfigInit(
 	pConfig->pConfig = &dev->config->desc;
 	usb_set_intfdata(intf, pAd);
 	RTMP_DRIVER_USB_CONFIG_INIT(pAd, pConfig);
-	RT28XXVendorSpecificCheck(dev, pAd);
 
 	return true;
 
