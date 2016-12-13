@@ -527,8 +527,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
 
-	int (*MCU_BurstRead)(struct rtmp_adapter *ad, u32 Offset, u32 Cnt, u32 *Data);
-
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
 
 	int (*MCU_RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
@@ -684,12 +682,6 @@ do {	\
 do {												\
 		if (_pAd->chipOps.MCU_BurstWrite != NULL)		\
 			_pAd->chipOps.MCU_BurstWrite(_pAd, _Offset, _pData, _Cnt);\
-} while (0)
-
-#define BURST_READ(_pAd, _Offset, _Cnt, _pData)	\
-do {											\
-		if (_pAd->chipOps.MCU_BurstRead != NULL)	\
-			_pAd->chipOps.MCU_BurstRead(_pAd, _Offset, _Cnt, _pData);	\
 } while (0)
 
 #define RANDOM_READ(_pAd, _RegPair, _Num)	\
