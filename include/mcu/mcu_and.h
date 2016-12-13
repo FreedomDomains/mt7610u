@@ -55,18 +55,18 @@ typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD_PKT {
 #endif /* RT_BIG_ENDIAN */
 
 enum cmd_msg_state {
-	illegal,
-	tx_start,
-	tx_kickout_fail,
-	tx_timeout_fail,
-	tx_retransmit,
-	tx_done,
-	wait_cmd_out,
-	wait_cmd_out_and_ack,
-	wait_ack,
-	rx_start,
-	rx_receive_fail,
-	rx_done,
+	ILLEGAL,
+	TX_START,
+	TX_KICKOUT_FAIL,
+	TX_TIMEOUT_FAIL,
+	TX_RETRANSMIT,
+	TX_DONE,
+	WAIT_CMD_OUT,
+	WAIT_CMD_OUT_AND_ACK,
+	WAIT_ACK,
+	RX_START,
+	RX_RECEIVE_FAIL,
+	RX_DONE,
 };
 
 enum {
@@ -76,9 +76,9 @@ enum {
 };
 
 enum cmd_msg_error_type {
-	error_tx_kickout_fail,
-	error_tx_timeout_fail,
-	error_rx_receive_fail,
+	ERROR_TX_KICKOUT_FAIL,
+	ERROR_TX_TIMEOUT_FAIL,
+	ERROR_RX_RECEIVE_FAIL,
 };
 
 struct mt7610u_mcu_ctrl {
