@@ -597,7 +597,7 @@ static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned
 	struct sk_buff * net_pkt = msg->skb;
 
 	if (data)
-		memcpy(OS_PKT_TAIL_BUF_EXTEND(net_pkt, len), data, len);
+		memcpy(skb_put(net_pkt, len), data, len);
 }
 
 void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
@@ -879,7 +879,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 	mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
 
-	OS_PKT_TAIL_BUF_EXTEND(net_pkt, RTMP_USB_URB_LEN_GET(urb));
+	skb_put(net_pkt, RTMP_USB_URB_LEN_GET(urb));
 
 	if (RTMP_USB_URB_STATUS_GET(urb) == 0) {
 		state = RX_DONE;
@@ -1073,7 +1073,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
-	memset(OS_PKT_TAIL_BUF_EXTEND(net_pkt, 4), 0x00, 4);
+	memset(skb_put(net_pkt, 4), 0x00, 4);
 
 	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
 						usb_sndbulkpipe(pObj->pUsb_Dev, pChipCap->CommandBulkOutAddr),

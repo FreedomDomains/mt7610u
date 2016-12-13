@@ -682,9 +682,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define OS_PKT_HEAD_BUF_EXTEND(_pkt, _offset)								\
 	skb_push(RTPKT_TO_OSPKT(_pkt), _offset)
 
-#define OS_PKT_TAIL_BUF_EXTEND(_pkt, _Len)									\
-	skb_put(RTPKT_TO_OSPKT(_pkt), _Len)
-
 #define OS_PKT_RESERVE(_pkt, _Len)											\
 	skb_reserve(RTPKT_TO_OSPKT(_pkt), _Len)
 
