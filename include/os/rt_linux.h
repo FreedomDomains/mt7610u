@@ -955,9 +955,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 
 #define RT28XX_PUT_DEVICE(dev_p)
 
-
-#define RTUSB_FREE_URB(pUrb)	usb_free_urb(pUrb)
-
 /* unlink urb */
 
 #define RTUSB_UNLINK_URB(pUrb)		usb_kill_urb(pUrb)

@@ -506,7 +506,7 @@ error2:
 
 error1:
 	/* Free URB */
-	RTUSB_FREE_URB(urb);
+	usb_free_urb(urb);
 
 error0:
 	release_firmware(fw);
@@ -610,7 +610,7 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 		RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
 
 #ifdef RTMP_USB_SUPPORT
-	RTUSB_FREE_URB(msg->urb);
+	usb_free_urb(msg->urb);
 #endif
 
 	kfree(msg);
