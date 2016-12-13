@@ -586,11 +586,6 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wai
 	if (need_wait)
 		RTMP_OS_INIT_COMPLETION(&msg->ack_done);
 
-	msg->need_retransmit = false;
-
-	if (need_retransmit)
-		msg->retransmit_times = CMD_MSG_RETRANSMIT_TIMES;
-
 	msg->need_rsp = need_rsp;
 	msg->rsp_payload_len = rsp_payload_len;
 	msg->rsp_payload = rsp_payload;
@@ -1323,28 +1318,16 @@ retransmit:
 
 			mt7610u_mcu_inc_error_count(ctl, error_tx_timeout_fail);
 			state = tx_timeout_fail;
-			msg->retransmit_times--;
-			DBGPRINT(RT_DEBUG_ERROR, ("msg->retransmit_times = %d\n", msg->retransmit_times));
 		} else {
 			if (msg->state == tx_kickout_fail) {
 				state = tx_kickout_fail;
-				msg->retransmit_times--;
 			} else {
 				state = tx_done;
-				msg->retransmit_times = 0;
 			}
 		}
 
 		if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
-			if (msg->need_retransmit && (msg->retransmit_times > 0)) {
-				RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
-				RTMP_OS_INIT_COMPLETION(&msg->ack_done);
-				state = tx_retransmit;
-				mt7610u_mcu_queue_head_cmd_msg(&ctl->txq, msg, state);
-				goto retransmit;
-			} else {
-				mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, state);
-			}
+			mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, state);
 		} else {
 			mt7610u_mcu_free_cmd_msg(msg);
 		}

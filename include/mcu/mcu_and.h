@@ -130,7 +130,6 @@ struct cmd_msg {
 	u16 rsp_payload_len;
 	bool need_wait;
 	bool need_rsp;
-	bool need_retransmit;
 	RTMP_OS_COMPLETION ack_done;
 	char *rsp_payload;
 	MSG_RSP_HANDLER rsp_handler;
@@ -140,7 +139,6 @@ struct cmd_msg {
 #ifdef RTMP_USB_SUPPORT
 	struct urb *urb;
 #endif
-	int retransmit_times;
 };
 
 /*
