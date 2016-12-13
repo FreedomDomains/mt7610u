@@ -195,7 +195,7 @@ loadfw_protect:
 	}
 
 	/* Allocate URB */
-	urb = RTUSB_ALLOC_URB(0);
+	urb = usb_alloc_urb(0, GFP_ATOMIC);
 
 	if (!urb) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate URB\n"));
@@ -550,7 +550,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 	memset(msg, 0x00, sizeof(*msg));
 
 #ifdef RTMP_USB_SUPPORT
-	urb = RTUSB_ALLOC_URB(0);
+	urb = usb_alloc_urb(0, GFP_ATOMIC);
 
 	if (!urb) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate urb\n"));
