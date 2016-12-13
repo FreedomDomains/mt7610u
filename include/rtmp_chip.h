@@ -684,12 +684,6 @@ do {												\
 			_pAd->chipOps.MCU_BurstWrite(_pAd, _Offset, _pData, _Cnt);\
 } while (0)
 
-#define RANDOM_READ(_pAd, _RegPair, _Num)	\
-do {										\
-		if (_pAd->chipOps.MCU_RandomRead != NULL)	\
-			_pAd->chipOps.MCU_RandomRead(_pAd, _RegPair, _Num);	\
-} while (0)
-
 #define RF_RANDOM_READ(_pAd, _RegPair, _Num)	\
 do {											\
 		if (_pAd->chipOps.MCU_RFRandomRead != NULL)	\

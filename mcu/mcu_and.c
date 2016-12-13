@@ -1380,65 +1380,6 @@ error:
 	return ret;
 }
 
-static void mt7610u_mcu_random_read_callback(struct cmd_msg *msg,
-			char *rsp_payload, u16 rsp_payload_len)
-{
-	u32 i;
-	RTMP_REG_PAIR *reg_pair = (RTMP_REG_PAIR *)msg->rsp_payload;
-
-	for (i = 0; i < msg->rsp_payload_len / 8; i++) {
-		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 4);
-		reg_pair[i].Value = le2cpu32(reg_pair[i].Value);
-	}
-}
-
-int mt7610u_mcu_random_read(struct rtmp_adapter*ad,
-			    RTMP_REG_PAIR *reg_pair, u32 num)
-{
-	struct cmd_msg *msg;
-	unsigned int var_len = num * 8, cur_len = 0, receive_len;
-	u32 i, value, cur_index = 0;
-	struct rtmp_chip_cap *cap = &ad->chipCap;
-	int ret = 0;
-
-	if (!reg_pair)
-		return -1;
-
-	while (cur_len < var_len) {
-		receive_len =
-			(var_len - cur_len) > cap->InbandPacketMaxLen ?
-			cap->InbandPacketMaxLen :
-			(var_len - cur_len);
-
-		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
-
-		if (!msg) {
-			ret = NDIS_STATUS_RESOURCES;
-			goto error;
-		}
-
-		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0,
-					 true, true, receive_len,
-					 (char *)&reg_pair[cur_index],
-					 mt7610u_mcu_random_read_callback);
-
-		for (i = 0; i < receive_len / 8; i++) {
-			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
-			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-			value = 0;
-			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-		}
-
-		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
-
-		cur_index += receive_len / 8;
-		cur_len += cap->InbandPacketMaxLen;
-	}
-
-error:
-	return ret;
-}
-
 static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
