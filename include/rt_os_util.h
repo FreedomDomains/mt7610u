@@ -800,8 +800,6 @@ void RtmpOsUsbInitRxDesc(
 	void *pRxContext,
 	dma_addr_t TransferDma);
 
-void RtmpOsUsbDmaMapping(
-	IN	void 		*pUrb);
 #endif /* RTMP_MAC_USB */
 
 u32 RtmpOsGetUsbDevVendorID(

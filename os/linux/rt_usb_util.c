@@ -161,13 +161,6 @@ void RtmpOsUsbInitRxDesc(
 						DmaAddr);
 }
 
-void RtmpOsUsbDmaMapping(
-	IN	void 		*pUrb)
-{
-	RTUSB_URB_DMA_MAPPING(((struct urb *)pUrb));
-}
-
-
 /*
 ========================================================================
 Routine Description:
