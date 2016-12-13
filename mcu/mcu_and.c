@@ -28,8 +28,6 @@
 #include	"rt_config.h"
 #include <linux/firmware.h>
 
-
-#ifdef RTMP_MAC_USB
 void usb_uploadfw_complete(struct urb *urb)
 {
 	RTMP_OS_COMPLETION *load_fw_done = urb->context;
@@ -518,16 +516,13 @@ error0:
 
 	return ret;
 }
-#endif
 
 static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int length)
 {
 	struct cmd_msg *msg = NULL;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
-#ifdef RTMP_USB_SUPPORT
 	struct urb *urb = NULL;
-#endif
 
 	struct sk_buff * net_pkt = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
 
@@ -549,7 +544,6 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 
 	memset(msg, 0x00, sizeof(*msg));
 
-#ifdef RTMP_USB_SUPPORT
 	urb = usb_alloc_urb(0, GFP_ATOMIC);
 
 	if (!urb) {
@@ -558,7 +552,6 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 	}
 
 	msg->urb = urb;
-#endif
 
 	msg->priv = ad;
 	msg->skb = net_pkt;
@@ -609,9 +602,7 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 	if (msg->need_wait)
 		RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
 
-#ifdef RTMP_USB_SUPPORT
 	usb_free_urb(msg->urb);
-#endif
 
 	kfree(msg);
 
@@ -864,7 +855,6 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_m
 	}
 }
 
-#ifdef RTMP_USB_SUPPORT
 static void usb_rx_cmd_msg_complete(struct urb *urb)
 {
 	struct sk_buff * net_pkt = urb->context;
@@ -1127,8 +1117,6 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 	spin_unlock_irqrestore(lock, flags);
 }
 
-#endif
-
 void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 {
 	unsigned long flags;
@@ -1256,11 +1244,7 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
 		RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
 
-
-#ifdef RTMP_USB_SUPPORT
 		ret = usb_kick_out_cmd_msg(ad, msg);
-#endif
-
 
 		if (ret) {
 			DBGPRINT(RT_DEBUG_ERROR, ("kick out msg fail\n"));
@@ -1427,9 +1411,9 @@ int mt7610u_mcu_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *dat
 		rsp_len = sizeof(offset) * offset_num + 4 * cnt;
 
 	while (cur_len < rsp_len) {
-		receive_len = (rsp_len - cur_len) > cap->InbandPacketMaxLen
-									   ? cap->InbandPacketMaxLen
-									   : (rsp_len - cur_len);
+		receive_len =
+			(rsp_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen : (rsp_len - cur_len);
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, 8);
 
@@ -1438,8 +1422,10 @@ int mt7610u_mcu_burst_read(struct rtmp_adapter*ad, u32 offset, u32 cnt, u32 *dat
 			goto error;
 		}
 
-		mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_READ, true, 0, true, true, receive_len,
-									(char *)(&data[cur_index]), mt7610u_mcu_burst_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_READ, true, 0,
+					 true, true, receive_len,
+					(char *)(&data[cur_index]),
+					mt7610u_mcu_burst_read_callback);
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
 		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1462,7 +1448,8 @@ error:
 	return ret;
 }
 
-static void mt7610u_mcu_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
+static void mt7610u_mcu_random_read_callback(struct cmd_msg *msg,
+			char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
 	RTMP_REG_PAIR *reg_pair = (RTMP_REG_PAIR *)msg->rsp_payload;
@@ -1473,7 +1460,8 @@ static void mt7610u_mcu_random_read_callback(struct cmd_msg *msg, char *rsp_payl
 	}
 }
 
-int mt7610u_mcu_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_random_read(struct rtmp_adapter*ad,
+			    RTMP_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
@@ -1484,11 +1472,11 @@ int mt7610u_mcu_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32
 	if (!reg_pair)
 		return -1;
 
-	while (cur_len < var_len)
-	{
-		receive_len = (var_len - cur_len) > cap->InbandPacketMaxLen
-									   ? cap->InbandPacketMaxLen
-									   : (var_len - cur_len);
+	while (cur_len < var_len) {
+		receive_len =
+			(var_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen :
+			(var_len - cur_len);
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
 
@@ -1497,8 +1485,10 @@ int mt7610u_mcu_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32
 			goto error;
 		}
 
-		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
-									(char *)&reg_pair[cur_index], mt7610u_mcu_random_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0,
+					 true, true, receive_len,
+					 (char *)&reg_pair[cur_index],
+					 mt7610u_mcu_random_read_callback);
 
 		for (i = 0; i < receive_len / 8; i++) {
 			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
@@ -1507,9 +1497,7 @@ int mt7610u_mcu_random_read(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
 
-
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
-
 
 		cur_index += receive_len / 8;
 		cur_len += cap->InbandPacketMaxLen;
@@ -1541,9 +1529,10 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pai
 		return -1;
 
 	while (cur_len < var_len) {
-		receive_len = (var_len - cur_len) > cap->InbandPacketMaxLen
-									   ? cap->InbandPacketMaxLen
-									   : (var_len - cur_len);
+		receive_len =
+			(var_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen :
+			(var_len - cur_len);
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
 
@@ -1552,8 +1541,10 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pai
 			goto error;
 		}
 
-		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0, true, true, receive_len,
-									(char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0,
+					 true, true, receive_len,
+					 (char *)&reg_pair[cur_index],
+					 mt7610u_mcu_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
 			value = 0;
@@ -1575,7 +1566,6 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pai
 
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
-
 		cur_index += receive_len / 8;
 		cur_len += cap->InbandPacketMaxLen;
 	}
@@ -1584,7 +1574,8 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u32 num)
+int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad,
+				  R_M_W_REG *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 12, cur_len = 0, sent_len;
@@ -1597,10 +1588,13 @@ int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u
 		return -1;
 
 	while (cur_len < var_len) {
-		sent_len = (var_len - cur_len) > cap->InbandPacketMaxLen
-									? cap->InbandPacketMaxLen : (var_len - cur_len);
+		sent_len =
+			(var_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen :
+			(var_len - cur_len);
 
-		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
+		if ((sent_len < cap->InbandPacketMaxLen) ||
+		    (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1611,9 +1605,13 @@ int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg,
+					CMD_READ_MODIFY_WRITE, true, 0,
+					true, true, 0, NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_READ_MODIFY_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg,
+					CMD_READ_MODIFY_WRITE, false, 0,
+					false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 12); i++) {
 			/* Address */
@@ -1631,7 +1629,6 @@ int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad, R_M_W_REG *reg_pair, u
 
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
-
 		cur_index += (sent_len / 12);
 		cur_len += cap->InbandPacketMaxLen;
 	}
@@ -1640,7 +1637,8 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_random_write(struct rtmp_adapter*ad,
+			RTMP_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
@@ -1653,10 +1651,13 @@ int mt7610u_mcu_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u3
 		return -1;
 
 	while (cur_len < var_len) {
-		sent_len = (var_len - cur_len) > cap->InbandPacketMaxLen
-									? cap->InbandPacketMaxLen : (var_len - cur_len);
+		sent_len =
+			(var_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen :
+			(var_len - cur_len);
 
-		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
+		if ((sent_len < cap->InbandPacketMaxLen) ||
+		    (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1667,12 +1668,15 @@ int mt7610u_mcu_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u3
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
+						true, 0, true, true, 0,
+						NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
+						 false, 0, false, false,
+						 0, NULL, NULL);
 
-		for (i = 0; i < (sent_len / 8); i++)
-		{
+		for (i = 0; i < (sent_len / 8); i++) {
 			/* Address */
 			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1683,7 +1687,6 @@ int mt7610u_mcu_random_write(struct rtmp_adapter*ad, RTMP_REG_PAIR *reg_pair, u3
 		};
 
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
-
 
 		cur_index += (sent_len / 8);
 		cur_len += cap->InbandPacketMaxLen;
@@ -1706,10 +1709,13 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pa
 		return -1;
 
 	while (cur_len < var_len) {
-		sent_len = (var_len - cur_len) > cap->InbandPacketMaxLen
-									? cap->InbandPacketMaxLen : (var_len - cur_len);
+		sent_len =
+			(var_len - cur_len) > cap->InbandPacketMaxLen ?
+			cap->InbandPacketMaxLen :
+			(var_len - cur_len);
 
-		if ((sent_len < cap->InbandPacketMaxLen) || (cur_len + cap->InbandPacketMaxLen) == var_len)
+		if ((sent_len < cap->InbandPacketMaxLen) ||
+		    (cur_len + cap->InbandPacketMaxLen) == var_len)
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1720,9 +1726,13 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pa
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
+						 true, 0, true, true, 0,
+						 NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
+						 false, 0, false, false,
+						 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			value = 0;
@@ -1747,7 +1757,6 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pa
 
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
-
 		cur_index += (sent_len / 8);
 		cur_len += cap->InbandPacketMaxLen;
 	}
@@ -1757,8 +1766,8 @@ error:
 }
 
 int mt7610u_mcu_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
-					 u32 listen_interval, u32 pre_tbtt_lead_time,
-					 u8 tim_byte_offset, u8 tim_byte_pattern)
+			   u32 listen_interval, u32 pre_tbtt_lead_time,
+			   u8 tim_byte_offset, u8 tim_byte_pattern)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len;
@@ -1828,9 +1837,11 @@ int mt7610u_mcu_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 	}
 
 	if (fun_id != Q_SELECT)
-		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0, true, true, 0, NULL, NULL);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0,
+				         true, true, 0, NULL, NULL);
 	else
-		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0, false, false, 0, NULL, NULL);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0,
+					 false, false, 0, NULL, NULL);
 
 	/* Function ID */
 	value = cpu2le32(fun_id);
@@ -1862,7 +1873,8 @@ int mt7610u_mcu_calibration(struct rtmp_adapter*ad, u32 cal_id, u32 param)
 		goto error;
 	}
 
-	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true, true, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true,
+				 true, 0, NULL, NULL);
 
 	/* Calibration ID */
 	value = cpu2le32(cal_id);
@@ -1891,7 +1903,8 @@ int mt7610u_mcu_led_op(struct rtmp_adapter*ad, u32 led_idx, u32 link_status)
 		goto error;
 	}
 
-	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false, false, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false,
+				 false, 0, NULL, NULL);
 
 	/* Led index */
 	value = cpu2le32(led_idx);
