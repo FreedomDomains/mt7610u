@@ -98,7 +98,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
 		return ret;
 	}
 
-	RtmpOsMsDelay(5);
+	mdelay(5);
 
 	fw_image = (u8 *) fw->data;
 
@@ -115,7 +115,7 @@ loadfw_protect:
 		loop++;
 
 		if (((mac_value & 0x01) == 0) && (loop < GET_SEMAPHORE_RETRY_MAX)) {
-			RtmpOsMsDelay(1);
+			mdelay(1);
 			goto loadfw_protect;
 		}
 
@@ -143,7 +143,7 @@ loadfw_protect:
 	}
 
 	RTUSBVenderReset(ad);
-	RtmpOsMsDelay(5);
+	mdelay(5);
 
 	/* Get FW information */
 	ilm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image))));;
@@ -340,7 +340,7 @@ loadfw_protect:
 			mac_value++;
 			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
-			RtmpOsMsDelay(5);
+			mdelay(5);
 		} else {
 			break;
 		}
@@ -472,7 +472,7 @@ loadfw_protect:
 			mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
 			mac_value++;
 			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
-			RtmpOsMsDelay(5);
+			mdelay(5);
 		} else 	{
 			break;
 		}
@@ -491,7 +491,7 @@ loadfw_protect:
 		mt7610u_read32(ad, COM_REG0, &mac_value);
 		if ((mac_value & 0x01) == 0x01)
 			break;
-		RtmpOsMsDelay(10);
+		mdelay(10);
 		loop++;
 	} while (loop <= 100);
 

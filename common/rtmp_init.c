@@ -993,7 +993,7 @@ int	NICInitializeAsic(
 	MACValue &= (~0x2000);
 	mt7610u_write32(pAd, PBF_SYS_CTRL, MACValue);
 
-	RtmpOsMsDelay(200);
+	mdelay(200);
 
 #ifdef RTMP_MAC_USB
 	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);

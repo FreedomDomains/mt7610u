@@ -329,7 +329,7 @@ INT WaitForAsicReady(
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return true;
 
-		RtmpOsMsDelay(5);
+		mdelay(5);
 	} while (idx++ < 500);
 
 	DBGPRINT(RT_DEBUG_ERROR,

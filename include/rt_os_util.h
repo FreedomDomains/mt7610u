@@ -38,9 +38,6 @@ void RTMPusecDelay(
 
 void RtmpOsUsDelay(ULONG value);
 
-void RtmpOsMsDelay(
-	IN	ULONG					msec);
-
 void RTMP_GetCurrentSystemTime(
 	IN	LARGE_INTEGER			*time);
 
