@@ -319,7 +319,7 @@ loadfw_protect:
 					 &load_fw_done,
 					 fw_dma);
 
-			ret = RTUSB_SUBMIT_URB(urb);
+			ret = usb_submit_urb(urb, GFP_ATOMIC);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
@@ -452,7 +452,7 @@ loadfw_protect:
 					 &load_fw_done,
 					 fw_dma);
 
-			ret = RTUSB_SUBMIT_URB(urb);
+			ret = usb_submit_urb(urb, GFP_ATOMIC);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
@@ -908,7 +908,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
-		ret = RTUSB_SUBMIT_URB(msg->urb);
+		ret = usb_submit_urb(msg->urb, GFP_ATOMIC);
 
 		if (ret) {
 			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
@@ -949,7 +949,7 @@ static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 
 	mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
-	ret = RTUSB_SUBMIT_URB(msg->urb);
+	ret = usb_submit_urb(msg->urb, GFP_ATOMIC);
 
 	if (ret) {
 		mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
@@ -1087,7 +1087,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return -1;
 
-	ret = RTUSB_SUBMIT_URB(msg->urb);
+	ret = usb_submit_urb(msg->urb, GFP_ATOMIC);
 
 	if (ret) {
 		if (!msg->need_rsp) {
