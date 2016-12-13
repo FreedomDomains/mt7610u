@@ -529,7 +529,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 	struct urb *urb = NULL;
 #endif
 
-	struct sk_buff * net_pkt = RTMP_AllocateFragPacketBuffer(ad, cap->cmd_header_len + length + cap->cmd_padding_len);
+	struct sk_buff * net_pkt = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
 
 	if (!net_pkt) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate net_pkt\n"));

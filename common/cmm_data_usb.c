@@ -1222,7 +1222,7 @@ struct sk_buff * GetPacketFromRxRing(
 #endif /* RT_BIG_ENDIAN */
 
 	/* allocate a rx packet*/
-	pNetPkt = RTMP_AllocateFragPacketBuffer(pAd, ThisFrameLen);
+	pNetPkt = dev_alloc_skb(ThisFrameLen);
 	if (pNetPkt == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR,("%s():Cannot Allocate sk buffer for this Bulk-In buffer!\n", __FUNCTION__));

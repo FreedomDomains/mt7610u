@@ -170,22 +170,6 @@ int os_alloc_mem_suspend(
 		return NDIS_STATUS_FAILURE;
 }
 
-struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
-{
-	struct sk_buff *pkt;
-
-	pkt = dev_alloc_skb(len);
-
-	if (pkt == NULL) {
-		DBGPRINT(RT_DEBUG_ERROR,
-			 ("can't allocate frag rx %ld size packet\n", len));
-	}
-
-	return (struct sk_buff *) pkt;
-}
-
-
-
 /*
 	The allocated NDIS PACKET must be freed via RTMPFreeNdisPacket()
 */

@@ -91,10 +91,6 @@ bool RtmpOsStatsAlloc(
 
 /* OS Packet */
 
-struct sk_buff * RTMP_AllocateFragPacketBuffer(
-	IN	void 				*pReserved,
-	IN	ULONG					Length);
-
 int RTMPAllocateNdisPacket(
 	IN	void 				*pReserved,
 	OUT struct sk_buff *			*ppPacket,
