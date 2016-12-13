@@ -1120,8 +1120,7 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
 		spin_unlock_irqrestore(lock, flags);
 		if ((msg->state == WAIT_CMD_OUT_AND_ACK) || (msg->state == WAIT_CMD_OUT) ||
-						(msg->state == TX_START) || (msg->state == RX_START) ||
-						(msg->state == TX_RETRANSMIT))
+						(msg->state == TX_START) || (msg->state == RX_START))
 			RTUSB_UNLINK_URB(msg->urb);
 		spin_lock_irqsave(lock, flags);
 	}
