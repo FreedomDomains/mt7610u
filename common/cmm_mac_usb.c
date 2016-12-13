@@ -77,7 +77,7 @@ static int RTMPFreeUsbBulkBufStruct(
 	}
 
 	if (NULL != *ppXBuffer) {
-		RTUSB_URB_FREE_BUFFER(pObj->pUsb_Dev, bufLen,	*ppXBuffer, data_dma);
+		usb_free_coherent(pObj->pUsb_Dev, bufLen, *ppXBuffer, data_dma);
 		*ppXBuffer = NULL;
 	}
 
@@ -803,7 +803,7 @@ out1:
 
 		if (NULL != pRxContext->TransferBuffer)
 		{
-			RTUSB_URB_FREE_BUFFER(pObj->pUsb_Dev, MAX_RXBULK_SIZE,
+			usb_free_coheren(pObj->pUsb_Dev, MAX_RXBULK_SIZE,
 								pRxContext->TransferBuffer, pRxContext->data_dma);
 			pRxContext->TransferBuffer = NULL;
 		}

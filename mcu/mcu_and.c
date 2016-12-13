@@ -502,7 +502,7 @@ loadfw_protect:
 
 error2:
 	/* Free TransferBuffer */
-	RTUSB_URB_FREE_BUFFER(udev, UPLOAD_FW_UNIT, fw_data, fw_dma);
+	usb_free_coherent(udev, UPLOAD_FW_UNIT, fw_data, fw_dma);
 
 error1:
 	/* Free URB */
