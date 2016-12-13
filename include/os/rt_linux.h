@@ -918,7 +918,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 /***********************************************************************************
  *	Other function prototypes definitions
  ***********************************************************************************/
-void RTMP_GetCurrentSystemTime(LARGE_INTEGER *time);
 int rt28xx_packet_xmit(void *skb);
 
 

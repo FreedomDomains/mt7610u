@@ -1285,11 +1285,6 @@ int	RTUSBWriteHWMACAddress(
 	MAC_DW0_STRUC	StaMacReg0;
 	MAC_DW1_STRUC	StaMacReg1;
 	int		Status = NDIS_STATUS_SUCCESS;
-	LARGE_INTEGER	NOW;
-
-
-	/* initialize the random number generator*/
-	RTMP_GetCurrentSystemTime(&NOW);
 
 	/* Write New MAC address to MAC_CSR2 & MAC_CSR3 & let ASIC know our new MAC*/
 	StaMacReg0.field.Byte0 = pAd->CurrentAddress[0];
