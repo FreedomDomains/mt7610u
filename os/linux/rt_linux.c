@@ -145,14 +145,6 @@ void RTMPusecDelay(ULONG usec)
 }
 
 
-/* Unify all delay routine by using udelay */
-void RtmpOsUsDelay(ULONG value)
-{
-	ULONG i;
-
-	udelay(value);
-}
-
 void RTMP_GetCurrentSystemTime(LARGE_INTEGER * time)
 {
 	time->u.LowPart = jiffies;

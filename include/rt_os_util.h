@@ -36,8 +36,6 @@ void RtmpUtilInit(void);
 void RTMPusecDelay(
 	IN	ULONG					usec);
 
-void RtmpOsUsDelay(ULONG value);
-
 void RTMP_GetCurrentSystemTime(
 	IN	LARGE_INTEGER			*time);
 
