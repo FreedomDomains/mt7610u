@@ -90,9 +90,6 @@ bool RtmpOsStatsAlloc(
 	IN	void 				**ppIwStats);
 
 /* OS Packet */
-struct sk_buff * RtmpOSNetPktAlloc(
-	IN	void 				*pReserved,
-	IN	int						size);
 
 struct sk_buff * RTMP_AllocateFragPacketBuffer(
 	IN	void 				*pReserved,

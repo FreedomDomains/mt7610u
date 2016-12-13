@@ -170,15 +170,6 @@ int os_alloc_mem_suspend(
 		return NDIS_STATUS_FAILURE;
 }
 
-struct sk_buff * RtmpOSNetPktAlloc(void *dummy, int size)
-{
-	struct sk_buff *skb;
-	/* Add 2 more bytes for ip header alignment */
-	skb = dev_alloc_skb(size + 2);
-
-	return ((struct sk_buff *) skb);
-}
-
 struct sk_buff * RTMP_AllocateFragPacketBuffer(void *dummy, ULONG len)
 {
 	struct sk_buff *pkt;
@@ -1894,7 +1885,7 @@ struct sk_buff * RtmpOsPktIappMakeUp(
 	if (pNetDev == NULL)
 		return NULL;
 
-	pNetBuf = RtmpOSNetPktAlloc(NULL, size);
+	pNetBuf = dev_alloc_skb(size + 2);
 	if (!pNetBuf) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Error! Can't allocate a skb.\n"));
 		return NULL;
