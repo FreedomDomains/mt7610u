@@ -1337,42 +1337,6 @@ retransmit:
 	return ret;
 }
 
-static void mt7610u_mcu_pwr_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
-{
-
-
-}
-
-
-static void mt7610u_mcu_wow_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
-{
-
-
-}
-
-static void mt7610u_mcu_carrier_detect_event_handler(struct rtmp_adapter*ad, char *payload, u16 payload_len)
-{
-
-
-
-}
-
-static void mt7610u_mcu_dfs_detect_event_handler(struct rtmp_adapter *ad, char *payload, u16 payload_len)
-{
-
-
-
-}
-
-MSG_EVENT_HANDLER msg_event_handler_tb[] =
-{
-	mt7610u_mcu_pwr_event_handler,
-	mt7610u_mcu_wow_event_handler,
-	mt7610u_mcu_carrier_detect_event_handler,
-	mt7610u_mcu_dfs_detect_event_handler,
-};
-
-
 int mt7610u_mcu_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
 {
 	struct cmd_msg *msg;

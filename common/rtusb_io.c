@@ -1209,16 +1209,9 @@ static int RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, struct rtmp_
 #endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
-
-
-extern MSG_EVENT_HANDLER msg_event_handler_tb[];
-
 static int CmdRspEventCallback(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
 	struct rxfce_info_cmd *pFceInfo = CMDQelmt->buffer;
-
-	(*msg_event_handler_tb[pFceInfo->evt_type])(pAd, CMDQelmt->buffer,
-												CMDQelmt->bufferlength);
 
 	return NDIS_STATUS_SUCCESS;
 }
