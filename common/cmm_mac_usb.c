@@ -51,7 +51,7 @@ static int RTMPAllocUsbBulkBufStruct(
 		return NDIS_STATUS_RESOURCES;
 	}
 
-	*ppXBuffer = RTUSB_URB_ALLOC_BUFFER(pObj->pUsb_Dev, bufLen, pDmaAddr);
+	*ppXBuffer = usb_alloc_coherent(pObj->pUsb_Dev, bufLen, GFP_ATOMIC, pDmaAddr);
 	if (*ppXBuffer == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc Bulk buffer for %s!\n", pBufName));
 		return NDIS_STATUS_RESOURCES;
@@ -769,7 +769,7 @@ int	NICInitRecv(
 		}
 
 		/* Allocate transfer buffer*/
-		pRxContext->TransferBuffer = RTUSB_URB_ALLOC_BUFFER(pObj->pUsb_Dev, MAX_RXBULK_SIZE, &pRxContext->data_dma);
+		pRxContext->TransferBuffer = usb_alloc_coherent(pObj->pUsb_Dev, MAX_RXBULK_SIZE, &pRxContext->data_dma);
 		if (pRxContext->TransferBuffer == NULL)
 		{
 			Status = NDIS_STATUS_RESOURCES;
