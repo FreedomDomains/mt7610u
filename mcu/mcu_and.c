@@ -157,11 +157,6 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("build:%x\n", build_ver));
 	DBGPRINT(RT_DEBUG_OFF, ("build time:"));
 
-	for (loop = 0; loop < 16; loop++)
-		DBGPRINT(RT_DEBUG_OFF, ("%c", *(fw_image + 16 + loop)));
-
-	DBGPRINT(RT_DEBUG_OFF, ("\n"));
-
 	DBGPRINT(RT_DEBUG_OFF, ("ilm length = %d(bytes)\n", ilm_len));
 	DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
 
