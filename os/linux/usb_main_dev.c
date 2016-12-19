@@ -58,15 +58,14 @@ static struct usb_device_id rtusb_dev_id[] = {
 	{ USB_DEVICE(0x148f, 0x760a) },	/* TP-Link unknown */
 	{ USB_DEVICE(0x0b05, 0x17d1) },	/* Asus USB-AC51 */
 	{ USB_DEVICE(0x0b05, 0x17db) },	/* Asus USB-AC50 */
-	{ USB_DEVICE(0x0df6, 0x0076) },	/* Sitecom WLA-3100 */
+	{ USB_DEVICE(0x0df6, 0x0075) },	/* Sitecom WLA-3100 */
 	{ USB_DEVICE(0x2019, 0xab31) },	/* Planex GW-450D */
 	{ USB_DEVICE(0x2001, 0x3d02) },	/* D-LINK DWA-171 rev B1 */
-	{ USB_DEVICE(0x0586, 0x2425) },	/* Zyxel NWD6505 */
+	{ USB_DEVICE(0x0586, 0x3425) },	/* Zyxel NWD6505 */
 	{ USB_DEVICE(0x07b8, 0x7610) },	/* AboCom AU7212 */
 	{ USB_DEVICE(0x04bb, 0x0951) },	/* I-O DATA WN-AC433UK */
-	{ USB_DEVICE(0x13b1, 0x003e) },	/* Linksys AE6000 */
 	{ USB_DEVICE(0x057c, 0x8502) },	/* AVM FRITZ!WLAN USB Stick AC 430 */
-	{ USB_DEVICE(0x293c, 0x6702) },	/* Comcast Xfinity KXW02AAA  */
+	{ USB_DEVICE(0x293c, 0x5702) },	/* Comcast Xfinity KXW02AAA  */
 	{ USB_DEVICE(0x20f4, 0x806b) },	/* TRENDnet TEW-806UBH  */
 	{ USB_DEVICE(0x7392, 0xc711) }, /* Devolo Wifi ac Stick */
 	{ USB_DEVICE(0x0bdb, 0x1011) }, /* Sitecom Europe B.V. ac  Stick */
