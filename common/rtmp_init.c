@@ -399,15 +399,27 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 	else
 #endif /* MT76x0 */
+
+	/*
+	 * ULLI : it make no sense here to check for antenna config
+	 * ULLI : we use anyway a fixed config
+	 *
+
 	Antenna.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
 
 	/* must be put here, because RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET() will clear *
 	 * EPROM 0x34~3 */
 
 	// TODO: shiang, why we only check oxff00??
-	if ((Antenna.word & 0xFF00) == 0xFF00)
+	if ((Antenna.word & 0xFF00) == 0xFF00) {
 /*	if (Antenna.word == 0xFFFF)*/
-		RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET(pAd, &Antenna);
+		Antenna.word = 0;
+		Antenna.field.RfIcType = RFIC_7650;
+		Antenna.field.TxPath = 1;
+		Antenna.field.RxPath = 1;
+	}
+
+	/* ULLI : looks Mediatek wants to reduce streams, needed ?? */
 
 	/* Choose the desired Tx&Rx stream.*/
 	if ((pAd->CommonCfg.TxStream == 0) || (pAd->CommonCfg.TxStream > Antenna.field.TxPath))

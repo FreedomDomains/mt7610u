@@ -1505,16 +1505,6 @@ static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
 	return;
 }
 
-
-static void MT76x0_AsicAntennaDefaultReset(struct rtmp_adapter *pAd,
-	EEPROM_ANTENNA_STRUC *pAntenna)
-{
-	pAntenna->word = 0;
-	pAntenna->field.RfIcType = RFIC_7650;
-	pAntenna->field.TxPath = 1;
-	pAntenna->field.RxPath = 1;
-}
-
 static void MT76x0_ChipSwitchChannel(
 	struct rtmp_adapter *pAd,
 	u8 Channel,
@@ -2038,10 +2028,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	pChipOps->AsicRfInit = NICInitMT76x0RFRegisters;
 
 	/* MAC */
-
-
-	/* Antenna */
-	pChipOps->AsicAntennaDefaultReset = MT76x0_AsicAntennaDefaultReset;
 
 	/* Chip tuning */
 	pChipOps->AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC;
