@@ -1920,8 +1920,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->bAutoTxAgcA = false;			/* Default is OFF*/
 	pAd->bAutoTxAgcG = false;			/* Default is OFF*/
 
-	pAd->RfIcType = RFIC_2820;
-
 	/* Init timer for reset complete event*/
 	pAd->CommonCfg.CentralChannel = 42;
 	pAd->bForcePrintTX = false;
