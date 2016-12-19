@@ -300,20 +300,6 @@ static u8 ChipAGCAdjust(
 }
 #endif /* CONFIG_STA_SUPPORT */
 
-static void AsicAntennaDefaultReset(
-	IN struct rtmp_adapter *	pAd,
-	IN EEPROM_ANTENNA_STRUC	*pAntenna)
-{
-	{
-
-		pAntenna->word = 0;
-		pAntenna->field.RfIcType = RFIC_2820;
-		pAntenna->field.TxPath = 1;
-		pAntenna->field.RxPath = 2;
-	}
-	DBGPRINT(RT_DEBUG_WARN, ("E2PROM error, hard code as 0x%04x\n", pAntenna->word));
-}
-
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd)
 {
