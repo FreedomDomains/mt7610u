@@ -600,34 +600,6 @@ void StaQuickResponeForRateUpExec(
 			if (TxTotalCnt)
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
 
-#ifdef FIFO_EXT_SUPPORT
-			if (pAd->chipCap.FlgHwFifoExtCap)
-			{
-				if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
-				{
-					WCID_TX_CNT_STRUC wcidTxCnt;
-					u32 regAddr, offset;
-					ULONG HwTxCnt, HwErrRatio = 0;
-
-					regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
-					mt7610u_read32(pAd, regAddr, &wcidTxCnt.word);
-
-					HwTxCnt = wcidTxCnt.field.succCnt + wcidTxCnt.field.reTryCnt;
-					if (HwTxCnt)
-						HwErrRatio = (wcidTxCnt.field.reTryCnt * 100) / HwTxCnt;
-
-					DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s():TxErrRatio(Aid:%d, MCS:%d, Hw:0x%x-0x%x, Sw:0x%x-%x)\n",
-							__FUNCTION__, pEntry->Aid, pEntry->HTPhyMode.field.MCS,
-							HwTxCnt, HwErrRatio, TxTotalCnt, TxErrorRatio));
-
-					TxSuccess = wcidTxCnt.field.succCnt;
-					TxRetransmit = wcidTxCnt.field.reTryCnt;
-					TxErrorRatio = HwErrRatio;
-					TxTotalCnt = HwTxCnt;
-				}
-			}
-#endif /* FIFO_EXT_SUPPORT */
-
 #ifdef AGS_SUPPORT
 			if (SUPPORT_AGS(pAd))
 			{

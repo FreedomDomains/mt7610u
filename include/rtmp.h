@@ -1991,12 +1991,6 @@ typedef struct _MAC_TABLE_ENTRY {
 	u32      OneSecRxLGICount;		/* unicast-to-me Long GI count */
 	u32      OneSecRxSGICount;      	/* unicast-to-me Short GI count */
 
-#ifdef FIFO_EXT_SUPPORT
-	u32		fifoTxSucCnt;
-	u32		fifoTxRtyCnt;
-#endif /* FIFO_EXT_SUPPORT */
-
-
 	bool fLastSecAccordingRSSI;
 	u8 LastSecTxRateChangeAction;	/* 0: no change, 1:rate UP, 2:rate down */
 	CHAR LastTimeTxRateChangeAction;	/* Keep last time value of LastSecTxRateChangeAction */
@@ -3429,19 +3423,6 @@ void NICUpdateFifoStaCounters(
 
 void NICUpdateRawCounters(
 	IN  struct rtmp_adapter *  pAd);
-
-#ifdef FIFO_EXT_SUPPORT
-bool NicGetMacFifoTxCnt(
-	IN struct rtmp_adapter*pAd,
-	IN MAC_TABLE_ENTRY *pEntry);
-
-void AsicFifoExtSet(
-	IN struct rtmp_adapter*pAd);
-
-void AsicFifoExtEntryClean(
-	IN struct rtmp_adapter* pAd,
-	IN MAC_TABLE_ENTRY *pEntry);
-#endif /* FIFO_EXT_SUPPORT */
 
 void NicResetRawCounters(struct rtmp_adapter*pAd);
 

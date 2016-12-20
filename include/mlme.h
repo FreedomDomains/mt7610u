@@ -197,20 +197,6 @@ enum SCAN_MODE{
 #define DELBA_REASONCODE_UNKNOWN_BA					38
 #define DELBA_REASONCODE_TIMEOUT					39
 
-/* reset all OneSecTx counters */
-#ifdef FIFO_EXT_SUPPORT
-#define RESET_ONE_SEC_TX_CNT(__pEntry) \
-if (((__pEntry)) != NULL) \
-{ \
-	(__pEntry)->OneSecTxRetryOkCount = 0; \
-	(__pEntry)->OneSecTxFailCount = 0; \
-	(__pEntry)->OneSecTxNoRetryOkCount = 0; \
-	(__pEntry)->OneSecRxLGICount = 0; \
-	(__pEntry)->OneSecRxSGICount = 0; \
-	(__pEntry)->fifoTxSucCnt = 0;\
-	(__pEntry)->fifoTxRtyCnt = 0;\
-}
-#else
 #define RESET_ONE_SEC_TX_CNT(__pEntry) \
 if (((__pEntry)) != NULL) \
 { \
@@ -220,8 +206,6 @@ if (((__pEntry)) != NULL) \
 	(__pEntry)->OneSecRxLGICount = 0; \
 	(__pEntry)->OneSecRxSGICount = 0; \
 }
-#endif /* FIFO_EXT_SUPPORT */
-
 
 /*
 	802.11 frame formats

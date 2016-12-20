@@ -1358,58 +1358,6 @@ void NICUpdateFifoStaCounters(
 
 }
 
-
-#ifdef FIFO_EXT_SUPPORT
-bool NicGetMacFifoTxCnt(
-	IN struct rtmp_adapter*pAd,
-	IN MAC_TABLE_ENTRY *pEntry)
-{
-	if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
-	{
-		WCID_TX_CNT_STRUC wcidTxCnt;
-		u32 regAddr;
-
-		regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
-		mt7610u_read32(pAd, regAddr, &wcidTxCnt.word);
-
-		pEntry->fifoTxSucCnt += wcidTxCnt.field.succCnt;
-		pEntry->fifoTxRtyCnt += wcidTxCnt.field.reTryCnt;
-	}
-
-	return true;
-}
-
-
-void AsicFifoExtSet(IN struct rtmp_adapter*pAd)
-{
-	if (pAd->chipCap.FlgHwFifoExtCap)
-	{
-		mt7610u_write32(pAd, WCID_MAPPING_0, 0x04030201);
-		mt7610u_write32(pAd, WCID_MAPPING_1, 0x08070605);
-	}
-}
-
-
-void AsicFifoExtEntryClean(
-	IN struct rtmp_adapter* pAd,
-	IN MAC_TABLE_ENTRY *pEntry)
-{
-	WCID_TX_CNT_STRUC wcidTxCnt;
-	u32 regAddr;
-
-	if (pAd->chipCap.FlgHwFifoExtCap)
-	{
-		/* We clean the fifo info when MCS is 0 and Aid is from 1~8 */
-		if (pEntry->Aid >=1  && pEntry->Aid <= 8)
-		{
-			regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
-			mt7610u_read32(pAd, regAddr, &wcidTxCnt.word);
-		}
-	}
-}
-#endif /* FIFO_EXT_SUPPORT */
-
-
 /*
 	========================================================================
 

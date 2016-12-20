@@ -1224,30 +1224,6 @@ void MlmeDynamicTxRateSwitchingAdapt(
 		if (TxTotalCnt)
 			TxErrorRatio = ((pEntry->OneSecTxRetryOkCount + pEntry->OneSecTxFailCount) * 100) / TxTotalCnt;
 
-#ifdef FIFO_EXT_SUPPORT
-		if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
-		{
-			WCID_TX_CNT_STRUC wcidTxCnt;
-			UINT32 regAddr, offset;
-			ULONG HwTxCnt, HwErrRatio = 0;
-
-			regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
-			mt7610u_read32(pAd, regAddr, &wcidTxCnt.word);
-
-			HwTxCnt = wcidTxCnt.field.succCnt + wcidTxCnt.field.reTryCnt;
-			if (HwTxCnt)
-				HwErrRatio = (wcidTxCnt.field.reTryCnt * 100) / HwTxCnt;
-
-			DBGPRINT(RT_DEBUG_TRACE ,("%s():TxErrRatio(Aid:%d, MCS:%d, Hw:0x%x-0x%x, Sw:0x%x-%x)\n",
-					__FUNCTION__, pEntry->Aid, pEntry->HTPhyMode.field.MCS,
-					HwTxCnt, HwErrRatio, TxTotalCnt, TxErrorRatio));
-
-			TxSuccess = wcidTxCnt.field.succCnt;
-			TxRetransmit = wcidTxCnt.field.reTryCnt;
-			TxErrorRatio = HwErrRatio;
-			TxTotalCnt = HwTxCnt;
-		}
-#endif /* FIFO_EXT_SUPPORT */
 	}
 
 	/* Save LastTxOkCount, LastTxPER and last MCS action for StaQuickResponeForRateUpExec */

@@ -352,11 +352,6 @@ struct rtmp_chip_cap {
 #define VCO_CAL_MODE_3		3	/* toggle RF4[7] */
 	u8	FlgIsVcoReCalMode;
 
-#ifdef FIFO_EXT_SUPPORT
-	bool FlgHwFifoExtCap;
-#endif /* FIFO_EXT_SUPPORT */
-
-
 	enum ASIC_CAP asic_caps;
 	enum PHY_CAP phy_caps;
 
