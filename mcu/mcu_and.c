@@ -100,11 +100,6 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
 
 	fw_image = (u8 *) fw->data;
 
-	if (!fw_image) {
-		DBGPRINT(RT_DEBUG_ERROR, ("%s:Please assign a fw image\n", __FUNCTION__));
-		return NDIS_STATUS_FAILURE;
-	}
-
 	dev_info(&udev->dev, "firmware %s loaded\n", cap->fw_name);
 
 	if (cap->IsComboChip) {
