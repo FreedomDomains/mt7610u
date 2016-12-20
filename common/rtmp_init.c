@@ -282,6 +282,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	EEPROM_TX_PWR_STRUC Power;
 	EEPROM_VERSION_STRUC Version;
 	EEPROM_ANTENNA_STRUC Antenna;
+	EEPROM_NIC_CONFIG0_STRUC NicCfg0;
+	u32 reg_val = 0;
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
 	u16  Addr01,Addr23,Addr45 ;
 	MAC_DW0_STRUC csr2;
@@ -377,47 +379,20 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	/* If TSSI did not have preloaded value, it should reset the TxAutoAgc to false*/
 	/* Therefore, we have to read TxAutoAgc control beforehand.*/
 	/* Read Tx AGC control bit*/
-#if	defined(MT76x0) || defined(MT76x2)
-	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
-	{
-		EEPROM_NIC_CONFIG0_STRUC NicCfg0;
-		u32 reg_val = 0;
 
-		RTUSBReadEEPROM16(pAd, 0x24, &value);
-		mt7610u_read32(pAd, 0x0104, &reg_val);
-		DBGPRINT(RT_DEBUG_WARN, ("0x24 = 0x%04x, 0x0104 = 0x%08x\n", value, reg_val));
-		NicCfg0.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
-		pAd->chipCap.PAType = NicCfg0.field.PAType;
-		Antenna.word = 0;
-		Antenna.field.TxPath = NicCfg0.field.TxPath;
-		Antenna.field.RxPath = NicCfg0.field.RxPath;
+	RTUSBReadEEPROM16(pAd, 0x24, &value);
+	mt7610u_read32(pAd, 0x0104, &reg_val);
+	DBGPRINT(RT_DEBUG_OFF, ("0x24 = 0x%04x, 0x0104 = 0x%08x\n", value, reg_val));
+	NicCfg0.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
+	DBGPRINT(RT_DEBUG_OFF, ("EEPROM_NIC_CFG1_OFFSET = 0x%04x\n", NicCfg0.word));
+	pAd->chipCap.PAType = NicCfg0.field.PAType;
+	Antenna.word = 0;
+	Antenna.field.TxPath = NicCfg0.field.TxPath;
+	Antenna.field.RxPath = NicCfg0.field.RxPath;
 #ifdef MT76x0
-		if (IS_MT76x0(pAd))
-			MT76x0_AntennaSelCtrl(pAd);
+	if (IS_MT76x0(pAd))
+		MT76x0_AntennaSelCtrl(pAd);
 #endif /* MT76x0 */
-
-	}
-	else
-#endif /* MT76x0 */
-
-	/*
-	 * ULLI : it make no sense here to check for antenna config
-	 * ULLI : we use anyway a fixed config
-	 *
-
-	Antenna.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
-
-	/* must be put here, because RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET() will clear *
-	 * EPROM 0x34~3 */
-
-	// TODO: shiang, why we only check oxff00??
-	if ((Antenna.word & 0xFF00) == 0xFF00) {
-/*	if (Antenna.word == 0xFFFF)*/
-		Antenna.word = 0;
-		Antenna.field.RfIcType = RFIC_7650;
-		Antenna.field.TxPath = 1;
-		Antenna.field.RxPath = 1;
-	}
 
 	/* ULLI : looks Mediatek wants to reduce streams, needed ?? */
 
@@ -835,7 +810,7 @@ void NICInitAsicFromEEPROM(
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
-	DBGPRINT(RT_DEBUG_TRACE, ("TxPath = %d, RxPath = %d, RFIC=%d\n",
+	DBGPRINT(RT_DEBUG_OFF, ("TxPath = %d, RxPath = %d, RFIC=%d\n",
 				pAd->Antenna.field.TxPath, pAd->Antenna.field.RxPath, pAd->RfIcType));
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitAsicFromEEPROM\n"));
 }
