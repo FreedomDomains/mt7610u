@@ -64,10 +64,7 @@ int os_alloc_mem_suspend(
 	OUT	u8 				**mem,
 	IN	ULONG					size);
 
-int AdapterBlockAllocateMemory(
-	IN	void *				handle,
-	OUT	void *				*ppAd,
-	IN	u32					SizeOfpAd);
+int AdapterBlockAllocateMemory(struct rtmp_adapter **ppAd, u32 SizeOfpAd);
 
 void *RtmpOsVmalloc(
 	IN	ULONG					Size);

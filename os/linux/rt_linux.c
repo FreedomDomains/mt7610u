@@ -1445,10 +1445,8 @@ Return Value:
 Note:
 ========================================================================
 */
-int AdapterBlockAllocateMemory(void *handle, void **ppAd, u32 SizeOfpAd)
+int AdapterBlockAllocateMemory(struct rtmp_adapter **ppAd, u32 SizeOfpAd)
 {
-
-/*	*ppAd = (void *)vmalloc(sizeof(struct rtmp_adapter)); //pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
 	*ppAd = (void *) vmalloc(SizeOfpAd);	/*pci_alloc_consistent(pci_dev, sizeof(struct rtmp_adapter), phy_addr); */
 	if (*ppAd) {
 		memset(*ppAd, 0, SizeOfpAd);
