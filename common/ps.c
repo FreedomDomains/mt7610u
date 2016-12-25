@@ -192,10 +192,9 @@ void RtmpHandleRxPsPoll(
 				/* we need to call RTMPDeQueuePacket() immediately as below */
 				if (NumOfOldPsPkt != pAd->TxSwQueue[QID_AC_BE].Number)
 				{
-					if (RTMP_GET_PACKET_DHCP(RTPKT_TO_OSPKT(pEntry)) ||
-						RTMP_GET_PACKET_EAPOL(RTPKT_TO_OSPKT(pEntry)) ||
-						RTMP_GET_PACKET_WAI(RTPKT_TO_OSPKT(pEntry)))
-					{
+					if (RTMP_GET_PACKET_DHCP(pEntry) ||
+					    RTMP_GET_PACKET_EAPOL(pEntry) ||
+					    RTMP_GET_PACKET_WAI(pEntry)) {
 						/*
 							These packets will use 1M/6M rate to send.
 							If you use 1M(2.4G)/6M(5G) to send, no statistics

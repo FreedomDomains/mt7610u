@@ -1549,7 +1549,7 @@ void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 
 	ASSERT(pRxBlk->pRxPacket);
 
-	pRxPkt = RTPKT_TO_OSPKT(pRxBlk->pRxPacket);
+	pRxPkt = pRxBlk->pRxPacket;
 
 	RTMP_OS_PKT_INIT(pRxBlk->pRxPacket,
 					get_netdev_from_bssid(pAd, FromWhichBSSID),

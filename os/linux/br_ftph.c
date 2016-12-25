@@ -136,7 +136,7 @@ UINT32 BG_FTPH_PacketFromApHandle(
 
 
 	/* init */
-	pRxPkt = RTPKT_TO_OSPKT(pPacket);
+	pRxPkt = pPacket;
 	pNetDev = pRxPkt->dev;
 
 	/* if pNetDev is promisc mode ??? */

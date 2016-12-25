@@ -221,7 +221,7 @@ void RTMPFreeNdisPacket(
 	IN void *pReserved,
 	IN struct sk_buff * pPacket)
 {
-	dev_kfree_skb_any(RTPKT_TO_OSPKT(pPacket));
+	dev_kfree_skb_any(pPacket);
 }
 
 
@@ -292,7 +292,7 @@ struct sk_buff * DuplicatePacket(
 	DataSize = pPacket->len;
 	pData = pPacket->data;
 
-	skb = skb_clone(RTPKT_TO_OSPKT(pPacket), MEM_ALLOC_FLAG);
+	skb = skb_clone(pPacket, MEM_ALLOC_FLAG);
 	if (skb) {
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 		pRetPacket = skb;
@@ -337,7 +337,7 @@ struct sk_buff * duplicate_pkt_with_TKIP_MIC(
 {
 	struct sk_buff *skb, *newskb;
 
-	skb = RTPKT_TO_OSPKT(pPacket);
+	skb = pPacket;
 	if (skb_tailroom(skb) < TKIP_TX_MIC_SIZE) {
 		/* alloc a new skb and copy the packet */
 		newskb = skb_copy_expand(skb, skb_headroom(skb), TKIP_TX_MIC_SIZE, GFP_ATOMIC);
@@ -418,7 +418,7 @@ struct sk_buff * ExpandPacket(
 {
 	struct sk_buff *skb, *newskb;
 
-	skb = RTPKT_TO_OSPKT(pPacket);
+	skb = pPacket;
 	if (skb_cloned(skb) || (skb_headroom(skb) < ext_head_len)
 	    || (skb_tailroom(skb) < ext_tail_len)) {
 		u32 head_len =
@@ -455,7 +455,7 @@ struct sk_buff * ClonePacket(
 	struct sk_buff *pClonedPkt;
 
 	ASSERT(pPacket);
-	pRxPkt = RTPKT_TO_OSPKT(pPacket);
+	pRxPkt = pPacket;
 
 	/* clone the packet */
 	pClonedPkt = skb_clone(pRxPkt, MEM_ALLOC_FLAG);
@@ -479,7 +479,7 @@ void RtmpOsPktInit(
 {
 	struct sk_buff * pRxPkt;
 
-	pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
+	pRxPkt = pNetPkt;
 
 	pRxPkt->dev = pNetDev;
 	pRxPkt->data = pData;
@@ -504,7 +504,7 @@ void wlan_802_11_to_802_3_packet(
 
 	ASSERT(pHeader802_3);
 
-	pOSPkt = RTPKT_TO_OSPKT(pRxPacket);
+	pOSPkt = pRxPacket;
 
 	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 	pOSPkt->dev = pNetDev;
@@ -577,7 +577,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	u8 temp_header[40] = {
 	0};
 
-	pOSPkt = RTPKT_TO_OSPKT(pRxPacket);	/*pRxBlk->pRxPacket); */
+	pOSPkt = pRxPacket;	/*pRxBlk->pRxPacket); */
 	pOSPkt->dev = pNetDev;	/*get_netdev_from_bssid(pAd, BSS0); */
 	if (pHeader->FC.Type == BTYPE_DATA) {
 		DataSize -= LENGTH_802_11;
@@ -1788,7 +1788,7 @@ Note:
 */
 void RtmpOsPktProtocolAssign(struct sk_buff * pNetPkt)
 {
-	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
+	struct sk_buff *pRxPkt = pNetPkt;
 	pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
 }
 
@@ -1828,7 +1828,7 @@ Note:
 */
 void RtmpOsPktRcvHandle(struct sk_buff * pNetPkt)
 {
-	struct sk_buff *pRxPkt = RTPKT_TO_OSPKT(pNetPkt);
+	struct sk_buff *pRxPkt = pNetPkt;
 
 
 	netif_rx(pRxPkt);

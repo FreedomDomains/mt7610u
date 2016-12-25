@@ -661,34 +661,33 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  * 	- convert internal rt packet to os packet or
  *             os packet to rt packet
  */
-#define RTPKT_TO_OSPKT(_p)		((_p))
 
 #ifdef NET_SKBUFF_DATA_USES_OFFSET
 #define GET_OS_PKT_DATATAIL(_pkt) \
-        (RTPKT_TO_OSPKT(_pkt)->head + (ULONG)RTPKT_TO_OSPKT(_pkt)->tail)
+        ((_pkt)->head + (ULONG)(_pkt)->tail)
 #define SET_OS_PKT_DATATAIL(_pkt, _start, _len) \
-        ((RTPKT_TO_OSPKT(_pkt))->tail) = (ULONG)_start - (ULONG)(RTPKT_TO_OSPKT(_pkt)->head) + (_len)
+        (((_pkt))->tail) = (ULONG)_start - (ULONG)((_pkt)->head) + (_len)
 #else
 #define GET_OS_PKT_DATATAIL(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt)->tail)
+		((_pkt)->tail)
 #define SET_OS_PKT_DATATAIL(_pkt, _start, _len)	\
-		((RTPKT_TO_OSPKT(_pkt))->tail) = (ULONG)((_start) + (_len))
+		(((_pkt))->tail) = (ULONG)((_start) + (_len))
 #endif
 
 
 #define GET_OS_PKT_TYPE(_pkt) \
-		(RTPKT_TO_OSPKT(_pkt))
+		((_pkt))
 
 #define OS_PKT_HEAD_BUF_EXTEND(_pkt, _offset)								\
-	skb_push(RTPKT_TO_OSPKT(_pkt), _offset)
+	skb_push((_pkt), _offset)
 
 #define OS_PKT_RESERVE(_pkt, _Len)											\
-	skb_reserve(RTPKT_TO_OSPKT(_pkt), _Len)
+	skb_reserve((_pkt), _Len)
 
 #define RTMP_OS_PKT_INIT(__pRxPacket, __pNetDev, __pData, __DataSize)		\
 {																			\
 	struct sk_buff * __pRxPkt;													\
-	__pRxPkt = RTPKT_TO_OSPKT(__pRxPacket);									\
+	__pRxPkt = (__pRxPacket);									\
 	__pRxPkt->dev = __pNetDev;									\
 	__pRxPkt->data = __pData;									\
 	__pRxPkt->len = __DataSize;									\
@@ -709,34 +708,34 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 #define CB_OFF  10
 
-#define GET_OS_PKT_CB(_p)						(RTPKT_TO_OSPKT(_p)->cb)
+#define GET_OS_PKT_CB(_p)						((_p)->cb)
 
 /* User Priority */
-#define RTMP_SET_PACKET_UP(_p, _prio)			(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+0] = _prio)
-#define RTMP_GET_PACKET_UP(_p)					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+0])
+#define RTMP_SET_PACKET_UP(_p, _prio)			((_p)->cb[CB_OFF+0] = _prio)
+#define RTMP_GET_PACKET_UP(_p)					((_p)->cb[CB_OFF+0])
 
 /* Fragment # */
-#define RTMP_SET_PACKET_FRAGMENTS(_p, _num)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+1] = _num)
-#define RTMP_GET_PACKET_FRAGMENTS(_p)			(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+1])
+#define RTMP_SET_PACKET_FRAGMENTS(_p, _num)		((_p)->cb[CB_OFF+1] = _num)
+#define RTMP_GET_PACKET_FRAGMENTS(_p)			((_p)->cb[CB_OFF+1])
 
 /* 0x0 ~0x7f: TX to AP's own BSS which has the specified AID. if AID>127, set bit 7 in RTMP_SET_PACKET_EMACTAB too. */
 /*(this value also as MAC(on-chip WCID) table index) */
 /* 0x80~0xff: TX to a WDS link. b0~6: WDS index */
-#define RTMP_SET_PACKET_WCID(_p, _wdsidx)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+2] = _wdsidx)
-#define RTMP_GET_PACKET_WCID(_p)          		((u8)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+2]))
+#define RTMP_SET_PACKET_WCID(_p, _wdsidx)		((_p)->cb[CB_OFF+2] = _wdsidx)
+#define RTMP_GET_PACKET_WCID(_p)          		((u8)((_p)->cb[CB_OFF+2]))
 
 /* RTS/CTS-to-self protection method */
-#define RTMP_SET_PACKET_RTS(_p, _num)      		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+4] = _num)
-#define RTMP_GET_PACKET_RTS(_p)          		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+4])
+#define RTMP_SET_PACKET_RTS(_p, _num)      		((_p)->cb[CB_OFF+4] = _num)
+#define RTMP_GET_PACKET_RTS(_p)          		((_p)->cb[CB_OFF+4])
 /* see RTMP_S(G)ET_PACKET_EMACTAB */
 
 /* TX rate index */
-#define RTMP_SET_PACKET_TXRATE(_p, _rate)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+5] = _rate)
-#define RTMP_GET_PACKET_TXRATE(_p)		  		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+5])
+#define RTMP_SET_PACKET_TXRATE(_p, _rate)		((_p)->cb[CB_OFF+5] = _rate)
+#define RTMP_GET_PACKET_TXRATE(_p)		  		((_p)->cb[CB_OFF+5])
 
 /* From which Interface */
-#define RTMP_SET_PACKET_IF(_p, _ifdx)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+6] = _ifdx)
-#define RTMP_GET_PACKET_IF(_p)		  		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+6])
+#define RTMP_SET_PACKET_IF(_p, _ifdx)		((_p)->cb[CB_OFF+6] = _ifdx)
+#define RTMP_GET_PACKET_IF(_p)		  		((_p)->cb[CB_OFF+6])
 #define RTMP_SET_PACKET_NET_DEVICE_MBSSID(_p, _bss)		RTMP_SET_PACKET_IF((_p), (_bss))
 #define RTMP_SET_PACKET_NET_DEVICE_WDS(_p, _bss)		RTMP_SET_PACKET_IF((_p), ((_bss) + MIN_NET_DEVICE_FOR_WDS))
 #define RTMP_SET_PACKET_NET_DEVICE_APCLI(_p, _idx)   	RTMP_SET_PACKET_IF((_p), ((_idx) + MIN_NET_DEVICE_FOR_APCLI))
@@ -745,8 +744,8 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define RTMP_GET_PACKET_NET_DEVICE_MBSSID(_p)			RTMP_GET_PACKET_IF((_p))
 #define RTMP_GET_PACKET_NET_DEVICE(_p)					RTMP_GET_PACKET_IF((_p))
 
-#define RTMP_SET_PACKET_MOREDATA(_p, _morebit)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+7] = _morebit)
-#define RTMP_GET_PACKET_MOREDATA(_p)				(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+7])
+#define RTMP_SET_PACKET_MOREDATA(_p, _morebit)		((_p)->cb[CB_OFF+7] = _morebit)
+#define RTMP_GET_PACKET_MOREDATA(_p)				((_p)->cb[CB_OFF+7])
 
 
 
@@ -754,16 +753,16 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 /* if we queue a U-APSD packet to any software queue, we will set the U-APSD
    flag and its physical queue ID for it */
 #define RTMP_SET_PACKET_UAPSD(_p, _flg_uapsd, _que_id) \
-                    (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9] = ((_flg_uapsd<<7) | _que_id))
+                    ((_p)->cb[CB_OFF+9] = ((_flg_uapsd<<7) | _que_id))
 
-#define RTMP_SET_PACKET_QOS_NULL(_p)     (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9] = 0xff)
-#define RTMP_GET_PACKET_QOS_NULL(_p)	 (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9])
-#define RTMP_SET_PACKET_NON_QOS_NULL(_p) (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9] = 0x00)
-#define RTMP_GET_PACKET_UAPSD_Flag(_p)   (((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9]) & 0x80) >> 7)
-#define RTMP_GET_PACKET_UAPSD_QUE_ID(_p) ((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+9]) & 0x7f)
+#define RTMP_SET_PACKET_QOS_NULL(_p)     ((_p)->cb[CB_OFF+9] = 0xff)
+#define RTMP_GET_PACKET_QOS_NULL(_p)	 ((_p)->cb[CB_OFF+9])
+#define RTMP_SET_PACKET_NON_QOS_NULL(_p) ((_p)->cb[CB_OFF+9] = 0x00)
+#define RTMP_GET_PACKET_UAPSD_Flag(_p)   ((((_p)->cb[CB_OFF+9]) & 0x80) >> 7)
+#define RTMP_GET_PACKET_UAPSD_QUE_ID(_p) (((_p)->cb[CB_OFF+9]) & 0x7f)
 
-#define RTMP_SET_PACKET_EOSP(_p, _flg)   (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+10] = _flg)
-#define RTMP_GET_PACKET_EOSP(_p)         (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+10])
+#define RTMP_SET_PACKET_EOSP(_p, _flg)   ((_p)->cb[CB_OFF+10] = _flg)
+#define RTMP_GET_PACKET_EOSP(_p)         ((_p)->cb[CB_OFF+10])
 #endif /* UAPSD_SUPPORT */
 
 /* */
@@ -780,86 +779,86 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define RTMP_PACKET_SPECIFIC_TDLS		0x40
 
 /*Specific */
-#define RTMP_SET_PACKET_SPECIFIC(_p, _flg)	   	(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] = _flg)
+#define RTMP_SET_PACKET_SPECIFIC(_p, _flg)	   	((_p)->cb[CB_OFF+11] = _flg)
 
 /*DHCP */
 #define RTMP_SET_PACKET_DHCP(_p, _flg)   													\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_DHCP);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_DHCP);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_DHCP);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_DHCP);	\
 			}while(0)
-#define RTMP_GET_PACKET_DHCP(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_DHCP)
+#define RTMP_GET_PACKET_DHCP(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_DHCP)
 
 /*EAPOL */
 #define RTMP_SET_PACKET_EAPOL(_p, _flg)   													\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_EAPOL);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_EAPOL);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_EAPOL);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_EAPOL);	\
 			}while(0)
-#define RTMP_GET_PACKET_EAPOL(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_EAPOL)
+#define RTMP_GET_PACKET_EAPOL(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_EAPOL)
 
 /*WAI */
 #define RTMP_SET_PACKET_WAI(_p, _flg)   													\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_WAI);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_WAI);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_WAI);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_WAI);	\
 			}while(0)
-#define RTMP_GET_PACKET_WAI(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_WAI)
+#define RTMP_GET_PACKET_WAI(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_WAI)
 
-#define RTMP_GET_PACKET_LOWRATE(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & (RTMP_PACKET_SPECIFIC_EAPOL | RTMP_PACKET_SPECIFIC_DHCP | RTMP_PACKET_SPECIFIC_WAI))
+#define RTMP_GET_PACKET_LOWRATE(_p)		((_p)->cb[CB_OFF+11] & (RTMP_PACKET_SPECIFIC_EAPOL | RTMP_PACKET_SPECIFIC_DHCP | RTMP_PACKET_SPECIFIC_WAI))
 
 /*VLAN */
 #define RTMP_SET_PACKET_VLAN(_p, _flg)   													\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_VLAN);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_VLAN);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_VLAN);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_VLAN);	\
 			}while(0)
-#define RTMP_GET_PACKET_VLAN(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_VLAN)
+#define RTMP_GET_PACKET_VLAN(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_VLAN)
 
 /*LLC/SNAP */
 #define RTMP_SET_PACKET_LLCSNAP(_p, _flg)   													\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_LLCSNAP);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_LLCSNAP);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_LLCSNAP);		\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_LLCSNAP);		\
 			}while(0)
 
-#define RTMP_GET_PACKET_LLCSNAP(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_LLCSNAP)
+#define RTMP_GET_PACKET_LLCSNAP(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_LLCSNAP)
 
 /* IP */
 #define RTMP_SET_PACKET_IPV4(_p, _flg)														\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_IPV4);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_IPV4);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_IPV4);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_IPV4);	\
 			}while(0)
 
-#define RTMP_GET_PACKET_IPV4(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_IPV4)
+#define RTMP_GET_PACKET_IPV4(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_IPV4)
 
 // TDLS
 #define RTMP_SET_PACKET_TDLS(_p, _flg)														\
 			do{																				\
 				if (_flg)																	\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_TDLS);		\
+					((_p)->cb[CB_OFF+11]) |= (RTMP_PACKET_SPECIFIC_TDLS);		\
 				else																		\
-					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_TDLS);	\
+					((_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_TDLS);	\
 			}while(0)
 
-#define RTMP_GET_PACKET_TDLS(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_TDLS)
+#define RTMP_GET_PACKET_TDLS(_p)		((_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_TDLS)
 
 /* If this flag is set, it indicates that this EAPoL frame MUST be clear. */
-#define RTMP_SET_PACKET_CLEAR_EAP_FRAME(_p, _flg)   (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+12] = _flg)
-#define RTMP_GET_PACKET_CLEAR_EAP_FRAME(_p)         (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+12])
+#define RTMP_SET_PACKET_CLEAR_EAP_FRAME(_p, _flg)   ((_p)->cb[CB_OFF+12] = _flg)
+#define RTMP_GET_PACKET_CLEAR_EAP_FRAME(_p)         ((_p)->cb[CB_OFF+12])
 
 
 #ifdef DOT11_VHT_AC
@@ -875,37 +874,37 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 /* use bit3 of cb[CB_OFF+16] */
 #define RTMP_SET_PACKET_MGMT_PKT(_p, _flg)	        \
-        RTPKT_TO_OSPKT(_p)->cb[CB_OFF+16] = (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+16] & 0xF7) | ((_flg & 0x01) << 3);
+        (_p)->cb[CB_OFF+16] = ((_p)->cb[CB_OFF+16] & 0xF7) | ((_flg & 0x01) << 3);
 #define RTMP_GET_PACKET_MGMT_PKT(_p)				\
-		((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+16] & 0x08) >> 3)
+		(((_p)->cb[CB_OFF+16] & 0x08) >> 3)
 
 /* use bit0 of cb[CB_OFF+20] */
 #define RTMP_SET_PACKET_MGMT_PKT_DATA_QUE(_p, _flg)	\
-        RTPKT_TO_OSPKT(_p)->cb[CB_OFF+20] = (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+20] & 0xFE) | (_flg & 0x01);
+        (_p)->cb[CB_OFF+20] = ((_p)->cb[CB_OFF+20] & 0xFE) | (_flg & 0x01);
 #define RTMP_GET_PACKET_MGMT_PKT_DATA_QUE(_p)		\
-		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+20] & 0x01)
+		((_p)->cb[CB_OFF+20] & 0x01)
 
-#define RTMP_SET_PACKET_5VT(_p, _flg)   (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+22] = _flg)
-#define RTMP_GET_PACKET_5VT(_p)         (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+22])
+#define RTMP_SET_PACKET_5VT(_p, _flg)   ((_p)->cb[CB_OFF+22] = _flg)
+#define RTMP_GET_PACKET_5VT(_p)         ((_p)->cb[CB_OFF+22])
 
 #define RTMP_SET_PACKET_PROTOCOL(_p, _protocol) {\
-	(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+23] = (u8)((_protocol) & 0x00ff)); \
-	(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+24] = (u8)(((_protocol) & 0xff00) >> 8)); \
+	((_p)->cb[CB_OFF+23] = (u8)((_protocol) & 0x00ff)); \
+	((_p)->cb[CB_OFF+24] = (u8)(((_protocol) & 0xff00) >> 8)); \
 }
 
 #define RTMP_GET_PACKET_PROTOCOL(_p) \
-	((((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+24]) & 0x00ff) << 8) \
-	| ((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+23]) & 0x00ff))
+	((((UINT16)((_p)->cb[CB_OFF+24]) & 0x00ff) << 8) \
+	| ((UINT16)((_p)->cb[CB_OFF+23]) & 0x00ff))
 
 #define NAF_TYPE_CSO	1<<0
 #define NAF_TYPE_TSO	1<<1
-#define RTMP_GET_PKT_NAF_TYPE(_p)	((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+31]) & (NAF_TYPE_CSO | NAF_TYPE_TSO))
+#define RTMP_GET_PKT_NAF_TYPE(_p)	(((_p)->cb[CB_OFF+31]) & (NAF_TYPE_CSO | NAF_TYPE_TSO))
 
 
 
 //#ifdef MAC_REPEATER_SUPPORT
-#define RTMP_SET_PKT_MAT_FREE(_p, _flg)	((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+36]) = (_flg))
-#define RTMP_GET_PKT_MAT_FREE(_p)		((RTPKT_TO_OSPKT(_p)->cb[CB_OFF+36]))
+#define RTMP_SET_PKT_MAT_FREE(_p, _flg)	(((_p)->cb[CB_OFF+36]) = (_flg))
+#define RTMP_GET_PKT_MAT_FREE(_p)		(((_p)->cb[CB_OFF+36]))
 //#endif /* MAC_REPEATER_SUPPORT */
 
 /* Max skb->cb = 48B = [CB_OFF+38] */
