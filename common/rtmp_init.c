@@ -142,7 +142,7 @@ spinlock_t TimerSemLock;
 
 	========================================================================
 */
-int RTMPAllocAdapterBlock(void *handle, struct rtmp_adapter **ppAdapter)
+int RTMPAllocAdapterBlock(struct os_cookie *handle, struct rtmp_adapter **ppAdapter)
 {
 	struct rtmp_adapter *pAd = NULL;
 	int		Status;
