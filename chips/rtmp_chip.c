@@ -385,7 +385,7 @@ int RtmpChipOpsHook(void *pCB)
 		return -1;
 
 	/* default init */
-	RTMP_DRS_ALG_INIT(pAd, RATE_ALG_LEGACY);
+	pAd->rateAlg = RATE_ALG_LEGACY;
 
 #ifdef MT76x0
 	if (IS_MT76x0(pAd)) {

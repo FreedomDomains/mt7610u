@@ -333,10 +333,6 @@ void MlmeSelectTxRateTable(
 	IN u8 *pTableSize,
 	IN u8 *pInitTxRateIdx);
 
-/* normal rate switch */
-#define RTMP_DRS_ALG_INIT(__pAd, __Alg)										\
-	(__pAd)->rateAlg = __Alg;
-
 #endif /* __DRS_EXTR_H__ */
 
 /* End of drs_extr.h */

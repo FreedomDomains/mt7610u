@@ -2002,7 +2002,7 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 	pChipCap->bDoTemperatureSensor = true;
 
-	RTMP_DRS_ALG_INIT(pAd, RATE_ALG_GRP);
+	pAd->rateAlg = RATE_ALG_GRP;
 
 	/*
 		Following function configure beacon related parameters
