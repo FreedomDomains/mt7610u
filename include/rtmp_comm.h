@@ -30,9 +30,6 @@
 
 /*#define MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
-/*#define AGS_SUPPORT */
-#endif	/* CONFIG_STA_SUPPORT */
 
 /* ======================== Before include files ============================ */
 /*

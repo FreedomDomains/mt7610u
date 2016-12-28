@@ -730,13 +730,6 @@ void MlmeSetTxRate(
 	}
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-#ifdef AGS_SUPPORT
-	if (pEntry->pTable == Ags2x2VhtRateTable)
-	{
-		RTMP_RA_AGS_TB *pAgsTbEntry = (RTMP_RA_AGS_TB *)pTxRate;
-		pEntry->HTPhyMode.field.MCS = pAgsTbEntry->CurrMCS | (pAgsTbEntry->Nss <<4);
-	}
-#endif /* AGS_SUPPORT */
 #endif /* DOT11_VHT_AC */
 
 	if (pAd->StaCfg.HTPhyMode.field.MCS > 7)
@@ -934,17 +927,6 @@ void MlmeSelectTxRateTable(
 			}
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-#ifdef AGS_SUPPORT
-			if (pAd->rateAlg == RATE_ALG_AGS)
-			{
-				if (ss == 2)
-					*ppTable = Ags2x2VhtRateTable;
-				else
-					*ppTable = Ags1x1VhtRateTable;
-				DBGPRINT(RT_DEBUG_INFO, ("%s(): Select Ags%dx%dVhtRateTable\n",
-							__FUNCTION__, (ss == 2 ? 2 : 1), (ss == 2 ? 2 : 1)));
-			}
-#endif /* AGS_SUPPORT */
 			break;
 		}
 #endif /* DOT11_VHT_AC */
@@ -959,11 +941,6 @@ void MlmeSelectTxRateTable(
 				((pEntry->HTCapability.MCSSet[1] == 0x00) || (pAd->Antenna.field.TxPath == 1)))
 			{/* 11N 1S Adhoc*/
 
-#ifdef AGS_SUPPORT
-				if (SUPPORT_AGS(pAd))
-					*ppTable = AGS1x1HTRateTable;
-				else
-#endif /* AGS_SUPPORT */
 				{
 					if (pAd->LatchRfRegs.Channel <= 14)
 					*ppTable = RateSwitchTable11N1S;
@@ -976,13 +953,6 @@ void MlmeSelectTxRateTable(
 					(pEntry->HTCapability.MCSSet[1] != 0x00) &&
 					(((pAd->Antenna.field.TxPath == 3) && (pEntry->HTCapability.MCSSet[2] == 0x00)) || (pAd->Antenna.field.TxPath == 2)))
 			{/* 11N 2S Adhoc*/
-#ifdef AGS_SUPPORT
-				if (SUPPORT_AGS(pAd))
-				{
-					*ppTable = AGS2x2HTRateTable;
-				}
-				else
-#endif /* AGS_SUPPORT */
 				{
 					if (pAd->LatchRfRegs.Channel <= 14)
 						*ppTable = RateSwitchTable11N2S;
@@ -990,16 +960,6 @@ void MlmeSelectTxRateTable(
 						*ppTable = RateSwitchTable11N2SForABand;
 				}
 			}
-#ifdef AGS_SUPPORT
-			else if (SUPPORT_AGS(pAd) &&
-					(pEntry->HTCapability.MCSSet[0] != 0x00) &&
-					(pEntry->HTCapability.MCSSet[1] != 0x00) &&
-					(pEntry->HTCapability.MCSSet[2] != 0x00) &&
-					(pAd->Antenna.field.TxPath == 3))
-			{
-				*ppTable = AGS3x3HTRateTable;
-			}
-#endif /* AGS_SUPPORT */
 			else
 #endif /* DOT11_N_SUPPORT */
 				if ((pEntry->RateLen == 4)
@@ -1023,11 +983,6 @@ void MlmeSelectTxRateTable(
 			(pEntry->HTCapability.MCSSet[0] != 0x00) &&
 			((pEntry->HTCapability.MCSSet[1] == 0x00) || (pAd->CommonCfg.TxStream == 1)))
 		{/* 11BGN 1S AP*/
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-				*ppTable = AGS1x1HTRateTable;
-			else
-#endif /* AGS_SUPPORT */
 #ifdef NEW_RATE_ADAPT_SUPPORT
 			if (pAd->rateAlg == RATE_ALG_GRP)
 				*ppTable = RateSwitchTableAdapt11N1S;
@@ -1041,18 +996,6 @@ void MlmeSelectTxRateTable(
 			break;
 		}
 
-#ifdef AGS_SUPPORT
-		/* only for station */
-		if (SUPPORT_AGS(pAd) &&
-			(pEntry->HTCapability.MCSSet[0] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[1] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[2] != 0x00) &&
-			(pAd->CommonCfg.TxStream == 3))
-		{/* 11N 3S */
-			*ppTable = AGS3x3HTRateTable;
-			break;
-		}
-#endif /* AGS_SUPPORT */
 
 		/*else if ((pAd->StaActive.SupRateLen + pAd->StaActive.ExtRateLen == 12) && (pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0xff) &&*/
 		/*	(pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0xff) && (pAd->Antenna.field.TxPath == 2))*/
@@ -1061,13 +1004,6 @@ void MlmeSelectTxRateTable(
 			(pEntry->HTCapability.MCSSet[1] != 0x00) &&
 			(((pAd->Antenna.field.TxPath == 3) && (pEntry->HTCapability.MCSSet[2] == 0x00)) || (pAd->CommonCfg.TxStream == 2)))
 		{/* 11BGN 2S AP*/
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-			{
-				*ppTable = AGS2x2HTRateTable;
-			}
-			else
-#endif /* AGS_SUPPORT */
 #ifdef NEW_RATE_ADAPT_SUPPORT
 				if (pAd->rateAlg == RATE_ALG_GRP)
 					*ppTable = RateSwitchTableAdapt11N2S;
@@ -1108,11 +1044,6 @@ void MlmeSelectTxRateTable(
 		if ((pEntry->HTCapability.MCSSet[0] != 0x00) &&
 			((pEntry->HTCapability.MCSSet[1] == 0x00) || (pAd->CommonCfg.TxStream == 1)))
 		{/* 11N 1S AP*/
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-				*ppTable = AGS1x1HTRateTable;
-			else
-#endif /* AGS_SUPPORT */
 			{
 #ifdef NEW_RATE_ADAPT_SUPPORT
 				if (pAd->rateAlg == RATE_ALG_GRP)
@@ -1132,11 +1063,6 @@ void MlmeSelectTxRateTable(
 			(pEntry->HTCapability.MCSSet[1] != 0x00) &&
 			(pAd->CommonCfg.TxStream == 2))
 		{/* 11N 2S AP*/
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-				*ppTable = AGS2x2HTRateTable;
-			else
-#endif /* AGS_SUPPORT */
 			{
 #ifdef NEW_RATE_ADAPT_SUPPORT
 				if (pAd->rateAlg == RATE_ALG_GRP)
@@ -1299,11 +1225,6 @@ void MlmeSelectTxRateTable(
 				break;
 			}
 #ifdef DOT11_N_SUPPORT
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd) && (pAd->CommonCfg.TxStream == 3))
-				*ppTable = AGS3x3HTRateTable;
-			else
-#endif /* AGS_SUPPORT */
 			{
 			if (pAd->LatchRfRegs.Channel <= 14)
 			{

@@ -45,10 +45,6 @@
 #endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
-#ifdef AGS_SUPPORT
-#include "ags.h"
-#endif /* AGS_SUPPORT */
-
 #include "mlme.h"
 #include "crypt_md5.h"
 #include "crypt_sha2.h"

@@ -112,8 +112,6 @@ HAS_LED_CONTROL_SUPPORT=y
 
 HAS_NEW_RATE_ADAPT_SUPPORT=y
 
-HAS_RATE_ADAPT_AGS_SUPPORT=n
-
 HAS_MAC_REPEATER_SUPPORT=n
 
 HAS_WIFI_P2P_CONCURRENT_FAST_SCAN=n
@@ -411,10 +409,6 @@ endif
 
 ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 obj_cmm += 	rate_ctrl/alg_grp.o
-endif
-
-ifeq ($(HAS_RATE_ADAPT_AGS_SUPPORT),y)
-obj_cmm += 	rate_ctrl/alg_ags.o
 endif
 
 ifeq ($(HAS_DFS_SUPPORT),y)

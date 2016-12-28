@@ -2095,9 +2095,6 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 MpduHeaderLen;
 	UINT16 Protocol;
 
-#ifdef AGS_SUPPORT
-	AGS_CONTROL AGSCtrl;	/* AGS control */
-#endif /* AGS_SUPPORT */
 
 u8 SupportRateMode; /* 1: CCK 2:OFDM 4: HT, 8:VHT */
 bool SupportCCKMCS[MAX_LEN_OF_CCK_RATES];
@@ -4990,30 +4987,6 @@ void MlmeCheckForRoaming(
 bool MlmeCheckForFastRoaming(
 	IN  struct rtmp_adapter *  pAd);
 
-#ifdef AGS_SUPPORT
-INT Show_AGS_Proc(
-    IN  struct rtmp_adapter *pAd,
-    IN  char *		arg);
-
-#ifdef CONFIG_STA_SUPPORT
-void MlmeDynamicTxRateSwitchingAGS(
-	IN struct rtmp_adapter *pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN u8 *pTable,
-	IN u8 TableSize,
-	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
-	IN u8 InitTxRateIdx);
-
-void StaQuickResponeForRateUpExecAGS(
-	IN struct rtmp_adapter *pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN u8 *pTable,
-	IN u8 TableSize,
-	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
-	IN u8 InitTxRateIdx);
-#endif /* CONFIG_STA_SUPPORT */
-
-#endif /* AGS_SUPPORT */
 
 void MlmeCalculateChannelQuality(
 	IN struct rtmp_adapter *pAd,

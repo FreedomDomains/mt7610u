@@ -64,9 +64,6 @@ void MlmeDynamicTxRateSwitching(
 	CHAR					Rssi, TmpIdx = 0;
 	ULONG					TxRetransmit = 0, TxSuccess = 0, TxFailCount = 0;
 	RSSI_SAMPLE				*pRssi = &pAd->StaCfg.RssiSample;
-#ifdef AGS_SUPPORT
-	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
-#endif /* AGS_SUPPORT */
 
 	/* Update statistic counter */
 	NicGetTxRawCounters(pAd, &TxStaCnt0, &StaTx1);
@@ -110,21 +107,6 @@ void MlmeDynamicTxRateSwitching(
 					("DRS:Aid=%d, TxSuccess=%ld, TxRetransmit=%ld, TxFailCount=%ld \n",
 					pEntry->Aid, TxSuccess, TxRetransmit, TxFailCount));
 
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-			{
-
-				/* Gather the statistics information*/
-
-				AGSStatisticsInfo.RSSI = Rssi;
-				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
-				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxSuccess = TxSuccess;
-				AGSStatisticsInfo.TxRetransmit = TxRetransmit;
-				AGSStatisticsInfo.TxFailCount = TxFailCount;
-			}
-#endif /* AGS_SUPPORT */
 		}
 		else
 		{
@@ -148,21 +130,6 @@ void MlmeDynamicTxRateSwitching(
 				pEntry->OneSecTxRetryOkCount,
 				pEntry->OneSecTxFailCount));
 
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-			{
-
-				/* Gather the statistics information*/
-
-				AGSStatisticsInfo.RSSI = Rssi;
-				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
-				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxSuccess = pEntry->OneSecTxNoRetryOkCount;
-				AGSStatisticsInfo.TxRetransmit = pEntry->OneSecTxRetryOkCount;
-				AGSStatisticsInfo.TxFailCount = pEntry->OneSecTxFailCount;
-			}
-#endif /* AGS_SUPPORT */
 		}
 
 		if (TxTotalCnt)
@@ -202,15 +169,6 @@ void MlmeDynamicTxRateSwitching(
 
 		CurrRateIdx = pEntry->CurrTxRateIndex;
 
-#ifdef AGS_SUPPORT
-		if (AGS_IS_USING(pAd, pTable))
-		{
-			/* The dynamic Tx rate switching for AGS (Adaptive Group Switching)*/
-			MlmeDynamicTxRateSwitchingAGS(pAd, pEntry, pTable, TableSize, &AGSStatisticsInfo, InitTxRateIdx);
-
-			continue;
-		}
-#endif /* AGS_SUPPORT */
 
 		if (CurrRateIdx >= TableSize)
 			CurrRateIdx = TableSize - 1;
@@ -492,9 +450,6 @@ void StaQuickResponeForRateUpExec(
 	CHAR					Rssi, ratio;
 	ULONG					TxSuccess, TxRetransmit, TxFailCount;
 	MAC_TABLE_ENTRY			*pEntry;
-#ifdef AGS_SUPPORT
-	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
-#endif /* AGS_SUPPORT */
 
 	pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = false;
 
@@ -574,21 +529,6 @@ void StaQuickResponeForRateUpExec(
 			if (TxTotalCnt)
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
 
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-			{
-
-				/* Gather the statistics information*/
-
-				AGSStatisticsInfo.RSSI = Rssi;
-				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
-				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxSuccess = TxSuccess;
-				AGSStatisticsInfo.TxRetransmit = TxRetransmit;
-				AGSStatisticsInfo.TxFailCount = TxFailCount;
-			}
-#endif /* AGS_SUPPORT */
 		}
 		else
 		{
@@ -600,34 +540,8 @@ void StaQuickResponeForRateUpExec(
 			if (TxTotalCnt)
 				TxErrorRatio = ((TxRetransmit + TxFailCount) * 100) / TxTotalCnt;
 
-#ifdef AGS_SUPPORT
-			if (SUPPORT_AGS(pAd))
-			{
-
-				/* Gather the statistics information*/
-
-				AGSStatisticsInfo.RSSI = Rssi;
-				AGSStatisticsInfo.TxErrorRatio = TxErrorRatio;
-				AGSStatisticsInfo.AccuTxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxTotalCnt = TxTotalCnt;
-				AGSStatisticsInfo.TxSuccess = pEntry->OneSecTxNoRetryOkCount;
-				AGSStatisticsInfo.TxRetransmit = pEntry->OneSecTxRetryOkCount;
-				AGSStatisticsInfo.TxFailCount = pEntry->OneSecTxFailCount;
-			}
-#endif /* AGS_SUPPORT */
 		}
 
-#ifdef AGS_SUPPORT
-		if (AGS_IS_USING(pAd, pTable))
-		{
-
-			/* The dynamic Tx rate switching for AGS (Adaptive Group Switching)*/
-
-			StaQuickResponeForRateUpExecAGS(pAd, pEntry, pTable, TableSize, &AGSStatisticsInfo, InitTxRateIdx);
-
-			continue; /* Skip the remaining procedure of the old Tx rate switching*/
-		}
-#endif /* AGS_SUPPORT */
 
 #ifdef DBG_CTRL_SUPPORT
 		/* Debug option: Concise RA log */
