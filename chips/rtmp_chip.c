@@ -384,9 +384,6 @@ int RtmpChipOpsHook(void *pCB)
 	if (pAd->MACVersion == 0xffffffff)
 		return -1;
 
-	/* default init */
-	pAd->rateAlg = RATE_ALG_LEGACY;
-
 #ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
 		MT76x0_Init(pAd);

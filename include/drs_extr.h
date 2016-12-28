@@ -100,9 +100,7 @@ typedef struct  _RTMP_RA_GRP_TB
 #define RATE_TABLE_INIT_INDEX(pTable)	((pTable)[1])		/* Byte 1 is initial rate index */
 
 enum RATE_ADAPT_ALG{
-	RATE_ALG_LEGACY = 1,
 	RATE_ALG_GRP = 2,
-	RATE_ALG_AGS = 3,
 	RATE_ALG_MAX_NUM
 };
 
