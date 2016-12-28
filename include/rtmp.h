@@ -6842,10 +6842,6 @@ INT Set_VcoPeriod_Proc(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg);
 
-INT	Set_RateAlg_Proc(
-	IN struct rtmp_adapter*pAd,
-	IN char *arg);
-
 void RtmpEnqueueNullFrame(
 	IN struct rtmp_adapter *pAd,
 	IN u8 *       pAddr,

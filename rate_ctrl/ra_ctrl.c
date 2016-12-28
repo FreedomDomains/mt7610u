@@ -1957,25 +1957,5 @@ void RTMPSetSupportMCS(
 	}
 }
 
-INT	Set_RateAlg_Proc(
-	IN	struct rtmp_adapter *		pAd,
-	IN	char *				arg)
-{
-	u32 ra_alg;
-
-	ra_alg = simple_strtol(arg, 0, 10);
-
-	if ((ra_alg < RATE_ALG_MAX_NUM) && (ra_alg != pAd->rateAlg))
-	{
-		u32 IdEntry;
-
-		pAd->rateAlg = ra_alg;
-		for(IdEntry = 0; IdEntry < MAX_LEN_OF_MAC_TABLE; IdEntry++)
-			pAd->MacTab.Content[IdEntry].rateAlg = ra_alg;
-	}
-
-	DBGPRINT(RT_DEBUG_ERROR, ("%s: Set Alg = %d\n", __FUNCTION__, ra_alg));
-	return true;
-}
 
 
