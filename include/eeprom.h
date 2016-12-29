@@ -196,6 +196,5 @@ INT efuse_probe(struct rtmp_adapter *pAd);
 /*************************************************************************
   *	Public function declarations for prom operation callback functions setting
   ************************************************************************/
-INT RtmpChipOpsEepromHook(struct rtmp_adapter *pAd, INT infType);
 
 #endif /* __EEPROM_H__ */

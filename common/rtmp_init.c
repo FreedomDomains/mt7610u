@@ -2638,9 +2638,6 @@ static INT RtmpChipOpsRegister(
 
 	ChipOpsMCUHook(pAd);
 
-	/* set eeprom related hook functions */
-	ret = RtmpChipOpsEepromHook(pAd, infType);
-
 	return ret;
 }
 

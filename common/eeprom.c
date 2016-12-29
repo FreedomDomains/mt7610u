@@ -28,13 +28,4 @@
 #include "rt_config.h"
 
 
-INT RtmpChipOpsEepromHook(struct rtmp_adapter*pAd, INT infType)
-{
-	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-
-	DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
-	DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
-
-	return 0;
-}
 
