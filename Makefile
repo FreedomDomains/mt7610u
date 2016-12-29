@@ -376,7 +376,6 @@ obj_cmm := \
 		common/cmm_tkip.o\
 		common/cmm_aes.o\
 		common/cmm_sync.o\
-		common/eeprom.o\
 		common/cmm_sanity.o\
 		common/cmm_info.o\
 		common/cmm_cfg.o\
