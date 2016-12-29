@@ -56,8 +56,8 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	if (WaitForAsicReady(pAd) != true)
 		goto err1;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("MAC[Ver:Rev=0x%08x : 0x%08x]\n",
-				pAd->MACVersion, pAd->MacIcVersion));
+	DBGPRINT(RT_DEBUG_OFF, ("MAC[Ver=0x%08x]\n",
+				pAd->MACVersion));
 
 
 	if (MAX_LEN_OF_MAC_TABLE > MAX_AVAILABLE_CLIENT_WCID(pAd))
