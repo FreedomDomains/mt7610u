@@ -6641,9 +6641,6 @@ void ieee80211_notify_michael_failure(
 const CHAR* ether_sprintf(const u8 *mac);
 #endif/*HOSTAPD_SUPPORT*/
 
-INT AsicGetMacVersion(
-	IN struct rtmp_adapter*pAd);
-
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd);
 
