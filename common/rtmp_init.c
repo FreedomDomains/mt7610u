@@ -1676,16 +1676,6 @@ int NICLoadFirmware(
 	return status;
 }
 
-
-void NICEraseFirmware(
-	IN struct rtmp_adapter *pAd)
-{
-	if (pAd->chipOps.eraseFirmware)
-		pAd->chipOps.eraseFirmware(pAd);
-
-}
-
-
 /*
 	========================================================================
 

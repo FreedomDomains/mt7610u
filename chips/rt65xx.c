@@ -455,8 +455,6 @@ void MT76x0DisableTxRx(
 	if ((Level == RTMP_HALT) &&
 		(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false))
 	{
-		if (!pAd->chipCap.IsComboChip)
-			NICEraseFirmware(pAd);
 
 		/*
  		 * Disable RF/MAC and do not do reset WLAN under below cases

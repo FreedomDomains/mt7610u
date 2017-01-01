@@ -478,7 +478,6 @@ struct rtmp_chip_ops {
 
 	/* MCU related callback functions */
 	int (*MCU_loadFirmware)(struct rtmp_adapter *pAd);
-	int (*eraseFirmware)(struct rtmp_adapter *pAd);
 #ifdef CONFIG_ANDES_SUPPORT
 	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, bool FlgIsNeedLocked);
 #endif

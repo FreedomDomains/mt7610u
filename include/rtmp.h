@@ -3411,9 +3411,6 @@ void UserCfgInit(
 int NICLoadFirmware(
 	IN  struct rtmp_adapter *  pAd);
 
-void NICEraseFirmware(
-	IN struct rtmp_adapter *pAd);
-
 void NICUpdateFifoStaCounters(
 	IN struct rtmp_adapter *pAd);
 
