@@ -1068,40 +1068,6 @@ void eFuseGetFreeBlockCount(IN struct rtmp_adapter *pAd,
 	DBGPRINT(RT_DEBUG_TRACE,("eFuseGetFreeBlockCount is %d\n",*EfuseFreeBlock));
 }
 
-
-INT eFuse_init(struct rtmp_adapter*pAd)
-{
-	UINT EfuseFreeBlock=0;
-	EFUSE_CTRL_STRUC eFuseCtrlStruc;
-	u32 efuse_ctrl_reg = EFUSE_CTRL;
-
-	/*RT3572 means 3062/3562/3572*/
-	/*3593 means 3593*/
-	DBGPRINT(RT_DEBUG_ERROR, ("NVM is Efuse and its size =%x[%x-%x] \n",pAd->chipCap.EFUSE_USAGE_MAP_SIZE,pAd->chipCap.EFUSE_USAGE_MAP_START,pAd->chipCap.EFUSE_USAGE_MAP_END));
-	eFuseGetFreeBlockCount(pAd, &EfuseFreeBlock);
-	/*If the used block of efuse is less than 5. We assume the default value*/
-	/* of this efuse is empty and change to the buffer mode in odrder to */
-	/*bring up interfaces successfully.*/
-
-	mt7610u_read32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
-
-	DBGPRINT(RT_DEBUG_TRACE, ("EFUSE_CTRL=0x%x:: (0x%x) on_time = %d, off_time = %d \n",
-		efuse_ctrl_reg, eFuseCtrlStruc.word, eFuseCtrlStruc.field.EFSROM_LDO_ON_TIME, eFuseCtrlStruc.field.EFSROM_LDO_OFF_TIME));
-
-	if(EfuseFreeBlock > (pAd->chipCap.EFUSE_USAGE_MAP_SIZE-5))
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("NVM is Efuse and the information is too less to bring up interface. Force to use EEPROM Buffer Mode\n"));
-		pAd->bFroceEEPROMBuffer = true;
-		eFuseLoadEEPROM(pAd);
-	}
-	else
-		pAd->bFroceEEPROMBuffer = false;
-	DBGPRINT(RT_DEBUG_TRACE, ("NVM is Efuse and force to use EEPROM Buffer Mode=%x\n",pAd->bFroceEEPROMBuffer));
-
-	return 0;
-}
-
-
 INT efuse_probe(struct rtmp_adapter*pAd)
 {
 	u32 eFuseCtrl, ctrl_reg;

@@ -184,7 +184,6 @@ void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);
 int eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 int eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 
-INT eFuse_init(struct rtmp_adapter *pAd);
 INT efuse_probe(struct rtmp_adapter *pAd);
 #endif /* RTMP_EFUSE_SUPPORT */
 
