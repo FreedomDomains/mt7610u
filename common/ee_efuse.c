@@ -880,31 +880,6 @@ int eFuseWrite(
 	return true;
 }
 
-INT set_eFusedump_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg)
-{
-	USHORT InBuf[3];
-	INT i=0;
-
-	if (pAd->bUseEfuse == false && pAd->bFroceEEPROMBuffer == false)
-		return false;
-
-	for(i =0; i<pAd->chipCap.EFUSE_USAGE_MAP_END/2; i++)
-	{
-		InBuf[0] = 2*i;
-		InBuf[1] = 2;
-		InBuf[2] = 0x0;
-
-		eFuseReadPhysical(pAd, &InBuf[0], 4, &InBuf[2], 2);
-		if(i%4==0)
-		printk("\nBlock %x:",i/8);
-		printk("%04x ",InBuf[2]);
-	}
-	return true;
-}
-
-
 int rtmp_ee_efuse_read16(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
