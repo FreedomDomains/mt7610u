@@ -5061,10 +5061,6 @@ CHAR RTMPMinSnr(
 	IN CHAR				Snr1);
 
 #ifdef RTMP_EFUSE_SUPPORT
-INT set_eFuseGetFreeBlockCount_Proc(
-   	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
-
 INT set_eFusedump_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);

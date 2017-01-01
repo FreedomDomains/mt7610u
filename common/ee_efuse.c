@@ -880,33 +880,6 @@ int eFuseWrite(
 	return true;
 }
 
-
-/*
-========================================================================
-
-	Routine Description:
-
-	Arguments:
-
-	Return Value:
-
-	Note:
-
-========================================================================
-*/
-INT set_eFuseGetFreeBlockCount_Proc(
-   	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg)
-{
-	UINT efusefreenum=0;
-	if (pAd->bUseEfuse == false && pAd->bFroceEEPROMBuffer == false)
-		return false;
-	eFuseGetFreeBlockCount(pAd,&efusefreenum);
-	printk("efuseFreeNumber is %d\n",efusefreenum);
-	return true;
-}
-
-
 INT set_eFusedump_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
