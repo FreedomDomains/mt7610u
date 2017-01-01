@@ -177,16 +177,6 @@ int RTUSBWriteEEPROM16(struct rtmp_adapter *pAd,
 	u16 offset, u16 value);
 #endif /* RTMP_USB_SUPPORT */
 
-#ifdef RTMP_EFUSE_SUPPORT
-INT eFuseLoadEEPROM(struct rtmp_adapter *pAd);
-void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);
-
-int eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
-int eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
-
-INT efuse_probe(struct rtmp_adapter *pAd);
-#endif /* RTMP_EFUSE_SUPPORT */
-
 
 /*************************************************************************
   *	Public function declarations for prom operation callback functions setting
