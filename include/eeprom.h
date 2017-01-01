@@ -181,9 +181,6 @@ int RTUSBWriteEEPROM16(struct rtmp_adapter *pAd,
 INT eFuseLoadEEPROM(struct rtmp_adapter *pAd);
 void eFuseGetFreeBlockCount(struct rtmp_adapter *pAd, UINT *EfuseFreeBlock);
 
-int rtmp_ee_efuse_write16(struct rtmp_adapter *pAd, USHORT Offset, USHORT data);
-
-
 int eFuseRead(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 int eFuseWrite(struct rtmp_adapter *pAd, USHORT Offset, USHORT *pData, USHORT len);
 

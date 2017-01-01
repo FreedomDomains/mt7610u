@@ -880,22 +880,6 @@ int eFuseWrite(
 	return true;
 }
 
-int rtmp_ee_efuse_write16(
-	IN struct rtmp_adapter*pAd,
-	IN USHORT Offset,
-	IN USHORT data)
-{
-    if (pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
-    {
-    	data = le2cpu16(data);
-        DBGPRINT(RT_DEBUG_TRACE,  ("Write to EEPROM Buffer\n"));
-        memmove(&(pAd->EEPROMImage[Offset]), &data, 2);
-    }
-    else
-        eFuseWrite(pAd,Offset ,&data, 2);
-	return 0;
-}
-
 /*
 	========================================================================
 
