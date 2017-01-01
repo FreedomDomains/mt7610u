@@ -880,23 +880,6 @@ int eFuseWrite(
 	return true;
 }
 
-int rtmp_ee_efuse_read16(
-	IN struct rtmp_adapter*pAd,
-	IN USHORT Offset,
-	OUT USHORT *pValue)
-{
-	if (pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
-	{
-	    DBGPRINT(RT_DEBUG_TRACE,  ("Read from EEPROM Buffer\n"));
-	    memmove(pValue, &(pAd->EEPROMImage[Offset]), 2);
-	    *pValue = le2cpu16(*pValue);
-	}
-	else
-		eFuseReadRegisters(pAd, Offset, 2, pValue);
-	return (*pValue);
-}
-
-
 int rtmp_ee_efuse_write16(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT Offset,
