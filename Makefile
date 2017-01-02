@@ -505,7 +505,6 @@ $(MOD_NAME)-objs += \
 		common/rtusb_data.o\
 		common/rtusb_bulk.o\
 		os/linux/rt_usb.o\
-		common/ee_prom.o\
 		common/rt_rf.o\
 		chips/rt65xx.o\
 		chips/mt76x0.o\
