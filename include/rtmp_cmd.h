@@ -34,7 +34,6 @@ struct rtmp_queue_elem {
 	UINT command;
 	void *buffer;
 	ULONG bufferlength;
-	bool CmdFromNdis;
 	bool SetOperation;
 	struct rtmp_queue_elem *next;
 };

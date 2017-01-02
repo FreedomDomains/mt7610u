@@ -129,7 +129,6 @@ int RTEnqueueInternalCmd(
 	}
 
 	cmdqelmt->command = Oid;
-	cmdqelmt->CmdFromNdis = false;
 
 	if (cmdqelmt != NULL) {
 		NdisAcquireSpinLock(&pAd->CmdQLock);

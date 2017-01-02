@@ -948,15 +948,9 @@ INT RTUSBCmdThread(
 		while(pAd->CmdQ.size) {
 			RTThreadDequeueCmd(&pAd->CmdQ, &pCmdQElmt);
 			if (pCmdQElmt) {
-				if (pCmdQElmt->CmdFromNdis == true) {
-					if (pCmdQElmt->buffer != NULL)
-						kfree(pCmdQElmt->buffer);
-					kfree(pCmdQElmt);
-				} else {
-					if ((pCmdQElmt->buffer != NULL) && (pCmdQElmt->bufferlength != 0))
-						kfree(pCmdQElmt->buffer);
-					kfree(pCmdQElmt);
-				}
+				if ((pCmdQElmt->buffer != NULL) && (pCmdQElmt->bufferlength != 0))
+					kfree(pCmdQElmt->buffer);
+				kfree(pCmdQElmt);
 			}
 		}
 

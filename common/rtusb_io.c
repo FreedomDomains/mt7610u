@@ -1350,18 +1350,9 @@ void CMDHandler(struct rtmp_adapter *pAd)
 				ntStatus = (*CMDHdlrTable[cmdqelmt->command - CMDTHREAD_FIRST_CMD_ID])(pAd, cmdqelmt);
 		}
 
-		if (cmdqelmt->CmdFromNdis == true)
-		{
-			if (cmdqelmt->buffer != NULL)
-				kfree(cmdqelmt->buffer);
-			kfree(cmdqelmt);
-		}
-		else
-		{
-			if ((cmdqelmt->buffer != NULL) && (cmdqelmt->bufferlength != 0))
-				kfree(cmdqelmt->buffer);
-			kfree(cmdqelmt);
-		}
+		if ((cmdqelmt->buffer != NULL) && (cmdqelmt->bufferlength != 0))
+			kfree(cmdqelmt->buffer);
+		kfree(cmdqelmt);
 	}	/* end of while */
 }
 
