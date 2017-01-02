@@ -501,12 +501,6 @@ $(MOD_NAME)-objs += \
 		mcu/mcu.o\
 		mcu/mcu_and.o
 
-ifeq ($(HAS_TSO_SUPPORT),y)
-$(MOD_NAME)-objs += \
-		naf/net_acc.o\
-		naf/cso.o
-endif
-
 ifeq ($(HAS_CSO_SUPPORT), y)
 $(MOD_NAME)-objs += \
 		naf/net_acc.o\
