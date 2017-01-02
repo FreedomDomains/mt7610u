@@ -27,9 +27,6 @@ HAS_WPA_SUPPLICANT=y
 # i.e. wpa_supplicant -Dwext
 HAS_NATIVE_WPA_SUPPLICANT_SUPPORT=y
 
-#Support Net interface block while Tx-Sw queue full
-HAS_BLOCK_NET_IF=n
-
 #Support IGMP-Snooping function.
 HAS_IGMP_SNOOP_SUPPORT=n
 
@@ -306,10 +303,6 @@ endif
 #################################################
 
 
-ifeq ($(HAS_BLOCK_NET_IF),y)
-WFLAGS += -DBLOCK_NET_IF
-endif
-
 ifeq ($(HAS_DFS_SUPPORT),y)
 WFLAGS += -DDFS_SUPPORT
 endif
@@ -401,10 +394,6 @@ obj_cmm := \
 		phy/rtmp_phy.o\
 		phy/rlt_phy.o\
 		phy/rlt_rf.o
-
-ifeq ($(HAS_BLOCK_NET_IF),y)
-obj_cmm += 	common/netif_block.o
-endif
 
 ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 obj_cmm += 	rate_ctrl/alg_grp.o
