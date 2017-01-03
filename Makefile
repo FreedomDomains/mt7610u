@@ -448,16 +448,6 @@ $(MOD_NAME)-objs += \
 		os/linux/rt_linux.o\
 		os/linux/rt_main_dev.o
 
-#ifdef ETH_CONVERT
-ifeq ($(HAS_ETH_CONVERT_SUPPORT), y)
-$(MOD_NAME)-objs += \
-		common/cmm_mat.o \
-		common/cmm_mat_iparp.o \
-		common/cmm_mat_pppoe.o \
-		common/cmm_mat_ipv6.o
-endif
-#endif // ETH_CONVERT //
-
 ifeq ($(HAS_QOS_DLS_SUPPORT),y)
 $(MOD_NAME)-objs += \
 		sta/dls.o
