@@ -414,35 +414,6 @@ int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
 
 	========================================================================
 */
-void RTUSBPutToSleep(
-	IN	struct rtmp_adapter *pAd)
-{
-	u32		value;
-
-	/* Timeout 0x40 x 50us*/
-	value = (SLEEPCID<<16)+(OWNERMCU<<24)+ (0x40<<8)+1;
-	mt7610u_write32(pAd, 0x7010, value);
-	mt7610u_write32(pAd, 0x404, 0x30);
-	/*RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);			*/
-	DBGPRINT_RAW(RT_DEBUG_ERROR, ("Sleep Mailbox testvalue %x\n", value));
-
-}
-
-/*
-	========================================================================
-
-	Routine Description:
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
 int RTUSBWakeUp(
 	IN	struct rtmp_adapter *pAd)
 {
