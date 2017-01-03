@@ -65,43 +65,6 @@ static int	RTUSBFirmwareRun(
 	return Status;
 }
 
-
-
-/*
-	========================================================================
-
-	Routine Description: Get current firmware operation mode (Return Value)
-
-	Arguments:
-
-	Return Value:
-		0 or 1 = Downloaded by host driver
-		others = Driver doesn't download firmware
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int	RTUSBFirmwareOpmode(
-	IN	struct rtmp_adapter *pAd,
-	OUT	PULONG			pValue)
-{
-	int	Status;
-
-	Status = RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_IN,
-		0x1,
-		0x11,
-		0,
-		pValue,
-		4);
-	return Status;
-}
-
-
 /*
 	========================================================================
 
