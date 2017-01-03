@@ -2274,6 +2274,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		17 RX DCOC calibration
 	*/
 	if (bFullCal) {
+		int band_nr = (Channel > 14) ? 1 : 0;
 		/*
 			4. RXDC Calibration parameter
 				0:Back Ground Disable
@@ -2298,12 +2299,9 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			// TODO: check PA setting from EEPROM @20121016
-			RTMP_CHIP_CALIBRATION(pAd, LC_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, LC_CALIBRATION, 0x0);
-		}
+
+		// TODO: check PA setting from EEPROM @20121016
+		RTMP_CHIP_CALIBRATION(pAd, LC_CALIBRATION, band_nr);
 
 		/*
 			6,7. BW-Calibration
@@ -2337,11 +2335,8 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			RTMP_CHIP_CALIBRATION(pAd, LOFT_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, LOFT_CALIBRATION, 0x0);
-		}
+
+		RTMP_CHIP_CALIBRATION(pAd, LOFT_CALIBRATION, band_nr);
 
 		/*
 			9. TXIQ-Calibration parameter
@@ -2358,11 +2353,8 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			RTMP_CHIP_CALIBRATION(pAd, TXIQ_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, TXIQ_CALIBRATION, 0x0);
-		}
+
+		RTMP_CHIP_CALIBRATION(pAd, TXIQ_CALIBRATION, band_nr);
 
 		/*
 			10. TX Group-Delay Calibation parameter
@@ -2379,11 +2371,8 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			RTMP_CHIP_CALIBRATION(pAd, TX_GROUP_DELAY_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, TX_GROUP_DELAY_CALIBRATION, 0x0);
-		}
+
+		RTMP_CHIP_CALIBRATION(pAd, TX_GROUP_DELAY_CALIBRATION, band_nr);
 
 		/*
 			11. RXIQ-Calibration parameter
@@ -2400,11 +2389,8 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			RTMP_CHIP_CALIBRATION(pAd, RXIQ_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, RXIQ_CALIBRATION, 0x0);
-		}
+
+		RTMP_CHIP_CALIBRATION(pAd, RXIQ_CALIBRATION, band_nr);
 
 		/*
 			12. RX Group-Delay Calibation parameter
@@ -2421,11 +2407,8 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					8: A-Band (Mid) Restore Calibration
 					9: A-Band (High) Restore Calibration
 		*/
-		if (Channel > 14) {
-			RTMP_CHIP_CALIBRATION(pAd, RX_GROUP_DELAY_CALIBRATION, 0x1);
-		} else {
-			RTMP_CHIP_CALIBRATION(pAd, RX_GROUP_DELAY_CALIBRATION, 0x0);
-		}
+
+		RTMP_CHIP_CALIBRATION(pAd, RX_GROUP_DELAY_CALIBRATION, band_nr);
 
 		/*
 			14. TX 2G DPD - Only 2.4G needs to do DPD Calibration.
