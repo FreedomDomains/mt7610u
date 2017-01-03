@@ -525,34 +525,6 @@ int RTUSB_VendorRequest(
 
 }
 
-
-/*
-	========================================================================
-
-	Routine Description:
-	  Creates an IRP to submite an IOCTL_INTERNAL_USB_RESET_PORT
-	  synchronously. Callers of this function must be running at
-	  PASSIVE LEVEL.
-
-	Arguments:
-
-	Return Value:
-
-	Note:
-
-	========================================================================
-*/
-int RTUSB_ResetDevice(
-	IN	struct rtmp_adapter *pAd)
-{
-	int		Status = true;
-
-	DBGPRINT_RAW(RT_DEBUG_TRACE, ("--->USB_ResetDevice\n"));
-	/*RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS);*/
-	return Status;
-}
-
-
 int CheckGPIOHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
 #ifdef CONFIG_STA_SUPPORT
