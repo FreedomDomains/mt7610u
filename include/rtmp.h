@@ -6218,9 +6218,6 @@ int RTUSB_VendorRequest(
 	IN	void *		TransferBuffer,
 	IN	u32		TransferBufferLength);
 
-int RTUSBWakeUp(
-	IN	struct rtmp_adapter *pAd);
-
 void RTUSBDequeueCmd(struct rtmp_command_queue *cmdq,
 	struct rtmp_queue_elem	*pcmdqelmt);
 

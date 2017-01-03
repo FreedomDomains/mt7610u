@@ -400,38 +400,6 @@ int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
 }
 
 /*
-	========================================================================
-
-	Routine Description:
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int RTUSBWakeUp(
-	IN	struct rtmp_adapter *pAd)
-{
-	int	Status;
-
-	Status = RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_OUT,
-		0x01,
-		0x09,
-		0,
-		NULL,
-		0);
-
-	return Status;
-}
-
-/*
     ========================================================================
  	Routine Description:
 		RTUSB_VendorRequest - Builds a ralink specific request, sends it off to USB endpoint zero and waits for completion
