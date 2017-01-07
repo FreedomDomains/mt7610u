@@ -1127,34 +1127,6 @@ INT Set_ForceTxBurst_Proc(
 	return true;
 }
 
-#ifdef XLINK_SUPPORT
-INT Set_XlinkMode_Proc(
-    IN  struct rtmp_adapter *  pAd,
-    IN  char *        arg)
-{
-	u32 Value = 0;
-
-    if (simple_strtol(arg, 0, 10) == 0)
-        pAd->StaCfg.PSPXlink = 0;
-    else
-        pAd->StaCfg.PSPXlink = 1;
-
-	if (pAd->StaCfg.PSPXlink)
-		Value = PSPXLINK;
-	else
-		Value = STANORMAL;
-	mt7610u_write32(pAd, RX_FILTR_CFG, Value);
-	Value = 0;
-	mt7610u_read32(pAd, MAC_SYS_CTRL, &Value);
-	Value &= (~0x80);
-	mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
-
-    DBGPRINT(RT_DEBUG_TRACE, ("IF Set_XlinkMode_Proc::(PSPXlink=%d)\n", pAd->StaCfg.PSPXlink));
-	return true;
-}
-#endif /* XLINK_SUPPORT */
-
-
 void RTMPAddKey(
 	IN	struct rtmp_adapter *    pAd,
 	IN	PNDIS_802_11_KEY    pKey)

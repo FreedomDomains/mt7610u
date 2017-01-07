@@ -2576,11 +2576,6 @@ void RTMPEnableRxTx(
 #ifdef CONFIG_STA_SUPPORT
 	else
 	{
-#ifdef XLINK_SUPPORT
-		if (pAd->StaCfg.PSPXlink)
-			rx_filter_flag = PSPXLINK;
-		else
-#endif /* XLINK_SUPPORT */
 			rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
 		mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
 	}

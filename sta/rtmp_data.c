@@ -676,12 +676,6 @@ void STAHandleRxDataFrame(
 			return;
 		}
 	}
-#ifdef XLINK_SUPPORT
-	else if (pAd->StaCfg.PSPXlink) {
-		Indicate_Legacy_Packet(pAd, pRxBlk, FromWhichBSSID);
-		return;
-	}
-#endif /* XLINK_SUPPORT */
 
 	ASSERT(0);
 	/* release packet */
@@ -1192,14 +1186,7 @@ int STASendPacket(
 				RTMP_SET_PACKET_WCID(pPacket, MCAST_WCID);
 				pEntry = &pAd->MacTab.Content[MCAST_WCID];
 			} else {
-#ifdef XLINK_SUPPORT
-				if (pAd->StaCfg.PSPXlink) {
-					pEntry =
-					    &pAd->MacTab.Content[MCAST_WCID];
-					pEntry->Aid = MCAST_WCID;
-				} else
-#endif /* XLINK_SUPPORT */
-					pEntry = MacTableLookup(pAd, pSrcBufVA);
+				pEntry = MacTableLookup(pAd, pSrcBufVA);
 
 				if (pEntry)
 					RTMP_SET_PACKET_WCID(pPacket,
@@ -1668,13 +1655,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		else if (ADHOC_ON(pAd))
 		{
 			memcpy(wifi_hdr->Addr1, pTxBlk->pSrcBufHeader, ETH_ALEN);
-#ifdef XLINK_SUPPORT
-			if (pAd->StaCfg.PSPXlink)
-				/* copy the SA of ether frames to address 2 of 802.11 frame */
-				memcpy(wifi_hdr->Addr2, pTxBlk->pSrcBufHeader + ETH_ALEN, ETH_ALEN);
-			else
-#endif /* XLINK_SUPPORT */
-				memcpy(wifi_hdr->Addr2, pAd->CurrentAddress, ETH_ALEN);
+			memcpy(wifi_hdr->Addr2, pAd->CurrentAddress, ETH_ALEN);
 			memcpy(wifi_hdr->Addr3, pAd->CommonCfg.Bssid, ETH_ALEN);
 			wifi_hdr->FC.ToDs = 0;
 		}

@@ -208,14 +208,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	mt7610u_read32(pAd,0x1000, &MACValue);
 	DBGPRINT(RT_DEBUG_TRACE,("A MAC query to invoke EvtDeviceD0Entry, MACValue = 0x%x\n",MACValue));
 
-	/* enable RX of MAC block*/
-#ifdef XLINK_SUPPORT
-	if (pAd->StaCfg.PSPXlink)
-		rx_filter_flag = PSPXLINK;
-	else
-#endif /* XLINK_SUPPORT */
-		rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
-
+	rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
 
 	mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
 	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);

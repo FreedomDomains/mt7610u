@@ -1742,9 +1742,6 @@ typedef struct _STA_ADMIN_CONFIG {
 	bool bAutoConnectByBssid;
 	ULONG BeaconLostTime;	/* seconds */
 	bool bForceTxBurst;	/* 1: force enble TX PACKET BURST, 0: disable */
-#ifdef XLINK_SUPPORT
-	bool PSPXlink;	/* 0: Disable. 1: Enable */
-#endif /* XLINK_SUPPORT */
 	bool bAutoConnectIfNoSSID;
 #ifdef DOT11_N_SUPPORT
 #ifdef DOT11N_DRAFT3
@@ -6109,11 +6106,6 @@ void    RTMPSetDesiredRates(
     IN  struct rtmp_adapter *  pAdapter,
     IN  LONG            Rates);
 
-#ifdef XLINK_SUPPORT
-INT Set_XlinkMode_Proc(
-	IN	struct rtmp_adapter *pAdapter,
-	IN	char *		arg);
-#endif /* XLINK_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 INT	Set_FixedTxMode_Proc(

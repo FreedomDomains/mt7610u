@@ -590,34 +590,6 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char
 #endif /* UAPSD_SUPPORT */
 }
 
-#ifdef XLINK_SUPPORT
-static void rtmp_get_psp_xlink_mode_from_file(IN  struct rtmp_adapter *pAd, char *tmpbuf, char *buffer)
-{
-	u32 Value = 0;
-
-	/* Xlink Mode*/
-	if (RTMPGetKeyParameter("PSP_XLINK_MODE", tmpbuf, 32, buffer, true))
-	{
-		if(simple_strtol(tmpbuf, 0, 10) != 0) /* enable*/
-		{
-			pAd->StaCfg.PSPXlink = true;
-		}
-		else /* disable*/
-		{
-			pAd->StaCfg.PSPXlink = false;
-		}
-
-		if (pAd->StaCfg.PSPXlink)
-			Value = PSPXLINK;
-		else
-			Value = STANORMAL;
-
-		RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, Value);
-
-		DBGPRINT(RT_DEBUG_TRACE, ("PSP_XLINK_MODE=%d\n", pAd->StaCfg.PSPXlink));
-	}
-}
-#endif /* XLINK_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 
@@ -1458,12 +1430,8 @@ int	RTMPSetProfileParameters(
 		/* WmmCapable*/
 
 #ifdef CONFIG_STA_SUPPORT
-		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 			rtmp_read_sta_wmm_parms_from_file(pAd, tmpbuf, pBuffer);
-#ifdef XLINK_SUPPORT
-			rtmp_get_psp_xlink_mode_from_file(pAd, tmpbuf, pBuffer);
-#endif /* XLINK_SUPPORT */
 		}
 #endif /* CONFIG_STA_SUPPORT */
 

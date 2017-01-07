@@ -824,18 +824,6 @@ bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		else
 			TX_BLK_SET_FLAG(pTxBlk, fTX_bAckRequired);
 
-#ifdef CONFIG_STA_SUPPORT
-#ifdef XLINK_SUPPORT
-		if ((pAd->OpMode == OPMODE_STA) &&
-			(ADHOC_ON(pAd)) /*&&
-			(RX_FILTER_TEST_FLAG(pAd, fRX_FILTER_ACCEPT_PROMISCUOUS))*/)
-		{
-			if(pAd->StaCfg.PSPXlink)
-				TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bAckRequired);
-		}
-#endif /* XLINK_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
-
 		{
 
 #ifdef CONFIG_STA_SUPPORT
