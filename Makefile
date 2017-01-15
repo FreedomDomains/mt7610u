@@ -85,7 +85,7 @@ HAS_WIFI_P2P_CONCURRENT_FAST_SCAN=n
 #################################################
 
 WFLAGS += -g -DAGGREGATION_SUPPORT -DPIGGYBACK_SUPPORT -DWMM_SUPPORT  -DLINUX -Wall -Wstrict-prototypes -Wno-trigraphs
-WFLAGS += -DRT28xx_MODE=$(RT28xx_MODE) -DCHIPSET=$(MODULE) -DRESOURCE_PRE_ALLOC -DENHANCED_STAT_DISPLAY
+WFLAGS += -DRT28xx_MODE=$(RT28xx_MODE) -DRESOURCE_PRE_ALLOC -DENHANCED_STAT_DISPLAY
 WFLAGS += -I$(PWD)/include
 
 ifeq ($(HAS_WIFI_P2P_CONCURRENT_FAST_SCAN),y)
@@ -190,16 +190,12 @@ ifeq ($(HAS_LED_CONTROL_SUPPORT),y)
 WFLAGS += -DLED_CONTROL_SUPPORT
 endif
 
-ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
 WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
 #-DRTMP_FREQ_CALIBRATION_SUPPORT
 #-DRX_DMA_SCATTER
 
 ifeq ($(HAS_CSO_SUPPORT), y)
 WFLAGS += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
-endif
-
-CHIPSET_DAT = 2870
 endif
 
 #################################################
@@ -221,16 +217,7 @@ RT28xx_MODE = STA
 
 TARGET = LINUX
 
-# CHIPSET
-# rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062, rt3562, rt3593, rt3573
-# rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592,
-# rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
-
-ifeq ($(CHIPSET),)
-CHIPSET = mt7610u mt7630u mt7650u
-endif
-
-MODULE = $(word 1, $(CHIPSET))
+MODULE = mt7610u
 
 PWD = $(shell pwd)
 
@@ -368,7 +355,6 @@ endif
 #chip releated
 
 #ifdef MT76x0
-ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
 $(MOD_NAME)-objs += \
 		common/cmm_mac_usb.o\
 		common/cmm_data_usb.o\
@@ -387,7 +373,6 @@ ifeq ($(HAS_CSO_SUPPORT), y)
 $(MOD_NAME)-objs += \
 		naf/net_acc.o\
 		naf/cso.o
-endif
 
 $(MOD_NAME)-objs += \
                 os/linux/rt_usb.o\
@@ -416,7 +401,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
 ARCH ?= $(SUBARCH)
 endif
 
-export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR TARGET
+export PWD RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE MODULE RTMP_SRC_DIR TARGET
 
 # The targets that may be used.
 PHONY += all build_tools test LINUX clean
