@@ -47,14 +47,6 @@
 #define BAND_24G	2
 #define BAND_BOTH	(BAND_5G | BAND_24G)
 
-
-#ifdef SNMP_SUPPORT
-/* for snmp, to get manufacturer OUI, 2008_0220 */
-#define ManufacturerOUI_LEN			3
-#define ManufacturerNAME			("Ralink Technology Company.")
-#define	ResourceTypeIdName			("Ralink_ID")
-#endif
-
 #define RALINK_2883_VERSION		((u32)0x28830300)
 #define RALINK_2880E_VERSION	((u32)0x28720200)
 #define RALINK_3883_VERSION		((u32)0x38830400)
@@ -1608,39 +1600,6 @@ enum WIFI_MODE{
 /* WIRELESS EVENTS definition */
 /* Max number of char in custom event, refer to wireless_tools.28/wireless.20.h */
 #define IW_CUSTOM_MAX_LEN				  			255	/* In bytes */
-
-#ifdef IDS_SUPPORT
-/* For spoof attack event - start */
-#define	IW_SPOOF_EVENT_FLAG_START                   0x0300
-#define IW_CONFLICT_SSID_EVENT_FLAG					0x0300
-#define IW_SPOOF_ASSOC_RESP_EVENT_FLAG				0x0301
-#define IW_SPOOF_REASSOC_RESP_EVENT_FLAG			0x0302
-#define IW_SPOOF_PROBE_RESP_EVENT_FLAG				0x0303
-#define IW_SPOOF_BEACON_EVENT_FLAG					0x0304
-#define IW_SPOOF_DISASSOC_EVENT_FLAG				0x0305
-#define IW_SPOOF_AUTH_EVENT_FLAG					0x0306
-#define IW_SPOOF_DEAUTH_EVENT_FLAG					0x0307
-#define IW_SPOOF_UNKNOWN_MGMT_EVENT_FLAG			0x0308
-#define IW_REPLAY_ATTACK_EVENT_FLAG					0x0309
-/* if add new spoof attack event flag, please upadte the IW_SPOOF_EVENT_FLAG_END */
-#define	IW_SPOOF_EVENT_FLAG_END                     0x0309
-#define	IW_SPOOF_EVENT_TYPE_NUM						(IW_SPOOF_EVENT_FLAG_END - IW_SPOOF_EVENT_FLAG_START + 1)
-/* For spoof attack event - end */
-
-/* For flooding attack event - start */
-#define	IW_FLOOD_EVENT_FLAG_START                   0x0400
-#define IW_FLOOD_AUTH_EVENT_FLAG					0x0400
-#define IW_FLOOD_ASSOC_REQ_EVENT_FLAG				0x0401
-#define IW_FLOOD_REASSOC_REQ_EVENT_FLAG				0x0402
-#define IW_FLOOD_PROBE_REQ_EVENT_FLAG				0x0403
-#define IW_FLOOD_DISASSOC_EVENT_FLAG				0x0404
-#define IW_FLOOD_DEAUTH_EVENT_FLAG					0x0405
-#define IW_FLOOD_EAP_REQ_EVENT_FLAG					0x0406
-/* if add new flooding attack event flag, please upadte the IW_FLOOD_EVENT_FLAG_END */
-#define	IW_FLOOD_EVENT_FLAG_END                   	0x0406
-#define	IW_FLOOD_EVENT_TYPE_NUM						(IW_FLOOD_EVENT_FLAG_END - IW_FLOOD_EVENT_FLAG_START + 1)
-/* For flooding attack - end */
-#endif /* IDS_SUPPORT */
 
 /* End - WIRELESS EVENTS definition */
 

@@ -819,30 +819,6 @@ typedef struct _NDIS_802_11_CAPABILITY {
 #define RTPRIV_IOCTL_FLAG_NOSPACE		0x0004	/* Notify driver didn't need copy msg to caller due to the caller didn't reserve space for this cmd */
 #endif /* DBG */
 
-
-#ifdef SNMP_SUPPORT
-/*SNMP ieee 802dot11 , 2008_0220 */
-/* dot11res(3) */
-#define RT_OID_802_11_MANUFACTUREROUI			0x0700
-#define RT_OID_802_11_MANUFACTURERNAME			0x0701
-#define RT_OID_802_11_RESOURCETYPEIDNAME		0x0702
-
-/* dot11smt(1) */
-#define RT_OID_802_11_PRIVACYOPTIONIMPLEMENTED	0x0703
-#define RT_OID_802_11_POWERMANAGEMENTMODE		0x0704
-#define OID_802_11_WEPDEFAULTKEYVALUE			0x0705	/* read , write */
-#define OID_802_11_WEPDEFAULTKEYID				0x0706
-#define RT_OID_802_11_WEPKEYMAPPINGLENGTH		0x0707
-#define OID_802_11_SHORTRETRYLIMIT				0x0708
-#define OID_802_11_LONGRETRYLIMIT				0x0709
-#define RT_OID_802_11_PRODUCTID					0x0710
-#define RT_OID_802_11_MANUFACTUREID				0x0711
-
-/* //dot11Phy(4) */
-#define OID_802_11_CURRENTCHANNEL				0x0712
-
-#endif /* SNMP_SUPPORT */
-
 /*dot11mac */
 #define RT_OID_802_11_MAC_ADDRESS				0x0713
 #define OID_802_11_BUILD_CHANNEL_EX				0x0714
@@ -884,11 +860,6 @@ typedef struct _NDIS_802_11_CAPABILITY {
 #define RT_OID_WSC_WRITE_UFD_FILE					0x075B
 #define RT_OID_WSC_QUERY_PEER_INFO_ON_RUNNING		0x075C
 #define RT_OID_WSC_MAC_ADDRESS						0x0760
-
-#ifdef LLTD_SUPPORT
-/* for consistency with RT61 */
-#define RT_OID_GET_PHY_MODE                         0x761
-#endif /* LLTD_SUPPORT */
 
 #ifdef NINTENDO_AP
 /*#define RT_OID_NINTENDO                             0x0D010770 */
@@ -1163,19 +1134,6 @@ typedef struct _NINTENDO_SEED_WEPKEY {
 	u8 wepkey[16];	/*use 13 for 104 bits wep key */
 } RT_NINTENDO_SEED_WEPKEY, *PRT_NINTENDO_SEED_WEPKEY;
 #endif /* NINTENDO_AP */
-
-#ifdef LLTD_SUPPORT
-typedef struct _RT_LLTD_ASSOICATION_ENTRY {
-	u8 Addr[ETH_LENGTH_OF_ADDRESS];
-	unsigned short MOR;	/* maximum operational rate */
-	u8 phyMode;
-} RT_LLTD_ASSOICATION_ENTRY, *PRT_LLTD_ASSOICATION_ENTRY;
-
-typedef struct _RT_LLTD_ASSOICATION_TABLE {
-	unsigned int Num;
-	RT_LLTD_ASSOICATION_ENTRY Entry[MAX_NUMBER_OF_MAC];
-} RT_LLTD_ASSOICATION_TABLE, *PRT_LLTD_ASSOICATION_TABLE;
-#endif /* LLTD_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT

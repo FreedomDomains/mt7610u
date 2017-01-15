@@ -6032,16 +6032,6 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 
 /*////////////////////////////////////*/
 
-#ifdef SNMP_SUPPORT
-/*for snmp */
-typedef struct _DefaultKeyIdxValue
-{
-	u8 KeyIdx;
-	u8 Value[16];
-} DefaultKeyIdxValue, *PDefaultKeyIdxValue;
-#endif
-
-
 #ifdef CONFIG_STA_SUPPORT
 
 /* The radio capture header precedes the 802.11 header. */

@@ -1,18 +1,6 @@
-# Support QA ATE function
-HAS_QA_SUPPORT=n
-
-HAS_RSSI_FEEDBACK=n
-
-HAS_NINTENDO=n
-
-# Support LLTD function
-HAS_LLTD=n
-
 # Support WDS function
 HAS_WDS=n
 
-# Support AP-Client function
-HAS_APCLI=n
 
 # Support Wpa_Supplicant
 # i.e. wpa_supplicant -Dralink
@@ -36,19 +24,8 @@ HAS_WEPAUTO_OPEN_FIRST_SUPPORT=n
 # Support user specific transmit rate of Multicast packet.
 HAS_MCAST_RATE_SPECIFIC_SUPPORT=n
 
-#Support for PCI-MSI
-HAS_MSI_SUPPORT=n
-
-
 #Support for IEEE802.11e DLS
 HAS_QOS_DLS_SUPPORT=n
-
-#Support for IDS
-HAS_IDS_SUPPORT=n
-
-
-#Support for Net-SNMP
-HAS_SNMP_SUPPORT=n
 
 #Support features of 802.11n Draft3
 HAS_DOT11N_DRAFT3_SUPPORT=y
@@ -92,10 +69,6 @@ HAS_CFG80211_SUPPORT=y
 
 #Support RFKILL hardware block/unblock LINUX-only function
 HAS_RFKILL_HW_SUPPORT=n
-
-
-
-HAS_APCLI_WPA_SUPPLICANT=n
 
 HAS_LED_CONTROL_SUPPORT=y
 
@@ -176,10 +149,6 @@ WFLAGS += -DNATIVE_WPA_SUPPLICANT_SUPPORT
 endif
 endif
 
-ifeq ($(HAS_SNMP_SUPPORT),y)
-WFLAGS += -DSNMP_SUPPORT
-endif
-
 ifeq ($(HAS_QOS_DLS_SUPPORT),y)
 WFLAGS += -DQOS_DLS_SUPPORT
 endif
@@ -209,11 +178,6 @@ endif
 endif
 
 
-ifeq ($(HAS_WIDI_SUPPORT),y)
-WFLAGS += -DWIDI_SUPPORT
-
-endif
-
 endif
 # endif of ifeq ($(RT28xx_MODE),STA)
 
@@ -224,10 +188,6 @@ endif
 #
 # Common compiler flag
 #
-
-ifeq ($(HAS_IDS_SUPPORT),y)
-WFLAGS += -DIDS_SUPPORT
-endif
 
 ifeq ($(HAS_BGFP_SUPPORT),y)
 WFLAGS += -DBG_FT_SUPPORT
@@ -297,11 +257,6 @@ endif
 ifeq ($(HAS_DFS_SUPPORT),y)
 WFLAGS += -DDFS_SUPPORT
 endif
-
-ifeq ($(HAS_LLTD),y)
-WFLAGS += -DLLTD_SUPPORT
-endif
-
 
 #kernel build options for 2.4
 # move to Makefile outside LINUX_SRC := /opt/star/kernel/linux-2.4.27-star
