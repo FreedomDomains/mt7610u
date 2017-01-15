@@ -1985,20 +1985,14 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	pChipCap->CommandRspBulkInAddr = 0x85;
 #endif /* RTMP_USB_SUPPORT */
 
-#ifdef MT7650
 	if (IS_MT7650(pAd))
 		pChipCap->fw_name = MT7650_FIRMWARE_NAME;
-#endif
 
-#ifdef MT7630
 	if (IS_MT7630(pAd))
 		pChipCap->fw_name = MT7650_FIRMWARE_NAME;
-#endif
 
-#ifdef MT7610
 	if (IS_MT7610(pAd))
 		pChipCap->fw_name = MT7610_FIRMWARE_NAME;
-#endif
 
 	pChipCap->bDoTemperatureSensor = true;
 

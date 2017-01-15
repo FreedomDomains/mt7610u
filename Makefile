@@ -206,17 +206,6 @@ ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(
 WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
 #-DRTMP_FREQ_CALIBRATION_SUPPORT
 #-DRX_DMA_SCATTER
-ifneq ($(findstring mt7650u,$(CHIPSET)),)
-WFLAGS += -DMT7650
-endif
-
-ifneq ($(findstring mt7630u,$(CHIPSET)),)
-WFLAGS += -DMT7630
-endif
-
-ifneq ($(findstring mt7610u,$(CHIPSET)),)
-WFLAGS += -DMT7610
-endif
 
 ifneq ($(findstring $(RT28xx_MODE),AP),)
 #WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
