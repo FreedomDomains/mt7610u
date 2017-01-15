@@ -207,10 +207,6 @@ WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT
 #-DRTMP_FREQ_CALIBRATION_SUPPORT
 #-DRX_DMA_SCATTER
 
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-#WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
-endif
-
 ifeq ($(HAS_CSO_SUPPORT), y)
 WFLAGS += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
 endif
@@ -227,10 +223,6 @@ endif
 
 ifneq ($(findstring mt7612u,$(CHIPSET)),)
 WFLAGS += -DMT7612
-endif
-
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-#WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
 endif
 
 ifeq ($(HAS_CSO_SUPPORT), y)
@@ -255,12 +247,7 @@ ifeq ($(PLATFORM),PC)
 endif
 
 
-ifeq ($(WIFI_MODE),)
 RT28xx_MODE = STA
-# RT28xx_MODE = AP
-else
-RT28xx_MODE = $(WIFI_MODE)
-endif
 
 TARGET = LINUX
 
