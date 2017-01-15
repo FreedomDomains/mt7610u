@@ -214,24 +214,6 @@ endif
 CHIPSET_DAT = 2870
 endif
 
-ifneq ($(or $(findstring mt7662u,$(CHIPSET)),$(findstring mt7662u,$(CHIPSET))),)
-WFLAGS += -DMT76x2 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DCONFIG_ANDES_SUPPORT
-
-ifneq ($(findstring mt7662u,$(CHIPSET)),)
-WFLAGS += -DMT7662
-endif
-
-ifneq ($(findstring mt7612u,$(CHIPSET)),)
-WFLAGS += -DMT7612
-endif
-
-ifeq ($(HAS_CSO_SUPPORT), y)
-WFLAGS += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
-endif
-
-CHIPSET_DAT = 2870
-endif
-
 #################################################
 
 
