@@ -76,7 +76,7 @@
 	(__pBandInfo)->RtsThreshold = pAd->CommonCfg.RtsThreshold;				\
 	(__pBandInfo)->FragmentThreshold = pAd->CommonCfg.FragmentThreshold;	\
 	(__pBandInfo)->RetryMaxCnt = 0;											\
-	mt7610u_read32(__pAd, TX_RTY_CFG, &((__pBandInfo)->RetryMaxCnt));		\
+	(__pBandInfo)->RetryMaxCnt = mt7610u_read32(__pAd, TX_RTY_CFG);		\
 }
 
 

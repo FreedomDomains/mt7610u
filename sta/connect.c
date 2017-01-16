@@ -1888,7 +1888,7 @@ void LinkUp(
 	      && OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED))
 	     || ((pAd->StaActive.SupportedPhyInfo.bHtEnable == true)
 		 && (pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE)))) {
-		mt7610u_read32(pAd, EDCA_AC0_CFG, &Data);
+		Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
 		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 
@@ -1896,14 +1896,14 @@ void LinkUp(
 	} else
 #endif /* DOT11_N_SUPPORT */
 	if (pAd->CommonCfg.bEnableTxBurst) {
-		mt7610u_read32(pAd, EDCA_AC0_CFG, &Data);
+		Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
 		Data |= 0x60;
 		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 		pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = true;
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 2\n"));
 	} else {
-		mt7610u_read32(pAd, EDCA_AC0_CFG, &Data);
+		Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
 		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 3\n"));
@@ -1918,7 +1918,7 @@ void LinkUp(
 			u32 MACValue = 0;
 			/* Force disable TXOP value in this case. The same action in MLMEUpdateProtect too */
 			/* I didn't change PBF_MAX_PCNT setting. */
-			mt7610u_read32(pAd, EDCA_AC0_CFG, &MACValue);
+			MACValue = mt7610u_read32(pAd, EDCA_AC0_CFG);
 			MACValue &= 0xFFFFFF00;
 			mt7610u_write32(pAd, EDCA_AC0_CFG, MACValue);
 			pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = false;

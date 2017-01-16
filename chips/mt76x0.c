@@ -1019,7 +1019,7 @@ void InitFce(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: -->\n", __FUNCTION__));
 
-	mt7610u_read32(pAd, FCE_L2_STUFF, &L2Stuffing.word);
+	L2Stuffing.word = mt7610u_read32(pAd, FCE_L2_STUFF);
 	L2Stuffing.field.FS_WR_MPDU_LEN_EN = 0;
 	mt7610u_write32(pAd, FCE_L2_STUFF, L2Stuffing.word);
 
@@ -1253,7 +1253,7 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		}
 	}
 
-	mt7610u_read32(pAd, RF_MISC, &MacReg);
+	MacReg = mt7610u_read32(pAd, RF_MISC);
 	MacReg &= ~(0xC); /* Clear 0x518[3:2] */
 	mt7610u_write32(pAd, RF_MISC, MacReg);
 
@@ -1283,11 +1283,11 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 			[3]1'b1: enable external G band PA, 1'b0: disable external G band PA
 		*/
 		if (RfBand & RF_A_BAND) {
-			mt7610u_read32(pAd, RF_MISC, &MacReg);
+			MacReg = mt7610u_read32(pAd, RF_MISC);
 			MacReg |= (0x4);
 			mt7610u_write32(pAd, RF_MISC, MacReg);
 		} else {
-			mt7610u_read32(pAd, RF_MISC, &MacReg);
+			MacReg = mt7610u_read32(pAd, RF_MISC);
 			MacReg |= (0x8);
 			mt7610u_write32(pAd, RF_MISC, MacReg);
 		}
@@ -1312,13 +1312,13 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 	if (RfBand & RF_G_BAND) {
 		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
 		/* Set Atten mode = 2 for G band and disable Tx Inc DCOC Cal by Chee's comment */
-		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
+		MacReg = mt7610u_read32(pAd, TX_ALC_CFG_1);
 		MacReg &= 0x896400FF;
 		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
 	} else {
 		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
 		/* Set Atten mode = 0 For Ext A band and disable Tx Inc DCOC Cal by Chee's comment */
-		mt7610u_read32(pAd, TX_ALC_CFG_1, &MacReg);
+		MacReg = mt7610u_read32(pAd, TX_ALC_CFG_1);
 		MacReg &= 0x890400FF;
 		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
 	}
@@ -1433,7 +1433,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 		Release BBP and MAC reset
 		MAC_SYS_CTRL[1:0] = 0x0
 	*/
-	mt7610u_read32(pAd, MAC_SYS_CTRL, &MacReg);
+	MacReg = mt7610u_read32(pAd, MAC_SYS_CTRL);
 	MacReg &= ~(0x3);
 	mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
 
@@ -1441,7 +1441,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 	/*
 		Set 0x141C[15:12]=0xF
 	*/
-	mt7610u_read32(pAd, EXT_CCA_CFG, &MacReg);
+	MacReg = mt7610u_read32(pAd, EXT_CCA_CFG);
 	MacReg |= (0x0000F000);
 	mt7610u_write32(pAd, EXT_CCA_CFG, MacReg);
 
@@ -1453,7 +1453,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 		WMM_RG0_TXQMA: This register setting is for FCE to define the rule of TxRing 9.
 		WMM_RG1_TXQMA: This register setting is for FCE to define the rule of TxRing 8.
 	*/
-	mt7610u_read32(pAd, WMM_CTRL, &MacReg);
+	MacReg = mt7610u_read32(pAd, WMM_CTRL);
 	MacReg &= ~(0x000003FF);
 	MacReg |= (0x00000201);
 	mt7610u_write32(pAd, WMM_CTRL, MacReg);
@@ -1542,7 +1542,7 @@ static void MT76x0_ChipSwitchChannel(
 	}
 #endif /* RTMP_MAC_USB */
 
-	mt7610u_read32(pAd, EXT_CCA_CFG, &RegValue);
+	RegValue = mt7610u_read32(pAd, EXT_CCA_CFG);
 	RegValue &= ~(0xFFF);
 	if (pAd->CommonCfg.BBPCurrentBW == BW_80) {
 		rf_bw = RF_BW_80;
@@ -1589,7 +1589,7 @@ static void MT76x0_ChipSwitchChannel(
 	}
 
 	/* set Japan Tx filter at channel 14 */
-	RTMP_BBP_IO_READ32(pAd, CORE_R1, &RegValue);
+	RegValue = RTMP_BBP_IO_READ32(pAd, CORE_R1);
 	if (Channel == 14)
 		RegValue |= 0x20;
 	else
@@ -1630,7 +1630,7 @@ static void MT76x0_ChipSwitchChannel(
 
 	RTMPusecDelay(1000);
 
-	mt7610u_read32(pAd, TX_ALC_CFG_0, &Value);
+	Value = mt7610u_read32(pAd, TX_ALC_CFG_0);
 	Value = Value & (~0x3F3F);
 	Value |= TxPwer;
 	Value |= (0x2F2F << 16);
@@ -1797,9 +1797,9 @@ void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd)
 		bit 21:16 -> HT/VHT MCS 7
 		bit 5:0 -> OFDM 54
 	*/
-	mt7610u_read32(pAd, TX_PWR_CFG_1, &ExtraPwrOverMAC);
+	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_1);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for OFDM 54 */
-	mt7610u_read32(pAd, TX_PWR_CFG_2, &ExtraPwrOverMAC);
+	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_2);
 	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) << 8; /* Get Tx power for HT MCS 7 */
 	mt7610u_write32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
 
@@ -1809,7 +1809,7 @@ void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd)
 		bit 21:16 -> VHT 1SS MCS 8
 		bit 5:0 -> HT MCS 15
 	*/
-	mt7610u_read32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);
+	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_3);
 #ifdef DOT11_VHT_AC
 	ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
 #else
@@ -1821,7 +1821,7 @@ void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd)
 		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC
 		bit 5:0 -> STBC MCS 7
 	*/
-	mt7610u_read32(pAd, TX_PWR_CFG_4, &ExtraPwrOverMAC);
+	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_4);
 	ExtraPwrOverTxPwrCfg9 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for STBC MCS 7 */
 	mt7610u_write32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
 
@@ -1919,7 +1919,7 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	/*
 		Init chip capabilities
 	*/
-	mt7610u_read32(pAd, 0x00, &Value);
+	Value = mt7610u_read32(pAd, 0x00);
 	pChipCap->ChipID = Value;
 
 	pChipCap->MaxNss = 1;
@@ -2053,10 +2053,10 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 	}
 #endif /* RTMP_MAC_USB */
 
-	mt7610u_read32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl);
-	mt7610u_read32(pAd, CMB_CTRL, &CmbCtrl);
-	mt7610u_read32(pAd, COEXCFG0, &CoexCfg0);
-	mt7610u_read32(pAd, COEXCFG3, &CoexCfg3);
+	WlanFunCtrl = mt7610u_read32(pAd, WLAN_FUN_CTRL);
+	CmbCtrl = mt7610u_read32(pAd, CMB_CTRL);
+	CoexCfg0 = mt7610u_read32(pAd, COEXCFG0);
+	CoexCfg3 = mt7610u_read32(pAd, COEXCFG3);
 
 	CoexCfg0 &= ~BIT(2);
 	CmbCtrl &= ~(BIT(14) | BIT(12));
@@ -2124,7 +2124,7 @@ void MT76x0_dynamic_vga_tuning(struct rtmp_adapter *pAd)
 	else if ((rssi <= -60) && (rssi > -70))
 		init_vga -= 0x10;
 
-	mt7610u_read32(pAd, AGC1_R8, &reg_val);
+	reg_val = mt7610u_read32(pAd, AGC1_R8);
 	reg_val &= 0xFFFF80FF;
 	reg_val |= (init_vga << 8);
 	mt7610u_write32(pAd, AGC1_R8, reg_val);
@@ -2241,11 +2241,11 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		MT76x0_VCO_CalibrationMode3(pAd, Channel);
 	}
 
-	mt7610u_read32(pAd, TX_ALC_CFG_0, &reg_tx_alc); /* We need to restore 0x13b0 after calibration. */
+	reg_tx_alc = mt7610u_read32(pAd, TX_ALC_CFG_0); /* We need to restore 0x13b0 after calibration. */
 	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
 	RTMPusecDelay(500);
 
-	mt7610u_read32(pAd, 0x2124, &reg_val); /* We need to restore 0x2124 after calibration. */
+	reg_val = mt7610u_read32(pAd, 0x2124); /* We need to restore 0x2124 after calibration. */
 	MacReg = 0xFFFFFF7E; /* Disable 0x2704, 0x2708 controlled by MAC. */
 	mt7610u_write32(pAd, 0x2124, MacReg);
 
@@ -2487,7 +2487,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 			wait until 0x2088[4] = 0
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
-		RTMP_BBP_IO_READ32(pAd, CORE_R34, &reg_val);
+		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
 		RTMPusecDelay(3);
@@ -2504,7 +2504,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 			WIFI_BBP_CR_READ(0x208c) //$Dout
 
 	*/
-	RTMP_BBP_IO_READ32(pAd, CORE_R35, &Dout);
+	Dout = RTMP_BBP_IO_READ32(pAd, CORE_R35);
 	Dout &= 0xFF;
 
 	if ((Dout & 0x80) == 0x00)
@@ -2586,7 +2586,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 			wait until 0x2088[4] = 0
 	*/
 	for (wait = 0; wait < 2000; wait++) {
-		RTMP_BBP_IO_READ32(pAd, CORE_R34, &reg_val);
+		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
 		RTMPusecDelay(3);
@@ -2604,7 +2604,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 			WIFI_BBP_CR_READ(0x208c) //$Dout
 
 	*/
-	RTMP_BBP_IO_READ32(pAd, CORE_R35, &reg_val);
+	reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R35);
 	reg_val &= 0xFF;
 	if ((reg_val & 0x80) == 0x80)
 		reg_val |= 0xFFFFFF00; /* Negative number */
@@ -2737,7 +2737,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 			else
 				delta_pwr = pAd->TxAgcCompensateA - pAd->mp_delta_pwr;
 
-			mt7610u_read32(pAd, TX_ALC_CFG_1, &mac_val);
+			mac_val = mt7610u_read32(pAd, TX_ALC_CFG_1);
 			/* 6-bit representation ==> 8-bit representation (2's complement) */
 			pAd->DeltaPwrBeforeTempComp = (mac_val & 0x20) ?
 						      ((mac_val & 0x3F) | 0xC0) :
@@ -2754,7 +2754,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 				Write compensation value into TX_ALC_CFG_1,
 				delta_pwr (unit: 0.5dB) will be compensated by TX_ALC_CFG_1
 			*/
-			mt7610u_read32(pAd, TX_ALC_CFG_1, &mac_val);
+			mac_val = mt7610u_read32(pAd, TX_ALC_CFG_1);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
 			mt7610u_write32(pAd, TX_ALC_CFG_1, mac_val);
 

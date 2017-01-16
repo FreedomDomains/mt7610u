@@ -402,7 +402,7 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 	}
 #endif /* MT76x0 */
 
-	mt7610u_read32(pAd, 0x1300, &reg);  /* clear garbage interrupts*/
+	reg = mt7610u_read32(pAd, 0x1300);  /* clear garbage interrupts*/
 	DBGPRINT(RT_DEBUG_OFF, ("0x1300 = %08x\n", reg));
 
 

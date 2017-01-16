@@ -140,7 +140,7 @@ void MlmeDynamicTxRateSwitching(
 				ULONG	Index;
 				u32	MACValue;
 
-				mt7610u_read32(pAd, TX_RTY_CFG, &TxRtyCfg.word);
+				TxRtyCfg.word = mt7610u_read32(pAd, TX_RTY_CFG);
 				TxRtyCfgtmp.word = TxRtyCfg.word;
 				TxRtyCfg.field.LongRtyLimit = 0x0;
 				TxRtyCfg.field.ShortRtyLimit = 0x0;
@@ -152,14 +152,14 @@ void MlmeDynamicTxRateSwitching(
 				MACValue = 0;
 				do
 				{
-					mt7610u_read32(pAd, TXRXQ_PCNT, &MACValue);
+					MACValue = mt7610u_read32(pAd, TXRXQ_PCNT);
 					if ((MACValue & 0xffffff) == 0)
 						break;
 					Index++;
 					RTMPusecDelay(1000);
 				}while((Index < 330)&&(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS)));
 
-				mt7610u_read32(pAd, TX_RTY_CFG, &TxRtyCfg.word);
+				TxRtyCfg.word = mt7610u_read32(pAd, TX_RTY_CFG);
 				TxRtyCfg.field.LongRtyLimit = TxRtyCfgtmp.field.LongRtyLimit;
 				TxRtyCfg.field.ShortRtyLimit = TxRtyCfgtmp.field.ShortRtyLimit;
 				mt7610u_write32(pAd, TX_RTY_CFG, TxRtyCfg.word);
@@ -511,8 +511,8 @@ void StaQuickResponeForRateUpExec(
 			TX_STA_CNT1_STRUC	StaTx1;
 			TX_STA_CNT0_STRUC	TxStaCnt0;
 
-			mt7610u_read32(pAd, TX_STA_CNT0, &TxStaCnt0.word);
-			mt7610u_read32(pAd, TX_STA_CNT1, &StaTx1.word);
+			TxStaCnt0.word = mt7610u_read32(pAd, TX_STA_CNT0);
+			StaTx1.word = mt7610u_read32(pAd, TX_STA_CNT1);
 
 			TxRetransmit = StaTx1.field.TxRetransmit;
 			TxSuccess = StaTx1.field.TxSuccess;

@@ -52,7 +52,7 @@ INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 {
 	u32 txbe, txbe_r5 = 0;
 
-	RTMP_BBP_IO_READ32(pAd, TXBE_R5, &txbe_r5);
+	txbe_r5 = RTMP_BBP_IO_READ32(pAd, TXBE_R5);
 	txbe = txbe_r5 & (~0x3);
 	switch (tx_dac)
 	{
@@ -77,7 +77,7 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 {
 	u32 agc, agc_r0 = 0;
 
-	RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc_r0);
+	agc_r0 = RTMP_BBP_IO_READ32(pAd, AGC1_R0);
 	agc = agc_r0 & (~0x18);
 	if(rxpath == 2)
 		agc |= (0x8);
@@ -129,9 +129,9 @@ INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
 	u32 be, be_r0 = 0;
 
 
-	RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc_r0);
+	agc_r0 = RTMP_BBP_IO_READ32(pAd, AGC1_R0);
 	agc = agc_r0 & (~0x300);
-	RTMP_BBP_IO_READ32(pAd, TXBE_R0, &be_r0);
+	be_r0 = RTMP_BBP_IO_READ32(pAd, TXBE_R0);
 	be = (be_r0 & (~0x03));
 #ifdef DOT11_VHT_AC
 	if (pAd->CommonCfg.BBPCurrentBW == BW_80 &&
@@ -230,7 +230,7 @@ INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX chain)
 
 		if (chain & 0x01)
 		{
-			RTMP_BBP_IO_READ32(pAd, bbp_reg, &bbp_val);
+			bbp_val = RTMP_BBP_IO_READ32(pAd, bbp_reg);
 			val = ((bbp_val & (0x0000ff00)) >> 8) & 0xff;
 			break;
 		}
@@ -263,7 +263,7 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 
 		if (idx & 0x01)
 		{
-			RTMP_BBP_IO_READ32(pAd, bbp_reg, &bbp_val);
+			bbp_val = RTMP_BBP_IO_READ32(pAd, bbp_reg);
 			bbp_val = (bbp_val & 0xffff00ff) | (agc << 8);
 			RTMP_BBP_IO_WRITE32(pAd, bbp_reg, bbp_val);
 
@@ -287,7 +287,7 @@ INT rlt_bbp_is_ready(struct rtmp_adapter *pAd)
 
 	do
 	{
-		RTMP_BBP_IO_READ32(pAd, CORE_R0, &val);
+		val = RTMP_BBP_IO_READ32(pAd, CORE_R0);
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return false;
 		DBGPRINT(RT_DEBUG_TRACE, ("BBP version = %x\n", val));

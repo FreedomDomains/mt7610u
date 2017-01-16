@@ -316,7 +316,7 @@ bool CFG80211DRV_OpsChgVirtualInf(
 			u32 Filter;
 
 
-			mt7610u_read32(pAd, RX_FILTR_CFG, &Filter);
+			Filter = mt7610u_read32(pAd, RX_FILTR_CFG);
 
 			if ((FlgFilter & RT_CMD_80211_FILTER_FCSFAIL) == \
 												RT_CMD_80211_FILTER_FCSFAIL)

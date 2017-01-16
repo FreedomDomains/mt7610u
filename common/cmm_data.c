@@ -2127,7 +2127,7 @@ void ReSyncBeaconTime(
 	if (Offset == (BCN_TBTT_OFFSET-2))
 	{
 		BCN_TIME_CFG_STRUC csr;
-		mt7610u_read32(pAd, BCN_TIME_CFG, &csr.word);
+		csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
 		csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod << 4) - 1 ;	/* ASIC register in units of 1/16 TU = 64us*/
 		mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
 	}
@@ -2137,7 +2137,7 @@ void ReSyncBeaconTime(
 		{
 			BCN_TIME_CFG_STRUC csr;
 
-			mt7610u_read32(pAd, BCN_TIME_CFG, &csr.word);
+			csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
 			csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod) << 4; /* ASIC register in units of 1/16 TU*/
 			mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
 		}
@@ -2545,7 +2545,7 @@ void StopDmaRx(
 	{
 
 #ifdef  RTMP_MAC_USB
-		mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
+		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if ((MacReg & 0x40000000) && (IdleNums < 10))
 		{
@@ -2596,7 +2596,7 @@ void StopDmaTx(
 	{
 
 #ifdef RTMP_MAC_USB
-		mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
+		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if (((MacReg & 0x80000000) == 0) && IdleNums > 10)
 		{

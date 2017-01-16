@@ -311,7 +311,7 @@ INT WaitForAsicReady(
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return false;
 
-		mt7610u_read32(pAd, reg, &mac_val);
+		mac_val = mt7610u_read32(pAd, reg);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return true;
 
@@ -353,7 +353,7 @@ int RtmpChipOpsHook(void *pCB)
 	if (WaitForAsicReady(pAd) == false)
 		return -1;
 
-	mt7610u_read32(pAd, MAC_CSR0, &MacValue);
+	MacValue = mt7610u_read32(pAd, MAC_CSR0);
 	pAd->MACVersion = MacValue;
 
 	if (pAd->MACVersion == 0xffffffff)

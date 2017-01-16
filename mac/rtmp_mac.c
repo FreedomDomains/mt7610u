@@ -408,7 +408,7 @@ INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
 	u32 val, band_cfg;
 
 
-	mt7610u_read32(pAd, TX_BAND_CFG, &band_cfg);
+	band_cfg = mt7610u_read32(pAd, TX_BAND_CFG);
 	val = band_cfg & (~0x6);
 	switch (band)
 	{
@@ -433,7 +433,7 @@ INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
 	u32 val, band_cfg;
 
 
-	mt7610u_read32(pAd, TX_BAND_CFG, &band_cfg);
+	band_cfg = mt7610u_read32(pAd, TX_BAND_CFG);
 	val = band_cfg & (~0x1);
 	switch (extch)
 	{
@@ -459,7 +459,7 @@ INT rtmp_mac_set_mmps(struct rtmp_adapter*pAd, INT ReduceCorePower)
 {
 	u32 mac_val, org_val;
 
-	mt7610u_read32(pAd, 0x1210, &org_val);
+	org_val = mt7610u_read32(pAd, 0x1210);
 	mac_val = org_val;
 	if (ReduceCorePower)
 		mac_val |= 0x09;

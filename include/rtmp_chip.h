@@ -628,7 +628,7 @@ do {	\
 do {	\
 		BBP_CSR_CFG_STRUC	BbpCsr;	\
 		DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));	\
-		mt7610u_read32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
+		BbpCsr.word = mt7610u_read32(__pAd, H2M_BBP_AGENT);	\
 		BbpCsr.field.Busy = 0;	\
 		mt7610u_write32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
 } while (0)

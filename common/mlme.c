@@ -466,7 +466,8 @@ void MlmeHalt(
 #ifdef RTMP_MAC_USB
 		{
 			LED_CFG_STRUC LedCfg;
-			mt7610u_read32(pAd, LED_CFG, &LedCfg.word);
+
+			LedCfg.word =  mt7610u_read32(pAd, LED_CFG);
 			LedCfg.field.LedPolar = 0;
 			LedCfg.field.RLedMode = 0;
 			LedCfg.field.GLedMode = 0;
@@ -750,7 +751,7 @@ void MlmePeriodicExec(
 
 			u32	MacReg = 0;
 
-			mt7610u_read32(pAd, 0x10F4, &MacReg);
+			MacReg = mt7610u_read32(pAd, 0x10F4);
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
 			{
 				mt7610u_write32(pAd, MAC_SYS_CTRL, 0x1);
@@ -969,8 +970,8 @@ void STAMlmePeriodicExec(
 		{
 			EDCA_AC_CFG_STRUC	Ac0Cfg;
 			EDCA_AC_CFG_STRUC	Ac2Cfg;
-			mt7610u_read32(pAd, EDCA_AC2_CFG, &Ac2Cfg.word);
-			mt7610u_read32(pAd, EDCA_AC0_CFG, &Ac0Cfg.word);
+			Ac2Cfg.word = mt7610u_read32(pAd, EDCA_AC2_CFG);
+			Ac0Cfg.word = mt7610u_read32(pAd, EDCA_AC0_CFG);
 
 			if ((pAd->RalinkCounters.OneSecOsTxCount[QID_AC_VO] == 0) &&
 			(pAd->RalinkCounters.OneSecOsTxCount[QID_AC_BK] == 0) &&
@@ -1604,7 +1605,7 @@ void MlmeSetTxPreamble(
 
 	/*TxPreamble = Rt802_11PreambleLong;*/
 
-	mt7610u_read32(pAd, AUTO_RSP_CFG, &csr4.word);
+	csr4.word = mt7610u_read32(pAd, AUTO_RSP_CFG);
 	if (TxPreamble == Rt802_11PreambleLong)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("MlmeSetTxPreamble (= LONG PREAMBLE)\n"));
@@ -4872,7 +4873,7 @@ void RTMPSetPiggyBack(
 {
 	TX_LINK_CFG_STRUC  TxLinkCfg;
 
-	mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
+	TxLinkCfg.word = mt7610u_read32(pAd, TX_LINK_CFG);
 
 	TxLinkCfg.field.TxCFAckEn = bPiggyBack;
 	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);

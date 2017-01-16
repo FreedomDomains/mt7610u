@@ -1338,7 +1338,7 @@ void RT28XXDMAEnable(
 
 	RTMPusecDelay(50);
 
-	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
+	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
 
 
 	UsbCfg.field.UDMA_TX_WL_DROP = 0;
@@ -1660,8 +1660,8 @@ void BeaconUpdateExec(
 
 	}
 
-	mt7610u_read32(pAd, TSF_TIMER_DW0, &tsfTime_a.u.LowPart);
-	mt7610u_read32(pAd, TSF_TIMER_DW1, &tsfTime_a.u.HighPart);
+	tsfTime_a.u.LowPart = mt7610u_read32(pAd, TSF_TIMER_DW0);
+	tsfTime_a.u.HighPart = mt7610u_read32(pAd, TSF_TIMER_DW1);
 
 
 	/*
@@ -1847,7 +1847,7 @@ bool AsicCheckCommandOk(
 	i = 0;
 	do
 	{
-		mt7610u_read32(pAd, H2M_MAILBOX_CID, &CID);
+		CID = mt7610u_read32(pAd, H2M_MAILBOX_CID);
 		if ((CID & CID0MASK) == Command)
 		{
 			ThisCIDMask = CID0MASK;
@@ -1874,7 +1874,7 @@ bool AsicCheckCommandOk(
 	}while (i < 200);
 
 	ret = false;
-	mt7610u_read32(pAd, H2M_MAILBOX_STATUS, &CmdStatus);
+	CmdStatus = mt7610u_read32(pAd, H2M_MAILBOX_STATUS);
 	if (i < 200)
 	{
 		if (((CmdStatus & ThisCIDMask) == 0x1) || ((CmdStatus & ThisCIDMask) == 0x100)

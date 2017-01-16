@@ -381,7 +381,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	/* Read Tx AGC control bit*/
 
 	RTUSBReadEEPROM16(pAd, 0x24, &value);
-	mt7610u_read32(pAd, 0x0104, &reg_val);
+	reg_val = mt7610u_read32(pAd, 0x0104);
 	DBGPRINT(RT_DEBUG_OFF, ("0x24 = 0x%04x, 0x0104 = 0x%08x\n", value, reg_val));
 	NicCfg0.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
 	DBGPRINT(RT_DEBUG_OFF, ("EEPROM_NIC_CFG1_OFFSET = 0x%04x\n", NicCfg0.word));
@@ -750,7 +750,7 @@ void NICInitAsicFromEEPROM(
 
 			{
 				/* Read GPIO pin2 as Hardware controlled radio state*/
-				mt7610u_read32(pAd, GPIO_CTRL_CFG, &data);
+				data = mt7610u_read32(pAd, GPIO_CTRL_CFG);
 				if ((data & 0x04) == 0)
 					radioOff = true;
 			}
@@ -976,14 +976,14 @@ int	NICInitializeAsic(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s():MACVersion[Ver:Rev=0x%08x]\n",
 			__FUNCTION__, pAd->MACVersion));
 	/* turn on bit13 (set to zero) after rt2860D. This is to solve high-current issue.*/
-	mt7610u_read32(pAd, PBF_SYS_CTRL, &MACValue);
+	MACValue = mt7610u_read32(pAd, PBF_SYS_CTRL);
 	MACValue &= (~0x2000);
 	mt7610u_write32(pAd, PBF_SYS_CTRL, MACValue);
 
 	mdelay(200);
 
 #ifdef RTMP_MAC_USB
-	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
+	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
 
 	/* USB1.1 do not use bulk in aggregation */
 	if (pAd->BulkInMaxPacketSize == 512)
@@ -1000,9 +1000,9 @@ int	NICInitializeAsic(
 
 
 	/* check MCU if ready */
-	mt7610u_read32(pAd, COM_REG0, &MACValue);
+	MACValue = mt7610u_read32(pAd, COM_REG0);
 
-	mt7610u_read32(pAd, USB_DMA_CFG, &UsbCfg.word);
+	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
 
 	if (IS_MT76x0(pAd)) {
 		UsbCfg.field.RX_DROP_OR_PADDING = 1;
@@ -1052,7 +1052,7 @@ int	NICInitializeAsic(
 	Index = 0;
 	do
 	{
-		mt7610u_read32(pAd, MAC_STATUS_CFG, &MACValue);
+		MACValue = mt7610u_read32(pAd, MAC_STATUS_CFG);
 
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return NDIS_STATUS_FAILURE;
@@ -1086,7 +1086,8 @@ int	NICInitializeAsic(
 	{
 		/* enlarge MAX_LEN_CFG*/
 		u32 csr;
-		mt7610u_read32(pAd, MAX_LEN_CFG, &csr);
+
+		csr = mt7610u_read32(pAd, MAX_LEN_CFG);
 #if defined(RT2883) || defined(RT3883) || defined(RT3593) || defined(RT65xx)
 		if (IS_RT65XX(pAd))
 		{
@@ -1172,7 +1173,7 @@ int	NICInitializeAsic(
 	NicResetRawCounters(pAd);
 
 	/* Default PCI clock cycle per ms is different as default setting, which is based on PCI.*/
-	mt7610u_read32(pAd, USB_CYC_CFG, &Counter);
+	Counter = mt7610u_read32(pAd, USB_CYC_CFG);
 	Counter&=0xffffff00;
 	Counter|=0x000001e;
 	mt7610u_write32(pAd, USB_CYC_CFG, Counter);
@@ -1223,7 +1224,7 @@ void NICUpdateFifoStaCounters(
 
 		do
 		{
-			mt7610u_read32(pAd, TX_STA_FIFO, &StaFifo.word);
+			StaFifo.word = mt7610u_read32(pAd, TX_STA_FIFO);
 
 			if (StaFifo.field.bValid == 0)
 				break;
@@ -1381,8 +1382,8 @@ void NicGetTxRawCounters(
 	IN TX_STA_CNT1_STRUC *pStaTxCnt1)
 {
 
-	mt7610u_read32(pAd, TX_STA_CNT0, &pStaTxCnt0->word);
-	mt7610u_read32(pAd, TX_STA_CNT1, &pStaTxCnt1->word);
+	pStaTxCnt0->word = mt7610u_read32(pAd, TX_STA_CNT0);
+	pStaTxCnt1->word = mt7610u_read32(pAd, TX_STA_CNT1);
 
 	pAd->bUpdateBcnCntDone = true;	/* not appear in Rory's code */
 	pAd->RalinkCounters.OneSecBeaconSentCnt += pStaTxCnt0->field.TxBeaconCount;
@@ -1413,12 +1414,12 @@ void NicResetRawCounters(struct rtmp_adapter*pAd)
 {
 	u32 Counter;
 
-	mt7610u_read32(pAd, RX_STA_CNT0, &Counter);
-	mt7610u_read32(pAd, RX_STA_CNT1, &Counter);
-	mt7610u_read32(pAd, RX_STA_CNT2, &Counter);
-	mt7610u_read32(pAd, TX_STA_CNT0, &Counter);
-	mt7610u_read32(pAd, TX_STA_CNT1, &Counter);
-	mt7610u_read32(pAd, TX_STA_CNT2, &Counter);
+	Counter = mt7610u_read32(pAd, RX_STA_CNT0);
+	Counter = mt7610u_read32(pAd, RX_STA_CNT1);
+	Counter = mt7610u_read32(pAd, RX_STA_CNT2);
+	Counter = mt7610u_read32(pAd, TX_STA_CNT0);
+	Counter = mt7610u_read32(pAd, TX_STA_CNT1);
+	Counter = mt7610u_read32(pAd, TX_STA_CNT2);
 }
 
 
@@ -1467,12 +1468,12 @@ void NICUpdateRawCounters(
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
 
-	mt7610u_read32(pAd, RX_STA_CNT0, &RxStaCnt0.word);
-	mt7610u_read32(pAd, RX_STA_CNT2, &RxStaCnt2.word);
+	RxStaCnt0.word = mt7610u_read32(pAd, RX_STA_CNT0);
+	RxStaCnt2.word = mt7610u_read32(pAd, RX_STA_CNT2);
 
 	pAd->RalinkCounters.PhyErrCnt += RxStaCnt0.field.PhyErr;
 	{
-		mt7610u_read32(pAd, RX_STA_CNT1, &RxStaCnt1.word);
+		RxStaCnt1.word = mt7610u_read32(pAd, RX_STA_CNT1);
 		pAd->RalinkCounters.PlcpErrCnt += RxStaCnt1.field.PlcpErr;
 	    /* Update RX PLCP error counter*/
 	    pAd->PrivateInfo.PhyRxErrCnt += RxStaCnt1.field.PlcpErr;
@@ -1523,20 +1524,20 @@ void NICUpdateRawCounters(
 	{
 		/* Update BEACON sent count*/
 		NicGetTxRawCounters(pAd, &TxStaCnt0, &StaTx1);
-		mt7610u_read32(pAd, TX_STA_CNT2, &StaTx2.word);
+		StaTx2.word = mt7610u_read32(pAd, TX_STA_CNT2);
 	}
 
 
 	/*if (pAd->bStaFifoTest == true)*/
-	mt7610u_read32(pAd, TX_AGG_CNT, &TxAggCnt.word);
-	mt7610u_read32(pAd, TX_AGG_CNT0, &TxAggCnt0.word);
-	mt7610u_read32(pAd, TX_AGG_CNT1, &TxAggCnt1.word);
-	mt7610u_read32(pAd, TX_AGG_CNT2, &TxAggCnt2.word);
-	mt7610u_read32(pAd, TX_AGG_CNT3, &TxAggCnt3.word);
-	mt7610u_read32(pAd, TX_AGG_CNT4, &TxAggCnt4.word);
-	mt7610u_read32(pAd, TX_AGG_CNT5, &TxAggCnt5.word);
-	mt7610u_read32(pAd, TX_AGG_CNT6, &TxAggCnt6.word);
-	mt7610u_read32(pAd, TX_AGG_CNT7, &TxAggCnt7.word);
+	TxAggCnt.word = mt7610u_read32(pAd, TX_AGG_CNT);
+	TxAggCnt0.word = mt7610u_read32(pAd, TX_AGG_CNT0);
+	TxAggCnt1.word = mt7610u_read32(pAd, TX_AGG_CNT1);
+	TxAggCnt2.word = mt7610u_read32(pAd, TX_AGG_CNT2);
+	TxAggCnt3.word = mt7610u_read32(pAd, TX_AGG_CNT3);
+	TxAggCnt4.word = mt7610u_read32(pAd, TX_AGG_CNT4);
+	TxAggCnt5.word = mt7610u_read32(pAd, TX_AGG_CNT5);
+	TxAggCnt6.word = mt7610u_read32(pAd, TX_AGG_CNT6);
+	TxAggCnt7.word = mt7610u_read32(pAd, TX_AGG_CNT7);
 	pRalinkCounters->TxAggCount += TxAggCnt.field.AggTxCount;
 	pRalinkCounters->TxNonAggCount += TxAggCnt.field.NonAggTxCount;
 	pRalinkCounters->TxAgg1MPDUCount += TxAggCnt0.field.AggSize1Count;

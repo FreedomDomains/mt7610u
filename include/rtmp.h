@@ -6223,10 +6223,7 @@ int mt7610u_write32(
 	IN	USHORT			Offset,
 	IN	u32			Value);
 
-int mt7610u_read32(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	OUT	u32 			*pValue);
+u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset);
 
 int RTUSBSingleWrite(
 	IN 	struct rtmp_adapter	*pAd,
