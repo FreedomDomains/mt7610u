@@ -373,6 +373,7 @@ ifeq ($(HAS_CSO_SUPPORT), y)
 $(MOD_NAME)-objs += \
 		naf/net_acc.o\
 		naf/cso.o
+endif
 
 $(MOD_NAME)-objs += \
                 os/linux/rt_usb.o\
@@ -383,9 +384,6 @@ ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
 		common/frq_cal.o
 endif
-
-endif
-#endif // MT76x0 //
 
 EXTRA_CFLAGS += -Wno-unused-label
 EXTRA_CFLAGS += -Wno-unused
