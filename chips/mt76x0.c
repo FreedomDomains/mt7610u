@@ -1423,7 +1423,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 	*/
 	RANDOM_WRITE(pAd, MT76x0_MACRegTable, MT76x0_NUM_MAC_REG_PARMS);
 
-	mt7610u_read_eeprom16(pAd, 0x24, &trsw_mode);
+	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
 		mt7610u_write32(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
@@ -1690,7 +1690,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ss_offset_g = EEPROM_G_TX_PWR_OFFSET;
 	for (i = 0; i < 7; i++) {
 		idx = i * 2;
-		mt7610u_read_eeprom16(pAd, ss_offset_g + idx, &Power.word);
+		Power.word = mt7610u_read_eeprom16(pAd, ss_offset_g + idx);
 
 		tx_pwr1 = tx_pwr2 = DEFAULT_RF_TX_POWER;
 
@@ -1711,7 +1711,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 36));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + idx, &Power.word);
+		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1727,7 +1727,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	for (i = 0; i < 8; i++) {
 
 		idx = i * 2;
-		mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, &Power.word);
+		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1742,7 +1742,7 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 149));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx, &Power.word);
+		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -2068,7 +2068,7 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 		0x1: Chip is in dual antenna mode
 		0x0: Chip is in single antenna mode
 	*/
-	mt7610u_read_eeprom16(pAd, 0x22, &e2p_val);
+	e2p_val = mt7610u_read_eeprom16(pAd, 0x22);
 
 	if (e2p_val & 0x8000) {
 		if (pAd->NicConfig2.field.AntOpt == 0 &&
@@ -2831,7 +2831,7 @@ static void adjust_mp_temp(struct rtmp_adapter *pAd, char *temp_minus_bdy,
 	EEPROM_TX_PWR_STRUC e2p_value;
 	CHAR mp_temp, idx = 0, mp_offset = 0;
 
-	mt7610u_read_eeprom16(pAd, 0x10C, (u16 *) &e2p_value);
+	e2p_value.word = mt7610u_read_eeprom16(pAd, 0x10C);
 	mp_temp = e2p_value.field.Byte1;
 
 	if (mp_temp < temp_minus_bdy[1]) {
@@ -2907,7 +2907,7 @@ bool load_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 			e2p_idx--;
 		}
 
-		mt7610u_read_eeprom16(pAd, e2p_idx, &e2p_value);
+		e2p_value = mt7610u_read_eeprom16(pAd, e2p_idx);
 
 		if (e2p_idx == e2p_start_addr) {
 			if (table_sign > 0)
@@ -2979,7 +2979,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 	u16 e2p_value = 0;
 
 	if (IS_MT76x0(pAd)) {
-		mt7610u_read_eeprom16(pAd, 0xD0, &e2p_value);
+		e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
 		e2p_value = (e2p_value & 0xFF00) >> 8;
 		DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
 			__FUNCTION__, e2p_value));
@@ -2997,11 +2997,11 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 	}
 
 	if (pAd->bAutoTxAgcG | pAd->bAutoTxAgcA) {
-		mt7610u_read_eeprom16(pAd, 0xD0, &e2p_value);
+		e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
 		pAd->TssiCalibratedOffset = (e2p_value >> 8);
 
 		/* 5G Tx power compensation channel boundary index */
-		mt7610u_read_eeprom16(pAd, 0x10C, &e2p_value);
+		e2p_value = mt7610u_read_eeprom16(pAd, 0x10C);
 		pAd->ChBndryIdx = (u8)(e2p_value & 0xFF);
 		DBGPRINT(RT_DEBUG_OFF, ("%s(): channel boundary index = %u, temp reference offset = %d\n",
 			__FUNCTION__, pAd->ChBndryIdx, pAd->TssiCalibratedOffset));

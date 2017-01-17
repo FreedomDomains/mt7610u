@@ -335,8 +335,7 @@ done:
 	========================================================================
 */
 
-int mt7610u_read_eeprom16(struct rtmp_adapter *pAd,
-	u16 offset, u16 *pData)
+u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 {
 	int status;
 	u16 localData;
@@ -350,11 +349,13 @@ int mt7610u_read_eeprom16(struct rtmp_adapter *pAd,
 			&localData,
 			2);
 
-	if (status == STATUS_SUCCESS)
-		*pData = le2cpu16(localData);
+	/*
+	 * ULLI : previous lines returns only valad data on success,
+	 * ULLI : which is bogus, as the return value is not checked
+	 * ULLI : so use return this value directly for this value
+	 */
 
-	return status;
-
+	return le2cpu16(localData);
 }
 
 /*

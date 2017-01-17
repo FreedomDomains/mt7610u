@@ -984,9 +984,9 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
 
-			mt7610u_read_eeprom16(pAd, 0x04, &Addr01);
-			mt7610u_read_eeprom16(pAd, 0x06, &Addr23);
-			mt7610u_read_eeprom16(pAd, 0x08, &Addr45);
+			Addr01 = mt7610u_read_eeprom16(pAd, 0x04);
+			Addr23 = mt7610u_read_eeprom16(pAd, 0x06);
+			Addr45 = mt7610u_read_eeprom16(pAd, 0x08);
 
 			PermanentAddress[0] = (u8)(Addr01 & 0xff);
 			PermanentAddress[1] = (u8)(Addr01 >> 8);
