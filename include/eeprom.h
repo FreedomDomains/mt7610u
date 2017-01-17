@@ -96,36 +96,6 @@ typedef union _EEPROM_NIC_CINFIG2_STRUC {
 } EEPROM_NIC_CONFIG2_STRUC, *PEEPROM_NIC_CONFIG2_STRUC;
 #endif
 
-
-#if defined(BT_COEXISTENCE_SUPPORT)
-#ifdef RTMP_USB_SUPPORT
-#ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_NIC_CINFIG3_STRUC {
-	struct {
-		USHORT Rsv1:7;	/* must be 0 */
-		USHORT CoexMethod:1;
-		USHORT TxStream:4;	/* Number of Tx stream */
-		USHORT RxStream:4;	/* Number of rx stream */
-	} field;
-	USHORT word;
-} EEPROM_NIC_CONFIG3_STRUC, *PEEPROM_NIC_CONFIG3_STRUC;
-#else
-typedef union _EEPROM_NIC_CINFIG3_STRUC {
-	struct {
-		USHORT RxStream:4;	/* Number of rx stream */
-		USHORT TxStream:4;	/* Number of Tx stream */
-		USHORT CoexMethod:1;
-		USHORT Rsv1:7;	/* must be 0 */
-	} field;
-	USHORT word;
-} EEPROM_NIC_CONFIG3_STRUC, *PEEPROM_NIC_CONFIG3_STRUC;
-#endif
-#endif /* RTMP_USB_SUPPORT */
-
-#endif /* defined(BT_COEXISTENCE_SUPPORT) */
-
-
-
 /*
 	TX_PWR Value valid range 0xFA(-6) ~ 0x24(36)
 */

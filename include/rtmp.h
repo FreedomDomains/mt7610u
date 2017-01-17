@@ -2571,9 +2571,6 @@ struct rtmp_adapter {
 
 	EEPROM_ANTENNA_STRUC Antenna;	/* Since ANtenna definition is different for a & g. We need to save it for future reference. */
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
-#if defined(BT_COEXISTENCE_SUPPORT)
-	EEPROM_NIC_CONFIG3_STRUC NicConfig3;
-#endif /* defined(BT_COEXISTENCE_SUPPORT) */
 
 	/* This soft Rx Antenna Diversity mechanism is used only when user set */
 	/* RX Antenna = DIVERSITY ON */

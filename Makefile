@@ -36,11 +36,6 @@ HAS_DOT11_N_SUPPORT=y
 #Support for 802.11ac VHT
 HAS_DOT11_VHT_SUPPORT=y
 
-
-
-#Support for 2860/2880 co-exist
-HAS_RT2880_RT2860_COEXIST=n
-
 HAS_KTHREAD_SUPPORT=n
 
 #Support for Auto channel select enhance
