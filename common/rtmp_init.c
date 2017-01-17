@@ -295,9 +295,9 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	/* Read MAC setting from EEPROM and record as permanent MAC address */
 	DBGPRINT(RT_DEBUG_TRACE, ("Initialize MAC Address from E2PROM \n"));
 
-	RTUSBReadEEPROM16(pAd, 0x04, &Addr01);
-	RTUSBReadEEPROM16(pAd, 0x06, &Addr23);
-	RTUSBReadEEPROM16(pAd, 0x08, &Addr45);
+	mt7610u_read_eeprom16(pAd, 0x04, &Addr01);
+	mt7610u_read_eeprom16(pAd, 0x06, &Addr23);
+	mt7610u_read_eeprom16(pAd, 0x08, &Addr45);
 
 	pAd->PermanentAddress[0] = (u8)(Addr01 & 0xff);
 	pAd->PermanentAddress[1] = (u8)(Addr01 >> 8);
@@ -348,7 +348,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	/* if E2PROM version mismatch with driver's expectation, then skip*/
 	/* all subsequent E2RPOM retieval and set a system error bit to notify GUI*/
-	RTUSBReadEEPROM16(pAd, EEPROM_VERSION_OFFSET, &Version.word);
+	mt7610u_read_eeprom16(pAd, EEPROM_VERSION_OFFSET, &Version.word);
 	pAd->EepromVersion = Version.field.Version + Version.field.FaeReleaseNumber * 256;
 	DBGPRINT(RT_DEBUG_TRACE, ("E2PROM: Version = %d, FAE release #%d\n", Version.field.Version, Version.field.FaeReleaseNumber));
 
@@ -358,19 +358,19 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 
 	/* Read BBP default value from EEPROM and store to array(EEPROMDefaultValue) in pAd*/
-	RTUSBReadEEPROM16(pAd, EEPROM_NIC1_OFFSET, &value);
+	mt7610u_read_eeprom16(pAd, EEPROM_NIC1_OFFSET, &value);
 	pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET] = value;
 
-	RTUSBReadEEPROM16(pAd, EEPROM_NIC2_OFFSET, &value);
+	mt7610u_read_eeprom16(pAd, EEPROM_NIC2_OFFSET, &value);
 	pAd->EEPROMDefaultValue[EEPROM_NIC_CFG2_OFFSET] = value;
 
 	{
-		RTUSBReadEEPROM16(pAd, EEPROM_COUNTRY_REGION, &value);	/* Country Region*/
+		mt7610u_read_eeprom16(pAd, EEPROM_COUNTRY_REGION, &value);	/* Country Region*/
 		pAd->EEPROMDefaultValue[EEPROM_COUNTRY_REG_OFFSET] = value;
 	}
 
 #if defined(BT_COEXISTENCE_SUPPORT)
-	RTUSBReadEEPROM16(pAd, EEPROM_NIC3_OFFSET, &value);
+	mt7610u_read_eeprom16(pAd, EEPROM_NIC3_OFFSET, &value);
 	pAd->EEPROMDefaultValue[EEPROM_NIC_CFG3_OFFSET] = value;
 	pAd->NicConfig3.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG3_OFFSET];
 #endif /* defined(BT_COEXISTENCE_SUPPORT) */
@@ -380,7 +380,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	/* Therefore, we have to read TxAutoAgc control beforehand.*/
 	/* Read Tx AGC control bit*/
 
-	RTUSBReadEEPROM16(pAd, 0x24, &value);
+	mt7610u_read_eeprom16(pAd, 0x24, &value);
 	reg_val = mt7610u_read32(pAd, 0x0104);
 	DBGPRINT(RT_DEBUG_OFF, ("0x24 = 0x%04x, 0x0104 = 0x%08x\n", value, reg_val));
 	NicCfg0.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG1_OFFSET];
@@ -500,19 +500,19 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		   TssiPlusBoundaryG [4] [3] [2] [1] [0] (smaller) +
 		   TssiMinusBoundaryG[0] [1] [2] [3] [4] (larger) */
 		{
-			RTUSBReadEEPROM16(pAd, EEPROM_G_TSSI_BOUND1, &Power.word);
+			mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND1, &Power.word);
 			pAd->TssiMinusBoundaryG[4] = Power.field.Byte0;
 			pAd->TssiMinusBoundaryG[3] = Power.field.Byte1;
-			RTUSBReadEEPROM16(pAd, EEPROM_G_TSSI_BOUND2, &Power.word);
+			mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND2, &Power.word);
 			pAd->TssiMinusBoundaryG[2] = Power.field.Byte0;
 			pAd->TssiMinusBoundaryG[1] = Power.field.Byte1;
-			RTUSBReadEEPROM16(pAd, EEPROM_G_TSSI_BOUND3, &Power.word);
+			mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND3, &Power.word);
 			pAd->TssiRefG   = Power.field.Byte0; /* reference value [0] */
 			pAd->TssiPlusBoundaryG[1] = Power.field.Byte1;
-			RTUSBReadEEPROM16(pAd, EEPROM_G_TSSI_BOUND4, &Power.word);
+			mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND4, &Power.word);
 			pAd->TssiPlusBoundaryG[2] = Power.field.Byte0;
 			pAd->TssiPlusBoundaryG[3] = Power.field.Byte1;
-			RTUSBReadEEPROM16(pAd, EEPROM_G_TSSI_BOUND5, &Power.word);
+			mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND5, &Power.word);
 			pAd->TssiPlusBoundaryG[4] = Power.field.Byte0;
 			pAd->TxAgcStepG = Power.field.Byte1;
 			pAd->TxAgcCompensateG = 0;
@@ -554,7 +554,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	pAd->BbpRssiToDbmDelta = 0x0;
 
 	/* Read frequency offset setting for RF*/
-		RTUSBReadEEPROM16(pAd, EEPROM_FREQ_OFFSET, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_FREQ_OFFSET, &value);
 
 	if ((value & 0x00FF) != 0x00FF)
 		pAd->RfFreqOffset = (ULONG) (value & 0x00FF);
@@ -584,13 +584,13 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	/* The valid value are (-10 ~ 10) */
 	/* */
 	{
-		RTUSBReadEEPROM16(pAd, EEPROM_RSSI_BG_OFFSET, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_RSSI_BG_OFFSET, &value);
 		pAd->BGRssiOffset[0] = value & 0x00ff;
 		pAd->BGRssiOffset[1] = (value >> 8);
 	}
 
 	{
-		RTUSBReadEEPROM16(pAd, EEPROM_RSSI_BG_OFFSET+2, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_RSSI_BG_OFFSET+2, &value);
 #ifdef MT76x0
 		/*
 			External LNA gain for 5GHz Band(CH100~CH128)
@@ -609,7 +609,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 
 	{
-		RTUSBReadEEPROM16(pAd, EEPROM_LNA_OFFSET, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_LNA_OFFSET, &value);
 		pAd->BLNAGain = value & 0x00ff;
 		/*
 			External LNA gain for 5GHz Band(CH36~CH64)
@@ -619,13 +619,13 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 
 	{
-		RTUSBReadEEPROM16(pAd, EEPROM_RSSI_A_OFFSET, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_RSSI_A_OFFSET, &value);
 		pAd->ARssiOffset[0] = value & 0x00ff;
 		pAd->ARssiOffset[1] = (value >> 8);
 	}
 
 	{
-		RTUSBReadEEPROM16(pAd, (EEPROM_RSSI_A_OFFSET+2), &value);
+		mt7610u_read_eeprom16(pAd, (EEPROM_RSSI_A_OFFSET+2), &value);
 #ifdef MT76x0
 		if (IS_MT76x0(pAd))
 		{
@@ -670,7 +670,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 #ifdef MT76x0
 	if (IS_MT76x0(pAd))
 	{
-		RTUSBReadEEPROM16(pAd, 0xD0, &value);
+		mt7610u_read_eeprom16(pAd, 0xD0, &value);
 		value = (value & 0xFF00) >> 8;
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET = 0x%x\n", __FUNCTION__, value));
 		if ((value & 0xFF) == 0xFF)
@@ -685,7 +685,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		}
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TemperatureOffset = 0x%x\n", __FUNCTION__, pAd->chipCap.TemperatureOffset));
 
-		RTUSBReadEEPROM16(pAd, EEPROM_MT76x0_A_BAND_MB, &value);
+		mt7610u_read_eeprom16(pAd, EEPROM_MT76x0_A_BAND_MB, &value);
 		pAd->chipCap.a_band_mid_ch = value & 0x00ff;
 		if (pAd->chipCap.a_band_mid_ch == 0xFF)
 			pAd->chipCap.a_band_mid_ch = 100;

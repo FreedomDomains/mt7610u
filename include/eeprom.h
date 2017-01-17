@@ -170,7 +170,7 @@ struct rtmp_adapter;
 
 
 #ifdef RTMP_USB_SUPPORT
-int RTUSBReadEEPROM16(struct rtmp_adapter *pAd,
+int mt7610u_read_eeprom16(struct rtmp_adapter *pAd,
 	u16 offset, u16 *pData);
 
 int RTUSBWriteEEPROM16(struct rtmp_adapter *pAd,
