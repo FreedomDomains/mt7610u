@@ -369,6 +369,16 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->EEPROMDefaultValue[EEPROM_COUNTRY_REG_OFFSET] = value;
 	}
 
+	/*
+	 * ULLI : Debug output of BT coexistance word,
+	 * ULLI : maybe we need this in future
+	 */
+
+	value = mt7610u_read_eeprom16(pAd, EEPROM_NIC3_OFFSET);
+	DBGPRINT(RT_DEBUG_OFF, ("BT Coexistence word [%d] = %08x\n",
+		EEPROM_NIC3_OFFSET, value));
+
+
 	/* We have to parse NIC configuration 0 at here.*/
 	/* If TSSI did not have preloaded value, it should reset the TxAutoAgc to false*/
 	/* Therefore, we have to read TxAutoAgc control beforehand.*/

@@ -149,7 +149,7 @@ struct _RSSI_SAMPLE;
 #define EEPROM_VERSION_OFFSET       0x02
 #define EEPROM_NIC1_OFFSET          0x34	/* The address is from NIC config 0, not BBP register ID */
 #define EEPROM_NIC2_OFFSET          0x36	/* The address is from NIC config 1, not BBP register ID */
-
+#define	EEPROM_NIC3_OFFSET	    0x42	/* ULLI BT Coexistence ?? */
 
 #define EEPROM_COUNTRY_REGION			0x38
 
