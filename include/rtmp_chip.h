@@ -368,11 +368,9 @@ struct rtmp_chip_cap {
 	/* ---------------------------- packet ---------------------------------- */
 
 	/* ---------------------------- others ---------------------------------- */
-#ifdef RTMP_EFUSE_SUPPORT
 	UINT16 EFUSE_USAGE_MAP_START;
 	UINT16 EFUSE_USAGE_MAP_END;
 	u8 EFUSE_USAGE_MAP_SIZE;
-#endif /* RTMP_EFUSE_SUPPORT */
 
 #ifdef DFS_SUPPORT
 	u8 DfsEngineNum;

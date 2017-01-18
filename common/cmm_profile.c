@@ -1203,14 +1203,6 @@ int	RTMPSetProfileParameters(
 			retval = RT_CfgSetCountryRegion(pAd, tmpbuf, BAND_5G);
 			DBGPRINT(RT_DEBUG_TRACE, ("CountryRegionABand=%d\n", pAd->CommonCfg.CountryRegionForABand));
 		}
-#ifdef RTMP_EFUSE_SUPPORT
-		/*EfuseBufferMode*/
-		if(RTMPGetKeyParameter("EfuseBufferMode", tmpbuf, 25, pBuffer, true))
-		{
-			pAd->bEEPROMFile = (u8) simple_strtol(tmpbuf, 0, 10);
-			DBGPRINT(RT_DEBUG_TRACE, ("EfuseBufferMode=%d\n", pAd->bUseEfuse));
-		}
-#endif /* RTMP_EFUSE_SUPPORT */
 		/*CountryCode*/
 
 		if (pAd->CommonCfg.bCountryFlag == 0)

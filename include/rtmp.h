@@ -2849,13 +2849,6 @@ struct rtmp_adapter {
 	u8 FlgCtsEnabled;
 	u8 PM_FlgSuspend;
 
-#ifdef RTMP_EFUSE_SUPPORT
-	bool bUseEfuse;
-	bool bEEPROMFile;
-	bool bFroceEEPROMBuffer;
-	u8 EEPROMImage[1024];
-#endif /* RTMP_EFUSE_SUPPORT */
-
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -5054,18 +5047,11 @@ CHAR RTMPMinSnr(
 	IN CHAR				Snr0,
 	IN CHAR				Snr1);
 
-#ifdef RTMP_EFUSE_SUPPORT
 void eFusePhysicalReadRegisters(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT Offset,
 	IN	USHORT Length,
 	OUT	USHORT* pData);
-
-#endif /* RTMP_EFUSE_SUPPORT */
-
-
-
-
 
 void AsicEvaluateRxAnt(
 	IN struct rtmp_adapter *pAd);

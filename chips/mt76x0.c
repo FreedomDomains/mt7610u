@@ -1950,11 +1950,9 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	pChipCap->init_vga_gain_2G = 0x4E;
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef RTMP_EFUSE_SUPPORT
 	pChipCap->EFUSE_USAGE_MAP_START = 0x1e0;
 	pChipCap->EFUSE_USAGE_MAP_END = 0x1FC;
 	pChipCap->EFUSE_USAGE_MAP_SIZE = 29;
-#endif /* RTMP_EFUSE_SUPPORT */
 
 #ifdef CONFIG_ANDES_SUPPORT
 	pChipCap->WlanMemmapOffset = 0x410000;
