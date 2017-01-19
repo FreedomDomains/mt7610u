@@ -96,24 +96,6 @@ Return Value:
 Note:
 ========================================================================
 */
-void RtmpChipBcnSpecInit(struct rtmp_adapter*pAd)
-{
-}
-
-/*
-========================================================================
-Routine Description:
-	Initialize specific beacon frame architecture.
-
-Arguments:
-	pAd				- WLAN control block pointer
-
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
 void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 {
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;

@@ -734,7 +734,6 @@ do {	\
 } while (0)
 
 int RtmpChipOpsHook(void *pCB);
-void RtmpChipBcnSpecInit(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
 void RtmpChipWriteMemory(
