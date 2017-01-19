@@ -128,20 +128,6 @@ void RtmpChipWriteMemory(
 	}
 }
 
-
-
-
-static void RxSensitivityTuning(struct rtmp_adapter*pAd)
-{
-	u8 R66 = 0x26 + GET_LNA_GAIN(pAd);
-
-	{
-		rtmp_bbp_set_agc(pAd, R66, RX_CHAIN_ALL);
-	}
-	DBGPRINT(RT_DEBUG_TRACE,("turn off R17 tuning, restore to 0x%02x\n", R66));
-}
-
-
 #ifdef CONFIG_STA_SUPPORT
 static u8 ChipAGCAdjust(
 	IN struct rtmp_adapter *	pAd,
