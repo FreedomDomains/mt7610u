@@ -742,14 +742,6 @@ void RtmpChipWriteMemory(
 	IN	u32			Value,
 	IN	u8			Unit);
 
-/* global variable */
-extern FREQUENCY_ITEM RtmpFreqItems3020[];
-extern FREQUENCY_ITEM FreqItems3020_Xtal20M[];
-extern u8 NUM_OF_3020_CHNL;
-extern FREQUENCY_ITEM *FreqItems3020;
-extern RTMP_RF_REGS RF2850RegTable[];
-extern u8 NUM_OF_2850_CHNL;
-
 bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
 INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, bool enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
