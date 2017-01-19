@@ -79,8 +79,6 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 	pChipCap->BcnBase[14] = 0xdc00;
 	pChipCap->BcnBase[15] = 0xde00;
 
-	pAd->chipOps.BeaconUpdate = RtmpChipWriteMemory;
-
 	DBGPRINT(RT_DEBUG_TRACE, ("< Beacon Spec Information: >\n"));
 	DBGPRINT(RT_DEBUG_TRACE, ("\tBcnMaxHwNum = \t%d\n", pChipCap->BcnMaxHwNum));
 	DBGPRINT(RT_DEBUG_TRACE, ("\tBcnMaxNum = \t%d\n", pChipCap->BcnMaxNum));

@@ -489,9 +489,6 @@ struct rtmp_chip_ops {
 							u32 ListenInterval, u32 PreTBTTLeadTime,
 							u8 TIMByteOffset, u8 TIMBytePattern);
 
-	/* MAC */
-	void (*BeaconUpdate)(struct rtmp_adapter *pAd, USHORT Offset, u32 Value, u8 Unit);
-
 	/* Channel */
 	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, bool bScan);
 
@@ -626,12 +623,6 @@ do {	\
 		BbpCsr.word = mt7610u_read32(__pAd, H2M_BBP_AGENT);	\
 		BbpCsr.field.Busy = 0;	\
 		mt7610u_write32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\
-} while (0)
-
-#define RTMP_CHIP_UPDATE_BEACON(__pAd, Offset, Value, Unit)	\
-do {	\
-		if (__pAd->chipOps.BeaconUpdate != NULL)	\
-			__pAd->chipOps.BeaconUpdate(__pAd, Offset, Value, Unit);	\
 } while (0)
 
 #define RTMP_CHIP_CCK_MRC_STATUS_CTRL(__pAd)	\

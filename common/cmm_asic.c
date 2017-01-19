@@ -1008,7 +1008,7 @@ void AsicEnableIbssSync(
 	for (i=0; i < TXWISize; i+=2)
 	{
 		longptr =  *ptr + (*(ptr+1)<<8);
-		RTMP_CHIP_UPDATE_BEACON(pAd, HW_BEACON_BASE0(pAd) + i, longptr, 2);
+		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + i, longptr, 2);
 		ptr += 2;
 	}
 
@@ -1018,7 +1018,7 @@ void AsicEnableIbssSync(
 	for (i=0; i< beaconLen; i+=2)
 	{
 		longptr =  *ptr + (*(ptr+1)<<8);
-		RTMP_CHIP_UPDATE_BEACON(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i, longptr, 2);
+		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i, longptr, 2);
 		ptr +=2;
 	}
 #endif /* RTMP_MAC_USB */
