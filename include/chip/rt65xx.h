@@ -118,5 +118,4 @@ void MT76x0DisableTxRx(struct rtmp_adapter *pAd, u8 Level);
 void MT76x0_WLAN_ChipOnOff(struct rtmp_adapter *pAd, bool bOn,
 							bool bResetWLAN);
 
-void dump_bw_info(struct rtmp_adapter *pAd);
 #endif

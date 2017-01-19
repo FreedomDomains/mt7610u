@@ -110,43 +110,6 @@ void MT76x0_ral_wlan_chip_onoff(
 #endif /* RTMP_MAC_USB */
 }
 
-void dump_bw_info(struct rtmp_adapter*pAd)
-{
-		u32 core_r1, agc_r0, be_r0, band_cfg;
-		static u8 *bw_str[]={"20", "10", "40", "80"};
-		u8 bw, prim_ch_idx, decode_cap;
-		static u8 *decode_str[] = {"0", "20", "40", "20/40",
-									"80", "20/80", "40/80", "20/40/80"};
-		u8 tx_prim;
-		struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
-
-
-		core_r1 = RTMP_BBP_IO_READ32(pAd, CORE_R1);
-		agc_r0 = RTMP_BBP_IO_READ32(pAd, AGC1_R0);
-		be_r0 = RTMP_BBP_IO_READ32(pAd, TXBE_R0);
-		band_cfg = mt7610u_read32(pAd, TX_BAND_CFG);
-
-		/*  Tx/RX : control channel setting */
-		DBGPRINT(RT_DEBUG_TRACE, ("%s():RegisterSetting: TX_BAND_CFG=0x%x, CORE_R1=0x%x, AGC1_R0=0x%x, TXBE_R0=0x%x\n",
-				__FUNCTION__, band_cfg, core_r1, agc_r0, be_r0));
-		bw = ((core_r1 & 0x18) >> 3) & 0xff;
-		DBGPRINT(RT_DEBUG_TRACE, ("[CORE_R1]\n"));
-		DBGPRINT(RT_DEBUG_TRACE, ("\tTx/Rx BandwidthCtrl(CORE_R1[4:3])=%d(%s MHz)\n",
-					bw, bw_str[bw]));
-
-		DBGPRINT(RT_DEBUG_TRACE, ("[AGC_R0]\n"));
-		prim_ch_idx = ((agc_r0 & 0x300) >> 8) & 0xff;
-		DBGPRINT(RT_DEBUG_TRACE, ("\tPrimary Channel Idx(AGC_R0[9:8])=%d\n", prim_ch_idx));
-		decode_cap = ((agc_r0 & 0x7000) >> 12);
-		DBGPRINT(RT_DEBUG_TRACE, ("\tDecodeBWCap(AGC_R0[14:12])=%d(%s MHz Data)\n",
-					decode_cap, decode_str[decode_cap]));
-
-		DBGPRINT(RT_DEBUG_TRACE, ("[TXBE_R0]\n"));
-		tx_prim = (be_r0 & 0x3);
-		DBGPRINT(RT_DEBUG_TRACE, ("\tTxPrimary(TXBE_R0[1:0])=%d\n", tx_prim));
-}
-
-
 #ifdef RTMP_USB_SUPPORT
 void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 {
