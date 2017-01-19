@@ -128,40 +128,6 @@ void RtmpChipWriteMemory(
 	}
 }
 
-#ifdef CONFIG_STA_SUPPORT
-static u8 ChipAGCAdjust(
-	IN struct rtmp_adapter *	pAd,
-	IN CHAR					Rssi,
-	IN u8 			OrigR66Value)
-{
-	u8 R66 = OrigR66Value;
-	CHAR lanGain = GET_LNA_GAIN(pAd);
-
-	if (pAd->LatchRfRegs.Channel <= 14)
-	{	/*BG band*/
-		R66 = 0x2E + lanGain;
-		if (Rssi > RSSI_FOR_MID_LOW_SENSIBILITY)
-			R66 += 0x10;
-	}
-	else
-	{	/*A band*/
-		if (pAd->CommonCfg.BBPCurrentBW == BW_20)
-			R66 = 0x32 + (lanGain * 5) / 3;
-		else
-			R66 = 0x3A + (lanGain * 5) / 3;
-
-		if (Rssi > RSSI_FOR_MID_LOW_SENSIBILITY)
-				R66 += 0x10;
-	}
-
-	if (OrigR66Value != R66)
-		rtmp_bbp_set_agc(pAd, R66, RX_CHAIN_ALL);
-
-
-	return R66;
-}
-#endif /* CONFIG_STA_SUPPORT */
-
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd)
 {
