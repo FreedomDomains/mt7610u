@@ -437,7 +437,6 @@ struct rtmp_chip_cap {
 
 #ifdef RTMP_USB_SUPPORT
 	u8 CommandRspBulkInAddr;
-	u8 CommandBulkOutAddr;
 #endif
 
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */

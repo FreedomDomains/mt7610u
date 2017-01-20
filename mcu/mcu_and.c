@@ -28,6 +28,8 @@
 #include	"rt_config.h"
 #include <linux/firmware.h>
 
+static u8 CommandBulkOutAddr = 0x8;
+
 void usb_uploadfw_complete(struct urb *urb)
 {
 	RTMP_OS_COMPLETION *load_fw_done = urb->context;
@@ -300,7 +302,7 @@ loadfw_protect:
 			/* Initialize URB descriptor */
 			RTUSB_FILL_HTTX_BULK_URB(urb,
 					 udev,
-					 cap->CommandBulkOutAddr,
+					 CommandBulkOutAddr,
 					 fw_data,
 					 sent_len + sizeof(*tx_info) + USB_END_PADDING,
 					 usb_uploadfw_complete,
@@ -433,7 +435,7 @@ loadfw_protect:
 			/* Initialize URB descriptor */
 			RTUSB_FILL_HTTX_BULK_URB(urb,
 					 udev,
-					 cap->CommandBulkOutAddr,
+					 CommandBulkOutAddr,
 					 fw_data,
 					 sent_len + sizeof(*tx_info) + USB_END_PADDING,
 					 usb_uploadfw_complete,
@@ -1065,7 +1067,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 
 	RTUSB_FILL_BULK_URB(msg->urb,
 			pObj->pUsb_Dev,
-			usb_sndbulkpipe(pObj->pUsb_Dev, pChipCap->CommandBulkOutAddr),
+			usb_sndbulkpipe(pObj->pUsb_Dev, CommandBulkOutAddr),
 			net_pkt->data,
 			net_pkt->len,
 			usb_kick_out_cmd_msg_complete,
