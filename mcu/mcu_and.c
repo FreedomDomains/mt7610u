@@ -882,9 +882,13 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 		net_pkt = msg->skb;
 
-		RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
-							usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
-							net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
+		RTUSB_FILL_BULK_URB(msg->urb,
+			pObj->pUsb_Dev,
+			usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
+			net_pkt->data,
+			512,
+			usb_rx_cmd_msg_complete,
+			net_pkt);
 
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
@@ -923,9 +927,13 @@ static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 
 	net_pkt = msg->skb;
 
-	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
-						usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
-						net_pkt->data, 512, usb_rx_cmd_msg_complete, net_pkt);
+	RTUSB_FILL_BULK_URB(msg->urb,
+			pObj->pUsb_Dev,
+			usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
+			net_pkt->data,
+			512,
+			usb_rx_cmd_msg_complete,
+			net_pkt);
 
 	mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
@@ -1055,9 +1063,13 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	/* append four zero bytes padding when usb aggregate enable */
 	memset(skb_put(net_pkt, 4), 0x00, 4);
 
-	RTUSB_FILL_BULK_URB(msg->urb, pObj->pUsb_Dev,
-						usb_sndbulkpipe(pObj->pUsb_Dev, pChipCap->CommandBulkOutAddr),
-						net_pkt->data, net_pkt->len, usb_kick_out_cmd_msg_complete, net_pkt);
+	RTUSB_FILL_BULK_URB(msg->urb,
+			pObj->pUsb_Dev,
+			usb_sndbulkpipe(pObj->pUsb_Dev, pChipCap->CommandBulkOutAddr),
+			net_pkt->data,
+			net_pkt->len,
+			usb_kick_out_cmd_msg_complete,
+			net_pkt);
 
 	if (msg->need_rsp)
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->ackq, msg, WAIT_CMD_OUT_AND_ACK);
