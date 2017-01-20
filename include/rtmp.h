@@ -6104,12 +6104,6 @@ void RT28XXDMADisable(
 void RT28XXDMAEnable(
 	IN struct rtmp_adapter		*pAd);
 
-void RT28xx_UpdateBeaconToAsic(
-	IN struct rtmp_adapter* pAd,
-	IN INT apidx,
-	IN ULONG BeaconLen,
-	IN ULONG UpdatePos);
-
 void CfgInitHook(struct rtmp_adapter *pAd);
 
 
