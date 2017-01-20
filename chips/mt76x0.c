@@ -2026,10 +2026,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 */
 
 	pChipOps->DisableTxRx = MT76x0DisableTxRx;
-
-#ifdef RTMP_USB_SUPPORT
-	pChipOps->AsicRadioOff = MT76x0UsbAsicRadioOff;
-#endif /* RTMP_USB_SUPPORT */
 }
 
 

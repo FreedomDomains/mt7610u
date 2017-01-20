@@ -1820,7 +1820,7 @@ void RT28xxUsbMlmeRadioOFF(
 	RTMPSetLED(pAd, LED_RADIO_OFF);
 #endif /* LED_CONTROL_SUPPORT */
 
-	ASIC_RADIO_OFF(pAd, MLME_RADIO_OFF);
+	MT76x0UsbAsicRadioOff(pAd, MLME_RADIO_OFF);
 }
 
 
