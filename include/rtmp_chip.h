@@ -523,8 +523,6 @@ struct rtmp_chip_ops {
 
 	void (*DisableTxRx)(struct rtmp_adapter *ad, u8 Level);
 
-	void (*AsicRadioOn)(struct rtmp_adapter *ad, u8 Stage);
-
 	void (*AsicRadioOff)(struct rtmp_adapter *ad, u8 Stage);
 
 	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
@@ -698,12 +696,6 @@ do {	\
 do {	\
 	if (_pAd->chipOps.DisableTxRx != NULL)	\
 		_pAd->chipOps.DisableTxRx(_pAd, _Level);	\
-} while (0)
-
-#define ASIC_RADIO_ON(_pAd, _Stage)	\
-do {	\
-	if (_pAd->chipOps.AsicRadioOn != NULL)	\
-		_pAd->chipOps.AsicRadioOn(_pAd, _Stage);	\
 } while (0)
 
 #define ASIC_RADIO_OFF(_pAd, _Stage)	\

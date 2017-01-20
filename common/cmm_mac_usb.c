@@ -1736,7 +1736,7 @@ void RT28xxUsbMlmeRadioOn(
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF))
 		return;
 
-	ASIC_RADIO_ON(pAd, MLME_RADIO_ON);
+	MT76x0UsbAsicRadioOn(pAd, MLME_RADIO_ON);
 
 	/* Clear Radio off flag*/
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);

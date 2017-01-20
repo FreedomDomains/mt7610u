@@ -6341,9 +6341,6 @@ void RT28xxUsbMlmeRadioOFF(
 void RT28xxUsbAsicRadioOff(
 	IN struct rtmp_adapter *pAd);
 
-void RT28xxUsbAsicRadioOn(
-	IN struct rtmp_adapter *pAd);
-
 bool AsicCheckCommandOk(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	 Command);

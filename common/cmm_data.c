@@ -282,7 +282,7 @@ int MiniportMMRequest(
 #ifdef CONFIG_STA_SUPPORT
 #ifdef RTMP_MAC_USB
 		if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
-				ASIC_RADIO_ON(pAd, MLME_RADIO_ON);
+				MT76x0UsbAsicRadioOn(pAd, MLME_RADIO_ON);
 #endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 

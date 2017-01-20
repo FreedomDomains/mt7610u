@@ -732,7 +732,7 @@ INT RTMP_COM_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_ASICRADIO_ON:
-			ASIC_RADIO_ON(pAd, RESUME_RADIO_ON);
+			MT76x0UsbAsicRadioOn(pAd, RESUME_RADIO_ON);
 			break;
 
 #endif
