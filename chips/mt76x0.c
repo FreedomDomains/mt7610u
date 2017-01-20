@@ -1973,7 +1973,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 #ifdef RTMP_USB_SUPPORT
 	pChipCap->cmd_padding_len = 4;
-	pChipCap->CommandRspBulkInAddr = 0x85;
 #endif /* RTMP_USB_SUPPORT */
 
 	if (IS_MT7650(pAd))

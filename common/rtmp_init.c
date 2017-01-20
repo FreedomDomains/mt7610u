@@ -2638,11 +2638,6 @@ bool PairEP(struct rtmp_adapter*pAd, u8 EP)
 	int i;
 	int found = 0;
 
-	if (EP == pChipCap->CommandRspBulkInAddr) {
-		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for Command Rsp\n", EP));
-		found = 1;
-	}
-
 	if (!found) {
 		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) do not pair\n", EP));
 		return false;

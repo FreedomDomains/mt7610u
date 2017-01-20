@@ -29,6 +29,7 @@
 #include <linux/firmware.h>
 
 static u8 CommandBulkOutAddr = 0x8;
+static u8 CommandRspBulkInAddr = 0x85;
 
 void usb_uploadfw_complete(struct urb *urb)
 {
@@ -886,7 +887,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 		RTUSB_FILL_BULK_URB(msg->urb,
 			pObj->pUsb_Dev,
-			usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
+			usb_rcvbulkpipe(pObj->pUsb_Dev, CommandRspBulkInAddr),
 			net_pkt->data,
 			512,
 			usb_rx_cmd_msg_complete,
@@ -931,7 +932,7 @@ static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 
 	RTUSB_FILL_BULK_URB(msg->urb,
 			pObj->pUsb_Dev,
-			usb_rcvbulkpipe(pObj->pUsb_Dev, pChipCap->CommandRspBulkInAddr),
+			usb_rcvbulkpipe(pObj->pUsb_Dev, CommandRspBulkInAddr),
 			net_pkt->data,
 			512,
 			usb_rx_cmd_msg_complete,
