@@ -36,6 +36,7 @@ static u8 WMM0ACBulkOutAddr[4] = {
 	0x7
 };
 
+static u8 DataBulkInAddr = 0x84;
 
 #include	"rt_config.h"
 /* Match total 6 bulkout endpoint to corresponding queue.*/
@@ -136,7 +137,7 @@ void RTUSBInitRxDesc(
 
 	RTUSB_FILL_RX_BULK_URB(pUrb,
 					pObj->pUsb_Dev,
-					pChipCap->DataBulkInAddr,
+					DataBulkInAddr,
 					&(pRxContext->TransferBuffer[pAd->NextRxBulkInPosition]),
 					RX_bulk_size - (pAd->NextRxBulkInPosition),
 					RtmpUsbBulkRxComplete,

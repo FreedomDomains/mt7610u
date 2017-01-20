@@ -2643,11 +2643,6 @@ bool PairEP(struct rtmp_adapter*pAd, u8 EP)
 		found = 1;
 	}
 
-	if (EP == pChipCap->DataBulkInAddr) {
-		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for Data-In\n", EP));
-		found = 1;
-	}
-
 	if (EP == pChipCap->CommandRspBulkInAddr) {
 		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for Command Rsp\n", EP));
 		found = 1;
