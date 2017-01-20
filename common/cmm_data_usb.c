@@ -991,10 +991,6 @@ int RtmpUSBMgmtKickOut(
 
 	BulkOutSize += 4; /* Always add 4 extra bytes at every packet.*/
 
-//+++Add by shiang for debug
-if (0) {
-	DBGPRINT(RT_DEBUG_OFF, ("-->%s():shiang-6590, QueIdx=%d, SrcBufLen=%d\n", __FUNCTION__, QueIdx, SrcBufLen));
-}
 //---Add by shiang for debug
 
 /* WY , it cause Tx hang on Amazon_SE , Max said the padding is useless*/
