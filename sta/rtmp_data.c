@@ -863,7 +863,6 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		{
 			DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
-			dumpRxFCEInfo(pAd, pFceInfo);
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
 			RTMPFreeNdisPacket(pAd, pRxPacket);
 			continue;
