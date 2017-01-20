@@ -39,43 +39,6 @@ u8 APPLE_TALK[] = {0x80, 0xf3};
 
 u8 MapUserPriorityToAccessCategory[8] = {QID_AC_BE, QID_AC_BK, QID_AC_BK, QID_AC_BE, QID_AC_VI, QID_AC_VI, QID_AC_VO, QID_AC_VO};
 
-
-
-void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo)
-{
-	DBGPRINT(RT_DEBUG_OFF, ("RxInfo Fields:\n"));
-
-	DBGPRINT(RT_DEBUG_OFF, ("\tBA=%d\n", pRxInfo->BA));
-	DBGPRINT(RT_DEBUG_OFF, ("\tDATA=%d\n", pRxInfo->DATA));
-	DBGPRINT(RT_DEBUG_OFF, ("\tNULLDATA=%d\n", pRxInfo->NULLDATA));
-	DBGPRINT(RT_DEBUG_OFF, ("\tFRAG=%d\n", pRxInfo->FRAG));
-	DBGPRINT(RT_DEBUG_OFF, ("\tU2M=%d\n", pRxInfo->U2M));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMcast=%d\n", pRxInfo->Mcast));
-	DBGPRINT(RT_DEBUG_OFF, ("\tBcast=%d\n", pRxInfo->Bcast));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMyBss=%d\n", pRxInfo->MyBss));
-	DBGPRINT(RT_DEBUG_OFF, ("\tCrc=%d\n", pRxInfo->Crc));
-	DBGPRINT(RT_DEBUG_OFF, ("\tCipherErr=%d\n", pRxInfo->CipherErr));
-	DBGPRINT(RT_DEBUG_OFF, ("\tAMSDU=%d\n", pRxInfo->AMSDU));
-	DBGPRINT(RT_DEBUG_OFF, ("\tHTC=%d\n", pRxInfo->HTC));
-	DBGPRINT(RT_DEBUG_OFF, ("\tRSSI=%d\n", pRxInfo->RSSI));
-	DBGPRINT(RT_DEBUG_OFF, ("\tL2PAD=%d\n", pRxInfo->L2PAD));
-	DBGPRINT(RT_DEBUG_OFF, ("\tAMPDU=%d\n", pRxInfo->AMPDU));
-	DBGPRINT(RT_DEBUG_OFF, ("\tDecrypted=%d\n", pRxInfo->Decrypted));
-	DBGPRINT(RT_DEBUG_OFF, ("\tBssIdx3=%d\n", pRxInfo->BssIdx3));
-	DBGPRINT(RT_DEBUG_OFF, ("\twapi_kidx=%d\n", pRxInfo->wapi_kidx));
-	DBGPRINT(RT_DEBUG_OFF, ("\tpn_len=%d\n", pRxInfo->pn_len));
-	DBGPRINT(RT_DEBUG_OFF, ("\tsw_fc_type0=%d\n", pRxInfo->action_wanted));
-	DBGPRINT(RT_DEBUG_OFF, ("\tsw_fc_type1=%d\n", pRxInfo->sw_fc_type1));
-	DBGPRINT(RT_DEBUG_OFF, ("\tprobe_rsp=%d\n", pRxInfo->probe_rsp));
-	DBGPRINT(RT_DEBUG_OFF, ("\tbeacon=%d\n", pRxInfo->beacon));
-	DBGPRINT(RT_DEBUG_OFF, ("\tdisasso=%d\n", pRxInfo->disasso));
-	DBGPRINT(RT_DEBUG_OFF, ("\tdeauth=%d\n", pRxInfo->deauth));
-	DBGPRINT(RT_DEBUG_OFF, ("\taction_wanted=%d\n", pRxInfo->action_wanted));
-	DBGPRINT(RT_DEBUG_OFF, ("\trsv=%d\n", pRxInfo->rsv));
-
-}
-
-
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("RxFCEInfo Fields:\n"));

@@ -6825,7 +6825,6 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  u8 		IfIdx);
 #endif /* MAC_REPEATER_SUPPORT */
 
-void dump_rxinfo(struct rtmp_adapter*pAd, struct rtmp_rxinfo *pRxInfo);
 void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo);
 
 #ifdef WFA_VHT_PF
