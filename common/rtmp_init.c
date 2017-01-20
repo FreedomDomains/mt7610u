@@ -2631,22 +2631,6 @@ static INT RtmpChipOpsRegister(
 	return ret;
 }
 
-#ifdef RTMP_USB_SUPPORT
-bool PairEP(struct rtmp_adapter*pAd, u8 EP)
-{
-	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
-	int i;
-	int found = 0;
-
-	if (!found) {
-		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) do not pair\n", EP));
-		return false;
-	} else {
-		return true;
-	}
-}
-#endif /* RTMP_USB_SUPPORT */
-
 INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 {
 	u8 i;
