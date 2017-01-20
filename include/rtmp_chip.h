@@ -438,7 +438,6 @@ struct rtmp_chip_cap {
 #ifdef RTMP_USB_SUPPORT
 	u8 DataBulkInAddr;
 	u8 CommandRspBulkInAddr;
-	u8 WMM0ACBulkOutAddr[4];
 	u8 WMM1ACBulkOutAddr;
 	u8 CommandBulkOutAddr;
 #endif

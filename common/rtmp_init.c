@@ -2643,13 +2643,6 @@ bool PairEP(struct rtmp_adapter*pAd, u8 EP)
 		found = 1;
 	}
 
-	for (i = 0; i < 4; i++) {
-		if (EP == pChipCap->WMM0ACBulkOutAddr[i]) {
-			DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for WMM0 AC%d\n", EP, i));
-			found = 1;
-		}
-	}
-
 	if (EP == pChipCap->WMM1ACBulkOutAddr) {
 		DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for WMM1 AC0\n", EP));
 		found = 1;

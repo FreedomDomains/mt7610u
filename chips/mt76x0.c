@@ -1974,10 +1974,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 #ifdef RTMP_USB_SUPPORT
 	pChipCap->cmd_padding_len = 4;
 	pChipCap->CommandBulkOutAddr = 0x8;
-	pChipCap->WMM0ACBulkOutAddr[0] = 0x4;
-	pChipCap->WMM0ACBulkOutAddr[1] = 0x5;
-	pChipCap->WMM0ACBulkOutAddr[2] = 0x6;
-	pChipCap->WMM0ACBulkOutAddr[3] = 0x7;
 	pChipCap->WMM1ACBulkOutAddr	= 0x9;
 	pChipCap->DataBulkInAddr = 0x84;
 	pChipCap->CommandRspBulkInAddr = 0x85;

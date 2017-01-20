@@ -27,6 +27,15 @@
 
 #ifdef RTMP_MAC_USB
 
+#include <linux/types.h>
+
+static u8 WMM0ACBulkOutAddr[4] = {
+	0x4,
+	0x5,
+	0x6,
+	0x7
+};
+
 
 #include	"rt_config.h"
 /* Match total 6 bulkout endpoint to corresponding queue.*/
@@ -56,7 +65,7 @@ void RTUSBInitTxDesc(
 
 		RTUSB_FILL_TX_BULK_URB(pUrb,
 						pObj->pUsb_Dev,
-						pChipCap->WMM0ACBulkOutAddr[BulkOutPipeId],
+						WMM0ACBulkOutAddr[BulkOutPipeId],
 						pSrc,
 						pTxContext->BulkOutSize,
 						Func,
@@ -69,7 +78,7 @@ void RTUSBInitTxDesc(
 
 		RTUSB_FILL_TX_BULK_URB(pUrb,
 						pObj->pUsb_Dev,
-						pChipCap->WMM0ACBulkOutAddr[BulkOutPipeId],
+						WMM0ACBulkOutAddr[BulkOutPipeId],
 						pSrc,
 						pTxContext->BulkOutSize,
 						Func,
@@ -100,7 +109,7 @@ void RTUSBInitHTTxDesc(
 
 	RTUSB_FILL_HTTX_BULK_URB(pUrb,
 						pObj->pUsb_Dev,
-						pChipCap->WMM0ACBulkOutAddr[BulkOutPipeId],
+						WMM0ACBulkOutAddr[BulkOutPipeId],
 						pSrc,
 						BulkOutSize,
 						Func,
