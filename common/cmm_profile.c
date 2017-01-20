@@ -1036,7 +1036,6 @@ static void HTParametersHook(
 	}
 
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 			if (RTMPGetKeyParameter("OBSSScanParam", pValueStr, 32, pInput, true))
 			{
 				int ObssScanValue, idx;
@@ -1136,8 +1135,6 @@ static void HTParametersHook(
 
 				DBGPRINT(RT_DEBUG_TRACE, ("HT: 20/40 BssCoexApCntThr = %d\n", pAd->CommonCfg.BssCoexApCntThr));
 			}
-
-#endif /* DOT11N_DRAFT3 */
 
 	if (RTMPGetKeyParameter("BurstMode", pValueStr, 25, pInput, true))
 	{

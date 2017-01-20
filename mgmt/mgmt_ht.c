@@ -593,7 +593,6 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 
 	RTMPSetHT(pAd, &SetHT);
 
-#ifdef DOT11N_DRAFT3
 	if(pAd->CommonCfg.bBssCoexEnable && pAd->CommonCfg.Bss2040NeedFallBack)
 	{
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
@@ -602,7 +601,6 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 		pAd->CommonCfg.Bss2040CoexistFlag |= BSS_2040_COEXIST_INFO_SYNC;
 		pAd->CommonCfg.Bss2040NeedFallBack = 1;
 	}
-#endif /* DOT11N_DRAFT3 */
 
 	return true;
 }

@@ -363,8 +363,6 @@ void PeerBAAction(
 }
 
 
-#ifdef DOT11N_DRAFT3
-
 #ifdef CONFIG_STA_SUPPORT
 void StaPublicAction(
 	IN struct rtmp_adapter *pAd,
@@ -692,7 +690,6 @@ void ChannelSwitchAction(
 					pAd->CommonCfg.CentralChannel));
 	}
 }
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 void PeerPublicAction(
@@ -708,7 +705,6 @@ void PeerPublicAction(
 	switch(Action)
 	{
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 		case ACTION_BSS_2040_COEXIST:	/* Format defined in IEEE 7.4.7a.1 in 11n Draf3.03*/
 			{
 				/*u8 BssCoexist;*/
@@ -751,7 +747,6 @@ void PeerPublicAction(
 #endif /* CONFIG_STA_SUPPORT */
 			}
 			break;
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 		case ACTION_WIFI_DIRECT:

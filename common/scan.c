@@ -171,12 +171,10 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 	}
 
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 	if (ScanType == SCAN_2040_BSS_COEXIST)
 	{
 		DBGPRINT(RT_DEBUG_INFO, ("SYNC - SCAN_2040_BSS_COEXIST !! Prepare to send Probe Request\n"));
 	}
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 	/* There is no need to send broadcast probe request if active scan is in effect.*/
@@ -291,7 +289,6 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 		}
 		FrameLen += Tmp;
 
-#ifdef DOT11N_DRAFT3
 		if ((pAd->MlmeAux.Channel <= 14) && (pAd->CommonCfg.bBssCoexEnable == true))
 		{
 			ULONG Tmp;
@@ -304,7 +301,6 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 
 			FrameLen += Tmp;
 		}
-#endif /* DOT11N_DRAFT3 */
 	}
 #endif /* DOT11_N_SUPPORT */
 

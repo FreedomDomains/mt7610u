@@ -131,10 +131,8 @@ void RTMPWriteTxWI(
 	/* If CCK or OFDM, BW must be 20*/
 	pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 	if (pTxWI->TxWIBW)
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 	pTxWI->TxWIMCS = pTransmit->field.MCS;
@@ -227,10 +225,8 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 	/* If CCK or OFDM, BW must be 20 */
 	pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 	if (pTxWI->TxWIBW)
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
-#endif /* DOT11N_DRAFT3 */
 
 	pTxWI->TxWIAMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? true : false);
 	BASize = pAd->CommonCfg.TxBASize;
@@ -338,10 +334,8 @@ void RTMPWriteTxWI_Cache(
 
 	pTxWI->TxWIMIMOps = 0;
 
-#ifdef DOT11N_DRAFT3
 	if (pTxWI->TxWIBW)
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
-#endif /* DOT11N_DRAFT3 */
 
     if (pAd->CommonCfg.bMIMOPSEnable)
     {

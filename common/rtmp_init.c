@@ -1885,7 +1885,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->bBroadComHT = false;
 	pAd->CommonCfg.bRdg = false;
 
-#ifdef DOT11N_DRAFT3
 	pAd->CommonCfg.Dot11OBssScanPassiveDwell = dot11OBSSScanPassiveDwell;	/* Unit : TU. 5~1000*/
 	pAd->CommonCfg.Dot11OBssScanActiveDwell = dot11OBSSScanActiveDwell;	/* Unit : TU. 10~1000*/
 	pAd->CommonCfg.Dot11BssWidthTriggerScanInt = dot11BSSWidthTriggerScanInterval;	/* Unit : Second	*/
@@ -1898,7 +1897,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.bBssCoexEnable = true; /* by default, we enable this feature, you can disable it via the profile or ioctl command*/
 	pAd->CommonCfg.BssCoexApCntThr = 0;
 	pAd->CommonCfg.Bss2040NeedFallBack = 0;
-#endif  /* DOT11N_DRAFT3 */
 
 	memset(&pAd->CommonCfg.AddHTInfo, 0, sizeof(pAd->CommonCfg.AddHTInfo));
 	pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;

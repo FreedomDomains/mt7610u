@@ -245,15 +245,12 @@ void SupportRate(
 bool ApScanRunning(
 	IN struct rtmp_adapter *pAd);
 
-#ifdef DOT11N_DRAFT3
 void APOverlappingBSSScan(
 	IN struct rtmp_adapter*pAd);
 
 INT GetBssCoexEffectedChRange(
 	IN struct rtmp_adapter*pAd,
 	IN BSS_COEX_CH_RANGE *pCoexChRange);
-
-#endif /* DOT11N_DRAFT3 */
 
 /* ap_wpa.c */
 void WpaStateMachineInit(

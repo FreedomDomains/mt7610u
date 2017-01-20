@@ -784,20 +784,16 @@ typedef struct _BBP_R66_TUNING {
 
 
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 #define EFFECTED_CH_SECONDARY 0x1
 #define EFFECTED_CH_PRIMARY	0x2
 #define EFFECTED_CH_LEGACY		0x4
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 /* structure to store channel TX power */
 typedef struct _CHANNEL_TX_POWER {
 	USHORT RemainingTimeForUse;	/*unit: sec */
 	u8 Channel;
-#ifdef DOT11N_DRAFT3
 	bool bEffectedChannel;	/* For BW 40 operating in 2.4GHz , the "effected channel" is the channel that is covered in 40Mhz. */
-#endif /* DOT11N_DRAFT3 */
 	CHAR Power;
 	CHAR Power2;
 #ifdef DOT11N_SS3_SUPPORT
@@ -1076,7 +1072,6 @@ typedef struct {
 	bool bAllTid;	/* If True, delete all TID for BA sessions with this MACaddr. */
 } OID_ADD_BA_ENTRY, *POID_ADD_BA_ENTRY;
 
-#ifdef DOT11N_DRAFT3
 typedef enum _BSS2040COEXIST_FLAG {
 	BSS_2040_COEXIST_DISABLE = 0,
 	BSS_2040_COEXIST_TIMER_FIRED = 1,
@@ -1090,7 +1085,6 @@ typedef struct _BssCoexChRange_ {
 	u8 effectChStart;
 	u8 effectChEnd;
 } BSS_COEX_CH_RANGE;
-#endif /* DOT11N_DRAFT3 */
 
 #define IS_HT_STA(_pMacEntry)	\
 	(_pMacEntry->MaxHTPhyMode.field.MODE >= MODE_HTMIX)
@@ -1382,7 +1376,6 @@ struct common_config {
 
 	EXT_CAP_INFO_ELEMENT ExtCapIE;	/* this is the extened capibility IE appreed in MGMT frames. Doesn't need to update once set in Init. */
 
-#ifdef DOT11N_DRAFT3
 	bool bBssCoexEnable;
 	/*
 	   Following two paramters now only used for the initial scan operation. the AP only do
@@ -1417,7 +1410,6 @@ struct common_config {
 
 	bool bOverlapScanning;
 	bool bBssCoexNotify;
-#endif /* DOT11N_DRAFT3 */
 
 	bool bHTProtect;
 	bool bMIMOPSEnable;
@@ -1744,9 +1736,7 @@ typedef struct _STA_ADMIN_CONFIG {
 	bool bForceTxBurst;	/* 1: force enble TX PACKET BURST, 0: disable */
 	bool bAutoConnectIfNoSSID;
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 	u8 RegClass;		/*IE_SUPP_REG_CLASS: 2009 PF#3: For 20/40 Intolerant Channel Report */
-#endif /* DOT11N_DRAFT3 */
 	bool bAdhocN;
 #endif /* DOT11_N_SUPPORT */
 	bool bAdhocCreator;	/*true indicates divice is Creator. */
@@ -2038,10 +2028,8 @@ typedef struct _MAC_TABLE_ENTRY {
 
 	HT_CAPABILITY_IE HTCapability;
 
-#ifdef DOT11N_DRAFT3
 	u8 BSS2040CoexistenceMgmtSupport;
 	bool bForty_Mhz_Intolerant;
-#endif /* DOT11N_DRAFT3 */
 
 #ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap_ie;
@@ -3572,7 +3560,6 @@ void SendRefreshBAR(
 	IN	struct rtmp_adapter *pAd,
 	IN	MAC_TABLE_ENTRY	*pEntry);
 
-#ifdef DOT11N_DRAFT3
 void RTMP_11N_D3_TimerInit(
 	IN struct rtmp_adapter *pAd);
 
@@ -3616,7 +3603,6 @@ void Send2040CoexistAction(
 void UpdateBssScanParm(
 	IN struct rtmp_adapter *pAd,
 	IN OVERLAP_BSS_SCAN_IE APBssScan);
-#endif /* DOT11N_DRAFT3 */
 
 void AsicEnableRalinkBurstMode(
 	IN struct rtmp_adapter *pAd);
@@ -4071,7 +4057,6 @@ void BATableInsertEntry(
 	IN u8 OriginatorStatus,
     IN bool IsRecipient);
 
-#ifdef DOT11N_DRAFT3
 void Bss2040CoexistTimeOut(
 	IN void *SystemSpecific1,
 	IN void *FunctionContext,
@@ -4091,7 +4076,6 @@ INT TriEventTableSetEntry(
 	IN u8 		RegClass,
 	IN u8 ChannelNo);
 
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 void BssTableSsidSort(
@@ -4796,14 +4780,12 @@ bool PeerBeaconAndProbeRspSanity(
 
 
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 bool PeerBeaconAndProbeRspSanity2(
 	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	IN OVERLAP_BSS_SCAN_IE *BssScan,
 	OUT u8 	*RegClass);
-#endif /* DOT11N_DRAFT3 */
 #endif /* DOT11_N_SUPPORT */
 
 bool PeerAddBAReqActionSanity(
@@ -5270,7 +5252,6 @@ CHAR    ConvertToSnr(
 	IN struct rtmp_adapter * pAd,
 	IN u8 			Snr);
 
-#ifdef DOT11N_DRAFT3
 void BuildEffectedChannelList(
 	IN struct rtmp_adapter *pAd);
 
@@ -5284,9 +5265,6 @@ void CntlChannelWidth(
 	IN u8 		CentralChannel,
 	IN u8 		ChannelWidth,
 	IN u8 		SecondaryChannelOffset);
-
-#endif /* DOT11N_DRAFT3 */
-
 
 void APAsicEvaluateRxAnt(
 	IN struct rtmp_adapter *pAd);
@@ -5781,7 +5759,6 @@ INT	Set_HtMimoPs_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
 
-#ifdef DOT11N_DRAFT3
 INT Set_HT_BssCoex_Proc(
 	IN	struct rtmp_adapter *	pAd,
 	IN	char *			pParam);
@@ -5789,7 +5766,6 @@ INT Set_HT_BssCoex_Proc(
 INT Set_HT_BssCoexApCntThr_Proc(
 	IN	struct rtmp_adapter *	pAd,
 	IN	char *			pParam);
-#endif /* DOT11N_DRAFT3 */
 
 
 

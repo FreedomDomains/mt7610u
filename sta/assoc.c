@@ -412,7 +412,6 @@ void MlmeAssocReqAction(
 		}
 #endif /* DOT11_N_SUPPORT */
 
-#if defined(DOT11N_DRAFT3) || defined(DOT11V_WNM_SUPPORT) || defined(DOT11Z_TDLS_SUPPORT)
 		{
 			ULONG TmpLen;
 			EXT_CAP_INFO_ELEMENT extCapInfo;
@@ -421,14 +420,12 @@ void MlmeAssocReqAction(
 			extInfoLen = sizeof (EXT_CAP_INFO_ELEMENT);
 			memset(&extCapInfo, 0, extInfoLen);
 
-#ifdef DOT11N_DRAFT3
 			if ((pAd->CommonCfg.bBssCoexEnable == true) &&
 			    WMODE_CAP_N(pAd->CommonCfg.PhyMode)
 			    && (pAd->CommonCfg.Channel <= 14)
 			    ) {
 				extCapInfo.BssCoexistMgmtSupport = 1;
 			}
-#endif /* DOT11N_DRAFT3 */
 
 
 			MakeOutgoingFrame(pOutBuffer + FrameLen, &TmpLen,
@@ -438,7 +435,6 @@ void MlmeAssocReqAction(
 					END_OF_ARGS);
 			FrameLen += TmpLen;
 		}
-#endif /* defined(DOT11N_DRAFT3) || defined(DOT11V_WNM_SUPPORT) || defined(DOT11Z_TDLS_SUPPORT) */
 
 		/* add Ralink proprietary IE to inform AP this STA is going to use AGGREGATION or PIGGY-BACK+AGGREGATION */
 		/* Case I: (Aggregation + Piggy-Back) */

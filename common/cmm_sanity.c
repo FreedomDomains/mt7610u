@@ -1421,7 +1421,6 @@ SanityCheck:
 }
 
 
-#ifdef DOT11N_DRAFT3
 /*
 	==========================================================================
 	Description:
@@ -1508,7 +1507,6 @@ bool PeerBeaconAndProbeRspSanity2(
 	return brc;
 
 }
-#endif /* DOT11N_DRAFT3 */
 
 #if defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT)
 /*
