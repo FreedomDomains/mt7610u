@@ -97,33 +97,6 @@ void dumpRxFCEInfo(struct rtmp_adapter*pAd, RXFCE_INFO *pRxFceInfo)
 static u8 *txwi_txop_str[]={"HT_TXOP", "PIFS", "SIFS", "BACKOFF", "Invalid"};
 #define TXWI_TXOP_STR(_x)	((_x) <= 3 ? txwi_txop_str[(_x)]: txwi_txop_str[4])
 
-void dumpTxWI(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI)
-{
-	DBGPRINT(RT_DEBUG_OFF, ("TxWI Fields:\n"));
-	DBGPRINT(RT_DEBUG_OFF, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
-	DBGPRINT(RT_DEBUG_OFF, ("\tSTBC=%d\n", pTxWI->TxWISTBC));
-	DBGPRINT(RT_DEBUG_OFF, ("\tShortGI=%d\n", pTxWI->TxWIShortGI));
-	DBGPRINT(RT_DEBUG_OFF, ("\tBW=%d(%sMHz)\n", pTxWI->TxWIBW, get_bw_str(pTxWI->TxWIBW)));
-	DBGPRINT(RT_DEBUG_OFF, ("\tLDPC=%d\n",pTxWI->TxWILDPC));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMCS=%d\n", pTxWI->TxWIMCS));
-	DBGPRINT(RT_DEBUG_OFF, ("\tTxOP=%d(%s)\n", pTxWI->TxWITXOP, TXWI_TXOP_STR(pTxWI->TxWITXOP)));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMpduDensity=%d\n", pTxWI->TxWIMpduDensity));
-	DBGPRINT(RT_DEBUG_OFF, ("\tAMPDU=%d\n", pTxWI->TxWIAMPDU));
-	DBGPRINT(RT_DEBUG_OFF, ("\tTS=%d\n", pTxWI->TxWITS));
-	DBGPRINT(RT_DEBUG_OFF, ("\tCF-ACK=%d\n", pTxWI->TxWICFACK));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMIMO-PS=%d\n", pTxWI->TxWIMIMOps));
-	DBGPRINT(RT_DEBUG_OFF, ("\tNSEQ=%d\n", pTxWI->TxWINSEQ));
-	DBGPRINT(RT_DEBUG_OFF, ("\tACK=%d\n", pTxWI->TxWIACK));
-	DBGPRINT(RT_DEBUG_OFF, ("\tFRAG=%d\n", pTxWI->TxWIFRAG));
-	DBGPRINT(RT_DEBUG_OFF, ("\tWCID=%d\n", pTxWI->TxWIWirelessCliID));
-	DBGPRINT(RT_DEBUG_OFF, ("\tBAWinSize=%d\n", pTxWI->TxWIBAWinSize));
-	DBGPRINT(RT_DEBUG_OFF, ("\tMPDUtotalByteCnt=%d\n", pTxWI->TxWIMPDUByteCnt));
-	DBGPRINT(RT_DEBUG_OFF, ("\tTXBF_PT_SCA=%d\n", pTxWI->TxWITxBfPTSca));
-	DBGPRINT(RT_DEBUG_OFF, ("\tTIM=%d\n", pTxWI->TxWITIM));
-	DBGPRINT(RT_DEBUG_OFF, ("\tPID=%d\n", pTxWI->TxWIPacketId));
-}
-
-
 void dump_rxwi(struct rtmp_adapter*pAd, struct rxwi_nmac *pRxWI)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("RxWI Fields:\n"));
