@@ -1011,9 +1011,8 @@ void AsicEnableIbssSync(
 			(*(ptr + 1) << 8);
 			(*(ptr + 2) << 16);
 			(*(ptr + 3) << 24);
-		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + i,
-				    dword, 4);
-		ptr += 2;
+		mt7610u_write32(pAd, HW_BEACON_BASE0(pAd) + i,dword);
+		ptr += 4;
 	}
 
 	/* start right after the 16-byte TXWI field*/
@@ -1027,10 +1026,9 @@ void AsicEnableIbssSync(
 			(*(ptr + 2) << 16);
 			(*(ptr + 3) << 24);
 
-		RtmpChipWriteMemory(pAd,
-				    HW_BEACON_BASE0(pAd) + TXWISize + i,
-				    dword, 4);
-		ptr +=2;
+		mt7610u_write32(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i,
+				dword);
+		ptr +=4;
 	}
 #endif /* RTMP_MAC_USB */
 

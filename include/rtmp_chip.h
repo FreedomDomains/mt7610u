@@ -706,12 +706,6 @@ do {	\
 int RtmpChipOpsHook(void *pCB);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
-void RtmpChipWriteMemory(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u32			Value,
-	IN	u8			Unit);
-
 bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
 INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, bool enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);

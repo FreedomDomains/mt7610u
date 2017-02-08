@@ -89,43 +89,6 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 
 }
 
-/*
-========================================================================
-Routine Description:
-	write memory
-
-Arguments:
-	pAd				- WLAN control block pointer
-	Offset			- Memory offsets
-	Value			- Written value
-	Unit				- Unit in "Byte"
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
-void RtmpChipWriteMemory(
-	IN	struct rtmp_adapter*pAd,
-	IN	USHORT			Offset,
-	IN	u32			Value,
-	IN	u8			Unit)
-{
-	switch(Unit)
-	{
-		case 1:
-			RTMP_IO_WRITE8(pAd, Offset, Value);
-			break;
-		case 2:
-			RTMP_IO_WRITE16(pAd, Offset, Value);
-			break;
-		case 4:
-			mt7610u_write32(pAd, Offset, Value);
-		default:
-			break;
-	}
-}
-
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd)
 {

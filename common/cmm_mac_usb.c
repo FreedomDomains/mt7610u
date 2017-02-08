@@ -1385,13 +1385,14 @@ void RTUSBBssBeaconStop(
 
 		RTMPCancelTimer(&pAd->CommonCfg.BeaconUpdateTimer, &Cancelled);
 
-		for(i=0; i<NumOfBcn; i++)
-		{
+		for(i=0; i<NumOfBcn; i++) {
 			memset(pBeaconSync->BeaconBuf[i], 0, HW_BEACON_OFFSET);
 			memset(pBeaconSync->BeaconTxWI[i], 0, TXWISize);
 
 			for (offset=0; offset<HW_BEACON_OFFSET; offset+=4)
-				RtmpChipWriteMemory(pAd, pAd->BeaconOffset[i] + offset, 0x00, 4);
+				mt7610u_write32(pAd,
+						pAd->BeaconOffset[i] + offset,
+						0x00);
 
 			pBeaconSync->CapabilityInfoLocationInBeacon[i] = 0;
 			pBeaconSync->TimIELocationInBeacon[i] = 0;
