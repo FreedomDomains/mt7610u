@@ -977,7 +977,6 @@ void AsicEnableIbssSync(
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
 	u8 TXWISize = sizeof(struct txwi_nmac);
-	u32 longptr;
 
 #ifdef RT_BIG_ENDIAN
 	{
@@ -1005,20 +1004,32 @@ void AsicEnableIbssSync(
 #ifdef RTMP_MAC_USB
 	/* move BEACON TXD and frame content to on-chip memory*/
 	ptr = (u8 *)&pAd->BeaconTxWI;
-	for (i=0; i < TXWISize; i+=2)
-	{
-		longptr =  *ptr + (*(ptr+1)<<8);
-		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + i, longptr, 2);
+	for (i = 0; i < TXWISize; i += 4) {
+		u32 dword;
+
+		dword =  *ptr +
+			(*(ptr + 1) << 8);
+			(*(ptr + 2) << 16);
+			(*(ptr + 3) << 24);
+		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + i,
+				    dword, 4);
 		ptr += 2;
 	}
 
 	/* start right after the 16-byte TXWI field*/
 	ptr = pAd->BeaconBuf;
 	/*for (i=0; i< pAd->BeaconTxWI.TxWIMPDUByteCnt; i+=2)*/
-	for (i=0; i< beaconLen; i+=2)
-	{
-		longptr =  *ptr + (*(ptr+1)<<8);
-		RtmpChipWriteMemory(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i, longptr, 2);
+	for (i = 0; i< beaconLen; i += 4) {
+		u32 dword;
+
+		dword =  *ptr +
+			(*(ptr + 1) << 8);
+			(*(ptr + 2) << 16);
+			(*(ptr + 3) << 24);
+
+		RtmpChipWriteMemory(pAd,
+				    HW_BEACON_BASE0(pAd) + TXWISize + i,
+				    dword, 4);
 		ptr +=2;
 	}
 #endif /* RTMP_MAC_USB */
