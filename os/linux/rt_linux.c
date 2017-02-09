@@ -144,11 +144,6 @@ void RTMPusecDelay(ULONG usec)
 		udelay(usec % 50);
 }
 
-void RTMP_GetCurrentSystemTick(ULONG *pNow)
-{
-	*pNow = jiffies;
-}
-
 ULONG RTMPMsecsToJiffies(u32 m)
 {
 

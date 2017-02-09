@@ -1517,10 +1517,7 @@ static void MT76x0_ChipSwitchChannel(
 	u32 rf_phy_mode, rf_bw = RF_BW_20;
 	u8 bbp_ch_idx, delta_pwr;
 	u32 ret;
-	ULONG Old, New, Diff;
 	u32 Value;
-
-	RTMP_GetCurrentSystemTick(&Old);
 
 	bbp_ch_idx = vht_prim_ch_idx(Channel, pAd->CommonCfg.Channel);
 
@@ -1646,10 +1643,6 @@ static void MT76x0_ChipSwitchChannel(
 		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a41010);
 	else
 		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a4100A);
-
-	RTMP_GetCurrentSystemTick(&New);
-	Diff = (New - Old) * 1000 / OS_HZ;
-	DBGPRINT(RT_DEBUG_TRACE, ("Switch Channel spent %ldms\n", Diff));
 
 	return;
 }

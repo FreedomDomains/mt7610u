@@ -1665,18 +1665,9 @@ int NICLoadFirmware(
 	IN struct rtmp_adapter *pAd)
 {
 	int	 status = NDIS_STATUS_SUCCESS;
-	ULONG Old, New, Diff;
-
-	RTMP_GetCurrentSystemTick(&Old);
 
 	if (pAd->chipOps.MCU_loadFirmware)
 		status = pAd->chipOps.MCU_loadFirmware(pAd);
-
-	RTMP_GetCurrentSystemTick(&New);
-
-	Diff = (New - Old) * 1000 / OS_HZ;
-
-	DBGPRINT(RT_DEBUG_TRACE, ("Load fw spent %ldms\n", Diff));
 
 	return status;
 }
