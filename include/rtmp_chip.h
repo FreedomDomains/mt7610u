@@ -433,9 +433,6 @@ struct rtmp_chip_cap {
 	u8 cmd_header_len;
 	u8 cmd_padding_len;
 
-#ifdef RTMP_USB_SUPPORT
-#endif
-
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
 #ifdef MT76x0

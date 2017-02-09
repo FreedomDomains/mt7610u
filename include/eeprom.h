@@ -137,12 +137,10 @@ struct rtmp_adapter;
 
 
 
-#ifdef RTMP_USB_SUPPORT
 u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset);
 
 int RTUSBWriteEEPROM16(struct rtmp_adapter *pAd,
 	u16 offset, u16 value);
-#endif /* RTMP_USB_SUPPORT */
 
 
 /*************************************************************************

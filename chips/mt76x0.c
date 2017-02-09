@@ -1957,11 +1957,7 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 #endif /* CONFIG_ANDES_SUPPORT */
 
 	pChipCap->cmd_header_len = sizeof(struct txinfo_nmac_cmd);
-
-
-#ifdef RTMP_USB_SUPPORT
 	pChipCap->cmd_padding_len = 4;
-#endif /* RTMP_USB_SUPPORT */
 
 	if (IS_MT7650(pAd))
 		pChipCap->fw_name = MT7650_FIRMWARE_NAME;

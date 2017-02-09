@@ -83,10 +83,8 @@ typedef union _COEXCFG0_STRUC{
 }COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
 #endif
 
-#ifdef RTMP_USB_SUPPORT
 void MT76x0UsbAsicRadioOn(struct rtmp_adapter *pAd, u8 Stage);
 void MT76x0UsbAsicRadioOff(struct rtmp_adapter *pAd, u8 Stage);
-#endif
 
 /*
 	EEPROM format

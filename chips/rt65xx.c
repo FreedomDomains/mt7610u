@@ -30,7 +30,6 @@
 #include	"rt_config.h"
 
 
-#ifdef RTMP_USB_SUPPORT
 void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 ret;
@@ -134,7 +133,6 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
-#endif
 
 void MT76x0DisableTxRx(
 	struct rtmp_adapter*pAd,

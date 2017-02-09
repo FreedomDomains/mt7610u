@@ -49,9 +49,7 @@
 #include <linux/if_arp.h>
 #include <linux/ctype.h>
 #include <linux/vmalloc.h>
-#ifdef RTMP_USB_SUPPORT
 #include <linux/usb.h>
-#endif /* RTMP_USB_SUPPORT */
 #include <linux/wireless.h>
 #include <net/iw_handler.h>
 
@@ -97,10 +95,8 @@
 #define MT7610_FIRMWARE_NAME	"mt7610u.bin"
 #define MT7650_FIRMWARE_NAME	"mt7650u.bin"
 
-/*#ifdef RTMP_USB_SUPPORT // os abl move */
 typedef struct usb_device	*PUSB_DEV;
 typedef struct usb_ctrlrequest devctrlrequest;
-/*#endif */
 
 /***********************************************************************************
  *	Profile related sections
@@ -924,7 +920,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 #define GET_PAD_FROM_NET_DEV(_pAd, _net_dev)						\
 	_pAd = RTMP_OS_NETDEV_GET_PRIV(_net_dev);
 
-/*#ifdef RTMP_USB_SUPPORT */
 /******************************************************************************
 
   	USB related definitions
@@ -1042,8 +1037,6 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, struct urb 
 
 #define USB_CONTROL_MSG		usb_control_msg
 
-
-/*#endif // RTMP_USB_SUPPORT */
 
 INT RtmpOSNetDevOpsAlloc(
 	IN void **pNetDevOps);

@@ -676,7 +676,6 @@ INT RTMP_COM_IoctlHandle(
 
 #ifdef CONFIG_STA_SUPPORT
 //#ifdef CONFIG_PM
-#ifdef RTMP_USB_SUPPORT
 		case CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_SET:
 		/* set driver state to fRTMP_ADAPTER_SUSPEND */
 			RTMP_SET_FLAG(pAd,fRTMP_ADAPTER_SUSPEND);
@@ -735,7 +734,6 @@ INT RTMP_COM_IoctlHandle(
 			MT76x0UsbAsicRadioOn(pAd, RESUME_RADIO_ON);
 			break;
 
-#endif
 //#endif /* CONFIG_PM */
 
 		case CMD_RTPRIV_IOCTL_AP_BSSID_GET:
@@ -812,7 +810,6 @@ INT RTMP_COM_IoctlHandle(
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
 
-#ifdef RTMP_USB_SUPPORT
 		case CMD_RTPRIV_IOCTL_USB_CONFIG_INIT:
 		{
 			RT_CMD_USB_DEV_CONFIG *pConfig;
@@ -843,7 +840,6 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_USB_RESUME:
 			pAd->PM_FlgSuspend = 0;
 			break;
-#endif /* RTMP_USB_SUPPORT */
 
 
 #ifdef RT_CFG80211_SUPPORT

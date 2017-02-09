@@ -135,9 +135,7 @@ struct cmd_msg {
 	enum cmd_msg_state state;
 	struct rtmp_adapter *priv;
 	struct sk_buff *skb;
-#ifdef RTMP_USB_SUPPORT
 	struct urb *urb;
-#endif
 };
 
 /*

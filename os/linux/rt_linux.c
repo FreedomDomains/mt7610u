@@ -1630,7 +1630,6 @@ Note:
 */
 void RtmpOsMlmeUp(IN RTMP_OS_TASK *pMlmeQTask)
 {
-#ifdef RTMP_USB_SUPPORT
 	OS_TASK *pTask = RTMP_OS_TASK_GET(pMlmeQTask);
 
 #ifdef KTHREAD_SUPPORT
@@ -1645,7 +1644,6 @@ void RtmpOsMlmeUp(IN RTMP_OS_TASK *pMlmeQTask)
 		}
 	}
 #endif /* KTHREAD_SUPPORT */
-#endif /* RTMP_USB_SUPPORT */
 }
 
 

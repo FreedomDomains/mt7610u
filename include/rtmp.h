@@ -6398,7 +6398,6 @@ void MFB_PerPareMFB(
 
 
 
-#ifdef RTMP_USB_SUPPORT
 /*
  * Function Prototype in rtusb_bulk.c
  */
@@ -6471,7 +6470,6 @@ void RTUSBInitRxDesc(
 
 void RTUSBBulkRxHandle(
 	IN unsigned long data);
-#endif /* RTMP_USB_SUPPORT */
 
 
 #ifdef SOFT_ENCRYPT
