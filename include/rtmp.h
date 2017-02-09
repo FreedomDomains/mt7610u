@@ -3383,8 +3383,6 @@ void UserCfgExit(
 void UserCfgInit(
 	IN  struct rtmp_adapter *  pAd);
 
-void NICLoadFirmware(struct rtmp_adapter *  pAd);
-
 void NICUpdateFifoStaCounters(
 	IN struct rtmp_adapter *pAd);
 

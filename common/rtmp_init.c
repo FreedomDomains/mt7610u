@@ -914,7 +914,7 @@ retry:
 			return NDIS_STATUS_FAILURE;
 
 		if (j++ == 0) {
-			NICLoadFirmware(pAd);
+			mt7610u_mcu_usb_loadfw(pAd);
 			goto retry;
 		}
 		return NDIS_STATUS_FAILURE;
@@ -1657,10 +1657,6 @@ void NICUpdateRawCounters(
 
 }
 
-void NICLoadFirmware(struct rtmp_adapter *pAd)
-{
-	mt7610u_mcu_usb_loadfw(pAd);
-}
 
 /*
 	========================================================================
