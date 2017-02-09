@@ -155,11 +155,7 @@ void MT76x0_ShowDmaIndexCupIndex(
 	struct rtmp_adapter *pAd);
 #endif /* DBG */
 
-void MT76x0_WLAN_ChipOnOff(
-	IN struct rtmp_adapter *pAd,
-	IN bool bOn,
-	IN bool bResetWLAN);
-
+void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
 void MT76x0_AntennaSelCtrl(
 	IN struct rtmp_adapter *pAd);

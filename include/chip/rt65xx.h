@@ -115,7 +115,6 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC {
 #endif
 
 void MT76x0DisableTxRx(struct rtmp_adapter *pAd, u8 Level);
-void MT76x0_WLAN_ChipOnOff(struct rtmp_adapter *pAd, bool bOn,
-							bool bResetWLAN);
+void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
 #endif

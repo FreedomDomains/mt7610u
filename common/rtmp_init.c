@@ -2641,7 +2641,7 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 
 #ifdef RT65xx
 	//if (IS_RT65XX(pAd))
-		MT76x0_WLAN_ChipOnOff(pAd, true, false);
+		mt7610u_chip_onoff(pAd, true, false);
 #endif
 
 
@@ -2673,7 +2673,7 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 
 #ifdef RT65xx
 	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1)) {
-		MT76x0_WLAN_ChipOnOff(pAd, false, false);
+		mt7610u_chip_onoff(pAd, false, false);
 	}
 #endif /* RT65xx */
 

@@ -85,7 +85,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
-		MT76x0_WLAN_ChipOnOff(pAd, true, false);
+		mt7610u_chip_onoff(pAd, true, false);
 
 	/* make some traffic to invoke EvtDeviceD0Entry callback function*/
 	MACValue = mt7610u_read32(pAd,0x1000);
@@ -342,16 +342,13 @@ void MT76x0DisableTxRx(
 				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
 			bResetWLAN = 0;
 
-		MT76x0_WLAN_ChipOnOff(pAd, false, bResetWLAN);
+		mt7610u_chip_onoff(pAd, false, bResetWLAN);
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
 }
 
-void MT76x0_WLAN_ChipOnOff(
-	IN struct rtmp_adapter*pAd,
-	IN bool bOn,
-	IN bool bResetWLAN)
+void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 {
 	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
 
@@ -370,15 +367,13 @@ void MT76x0_WLAN_ChipOnOff(
 
 	WlanFunCtrl.word = mt7610u_read32(pAd, WLAN_FUN_CTRL);
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
-				__FUNCTION__, bOn, bResetWLAN, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
+				__FUNCTION__, enable, reset, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
-	if (bResetWLAN == true)
-	{
+	if (reset == true) {
 		WlanFunCtrl.field.GPIO0_OUT_OE_N = 0xFF;
 		WlanFunCtrl.field.FRC_WL_ANT_SET = 0;
 
-		if (pAd->WlanFunCtrl.field.WLAN_EN)
-		{
+		if (pAd->WlanFunCtrl.field.WLAN_EN) {
 			/*
 				Restore all HW default value and reset RF.
 			*/
@@ -395,16 +390,13 @@ void MT76x0_WLAN_ChipOnOff(
 		}
 	}
 
-	if (bOn == true)
-	{
+	if (enable == true) {
 		/*
 			Enable WLAN function and clock
 			WLAN_FUN_CTRL[1:0] = 0x3
 		*/
 		ENABLE_WLAN_FUN(WlanFunCtrl);
-	}
-	else
-	{
+	} else {
 		/*
 			Diable WLAN function and clock
 			WLAN_FUN_CTRL[1:0] = 0x0
@@ -416,23 +408,19 @@ void MT76x0_WLAN_ChipOnOff(
 	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 	RTMPusecDelay(20);
 
-	if (bOn)
-	{
+	if (enable) {
 		pAd->MACVersion = mt7610u_read32(pAd, MAC_CSR0);
 		DBGPRINT(RT_DEBUG_TRACE, ("MACVersion = 0x%08x\n", pAd->MACVersion));
 	}
 
-	if (bOn == true)
-	{
+	if (enable == true) {
 		UINT index = 0;
 		CMB_CTRL_STRUC CmbCtrl;
 
 		CmbCtrl.word = 0;
 
-		do
-		{
-			do
-			{
+		do {
+			do {
 				CmbCtrl.word = mt7610u_read32(pAd, CMB_CTRL);
 
 				/*
@@ -445,8 +433,7 @@ void MT76x0_WLAN_ChipOnOff(
 				RTMPusecDelay(20);
 			} while (index++ < MAX_CHECK_COUNT);
 
-			if (index >= MAX_CHECK_COUNT)
-			{
+			if (index >= MAX_CHECK_COUNT) {
 				DBGPRINT(RT_DEBUG_ERROR,
 						("Lenny:[boundary]Check PLL_LD ..CMB_CTRL 0x%08x, index=%d!\n",
 						CmbCtrl.word, index));
@@ -460,9 +447,7 @@ void MT76x0_WLAN_ChipOnOff(
 				ENABLE_WLAN_FUN(WlanFunCtrl);
 				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 				RTMPusecDelay(20);
-			}
-			else
-			{
+			} else {
 				break;
 			}
 		}
