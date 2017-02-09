@@ -90,12 +90,7 @@ typedef struct _UAPSD_INFO {
 
 #define	MAXSEQ		(0xFFF)
 
-#ifdef DOT11N_SS3_SUPPORT
-#define MAX_MCS_SET 24		/* From MCS 0 ~ MCS 23 */
-#else
 #define MAX_MCS_SET 16		/* From MCS 0 ~ MCS 15 */
-#endif /* DOT11N_SS3_SUPPORT */
-
 
 #define MAX_TXPOWER_ARRAY_SIZE	5
 
@@ -792,9 +787,6 @@ typedef struct _CHANNEL_TX_POWER {
 	bool bEffectedChannel;	/* For BW 40 operating in 2.4GHz , the "effected channel" is the channel that is covered in 40Mhz. */
 	CHAR Power;
 	CHAR Power2;
-#ifdef DOT11N_SS3_SUPPORT
-	CHAR Power3;
-#endif /* DOT11N_SS3_SUPPORT */
 	u8 MaxTxPwr;
 	u8 DfsReq;
 	u8 RegulatoryDomain;
@@ -1617,10 +1609,6 @@ typedef struct _STA_ADMIN_CONFIG {
 
 	u8 LastSNR0;		/* last received BEACON's SNR */
 	u8 LastSNR1;		/* last received BEACON's SNR for 2nd  antenna */
-#ifdef DOT11N_SS3_SUPPORT
-	u8 LastSNR2;		/* last received BEACON's SNR for 3nd  antenna */
-	INT32 BF_SNR[3];	/* Last RXWI BF SNR. Units=0.25 dB */
-#endif /* DOT11N_SS3_SUPPORT */
 	RSSI_SAMPLE RssiSample;
 	ULONG NumOfAvgRssiSample;
 

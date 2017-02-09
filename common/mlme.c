@@ -4769,13 +4769,6 @@ void AsicRxAntEvalTimeout(
 			if(pAd->Antenna.field.RxPath == 3)
 			{
 				larger = max(rssi0, rssi1);
-#ifdef DOT11N_SS3_SUPPORT
-				if (pAd->CommonCfg.TxStream >= 3)
-				{
-					pAd->Mlme.RealRxPath = 3;
-				}
-				else
-#endif /* DOT11N_SS3_SUPPORT */
 				if (larger > (rssi2 + 20))
 					pAd->Mlme.RealRxPath = 2;
 				else

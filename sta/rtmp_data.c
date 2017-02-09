@@ -609,11 +609,6 @@ void STAHandleRxDataFrame(
 		pAd->StaCfg.LastSNR0 = (u8) (pRxWI->RxWISNR0);
 		pAd->StaCfg.LastSNR1 = (u8) (pRxWI->RxWISNR1);
 
-#ifdef DOT11N_SS3_SUPPORT
-		if (pAd->CommonCfg.RxStream == 3)
-			pAd->StaCfg.LastSNR2 = (u8) (pRxWI->RxWISNR2);
-#endif /* DOT11N_SS3_SUPPORT */
-
 		pAd->RalinkCounters.OneSecRxOkDataCnt++;
 
 		if (pEntry != NULL)
@@ -700,10 +695,6 @@ void STAHandleRxMgmtFrame(
 
 			pAd->StaCfg.LastSNR0 = (u8) (pRxWI->RxWISNR0);
 			pAd->StaCfg.LastSNR1 = (u8) (pRxWI->RxWISNR1);
-#ifdef DOT11N_SS3_SUPPORT
-			pAd->StaCfg.LastSNR2 = (u8) (pRxWI->RxWISNR2);
-#endif /* DOT11N_SS3_SUPPORT */
-
 		}
 
 		if ((pHeader->FC.SubType == SUBTYPE_BEACON) &&

@@ -1664,9 +1664,6 @@ static u8 FillChList(
 			{
 				pAd->ChannelList[j].Power = pAd->TxPower[l].Power;
 				pAd->ChannelList[j].Power2 = pAd->TxPower[l].Power2;
-#ifdef DOT11N_SS3_SUPPORT
-					pAd->ChannelList[j].Power3 = pAd->TxPower[l].Power3;
-#endif /* DOT11N_SS3_SUPPORT */
 				break;
 			}
 		}

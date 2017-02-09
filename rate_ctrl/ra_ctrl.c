@@ -586,16 +586,6 @@ void MlmeGetSupportedMcs(
 		{
 			mcs[15] = idx;
 		}
-#ifdef DOT11N_SS3_SUPPORT
-		else if (pCurrTxRate->CurrMCS == MCS_20)
-			mcs[20] = idx;
-		else if (pCurrTxRate->CurrMCS == MCS_21)
-			mcs[21] = idx;
-		else if (pCurrTxRate->CurrMCS == MCS_22)
-			mcs[22] = idx;
-		else if (pCurrTxRate->CurrMCS == MCS_23)
-			mcs[23] = idx;
-#endif /*  DOT11N_SS3_SUPPORT */
 #endif /*  DOT11_N_SUPPORT */
 	}
 
@@ -1015,29 +1005,6 @@ void MlmeSelectTxRateTable(
 			break;
 		}
 
-#ifdef DOT11N_SS3_SUPPORT
-		if ((pEntry->SupportRateMode & (SUPPORT_OFDM_MODE)) &&
-			(pEntry->HTCapability.MCSSet[0] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[1] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[2] != 0x00) &&
-			(pAd->CommonCfg.TxStream == 3))
-		{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-			if (pAd->rateAlg == RATE_ALG_GRP)
-			{
-				*ppTable = RateSwitchTableAdapt11N3S;
-			}
-			else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-			if ((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
-				*ppTable = RateSwitchTable11N3S;
-			else
-				*ppTable = RateSwitchTable11N3SForABand;
-
-			break;
-		}
-#endif /* DOT11N_SS3_SUPPORT */
-
 		/*else if ((pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0xff) && ((pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0x00) || (pAd->Antenna.field.TxPath == 1)))*/
 		if ((pEntry->HTCapability.MCSSet[0] != 0x00) &&
 			((pEntry->HTCapability.MCSSet[1] == 0x00) || (pAd->CommonCfg.TxStream == 1)))
@@ -1075,92 +1042,7 @@ void MlmeSelectTxRateTable(
 			break;
 		}
 
-#ifdef DOT11N_SS3_SUPPORT
-		if ((pEntry->HTCapability.MCSSet[0] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[1] != 0x00) &&
-			(pEntry->HTCapability.MCSSet[2] != 0x00) &&
-			(pAd->CommonCfg.TxStream == 3))
-		{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-			if (pAd->rateAlg == RATE_ALG_GRP)
-				*ppTable = RateSwitchTableAdapt11N3S;
-			else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-			{
-				if (pAd->LatchRfRegs.Channel <= 14)
-				*ppTable = RateSwitchTable11N3S;
-				else
-					*ppTable = RateSwitchTable11N3SForABand;
-			}
-			break;
-		}
-#endif /* DOT11N_SS3_SUPPORT */
 
-#ifdef DOT11N_SS3_SUPPORT
-		if (pAd->CommonCfg.TxStream == 3)
-		{
-			if  (pEntry->HTCapability.MCSSet[0] != 0x00)
-			{
-				if (pEntry->HTCapability.MCSSet[1] == 0x00)
-				{	/* Only support 1SS */
-					if (pEntry->RateLen > 0)
-					{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-					if (pAd->rateAlg == RATE_ALG_GRP)
-						*ppTable = RateSwitchTableAdapt11N1S;
-					else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						if ((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
-							*ppTable = RateSwitchTable11N1S;
-						else
-							*ppTable = RateSwitchTable11N1SForABand;
-					}
-					else
-					{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-						if (pAd->rateAlg == RATE_ALG_GRP)
-							*ppTable = RateSwitchTableAdapt11N1S;
-						else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						if (pAd->LatchRfRegs.Channel <= 14)
-							*ppTable = RateSwitchTable11N1S;
-						else
-							*ppTable = RateSwitchTable11N1SForABand;
-					}
-					break;
-				}
-				else if (pEntry->HTCapability.MCSSet[2] == 0x00)
-				{	/* Only support 2SS */
-					if (pEntry->RateLen > 0)
-					{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-						if (pAd->rateAlg == RATE_ALG_GRP)
-							*ppTable = RateSwitchTableAdapt11N2S;
-						else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						if ((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
-							*ppTable = RateSwitchTable11BGN2S;
-						else
-							*ppTable = RateSwitchTable11BGN2SForABand;
-					}
-					else
-					{
-#ifdef NEW_RATE_ADAPT_SUPPORT
-						if (pAd->rateAlg == RATE_ALG_GRP)
-							*ppTable = RateSwitchTableAdapt11N2S;
-						else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						if (pAd->LatchRfRegs.Channel <= 14)
-							*ppTable = RateSwitchTable11N2S;
-						else
-							*ppTable = RateSwitchTable11N2SForABand;
-					}
-					break;
-				}
-				/* For 3SS case, we use the new rate table, so don't care it here */
-			}
-		}
-#endif /* DOT11N_SS3_SUPPORT */
 #endif /* DOT11_N_SUPPORT */
 
 		if (((pEntry->SupportRateMode == SUPPORT_CCK_MODE) ||
@@ -1238,17 +1120,7 @@ void MlmeSelectTxRateTable(
 				}
 				else
 				{
-#ifdef DOT11N_SS3_SUPPORT
-#ifdef NEW_RATE_ADAPT_SUPPORT
-					if (pAd->rateAlg == RATE_ALG_GRP)
-						*ppTable = RateSwitchTableAdapt11N3S;
-					else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						*ppTable = RateSwitchTable11N3S;
-
-#else
 					*ppTable = RateSwitchTable11N2S;
-#endif /* DOT11N_SS3_SUPPORT */
 				}
 			}
 			else
@@ -1265,16 +1137,7 @@ void MlmeSelectTxRateTable(
 				}
 				else
 				{
-#ifdef DOT11N_SS3_SUPPORT
-#ifdef NEW_RATE_ADAPT_SUPPORT
-					if (pAd->rateAlg == RATE_ALG_GRP)
-						*ppTable = RateSwitchTableAdapt11N3S;
-					else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-						*ppTable = RateSwitchTable11N3S;
-#else
 					*ppTable = RateSwitchTable11N2SForABand;
-#endif /* DOT11N_SS3_SUPPORT */
 				}
 			}
 			}
@@ -1381,38 +1244,6 @@ u8 MlmeSelectTxRate(
 	}
 	else
 #endif /* DOT11_VHT_AC */
-#ifdef DOT11N_SS3_SUPPORT
-	if ((pTable == RateSwitchTable11BGN3S) || (pTable == RateSwitchTable11N3S) || (pTable == RateSwitchTable11BGN3SForABand)
-#ifdef NEW_RATE_ADAPT_SUPPORT
-		|| (pTable == RateSwitchTableAdapt11N3S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-	)
-	{/*  N mode with 3 stream */
-		if (mcs[23]>=0 && (Rssi >= (-66+RssiOffset)) && (pEntry->SupportHTMCS[MCS_23]))
-			TxRateIdx = mcs[23];
-		else if (mcs[22]>=0 && (Rssi >= (-70+RssiOffset)) && (pEntry->SupportHTMCS[MCS_22]))
-			TxRateIdx = mcs[22];
-		else if (mcs[21]>=0 && (Rssi >= (-72+RssiOffset)) && (pEntry->SupportHTMCS[MCS_21]))
-			TxRateIdx = mcs[21];
-		else if (mcs[20]>=0 && (Rssi >= (-74+RssiOffset)) && (pEntry->SupportHTMCS[MCS_20]))
-			TxRateIdx = mcs[20];
-		else if (mcs[13]>=0 && (Rssi >= (-76+RssiOffset)) && (pEntry->SupportHTMCS[MCS_13]))
-			TxRateIdx = mcs[13];
-		else if (mcs[12]>=0 && (Rssi >= (-78+RssiOffset)) && (pEntry->SupportHTMCS[MCS_12]))
-			TxRateIdx = mcs[12];
-		else if (mcs[4]>=0 && (Rssi >= (-82+RssiOffset)) && (pEntry->SupportHTMCS[MCS_4]))
-			TxRateIdx = mcs[4];
-		else if (mcs[3]>=0 && (Rssi >= (-84+RssiOffset)) && (pEntry->SupportHTMCS[MCS_3]))
-			TxRateIdx = mcs[3];
-		else if (mcs[2]>=0 && (Rssi >= (-86+RssiOffset)) && (pEntry->SupportHTMCS[MCS_2]))
-			TxRateIdx = mcs[2];
-		else if (mcs[1]>=0 && (Rssi >= (-88+RssiOffset)) && (pEntry->SupportHTMCS[MCS_1]))
-			TxRateIdx = mcs[1];
-		else
-			TxRateIdx = mcs[0];
-	}
-	else
-#endif /*  DOT11N_SS3_SUPPORT */
 	if ((pTable == RateSwitchTable11BGN2S) || (pTable == RateSwitchTable11BGN2SForABand) ||
 		(pTable == RateSwitchTable11N2S) || (pTable == RateSwitchTable11N2SForABand)
 #ifdef NEW_RATE_ADAPT_SUPPORT
@@ -1613,69 +1444,6 @@ void MlmeRestoreLastRate(
 {
 	pEntry->CurrTxRateIndex = pEntry->lastRateIdx;
 }
-
-
-#ifdef DOT11N_SS3_SUPPORT
-/*  MlmeCheckRDG - check if RDG should be enabled or disabled */
-void MlmeCheckRDG(
-	IN struct rtmp_adapter *	pAd,
-	IN PMAC_TABLE_ENTRY	pEntry)
-{
-	u8 *pTable = pEntry->pTable;
-
-	/*  Turn off RDG when 3s and rx count > tx count*5 */
-	if (((pTable == RateSwitchTable11BGN3S) ||
-		(pTable == RateSwitchTable11BGN3SForABand) ||
-		(pTable == RateSwitchTable11N3S)
-#ifdef NEW_RATE_ADAPT_SUPPORT
-		|| (pTable == RateSwitchTableAdapt11N3S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-		) && pAd->RalinkCounters.OneSecReceivedByteCount > 50000 &&
-		pAd->RalinkCounters.OneSecTransmittedByteCount > 50000 &&
-		CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE))
-	{
-		TX_LINK_CFG_STRUC	TxLinkCfg;
-		ULONG				TxOpThres;
-		u8 			TableStep;
-		RTMP_RA_LEGACY_TB *pTempTxRate;
-
-#ifdef NEW_RATE_ADAPT_SUPPORT
-		TableStep = ADAPT_RATE_TABLE(pTable)? 10: 5;
-#else
-		TableStep = 5;
-#endif
-
-		pTempTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1)*TableStep]);
-		mt7610u_read32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
-		if (pAd->RalinkCounters.OneSecReceivedByteCount > (pAd->RalinkCounters.OneSecTransmittedByteCount * 5) &&
-				pTempTxRate->CurrMCS != 23 && pTempTxRate->ShortGI != 1)
-		{
-			if (TxLinkCfg.field.TxRDGEn == 1)
-			{
-				TxLinkCfg.field.TxRDGEn = 0;
-				mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
-				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
-				TxOpThres |= 0xff00;
-				mt7610u_write32(pAd, TXOP_THRES_CFG, TxOpThres);
-				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG off!\n"));
-			}
-		}
-		else
-		{
-			if (TxLinkCfg.field.TxRDGEn == 0)
-			{
-				TxLinkCfg.field.TxRDGEn = 1;
-				mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
-				mt7610u_read32(pAd, TXOP_THRES_CFG, &TxOpThres);
-				TxOpThres &= 0xffff00ff;
-				mt7610u_write32(pAd, TXOP_THRES_CFG, TxOpThres);
-				DBGPRINT_RAW(RT_DEBUG_WARN,("DRS: RDG on!\n"));
-			}
-		}
-	}
-}
-#endif /*  DOT11N_SS3_SUPPORT */
-
 
 INT rtmp_get_rate_from_rate_tb(u8 *table, INT idx, RTMP_TX_RATE *tx_rate)
 {

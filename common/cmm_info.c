@@ -1864,11 +1864,6 @@ INT	Set_HtMcs_Proc(
     bool bAutoRate = false;
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef DOT11N_SS3_SUPPORT
-	if (pAd->CommonCfg.TxStream >= 3)
-		ValidMcs = 23;
-#endif /* DOT11N_SS3_SUPPORT */
-
 	Mcs_tmp = simple_strtol(arg, 0, 10);
 
 	if (Mcs_tmp <= ValidMcs || Mcs_tmp == 32)

@@ -1285,13 +1285,6 @@ void NICUpdateFifoStaCounters(
 			}
 
 			succMCS = StaFifo.field.SuccessRate & 0x7F;
-#ifdef DOT11N_SS3_SUPPORT
-			if (pEntry->HTCapability.MCSSet[2] == 0xff)
-			{
-				if (succMCS > pid)
-					pid = pid + 16;
-			}
-#endif /* DOT11N_SS3_SUPPORT */
 
 			if (StaFifo.field.TxSuccess)
 			{
@@ -1306,10 +1299,6 @@ void NICUpdateFifoStaCounters(
 				pEntry->TXMCSFailed[pid]++;
 			}
 
-#ifdef DOT11N_SS3_SUPPORT
-			if (pid >= 16 && succMCS <= 8)
-				succMCS += (2 - (succMCS >> 3)) * 7;
-#endif /* DOT11N_SS3_SUPPORT */
 
 			reTry = pid - succMCS;
 

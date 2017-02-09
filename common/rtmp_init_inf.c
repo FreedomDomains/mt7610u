@@ -303,13 +303,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 #ifdef RANGE_EXTEND
 	mt7610u_write32(pAd, HT_FBK_CFG1, 0xedcba980);
 #endif // RANGE_EXTEND //
-#ifdef DOT11N_SS3_SUPPORT
-	if (pAd->CommonCfg.TxStream >= 3)
-	{
-		mt7610u_write32(pAd, TX_FBK_CFG_3S_0, 0x12111008);
-		mt7610u_write32(pAd, TX_FBK_CFG_3S_1, 0x16151413);
-	}
-#endif /* DOT11N_SS3_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
 #endif /* DOT11_N_SUPPORT */
