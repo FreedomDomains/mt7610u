@@ -1643,7 +1643,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_pwr_saving(struct rtmp_adapter*ad, u32 op)
+int mt7610u_mcu_set_radio_state(struct rtmp_adapter*ad, u32 op)
 {
 	u32 level = 1;
 	u32 listen_interval = 0;
