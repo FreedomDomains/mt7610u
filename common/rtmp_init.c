@@ -2548,9 +2548,7 @@ void CfgInitHook(struct rtmp_adapter *pAd)
 }
 
 
-static INT RtmpChipOpsRegister(
-	IN struct rtmp_adapter*pAd,
-	IN INT			infType)
+static INT RtmpChipOpsRegister(struct rtmp_adapter*pAd)
 {
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
@@ -2571,21 +2569,14 @@ static INT RtmpChipOpsRegister(
 	return ret;
 }
 
-INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
+INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd)
 {
 	u8 i;
 	int ret = 0;
 
-	/* Assign the interface type. We need use it when do register/EEPROM access.*/
-	pAd->infType = infType;
-
 #ifdef CONFIG_STA_SUPPORT
 	pAd->OpMode = OPMODE_STA;
 #endif /* CONFIG_STA_SUPPORT */
-
-
-	DBGPRINT(RT_DEBUG_TRACE, ("pAd->infType=%d\n", pAd->infType));
-
 
 	sema_init(&(pAd->UsbVendorReq_semaphore), 1);
 	sema_init(&(pAd->reg_atomic), 1);
@@ -2601,9 +2592,7 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 
 		mt7610u_chip_onoff(pAd, true, false);
 
-
-
-	ret = RtmpChipOpsRegister(pAd, infType);
+	ret = RtmpChipOpsRegister(pAd);
 
 	if (ret)
 		return false;

@@ -37,12 +37,10 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 
 	DISABLE_TX_RX(pAd, RTMP_HALT);
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->hw_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->hw_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	RTMP_SET_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
@@ -66,9 +64,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 		//pAd->PendingRx = 0;
 	}
 
-	if (IS_USB_INF(pAd)) {
-		up(&pAd->hw_atomic);
-	}
+	up(&pAd->hw_atomic);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
@@ -109,19 +105,15 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 
 	MCU_CTRL_INIT(pAd);
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->hw_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->hw_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
 
-	if (IS_USB_INF(pAd)) {
-		up(&pAd->hw_atomic);
-	}
+	up(&pAd->hw_atomic);
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
@@ -348,12 +340,10 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
 	u32 ret;
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->wlan_en_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->wlan_en_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	WlanFunCtrl.word = mt7610u_read32(pAd, WLAN_FUN_CTRL);
@@ -452,8 +442,6 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
 
-	if (IS_USB_INF(pAd)) {
-		up(&pAd->wlan_en_atomic);
-	}
+	up(&pAd->wlan_en_atomic);
 }
 

@@ -398,7 +398,7 @@ static int rt2870_probe(struct usb_interface *intf, struct usb_device *usb_dev,
 	if (USBDevConfigInit(usb_dev, intf, pAd) == false)
 		goto err_out_free_radev;
 
-	RtmpRaDevCtrlInit(pAd, RTMP_DEV_INF_USB);
+	RtmpRaDevCtrlInit(pAd);
 
 /*NetDevInit============================================== */
 	net_dev = RtmpPhyNetDevInit(pAd, &netDevHook);

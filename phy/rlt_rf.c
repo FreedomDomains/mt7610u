@@ -49,12 +49,10 @@ int rlt_rf_write(
 		UINT i = 0;
 
 
-		if (IS_USB_INF(pAd)) {
-			ret = down_interruptible(&pAd->reg_atomic);
-			if (ret != 0) {
-				DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-				return STATUS_UNSUCCESSFUL;
-			}
+		ret = down_interruptible(&pAd->reg_atomic);
+		if (ret != 0) {
+			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+			return STATUS_UNSUCCESSFUL;
 		}
 
 		ASSERT((regID <= pAd->chipCap.MaxNumOfRfId));
@@ -88,9 +86,7 @@ int rlt_rf_write(
 		ret = NDIS_STATUS_SUCCESS;
 
 done:
-		if (IS_USB_INF(pAd)) {
-			up(&pAd->reg_atomic);
-		}
+		up(&pAd->reg_atomic);
 	}
 
 	return ret;
@@ -130,12 +126,10 @@ int rlt_rf_read(
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
 		UINT i=0, k=0;
 
-		if (IS_USB_INF(pAd)) {
-			i = down_interruptible(&pAd->reg_atomic);
-			if (i != 0) {
-				DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", i));
-				return STATUS_UNSUCCESSFUL;
-			}
+		i = down_interruptible(&pAd->reg_atomic);
+		if (i != 0) {
+			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", i));
+			return STATUS_UNSUCCESSFUL;
 		}
 
 		ASSERT((regID <= pAd->chipCap.MaxNumOfRfId));
@@ -185,9 +179,7 @@ int rlt_rf_read(
 		ret = STATUS_SUCCESS;
 
 done:
-		if (IS_USB_INF(pAd)) {
-			up(&pAd->reg_atomic);
-		}
+		up(&pAd->reg_atomic);
 	}
 
 	return ret;

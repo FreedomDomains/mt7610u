@@ -1529,12 +1529,10 @@ static void MT76x0_ChipSwitchChannel(
 	else
 		rf_phy_mode = RF_G_BAND;
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->hw_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->hw_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	RegValue = mt7610u_read32(pAd, EXT_CCA_CFG);
@@ -1631,8 +1629,7 @@ static void MT76x0_ChipSwitchChannel(
 	Value |= (0x2F2F << 16);
 	mt7610u_write32(pAd, TX_ALC_CFG_0, Value);
 
-	if (IS_USB_INF(pAd))
-		up(&pAd->hw_atomic);
+	up(&pAd->hw_atomic);
 
 	if (Channel > 14)
 		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a41010);
@@ -2011,13 +2008,10 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 	u32 WlanFunCtrl = 0, CmbCtrl = 0, CoexCfg0 = 0, CoexCfg3 = 0;
 	u32 ret;
 
-
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->wlan_en_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->wlan_en_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	WlanFunCtrl = mt7610u_read32(pAd, WLAN_FUN_CTRL);
@@ -2066,10 +2060,7 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 	mt7610u_write32(pAd, COEXCFG0, CoexCfg0);
 	mt7610u_write32(pAd, COEXCFG3, CoexCfg3);
 
-	if (IS_USB_INF(pAd))
-		up(&pAd->wlan_en_atomic);
-
-
+	up(&pAd->wlan_en_atomic);
 }
 
 void MT76x0_dynamic_vga_tuning(struct rtmp_adapter *pAd)
@@ -2170,12 +2161,10 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d, bPowerOn = %d, bFullCal = %d\n", __FUNCTION__, Channel, bPowerOn, bFullCal));
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->cal_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->cal_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	if (!(bPowerOn || bDoTSSI || bFullCal))
@@ -2385,8 +2374,7 @@ RXDC_Calibration:
 	RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 1);
 
 
-	if (IS_USB_INF(pAd))
-		up(&pAd->cal_atomic);
+	up(&pAd->cal_atomic);
 }
 
 void MT76x0_TempSensor(struct rtmp_adapter *pAd)
@@ -2398,12 +2386,10 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 	u32 MTxCycle = 0;
 	u32 ret;
 
-	if (IS_USB_INF(pAd)) {
-		ret = down_interruptible(&pAd->cal_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
-			return;
-		}
+	ret = down_interruptible(&pAd->cal_atomic);
+	if (ret != 0) {
+		DBGPRINT(RT_DEBUG_ERROR, ("cal_atomic get failed(ret=%d)\n", ret));
+		return;
 	}
 
 	rlt_rf_read(pAd, RF_BANK7, RF_R73, &rf_b7_73);
@@ -2490,8 +2476,7 @@ done:
 	rlt_rf_write(pAd, RF_BANK0, RF_R66, rf_b0_66);
 	rlt_rf_write(pAd, RF_BANK0, RF_R67, rf_b0_67);
 
-	if (IS_USB_INF(pAd))
-		up(&pAd->cal_atomic);
+	up(&pAd->cal_atomic);
 }
 
 bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,

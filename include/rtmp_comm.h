@@ -182,17 +182,6 @@ Ndis802_11InfrastructureMax	/* Not a real value, defined as upper bound */
 #define RTMP_DCACHE_FLUSH(__AddrStart, __Size)
 #endif /* NO_CONSISTENT_MEM_SUPPORT */
 
-
-/* ======================== Interface ======================================= */
-typedef enum _RTMP_INF_TYPE_
-{
-	RTMP_DEV_INF_UNKNOWN = 0,
-	RTMP_DEV_INF_PCI = 1,
-	RTMP_DEV_INF_USB = 2,
-	RTMP_DEV_INF_RBUS = 4,
-	RTMP_DEV_INF_PCIE = 5,
-}RTMP_INF_TYPE;
-
 #define IF_DEV_CONFIG_OPMODE_ON_AP(_pAd)
 #define IF_DEV_CONFIG_OPMODE_ON_STA(_pAd)
 #define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)
