@@ -913,13 +913,9 @@ retry:
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return NDIS_STATUS_FAILURE;
 
-		if (pAd->chipOps.MCU_loadFirmware)
-		{
-			if (j++ == 0)
-			{
-				NICLoadFirmware(pAd);
-				goto retry;
-			}
+		if (j++ == 0) {
+			NICLoadFirmware(pAd);
+			goto retry;
 		}
 		return NDIS_STATUS_FAILURE;
 	}
@@ -1661,15 +1657,9 @@ void NICUpdateRawCounters(
 
 }
 
-int NICLoadFirmware(
-	IN struct rtmp_adapter *pAd)
+void NICLoadFirmware(struct rtmp_adapter *pAd)
 {
-	int	 status = NDIS_STATUS_SUCCESS;
-
-	if (pAd->chipOps.MCU_loadFirmware)
-		status = pAd->chipOps.MCU_loadFirmware(pAd);
-
-	return status;
+	mt7610u_mcu_usb_loadfw(pAd);
 }
 
 /*

@@ -69,13 +69,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	RT28XXDMADisable(pAd);
 
-	Status = NICLoadFirmware(pAd);
-
-	if (Status != NDIS_STATUS_SUCCESS)
-	{
-		DBGPRINT_ERR(("NICLoadFirmware failed, Status[=0x%08x]\n", Status));
-		goto err1;
-	}
+	NICLoadFirmware(pAd);
 
 	MCU_CTRL_INIT(pAd);
 

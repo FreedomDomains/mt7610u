@@ -32,9 +32,6 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
-#ifdef RTMP_USB_SUPPORT
-	pChipOps->MCU_loadFirmware = mt7610u_mcu_usb_loadfw;
-#endif
 	pChipOps->MCU_CtrlInit = mt7610u_mcu_ctrl_init;
 	pChipOps->MCU_CtrlExit = mt7610u_mcu_ctrl_exit;
 	pChipOps->MCU_Calibration = mt7610u_mcu_calibration;
