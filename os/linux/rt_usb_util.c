@@ -32,7 +32,6 @@
 #include "rtmp_osabl.h"
 #include "rt_os_util.h"
 
-#ifdef RTMP_MAC_USB
 #ifdef OS_ABL_SUPPORT
 MODULE_LICENSE("GPL");
 #endif /* OS_ABL_SUPPORT */
@@ -258,6 +257,4 @@ Note:
 u32 RtmpOsGetUsbDevProductID(IN void *pUsbDev) {
 	return ((struct usb_device *) pUsbDev)->descriptor.idProduct;
 }
-
-#endif /* RTMP_MAC_USB */
 

@@ -329,11 +329,9 @@ void STAHandleRxDataFrame(
 					if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
 					{
 
-#ifdef RTMP_MAC_USB
 					RTEnqueueInternalCmd(pAd,
 							     CMDTHREAD_FORCE_SLEEP_AUTO_WAKEUP,
 							     NULL, 0);
-#endif /* RTMP_MAC_USB */
 				}
 			}
 			}
@@ -418,9 +416,7 @@ void STAHandleRxDataFrame(
 #endif /* DOT11_VHT_AC */
 	}
 
-#ifdef RTMP_MAC_USB
-#endif /* RTMP_MAC_USB */
-
+	pRxBlk->pData = (u8 *) pHeader;
 	pRxBlk->pData = (u8 *) pHeader;
 
 	/*
@@ -638,11 +634,9 @@ void STAHandleRxDataFrame(
 		}
 
 
-#ifdef RTMP_MAC_USB
 		/* there's packet sent to me, keep awake for 1200ms */
 		if (pAd->CountDowntoPsm < 12)
 			pAd->CountDowntoPsm = 12;
-#endif /* RTMP_MAC_USB */
 
 		if (!((pHeader->Frag == 0) && (pHeader->FC.MoreFrag == 0))) {
 			/* re-assemble the fragmented packets */
@@ -1372,7 +1366,6 @@ int STASendPacket(
 */
 
 
-#ifdef RTMP_MAC_USB
 /*
 	Actually, this function used to check if the TxHardware Queue still has frame need to send.
 	If no frame need to send, go to sleep, else, still wake up.
@@ -1426,7 +1419,6 @@ int RTMPFreeTXDRequest(
 	return (Status);
 
 }
-#endif /* RTMP_MAC_USB */
 
 
 void RTMPSendNullFrame(
@@ -2945,11 +2937,9 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 
 	pPacket = QUEUE_ENTRY_TO_PACKET(pTxBlk->TxPacketList.Head);
 
-#ifdef RTMP_MAC_USB
 	/* there's packet to be sent, keep awake for 1200ms */
 	if (pAd->CountDowntoPsm < 12)
 		pAd->CountDowntoPsm = 12;
-#endif /* RTMP_MAC_USB */
 
 	/* ------------------------------------------------------------------
 	   STEP 1. WAKE UP PHY
@@ -2961,9 +2951,7 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 	if ((pAd->StaCfg.Psm == PWR_SAVE)
 	    && OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE)) {
 		DBGPRINT_RAW(RT_DEBUG_INFO, ("AsicForceWakeup At HardTx\n"));
-#ifdef RTMP_MAC_USB
 		RTEnqueueInternalCmd(pAd, CMDTHREAD_FORCE_WAKE_UP, NULL, 0);
-#endif /* RTMP_MAC_USB */
 	}
 
 	/* It should not change PSM bit, when APSD turn on. */

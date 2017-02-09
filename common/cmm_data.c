@@ -156,10 +156,8 @@ int MiniportMMRequest(
 		}
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
 		if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 				MT76x0UsbAsicRadioOn(pAd, MLME_RADIO_ON);
-#endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 
 		/* Check Free priority queue*/
@@ -996,9 +994,7 @@ void RTMPDeQueuePacket(
 					pTxBlk->TxFrameType = TX_LEGACY_FRAME;
 			}
 
-#ifdef RTMP_MAC_USB
 			DEQUEUE_UNLOCK(&pAd->irq_lock, bIntContext, IrqFlags);
-#endif /* RTMP_MAC_USB */
 
 			Count += pTxBlk->TxPacketList.Number;
 
@@ -1015,10 +1011,8 @@ void RTMPDeQueuePacket(
 
 		RTMP_STOP_DEQUEUE(pAd, QueIdx, IrqFlags);
 
-#ifdef RTMP_MAC_USB
 		if (!hasTxDesc)
 			RTUSBKickBulkOut(pAd);
-#endif /* RTMP_MAC_USB */
 
 #ifdef BLOCK_NET_IF
 		if ((pAd->blockQueueTab[QueIdx].SwTxQueueBlockFlag == true)
@@ -1676,7 +1670,6 @@ void Indicate_Legacy_Packet(
 
 	STATS_INC_RX_PACKETS(pAd, FromWhichBSSID);
 
-#ifdef RTMP_MAC_USB
 #ifdef DOT11_N_SUPPORT
 	if (pAd->CommonCfg.bDisableReordering == 0)
 	{
@@ -1708,7 +1701,6 @@ void Indicate_Legacy_Packet(
 		}
 	}
 #endif /* DOT11_N_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 	RT_80211_TO_8023_PACKET(pAd, VLAN_VID, VLAN_Priority,
 							pRxBlk, Header802_3, FromWhichBSSID, TPID);
@@ -2420,7 +2412,6 @@ void StopDmaRx(
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
 
-#ifdef  RTMP_MAC_USB
 		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if ((MacReg & 0x40000000) && (IdleNums < 10))
@@ -2432,7 +2423,6 @@ void StopDmaRx(
 		{
 			break;
 		}
-#endif
 
 		if (MacReg == 0xFFFFFFFF)
 		{
@@ -2471,7 +2461,6 @@ void StopDmaTx(
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
 	{
 
-#ifdef RTMP_MAC_USB
 		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if (((MacReg & 0x80000000) == 0) && IdleNums > 10)
@@ -2483,7 +2472,6 @@ void StopDmaTx(
 			IdleNums++;
 			RTMPusecDelay(50);
 		}
-#endif
 
 		if (MacReg == 0xFFFFFFFF)
 		{

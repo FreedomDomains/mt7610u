@@ -444,9 +444,7 @@ static inline void NdisGetSystemUpTime(ULONG *time)
 
 struct os_cookie {
 
-#ifdef RTMP_MAC_USB
 	struct usb_device		*pUsb_Dev;
-#endif /* RTMP_MAC_USB */
 
 #ifdef WORKQUEUE_BH
 	u32		     pAd_va;
@@ -467,10 +465,8 @@ struct os_cookie {
 #endif /* UAPSD_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
 	RTMP_NET_TASK_STRUCT null_frame_complete_task;
 	RTMP_NET_TASK_STRUCT pspoll_frame_complete_task;
-#endif /* RTMP_MAC_USB */
 
 	RTMP_OS_PID			apd_pid; /*802.1x daemon pid */
 	unsigned long			apd_pid_nr;
@@ -604,8 +600,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  * Device Register I/O Access related definitions and data structures.
  **********************************************************************************/
 
-#ifdef RTMP_MAC_USB
-
 #define RTMP_IO_READ8(_A, _R, _pV)								\
 {																\
 }
@@ -625,7 +619,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 #define RTMP_SYS_IO_READ32
 #define RTMP_SYS_IO_WRITE32
-#endif /* RTMP_MAC_USB */
 
 #define RTMP_USB_URB_DATA_GET(__pUrb)			((struct urb *)__pUrb)->context
 #define RTMP_USB_URB_STATUS_GET(__pUrb)			((struct urb *)__pUrb)->status

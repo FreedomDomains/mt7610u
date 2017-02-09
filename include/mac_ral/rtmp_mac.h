@@ -2250,12 +2250,10 @@ typedef	union _QOS_CSR1_STRUC {
 #define RTMP_MAC_SHR_MSEL_PROTECT_UNLOCK(__pAd, __IrqFlags) __IrqFlags = __IrqFlags;
 
 
-#ifdef RTMP_MAC_USB
 #ifdef DFS_SUPPORT
 #define BBPR127TABLE_OWNERID			0x4CA0
 #define BBPR127TABLE_OFFSET				0x4D00
 #endif /* DFS_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
 struct rtmp_adapter;

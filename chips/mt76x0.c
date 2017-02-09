@@ -1529,7 +1529,6 @@ static void MT76x0_ChipSwitchChannel(
 	else
 		rf_phy_mode = RF_G_BAND;
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
 		ret = down_interruptible(&pAd->hw_atomic);
 		if (ret != 0) {
@@ -1537,7 +1536,6 @@ static void MT76x0_ChipSwitchChannel(
 			return;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	RegValue = mt7610u_read32(pAd, EXT_CCA_CFG);
 	RegValue &= ~(0xFFF);
@@ -1633,11 +1631,8 @@ static void MT76x0_ChipSwitchChannel(
 	Value |= (0x2F2F << 16);
 	mt7610u_write32(pAd, TX_ALC_CFG_0, Value);
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 		up(&pAd->hw_atomic);
-
-#endif /* RTMP_MAC_USB */
 
 	if (Channel > 14)
 		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a41010);
@@ -2021,7 +2016,6 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 	u32 ret;
 
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
 		ret = down_interruptible(&pAd->wlan_en_atomic);
 		if (ret != 0) {
@@ -2029,7 +2023,6 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 			return;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	WlanFunCtrl = mt7610u_read32(pAd, WLAN_FUN_CTRL);
 	CmbCtrl = mt7610u_read32(pAd, CMB_CTRL);
@@ -2077,11 +2070,9 @@ void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
 	mt7610u_write32(pAd, COEXCFG0, CoexCfg0);
 	mt7610u_write32(pAd, COEXCFG3, CoexCfg3);
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 		up(&pAd->wlan_en_atomic);
 
-#endif /* RTMP_MAC_USB */
 
 }
 
@@ -2179,14 +2170,10 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 	bool bDoTSSI, bool bFullCal)
 {
 	u32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
-#ifdef RTMP_MAC_USB
 	u32 ret;
-#endif /* RTMP_MAC_USB */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d, bPowerOn = %d, bFullCal = %d\n", __FUNCTION__, Channel, bPowerOn, bFullCal));
 
-
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
 		ret = down_interruptible(&pAd->cal_atomic);
 		if (ret != 0) {
@@ -2194,7 +2181,6 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 			return;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	if (!(bPowerOn || bDoTSSI || bFullCal))
 		goto RXDC_Calibration;
@@ -2403,11 +2389,8 @@ RXDC_Calibration:
 	RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 1);
 
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 		up(&pAd->cal_atomic);
-
-#endif /* RTMP_MAC_USB */
 }
 
 void MT76x0_TempSensor(struct rtmp_adapter *pAd)
@@ -2417,12 +2400,8 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 	SHORT temperature = 0;
 	INT32 Dout = 0;
 	u32 MTxCycle = 0;
-#ifdef RTMP_MAC_USB
 	u32 ret;
-#endif /* RTMP_MAC_USB */
 
-
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
 		ret = down_interruptible(&pAd->cal_atomic);
 		if (ret != 0) {
@@ -2430,7 +2409,6 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 			return;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	rlt_rf_read(pAd, RF_BANK7, RF_R73, &rf_b7_73);
 	rlt_rf_read(pAd, RF_BANK0, RF_R66, &rf_b0_66);
@@ -2516,12 +2494,8 @@ done:
 	rlt_rf_write(pAd, RF_BANK0, RF_R66, rf_b0_66);
 	rlt_rf_write(pAd, RF_BANK0, RF_R67, rf_b0_67);
 
-
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 		up(&pAd->cal_atomic);
-
-#endif /* RTMP_MAC_USB */
 }
 
 bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,

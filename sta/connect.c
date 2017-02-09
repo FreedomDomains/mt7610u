@@ -1423,10 +1423,8 @@ void LinkUp(
 	pAd->StaCfg.bNotFirstScan = true;
 	pAd->StaCfg.bAutoConnectByBssid = false;
 
-#ifdef RTMP_MAC_USB
 	/* Within 10 seconds after link up, don't allow to go to sleep. */
 	pAd->CountDowntoPsm = STAY_10_SECONDS_AWAKE;
-#endif /* RTMP_MAC_USB */
 
 
 	pEntry = &pAd->MacTab.Content[BSSID_WCID];
@@ -2254,9 +2252,7 @@ void LinkDown(
 
 	pAd->StaActive.SupportedPhyInfo.bHtEnable = false;
 
-#ifdef RTMP_MAC_USB
 	pAd->bUsbTxBulkAggre = false;
-#endif /* RTMP_MAC_USB */
 
 	/* Clean association information */
 	memset(&pAd->StaCfg.AssocInfo, 0,
@@ -2631,7 +2627,6 @@ void AuthParmFill(
 
 	==========================================================================
  */
-#ifdef RTMP_MAC_USB
 
 void MlmeCntlConfirm(
 	IN struct rtmp_adapter *pAd,
@@ -2641,7 +2636,6 @@ void MlmeCntlConfirm(
 	MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MsgType, sizeof (USHORT),
 		    &Msg, 0);
 }
-#endif /* RTMP_MAC_USB */
 
 /*
 	==========================================================================

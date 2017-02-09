@@ -274,13 +274,11 @@ void APQuickResponeForRateUpExec(
     IN void *SystemSpecific2,
     IN void *SystemSpecific3);
 
-#ifdef RTMP_MAC_USB
 void BeaconUpdateExec(
     IN void *SystemSpecific1,
     IN void *FunctionContext,
     IN void *SystemSpecific2,
     IN void *SystemSpecific3);
-#endif /* RTMP_MAC_USB */
 
 void RTMPSetPiggyBack(
 	IN struct rtmp_adapter *pAd,

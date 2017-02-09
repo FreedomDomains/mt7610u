@@ -211,12 +211,10 @@ void UAPSD_SP_Close(
 			pEntry->bAPSDFlagLegacySent = 0;
 			UAPSD_SP_END(pAd, pEntry);
 
-#ifdef RTMP_MAC_USB
 			pEntry->UAPSDTagOffset[QID_AC_BE] = 0;
 			pEntry->UAPSDTagOffset[QID_AC_BK] = 0;
 			pEntry->UAPSDTagOffset[QID_AC_VI] = 0;
 			pEntry->UAPSDTagOffset[QID_AC_VO] = 0;
-#endif /* RTMP_MAC_USB */
 	    } /* End of if */
 
 		RTMP_SEM_UNLOCK(&pAd->UAPSDEOSPLock);
@@ -533,10 +531,7 @@ void UAPSD_QueueMaintenance(
 	QUEUE_HEADER *pQue;
 	u32 IdAc;
 	bool FlgUapsdPkt, FlgEospPkt;
-#ifdef RTMP_MAC_USB
 	ULONG IrqFlags;
-#endif /* RTMP_MAC_USB */
-
 
 	/* sanity check */
 	if (gUAPSD_FlgNotQueueMaintain)
@@ -575,9 +570,7 @@ void UAPSD_QueueMaintenance(
     /* check if any queued UAPSD packet exists */
 	if (FlgUapsdPkt || FlgEospPkt)
     {
-#ifdef RTMP_MAC_USB
 		RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
-#endif /* RTMP_MAC_USB */
 
 		pEntry->UAPSDQIdleCount ++;
 
@@ -624,9 +617,7 @@ void UAPSD_QueueMaintenance(
 
         } /* End of if */
 
-#ifdef RTMP_MAC_USB
 		RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
-#endif /* RTMP_MAC_USB */
     }
     else
 	{
@@ -1427,10 +1418,8 @@ void UAPSD_TriggerFrameHandle(
 
 	/* check if current rate of the entry is 1Mbps (2.4GHz) or 6Mbps (5GHz) */
 
-#ifdef RTMP_MAC_USB
 	/* always use rough mechanism */
 	pEntry->bAPSDFlagSpRoughUse = 1;
-#endif /* RTMP_MAC_USB */
 #else
 
 	pEntry->bAPSDFlagSpRoughUse = 1;
@@ -1772,7 +1761,6 @@ void UAPSD_TriggerFrameHandle(
 }
 
 
-#ifdef RTMP_MAC_USB
 /*
 ========================================================================
 Routine Description:
@@ -1978,7 +1966,6 @@ void UAPSD_UnTagFrame(
 
 	RTMP_SEM_UNLOCK(&pAd->UAPSDEOSPLock);
 } /* End of UAPSD_UnTagFrame */
-#endif /* RTMP_MAC_USB */
 
 #endif /* UAPSD_SUPPORT */
 

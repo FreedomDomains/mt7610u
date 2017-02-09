@@ -171,14 +171,12 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	pAd->MlmeAux.SsidLen = pAd->CommonCfg.SsidLen;
 	memset(pAd->MlmeAux.Ssid, 0, NDIS_802_11_LENGTH_SSID);
 
-#ifdef RTMP_MAC_USB
 	pAd->CommonCfg.bMultipleIRP = false;
 
 	if (pAd->CommonCfg.bMultipleIRP)
 		pAd->CommonCfg.NumOfBulkInIRP = RX_RING_SIZE;
 	else
 		pAd->CommonCfg.NumOfBulkInIRP = 1;
-#endif /* RTMP_MAC_USB */
 
 #ifdef DOT11_N_SUPPORT
    	/*Init Ba Capability parameters.*/
@@ -231,9 +229,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* APInitialize(pAd);*/
 
-#ifdef RTMP_MAC_USB
 	RTMPusecDelay(10000);
-#endif /* RTMP_MAC_USB */
 
 	/*
 		Some modules init must be called before APStartUp().
@@ -260,7 +256,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 		DBGPRINT(RT_DEBUG_TRACE, ("NDIS_STATUS_MEDIA_DISCONNECT Event B!\n"));
 
 
-#ifdef RTMP_MAC_USB
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS);
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_REMOVE_IN_PROGRESS);
 
@@ -273,7 +268,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 			RTUSBBulkReceive(pAd);
 			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkReceive!\n" ));
 		}
-#endif /* RTMP_MAC_USB */
 	}/* end of else*/
 
 	/* Set up the Mac address*/
@@ -438,9 +432,7 @@ void RTMPDrvSTAClose(
 		    AsicForceWakeup(pAd, true);
         }
 
-#ifdef RTMP_MAC_USB
 		RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_REMOVE_IN_PROGRESS);
-#endif /* RTMP_MAC_USB */
 
 	}
 

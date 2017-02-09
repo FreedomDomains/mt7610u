@@ -402,7 +402,6 @@ void ScanNextChannel(
 	{
 		scan_ch_restore(pAd, OpMode);
 	}
-#ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
 	else if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) &&
 		(OpMode == OPMODE_STA))
@@ -411,7 +410,6 @@ void ScanNextChannel(
 		MlmeCntlConfirm(pAd, MT2_SCAN_CONF, MLME_FAIL_NO_RESOURCE);
 	}
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
 	else
 	{
 #ifdef CONFIG_STA_SUPPORT

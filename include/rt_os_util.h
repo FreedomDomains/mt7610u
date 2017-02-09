@@ -705,7 +705,6 @@ dma_addr_t linux_pci_map_single(void *pPciDev, void *ptr, size_t size, int sd_id
 void linux_pci_unmap_single(void *pPciDev, dma_addr_t dma_addr, size_t size, int direction);
 
 /* ============================ rt_usb_util.c =============================== */
-#ifdef RTMP_MAC_USB
 typedef void (*USB_COMPLETE_HANDLER)(void *);
 
 void dump_urb(void *purb);
@@ -787,7 +786,6 @@ void RtmpOsUsbInitRxDesc(
 	void *pRxContext,
 	dma_addr_t TransferDma);
 
-#endif /* RTMP_MAC_USB */
 
 u32 RtmpOsGetUsbDevVendorID(
 	IN void *pUsbDev);

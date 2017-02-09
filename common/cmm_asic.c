@@ -1000,8 +1000,6 @@ void AsicEnableIbssSync(
 	mt7610u_write32(pAd, BCN_TIME_CFG, csr9.word);
 	beaconBaseLocation = HW_BEACON_BASE0(pAd);
 
-
-#ifdef RTMP_MAC_USB
 	/* move BEACON TXD and frame content to on-chip memory*/
 	ptr = (u8 *)&pAd->BeaconTxWI;
 	for (i = 0; i < TXWISize; i += 4) {
@@ -1030,8 +1028,6 @@ void AsicEnableIbssSync(
 				dword);
 		ptr +=4;
 	}
-#endif /* RTMP_MAC_USB */
-
 
 
 	/* For Wi-Fi faily generated beacons between participating stations. */
@@ -1279,13 +1275,11 @@ void AsicSetEdcaParm(
 		AifsnCsr.field.Aifsn0 = Ac0Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_BE];*/
 		AifsnCsr.field.Aifsn1 = Ac1Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_BK];*/
 #ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 		{
 			if(pAd->Antenna.field.TxPath == 1)
 				AifsnCsr.field.Aifsn1 = Ac1Cfg.field.Aifsn + 2; 	/*5.2.27 T7 Pass*/
 		}
-#endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 		AifsnCsr.field.Aifsn2 = Ac2Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_VI];*/
 
@@ -1490,7 +1484,6 @@ void AsicAddSharedKeyEntry(
 	offset = SharedKeyTableBase + (4*BssIndex + KeyIdx)*HW_KEY_ENTRY_SIZE;
 
 
-#ifdef RTMP_MAC_USB
 {
 	RTUSBMultiWrite(pAd, offset, pKey, MAX_LEN_OF_SHARE_KEY);
 
@@ -1506,7 +1499,6 @@ void AsicAddSharedKeyEntry(
 		RTUSBMultiWrite(pAd, offset, pRxMic, 8);
 	}
 }
-#endif /* RTMP_MAC_USB */
 
 
 	/* Update cipher algorithm. WSTA always use BSS0*/
@@ -1758,9 +1750,7 @@ void AsicAddPairwiseKeyEntry(
 
 	/* EKEY*/
 	offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
-#ifdef RTMP_MAC_USB
 	RTUSBMultiWrite(pAd, offset, &pCipherKey->Key[0], MAX_LEN_OF_PEER_KEY);
-#endif /* RTMP_MAC_USB */
 	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
 	{
 		u32 Value;
@@ -1773,16 +1763,12 @@ void AsicAddPairwiseKeyEntry(
 	/*  MIC KEY*/
 	if (pTxMic)
 	{
-#ifdef RTMP_MAC_USB
 		RTUSBMultiWrite(pAd, offset, &pCipherKey->TxMic[0], 8);
-#endif /* RTMP_MAC_USB */
 	}
 	offset += 8;
 	if (pRxMic)
 	{
-#ifdef RTMP_MAC_USB
 		RTUSBMultiWrite(pAd, offset, &pCipherKey->RxMic[0], 8);
-#endif /* RTMP_MAC_USB */
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("AsicAddPairwiseKeyEntry: WCID #%d Alg=%s\n",WCID, CipherName[CipherAlg]));
 	DBGPRINT(RT_DEBUG_TRACE,("	Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",

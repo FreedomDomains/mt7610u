@@ -2232,7 +2232,6 @@ RtmpIoctl_rt_ioctl_giwessid(
 		pSsid->SsidLen = pAd->CommonCfg.SsidLen;
 		memcpy(pSsid->pSsid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 	}
-#ifdef RTMP_MAC_USB
 #ifdef WPA_SUPPLICANT_SUPPORT
 	/* Add for RT2870 */
 	else if (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
@@ -2241,7 +2240,6 @@ RtmpIoctl_rt_ioctl_giwessid(
 		memcpy(pSsid->pSsid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
 	}
 #endif /* WPA_SUPPLICANT_SUPPORT */
-#endif /* RTMP_MAC_USB */
 	else
 	{/*the ANY ssid was specified */
 		pSsid->SsidLen = 0;

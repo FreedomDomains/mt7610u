@@ -40,8 +40,6 @@
 // TODO: shiang-6590, remove it when MP
 // TODO: End---
 
-#ifdef RTMP_MAC_USB
-#endif /* RTMP_MAC_USB */
 
 /*---------------------------------------------------------------------*/
 /* Private Variables Used                                              */

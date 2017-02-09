@@ -38,10 +38,8 @@ struct _RSSI_SAMPLE;
 #include "eeprom.h"
 
 
-#ifdef RTMP_MAC_USB
 #include "mac_ral/rtmp_mac.h"
 #include "mac_ral/mac_usb.h"
-#endif /* RTMP_MAC_USB */
 
 #ifdef RT65xx
 #include "chip/rt65xx.h"

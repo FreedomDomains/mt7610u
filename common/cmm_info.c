@@ -1261,9 +1261,7 @@ void RTMPAddWcidAttributeEntry(
 	}
 
 	/* For key index and ext IV bit, so only need to update the position(offset+3).*/
-#ifdef RTMP_MAC_USB
 	RTUSBMultiWrite_OneByte(pAd, offset+3, &IVEIV);
-#endif /* RTMP_MAC_USB */
 
 	DBGPRINT(RT_DEBUG_TRACE,("RTMPAddWcidAttributeEntry: WCID #%d, KeyIndex #%d, Alg=%s\n",Wcid, KeyIdx, CipherName[CipherAlg]));
 	DBGPRINT(RT_DEBUG_TRACE,("	WCIDAttri = 0x%x \n",  WCIDAttri));

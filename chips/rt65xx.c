@@ -279,11 +279,9 @@ void MT76x0DisableTxRx(
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 			return;
 		}
-#ifdef RTMP_MAC_USB
 		RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
 		usb_rx_cmd_msgs_receive(pAd);
 		RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
 	}
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
@@ -351,9 +349,6 @@ void MT76x0DisableTxRx(
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 {
 	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
-
-
-#ifdef RTMP_MAC_USB
 	u32 ret;
 
 	if (IS_USB_INF(pAd)) {
@@ -363,7 +358,6 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 			return;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	WlanFunCtrl.word = mt7610u_read32(pAd, WLAN_FUN_CTRL);
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
@@ -461,11 +455,9 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd)) {
 		up(&pAd->wlan_en_atomic);
 	}
-#endif /* RTMP_MAC_USB */
 }
 
 #endif /* RT65xx */

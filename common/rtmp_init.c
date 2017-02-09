@@ -72,11 +72,9 @@ RTMP_REG_PAIR MACRegTable[] = {
 	{AUTO_RSP_CFG,			0x00000013},	/* Initial Auto_Responder, because QA will turn off Auto-Responder*/
 	{CCK_PROT_CFG,			0x05740003 /*0x01740003*/},	/* Initial Auto_Responder, because QA will turn off Auto-Responder. And RTS threshold is enabled. */
 	{OFDM_PROT_CFG,			0x05740003 /*0x01740003*/},	/* Initial Auto_Responder, because QA will turn off Auto-Responder. And RTS threshold is enabled. */
-#ifdef RTMP_MAC_USB
 	{PBF_CFG, 				0xf40006}, 		/* Only enable Queue 2*/
 	{MM40_PROT_CFG,			0x3F44084},		/* Initial Auto_Responder, because QA will turn off Auto-Responder*/
 	{WPDMA_GLO_CFG,			0x00000030},
-#endif /* RTMP_MAC_USB */
 	{GF20_PROT_CFG,			0x01744004},    /* set 19:18 --> Short NAV for MIMO PS*/
 	{GF40_PROT_CFG,			0x03F44084},
 	{MM20_PROT_CFG,			0x01744004},
@@ -950,10 +948,8 @@ int	NICInitializeAsic(
 {
 	ULONG			Index = 0;
 	u32			MACValue = 0;
-#ifdef RTMP_MAC_USB
 	u32			Counter = 0;
 	USB_DMA_CFG_STRUC UsbCfg;
-#endif /* RTMP_MAC_USB */
 
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
@@ -961,7 +957,6 @@ int	NICInitializeAsic(
 
 
 
-#ifdef RTMP_MAC_USB
 	/* Make sure MAC gets ready after NICLoadFirmware().*/
 
 	Index = 0;
@@ -982,7 +977,6 @@ int	NICInitializeAsic(
 
 	mdelay(200);
 
-#ifdef RTMP_MAC_USB
 	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
 
 	/* USB1.1 do not use bulk in aggregation */
@@ -1031,7 +1025,6 @@ int	NICInitializeAsic(
 	usb_rx_cmd_msgs_receive(pAd);
 
 	//RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
@@ -1039,7 +1032,6 @@ int	NICInitializeAsic(
 	RANDOM_WRITE(pAd, MACRegTable, NUM_MAC_REG_PARMS);
 
 
-#endif /* RTMP_MAC_USB */
 
 	AsicInitBcnBuf(pAd);
 
@@ -1065,13 +1057,11 @@ int	NICInitializeAsic(
 	} while (Index++ < 100);
 
 
-#ifdef RTMP_MAC_USB
 	/* The commands to firmware should be after these commands, these commands will init firmware*/
 	/* PCI and USB are not the same because PCI driver needs to wait for PCI bus ready*/
 		mt7610u_write32(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
 		mt7610u_write32(pAd,H2M_MAILBOX_CSR,0);
 		mt7610u_write32(pAd, H2M_INT_SRC, 0);
-#endif /* RTMP_MAC_USB */
 
 	/* Wait to be stable.*/
 	RTMPusecDelay(1000);
@@ -1102,7 +1092,6 @@ int	NICInitializeAsic(
 		mt7610u_write32(pAd, MAX_LEN_CFG, csr);
 	}
 
-#ifdef RTMP_MAC_USB
 {
 		u32 MACValue[254 * 2];
 
@@ -1114,7 +1103,6 @@ int	NICInitializeAsic(
 
 		BURST_WRITE(pAd, MAC_WCID_BASE, MACValue, 254 * 2);
 }
-#endif /* RTMP_MAC_USB */
 
 #ifdef CONFIG_STA_SUPPORT
 	/* Add radio off control*/
@@ -1137,7 +1125,6 @@ int	NICInitializeAsic(
 	/* This routine can be ignored in radio-ON/OFF operation. */
 	if (bHardReset)
 	{
-#ifdef RTMP_MAC_USB
 		{
 			u32 MACValue[4];
 
@@ -1156,7 +1143,6 @@ int	NICInitializeAsic(
 
 			BURST_WRITE(pAd, MAC_WCID_ATTRIBUTE_BASE, MACValue, 256);
 		}
-#endif /* RTMP_MAC_USB */
 
 	}
 
@@ -1166,7 +1152,6 @@ int	NICInitializeAsic(
 		/* clear all on-chip BEACON frame space */
 	}
 
-#ifdef RTMP_MAC_USB
 	AsicDisableSync(pAd);
 
 	/* Clear raw counters*/
@@ -1178,7 +1163,6 @@ int	NICInitializeAsic(
 	Counter|=0x000001e;
 	mt7610u_write32(pAd, USB_CYC_CFG, Counter);
 	RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -1207,12 +1191,10 @@ void NICUpdateFifoStaCounters(
 	INT32				reTry;
 	u8 			succMCS;
 
-#ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
 	if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		return;
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
 #ifdef RT65xx
@@ -1502,7 +1484,6 @@ void NICUpdateRawCounters(
 	pAd->Counters8023.RxNoBuffer += (RxStaCnt2.field.RxFifoOverflowCount);
 
 	/*pAd->RalinkCounters.RxCount = 0;*/
-#ifdef RTMP_MAC_USB
 	if (pRalinkCounters->RxCount != pAd->watchDogRxCnt)
 	{
 		pAd->watchDogRxCnt = pRalinkCounters->RxCount;
@@ -1515,7 +1496,6 @@ void NICUpdateRawCounters(
 		else
 			pAd->watchDogRxOverFlowCnt = 0;
 	}
-#endif /* RTMP_MAC_USB */
 
 
 	/*if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_TX_RATE_SWITCH_ENABLED) || */
@@ -1768,7 +1748,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CommonCfg.BasicRateBitmap = 0xF;
 	pAd->CommonCfg.BasicRateBitmapOld = 0xF;
 
-#ifdef RTMP_MAC_USB
 	pAd->BulkOutReq = 0;
 
 	pAd->BulkOutComplete = 0;
@@ -1793,8 +1772,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->CountDowntoPsm = 0;
 	pAd->StaCfg.Connectinfoflag = false;
 #endif /* CONFIG_STA_SUPPORT */
-
-#endif /* RTMP_MAC_USB */
 
 	for(key_index=0; key_index<SHARE_KEY_NUM; key_index++)
 	{
@@ -2622,7 +2599,6 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 	DBGPRINT(RT_DEBUG_TRACE, ("pAd->infType=%d\n", pAd->infType));
 
 
-#ifdef RTMP_MAC_USB
 	sema_init(&(pAd->UsbVendorReq_semaphore), 1);
 	sema_init(&(pAd->reg_atomic), 1);
 	sema_init(&(pAd->hw_atomic), 1);
@@ -2641,7 +2617,6 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 #endif
 
 
-#endif /* RTMP_MAC_USB */
 
 	ret = RtmpChipOpsRegister(pAd, infType);
 
@@ -2673,10 +2648,8 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 	}
 #endif /* RT65xx */
 
-#ifdef RTMP_MAC_USB
 	if (pAd->UsbVendorReqBuf)
 		kfree(pAd->UsbVendorReqBuf);
-#endif /* RTMP_MAC_USB */
 
 	/*
 		Free ProbeRespIE Table

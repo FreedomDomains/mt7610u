@@ -470,13 +470,11 @@ typedef struct _RTMP_SCATTER_GATHER_LIST {
 	We need to enqueue the whole frame because MLME need to pass data type
 	information from 802.11 header
 */
-#ifdef RTMP_MAC_USB
 #define REPORT_MGMT_FRAME_TO_MLME(_pAd, Wcid, _pFrame, _FrameSize, _Rssi0, _Rssi1, _Rssi2, _MinSNR, _OpMode)        \
 {                                                                                       \
     u32 High32TSF=0, Low32TSF=0;                                                          \
     MlmeEnqueueForRecv(_pAd, Wcid, High32TSF, Low32TSF, (u8)_Rssi0, (u8)_Rssi1,(u8)_Rssi2,_FrameSize, _pFrame, (u8)_MinSNR, _OpMode);   \
 }
-#endif /* RTMP_MAC_USB */
 
 #define MAC_ADDR_EQUAL(pAddr1,pAddr2)           (memcmp(pAddr1, pAddr2, ETH_ALEN) == 0)
 #define SSID_EQUAL(ssid1, len1, ssid2, len2)    ((len1==len2) && (memcmp(ssid1, ssid2, len1) == 0))
@@ -688,7 +686,6 @@ typedef struct __attribute__ ((packed)) _RT_802_11_WPA_REKEY {
 } RT_WPA_REKEY,*PRT_WPA_REKEY, RT_802_11_WPA_REKEY, *PRT_802_11_WPA_REKEY;
 
 
-#ifdef RTMP_MAC_USB
 /***************************************************************************
   *	RTUSB I/O related data structure
   **************************************************************************/
@@ -710,7 +707,6 @@ typedef enum _RT_802_11_CIPHER_SUITE_TYPE {
 	Cipher_Type_CCMP,
 	Cipher_Type_WEP104
 } RT_802_11_CIPHER_SUITE_TYPE, *PRT_802_11_CIPHER_SUITE_TYPE;
-#endif /* RTMP_MAC_USB */
 
 typedef struct {
 	u8 Addr[ETH_ALEN];
@@ -917,10 +913,8 @@ typedef struct _MLME_STRUCT {
 	RALINK_TIMER_STRUCT RxAntEvalTimer;
 
 
-#ifdef RTMP_MAC_USB
 	RALINK_TIMER_STRUCT AutoWakeupTimer;
 	bool AutoWakeupTimerRunning;
-#endif /* RTMP_MAC_USB */
 } MLME_STRUCT, *PMLME_STRUCT;
 
 #ifdef DOT11_N_SUPPORT
@@ -1191,7 +1185,6 @@ struct wifi_dev{
 };
 
 
-#ifdef RTMP_MAC_USB
 /***************************************************************************
   *	USB-based chip Beacon related data structures
   **************************************************************************/
@@ -1205,7 +1198,6 @@ typedef struct _BEACON_SYNC_STRUCT_ {
 	u8 BeaconBitMap;	/* NOTE: If the MAX_MBSSID_NUM is larger than 8, this parameter need to change. */
 	u8 DtimBitOn;	/* NOTE: If the MAX_MBSSID_NUM is larger than 8, this parameter need to change. */
 } BEACON_SYNC_STRUCT;
-#endif /* RTMP_MAC_USB */
 
 /***************************************************************************
   *	Multiple SSID related data structures
@@ -1445,7 +1437,6 @@ struct common_config {
 
 	bool bHardwareRadio;	/* Hardware controlled Radio enabled */
 
-#ifdef RTMP_MAC_USB
 	bool bMultipleIRP;	/* Multiple Bulk IN flag */
 	u8 NumOfBulkInIRP;	/* if bMultipleIRP == true, NumOfBulkInIRP will be 4 otherwise be 1 */
 	RT_HT_CAPABILITY SupportedHtPhy;
@@ -1459,7 +1450,6 @@ struct common_config {
 	u32 BeaconAdjust;
 	u32 BeaconFactor;
 	u32 BeaconRemain;
-#endif				/* RTMP_MAC_USB */
 
 
 
@@ -1917,9 +1907,7 @@ typedef struct _MAC_TABLE_ENTRY {
 	bool bAPSDFlagLegacySent;	/* 1: Legacy PS sent but
 					   yet statistics handle */
 
-#ifdef RTMP_MAC_USB
 	u32 UAPSDTagOffset[WMM_NUM_OF_AC];
-#endif /* RTMP_MAC_USB */
 #endif /* UAPSD_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
@@ -2402,7 +2390,6 @@ struct rtmp_adapter {
 	spinlock_t CmdQLock;	/* CmdQLock spinlock */
 	RTMP_OS_TASK cmdQTask;
 
-#ifdef RTMP_MAC_USB
 /*****************************************************************************************/
 /*      USB related parameters                                                           */
 /*****************************************************************************************/
@@ -2434,7 +2421,6 @@ struct rtmp_adapter {
 
 	/* lock for ATE */
 
-#endif /* RTMP_MAC_USB */
 
 /*****************************************************************************************/
 /*      RBUS related parameters                                                           								  */
@@ -2463,7 +2449,6 @@ struct rtmp_adapter {
 	bool DeQueueRunning[NUM_OF_TX_RING];	/* for ensuring RTUSBDeQueuePacket get call once */
 	spinlock_t DeQueueLock[NUM_OF_TX_RING];
 
-#ifdef RTMP_MAC_USB
 	/* Data related context and AC specified, 4 AC supported */
 	spinlock_t BulkOutLock[6];	/* BulkOut spinlock for 4 ACs */
 	spinlock_t MLMEBulkOutLock;	/* MLME BulkOut lock */
@@ -2487,7 +2472,6 @@ struct rtmp_adapter {
 	USHORT CountDowntoPsm;
 #endif /* CONFIG_STA_SUPPORT */
 
-#endif /* RTMP_MAC_USB */
 
 	/* resource for software backlog queues */
 	QUEUE_HEADER TxSwQueue[NUM_OF_TX_RING];	/* 4 AC + 1 HCCA */
@@ -2512,7 +2496,6 @@ struct rtmp_adapter {
 /*****************************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 	RX_CONTEXT RxContext[RX_RING_SIZE];	/* 1 for redundant multiple IRP bulk in. */
 	spinlock_t BulkInLock;	/* BulkIn spinlock for 4 ACs */
 	spinlock_t CmdRspLock;
@@ -2524,7 +2507,6 @@ struct rtmp_adapter {
 	ULONG ReadPosition;	/* current read position in a packet buffer */
 
 	CMD_RSP_CONTEXT CmdRspEventContext;
-#endif /* RTMP_MAC_USB */
 
 /*****************************************************************************************/
 /*      ASIC related parameters                                                          */
@@ -2638,10 +2620,8 @@ struct rtmp_adapter {
 #endif /* CONFIG_STA_SUPPORT */
 	HEADER_802_11 NullFrame;
 
-#ifdef RTMP_MAC_USB
 	TX_CONTEXT NullContext;
 	TX_CONTEXT PsPollContext;
-#endif /* RTMP_MAC_USB */
 
 
 #ifdef UAPSD_SUPPORT
@@ -2748,14 +2728,12 @@ struct rtmp_adapter {
 	/*****************************************************************************************/
 	/*      Statistic related parameters                                                     */
 	/*****************************************************************************************/
-#ifdef RTMP_MAC_USB
 	ULONG BulkOutDataOneSecCount;
 	ULONG BulkInDataOneSecCount;
 	ULONG BulkLastOneSecCount;	/* BulkOutDataOneSecCount + BulkInDataOneSecCount */
 	ULONG watchDogRxCnt;
 	ULONG watchDogRxOverFlowCnt;
 	ULONG watchDogTxPendingCnt[NUM_OF_TX_RING];
-#endif /* RTMP_MAC_USB */
 
 	bool bUpdateBcnCntDone;
 
@@ -3102,12 +3080,10 @@ static inline void RTMPWIEndianChange(u8 *pData, int size)
 	========================================================================
 */
 
-#ifdef RTMP_MAC_USB
 static inline void RTMPDescriptorEndianChange(u8 *pData, ULONG DescType)
 {
 	*((u32 *)(pData)) = SWAP32(*((u32 *)(pData)));
 }
-#endif /* RTMP_MAC_USB */
 /*
 	========================================================================
 
@@ -4241,12 +4217,10 @@ void InvalidStateWhenDisassociate(
 	IN  struct rtmp_adapter *pAd,
 	IN  MLME_QUEUE_ELEM *Elem);
 
-#ifdef RTMP_MAC_USB
 void MlmeCntlConfirm(
 	IN struct rtmp_adapter *pAd,
 	IN ULONG MsgType,
 	IN USHORT Msg);
-#endif /* RTMP_MAC_USB */
 
 void  ComposePsPoll(
 	IN  struct rtmp_adapter *  pAd);
@@ -6124,7 +6098,6 @@ void RtmpTimerQInit(
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
 
 int RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
@@ -6318,7 +6291,6 @@ void RT28xxUsbAsicWOWEnable(
 void RT28xxUsbAsicWOWDisable(
 	IN struct rtmp_adapter *pAd);
 
-#endif /* RTMP_MAC_USB */
 
 int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
@@ -6809,9 +6781,7 @@ INT set_force_ip_assemble(struct rtmp_adapter*pAd, char *arg);
 INT set_rf(struct rtmp_adapter*pAd, char *arg);
 #endif /* RLT_RF */
 
-#ifdef RTMP_MAC_USB
 bool CmdRspEventHandle(struct rtmp_adapter*pAd);
-#endif /* RTMP_MAC_USB */
 
 #endif  /* __RTMP_H__ */
 

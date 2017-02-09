@@ -96,7 +96,6 @@ void RTMPSetLEDStatus(
 	IN struct rtmp_adapter *	pAd,
 	IN u8 		Status);
 
-#ifdef RTMP_MAC_USB
 #define RTMPSetLED(pAd, Status)	\
 do{								\
 	u8 LEDStatus;			\
@@ -106,8 +105,6 @@ do{								\
 	else\
 		RTEnqueueInternalCmd(pAd, CMDTHREAD_SET_LED_STATUS, &LEDStatus, sizeof(LEDStatus));	\
 }while(0)
-
-#endif /* RTMP_MAC_USB */
 
 struct mt7610u_led_control {
 	MCU_LEDCS_STRUC		MCULedCntl; /* LED Mode EEPROM 0x3b */

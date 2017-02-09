@@ -25,8 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
-
 #define usb_buffer_alloc(a, b, c, d) usb_alloc_coherent(a, b, c, d)
 #define usb_buffer_free(a, b, c, d) usb_free_coherent(a, b, c, d)
 
@@ -1733,7 +1731,6 @@ bool AsicCheckCommandOk(
 	INT ret;
 
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 	{
 		ret = down_interruptible(&pAd->reg_atomic);
@@ -1742,7 +1739,6 @@ bool AsicCheckCommandOk(
 			return false;
 		}
 	}
-#endif /* RTMP_MAC_USB */
 
 	i = 0;
 	do
@@ -1784,16 +1780,13 @@ bool AsicCheckCommandOk(
 			mt7610u_write32(pAd, H2M_MAILBOX_STATUS, 0xffffffff);
 			mt7610u_write32(pAd, H2M_MAILBOX_CID, 0xffffffff);
 
-#ifdef RTMP_MAC_USB
 	if (IS_USB_INF(pAd))
 	{
 		up(&pAd->reg_atomic);
 	}
-#endif /* RTMP_MAC_USB */
 
 
 	return ret;
 
 }
 
-#endif /* RTMP_MAC_USB */

@@ -240,9 +240,7 @@ struct mcu_skb_data {
 	enum mcu_skb_state state;
 };
 
-#ifdef RTMP_MAC_USB
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad);
-#endif /* RTMP_MAC_USB */
 void mt7610u_mcu_ctrl_init(struct rtmp_adapter *ad);
 void mt7610u_mcu_ctrl_enable(struct rtmp_adapter *ad);
 void mt7610u_mcu_ctrl_disable(struct rtmp_adapter *ad);

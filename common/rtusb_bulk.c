@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 
 #include <linux/types.h>
 
@@ -1335,4 +1334,3 @@ void RTUSBCancelPendingBulkOutIRP(
 	}
 }
 
-#endif /* RTMP_MAC_USB */

@@ -37,10 +37,7 @@ BUILD_TIMER_FUNCTION(EnqueueStartForPSKExec);
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
 BUILD_TIMER_FUNCTION(BeaconUpdateExec);
-#endif /* RTMP_MAC_USB */
-
 
 #ifdef CONFIG_STA_SUPPORT
 BUILD_TIMER_FUNCTION(BeaconTimeout);
@@ -58,9 +55,7 @@ BUILD_TIMER_FUNCTION(DlsTimeoutAction);
 
 
 
-#ifdef RTMP_MAC_USB
 BUILD_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
-#endif /* RTMP_MAC_USB */
 
 
 #endif /* CONFIG_STA_SUPPORT */

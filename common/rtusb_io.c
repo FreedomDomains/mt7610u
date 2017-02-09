@@ -25,9 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
-
-
 #include	"rt_config.h"
 
 #define MAX_VENDOR_REQ_RETRY_COUNT  10
@@ -1226,4 +1223,3 @@ void CMDHandler(struct rtmp_adapter *pAd)
 	}	/* end of while */
 }
 
-#endif /* RTMP_MAC_USB */
