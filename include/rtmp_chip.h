@@ -468,9 +468,6 @@ struct rtmp_chip_ops {
 	/* Power save */
 	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN bool ReduceCorePower);
 	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
-	INT (*MCU_PwrSavingOP)(struct rtmp_adapter *pAd, u32 PwrOP, u32 PwrLevel,
-							u32 ListenInterval, u32 PreTBTTLeadTime,
-							u8 TIMByteOffset, u8 TIMBytePattern);
 
 	/* Channel */
 	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, bool bScan);
@@ -521,15 +518,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.DisableAPMIMOPS != NULL)	\
 			__pAd->chipOps.DisableAPMIMOPS(__pAd);	\
-} while (0)
-
-#define PWR_SAVING_OP(__pAd, __PwrOP, __PwrLevel, __ListenInterval, \
-						__PreTBTTLeadTime, __TIMByteOffset, __TIMBytePattern)	\
-do {	\
-		if (__pAd->chipOps.MCU_PwrSavingOP != NULL)	\
-			__pAd->chipOps.MCU_PwrSavingOP(__pAd, __PwrOP, __PwrLevel,	\
-										__ListenInterval,__PreTBTTLeadTime, \
-										__TIMByteOffset, __TIMBytePattern);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_TSSI_TABLE_INIT(__pAd)	\

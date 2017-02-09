@@ -40,5 +40,4 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 	pChipOps->MCU_ReadModifyWrite = mt7610u_mcu_read_modify_write;
 	pChipOps->MCU_RandomWrite = mt7610u_mcu_random_write;
 	pChipOps->MCU_RFRandomWrite = mt7610u_mcu_rf_random_write;
-	pChipOps->MCU_PwrSavingOP = mt7610u_mcu_pwr_saving;
 }

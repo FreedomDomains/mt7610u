@@ -49,7 +49,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 	if (!IS_MT76x0(pAd))
 	{
 		if (Stage == MLME_RADIO_OFF)
-			PWR_SAVING_OP(pAd, RADIO_OFF, 1, 0, 0, 0, 0);
+			mt7610u_mcu_pwr_saving(pAd, RADIO_OFF, 1, 0, 0, 0, 0);
 	}
 
 	MCU_CTRL_EXIT(pAd);
@@ -119,7 +119,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 
 	if (!IS_MT76x0(pAd)) {
 		if (Stage == MLME_RADIO_ON)
-			PWR_SAVING_OP(pAd, RADIO_ON, 1, 0, 0, 0, 0);
+			mt7610u_mcu_pwr_saving(pAd, RADIO_ON, 1, 0, 0, 0, 0);
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
