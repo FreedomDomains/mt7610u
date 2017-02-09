@@ -87,13 +87,9 @@ void BA_MaxWinSizeReasign(
 	else
 		MaxPeerRxSize = (((1 << (pEntryPeer->MaxRAmpduFactor + 3)) * 10) / 16) -1;
 
-#ifdef RT65xx
 	if (IS_RT65XX(pAd))
 		MaxSize = 31;
-	else
-#endif /* RT65xx */
-	if (pAd->MACVersion >= RALINK_2883_VERSION)
-	{
+	else if (pAd->MACVersion >= RALINK_2883_VERSION) {
 		if (pAd->MACVersion >= RALINK_3070_VERSION)
 		{
 			if (pEntryPeer->WepStatus != Ndis802_11EncryptionDisabled)
@@ -103,9 +99,7 @@ void BA_MaxWinSizeReasign(
 		}
 		else
 			MaxSize = 31;
-	}
-	else if (pAd->MACVersion >= RALINK_2880E_VERSION) /* 2880e */
-	{
+	} else if (pAd->MACVersion >= RALINK_2880E_VERSION) { /* 2880e */
 		if (pEntryPeer->WepStatus != Ndis802_11EncryptionDisabled)
 			MaxSize = 7; /* for non-open mode */
 		else

@@ -99,14 +99,12 @@ void RTMPWriteTxWI(
 	/* John tune the performace with Intel Client in 20 MHz performance*/
 #ifdef DOT11_N_SUPPORT
 	BASize = pAd->CommonCfg.TxBASize;
-#ifdef RT65xx
 	if (IS_RT65XX(pAd))
 	{
 		if (BASize > 31)
 			BASize =31;
 	}
 	else
-#endif /* RT65xx */
 	if (pAd->MACVersion == 0x28720200)
 	{
 		if (BASize > 13)

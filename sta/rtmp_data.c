@@ -567,19 +567,11 @@ void STAHandleRxDataFrame(
 	}
 	else if (pRxInfo->U2M)
 	{
-#ifdef RT65xx
 		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) +
 									(pRxWI->RxWIBW << 7) +
 									(pRxWI->RxWISGI << 9) +
 									(pRxWI->RxWISTBC << 10) +
 									(pRxWI->RxWIPhyMode << 14));
-#else
-		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) +
-								   	(pRxWI->RxWIBW << 7) +
-								   	(pRxWI->RxWISGI << 8) +
-								   	(pRxWI->RxWISTBC << 9) +
-								   	(pRxWI->RxWIPhyMode << 14));
-#endif /* RT65xx */
 
 #if defined(DOT11Z_TDLS_SUPPORT) || defined(QOS_DLS_SUPPORT)
 		if (RX_BLK_TEST_FLAG(pRxBlk, fRX_DLS)) {

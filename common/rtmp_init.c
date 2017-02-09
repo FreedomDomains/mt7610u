@@ -89,11 +89,7 @@ RTMP_REG_PAIR MACRegTable[] = {
 		and beacon1 is SIFS (10us), so if INTEL 2200bg card connects to BSS0, the ping
 		will always lost. So we change the SIFS of CCK from 10us to 16us. */
 	{XIFS_TIME_CFG,			0x33a41010},
-#ifdef RT65xx
 	{PWR_PIN_CFG,			0x00000000},
-#else
-	{PWR_PIN_CFG,			0x00000003},	/* patch for 2880-E*/
-#endif
 };
 
 
@@ -484,8 +480,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	}
 	else
 	{
-#ifdef MT76x0
-#endif /* RT65xx */
 		pAd->RFICType = RFIC_24GHZ;
 	}
 
@@ -533,13 +527,11 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 			pAd->TxAgcStepG, pAd->bAutoTxAgcG));
 	}
 
-#ifdef RT65xx
 	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 	{
 		; // TODO: wait TC6008 EEPROM format
 	}
 	else
-#endif /* RT65xx */
 	/* 1. 11a*/
 	{
 		{
@@ -1078,13 +1070,11 @@ int	NICInitializeAsic(
 		u32 csr;
 
 		csr = mt7610u_read32(pAd, MAX_LEN_CFG);
-#if defined(RT2883) || defined(RT3883) || defined(RT3593) || defined(RT65xx)
 		if (IS_RT65XX(pAd))
 		{
 			csr |= 0x3fff;
 		}
 		else
-#endif /* defined(RT2883) || defined(RT3883) || defined(RT3593) */
 		{
 			csr &= 0xFFF;
 			csr |= 0x2000;
@@ -1197,11 +1187,9 @@ void NICUpdateFifoStaCounters(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef RT65xx
 	// TODO: shiang-6590, for 8592 now we have tx-status report packet from hardware!!
 	if (IS_RT65XX(pAd))
 		return;
-#endif /* RT65xx */
 
 
 		do
@@ -2611,10 +2599,7 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd, RTMP_INF_TYPE infType)
 		return false;
 	}
 
-#ifdef RT65xx
-	//if (IS_RT65XX(pAd))
 		mt7610u_chip_onoff(pAd, true, false);
-#endif
 
 
 
@@ -2642,11 +2627,9 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
 	INT index;
 
-#ifdef RT65xx
 	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1)) {
 		mt7610u_chip_onoff(pAd, false, false);
 	}
-#endif /* RT65xx */
 
 	if (pAd->UsbVendorReqBuf)
 		kfree(pAd->UsbVendorReqBuf);

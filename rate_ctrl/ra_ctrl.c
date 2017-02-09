@@ -902,10 +902,8 @@ void MlmeSelectTxRateTable(
 				}
 			}
 
-#ifdef RT65xx
 			if (IS_MT76x0(pAd))
 				ss = 1;
-#endif /* RT65xx */
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 			if (pAd->rateAlg == RATE_ALG_GRP)

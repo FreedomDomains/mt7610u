@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RT65xx
 
 #include	"rt_config.h"
 
@@ -458,4 +457,3 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 	}
 }
 
-#endif /* RT65xx */

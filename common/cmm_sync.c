@@ -361,7 +361,6 @@ CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, u8 rssi_idx)
 	else
 		RssiOffset = pAd->BGRssiOffset[rssi_idx];
 
-#ifdef RT65xx
 	/*
 		Recommended by CSD team:
 		2.4G : RSSI_report = RSSI_bpp + EEPROM_0x46[15:8 or 7:0] - EEPROM_0x44[7:0]
@@ -370,7 +369,6 @@ CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, u8 rssi_idx)
 	if (IS_RT65XX(pAd))
 		return (Rssi + RssiOffset - LNAGain);
 	else
-#endif /* RT65xx */
 		return (-12 - RssiOffset - LNAGain - Rssi);
 }
 

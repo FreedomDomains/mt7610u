@@ -2599,10 +2599,8 @@ struct rtmp_adapter {
 	/* MAC control */
 	/* ---------------------------- */
 
-#if defined(RT65xx)
 
 	union rtmp_wlan_func_ctrl WlanFunCtrl;
-#endif /* defined(RT65xx) */
 
 	struct hw_setting hw_cfg;
 

@@ -37,17 +37,10 @@ typedef union _CMB_CTRL_STRUC{
 		u32       	LDO_CORE_LEVEL:4;
 		u32       	PLL_LD:1;
 		u32       	XTAL_RDY:1;
-#ifdef RT65xx
 		u32		Rsv:3;
 		u32		GPIOModeLed2:1;
 		u32		GPIOModeLed1:1;
 		u32		CsrUartMode:1;
-#else
-		u32      Rsv:2;
-		u32		LDO25_FRC_ON:1;//4
-		u32		LDO25_LARGEA:1;
-		u32		LDO25_LEVEL:2;
-#endif
 		u32		AUX_OPT_Bit15_Two_AntennaMode:1;
 		u32		AUX_OPT_Bit14_TRSW1_as_GPIO:1;
 		u32		AUX_OPT_Bit13_GPIO7_as_GPIO:1;
@@ -86,17 +79,10 @@ typedef union _CMB_CTRL_STRUC{
 		u32		AUX_OPT_Bit13_GPIO7_as_GPIO:1;
 		u32		AUX_OPT_Bit14_TRSW1_as_GPIO:1;
 		u32		AUX_OPT_Bit15_Two_AntennaMode:1;
-#ifdef RT65xx
 		u32		CsrUartMode:1;
 		u32		GPIOModeLed1:1;
 		u32		GPIOModeLed2:1;
 		u32		Rsv:3;
-#else
-		u32		LDO25_LEVEL:2;
-		u32		LDO25_LARGEA:1;
-		u32		LDO25_FRC_ON:1;//4
-		u32       	Rsv:2;
-#endif /* RT65xx */
 		u32       	XTAL_RDY:1;
 		u32       	PLL_LD:1;
 		u32       	LDO_CORE_LEVEL:4;

@@ -27,13 +27,7 @@
 
 #include "rt_config.h"
 #ifdef DOT11_N_SUPPORT
-#ifdef RT65xx
 #define MAX_AGG_CNT	32
-#elif defined(RT2883) || defined(RT3883)
-#define MAX_AGG_CNT	16
-#else
-#define MAX_AGG_CNT	8
-#endif
 /* DisplayTxAgg - display Aggregation statistics from MAC */
 void DisplayTxAgg (struct rtmp_adapter*pAd)
 {

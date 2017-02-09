@@ -747,11 +747,7 @@ typedef union __attribute__ ((packed)) _HDR_TRANS_CTRL_STRUC {
 /* RX header translation enable by WCID */
 #define HT_RX_WCID_EN_BASE	0x0264
 #define HT_RX_WCID_OFFSET	32
-#ifdef RT63xx
-#define HT_RX_WCID_SIZE		(HT_RX_WCID_OFFSET * 4)	/* 128 WCIDs */
-#elif defined(RT65xx)
 #define HT_RX_WCID_SIZE		(HT_RX_WCID_OFFSET * 8)	/*	256 WCIDs */
-#endif /* defined(RT63xx) */
 #ifdef RT_BIG_ENDIAN
 typedef union __attribute__ ((packed)) _HT_RX_WCID_EN_STRUC {
 	struct {
@@ -955,7 +951,6 @@ void ral_wlan_chip_onoff(
 #define TX0_BB_GAIN_ATTEN	0x13C0
 #define TX_ALC_VGA3			0x13C8
 
-#ifdef RT65xx
 #define CPU_CTL				0x0704
 #define RESET_CTL			0x070C
 #define INT_LEVEL			0x0718
@@ -973,7 +968,6 @@ void ral_wlan_chip_onoff(
 #define LED0_S0				0x077C
 #define LED0_S1				0x0780
 #define SEMAPHORE_00		0x07B0
-#endif /* RT65xx */
 
 #define APCLI_BSSID_IDX			8
 #define MAC_APCLI_BSSID_DW0		0x1090

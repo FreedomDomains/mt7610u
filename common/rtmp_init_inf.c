@@ -35,10 +35,8 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	if (pAd == NULL)
 		return false;
 
-#ifdef RT65xx
 	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
 		mt7610u_chip_onoff(pAd, true, false);
-#endif /* RT65xx */
 
 	/* reset Adapter flags*/
 	RTMP_CLEAR_FLAGS(pAd);

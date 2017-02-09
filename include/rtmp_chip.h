@@ -41,9 +41,7 @@ struct _RSSI_SAMPLE;
 #include "mac_ral/rtmp_mac.h"
 #include "mac_ral/mac_usb.h"
 
-#ifdef RT65xx
 #include "chip/rt65xx.h"
-#endif
 
 #ifdef MT76x0
 #include "chip/mt76x0.h"
@@ -416,9 +414,7 @@ struct rtmp_chip_cap {
 	u32 Priv; /* Flag for RT5592 EP */
 #endif /* RT5592EP_SUPPORT */
 
-#ifdef RT65xx
 	u8 PAType; /* b'00: 2.4G+5G external PA, b'01: 5G external PA, b'10: 2.4G external PA, b'11: Internal PA */
-#endif /* RT65xx */
 
 #ifdef CONFIG_ANDES_SUPPORT
 	u32 WlanMemmapOffset;

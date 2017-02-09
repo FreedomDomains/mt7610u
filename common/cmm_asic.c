@@ -422,7 +422,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 #ifdef DOT11_VHT_AC
-#ifdef RT65xx
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -440,7 +439,6 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
 				break;
 
@@ -471,7 +469,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 #ifdef DOT11_VHT_AC
-#ifdef RT65xx
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -493,7 +490,6 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
 
 				break;
@@ -528,7 +524,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 #ifdef DOT11_VHT_AC
-#ifdef RT65xx
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -548,7 +543,6 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
 				break;
 
@@ -580,7 +574,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 #ifdef DOT11_VHT_AC
-#ifdef RT65xx
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -602,7 +595,6 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
 				break;
 
@@ -641,7 +633,6 @@ void AsicUpdateProtect(
 	}
 
 #ifdef DOT11_VHT_AC
-#ifdef RT65xx
 	if (IS_RT65XX(pAd))
 	{
 		MacReg = mt7610u_read32(pAd, TX_PROT_CFG8);
@@ -655,7 +646,6 @@ void AsicUpdateProtect(
 		}
 		mt7610u_write32(pAd, TX_PROT_CFG8, MacReg);
 	}
-#endif /* RT65xx */
 #endif /* DOT11_VHT_AC */
 }
 
@@ -1930,13 +1920,7 @@ bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us)
 
 
 #ifdef DOT11_N_SUPPORT
-#if defined(RT65xx)
 #define MAX_AGG_CNT	32
-#elif defined(RT2883) || defined(RT3883)
-#define MAX_AGG_CNT	16
-#else
-#define MAX_AGG_CNT	8
-#endif
 INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 {
 	u32 reg_addr;

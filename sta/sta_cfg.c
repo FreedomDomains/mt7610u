@@ -1579,7 +1579,6 @@ next:
 			for(IdAddr=AddrStart; IdAddr<=AddrEnd; IdAddr+=4, pBuf++)
 				pBuf = mt7610u_read32(pAd, IdAddr);
 			RtmpDrvAllMacPrint(pAd, pBufMac, AddrStart, AddrEnd, 4);
-#ifdef RT65xx
 			if (IS_RT65XX(pAd)) {
 				pBuf = pBufMac;
 				AddrStart = 0x0; AddrEnd = 0x800;
@@ -1587,7 +1586,6 @@ next:
 					pBuf = mt7610u_read32(pAd, IdAddr);
 				RtmpDrvAllMacPrint(pAd, pBufMac, AddrStart, AddrEnd, 4);
 			}
-#endif /* RT65xx */
 			kfree(pBufMac);
 		}
 	}
