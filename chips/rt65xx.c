@@ -376,7 +376,8 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 			Enable WLAN function and clock
 			WLAN_FUN_CTRL[1:0] = 0x3
 		*/
-		ENABLE_WLAN_FUN(WlanFunCtrl);
+		WlanFunCtrl.field.WLAN_CLK_EN = 1;
+		WlanFunCtrl.field.WLAN_EN = 1;
 	} else {
 		/*
 			Diable WLAN function and clock
@@ -425,7 +426,9 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 				RTMPusecDelay(20);
 
-				ENABLE_WLAN_FUN(WlanFunCtrl);
+				WlanFunCtrl.field.WLAN_CLK_EN = 1;
+				WlanFunCtrl.field.WLAN_EN = 1;
+
 				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
 				RTMPusecDelay(20);
 			} else {

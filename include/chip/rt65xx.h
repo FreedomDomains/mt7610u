@@ -32,12 +32,6 @@ struct rtmp_adapter;
 
 #define MAX_CHECK_COUNT 200
 
-#define ENABLE_WLAN_FUN(__WlanFunCtrl)\
-{\
-	__WlanFunCtrl.field.WLAN_CLK_EN = 1;\
-	__WlanFunCtrl.field.WLAN_EN = 1;\
-}
-
 #define DISABLE_WLAN_FUN(__WlanFunCtrl)\
 {\
 	__WlanFunCtrl.field.PCIE_APP0_CLK_REQ = 0;\
