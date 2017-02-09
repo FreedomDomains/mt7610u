@@ -1643,10 +1643,13 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_pwr_saving(struct rtmp_adapter*ad, u32 op, u32 level,
-			   u32 listen_interval, u32 pre_tbtt_lead_time,
-			   u8 tim_byte_offset, u8 tim_byte_pattern)
+int mt7610u_mcu_pwr_saving(struct rtmp_adapter*ad, u32 op)
 {
+	u32 level = 1;
+	u32 listen_interval = 0;
+	u32 pre_tbtt_lead_time = 0;
+	u8 tim_byte_offset = 0;
+	u8 tim_byte_pattern = 0;
 	struct cmd_msg *msg;
 	unsigned int var_len;
 	u32 value;

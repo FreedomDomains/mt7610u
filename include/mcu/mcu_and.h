@@ -252,9 +252,7 @@ int mt7610u_mcu_rf_read_modify_write(struct rtmp_adapter *ad, RF_R_M_W_REG *reg_
 int mt7610u_mcu_random_write(struct rtmp_adapter *ad, RTMP_REG_PAIR *reg_pair, u32 num);
 int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
 int mt7610u_mcu_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param);
-int mt7610u_mcu_pwr_saving(struct rtmp_adapter *ad, u32 op, u32 level,
-					 u32 listen_interval, u32 pre_tbtt_lead_time,
-					 u8 tim_byte_offset, u8 tim_byte_pattern);
+int mt7610u_mcu_pwr_saving(struct rtmp_adapter *ad, u32 op);
 int mt7610u_mcu_calibration(struct rtmp_adapter *ad, u32 cal_id, u32 param);
 int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status);
 bool is_inband_cmd_processing(struct rtmp_adapter *ad);
