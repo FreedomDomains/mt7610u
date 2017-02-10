@@ -603,13 +603,6 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 	ctl->free_cmd_msg++;
 }
 
-bool is_inband_cmd_processing(struct rtmp_adapter*ad)
-{
-	bool ret = 0;
-
-	return ret;
-}
-
 u8 get_cmd_rsp_num(struct rtmp_adapter*ad)
 {
 	u8 Num = 0;

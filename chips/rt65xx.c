@@ -257,7 +257,7 @@ void MT76x0DisableTxRx(
 		if (MacReg != 0)
 			bFree = false;
 
-		if (bFree && (CheckFreeTimes > 20) && (!is_inband_cmd_processing(pAd)))
+		if (bFree && (CheckFreeTimes > 20))
 			break;
 
 		if (bFree)
