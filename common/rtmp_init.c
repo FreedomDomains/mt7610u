@@ -2263,7 +2263,6 @@ void RTMPInitTimer(
 	pTimer->pAd = pAd;
 
 	RTMP_OS_Init_Timer(pAd, &pTimer->TimerObj,	pTimerFunc, (void *) pTimer, &pAd->RscTimerMemList);
-	DBGPRINT(RT_DEBUG_TRACE,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
 
 	RTMP_SEM_UNLOCK(&TimerSemLock);
 }
