@@ -603,13 +603,6 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 	ctl->free_cmd_msg++;
 }
 
-u8 get_cmd_rsp_num(struct rtmp_adapter*ad)
-{
-	u8 Num = 0;
-
-	return Num;
-}
-
 static inline void mt7610u_mcu_inc_error_count(struct mt7610u_mcu_ctrl *ctl, enum cmd_msg_error_type type)
 {
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
@@ -662,7 +655,6 @@ get_seq:
 	DlListForEach(msg, &ctl->ackq, struct cmd_msg, list) {
 		if (msg->seq == ctl->cmd_seq) {
 			DBGPRINT(RT_DEBUG_ERROR, ("command(seq: %d) is still running\n", ctl->cmd_seq));
-			DBGPRINT(RT_DEBUG_ERROR, ("command response nums = %d\n", get_cmd_rsp_num(ad)));
 			goto get_seq;
 		}
 	}
