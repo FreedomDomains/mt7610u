@@ -6564,15 +6564,6 @@ INT Set_Wpa_Support(
 	IN	char *		arg);
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-#ifdef DBG
-
-void RTMPIoctlMAC(
-	IN	struct rtmp_adapter *pAdapter,
-	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq);
-
-#endif /* DBG */
-
-
 int RTMPWPANoneAddKeyProc(
     IN  struct rtmp_adapter *  pAd,
     IN	void *		pBuf);
