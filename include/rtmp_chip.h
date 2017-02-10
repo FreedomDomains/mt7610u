@@ -501,8 +501,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
-	void (*DisableTxRx)(struct rtmp_adapter *ad, u8 Level);
-
 	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
 
 	void (*MCU_CtrlExit)(struct rtmp_adapter *ad);
@@ -659,12 +657,6 @@ do {	\
 	{	\
 		__pAd->chipOps.SecondCCADetection(__pAd);	\
 	}	\
-} while (0)
-
-#define DISABLE_TX_RX(_pAd, _Level)	\
-do {	\
-	if (_pAd->chipOps.DisableTxRx != NULL)	\
-		_pAd->chipOps.DisableTxRx(_pAd, _Level);	\
 } while (0)
 
 #define MCU_CTRL_INIT(_pAd)	\

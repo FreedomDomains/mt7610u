@@ -35,7 +35,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
 
-	DISABLE_TX_RX(pAd, RTMP_HALT);
+	MT76x0DisableTxRx(pAd, RTMP_HALT);
 
 	ret = down_interruptible(&pAd->hw_atomic);
 	if (ret != 0) {

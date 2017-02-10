@@ -1997,8 +1997,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	Following callback functions already initiailized in RtmpChipOpsHook()
 	1. Power save related
 */
-
-	pChipOps->DisableTxRx = MT76x0DisableTxRx;
 }
 
 
