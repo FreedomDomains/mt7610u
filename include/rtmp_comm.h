@@ -37,11 +37,7 @@
 	Refer to CH_HZ_ID_MAP[] in rt_channel.c
 
 */
-#ifdef DOT11_VHT_AC
 #define MAX_NUM_OF_CHS             		(54 + 5)	/* 5 channels for central channel of VHT 80MHz */
-#else
-#define MAX_NUM_OF_CHS             		54
-#endif /* DOT11_VHT_AC*/
 /* 14 channels @2.4G +  12@UNII + 4 @MMAC + 11 @HiperLAN2 + 7 @Japan + 1 as NULL termination */
 #define MAX_NUM_OF_CHANNELS             MAX_NUM_OF_CHS
 

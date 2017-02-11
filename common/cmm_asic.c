@@ -275,9 +275,7 @@ void AsicUpdateProtect(
 	ProtCfg.field.RTSThEn = 1;
 	ProtCfg.field.ProtectNav = ASIC_SHORTNAV;
 
-#ifdef DOT11_VHT_AC
 	PhyMode = 0x2000; /* Bit 15:13, 0:Legacy CCK, 1: Legacy OFDM, 2: HT mix mode, 3: HT green field, 4: VHT mode, 5-7: Reserved */
-#endif /* DOT11_VHT_AC */
 
 	/* update PHY mode and rate*/
 	if (pAd->OpMode == OPMODE_AP)
@@ -339,68 +337,42 @@ void AsicUpdateProtect(
 				/* 	PROT_TXOP(25:20) -- 010111*/
 				/*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
 				/*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
 				/* 	PROT_RATE(15:0)  -- 0x2004 (OFDM 24M)*/
 				Protect[2] = 0x01742004;
-#else /* DOT11_VHT_AC */
-				/* 	PROT_RATE(15:0)  -- 0x4004 (OFDM 24M)*/
-				Protect[2] = 0x01744004;
-#endif /* !DOT11_VHT_AC */
 
 				/* MM40_PROT_CFG*/
 				/*	Reserved (31:27)*/
 				/* 	PROT_TXOP(25:20) -- 111111*/
 				/*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
 				/*  PROT_CTRL(17:16) -- 00 (None) */
-#ifdef DOT11_VHT_AC
 				/* 	PROT_RATE(15:0)  -- 0x2084 (duplicate OFDM 24M)*/
 				Protect[3] = 0x03f42084;
-#else
-				/* 	PROT_RATE(15:0)  -- 0x4084 (duplicate OFDM 24M)*/
-				Protect[3] = 0x03f44084;
-#endif
 
 				/* CF20_PROT_CFG*/
 				/*	Reserved (31:27)*/
 				/* 	PROT_TXOP(25:20) -- 010111*/
 				/*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
 				/*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
 				/* 	PROT_RATE(15:0)  -- 0x2004 (OFDM 24M)*/
 				Protect[4] = 0x01742004;
-#else
-				/* 	PROT_RATE(15:0)  -- 0x4004 (OFDM 24M)*/
-				Protect[4] = 0x01744004;
-#endif
 
 				/* CF40_PROT_CFG*/
 				/*	Reserved (31:27)*/
 				/* 	PROT_TXOP(25:20) -- 111111*/
 				/*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
 				/*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
 				/* 	PROT_RATE(15:0)  -- 0x2084 (duplicate OFDM 24M)*/
 				Protect[5] = 0x03f42084;
-#else
-				/* 	PROT_RATE(15:0)  -- 0x4084 (duplicate OFDM 24M)*/
-				Protect[5] = 0x03f44084;
-#endif
 
 				if (bNonGFExist)
 				{
 					/* PROT_NAV(19:18)  -- 01 (Short NAV protectiion)*/
 					/* PROT_CTRL(17:16) -- 01 (RTS/CTS)*/
-#ifdef DOT11_VHT_AC
 					Protect[REG_IDX_GF20] = 0x01752004;
 					Protect[REG_IDX_GF40] = 0x03f52084;
-#else
-					Protect[REG_IDX_GF20] = 0x01754004;
-					Protect[REG_IDX_GF40] = 0x03f54084;
-#endif
 				}
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
-#ifdef DOT11_VHT_AC
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -418,19 +390,13 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* DOT11_VHT_AC */
 				break;
 
  			case 1:
 				/* This is "HT non-member protection mode."*/
 				/* If there may be non-HT STAs my BSS*/
-#ifdef DOT11_VHT_AC
 				ProtCfg.word = 0x01742004;	/* PROT_CTRL(17:16) : 0 (None)*/
 				ProtCfg4.word = 0x03f42084; /* duplicaet legacy 24M. BW set 1.*/
-#else
-				ProtCfg.word = 0x01744004;	/* PROT_CTRL(17:16) : 0 (None)*/
-				ProtCfg4.word = 0x03f44084; /* duplicaet legacy 24M. BW set 1.*/
-#endif
 				if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
 				{
 					ProtCfg.word = 0x01740003;	/*ERP use Protection bit is set, use protection rate at Clause 18..*/
@@ -447,7 +413,6 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_GF40] = ProtCfg4.word;
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
-#ifdef DOT11_VHT_AC
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -469,19 +434,13 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* DOT11_VHT_AC */
 
 				break;
 
 			case 2:
 				/* If only HT STAs are in BSS. at least one is 20MHz. Only protect 40MHz packets*/
-#ifdef DOT11_VHT_AC
 				ProtCfg.word = 0x01742004;  /* PROT_CTRL(17:16) : 0 (None)*/
 				ProtCfg4.word = 0x03f42084; /* duplicaet legacy 24M. BW set 1.*/
-#else
-				ProtCfg.word = 0x01744004;  /* PROT_CTRL(17:16) : 0 (None)*/
-				ProtCfg4.word = 0x03f44084; /* duplicaet legacy 24M. BW set 1.*/
-#endif
 				if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
 				{
 					ProtCfg.word = 0x01740003;	/*ERP use Protection bit is set, use protection rate at Clause 18..*/
@@ -502,7 +461,6 @@ void AsicUpdateProtect(
 
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
-#ifdef DOT11_VHT_AC
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -522,19 +480,13 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* DOT11_VHT_AC */
 				break;
 
 			case 3:
 				/* HT mixed mode.	 PROTECT ALL!*/
 				/* Assign Rate*/
-#ifdef DOT11_VHT_AC
 				ProtCfg.word = 0x01742004;	/*duplicaet legacy 24M. BW set 1.*/
 				ProtCfg4.word = 0x03f42084;
-#else
-				ProtCfg.word = 0x01744004;	/*duplicaet legacy 24M. BW set 1.*/
-				ProtCfg4.word = 0x03f44084;
-#endif
 				/* both 20MHz and 40MHz are protected. Whether use RTS or CTS-to-self depends on the*/
 				if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
 				{
@@ -552,7 +504,6 @@ void AsicUpdateProtect(
 				Protect[REG_IDX_GF40] = ProtCfg4.word;
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
-#ifdef DOT11_VHT_AC
 				// TODO: shiang-6590, fix me for this protection mechanism
 				if (IS_RT65XX(pAd))
 				{
@@ -574,18 +525,12 @@ void AsicUpdateProtect(
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
-#endif /* DOT11_VHT_AC */
 				break;
 
 			case 8:
 				/* Special on for Atheros problem n chip.*/
-#ifdef DOT11_VHT_AC
 				ProtCfg.word = 0x01752004;	/*duplicaet legacy 24M. BW set 1.*/
 				ProtCfg4.word = 0x03f52084;
-#else
-				ProtCfg.word = 0x01754004;	/*duplicaet legacy 24M. BW set 1.*/
-				ProtCfg4.word = 0x03f54084;
-#endif
 				if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
 				{
 					ProtCfg.word = 0x01750003;	/*ERP use Protection bit is set, use protection rate at Clause 18..*/
@@ -611,7 +556,6 @@ void AsicUpdateProtect(
 		}
 	}
 
-#ifdef DOT11_VHT_AC
 	if (IS_RT65XX(pAd))
 	{
 		MacReg = mt7610u_read32(pAd, TX_PROT_CFG8);
@@ -625,7 +569,6 @@ void AsicUpdateProtect(
 		}
 		mt7610u_write32(pAd, TX_PROT_CFG8, MacReg);
 	}
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -652,11 +595,9 @@ void AsicSwitchChannel(
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_SUSPEND);
 
-#ifdef DOT11_VHT_AC
 	if (pAd->CommonCfg.BBPCurrentBW == BW_80)
 		pAd->hw_cfg.cent_ch = pAd->CommonCfg.vht_cent_ch;
 	else
-#endif /* DOT11_VHT_AC */
 		pAd->hw_cfg.cent_ch = Channel;
 
 	if (pAd->chipOps.ChipSwitchChannel)

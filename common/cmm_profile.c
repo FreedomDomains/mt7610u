@@ -593,7 +593,6 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  struct rtmp_adapter *pAd, char
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 static void VHTParametersHook(
 	IN struct rtmp_adapter*pAd,
 	IN char *pValueStr,
@@ -652,7 +651,6 @@ static void VHTParametersHook(
 	}
 }
 
-#endif /* DOT11_VHT_AC */
 
 #ifdef CUSTOMER_DEMO
 void demo_mode_cfg(struct rtmp_adapter*pAd)
@@ -1518,9 +1516,7 @@ int	RTMPSetProfileParameters(
 				HTParametersHook(pAd, tmpbuf, pBuffer);
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 				VHTParametersHook(pAd, tmpbuf, pBuffer);
-#endif /* DOT11_VHT_AC */
 
 #ifdef CONFIG_STA_SUPPORT
 				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)

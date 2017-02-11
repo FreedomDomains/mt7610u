@@ -400,7 +400,6 @@ void MlmeAssocReqAction(
 			}
 			FrameLen += TmpLen;
 
-#ifdef DOT11_VHT_AC
 			if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 				(pAd->MlmeAux.Channel > 14) &&
 				(pAd->MlmeAux.vht_cap_len)
@@ -408,7 +407,6 @@ void MlmeAssocReqAction(
 			{
 				FrameLen += build_vht_ies(pAd, (u8 *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
 			}
-#endif /* DOT11_VHT_AC */
 		}
 #endif /* DOT11_N_SUPPORT */
 
@@ -798,7 +796,6 @@ void MlmeReassocReqAction(
 			}
 			FrameLen += TmpLen;
 
-#ifdef DOT11_VHT_AC
 			if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 				(pAd->MlmeAux.Channel > 14) &&
 				(pAd->MlmeAux.vht_cap_len)
@@ -806,7 +803,6 @@ void MlmeReassocReqAction(
 			{
 				FrameLen += build_vht_ies(pAd, (u8 *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
 			}
-#endif /* DOT11_VHT_AC */
 		}
 #endif /* DOT11_N_SUPPORT */
 
@@ -1097,10 +1093,8 @@ void PeerAssocRspAction(
 								SupRateLen,
 								ExtRate,
 								ExtRateLen,
-#ifdef DOT11_VHT_AC
 								ie_list->vht_cap_len,
 								&ie_list->vht_cap,
-#endif /* DOT11_VHT_AC */
 								&HtCapability,
 								HtCapabilityLen);
 
@@ -1236,10 +1230,8 @@ void PeerReassocRspAction(
 								SupRateLen,
 								ExtRate,
 								ExtRateLen,
-#ifdef DOT11_VHT_AC
 								ie_list->vht_cap_len,
 								&ie_list->vht_cap,
-#endif /* DOT11_VHT_AC */
 								&HtCapability,
 								HtCapabilityLen);
 
@@ -1381,11 +1373,9 @@ void AssocPostProc(
 			pAd->MacTab.Content[BSSID_WCID].MmpsMode,
 			pAd->MacTab.Content[BSSID_WCID].AMsduSize));
 
-#ifdef DOT11_VHT_AC
 	if (ie_list->vht_cap_len > 0 && ie_list->vht_op_len > 0) {
 		RTMPCheckVht(pAd, BSSID_WCID, &ie_list->vht_cap, &ie_list->vht_op);
 	}
-#endif /* DOT11_VHT_AC */
 #endif /* DOT11_N_SUPPORT */
 
 	/* Set New WPA information */
@@ -1801,14 +1791,12 @@ bool StaAddMacTableEntry(
 		memmove(&pEntry->HTCapability, pHtCapability, HtCapabilityLen);
 
 		assoc_ht_info_debugshow(pAd, pEntry, HtCapabilityLen, pHtCapability);
-#ifdef DOT11_VHT_AC
 		if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 			ie_list->vht_cap_len && ie_list->vht_op_len)
 		{
 			vht_mode_adjust(pAd, pEntry, &ie_list->vht_cap, &ie_list->vht_op);
 			assoc_vht_info_debugshow(pAd, pEntry, &ie_list->vht_cap, &ie_list->vht_op);
 		}
-#endif /* DOT11_VHT_AC */
 	} else {
 		pAd->MacTab.fAnyStationIsLegacy = true;
 	}

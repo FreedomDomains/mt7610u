@@ -43,7 +43,6 @@ void MlmeSetMcsGroup(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 	else
 		pEntry->mcsGroup = 1;
 
-#ifdef DOT11_VHT_AC
 	// TODO: shiang-6590, fix me!!
 	if (pEntry->SupportRateMode & SUPPORT_VHT_MODE)
 	{
@@ -52,7 +51,6 @@ void MlmeSetMcsGroup(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry)
 		else
 			pEntry->mcsGroup = 1;
 	}
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -109,9 +107,7 @@ u8 MlmeSelectUpRate(
 				 (pEntry->HTCapability.MCSSet[1] == 0xff) &&
 				 (pAd->CommonCfg.TxStream > 1) &&
 				 ((pAd->CommonCfg.TxStream == 2) || (pEntry->HTCapability.MCSSet[2] == 0x0)))
-#ifdef DOT11_VHT_AC
 				|| (pEntry->pTable == RateTableVht2S)
-#endif /* DOT11_VHT_AC */
 		)
 		{
 			switch (pEntry->mcsGroup)
@@ -242,9 +238,7 @@ u8 MlmeSelectDownRate(
 			bool valid_mcs32 = false;
 
 			if ((pEntry->MaxHTPhyMode.field.BW == BW_40 && pAd->CommonCfg.BBPCurrentBW == BW_40)
-#ifdef DOT11_VHT_AC
 				|| (pEntry->MaxHTPhyMode.field.BW == BW_80 && pAd->CommonCfg.BBPCurrentBW == BW_80)
-#endif /* DOT11_VHT_AC */
 			)
 				valid_mcs32 = true;
 
@@ -299,7 +293,6 @@ void MlmeGetSupportedMcsAdapt(
 	for (idx=0; idx<24; idx++)
 		mcs[idx] = -1;
 
-#ifdef DOT11_VHT_AC
 	if (pEntry->pTable == RateTableVht2S)
 	{
 		for (idx = 0; idx < RATE_TABLE_SIZE(pTable); idx++)
@@ -395,7 +388,6 @@ void MlmeGetSupportedMcsAdapt(
 
 		return;
 	}
-#endif /* DOT11_VHT_AC */
 
 	/*  check the existence and index of each needed MCS */
 	for (idx = 0; idx < RATE_TABLE_SIZE(pTable); idx++)
@@ -491,7 +483,6 @@ u8 MlmeSelectTxRateAdapt(
 #endif /* DBG_CTRL_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
-#ifdef DOT11_VHT_AC
 	if (pTable == RateTableVht1S || pTable == RateTableVht2S || pTable == RateTableVht1S_MCS7)
 	{
 		if (pTable == RateTableVht2S)
@@ -572,7 +563,6 @@ u8 MlmeSelectTxRateAdapt(
 		}
 	}
 	else
-#endif /* DOT11_VHT_AC */
 	 if (ADAPT_RATE_TABLE(pTable) ||
 		 (pTable == RateSwitchTable11BGN3S) ||
 		 (pTable == RateSwitchTable11BGN3SForABand))

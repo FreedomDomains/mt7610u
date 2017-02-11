@@ -69,7 +69,6 @@ void RtmpDrvMaxRateGet(
 {
 	int rate_index = 0;
 
-#ifdef DOT11_VHT_AC
        if (MODE >= MODE_VHT) {
                if (BW == 0 /* 20Mhz */) {
                        rate_index = 112 + ((u8)ShortGI * 29) + ((u8)MCS);
@@ -79,7 +78,6 @@ void RtmpDrvMaxRateGet(
                        rate_index = 131 + ((u8)ShortGI * 29) + ((u8)MCS);
                }
        } else
-#endif /* DOT11_VHT_AC */
 
 #ifdef DOT11_N_SUPPORT
 	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {

@@ -30,9 +30,6 @@ HAS_QOS_DLS_SUPPORT=n
 #Support features of 802.11n
 HAS_DOT11_N_SUPPORT=y
 
-#Support for 802.11ac VHT
-HAS_DOT11_VHT_SUPPORT=y
-
 HAS_KTHREAD_SUPPORT=n
 
 #Support for Auto channel select enhance
@@ -104,11 +101,6 @@ endif
 ifeq ($(HAS_KTHREAD_SUPPORT),y)
 WFLAGS += -DKTHREAD_SUPPORT
 endif
-
-ifeq ($(HAS_DOT11_VHT_SUPPORT),y)
-WFLAGS += -DDOT11_VHT_AC
-endif
-
 
 ifeq ($(HAS_MAC_REPEATER_SUPPORT),y)
 WFLAGS += -DMAC_REPEATER_SUPPORT
@@ -279,12 +271,8 @@ obj_cmm += \
 endif
 #endif // DOT11_N_SUPPORT //
 
-#ifdef DOT11_VHT_SUPPORT
-ifeq ($(HAS_DOT11_VHT_SUPPORT),y)
 obj_vht += 	mgmt/mgmt_vht.o\
 		common/vht.o
-endif
-#endif // DOT11_VHT_SUPPORT //
 
 #ifdef CONFIG_STA_SUPPORT
 MOD_NAME = $(MODULE)

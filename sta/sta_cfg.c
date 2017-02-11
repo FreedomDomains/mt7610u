@@ -3260,7 +3260,6 @@ RtmpIoctl_rt_ioctl_giwrate(
     else
         ht_setting.word = pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word;
 
-#ifdef DOT11_VHT_AC
        if (ht_setting.field.MODE >= MODE_VHT) {
                if (ht_setting.field.BW == 0 /* 20Mhz */) {
                        rate_index = 112 + ((u8)ht_setting.field.ShortGI * 29) + ((u8)ht_setting.field.MCS);
@@ -3270,7 +3269,6 @@ RtmpIoctl_rt_ioctl_giwrate(
                        rate_index = 131 + ((u8)ht_setting.field.ShortGI * 29) + ((u8)ht_setting.field.MCS);
                }
        } else
-#endif /* DOT11_VHT_AC */
 
 #ifdef DOT11_N_SUPPORT
     if ((ht_setting.field.MODE >= MODE_HTMIX) && (ht_setting.field.MODE < MODE_VHT)) {

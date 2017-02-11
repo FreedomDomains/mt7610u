@@ -2501,7 +2501,6 @@ void BssEntrySet(
 											&ie_list->HtCapability);
 		}
 
-#ifdef DOT11_VHT_AC
 		if (ie_list->vht_cap_len) {
 			memmove(&pBss->vht_cap_ie, &ie_list->vht_cap_ie, ie_list->vht_cap_len);
 			pBss->vht_cap_len = ie_list->vht_cap_len;
@@ -2526,7 +2525,6 @@ void BssEntrySet(
 				pBss->CentralChannel = vht_op->vht_op_info.center_freq_1;
 			}
 		}
-#endif /* DOT11_VHT_AC */
 	}
 #endif /* DOT11_N_SUPPORT */
 
@@ -4351,7 +4349,6 @@ bool RTMPCheckHt(
 }
 
 
-#ifdef DOT11_VHT_AC
 /*
 	========================================================================
 
@@ -4403,7 +4400,6 @@ bool RTMPCheckVht(
 
 	return true;
 }
-#endif /* DOT11_VHT_AC */
 #endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -4480,7 +4476,6 @@ void RTMPUpdateMlmeRate(
 	}
 
 
-#ifdef DOT11_VHT_AC
 	if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
 	{
 		ProperMlmeRate = RATE_11;
@@ -4506,7 +4501,6 @@ void RTMPUpdateMlmeRate(
 			MinimumRate = RATE_6;
 		}
 	}
-#endif /* DOT11_VHT_AC */
 
 	for (i = 0; i < pAd->MlmeAux.SupRateLen; i++)
 	{

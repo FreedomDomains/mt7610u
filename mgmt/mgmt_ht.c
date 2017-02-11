@@ -290,12 +290,10 @@ void RTMPSetHT(
 		bw = BW_20;
 	}
 
-#ifdef DOT11_VHT_AC
 	if (pHTPhyMode->BW == BW_40 &&
 		pAd->CommonCfg.vht_bw == VHT_BW_80 &&
 		pAd->CommonCfg.vht_cent_ch)
 		bw = BW_80;
-#endif /* DOT11_VHT_AC */
 	rtmp_bbp_set_bw(pAd, bw);
 
 
@@ -535,12 +533,10 @@ void RTMPSetIndividualHT(
 	else
 		MlmeUpdateHtTxRates(pAd, apidx);
 
-#ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode)) {
 		pDesired_ht_phy->bVhtEnable = true;
 		rtmp_set_vht(pAd, pDesired_ht_phy);
 	}
-#endif /* DOT11_VHT_AC */
 }
 
 /*
@@ -578,9 +574,7 @@ INT	SetCommonHT(struct rtmp_adapter*pAd)
 		return false;
 	}
 
-#ifdef DOT11_VHT_AC
 	SetCommonVHT(pAd);
-#endif /* DOT11_VHT_AC */
 
 	SetHT.PhyMode = (RT_802_11_PHY_MODE)pAd->CommonCfg.PhyMode;
 	SetHT.TransmitNo = ((u8)pAd->Antenna.field.TxPath);

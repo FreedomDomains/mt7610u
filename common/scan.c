@@ -304,12 +304,10 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 	}
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 		(pAd->MlmeAux.Channel > 14)) {
 		FrameLen += build_vht_ies(pAd, (u8 *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
 	}
-#endif /* DOT11_VHT_AC */
 
 
 #ifdef WPA_SUPPLICANT_SUPPORT

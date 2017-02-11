@@ -1127,7 +1127,6 @@ void CntlWaitStartProc(
 				memmove(&rt_phy_info->MCSSet[0],
 					       &pAd->CommonCfg.HtCapability.MCSSet[0], 16);
 				COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
-#ifdef DOT11_VHT_AC
 				if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 					pAd->MlmeAux.vht_cap_len) {
 					RT_VHT_CAP *rt_vht_cap = &pAd->StaActive.SupVhtCap;
@@ -1139,7 +1138,6 @@ void CntlWaitStartProc(
 					rt_vht_cap->vht_rxstbc = pAd->MlmeAux.vht_cap.vht_cap.rx_stbc;
 					rt_vht_cap->vht_htc = pAd->MlmeAux.vht_cap.vht_cap.htc_vht_cap;
 				}
-#endif /* DOT11_VHT_AC */
 			}
 			else
 #endif /* DOT11_N_SUPPORT */
@@ -3007,7 +3005,6 @@ void AdjustChannelRelatedValue(
 		ext_ch = EXTCHA_NONE;
 	}
 
-#ifdef DOT11_VHT_AC
 	if (rf_bw == BW_40 &&
 		pAd->StaActive.SupportedPhyInfo.bVhtEnable == true &&
 		pAd->StaActive.SupportedPhyInfo.vht_bw == VHT_BW_80) {
@@ -3017,7 +3014,6 @@ void AdjustChannelRelatedValue(
 	DBGPRINT(RT_DEBUG_OFF, ("%s(): Input BW=%d, rf_channel=%d, vht_bw=%d, Channel=%d, vht_cent_ch=%d!\n",
 				__FUNCTION__, rf_bw, rf_channel, pAd->CommonCfg.vht_bw, pAd->CommonCfg.Channel,
 				pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
 
 	rtmp_bbp_set_bw(pAd, rf_bw);
 	rtmp_bbp_set_ctrlch(pAd, ext_ch);
@@ -3031,9 +3027,7 @@ void AdjustChannelRelatedValue(
 				pAd->LatchRfRegs.Channel,
 				pAd->CommonCfg.Channel,
 				pAd->CommonCfg.CentralChannel));
-#ifdef DOT11_VHT_AC
 	DBGPRINT(RT_DEBUG_TRACE, ("VHT-CentralCh=%d\n", pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AdjustChannelRelatedValue ==> not any connection !!!\n"));
 }

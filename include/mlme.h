@@ -551,15 +551,12 @@ typedef struct _RT_PHY_INFO{
 	bool 	bPreNHt;	 /* If we should use ht rate. */
 	/*Substract from HT Capability IE */
 	u8 	MCSSet[16];
-#ifdef DOT11_VHT_AC
 	bool 	bVhtEnable;
 	u8 		vht_bw;
 	VHT_MCS_SET vht_mcs_set;
-#endif /* DOT11_VHT_AC */
 } RT_PHY_INFO;
 
 
-#ifdef DOT11_VHT_AC
 typedef struct _RT_VHT_CAP{
 	u32 vht_bw:2;
 	u32 vht_txstbc:1;
@@ -574,7 +571,6 @@ typedef struct _RT_VHT_CAP{
 
 	u32 rsv:16;
 }RT_VHT_CAP;
-#endif /* DOT11_VHT_AC */
 
 
 /*
@@ -1119,12 +1115,10 @@ typedef struct {
 	u8 		NewExtChanOffset;
 	CHAR    Rssi;
 
-#ifdef DOT11_VHT_AC
 	u8 vht_cap_len;
 	u8 vht_op_len;
 	VHT_CAP_IE vht_cap_ie;
 	VHT_OP_IE vht_op_ie;
-#endif /* DOT11_VHT_AC */
 
 
 	CHAR	MinSNR;
@@ -1270,12 +1264,10 @@ typedef struct _MLME_AUX {
 	u8 		NewExtChannelOffset;
 	/*RT_HT_CAPABILITY	SupportedHtPhy; */
 
-#ifdef DOT11_VHT_AC
 	u8 vht_cap_len;
 	u8 vht_op_len;
 	VHT_CAP_IE vht_cap;
 	VHT_OP_IE vht_op;
-#endif /* DOT11_VHT_AC */
 
     /* new for QOS */
     QOS_CAPABILITY_PARM APQosCapability;    /* QOS capability of the current associated AP */
@@ -1439,12 +1431,10 @@ typedef struct _IE_lists {
 	EXT_CAP_INFO_ELEMENT ExtCapInfo;
 	u8 ht_cap_len;
 	HT_CAPABILITY_IE HTCapability;
-#ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap;
 	VHT_OP_IE vht_op;
 	u8 vht_cap_len;
 	u8 vht_op_len;
-#endif /* DOT11_VHT_AC */
 }IE_LISTS;
 
 
@@ -1484,12 +1474,10 @@ typedef struct _bcn_ie_list {
 	u8 AddHtInfoLen;
 	ADD_HT_INFO_IE AddHtInfo;
 	u8 NewExtChannelOffset;
-#ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap_ie;
 	VHT_OP_IE vht_op_ie;
 	u8 vht_cap_len;
 	u8 vht_op_len;
-#endif /* DOT11_VHT_AC */
 }BCN_IE_LIST;
 
 #endif	/* MLME_H__ */

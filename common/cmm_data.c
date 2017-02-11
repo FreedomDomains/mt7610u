@@ -321,9 +321,7 @@ int MlmeHardTransmitMgmtRing(
 #ifdef DOT11_N_SUPPORT
 			|| WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_B | WMODE_G | WMODE_AN | WMODE_GN)
 #endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
 			|| WMODE_CAP(pAd->CommonCfg.PhyMode, WMODE_AC)
-#endif /* DOT11_VHT_AC*/
 		)
 		{
 			if (pAd->LatchRfRegs.Channel > 14)

@@ -759,14 +759,12 @@ void MlmeStartReqAction(
 			pAd->MlmeAux.HtCapabilityLen = sizeof(HT_CAPABILITY_IE);
 			/* Not turn pAd->StaActive.SupportedHtPhy.bHtEnable = true here. */
 			DBGPRINT(RT_DEBUG_TRACE, ("SYNC -pAd->StaActive.SupportedHtPhy.bHtEnable = true\n"));
-#ifdef DOT11_VHT_AC
 			if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 				(pAd->MlmeAux.Channel > 14))
 			{
 				build_vht_cap_ie(pAd, (u8 *)&pAd->MlmeAux.vht_cap);
 				pAd->MlmeAux.vht_cap_len = sizeof(VHT_CAP_IE);
 			}
-#endif /* DOT11_VHT_AC */
 		}
 		else
 #endif /* DOT11_N_SUPPORT */
@@ -1492,7 +1490,6 @@ void PeerBeaconAtJoinAction(
 		 						__FUNCTION__, ie_list->AddHtInfo.ControlChan, CentralChannel));
 				}
 
-#ifdef DOT11_VHT_AC
 				if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 					(pAd->MlmeAux.Channel > 14) &&
 					(ie_list->vht_cap_len))
@@ -1512,7 +1509,6 @@ void PeerBeaconAtJoinAction(
 					DBGPRINT(RT_DEBUG_OFF, ("%s(): VHT->center_freq_1=%d, CentralChannel=>%d, vht_cent_ch=%d\n",
 		 						__FUNCTION__, vht_op->center_freq_1, CentralChannel, pAd->CommonCfg.vht_cent_ch));
 				}
-#endif /* DOT11_VHT_AC */
 			}
 			else
 #endif /* DOT11_N_SUPPORT */
@@ -1522,10 +1518,8 @@ void PeerBeaconAtJoinAction(
 					pAd->MlmeAux.CentralChannel = pAd->MlmeAux.Channel;
 
 				pAd->StaActive.SupportedPhyInfo.bHtEnable = false;
-#ifdef DOT11_VHT_AC
 				pAd->StaActive.SupportedPhyInfo.bVhtEnable = false;
 				pAd->StaActive.SupportedPhyInfo.vht_bw = VHT_BW_2040;
-#endif /* DOT11_VHT_AC */
 				pAd->MlmeAux.NewExtChannelOffset = 0xff;
 				memset(&pAd->MlmeAux.HtCapability, 0, SIZE_HT_CAP_IE);
 				pAd->MlmeAux.HtCapabilityLen = 0;
@@ -1927,7 +1921,6 @@ void PeerBeacon(
 						goto LabelOK;
 
 
-#ifdef DOT11_VHT_AC
 {
 					bool result;
 					IE_LISTS *ielist;
@@ -1961,21 +1954,6 @@ void PeerBeacon(
 						goto LabelOK;
 					}
 }
-#else
-					if (StaAddMacTableEntry(pAd,
-											pEntry,
-											MaxSupportedRateIn500Kbps,
-											&ie_list->HtCapability,
-											ie_list->HtCapabilityLen,
-											&ie_list->AddHtInfo,
-											ie_list->AddHtInfoLen,
-											ie_list,
-											ie_list->CapabilityInfo) == false)
-					{
-						DBGPRINT(RT_DEBUG_TRACE, ("ADHOC - Add Entry failed.\n"));
-						goto LabelOK;
-					}
-#endif /* DOT11_VHT_AC */
 
 					if (ADHOC_ON(pAd) && pEntry)
 					{
@@ -1986,10 +1964,8 @@ void PeerBeacon(
 										ie_list->SupRateLen,
 										ie_list->ExtRate,
 										ie_list->ExtRateLen,
-#ifdef DOT11_VHT_AC
 										ie_list->vht_cap_len,
 										&ie_list->vht_cap_ie,
-#endif /* DOT11_VHT_AC */
 										&ie_list->HtCapability,
 										ie_list->HtCapabilityLen);
 					}

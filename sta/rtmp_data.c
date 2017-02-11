@@ -400,20 +400,6 @@ void STAHandleRxDataFrame(
 				ASSERT(pRxWI->RxWIWirelessCliID == BSSID_WCID);
 		}
 
-#ifndef DOT11_VHT_AC
-#ifndef WFA_VHT_PF
-		// TODO: shiang@PF#2, is this atheros protection still necessary here???
-		/* check Atheros Client */
-		if ((pEntry->bIAmBadAtheros == false) && (pRxInfo->AMPDU == 1)
-		    && (pHeader->FC.Retry)) {
-			pEntry->bIAmBadAtheros = true;
-			pAd->CommonCfg.IOTestParm.bCurrentAtheros = true;
-			pAd->CommonCfg.IOTestParm.bLastAtheros = true;
-			if (!STA_AES_ON(pAd))
-				RTMP_UPDATE_PROTECT(pAd, 8 , ALLN_SETPROTECT, true, false);
-		}
-#endif /* WFA_VHT_PF */
-#endif /* DOT11_VHT_AC */
 	}
 
 	pRxBlk->pData = (u8 *) pHeader;

@@ -1139,10 +1139,8 @@ void RTMPSetPhyMode(
 		case (WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
 		case (WMODE_AN):
 #endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
 		case (WMODE_A | WMODE_AN | WMODE_AC):
 		case (WMODE_AN | WMODE_AC):
-#endif /* DOT11_VHT_AC */
 			pAd->CommonCfg.SupRate[0]  = 0x8C;	  /* 6 mbps, in units of 0.5 Mbps, basic rate*/
 			pAd->CommonCfg.SupRate[1]  = 0x12;	  /* 9 mbps, in units of 0.5 Mbps*/
 			pAd->CommonCfg.SupRate[2]  = 0x98;	  /* 12 mbps, in units of 0.5 Mbps, basic rate*/
@@ -1174,9 +1172,7 @@ void RTMPSetPhyMode(
 	SetCommonHT(pAd);
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 	SetCommonVHT(pAd);
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -2399,7 +2395,6 @@ INT Set_HT_BssCoexApCntThr_Proc(
 #endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 INT	Set_VhtBw_Proc(
 	IN struct rtmp_adapter*pAd,
 	IN char *arg)
@@ -2479,7 +2474,6 @@ INT	Set_VhtStbc_Proc(
 
 	return true;
 }
-#endif /* DOT11_VHT_AC */
 
 
 
@@ -3137,7 +3131,6 @@ INT	Set_BurstMode_Proc(
 #endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 void assoc_vht_info_debugshow(
 	IN struct rtmp_adapter*pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
@@ -3190,7 +3183,6 @@ void assoc_vht_info_debugshow(
 	DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 
 }
-#endif /* DOT11_VHT_AC */
 
 
 INT Set_RateAdaptInterval(

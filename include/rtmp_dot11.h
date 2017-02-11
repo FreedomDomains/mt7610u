@@ -30,9 +30,7 @@
 
 #include "rtmp_type.h"
 
-#ifdef DOT11_VHT_AC
 #include "dot11ac_vht.h"
-#endif /* DOT11_VHT_AC */
 
 /* 4-byte HTC field.  maybe included in any frame except non-QOS data frame.  The Order bit must set 1. */
 typedef struct __attribute__ ((packed)) _HT_CONTROL{

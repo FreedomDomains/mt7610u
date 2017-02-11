@@ -1360,7 +1360,6 @@ bool PeerBeaconAndProbeRspSanity(
 				break;
 			}
 
-#ifdef DOT11_VHT_AC
 		case IE_VHT_CAP:
 			if (pEid->Len == sizeof(VHT_CAP_IE)) {
 				memmove(&ie_list->vht_cap_ie, &pEid->Octet[0], sizeof(VHT_CAP_IE));
@@ -1373,7 +1372,6 @@ bool PeerBeaconAndProbeRspSanity(
 				ie_list->vht_op_len = pEid->Len;
 			}
 			break;
-#endif /* DOT11_VHT_AC */
 
 		default:
 			break;

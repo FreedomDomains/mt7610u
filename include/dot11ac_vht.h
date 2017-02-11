@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef DOT11_VHT_AC
 
 
 #ifndef __DOT11AC_VHT_H
@@ -475,5 +474,4 @@ typedef struct __attribute__ ((packed)) _NDPA_PKT{
 
 #endif /* __DOT11AC_VHT_H */
 
-#endif /* DOT11_VHT_AC */
 

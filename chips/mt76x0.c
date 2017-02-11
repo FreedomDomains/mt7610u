@@ -1739,7 +1739,6 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	/* choffset = 14 + 12 + 16 + 7; */
 	choffset = 14 + 12 + 16 + 11;
 
-#ifdef DOT11_VHT_AC
 	ASSERT((pAd->TxPower[choffset].Channel == 42));
 
 	/* For VHT80MHz, we need assign tx power for central channel 42, 58, 106, 122, and 155 */
@@ -1760,7 +1759,6 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	choffset += 5;		/* the central channel of VHT80 */
 
 	choffset = (MAX_NUM_OF_CHANNELS - 1);
-#endif /* DOT11_VHT_AC */
 
 
 	/* 4. Print and Debug*/
@@ -1795,11 +1793,7 @@ void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd)
 		bit 5:0 -> HT MCS 15
 	*/
 	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_3);
-#ifdef DOT11_VHT_AC
 	ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
-#else
-	ExtraPwrOverTxPwrCfg8 |= (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
-#endif /* DOT11_VHT_AC */
 	mt7610u_write32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
 
 	/*

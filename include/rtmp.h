@@ -323,11 +323,9 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
 }
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 #define COPY_VHT_FROM_MLME_AUX_TO_ACTIVE_CFG(_pAd)                                 \
 {                                                                                       \
 }
-#endif /* DOT11_VHT_AC */
 
 
 /*
@@ -1303,7 +1301,6 @@ struct common_config {
 	BACAP_STRUC REGBACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 	bool force_vht;
 	u8 vht_bw;
 	u8 vht_sgi_80;
@@ -1311,7 +1308,6 @@ struct common_config {
 	u8 vht_bw_signal;
 	u8 vht_cent_ch;
 	u8 vht_cent_ch2;
-#endif /* DOT11_VHT_AC */
 
 	IOT_STRUC IOTestParm;	/* 802.11n InterOpbility Test Parameter; */
 	ULONG TxPreamble;	/* Rt802_11PreambleLong, Rt802_11PreambleShort, Rt802_11PreambleAuto */
@@ -1410,10 +1406,8 @@ struct common_config {
 	u32 RestoreBurstMode;
 #endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 	u32 cfg_vht;
 	VHT_CAP_INFO vht_info;
-#endif /* DOT11_VHT_AC */
 
 	bool bWiFiTest;	/* Enable this parameter for WiFi test */
 
@@ -2007,9 +2001,7 @@ typedef struct _MAC_TABLE_ENTRY {
 	u8 BSS2040CoexistenceMgmtSupport;
 	bool bForty_Mhz_Intolerant;
 
-#ifdef DOT11_VHT_AC
 	VHT_CAP_IE vht_cap_ie;
-#endif /* DOT11_VHT_AC */
 
 #endif /* DOT11_N_SUPPORT */
 
@@ -2063,9 +2055,7 @@ bool SupportOFDMMCS[MAX_LEN_OF_OFDM_RATES];
 bool SupportHTMCS[MAX_LEN_OF_HT_RATES];
 
 
-#ifdef DOT11_VHT_AC
 	bool SupportVHTMCS[MAX_LEN_OF_VHT_RATES];
-#endif /* DOT11_VHT_AC */
 
 #ifdef WFA_VHT_PF
 #ifdef IP_ASSEMBLY
@@ -2540,9 +2530,7 @@ struct rtmp_adapter {
 	u8 ChannelListNum;	/* number of channel in ChannelList[] */
 	u8 Bbp94;
 	bool BbpForCCK;
-#ifdef DOT11_VHT_AC
 	ULONG Tx80MPwrCfgABand[MAX_TXPOWER_ARRAY_SIZE]; // Per-rate Tx power control for VHT BW80 (5GHz only)
-#endif /* DOT11_VHT_AC */
 
 
 	bool bAutoTxAgcA;	/* Enable driver auto Tx Agc control */
@@ -4957,13 +4945,11 @@ bool RTMPCheckHt(
 	INOUT HT_CAPABILITY_IE *pHtCapability,
 	INOUT ADD_HT_INFO_IE *pAddHtInfo);
 
-#ifdef DOT11_VHT_AC
 bool RTMPCheckVht(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Wcid,
 	IN VHT_CAP_IE *vht_cap,
 	IN VHT_OP_IE *vht_op);
-#endif /* DOT11_VHT_AC */
 
 void RTMPUpdateMlmeRate(
 	IN struct rtmp_adapter *pAd);
@@ -5762,11 +5748,9 @@ INT	Set_BurstMode_Proc(
 #endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 INT Set_VhtBw_Proc(struct rtmp_adapter*pAd, char *arg);
 INT Set_VhtStbc_Proc(struct rtmp_adapter*pAd, char *arg);
 INT Set_VhtBwSignal_Proc(struct rtmp_adapter*pAd, char *arg);
-#endif /* DOT11_VHT_AC */
 
 
 #ifdef APCLI_SUPPORT

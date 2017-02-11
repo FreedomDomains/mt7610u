@@ -28,7 +28,6 @@
 #include "rt_config.h"
 
 
-#ifdef DOT11_VHT_AC
 
 void rtmp_set_vht(struct rtmp_adapter*pAd, RT_PHY_INFO *phy_info)
 {
@@ -59,4 +58,3 @@ INT SetCommonVHT(struct rtmp_adapter*pAd)
 	return true;
 }
 
-#endif /* DOT11_VHT_AC */
