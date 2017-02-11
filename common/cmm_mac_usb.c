@@ -1316,47 +1316,6 @@ void RT28XXDMAEnable(
   *
   ********************************************************************/
 
-void RTUSBBssBeaconStop(
-	IN struct rtmp_adapter*pAd)
-{
-	BEACON_SYNC_STRUCT	*pBeaconSync;
-	int i, offset;
-	bool Cancelled = true;
-	u8 TXWISize = sizeof(struct txwi_nmac);
-
-	pBeaconSync = pAd->CommonCfg.pBeaconSync;
-	if (pBeaconSync && pBeaconSync->EnableBeacon)
-	{
-		INT NumOfBcn = 0;
-
-
-#ifdef CONFIG_STA_SUPPORT
-		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{
-			NumOfBcn = MAX_MESH_NUM;
-		}
-#endif /* CONFIG_STA_SUPPORT */
-
-		RTMPCancelTimer(&pAd->CommonCfg.BeaconUpdateTimer, &Cancelled);
-
-		for(i=0; i<NumOfBcn; i++) {
-			memset(pBeaconSync->BeaconBuf[i], 0, HW_BEACON_OFFSET);
-			memset(pBeaconSync->BeaconTxWI[i], 0, TXWISize);
-
-			for (offset=0; offset<HW_BEACON_OFFSET; offset+=4)
-				mt7610u_write32(pAd,
-						pAd->BeaconOffset[i] + offset,
-						0x00);
-
-			pBeaconSync->CapabilityInfoLocationInBeacon[i] = 0;
-			pBeaconSync->TimIELocationInBeacon[i] = 0;
-		}
-		pBeaconSync->BeaconBitMap = 0;
-		pBeaconSync->DtimBitOn = 0;
-	}
-}
-
-
 void RTUSBBssBeaconStart(
 	IN struct rtmp_adapter*pAd)
 {

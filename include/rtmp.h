@@ -6096,9 +6096,6 @@ INT RTUSBCmdThread(
 void RTUSBBssBeaconExit(
 	IN struct rtmp_adapter*pAd);
 
-void RTUSBBssBeaconStop(
-	IN struct rtmp_adapter*pAd);
-
 void RTUSBBssBeaconStart(
 	IN struct rtmp_adapter* pAd);
 
