@@ -32,39 +32,6 @@
 /*
 	========================================================================
 
-	Routine Description: NIC initialization complete
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-
-static int	RTUSBFirmwareRun(
-	IN	struct rtmp_adapter *pAd)
-{
-	int	Status;
-
-	Status = RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_OUT,
-		0x01,
-		0x8,
-		0,
-		NULL,
-		0);
-
-	return Status;
-}
-
-/*
-	========================================================================
-
 	Routine Description: Write Firmware to NIC.
 
 	Arguments:
