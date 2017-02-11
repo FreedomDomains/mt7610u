@@ -1262,45 +1262,6 @@ void RTMPFreeTxRxRingMemory(
 
 #endif /* RESOURCE_PRE_ALLOC */
 
-
-/*
-========================================================================
-Routine Description:
-    Write WLAN MAC address to USB 2870.
-
-Arguments:
-    pAd					Pointer to our adapter
-
-Return Value:
-	NDIS_STATUS_SUCCESS
-
-Note:
-========================================================================
-*/
-int	RTUSBWriteHWMACAddress(
-	IN	struct rtmp_adapter *	pAd)
-{
-	MAC_DW0_STRUC	StaMacReg0;
-	MAC_DW1_STRUC	StaMacReg1;
-	int		Status = NDIS_STATUS_SUCCESS;
-
-	/* Write New MAC address to MAC_CSR2 & MAC_CSR3 & let ASIC know our new MAC*/
-	StaMacReg0.field.Byte0 = pAd->CurrentAddress[0];
-	StaMacReg0.field.Byte1 = pAd->CurrentAddress[1];
-	StaMacReg0.field.Byte2 = pAd->CurrentAddress[2];
-	StaMacReg0.field.Byte3 = pAd->CurrentAddress[3];
-	StaMacReg1.field.Byte4 = pAd->CurrentAddress[4];
-	StaMacReg1.field.Byte5 = pAd->CurrentAddress[5];
-	StaMacReg1.field.U2MeMask = 0xff;
-	DBGPRINT_RAW(RT_DEBUG_TRACE, ("Local MAC = %02x:%02x:%02x:%02x:%02x:%02x\n",
-			pAd->CurrentAddress[0], pAd->CurrentAddress[1], pAd->CurrentAddress[2],
-			pAd->CurrentAddress[3], pAd->CurrentAddress[4], pAd->CurrentAddress[5]));
-
-	mt7610u_write32(pAd, MAC_ADDR_DW0, StaMacReg0.word);
-	mt7610u_write32(pAd, MAC_ADDR_DW1, StaMacReg1.word);
-	return Status;
-}
-
 /*
 ========================================================================
 Routine Description:

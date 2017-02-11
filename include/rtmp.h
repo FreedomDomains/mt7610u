@@ -6131,9 +6131,6 @@ int RTUSBQueryHardWareRegister(
 /*void CMDHandler( */
 /*    IN struct rtmp_adapter *pAd); */
 
-int	RTUSBWriteHWMACAddress(
-	IN struct rtmp_adapter*pAd);
-
 void MlmeSetPsm(
 	IN struct rtmp_adapter*pAd,
 	IN USHORT psm);
