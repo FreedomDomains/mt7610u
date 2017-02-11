@@ -6012,10 +6012,6 @@ INT Set_AutoFallBack_Proc(
 	IN	struct rtmp_adapter *pAdapter,
 	IN	char *		arg);
 
-
-void RT28XXDMADisable(
-	IN struct rtmp_adapter		*pAd);
-
 void RT28XXDMAEnable(
 	IN struct rtmp_adapter		*pAd);
 

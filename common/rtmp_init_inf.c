@@ -65,8 +65,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	}
 
 
-	RT28XXDMADisable(pAd);
-
 	mt7610u_mcu_usb_loadfw(pAd);
 
 	MCU_CTRL_INIT(pAd);

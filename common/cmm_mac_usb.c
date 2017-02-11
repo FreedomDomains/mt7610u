@@ -1301,11 +1301,6 @@ int	RTUSBWriteHWMACAddress(
 	return Status;
 }
 
-void RT28XXDMADisable(
-	IN struct rtmp_adapter*pAd)
-{
-}
-
 /*
 ========================================================================
 Routine Description:
