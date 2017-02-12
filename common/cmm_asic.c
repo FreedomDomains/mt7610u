@@ -1344,20 +1344,17 @@ void 	AsicSetSlotTime(
     Return:
 	========================================================================
 */
-void AsicAddSharedKeyEntry(
-	IN struct rtmp_adapter *	pAd,
-	IN u8 	 	BssIndex,
-	IN u8 	 	KeyIdx,
-	IN PCIPHER_KEY		pCipherKey)
+void AsicAddSharedKeyEntry(struct rtmp_adapter *pAd, u8 BssIndex,
+			   u8 KeyIdx, PCIPHER_KEY pCipherKey)
 {
 	ULONG offset; /*, csr0;*/
 	SHAREDKEY_MODE_STRUC csr1;
 	UINT16 SharedKeyTableBase, SharedKeyModeBase;
 
-	u8 *	pKey = pCipherKey->Key;
-	u8 *	pTxMic = pCipherKey->TxMic;
-	u8 *	pRxMic = pCipherKey->RxMic;
-	u8 	CipherAlg = pCipherKey->CipherAlg;
+	u8 *pKey = pCipherKey->Key;
+	u8 *pTxMic = pCipherKey->TxMic;
+	u8 *pRxMic = pCipherKey->RxMic;
+	u8  CipherAlg = pCipherKey->CipherAlg;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AsicAddSharedKeyEntry BssIndex=%d, KeyIdx=%d\n", BssIndex,KeyIdx));
 /*============================================================================================*/
@@ -1365,13 +1362,11 @@ void AsicAddSharedKeyEntry(
 	DBGPRINT(RT_DEBUG_TRACE,("AsicAddSharedKeyEntry: %s key #%d\n", CipherName[CipherAlg], BssIndex*4 + KeyIdx));
 	DBGPRINT_RAW(RT_DEBUG_TRACE, (" 	Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 		pKey[0],pKey[1],pKey[2],pKey[3],pKey[4],pKey[5],pKey[6],pKey[7],pKey[8],pKey[9],pKey[10],pKey[11],pKey[12],pKey[13],pKey[14],pKey[15]));
-	if (pRxMic)
-	{
+	if (pRxMic) {
 		DBGPRINT_RAW(RT_DEBUG_TRACE, (" 	Rx MIC Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 			pRxMic[0],pRxMic[1],pRxMic[2],pRxMic[3],pRxMic[4],pRxMic[5],pRxMic[6],pRxMic[7]));
 	}
-	if (pTxMic)
-	{
+	if (pTxMic) {
 		DBGPRINT_RAW(RT_DEBUG_TRACE, (" 	Tx MIC Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 			pTxMic[0],pTxMic[1],pTxMic[2],pTxMic[3],pTxMic[4],pTxMic[5],pTxMic[6],pTxMic[7]));
 	}
@@ -1379,43 +1374,33 @@ void AsicAddSharedKeyEntry(
 
 	/* fill key material - key + TX MIC + RX MIC*/
 
-	if (BssIndex >= 8)
-	{
+	if (BssIndex >= 8) {
 		SharedKeyTableBase = SHARED_KEY_TABLE_BASE_EXT;
 		SharedKeyModeBase = SHARED_KEY_MODE_BASE_EXT;
 		BssIndex -= 8;
-	}
-	else
-	{
+	} else {
 		SharedKeyTableBase = SHARED_KEY_TABLE_BASE;
 		SharedKeyModeBase = SHARED_KEY_MODE_BASE;
 	}
 
 	offset = SharedKeyTableBase + (4*BssIndex + KeyIdx)*HW_KEY_ENTRY_SIZE;
 
-
-{
 	RTUSBMultiWrite(pAd, offset, pKey, MAX_LEN_OF_SHARE_KEY);
 
 	offset += MAX_LEN_OF_SHARE_KEY;
-	if (pTxMic)
-	{
+	if (pTxMic) {
 		RTUSBMultiWrite(pAd, offset, pTxMic, 8);
 	}
 
 	offset += 8;
-	if (pRxMic)
-	{
+	if (pRxMic) {
 		RTUSBMultiWrite(pAd, offset, pRxMic, 8);
 	}
-}
-
 
 	/* Update cipher algorithm. WSTA always use BSS0*/
 	csr1.word = mt7610u_read32(pAd, SharedKeyModeBase+4*(BssIndex/2));
 	DBGPRINT(RT_DEBUG_TRACE,("Read: SHARED_KEY_MODE_BASE at this Bss[%d] KeyIdx[%d]= 0x%x \n", BssIndex,KeyIdx, csr1.word));
-	if ((BssIndex%2) == 0)
-	{
+	if ((BssIndex % 2) == 0) 	{
 		if (KeyIdx == 0)
 			csr1.field.Bss0Key0CipherAlg = CipherAlg;
 		else if (KeyIdx == 1)
@@ -1424,9 +1409,7 @@ void AsicAddSharedKeyEntry(
 			csr1.field.Bss0Key2CipherAlg = CipherAlg;
 		else
 			csr1.field.Bss0Key3CipherAlg = CipherAlg;
-	}
-	else
-	{
+	} else {
 		if (KeyIdx == 0)
 			csr1.field.Bss1Key0CipherAlg = CipherAlg;
 		else if (KeyIdx == 1)
@@ -1438,7 +1421,6 @@ void AsicAddSharedKeyEntry(
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
 	mt7610u_write32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
-
 }
 
 /*	IRQL = DISPATCH_LEVEL*/
