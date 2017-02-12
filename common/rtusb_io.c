@@ -63,41 +63,6 @@ int	RTUSBVenderReset(
 	return Status;
 }
 
-/*
-	========================================================================
-
-	Routine Description: Write various length data to RT2573
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int	RTUSBMultiWrite_OneByte(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData)
-{
-	int	Status;
-
-	/* TODO: In 2870, use this funciton carefully cause it's not stable.*/
-	Status = RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_OUT,
-		0x6,
-		0,
-		Offset,
-		pData,
-		1);
-
-	return Status;
-}
-
 int	RTUSBMultiWrite(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,

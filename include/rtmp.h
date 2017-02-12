@@ -6062,11 +6062,6 @@ int RTUSBMultiWrite(
 	IN	u8 *		pData,
 	IN	USHORT			length);
 
-int RTUSBMultiWrite_OneByte(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData);
-
 int RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	u32			Value);
