@@ -63,27 +63,24 @@ int	RTUSBVenderReset(
 	return Status;
 }
 
-int	RTUSBMultiWrite(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData,
-	IN	USHORT			length)
+int RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
+		    u8 *pData, USHORT length)
 {
 	int	Status;
 
-	USHORT          index = 0,Value;
-	u8 *         pSrc = pData;
-	USHORT          resude = 0;
+	USHORT index = 0,Value;
+	u8 *pSrc = pData;
+	USHORT resude = 0;
 
 	resude = length % 2;
 	length  += resude;
-	do
-	{
-			Value =(USHORT)( *pSrc  | (*(pSrc + 1) << 8));
+
+	do {
+		Value =(USHORT)( *pSrc  | (*(pSrc + 1) << 8));
 		Status = RTUSBSingleWrite(pAd,Offset + index, Value);
-            index +=2;
-            length -= 2;
-            pSrc = pSrc + 2;
+		index +=2;
+		length -= 2;
+		pSrc = pSrc + 2;
         }while(length > 0);
 
 	return Status;
