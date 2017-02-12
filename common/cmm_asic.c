@@ -1646,10 +1646,8 @@ void AsicDelWcidTab(struct rtmp_adapter*pAd, u8 wcid_idx)
     Return:
 	========================================================================
 */
-void AsicAddPairwiseKeyEntry(
-	IN struct rtmp_adapter *	pAd,
-	IN u8 		WCID,
-	IN PCIPHER_KEY		pCipherKey)
+void AsicAddPairwiseKeyEntry(struct rtmp_adapter *pAd,
+			     u8 WCID, PCIPHER_KEY pCipherKey)
 {
 	INT i;
 	ULONG 		offset;
@@ -1660,9 +1658,9 @@ void AsicAddPairwiseKeyEntry(
 
 	/* EKEY*/
 	offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
+	/* ULLI : MAX_LEN_OF_PEER_KEY is 16 */
 	RTUSBMultiWrite(pAd, offset, &pCipherKey->Key[0], MAX_LEN_OF_PEER_KEY);
-	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
-	{
+	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4) {
 		u32 Value;
 
 		Value = mt7610u_read32(pAd, offset + i);
@@ -1671,25 +1669,21 @@ void AsicAddPairwiseKeyEntry(
 	offset += MAX_LEN_OF_PEER_KEY;
 
 	/*  MIC KEY*/
-	if (pTxMic)
-	{
+	if (pTxMic) {
 		RTUSBMultiWrite(pAd, offset, &pCipherKey->TxMic[0], 8);
 	}
 	offset += 8;
-	if (pRxMic)
-	{
+	if (pRxMic) {
 		RTUSBMultiWrite(pAd, offset, &pCipherKey->RxMic[0], 8);
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("AsicAddPairwiseKeyEntry: WCID #%d Alg=%s\n",WCID, CipherName[CipherAlg]));
 	DBGPRINT(RT_DEBUG_TRACE,("	Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 		pKey[0],pKey[1],pKey[2],pKey[3],pKey[4],pKey[5],pKey[6],pKey[7],pKey[8],pKey[9],pKey[10],pKey[11],pKey[12],pKey[13],pKey[14],pKey[15]));
-	if (pRxMic)
-	{
+	if (pRxMic) {
 		DBGPRINT(RT_DEBUG_TRACE, ("	Rx MIC Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 			pRxMic[0],pRxMic[1],pRxMic[2],pRxMic[3],pRxMic[4],pRxMic[5],pRxMic[6],pRxMic[7]));
 	}
-	if (pTxMic)
-	{
+	if (pTxMic) {
 		DBGPRINT(RT_DEBUG_TRACE, ("	Tx MIC Key = %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n",
 			pTxMic[0],pTxMic[1],pTxMic[2],pTxMic[3],pTxMic[4],pTxMic[5],pTxMic[6],pTxMic[7]));
 	}
