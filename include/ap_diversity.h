@@ -31,7 +31,6 @@
 #include "rtmp.h"
 
 #define ADDBGPRINT(format,args...)	do{if(atomic_read(&DEBUG_VERBOSE_MODE))	printk( format, ##args);}while(0)
-#define PROC_DIR	"AntDiv"
 
 /*
  *  For shorter udelay().
@@ -41,41 +40,6 @@
 /*
  * proc fs related macros.
  */
-#define CREATE_PROC_ENTRY(x)	\
-	if ((pProc##x = create_proc_entry(#x, 0, pProcDir))){		\
-		pProc##x->read_proc = (read_proc_t*)&x##Read;		\
-		pProc##x->write_proc = (write_proc_t*)&x##Write;	\
-	}								\
-
-#define IMPLEMENT_PROC_ENTRY(x,y,z)			\
-static struct proc_dir_entry *pProc##x;			\
-IMPLEMENT_PROC_ENTRY_READ(x,y,z)			\
-IMPLEMENT_PROC_ENTRY_WRITE(x,y,z)
-
-#define IMPLEMENT_PROC_ENTRY_READ(x,y,z)		\
-static INT x##Read(char *page, char **start, off_t off,	\
-		   int count, int *eof, void *data){	\
-	INT	len;					\
-	sprintf(page, "%d\n", atomic_read(&x));		\
-	len = strlen(page) + 1;				\
-	*eof = 1;					\
-	return len;					\
-}
-#define IMPLEMENT_PROC_ENTRY_WRITE(x,y,z)		\
-static INT x##Write(struct file *file, const char *buffer, \
-			 unsigned long count, void *data){ \
-	CHAR tmp[32];INT tmp_val;			\
-	if (count > 32)	count = 32;			\
-	memset(tmp, 0, 32);				\
-	if (copy_from_user(tmp, buffer, count))		\
-		return -EFAULT;				\
-	tmp_val = simple_strtol(tmp, 0, 10);		\
-	if(tmp_val > z || tmp_val < y)			\
-		return -EFAULT;				\
-	atomic_set(&x,  (int)tmp_val);			\
-	return count;					\
-}
-#define DESTORY_PROC_ENTRY(x) if (pProc##x)	remove_proc_entry(#x, pProcDir);
 
 /*
  * function prototype
