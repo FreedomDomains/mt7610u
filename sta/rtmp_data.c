@@ -771,7 +771,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	RXD_STRUC *pRxD;
 	struct rxwi_nmac *pRxWI;
 	struct rtmp_rxinfo *pRxInfo;
-	struct sk_buff * pRxPacket;
+	struct sk_buff *skb;
 	HEADER_802_11 *pHeader;
 	u8 *pData;
 	RX_BLK RxBlk;
@@ -782,8 +782,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	RxProcessed = RxPending = 0;
 
 	/* process whole rx ring */
-	while (1)
-	{
+	while (1) {
 		if ((RTMP_TEST_FLAG(pAd, (fRTMP_ADAPTER_RADIO_OFF |
 				   fRTMP_ADAPTER_RESET_IN_PROGRESS |
 				   fRTMP_ADAPTER_HALT_IN_PROGRESS |
@@ -793,7 +792,6 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		{
 			break;
 		}
-
 
 		RxProcessed++;
 
@@ -805,29 +803,29 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 			   a. be indicated to upper layer or
 			   b. be released if it is discarded
 		 */
-		pRxPacket = GetPacketFromRxRing(pAd, &RxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
+		skb = GetPacketFromRxRing(pAd, &RxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
 
-		if (pRxPacket == NULL && !bCmdRspPacket)
+		if (skb == NULL && !bCmdRspPacket)
 			break;
 
-		if (pRxPacket == NULL && bCmdRspPacket)
+		if (skb == NULL && bCmdRspPacket)
 			continue;
 
 		/* get rx descriptor and buffer */
 		pRxD = (RXD_STRUC *)(&RxBlk.hw_rx_info[0]);
 		pFceInfo = RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
-		pData = pRxPacket->data;
+		pData = skb->data;
 		pRxWI = (struct rxwi_nmac *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
 		// TODO: shiang-6590, handle packet from other ports
-		if ((pFceInfo->info_type != 0) || (pFceInfo->pkt_80211 != 1))
-		{
+		if ((pFceInfo->info_type != 0) ||
+		    (pFceInfo->pkt_80211 != 1)) {
 			DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			RTMPFreeNdisPacket(pAd, skb);
 			continue;
 		}
 
@@ -846,7 +844,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		/* build RxBlk */
 		RxBlk.pRxWI = pRxWI;
 		RxBlk.pHeader = pHeader;
-		RxBlk.pRxPacket = pRxPacket;
+		RxBlk.pRxPacket = skb;
 		RxBlk.pData = (u8 *) pHeader;
 		RxBlk.DataSize = pRxWI->RxWIMPDUByteCnt;
 		RxBlk.pRxInfo = pRxInfo;
@@ -859,14 +857,12 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		pAd->RalinkCounters.RxCount++;
 		INC_COUNTER64(pAd->WlanCounters.ReceivedFragmentCount);
 
-		if (pRxWI->RxWIMPDUByteCnt < 14)
-		{
+		if (pRxWI->RxWIMPDUByteCnt < 14) {
 			Status = NDIS_STATUS_FAILURE;
 			continue;
 		}
 
-		if (MONITOR_ON(pAd))
-		{
+		if (MONITOR_ON(pAd)) {
 			STA_MonPktSend(pAd, &RxBlk);
 			continue;
 		}
@@ -876,28 +872,27 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 
 		/* Handle the received frame */
 		if (Status == NDIS_STATUS_SUCCESS) {
-
 			switch (pHeader->FC.Type) {
 			case BTYPE_DATA:
-					STAHandleRxDataFrame(pAd, &RxBlk);
+				STAHandleRxDataFrame(pAd, &RxBlk);
 				break;
 
 			case BTYPE_MGMT:
-					STAHandleRxMgmtFrame(pAd, &RxBlk);
+				STAHandleRxMgmtFrame(pAd, &RxBlk);
 				break;
 
 			case BTYPE_CNTL:
-					STAHandleRxControlFrame(pAd, &RxBlk);
+				STAHandleRxControlFrame(pAd, &RxBlk);
 				break;
 
 			default:
-				RTMPFreeNdisPacket(pAd, pRxPacket);
+				RTMPFreeNdisPacket(pAd, skb);
 				break;
 			}
 		} else {
 			pAd->Counters8023.RxErrors++;
 			/* discard this frame */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			RTMPFreeNdisPacket(pAd, skb);
 		}
 	}
 
