@@ -161,23 +161,16 @@ void tbtt_tasklet(unsigned long data)
 }
 
 
-void announce_802_3_packet(
-	IN void *pAdSrc,
-	IN struct sk_buff * pPacket,
-	IN u8 OpMode)
+void announce_802_3_packet(struct rtmp_adapter *pAd, struct sk_buff *skb,
+			   u8 OpMode)
 {
-	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pAdSrc;
-	struct sk_buff * pRxPkt = pPacket;
-
-	ASSERT(pPacket);
-
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
     /* Push up the protocol stack */
 
-		pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
-		netif_rx(pRxPkt);
+	skb->protocol = eth_type_trans(skb, skb->dev);
+	netif_rx(skb);
 }
 
 

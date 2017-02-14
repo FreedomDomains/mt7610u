@@ -138,9 +138,9 @@ struct sk_buff * duplicate_pkt_with_VLAN(
 	IN	u8 				*TPID);
 
 typedef void (*RTMP_CB_8023_PACKET_ANNOUNCE)(
-			IN	void 		*pCtrlBkPtr,
-			IN	struct sk_buff *	pPacket,
-			IN	u8 		OpMode);
+			struct rtmp_adapter *pAd,
+			struct sk_buff *skb,
+			u8 OpMode);
 
 bool RTMPL2FrameTxAction(
 	IN  void 				*pCtrlBkPtr,
