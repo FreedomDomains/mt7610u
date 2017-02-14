@@ -218,7 +218,7 @@
 		/* clear EOSP frame */												\
 		__pSta->UAPSDTxNum = 0;												\
 		if (__pSta->pUAPSDEOSPFrame != NULL) {								\
-			RTMPFreeNdisPacket((__pAd), QUEUE_ENTRY_TO_PACKET(__pSta->pUAPSDEOSPFrame));	\
+			dev_kfree_skb_any(QUEUE_ENTRY_TO_PACKET(__pSta->pUAPSDEOSPFrame));	\
 			__pSta->pUAPSDEOSPFrame = NULL; }								\
 		__pSta->bAPSDFlagSPStart = 0;										\
 		__pSta->bAPSDFlagEOSPOK = 0;                                                                            \

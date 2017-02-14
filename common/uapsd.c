@@ -200,7 +200,7 @@ void UAPSD_SP_Close(
 							QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame))));
 #endif /* UAPSD_DEBUG */
 
-				RTMPFreeNdisPacket(pAd,	QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
+				dev_kfree_skb_any(QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 				pEntry->pUAPSDEOSPFrame = NULL;
 	        } /* End of if */
 
@@ -465,7 +465,7 @@ void UAPSD_PacketEnqueue(
 	/* check if current queued UAPSD packet number is too much */
 	if (pEntry == NULL)
 	{
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pAd, pPacket);
 		DBGPRINT(RT_DEBUG_TRACE, ("uapsd> pEntry == NULL!\n"));
 		return;
 	} /* End of if */
@@ -481,7 +481,7 @@ void UAPSD_PacketEnqueue(
 				RTMP_GET_PACKET_WCID(pPacket),
 				IdAc));
 
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pAd, pPacket);
 	}
 	else
 	{
@@ -603,7 +603,7 @@ void UAPSD_QueueMaintenance(
 
 			if (pEntry->pUAPSDEOSPFrame != NULL)
             {
-				RTMPFreeNdisPacket(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
+				dev_kfree_skb_any(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 				pEntry->pUAPSDEOSPFrame = NULL;
             } /* End of if */
 
@@ -1891,7 +1891,7 @@ void UAPSD_UnTagFrame(
 					if (pEntry->pUAPSDEOSPFrame != NULL)
 		            {
 						/* should not be here */
-						RTMPFreeNdisPacket(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
+						dev_kfree_skb_any(pAd, QUEUE_ENTRY_TO_PACKET(pEntry->pUAPSDEOSPFrame));
 						pEntry->pUAPSDEOSPFrame = NULL;
 		            } /* End of if */
 

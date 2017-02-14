@@ -386,7 +386,7 @@ static int rt28xx_send_packets(
 {
 	if (!(RTMP_OS_NETDEV_STATE_RUNNING(net_dev)))
 	{
-		RTMPFreeNdisPacket(NULL, (struct sk_buff *)skb_p);
+		dev_kfree_skb_any(skb_p);
 		return 0;
 	}
 

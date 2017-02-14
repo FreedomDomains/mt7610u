@@ -252,7 +252,7 @@ void ba_reordering_resource_release(struct rtmp_adapter *pAd)
 			while ((mpdu_blk = ba_reordering_mpdu_dequeue(&pBAEntry->list)))
 			{
 				ASSERT(mpdu_blk->pPacket);
-				RTMPFreeNdisPacket(pAd, mpdu_blk->pPacket);
+				dev_kfree_skb_any(mpdu_blk->pPacket);
 				ba_mpdu_blk_free(pAd, mpdu_blk);
 			}
 		}
@@ -1621,7 +1621,7 @@ static void ba_enqueue_reordering_packet(
 		if (ba_reordering_mpdu_insertsorted(&pBAEntry->list, mpdu_blk) == false)
 		{
 			/* had been already within reordering list don't indicate */
-			RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+			dev_kfree_skb_any(pRxBlk->pRxPacket);
 			ba_mpdu_blk_free(pAd, mpdu_blk);
 		}
 
@@ -1688,7 +1688,7 @@ void Indicate_AMPDU_Packet(
 		}
 
 		/* release packet*/
-		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -1710,7 +1710,7 @@ void Indicate_AMPDU_Packet(
 		/* impossible !!!*/
 		ASSERT(0);
 		/* release packet*/
-		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->pRxPacket);
 		return;
 	}
 
@@ -1761,7 +1761,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->pRxPacket);
 	}
 
 	/* III. Drop Old Received Packet*/
@@ -1770,7 +1770,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->pRxPacket);
 	}
 
 	/* IV. Receive Sequence within Window Size*/

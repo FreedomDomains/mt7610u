@@ -106,7 +106,7 @@ void RTMPResetTxRxRingMemory(
 		{
 			pEntry = RemoveHeadQueue(pQueue);
 			pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
-			RTMPFreeNdisPacket(pAd, pPacket);
+			dev_kfree_skb_any(pPacket);
 		}
 		 RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 	}
@@ -147,7 +147,7 @@ void RTMPResetTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
+			dev_kfree_skb_any(pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 				pMLMEContext->TransferBuffer = NULL;
@@ -263,7 +263,7 @@ void RTMPFreeTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
+			dev_kfree_skb_any(pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 				pMLMEContext->TransferBuffer = NULL;
@@ -287,7 +287,7 @@ void RTMPFreeTxRxRingMemory(
 	}
 
 	if (pAd->FragFrame.pFragPacket)
-		RTMPFreeNdisPacket(pAd, pAd->FragFrame.pFragPacket);
+		dev_kfree_skb_any(pAd->FragFrame.pFragPacket);
 
 
 	DBGPRINT(RT_DEBUG_ERROR, ("<--- RTMPFreeTxRxRingMemory\n"));
@@ -1212,7 +1212,7 @@ void RTMPFreeTxRxRingMemory(
 
 		if (NULL != pAd->MgmtRing.Cell[i].pNdisPacket)
 		{
-			RTMPFreeNdisPacket(pAd, pAd->MgmtRing.Cell[i].pNdisPacket);
+			dev_kfree_skb_any(pAd->MgmtRing.Cell[i].pNdisPacket);
 			pAd->MgmtRing.Cell[i].pNdisPacket = NULL;
 			if (pMLMEContext)
 			pMLMEContext->TransferBuffer = NULL;
@@ -1237,7 +1237,7 @@ void RTMPFreeTxRxRingMemory(
 
 	/* Free fragement frame buffer*/
 	if (pAd->FragFrame.pFragPacket)
-		RTMPFreeNdisPacket(pAd, pAd->FragFrame.pFragPacket);
+		dev_kfree_skb_any(pAd->FragFrame.pFragPacket);
 
 
 	/* Free spinlocks*/

@@ -71,7 +71,7 @@ void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN u32 qLen)
 			if (pEntry)
 			{
 				pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
-				RTMPFreeNdisPacket(pAd, pPacket);
+				dev_kfree_skb_any(pPacket);
 			}
 			else
 				break;

@@ -121,7 +121,7 @@ void STARxEAPOLFrameIndicate(
 		}
 	}
 
-	RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+	dev_kfree_skb_any(pRxBlk->pRxPacket);
 	return;
 
 }
@@ -139,7 +139,7 @@ void STARxDataFrameAnnounce(
 	    (pAd, pEntry, pRxBlk->pData, pRxBlk->DataSize, FromWhichBSSID)) {
 		/* before LINK UP, all DATA frames are rejected */
 		if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED)) {
-			RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+			dev_kfree_skb_any(pRxBlk->pRxPacket);
 			return;
 		}
 
@@ -152,7 +152,7 @@ void STARxDataFrameAnnounce(
 				if (pAd->StaCfg.WepStatus ==
 				    Ndis802_11EncryptionDisabled) {
 					/* release packet */
-					RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+					dev_kfree_skb_any(pRxBlk->pRxPacket);
 					return;
 				}
 			} else {
@@ -162,7 +162,7 @@ void STARxDataFrameAnnounce(
 				    && (pAd->StaCfg.PortSecured ==
 					WPA_802_1X_PORT_NOT_SECURED)) {
 					/* release packet */
-					RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+					dev_kfree_skb_any(pRxBlk->pRxPacket);
 					return;
 				}
 			}
@@ -243,7 +243,7 @@ bool STACheckTkipMICValue(
 		}
 
 		/* release packet */
-		RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->pRxPacket);
 		return false;
 	}
 
@@ -280,7 +280,7 @@ void STAHandleRxDataFrame(
 		} else
 #endif /* CLIENT_WDS */
 		{		/* release packet */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 	}
@@ -302,7 +302,7 @@ void STAHandleRxDataFrame(
 		if (pRxInfo->MyBss == 0) {
 			{
 				/* release packet */
-				RTMPFreeNdisPacket(pAd, pRxPacket);
+				dev_kfree_skb_any(pRxPacket);
 				return;
 			}
 		}
@@ -348,7 +348,7 @@ void STAHandleRxDataFrame(
 		/* Drop NULL, CF-ACK(no data), CF-POLL(no data), and CF-ACK+CF-POLL(no data) data frame */
 		if ((pHeader->FC.SubType & 0x04)) {	/* bit 2 : no DATA */
 			/* release packet */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 
@@ -363,7 +363,7 @@ void STAHandleRxDataFrame(
 				{
 					/* Receive frame not my BSSID */
 					/* release packet */
-					RTMPFreeNdisPacket(pAd, pRxPacket);
+					dev_kfree_skb_any(pRxPacket);
 					return;
 				}
 			}
@@ -375,7 +375,7 @@ void STAHandleRxDataFrame(
 			if (memcmp(&pHeader->Addr3, &pAd->CommonCfg.Bssid, 6) != 0) {
 				/* Receive frame not my BSSID */
 				/* release packet */
-				RTMPFreeNdisPacket(pAd, pRxPacket);
+				dev_kfree_skb_any(pRxPacket);
 				return;
 			}
 		}
@@ -385,7 +385,7 @@ void STAHandleRxDataFrame(
 			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
 
 		} else {
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 
@@ -493,7 +493,7 @@ void STAHandleRxDataFrame(
 						       pRxBlk->pData, pRxBlk,
 						       pEntry)) == NULL) {
 			DBGPRINT(RT_DEBUG_TRACE, ("No vaild cipher key for SW decryption!!!\n"));
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 
@@ -506,7 +506,7 @@ void STAHandleRxDataFrame(
 					     &(pRxBlk->DataSize)) !=
 		    NDIS_STATUS_SUCCESS) {
 			/* release packet */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 		/* Record the Decrypted bit as 1 */
@@ -523,7 +523,7 @@ void STAHandleRxDataFrame(
 		/* Drop Mcast/Bcast frame with fragment bit on */
 		if (pHeader->FC.MoreFrag) {
 			/* release packet */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 
@@ -531,7 +531,7 @@ void STAHandleRxDataFrame(
 		if (pHeader->FC.FrDs
 		    && MAC_ADDR_EQUAL(pHeader->Addr3, pAd->CurrentAddress)) {
 			/* release packet */
-			RTMPFreeNdisPacket(pAd, pRxPacket);
+			dev_kfree_skb_any(pRxPacket);
 			return;
 		}
 
@@ -646,7 +646,7 @@ void STAHandleRxDataFrame(
 
 	ASSERT(0);
 	/* release packet */
-	RTMPFreeNdisPacket(pAd, pRxPacket);
+	dev_kfree_skb_any(pRxPacket);
 }
 
 void STAHandleRxMgmtFrame(
@@ -709,7 +709,7 @@ void STAHandleRxMgmtFrame(
 
 	} while (false);
 
-	RTMPFreeNdisPacket(pAd, pRxPacket);
+	dev_kfree_skb_any(pRxPacket);
 }
 
 
@@ -740,7 +740,7 @@ void STAHandleRxControlFrame(
 		break;
 	}
 
-	RTMPFreeNdisPacket(pAd, pRxPacket);
+	dev_kfree_skb_any(pRxPacket);
 }
 
 
@@ -825,7 +825,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 			DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
-			RTMPFreeNdisPacket(pAd, skb);
+			dev_kfree_skb_any(skb);
 			continue;
 		}
 
@@ -886,13 +886,13 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 				break;
 
 			default:
-				RTMPFreeNdisPacket(pAd, skb);
+				dev_kfree_skb_any(skb);
 				break;
 			}
 		} else {
 			pAd->Counters8023.RxErrors++;
 			/* discard this frame */
-			RTMPFreeNdisPacket(pAd, skb);
+			dev_kfree_skb_any(skb);
 		}
 	}
 
@@ -987,7 +987,7 @@ void STASendPackets(
 	if (allowToSend == true)
 		STASendPacket(pAd, pPacket);
 	else
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 
 	/* Dequeue outgoing frames from TxSwQueue[] and process it */
 	RTMPDeQueuePacket(pAd, false, NUM_OF_TX_RING, MAX_TX_PROCESS);
@@ -1039,14 +1039,14 @@ int STASendPacket(
 			  SrcBufLen));
 		/* Resourece is low, system did not allocate virtual address */
 		/* return NDIS_STATUS_FAILURE directly to upper layer */
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 		return NDIS_STATUS_FAILURE;
 	}
 
 	if (SrcBufLen < 14) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("STASendPacket --> Ndis Packet buffer error !!!\n"));
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 		return (NDIS_STATUS_FAILURE);
 	}
 
@@ -1092,7 +1092,7 @@ int STASendPacket(
 			  PRINT_MAC(pSrcBufVA)));
 		/* Resourece is low, system did not allocate virtual address */
 		/* return NDIS_STATUS_FAILURE directly to upper layer */
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -1124,7 +1124,7 @@ int STASendPacket(
 	    ) {
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("STASendPacket --> Drop packet before port secured !!!\n"));
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 
 		return (NDIS_STATUS_FAILURE);
 	}
@@ -1206,7 +1206,7 @@ int STASendPacket(
 #ifdef BLOCK_NET_IF
 			StopNetIfQueue(pAd, QueIdx, pPacket);
 #endif /* BLOCK_NET_IF */
-			RTMPFreeNdisPacket(pAd, pPacket);
+			dev_kfree_skb_any(pPacket);
 
 			return NDIS_STATUS_FAILURE;
 		} else {
@@ -1765,7 +1765,7 @@ void STA_AMPDU_Frame_Tx(
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			continue;
 		}
 
@@ -1799,7 +1799,7 @@ void STA_AMPDU_Frame_Tx(
 			/* Check if the original data has enough buffer
 			   to insert or append WPI related field. */
 			if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
-				RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+				dev_kfree_skb_any(pTxBlk->pPacket);
 				continue;
 			}
 		}
@@ -2043,7 +2043,7 @@ void STA_AMSDU_Frame_Tx(
 		pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			continue;
 		}
 
@@ -2164,7 +2164,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 	pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
-		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+		dev_kfree_skb_any(pTxBlk->pPacket);
 		return;
 	}
 	if (pTxBlk->TxFrameType == TX_MCAST_FRAME) {
@@ -2187,7 +2187,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 		/* Check if the original data has enough buffer
 		   to insert or append WPI related field. */
 		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			return;
 		}
 	}
@@ -2342,7 +2342,7 @@ void STA_ARalink_Frame_Tx(
 		pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 
 		if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			continue;
 		}
 
@@ -2470,7 +2470,7 @@ void STA_Fragment_Frame_Tx(
 	pQEntry = RemoveHeadQueue(&pTxBlk->TxPacketList);
 	pTxBlk->pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 	if (RTMP_FillTxBlkInfo(pAd, pTxBlk) != true) {
-		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+		dev_kfree_skb_any(pTxBlk->pPacket);
 		return;
 	}
 
@@ -2487,7 +2487,7 @@ void STA_Fragment_Frame_Tx(
 	 */
 	if (TX_BLK_TEST_FLAG(pTxBlk, fTX_bSwEncrypt)) {
 		if (RTMPExpandPacketForSwEncrypt(pAd, pTxBlk) == false) {
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			return;
 		}
 	}
@@ -2661,7 +2661,7 @@ void STA_Fragment_Frame_Tx(
 			DBGPRINT(RT_DEBUG_ERROR,
 				 ("!!!%s : no memory for SW MIC calculation !!!\n",
 				  __FUNCTION__));
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			return;
 		}
 		memmove(tmp_ptr, pTxBlk->pSrcBufData, pTxBlk->SrcBufLen);
@@ -2790,7 +2790,7 @@ void STA_Fragment_Frame_Tx(
 		while(_pTxBlk->TxPacketList.Head)														\
 		{																						\
 			_pQEntry = RemoveHeadQueue(&_pTxBlk->TxPacketList);									\
-			RTMPFreeNdisPacket(_pAd, QUEUE_ENTRY_TO_PACKET(_pQEntry));	\
+			dev_kfree_skb_any(QUEUE_ENTRY_TO_PACKET(_pQEntry));	\
 		}
 
 /*
@@ -2899,7 +2899,7 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 				    RemoveHeadQueue(&pTxBlk->TxPacketList);
 				pPacket = QUEUE_ENTRY_TO_PACKET(pQEntry);
 				if (pPacket)
-					RTMPFreeNdisPacket(pAd, pPacket);
+					dev_kfree_skb_any(pPacket);
 			}
 		}
 		break;

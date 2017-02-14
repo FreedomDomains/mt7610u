@@ -165,9 +165,6 @@ int os_alloc_mem_suspend(
 		return NDIS_STATUS_FAILURE;
 }
 
-/*
-	The allocated NDIS PACKET must be freed via RTMPFreeNdisPacket()
-*/
 int RTMPAllocateNdisPacket(
 	IN void *pReserved,
 	OUT struct sk_buff * *ppPacket,
@@ -202,21 +199,6 @@ int RTMPAllocateNdisPacket(
 	*ppPacket = (struct sk_buff *)pPacket;
 
 	return NDIS_STATUS_SUCCESS;
-}
-
-
-/*
-  ========================================================================
-  Description:
-	This routine frees a miniport internally allocated NDIS_PACKET and its
-	corresponding NDIS_BUFFER and allocated memory.
-  ========================================================================
-*/
-void RTMPFreeNdisPacket(
-	IN void *pReserved,
-	IN struct sk_buff * pPacket)
-{
-	dev_kfree_skb_any(pPacket);
 }
 
 
@@ -775,7 +757,7 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	return;
 
       err_free_sk_buff:
-	RTMPFreeNdisPacket(NULL, pRxPacket);
+	dev_kfree_skb_any(pRxPacket);
 	return;
 
 }

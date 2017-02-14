@@ -400,7 +400,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 		{
 			RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
 
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			return(Status);
 		}
 	}
@@ -416,7 +416,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 		{
 			RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
 
-			RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+			dev_kfree_skb_any(pTxBlk->pPacket);
 			return(Status);
 		}
 	}
@@ -524,7 +524,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 		RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
 
 		/* succeed and release the skb buffer*/
-		RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+		dev_kfree_skb_any(pTxBlk->pPacket);
 	}
 
 
@@ -692,7 +692,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 
 
 	/* succeed and release the skb buffer*/
-	RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+	dev_kfree_skb_any(pTxBlk->pPacket);
 
 	return(Status);
 
@@ -825,7 +825,7 @@ USHORT RtmpUSB_WriteMultiTxResource(
 
 done:
 	/* Release the skb buffer here*/
-	RTMPFreeNdisPacket(pAd, pTxBlk->pPacket);
+	dev_kfree_skb_any(pTxBlk->pPacket);
 
 	return(Status);
 

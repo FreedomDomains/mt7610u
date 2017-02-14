@@ -239,7 +239,7 @@ void STA_MonPktSend(
 	return;
 
 err_free_sk_buff:
-	RTMPFreeNdisPacket(pAd, pRxBlk->pRxPacket);
+	dev_kfree_skb_any(pRxBlk->pRxPacket);
 	return;
 }
 #endif /* CONFIG_STA_SUPPORT */
@@ -305,7 +305,7 @@ int	RTMPSendPackets(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 		/* Drop send request since we are in monitor mode */
 		if (MONITOR_ON(pAd)) {
-			RTMPFreeNdisPacket(pAd, pPacket);
+			dev_kfree_skb_any(pPacket);
 			return 0;
 		}
 	}
@@ -314,7 +314,7 @@ int	RTMPSendPackets(
         /* EapolStart size is 18 */
 	if (pPacket->len < 14) {
 		/*printk("bad packet size: %d\n", pkt->len); */
-		RTMPFreeNdisPacket(pAd, pPacket);
+		dev_kfree_skb_any(pPacket);
 		return 0;
 	}
 

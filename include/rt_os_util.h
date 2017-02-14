@@ -93,10 +93,6 @@ int RTMPAllocateNdisPacket(
 	IN	u8 *				pData,
 	IN	UINT					DataLen);
 
-void RTMPFreeNdisPacket(
-	IN	void 				*pReserved,
-	IN	struct sk_buff *			pPacket);
-
 int Sniff2BytesFromNdisBuffer(
 	IN  PNDIS_BUFFER			pFirstBuffer,
 	IN  u8           		DesiredOffset,

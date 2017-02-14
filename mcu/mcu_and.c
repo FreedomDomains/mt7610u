@@ -556,7 +556,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 error2:
 	kfree(msg);
 error1:
-	RTMPFreeNdisPacket(ad, net_pkt);
+	dev_kfree_skb_any(net_pkt);
 error0:
 	return NULL;
 }
@@ -599,7 +599,7 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 
 	kfree(msg);
 
-	RTMPFreeNdisPacket(ad, net_pkt);
+	dev_kfree_skb_any(net_pkt);
 	ctl->free_cmd_msg++;
 }
 
