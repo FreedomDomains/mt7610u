@@ -249,9 +249,6 @@ void RtmpOsPktProtocolAssign(
 void RtmpOsPktInfPpaSend(
 	IN	struct sk_buff *			pNetPkt);
 
-void RtmpOsPktRcvHandle(
-	IN	struct sk_buff *			pNetPkt);
-
 void RtmpOsPktInit(
 	IN	struct sk_buff *			pNetPkt,
 	IN	struct net_device *			pNetDev,

@@ -178,7 +178,7 @@ void announce_802_3_packet(
 
 
 		RtmpOsPktProtocolAssign(pRxPkt);
-		RtmpOsPktRcvHandle(pRxPkt);
+		netif_rx(pRxPkt);
 }
 
 

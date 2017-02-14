@@ -1803,29 +1803,6 @@ bool RtmpOsStatsAlloc(
 	return true;
 }
 
-/*
-========================================================================
-Routine Description:
-	Pass the received packet to OS.
-
-Arguments:
-	pPkt			- the packet
-
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
-void RtmpOsPktRcvHandle(struct sk_buff * pNetPkt)
-{
-	struct sk_buff *pRxPkt = pNetPkt;
-
-
-	netif_rx(pRxPkt);
-}
-
-
 void RtmpOsTaskPidInit(RTMP_OS_PID *pPid)
 {
 	*pPid = THREAD_PID_INIT_VALUE;
