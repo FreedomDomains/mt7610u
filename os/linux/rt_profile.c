@@ -176,8 +176,7 @@ void announce_802_3_packet(
 
     /* Push up the protocol stack */
 
-
-		RtmpOsPktProtocolAssign(pRxPkt);
+		pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
 		netif_rx(pRxPkt);
 }
 

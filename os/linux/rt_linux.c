@@ -1763,27 +1763,6 @@ char *RtmpOsGetNetDevName(struct net_device *pDev)
 	return pDev->name;
 }
 
-/*
-========================================================================
-Routine Description:
-	Assign protocol to the packet.
-
-Arguments:
-	pPkt			- the packet
-
-Return Value:
-	None
-
-Note:
-========================================================================
-*/
-void RtmpOsPktProtocolAssign(struct sk_buff * pNetPkt)
-{
-	struct sk_buff *pRxPkt = pNetPkt;
-	pRxPkt->protocol = eth_type_trans(pRxPkt, pRxPkt->dev);
-}
-
-
 bool RtmpOsStatsAlloc(
 	IN void **ppStats,
 	IN void **ppIwStats)

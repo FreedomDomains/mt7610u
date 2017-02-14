@@ -243,9 +243,6 @@ void RtmpOsPktReserve(
 	IN	struct sk_buff *			pNetPkt,
 	IN	UINT					Len);
 
-void RtmpOsPktProtocolAssign(
-	IN	struct sk_buff *			pNetPkt);
-
 void RtmpOsPktInfPpaSend(
 	IN	struct sk_buff *			pNetPkt);
 
