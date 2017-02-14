@@ -2986,11 +2986,5 @@ void Sta_Announce_or_Forward_802_3_Packet(
 	IN struct sk_buff * pPacket,
 	IN u8 FromWhichBSSID)
 {
-	if (true
-	    ) {
-		announce_802_3_packet(pAd, pPacket, OPMODE_STA);
-	} else {
-		/* release packet */
-		RTMPFreeNdisPacket(pAd, pPacket);
-	}
+	announce_802_3_packet(pAd, pPacket, OPMODE_STA);
 }
