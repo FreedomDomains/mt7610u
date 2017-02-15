@@ -525,25 +525,15 @@ INT32 ralinkrate[] = {
 
 u32 RT_RateSize = sizeof (ralinkrate);
 
-void send_monitor_packets(IN struct net_device *pNetDev,
-			  IN struct sk_buff * pRxPacket,
-			  IN PHEADER_802_11 pHeader,
-			  IN u8 * pData,
-			  IN USHORT DataSize,
-			  IN u8 L2PAD,
-			  IN u8 PHYMODE,
-			  IN u8 BW,
-			  IN u8 ShortGI,
-			  IN u8 MCS,
-			  IN u8 AMPDU,
-			  IN u8 STBC,
-			  IN u8 RSSI1,
+void send_monitor_packets(struct net_device *ndev, struct sk_buff *skb,
+			  PHEADER_802_11 pHeader, u8 * pData,
+			  USHORT DataSize, u8 L2PAD,
+			  u8 PHYMODE, u8 BW, u8 ShortGI, u8 MCS,
+			  u8 AMPDU, u8 STBC, u8 RSSI1,
 			  IN u8 BssMonitorFlag11n,
-			  IN u8 * pDevName,
-			  IN u8 Channel,
-			  IN u8 CentralChannel,
-			  IN u32 MaxRssi) {
-	struct sk_buff *pOSPkt;
+			  u8 * pDevName, u8 Channel,
+			  u8 CentralChannel, u32 MaxRssi)
+{
 	wlan_ng_prism2_header *ph;
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 	ETHEREAL_RADIO h,
@@ -551,11 +541,9 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	int rate_index = 0;
 	USHORT header_len = 0;
-	u8 temp_header[40] = {
-	0};
+	u8 temp_header[40] = { 0 };
 
-	pOSPkt = pRxPacket;	/*pRxBlk->pRxPacket); */
-	pOSPkt->dev = pNetDev;	/*get_netdev_from_bssid(pAd, BSS0); */
+	skb->dev = ndev;	/*get_netdev_from_bssid(pAd, BSS0); */
 	if (pHeader->FC.Type == BTYPE_DATA) {
 		DataSize -= LENGTH_802_11;
 		if ((pHeader->FC.ToDs == 1) && (pHeader->FC.FrDs == 1))
@@ -588,19 +576,19 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 			pData += header_len;
 	}
 
-	if (DataSize < pOSPkt->len) {
-		skb_trim(pOSPkt, DataSize);
+	if (DataSize < skb->len) {
+		skb_trim(skb, DataSize);
 	} else {
-		skb_put(pOSPkt, (DataSize - pOSPkt->len));
+		skb_put(skb, (DataSize - skb->len));
 	}
 
-	if ((pData - pOSPkt->data) > 0) {
-		skb_put(pOSPkt, (pData - pOSPkt->data));
-		skb_pull(pOSPkt, (pData - pOSPkt->data));
+	if ((pData - skb->data) > 0) {
+		skb_put(skb, (pData - skb->data));
+		skb_pull(skb, (pData - skb->data));
 	}
 
-	if (skb_headroom(pOSPkt) < (sizeof (wlan_ng_prism2_header) + header_len)) {
-		if (pskb_expand_head(pOSPkt, (sizeof (wlan_ng_prism2_header) + header_len), 0, GFP_ATOMIC)) {
+	if (skb_headroom(skb) < (sizeof (wlan_ng_prism2_header) + header_len)) {
+		if (pskb_expand_head(skb, (sizeof (wlan_ng_prism2_header) + header_len), 0, GFP_ATOMIC)) {
 			DBGPRINT(RT_DEBUG_ERROR,
 				 ("%s : Reallocate header size of sk_buff fail!\n",
 				  __FUNCTION__));
@@ -609,14 +597,14 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	}
 
 	if (header_len > 0)
-		memmove(skb_push(pOSPkt, header_len), temp_header,
+		memmove(skb_push(skb, header_len), temp_header,
 			       header_len);
 
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 	if (BssMonitorFlag11n == 0)
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	{
-		ph = (wlan_ng_prism2_header *) skb_push(pOSPkt,
+		ph = (wlan_ng_prism2_header *) skb_push(skb,
 							sizeof(wlan_ng_prism2_header));
 		memset(ph, 0, sizeof(wlan_ng_prism2_header));
 
@@ -749,15 +737,15 @@ void send_monitor_packets(IN struct net_device *pNetDev,
 	}
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
-	pOSPkt->pkt_type = PACKET_OTHERHOST;
-	pOSPkt->protocol = eth_type_trans(pOSPkt, pOSPkt->dev);
-	pOSPkt->ip_summed = CHECKSUM_NONE;
-	netif_rx(pOSPkt);
+	skb->pkt_type = PACKET_OTHERHOST;
+	skb->protocol = eth_type_trans(skb, skb->dev);
+	skb->ip_summed = CHECKSUM_NONE;
+	netif_rx(skb);
 
 	return;
 
-      err_free_sk_buff:
-	dev_kfree_skb_any(pRxPacket);
+err_free_sk_buff:
+	dev_kfree_skb_any(skb);
 	return;
 
 }
