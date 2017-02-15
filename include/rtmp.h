@@ -1530,10 +1530,6 @@ typedef struct _STA_ADMIN_CONFIG {
 	*/
 	u8 BssType;		/* BSS_INFRA or BSS_ADHOC */
 
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-#define MONITOR_FLAG_11N_SNIFFER		0x01
-	u8 BssMonitorFlag;	/* Specific flag for monitor */
-#endif				/* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 	USHORT AtimWin;		/* used when starting a new IBSS */
 

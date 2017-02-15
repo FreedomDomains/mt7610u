@@ -217,24 +217,11 @@ INT Set_NetworkType_Proc(
 		RTMP_OS_NETDEV_SET_TYPE(pAd->net_dev, pAd->StaCfg.OriDevType);
 		DBGPRINT(RT_DEBUG_TRACE, ("===>Set_NetworkType_Proc::(INFRA)\n"));
 	}
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-	/*
-		Monitor2 is for 3593 11n wireshark sniffer tool.
-		The name, Monitor2, follows the command format in RT2883.
-	*/
-    else if ((strcmp(arg, "Monitor") == 0) || (strcmp(arg, "Monitor2") == 0))
-#else
     else if (strcmp(arg, "Monitor") == 0)
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	{
 		BCN_TIME_CFG_STRUC csr;
 		u8 rf_channel, rf_bw;
 		INT ext_ch;
-
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-		if (strcmp(arg, "Monitor2") == 0)
-			pAd->StaCfg.BssMonitorFlag |= MONITOR_FLAG_11N_SNIFFER;
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_INFRA_ON);
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_ADHOC_ON);

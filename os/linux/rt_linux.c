@@ -535,10 +535,6 @@ void send_monitor_packets(struct net_device *ndev, struct sk_buff *skb,
 			  u8 CentralChannel, u32 MaxRssi)
 {
 	wlan_ng_prism2_header *ph;
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-	ETHEREAL_RADIO h,
-	*ph_11n33;		/* for new 11n sniffer format */
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	int rate_index = 0;
 	USHORT header_len = 0;
 	u8 temp_header[40] = { 0 };
@@ -600,9 +596,6 @@ void send_monitor_packets(struct net_device *ndev, struct sk_buff *skb,
 		memmove(skb_push(skb, header_len), temp_header,
 			       header_len);
 
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-	if (BssMonitorFlag11n == 0)
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	{
 		ph = (wlan_ng_prism2_header *) skb_push(skb,
 							sizeof(wlan_ng_prism2_header));
@@ -673,69 +666,6 @@ void send_monitor_packets(struct net_device *ndev, struct sk_buff *skb,
 		ph->frmlen.len = 4;
 		ph->frmlen.data = (u_int32_t) DataSize;
 	}
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-	else {
-		ph_11n33 = &h;
-		memset((unsigned char *)ph_11n33, 0,
-			       sizeof (ETHEREAL_RADIO));
-
-		/*802.11n fields */
-		if (MCS > 15)
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_3x3;
-
-		if (PHYMODE == MODE_HTGREENFIELD)
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_GF;
-
-		if (BW == 1) {
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_BW40;
-		} else if (Channel < CentralChannel) {
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_BW20U;
-		} else if (Channel > CentralChannel) {
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_BW20D;
-		} else {
-			ph_11n33->Flag_80211n |=
-			    (WIRESHARK_11N_FLAG_BW20U |
-			     WIRESHARK_11N_FLAG_BW20D);
-		}
-
-		if (ShortGI == 1)
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_SGI;
-
-		if (AMPDU)
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_AMPDU;
-
-		if (STBC)
-			ph_11n33->Flag_80211n |= WIRESHARK_11N_FLAG_STBC;
-
-		ph_11n33->signal_level = (u8) RSSI1;
-
-		/* data_rate is the rate index in the wireshark rate table */
-		if (PHYMODE >= MODE_HTMIX) {
-			if (MCS == 32) {
-				if (ShortGI)
-					ph_11n33->data_rate = 16;
-				else
-					ph_11n33->data_rate = 4;
-			} else if (MCS > 15)
-				ph_11n33->data_rate =
-				    (16 * 4 + ((u8) BW * 16) +
-				     ((u8) ShortGI * 32) + ((u8) MCS));
-			else
-				ph_11n33->data_rate =
-				    16 + ((u8) BW * 16) +
-				    ((u8) ShortGI * 32) + ((u8) MCS);
-		} else if (PHYMODE == MODE_OFDM)
-			ph_11n33->data_rate = (u8) (MCS) + 4;
-		else
-			ph_11n33->data_rate = (u8) (MCS);
-
-		/*channel field */
-		ph_11n33->channel = (u8) Channel;
-
-		memmove(skb_put(pOSPkt, sizeof (ETHEREAL_RADIO)),
-			       (u8 *) ph_11n33, sizeof (ETHEREAL_RADIO));
-	}
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 	skb->pkt_type = PACKET_OTHERHOST;
 	skb->protocol = eth_type_trans(skb, skb->dev);

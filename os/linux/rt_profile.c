@@ -224,9 +224,6 @@ void STA_MonPktSend(
 	STBC = pRxBlk->pRxWI->RxWISTBC;
 	RSSI1 = pRxBlk->pRxWI->RxWIRSSI1;
 	BssMonitorFlag11n = 0;
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-	BssMonitorFlag11n = (pAd->StaCfg.BssMonitorFlag & MONITOR_FLAG_11N_SNIFFER);
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 	pDevName = (u8 *)RtmpOsGetNetDevName(pAd->net_dev);
 	Channel = pAd->CommonCfg.Channel;
 	CentralChannel = pAd->CommonCfg.CentralChannel;

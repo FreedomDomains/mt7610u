@@ -28,8 +28,6 @@
 #ifndef __RT_COMM_H__
 #define __RT_COMM_H__
 
-/*#define MONITOR_FLAG_11N_SNIFFER_SUPPORT */
-
 
 /* ======================== Before include files ============================ */
 /*
@@ -402,37 +400,6 @@ typedef struct {
         p80211item_uint32_t frmlen;
 } wlan_ng_prism2_header;
 
-#ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
-/*
-	Note: 2009/11/10
-	Used in WiFi Sigma Test Engine RT3593 (replace RT2883).
-*/
-
-#ifdef RT_BIG_ENDIAN
-typedef struct _ETHEREAL_RADIO {
-        u8 Flag_80211n;
-        u8 signal_level; /* dBm */
-        u8 data_rate; /* rate index */
-        u8 channel; /* Channel number */
-} ETHEREAL_RADIO, *PETHEREAL_RADIO;
-#else
-typedef struct _ETHEREAL_RADIO {
-        u8 channel; /* Channel number */
-        u8 data_rate; /* rate index */
-        u8 signal_level; /* dBm */
-        u8 Flag_80211n;
-} ETHEREAL_RADIO, *PETHEREAL_RADIO;
-#endif
-
-#define WIRESHARK_11N_FLAG_3x3             	0x01
-#define WIRESHARK_11N_FLAG_GF              	0x02
-#define WIRESHARK_11N_FLAG_AMPDU     	 	0x04
-#define WIRESHARK_11N_FLAG_STBC          	0x08
-#define WIRESHARK_11N_FLAG_SGI             	0x10
-#define WIRESHARK_11N_FLAG_BW20U      		0x20
-#define WIRESHARK_11N_FLAG_BW20D      		0x40
-#define WIRESHARK_11N_FLAG_BW40             0x80
-#endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
 
 
 
