@@ -72,9 +72,8 @@ void RtmpUtilInit(void)
 }
 
 /* timeout -- ms */
-static inline void __RTMP_SetPeriodicTimer(
-	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	IN unsigned long timeout)
+static inline void __RTMP_SetPeriodicTimer(struct timer_list * pTimer,
+					   unsigned long timeout)
 {
 	timeout = ((timeout * OS_HZ) / 1000);
 	pTimer->expires = jiffies + timeout;
@@ -83,10 +82,9 @@ static inline void __RTMP_SetPeriodicTimer(
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
 static inline void __RTMP_OS_Init_Timer(
-	IN void *pReserved,
-	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	IN TIMER_FUNCTION function,
-	IN void *data)
+	struct timer_list * pTimer,
+	TIMER_FUNCTION function,
+	void *data)
 {
 	if (!timer_pending(pTimer)) {
 		init_timer(pTimer);
@@ -96,8 +94,8 @@ static inline void __RTMP_OS_Init_Timer(
 }
 
 static inline void __RTMP_OS_Add_Timer(
-	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	IN unsigned long timeout)
+	struct timer_list *pTimer,
+	unsigned long timeout)
 {
 	if (timer_pending(pTimer))
 		return;
@@ -108,16 +106,16 @@ static inline void __RTMP_OS_Add_Timer(
 }
 
 static inline void __RTMP_OS_Mod_Timer(
-	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	IN unsigned long timeout)
+	struct timer_list *pTimer,
+	unsigned long timeout)
 {
 	timeout = ((timeout * OS_HZ) / 1000);
 	mod_timer(pTimer, jiffies + timeout);
 }
 
 static inline void __RTMP_OS_Del_Timer(
-	IN OS_NDIS_MINIPORT_TIMER * pTimer,
-	OUT bool *pCancelled)
+	struct timer_list *pTimer,
+	bool *pCancelled)
 {
 	if (timer_pending(pTimer))
 		*pCancelled = del_timer_sync(pTimer);
@@ -125,8 +123,7 @@ static inline void __RTMP_OS_Del_Timer(
 		*pCancelled = true;
 }
 
-static inline void __RTMP_OS_Release_Timer(
-	IN OS_NDIS_MINIPORT_TIMER * pTimer)
+static inline void __RTMP_OS_Release_Timer(struct timer_list * pTimer)
 {
 	/* nothing to do */
 }
@@ -2707,7 +2704,7 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, bool bSet)
 
 
 /* timeout -- ms */
-void RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_SetPeriodicTimer(struct timer_list *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_SetPeriodicTimer(pTimerOrg, timeout);
 }
@@ -2715,35 +2712,34 @@ void RTMP_SetPeriodicTimer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
 void RTMP_OS_Init_Timer(
-	void *pReserved,
-	NDIS_MINIPORT_TIMER *pTimerOrg,
+	struct timer_list *pTimerOrg,
 	TIMER_FUNCTION function,
 	void *data,
 	LIST_HEADER *pTimerList)
 {
-	__RTMP_OS_Init_Timer(pReserved, pTimerOrg, function, data);
+	__RTMP_OS_Init_Timer(pTimerOrg, function, data);
 }
 
 
-void RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Add_Timer(struct timer_list *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_OS_Add_Timer(pTimerOrg, timeout);
 }
 
 
-void RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Mod_Timer(struct timer_list *pTimerOrg, unsigned long timeout)
 {
 	__RTMP_OS_Mod_Timer(pTimerOrg, timeout);
 }
 
 
-void RTMP_OS_Del_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, bool *pCancelled)
+void RTMP_OS_Del_Timer(struct timer_list *pTimerOrg, bool *pCancelled)
 {
 	__RTMP_OS_Del_Timer(pTimerOrg, pCancelled);
 }
 
 
-void RTMP_OS_Release_Timer(NDIS_MINIPORT_TIMER *pTimerOrg)
+void RTMP_OS_Release_Timer(struct timer_list *pTimerOrg)
 {
 	__RTMP_OS_Release_Timer(pTimerOrg);
 }

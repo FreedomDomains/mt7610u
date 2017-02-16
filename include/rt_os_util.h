@@ -442,31 +442,19 @@ INT32 RtmpThreadPidKill(RTMP_OS_PID	 PID);
 void RtmpOsDCacheFlush(ULONG AddrStart, ULONG Size);
 
 /* OS Timer */
-void RTMP_SetPeriodicTimer(
-	IN	NDIS_MINIPORT_TIMER *pTimerOrg,
-	IN	unsigned long timeout);
+void RTMP_SetPeriodicTimer(struct timer_list *pTimerOrg, unsigned long timeout);
 
-void RTMP_OS_Init_Timer(
-	IN	void 					*pReserved,
-	IN	NDIS_MINIPORT_TIMER		*pTimerOrg,
-	IN	TIMER_FUNCTION			function,
-	IN	void *				data,
-	IN	LIST_HEADER				*pTimerList);
+void RTMP_OS_Init_Timer(struct timer_list *pTimerOrg,
+			TIMER_FUNCTION function, void *data,
+			LIST_HEADER *pTimerList);
 
-void RTMP_OS_Add_Timer(
-	IN	NDIS_MINIPORT_TIMER *pTimerOrg,
-	IN	unsigned long timeout);
+void RTMP_OS_Add_Timer(struct timer_list *pTimerOrg, unsigned long timeout);
 
-void RTMP_OS_Mod_Timer(
-	IN	NDIS_MINIPORT_TIMER *pTimerOrg,
-	IN	unsigned long timeout);
+void RTMP_OS_Mod_Timer(struct timer_list *pTimerOrg, unsigned long timeout);
 
-void RTMP_OS_Del_Timer(
-	IN	NDIS_MINIPORT_TIMER		*pTimerOrg,
-	OUT	bool 				*pCancelled);
+void RTMP_OS_Del_Timer(struct timer_list *pTimerOrg, bool *pCancelled);
 
-void RTMP_OS_Release_Timer(
-	IN	NDIS_MINIPORT_TIMER		*pTimerOrg);
+void RTMP_OS_Release_Timer(struct timer_list *pTimerOrg);
 
 bool RTMP_OS_Alloc_Rsc(
 	IN	LIST_HEADER				*pRscList,
