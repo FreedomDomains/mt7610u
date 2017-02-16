@@ -947,7 +947,7 @@ static int ForceSleepAutoWakeupHdlr(IN struct rtmp_adapter *pAd, struct rtmp_que
 
 int QkeriodicExecutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
-	StaQuickResponeForRateUpExec(NULL, pAd, NULL, NULL);
+	StaQuickResponeForRateUpExec(pAd);
 	return NDIS_STATUS_SUCCESS;
 }
 #endif /* CONFIG_STA_SUPPORT*/

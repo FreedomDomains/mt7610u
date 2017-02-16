@@ -192,11 +192,7 @@ void APSyncStateMachineInit(
     IN STATE_MACHINE *Sm,
     OUT STATE_MACHINE_FUNC Trans[]);
 
-void APScanTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void APScanTimeout(void *FunctionContext);
 
 void APInvalidStateWhenScan(
 	IN struct rtmp_adapter *pAd,

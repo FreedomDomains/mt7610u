@@ -94,7 +94,7 @@ void rtmp_timer_##_func(unsigned long data)										\
 {																			\
 	PRALINK_TIMER_STRUCT	pTimer = (PRALINK_TIMER_STRUCT) data;				\
 																			\
-	_func(NULL, (void *) pTimer->cookie, NULL, pTimer); 							\
+	_func((void *) pTimer->cookie); 							\
 	if (pTimer->Repeat)														\
 		RTMP_OS_Add_Timer(&pTimer->TimerObj, pTimer->TimerValue);			\
 }

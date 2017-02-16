@@ -1750,11 +1750,7 @@ int RTMPSendSTAKeyHandShake(
 	return NStatus;
 }
 
-void DlsTimeoutAction(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void DlsTimeoutAction(void *FunctionContext)
 {
 	MLME_DLS_REQ_STRUCT MlmeDlsReq;
 	USHORT reason;
