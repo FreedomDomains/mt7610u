@@ -179,8 +179,8 @@ void STA_MonPktSend(
 	IN struct rtmp_adapter*pAd,
 	IN RX_BLK *pRxBlk)
 {
-	struct net_device *pNetDev;
-	struct sk_buff * skb;
+	struct net_device *ndev;
+	struct sk_buff *skb;
 	PHEADER_802_11 pHeader;
 	USHORT DataSize;
 	u32 MaxRssi;
@@ -190,27 +190,25 @@ void STA_MonPktSend(
 
 
 	/* sanity check */
-    ASSERT(pRxBlk->skb);
-    if (pRxBlk->DataSize < 10)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too small! (%d)\n", __FUNCTION__, pRxBlk->DataSize));
+	ASSERT(pRxBlk->skb);
+	if (pRxBlk->DataSize < 10)   {
+		DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too small! (%d)\n", __FUNCTION__, pRxBlk->DataSize));
 		goto err_free_sk_buff;
-    }
+	}
 
-    if (pRxBlk->DataSize + sizeof(wlan_ng_prism2_header) > RX_BUFFER_AGGRESIZE)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too large! (%d)\n",
-		__FUNCTION__, (int) (pRxBlk->DataSize + sizeof(wlan_ng_prism2_header))));
+	if (pRxBlk->DataSize + sizeof(wlan_ng_prism2_header) > RX_BUFFER_AGGRESIZE) {
+		DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too large! (%d)\n",
+			__FUNCTION__, (int) (pRxBlk->DataSize + sizeof(wlan_ng_prism2_header))));
 		goto err_free_sk_buff;
-    }
+	}
 
 	/* init */
 	MaxRssi = RTMPMaxRssi(pAd,
-						ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI0, RSSI_0),
-						ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI1, RSSI_1),
-						ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI2, RSSI_2));
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI0, RSSI_0),
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI1, RSSI_1),
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI2, RSSI_2));
 
-	pNetDev = get_netdev_from_bssid(pAd, BSS0);
+	ndev = get_netdev_from_bssid(pAd, BSS0);
 	skb = pRxBlk->skb;
 	pHeader = pRxBlk->pHeader;
 	pData = pRxBlk->pData;
@@ -229,10 +227,10 @@ void STA_MonPktSend(
 	CentralChannel = pAd->CommonCfg.CentralChannel;
 
 	/* pass the packet */
-	send_monitor_packets(pNetDev, skb, pHeader, pData, DataSize,
-						L2PAD, PHYMODE, BW, ShortGI, MCS, AMPDU, STBC, RSSI1,
-						BssMonitorFlag11n, pDevName, Channel, CentralChannel,
-						MaxRssi);
+	send_monitor_packets(ndev, skb, pHeader, pData, DataSize,
+			     L2PAD, PHYMODE, BW, ShortGI, MCS, AMPDU, STBC, RSSI1,
+			     BssMonitorFlag11n, pDevName, Channel, CentralChannel,
+			     MaxRssi);
 	return;
 
 err_free_sk_buff:
