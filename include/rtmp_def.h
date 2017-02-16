@@ -1731,7 +1731,7 @@ do{									\
 				get_netdev_from_bssid(__pAd, __FromWhichBSSID),				\
 				__pRxBlk->OpMode,												\
 				__VLAN_VID, __VLAN_Priority,								\
-				__pRxBlk->pRxPacket, __pRxBlk->pData, __pRxBlk->DataSize,	\
+				__pRxBlk->skb, __pRxBlk->pData, __pRxBlk->DataSize,	\
 				__pHeader802_3, __FromWhichBSSID, __TPID);					\
 }
 
@@ -1744,7 +1744,7 @@ do{									\
 					__pPacket, __FromWhichBSSID)
 
 #define RTMP_UPDATE_OS_PACKET_INFO(__pAd, __pRxBlk, __FromWhichBSSID)		\
-	RtmpOsPktInit(__pRxBlk->pRxPacket,										\
+	RtmpOsPktInit(__pRxBlk->skb,										\
 					get_netdev_from_bssid(__pAd, __FromWhichBSSID),			\
 					__pRxBlk->pData, __pRxBlk->DataSize);
 

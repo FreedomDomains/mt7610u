@@ -164,7 +164,7 @@ void wlan_802_11_to_802_3_packet(
 	IN	u8 				OpMode,
 	IN	USHORT					VLAN_VID,
 	IN	USHORT					VLAN_Priority,
-	IN	struct sk_buff *			pRxPacket,
+	IN	struct sk_buff *			skb,
 	IN	u8 				*pData,
 	IN	ULONG					DataSize,
 	IN	u8 *				pHeader802_3,
@@ -173,7 +173,7 @@ void wlan_802_11_to_802_3_packet(
 
 void send_monitor_packets(
 	IN	struct net_device *			pNetDev,
-	IN	struct sk_buff *			pRxPacket,
+	IN	struct sk_buff *			skb,
 	IN	PHEADER_802_11			pHeader,
 	IN	u8 				*pData,
 	IN	USHORT					DataSize,

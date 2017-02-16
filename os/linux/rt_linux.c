@@ -470,7 +470,7 @@ void wlan_802_11_to_802_3_packet(
 	IN u8 OpMode,
 	IN USHORT VLAN_VID,
 	IN USHORT VLAN_Priority,
-	IN struct sk_buff * pRxPacket,
+	IN struct sk_buff * skb,
 	IN u8 *pData,
 	IN ULONG DataSize,
 	IN u8 *pHeader802_3,
@@ -481,7 +481,7 @@ void wlan_802_11_to_802_3_packet(
 
 	ASSERT(pHeader802_3);
 
-	pOSPkt = pRxPacket;
+	pOSPkt = skb;
 
 	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 	pOSPkt->dev = pNetDev;

@@ -1541,11 +1541,11 @@ void convert_reordering_packet_to_preAMSDU_or_802_3_packet(
 		RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(pRxBlk, Header802_3);
 #endif /* CONFIG_STA_SUPPORT */
 
-	ASSERT(pRxBlk->pRxPacket);
+	ASSERT(pRxBlk->skb);
 
-	pRxPkt = pRxBlk->pRxPacket;
+	pRxPkt = pRxBlk->skb;
 
-	RTMP_OS_PKT_INIT(pRxBlk->pRxPacket,
+	RTMP_OS_PKT_INIT(pRxBlk->skb,
 					get_netdev_from_bssid(pAd, FromWhichBSSID),
 					pRxBlk->pData, pRxBlk->DataSize);
 
@@ -1614,14 +1614,14 @@ static void ba_enqueue_reordering_packet(
 		/* it is necessary for reordering packet to record
 			which BSS it come from
 		*/
-		RTMP_SET_PACKET_IF(pRxBlk->pRxPacket, FromWhichBSSID);
+		RTMP_SET_PACKET_IF(pRxBlk->skb, FromWhichBSSID);
 
-		mpdu_blk->pPacket = pRxBlk->pRxPacket;
+		mpdu_blk->pPacket = pRxBlk->skb;
 
 		if (ba_reordering_mpdu_insertsorted(&pBAEntry->list, mpdu_blk) == false)
 		{
 			/* had been already within reordering list don't indicate */
-			dev_kfree_skb_any(pRxBlk->pRxPacket);
+			dev_kfree_skb_any(pRxBlk->skb);
 			ba_mpdu_blk_free(pAd, mpdu_blk);
 		}
 
@@ -1688,7 +1688,7 @@ void Indicate_AMPDU_Packet(
 		}
 
 		/* release packet*/
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -1710,7 +1710,7 @@ void Indicate_AMPDU_Packet(
 		/* impossible !!!*/
 		ASSERT(0);
 		/* release packet*/
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -1761,7 +1761,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 	}
 
 	/* III. Drop Old Received Packet*/
@@ -1770,7 +1770,7 @@ void Indicate_AMPDU_Packet(
 
 		/* drop and release packet*/
 		pBAEntry->nDropPacket++;
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 	}
 
 	/* IV. Receive Sequence within Window Size*/

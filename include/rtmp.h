@@ -2850,14 +2850,13 @@ struct rtmp_adapter {
 /***************************************************************************
   *	Rx Path software control block related data structures
   **************************************************************************/
-typedef struct _RX_BLK_
-{
+typedef struct _RX_BLK_{
 	u8 hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
 	struct rtmp_rxinfo *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
 	struct rxwi_nmac *pRxWI;
 	PHEADER_802_11 pHeader;
-	struct sk_buff * pRxPacket;
+	struct sk_buff *skb;
 	u8 *pData;
 	USHORT DataSize;
 	USHORT Flags;

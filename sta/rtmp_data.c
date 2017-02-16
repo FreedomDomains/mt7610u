@@ -121,7 +121,7 @@ void STARxEAPOLFrameIndicate(
 		}
 	}
 
-	dev_kfree_skb_any(pRxBlk->pRxPacket);
+	dev_kfree_skb_any(pRxBlk->skb);
 	return;
 
 }
@@ -139,7 +139,7 @@ void STARxDataFrameAnnounce(
 	    (pAd, pEntry, pRxBlk->pData, pRxBlk->DataSize, FromWhichBSSID)) {
 		/* before LINK UP, all DATA frames are rejected */
 		if (!OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED)) {
-			dev_kfree_skb_any(pRxBlk->pRxPacket);
+			dev_kfree_skb_any(pRxBlk->skb);
 			return;
 		}
 
@@ -152,7 +152,7 @@ void STARxDataFrameAnnounce(
 				if (pAd->StaCfg.WepStatus ==
 				    Ndis802_11EncryptionDisabled) {
 					/* release packet */
-					dev_kfree_skb_any(pRxBlk->pRxPacket);
+					dev_kfree_skb_any(pRxBlk->skb);
 					return;
 				}
 			} else {
@@ -162,7 +162,7 @@ void STARxDataFrameAnnounce(
 				    && (pAd->StaCfg.PortSecured ==
 					WPA_802_1X_PORT_NOT_SECURED)) {
 					/* release packet */
-					dev_kfree_skb_any(pRxBlk->pRxPacket);
+					dev_kfree_skb_any(pRxBlk->skb);
 					return;
 				}
 			}
@@ -243,7 +243,7 @@ bool STACheckTkipMICValue(
 		}
 
 		/* release packet */
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return false;
 	}
 
@@ -266,7 +266,7 @@ void STAHandleRxDataFrame(
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * skb = pRxBlk->skb;
 	bool bFragment = false;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	u8 FromWhichBSSID = BSS0;
@@ -280,7 +280,7 @@ void STAHandleRxDataFrame(
 		} else
 #endif /* CLIENT_WDS */
 		{		/* release packet */
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 	}
@@ -302,7 +302,7 @@ void STAHandleRxDataFrame(
 		if (pRxInfo->MyBss == 0) {
 			{
 				/* release packet */
-				dev_kfree_skb_any(pRxPacket);
+				dev_kfree_skb_any(skb);
 				return;
 			}
 		}
@@ -348,7 +348,7 @@ void STAHandleRxDataFrame(
 		/* Drop NULL, CF-ACK(no data), CF-POLL(no data), and CF-ACK+CF-POLL(no data) data frame */
 		if ((pHeader->FC.SubType & 0x04)) {	/* bit 2 : no DATA */
 			/* release packet */
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 
@@ -363,7 +363,7 @@ void STAHandleRxDataFrame(
 				{
 					/* Receive frame not my BSSID */
 					/* release packet */
-					dev_kfree_skb_any(pRxPacket);
+					dev_kfree_skb_any(skb);
 					return;
 				}
 			}
@@ -375,7 +375,7 @@ void STAHandleRxDataFrame(
 			if (memcmp(&pHeader->Addr3, &pAd->CommonCfg.Bssid, 6) != 0) {
 				/* Receive frame not my BSSID */
 				/* release packet */
-				dev_kfree_skb_any(pRxPacket);
+				dev_kfree_skb_any(skb);
 				return;
 			}
 		}
@@ -385,7 +385,7 @@ void STAHandleRxDataFrame(
 			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
 
 		} else {
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 
@@ -493,7 +493,7 @@ void STAHandleRxDataFrame(
 						       pRxBlk->pData, pRxBlk,
 						       pEntry)) == NULL) {
 			DBGPRINT(RT_DEBUG_TRACE, ("No vaild cipher key for SW decryption!!!\n"));
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 
@@ -506,7 +506,7 @@ void STAHandleRxDataFrame(
 					     &(pRxBlk->DataSize)) !=
 		    NDIS_STATUS_SUCCESS) {
 			/* release packet */
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 		/* Record the Decrypted bit as 1 */
@@ -523,7 +523,7 @@ void STAHandleRxDataFrame(
 		/* Drop Mcast/Bcast frame with fragment bit on */
 		if (pHeader->FC.MoreFrag) {
 			/* release packet */
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 
@@ -531,7 +531,7 @@ void STAHandleRxDataFrame(
 		if (pHeader->FC.FrDs
 		    && MAC_ADDR_EQUAL(pHeader->Addr3, pAd->CurrentAddress)) {
 			/* release packet */
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 			return;
 		}
 
@@ -613,12 +613,12 @@ void STAHandleRxDataFrame(
 
 		if (!((pHeader->Frag == 0) && (pHeader->FC.MoreFrag == 0))) {
 			/* re-assemble the fragmented packets */
-			/* return complete frame (pRxPacket) or NULL */
+			/* return complete frame (skb) or NULL */
 			bFragment = true;
-			pRxPacket = RTMPDeFragmentDataFrame(pAd, pRxBlk);
+			skb = RTMPDeFragmentDataFrame(pAd, pRxBlk);
 		}
 
-		if (pRxPacket) {
+		if (skb) {
 			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
 
 			/* process complete frame */
@@ -646,7 +646,7 @@ void STAHandleRxDataFrame(
 
 	ASSERT(0);
 	/* release packet */
-	dev_kfree_skb_any(pRxPacket);
+	dev_kfree_skb_any(skb);
 }
 
 void STAHandleRxMgmtFrame(
@@ -655,7 +655,7 @@ void STAHandleRxMgmtFrame(
 {
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * skb = pRxBlk->skb;
 	u8 MinSNR = 0;
 
 	do {
@@ -709,7 +709,7 @@ void STAHandleRxMgmtFrame(
 
 	} while (false);
 
-	dev_kfree_skb_any(pRxPacket);
+	dev_kfree_skb_any(skb);
 }
 
 
@@ -721,7 +721,7 @@ void STAHandleRxControlFrame(
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
 #endif /* DOT11_N_SUPPORT */
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * skb = pRxBlk->skb;
 	bool retStatus;
 	int status = NDIS_STATUS_FAILURE;
 
@@ -740,7 +740,7 @@ void STAHandleRxControlFrame(
 		break;
 	}
 
-	dev_kfree_skb_any(pRxPacket);
+	dev_kfree_skb_any(skb);
 }
 
 
@@ -844,7 +844,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		/* build RxBlk */
 		RxBlk.pRxWI = pRxWI;
 		RxBlk.pHeader = pHeader;
-		RxBlk.pRxPacket = skb;
+		RxBlk.skb = skb;
 		RxBlk.pData = (u8 *) pHeader;
 		RxBlk.DataSize = pRxWI->RxWIMPDUByteCnt;
 		RxBlk.pRxInfo = pRxInfo;

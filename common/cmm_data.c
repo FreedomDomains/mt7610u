@@ -1306,8 +1306,8 @@ void Indicate_AMSDU_Packet(
 	UINT			nMSDU;
 
 	RTMP_UPDATE_OS_PACKET_INFO(pAd, pRxBlk, FromWhichBSSID);
-	RTMP_SET_PACKET_IF(pRxBlk->pRxPacket, FromWhichBSSID);
-	nMSDU = deaggregate_AMSDU_announce(pAd, pRxBlk->pRxPacket, pRxBlk->pData, pRxBlk->DataSize, pRxBlk->OpMode);
+	RTMP_SET_PACKET_IF(pRxBlk->skb, FromWhichBSSID);
+	nMSDU = deaggregate_AMSDU_announce(pAd, pRxBlk->skb, pRxBlk->pData, pRxBlk->DataSize, pRxBlk->OpMode);
 }
 #endif /* DOT11_N_SUPPORT */
 
@@ -1641,7 +1641,7 @@ void Indicate_Legacy_Packet(
 	IN RX_BLK *pRxBlk,
 	IN u8 FromWhichBSSID)
 {
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * skb = pRxBlk->skb;
 	u8 Header802_3[LENGTH_802_3];
 	USHORT VLAN_VID = 0, VLAN_Priority = 0;
 
@@ -1662,7 +1662,7 @@ void Indicate_Legacy_Packet(
 	{
 
 		/* release packet*/
-		dev_kfree_skb_any(pRxPacket);
+		dev_kfree_skb_any(skb);
 		return;
 	}
 
@@ -1707,7 +1707,7 @@ void Indicate_Legacy_Packet(
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxPacket, FromWhichBSSID);
+		ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, skb, FromWhichBSSID);
 #endif /* CONFIG_STA_SUPPORT */
 
 }
@@ -1766,7 +1766,7 @@ void CmmRxRalinkFrameIndicate(
 	else
 	{
 		/* release packet*/
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -1777,7 +1777,7 @@ void CmmRxRalinkFrameIndicate(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-	ASSERT(pRxBlk->pRxPacket);
+	ASSERT(pRxBlk->skb);
 
 	/* Ralink Aggregation frame*/
 	pAd->RalinkCounters.OneSecRxAggregationCount ++;
@@ -1795,7 +1795,7 @@ void CmmRxRalinkFrameIndicate(
 	if (!pPacket2)
 	{
 		/* release packet*/
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -1807,7 +1807,7 @@ void CmmRxRalinkFrameIndicate(
 
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxBlk->pRxPacket, FromWhichBSSID);
+		ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxBlk->skb, FromWhichBSSID);
 #endif /* CONFIG_STA_SUPPORT */
 
 	if (pPacket2)
@@ -1834,7 +1834,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 	IN RX_BLK *pRxBlk)
 {
 	HEADER_802_11 *pHeader = pRxBlk->pHeader;
-	struct sk_buff * pRxPacket = pRxBlk->pRxPacket;
+	struct sk_buff * skb = pRxBlk->skb;
 	u8 *pData = pRxBlk->pData;
 	USHORT DataSize = pRxBlk->DataSize;
 	struct sk_buff * pRetPacket = NULL;
@@ -1909,7 +1909,7 @@ struct sk_buff * RTMPDeFragmentDataFrame(
 
 done:
 	/* always release rx fragmented packet*/
-	dev_kfree_skb_any(pRxPacket);
+	dev_kfree_skb_any(skb);
 
 	/* return defragmented packet if packet is reassembled completely*/
 	/* otherwise return NULL*/
@@ -1927,7 +1927,7 @@ done:
 			pRxBlk->pHeader = (PHEADER_802_11) pRetPacket->data;
 			pRxBlk->pData = (u8 *)pRxBlk->pHeader + HeaderRoom;
 			pRxBlk->DataSize = pAd->FragFrame.RxSize - HeaderRoom;
-			pRxBlk->pRxPacket = pRetPacket;
+			pRxBlk->skb = pRetPacket;
 		}
 		else
 		{
@@ -1949,7 +1949,7 @@ void Indicate_EAPOL_Packet(
 	if (pRxBlk->pRxWI->RxWIWirelessCliID >= MAX_LEN_OF_MAC_TABLE)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: invalid wcid.\n"));
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -1957,7 +1957,7 @@ void Indicate_EAPOL_Packet(
 	if (pEntry == NULL)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: drop and release the invalid packet.\n"));
-		dev_kfree_skb_any(pRxBlk->pRxPacket);
+		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
@@ -2380,7 +2380,7 @@ void StopDmaRx(
 	IN struct rtmp_adapter*pAd,
 	IN u8 Level)
 {
-	struct sk_buff *	pRxPacket;
+	struct sk_buff *	skb;
 	RX_BLK			RxBlk, *pRxBlk;
 	u32 RxPending = 0, MacReg = 0, MTxCycle = 0;
 	bool bReschedule = false;
@@ -2397,11 +2397,11 @@ void StopDmaRx(
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return;
 		pRxBlk = &RxBlk;
-		pRxPacket = GetPacketFromRxRing(pAd, pRxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
+		skb = GetPacketFromRxRing(pAd, pRxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
 		if ((RxPending == 0) && (bReschedule == false))
 			break;
 		else
-			dev_kfree_skb_any(pRxPacket);
+			dev_kfree_skb_any(skb);
 	}
 
 	/*
