@@ -156,11 +156,7 @@ void AssocStateMachineInit(
 
 	==========================================================================
  */
-void AssocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void AssocTimeout(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
@@ -185,11 +181,7 @@ void AssocTimeout(
 
 	==========================================================================
  */
-void ReassocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void ReassocTimeout(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 
@@ -214,11 +206,7 @@ void ReassocTimeout(
 
 	==========================================================================
  */
-void DisassocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void DisassocTimeout(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*) FunctionContext;
 

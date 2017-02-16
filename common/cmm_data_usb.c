@@ -1359,11 +1359,7 @@ int	RTMPCheckRxError(
 }
 
 
-void RtmpUsbStaAsicForceWakeupTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void RtmpUsbStaAsicForceWakeupTimeout(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)FunctionContext;
 

@@ -1402,11 +1402,7 @@ void PeerGroupMsg1Action(
 }
 
 
-void EnqueueStartForPSKExec(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3)
+void EnqueueStartForPSKExec(void *FunctionContext)
 {
 	MAC_TABLE_ENTRY     *pEntry = (PMAC_TABLE_ENTRY) FunctionContext;
 

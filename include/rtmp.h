@@ -3487,11 +3487,7 @@ void DlsParmFill(
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
-void RECBATimerTimeout(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3);
+void RECBATimerTimeout(void *FunctionContext);
 
 void ORIBATimerTimeout(
 	IN	struct rtmp_adapter *pAd);
@@ -3734,11 +3730,7 @@ void WpaMicFailureReportFrame(
 	IN  struct rtmp_adapter *   pAd,
 	IN  MLME_QUEUE_ELEM *Elem);
 
-void    WpaDisassocApAndBlockAssoc(
-    IN  void *SystemSpecific1,
-    IN  void *FunctionContext,
-    IN  void *SystemSpecific2,
-    IN  void *SystemSpecific3);
+void    WpaDisassocApAndBlockAssoc(void *FunctionContext);
 
 void WpaStaPairwiseKeySetting(
 	IN	struct rtmp_adapter *pAd);
@@ -3997,11 +3989,7 @@ void BATableInsertEntry(
 	IN u8 OriginatorStatus,
     IN bool IsRecipient);
 
-void Bss2040CoexistTimeOut(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void Bss2040CoexistTimeOut(void *FunctionContext);
 
 
 void  TriEventInit(
@@ -4109,23 +4097,11 @@ void AssocStateMachineInit(
 	IN  STATE_MACHINE *Sm,
 	OUT STATE_MACHINE_FUNC Trans[]);
 
-void ReassocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void ReassocTimeout(void *FunctionContext);
 
-void AssocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void AssocTimeout(void *FunctionContext);
 
-void DisassocTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void DisassocTimeout(void *FunctionContext);
 
 /*---------------------------------------------- */
 void MlmeDisassocReqAction(
@@ -4215,11 +4191,7 @@ void AuthStateMachineInit(
 	IN PSTATE_MACHINE sm,
 	OUT STATE_MACHINE_FUNC Trans[]);
 
-void AuthTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void AuthTimeout(void *FunctionContext);
 
 void MlmeAuthReqAction(
 	IN  struct rtmp_adapter *  pAd,
@@ -4324,11 +4296,7 @@ int RTMPSendSTAKeyHandShake(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pDA);
 
-void DlsTimeoutAction(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void DlsTimeoutAction(void *FunctionContext);
 
 bool MlmeDlsReqSanity(
 	IN struct rtmp_adapter *pAd,
@@ -4424,17 +4392,9 @@ void SyncStateMachineInit(
 	IN  STATE_MACHINE *Sm,
 	OUT STATE_MACHINE_FUNC Trans[]);
 
-void BeaconTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void BeaconTimeout(void *FunctionContext);
 
-void ScanTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void ScanTimeout(void *SystemSpecific2);
 
 void MlmeScanReqAction(
 	IN  struct rtmp_adapter *  pAd,
@@ -4855,23 +4815,11 @@ void AsicUpdateAutoFallBackTable(
 
 
 
-void  MlmePeriodicExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void  MlmePeriodicExec(void *FunctionContext);
 
-void LinkDownExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void LinkDownExec(void *FunctionContext);
 
-void LinkUpExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void LinkUpExec(void *FunctionContext);
 
 void STAMlmePeriodicExec(
 	struct rtmp_adapter *pAd);
@@ -4974,17 +4922,9 @@ void eFusePhysicalReadRegisters(
 void AsicEvaluateRxAnt(
 	IN struct rtmp_adapter *pAd);
 
-void AsicRxAntEvalTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void AsicRxAntEvalTimeout(void *FunctionContext);
 
-void APSDPeriodicExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void APSDPeriodicExec(void *FunctionContext);
 
 bool RTMPCheckEntryEnableAutoRateSwitch(
 	IN struct rtmp_adapter *   pAd,
@@ -5265,23 +5205,11 @@ void PeerGroupMsg2Action(
 	IN  void             *Msg,
 	IN  UINT             MsgLen);
 
-void CMTimerExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void CMTimerExec(void *FunctionContext);
 
-void WPARetryExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void WPARetryExec(void *FunctionContext);
 
-void EnqueueStartForPSKExec(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3);
+void EnqueueStartForPSKExec(void *FunctionContext);
 
 
 void RTMPHandleSTAKey(
@@ -5296,11 +5224,7 @@ void MlmeDeAuthAction(
 	IN  bool          bDataFrameFirst);
 
 
-void GREKEYPeriodicExec(
-	IN  void *  SystemSpecific1,
-	IN  void *  FunctionContext,
-	IN  void *  SystemSpecific2,
-	IN  void *  SystemSpecific3);
+void GREKEYPeriodicExec(void *  FunctionContext);
 
 void AES_128_CMAC(
 	IN	u8 *key,
@@ -6197,11 +6121,7 @@ void RtmpUSBNullFrameKickOut(
 	IN u8 	*pNullFrame,
 	IN u32		frameLen);
 
-void RtmpUsbStaAsicForceWakeupTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+void RtmpUsbStaAsicForceWakeupTimeout(void *FunctionContext);
 
 void RT28xxUsbStaAsicForceWakeup(
 	IN struct rtmp_adapter *pAd,

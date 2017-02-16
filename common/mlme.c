@@ -508,11 +508,7 @@ void MlmeResetRalinkCounters(
 	==========================================================================
  */
 #define ADHOC_BEACON_LOST_TIME		(8*OS_HZ)  /* 8 sec*/
-void MlmePeriodicExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void MlmePeriodicExec(void *FunctionContext)
 {
 	ULONG			TxTotalCnt;
 	struct rtmp_adapter *pAd = (struct rtmp_adapter*)FunctionContext;
@@ -1194,11 +1190,7 @@ SKIP_AUTO_SCAN_CONN:
 }
 
 /* Link down report*/
-void LinkDownExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void LinkDownExec(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)FunctionContext;
 
@@ -4719,11 +4711,7 @@ void AsicEvaluateRxAnt(
 
     ========================================================================
 */
-void AsicRxAntEvalTimeout(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void AsicRxAntEvalTimeout(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)FunctionContext;
 #ifdef CONFIG_STA_SUPPORT
@@ -4783,11 +4771,7 @@ void AsicRxAntEvalTimeout(
 }
 
 
-void APSDPeriodicExec(
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3)
+void APSDPeriodicExec(void *FunctionContext)
 {
 	struct rtmp_adapter*pAd = (struct rtmp_adapter*)FunctionContext;
 

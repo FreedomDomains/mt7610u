@@ -42,12 +42,7 @@
 /*  submit to ctrl pipe). So we need a wrapper function to take care it. */
 
 #ifdef RTMP_TIMER_TASK_SUPPORT
-typedef void(
-	*RTMP_TIMER_TASK_HANDLE) (
-	IN void *SystemSpecific1,
-	IN void *FunctionContext,
-	IN void *SystemSpecific2,
-	IN void *SystemSpecific3);
+typedef void(*RTMP_TIMER_TASK_HANDLE) (void *FunctionContext);
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 
 typedef struct _RALINK_TIMER_STRUCT {

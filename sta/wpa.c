@@ -259,11 +259,7 @@ void inc_byte_array(u8 *counter, int len)
 	}
 }
 
-void WpaDisassocApAndBlockAssoc(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3)
+void WpaDisassocApAndBlockAssoc(void *FunctionContext)
 {
     struct rtmp_adapter               *pAd = (struct rtmp_adapter *)FunctionContext;
     MLME_DISASSOC_REQ_STRUCT    DisassocReq;

@@ -54,17 +54,9 @@ BA_REC_ENTRY *BATableAllocRecEntry(
 								  IN  struct rtmp_adapter *  pAd,
 								  OUT USHORT          *Idx);
 
-void BAOriSessionSetupTimeout(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3);
+void BAOriSessionSetupTimeout(void *FunctionContext);
 
-void BARecSessionIdleTimeout(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3);
+void BARecSessionIdleTimeout(void *FunctionContext);
 
 
 BUILD_TIMER_FUNCTION(BAOriSessionSetupTimeout);
@@ -1093,11 +1085,7 @@ void BASessionTearDownALL(
 				false , then continue indicaterx at this moment.
 	==========================================================================
  */
-void BAOriSessionSetupTimeout(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3)
+void BAOriSessionSetupTimeout(void *FunctionContext)
 {
 	BA_ORI_ENTRY    *pBAEntry = (BA_ORI_ENTRY *)FunctionContext;
 	MAC_TABLE_ENTRY *pEntry;
@@ -1171,11 +1159,7 @@ void BAOriSessionSetupTimeout(
 				false , then continue indicaterx at this moment.
 	==========================================================================
  */
-void BARecSessionIdleTimeout(
-    IN void *SystemSpecific1,
-    IN void *FunctionContext,
-    IN void *SystemSpecific2,
-    IN void *SystemSpecific3)
+void BARecSessionIdleTimeout(void *FunctionContext)
 {
 
 	BA_REC_ENTRY    *pBAEntry = (BA_REC_ENTRY *)FunctionContext;
