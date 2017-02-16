@@ -222,7 +222,7 @@ void STA_MonPktSend(
 	STBC = pRxBlk->pRxWI->RxWISTBC;
 	RSSI1 = pRxBlk->pRxWI->RxWIRSSI1;
 	BssMonitorFlag11n = 0;
-	pDevName = (u8 *)RtmpOsGetNetDevName(pAd->net_dev);
+	pDevName = ndev->name;;
 	Channel = pAd->CommonCfg.Channel;
 	CentralChannel = pAd->CommonCfg.CentralChannel;
 

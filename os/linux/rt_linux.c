@@ -1644,24 +1644,6 @@ void RtmpOsVfree(void *pMem)
 		vfree(pMem);
 }
 
-/*
-========================================================================
-Routine Description:
-	Get network interface name.
-
-Arguments:
-	pDev			- the device
-
-Return Value:
-	the name
-
-Note:
-========================================================================
-*/
-char *RtmpOsGetNetDevName(struct net_device *pDev)
-{
-	return pDev->name;
-}
 
 bool RtmpOsStatsAlloc(
 	IN void **ppStats,
