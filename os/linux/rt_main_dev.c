@@ -485,8 +485,7 @@ INT rt28xx_ioctl(
 
     ========================================================================
 */
-struct net_device_stats *RT28xx_get_ether_stats(
-    IN  struct net_device *net_dev)
+struct net_device_stats *RT28xx_get_ether_stats(struct net_device *net_dev)
 {
 	struct rtmp_adapter*pAd = NULL;
 	struct net_device_stats *pStats;
@@ -494,52 +493,51 @@ struct net_device_stats *RT28xx_get_ether_stats(
 	if (net_dev)
 		GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
-	if (pAd)
-	{
-		RT_CMD_STATS DrvStats, *pDrvStats = &DrvStats;
+	if (pAd) {
+		RT_CMD_STATS DrvStats;
 
 
 		//assign net device for RTMP_DRIVER_INF_STATS_GET()
-		pDrvStats->pNetDev = net_dev;
-		RTMP_DRIVER_INF_STATS_GET(pAd, pDrvStats);
+		DrvStats.pNetDev = net_dev;
+		RTMP_DRIVER_INF_STATS_GET(pAd, &DrvStats);
 
-		pStats = (struct net_device_stats *)(pDrvStats->pStats);
-		pStats->rx_packets = pDrvStats->rx_packets;
-		pStats->tx_packets = pDrvStats->tx_packets;
+		pStats = DrvStats.pStats;
+		pStats->rx_packets = DrvStats.rx_packets;
+		pStats->tx_packets = DrvStats.tx_packets;
 
-		pStats->rx_bytes = pDrvStats->rx_bytes;
-		pStats->tx_bytes = pDrvStats->tx_bytes;
+		pStats->rx_bytes = DrvStats.rx_bytes;
+		pStats->tx_bytes = DrvStats.tx_bytes;
 
-		pStats->rx_errors = pDrvStats->rx_errors;
-		pStats->tx_errors = pDrvStats->tx_errors;
+		pStats->rx_errors = DrvStats.rx_errors;
+		pStats->tx_errors = DrvStats.tx_errors;
 
 		pStats->rx_dropped = 0;
 		pStats->tx_dropped = 0;
 
-	    pStats->multicast = pDrvStats->multicast;
-	    pStats->collisions = pDrvStats->collisions;
+		pStats->multicast = DrvStats.multicast;
+		pStats->collisions = DrvStats.collisions;
 
-	    pStats->rx_length_errors = 0;
-	    pStats->rx_over_errors = pDrvStats->rx_over_errors;
-	    pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
-	    pStats->rx_frame_errors = pDrvStats->rx_frame_errors;
-	    pStats->rx_fifo_errors = pDrvStats->rx_fifo_errors;
-	    pStats->rx_missed_errors = 0;                                            /* receiver missed packet */
+		pStats->rx_length_errors = 0;
+		pStats->rx_over_errors = DrvStats.rx_over_errors;
+		pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;     // recved pkt with crc error */
+		pStats->rx_frame_errors = DrvStats.rx_frame_errors;
+		pStats->rx_fifo_errors = DrvStats.rx_fifo_errors;
+		pStats->rx_missed_errors = 0;                                            /* receiver missed packet */
 
-	    /* detailed tx_errors */
-	    pStats->tx_aborted_errors = 0;
-	    pStats->tx_carrier_errors = 0;
-	    pStats->tx_fifo_errors = 0;
-	    pStats->tx_heartbeat_errors = 0;
-	    pStats->tx_window_errors = 0;
+		/* detailed tx_errors */
+		pStats->tx_aborted_errors = 0;
+		pStats->tx_carrier_errors = 0;
+		pStats->tx_fifo_errors = 0;
+		pStats->tx_heartbeat_errors = 0;
+		pStats->tx_window_errors = 0;
 
-	    /* for cslip etc */
-	    pStats->rx_compressed = 0;
-	    pStats->tx_compressed = 0;
+		/* for cslip etc */
+		pStats->rx_compressed = 0;
+		pStats->tx_compressed = 0;
 
 		return pStats;
 	}
-	else
+
     	return NULL;
 }
 
