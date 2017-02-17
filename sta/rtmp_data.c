@@ -859,6 +859,11 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 
 		if (pRxWI->RxWIMPDUByteCnt < 14) {
 			Status = NDIS_STATUS_FAILURE;
+
+			/* ULLI : fix memory leak, free skb */
+			/* ULLI . we drop 80211 ACK and CTS frames */
+
+			dev_kfree_skb_any(skb);
 			continue;
 		}
 
