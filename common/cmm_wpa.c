@@ -383,9 +383,9 @@ void RTMPToWirelessSta(
 
 	do {
         	/* build a NDIS packet*/
-        	Status = RTMPAllocateNdisPacket(pAd, &pPacket, pHeader802_3, HdrLen, pData, DataLen);
-        	if (Status != NDIS_STATUS_SUCCESS)
-            	break;
+		pPacket = RTMPAllocateNdisPacket(pHeader802_3, HdrLen, pData, DataLen);
+		if (pPacket == NULL)
+			break;
 
 
 			if (bClearFrame)

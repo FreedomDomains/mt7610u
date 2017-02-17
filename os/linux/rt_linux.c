@@ -162,40 +162,28 @@ int os_alloc_mem_suspend(
 		return NDIS_STATUS_FAILURE;
 }
 
-int RTMPAllocateNdisPacket(
-	IN void *pReserved,
-	OUT struct sk_buff * *ppPacket,
-	IN u8 *pHeader,
-	IN UINT HeaderLen,
-	IN u8 *pData,
-	IN UINT DataLen)
+struct sk_buff *RTMPAllocateNdisPacket(u8 *pHeader, UINT HeaderLen,
+				       u8 *pData, UINT DataLen)
 {
-	struct sk_buff *pPacket;
+	struct sk_buff *skb;
 
-
-	ASSERT(pData);
-	ASSERT(DataLen);
-
-	pPacket = dev_alloc_skb(HeaderLen + DataLen + RTMP_PKT_TAIL_PADDING);
-	if (pPacket == NULL) {
-		*ppPacket = NULL;
+	skb = dev_alloc_skb(HeaderLen + DataLen + RTMP_PKT_TAIL_PADDING);
+	if (skb == NULL) {
 #ifdef DEBUG
 		printk(KERN_ERR "RTMPAllocateNdisPacket Fail\n\n");
 #endif
-		return NDIS_STATUS_FAILURE;
+		return NULL;
 	}
 
 	/* Clone the frame content and update the length of packet */
 	if (HeaderLen > 0)
-		memmove(pPacket->data, pHeader, HeaderLen);
+		memmove(skb->data, pHeader, HeaderLen);
 	if (DataLen > 0)
-		memmove(pPacket->data + HeaderLen, pData, DataLen);
-	skb_put(pPacket, HeaderLen + DataLen);
+		memmove(skb->data + HeaderLen, pData, DataLen);
+	skb_put(skb, HeaderLen + DataLen);
 /* printk(KERN_ERR "%s : pPacket = %p, len = %d\n", __FUNCTION__, pPacket, pPacket->len);*/
 
-	*ppPacket = (struct sk_buff *)pPacket;
-
-	return NDIS_STATUS_SUCCESS;
+	return skb;
 }
 
 

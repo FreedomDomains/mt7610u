@@ -85,13 +85,8 @@ bool RtmpOsStatsAlloc(
 
 /* OS Packet */
 
-int RTMPAllocateNdisPacket(
-	IN	void 				*pReserved,
-	OUT struct sk_buff *			*ppPacket,
-	IN	u8 *				pHeader,
-	IN	UINT					HeaderLen,
-	IN	u8 *				pData,
-	IN	UINT					DataLen);
+struct sk_buff *RTMPAllocateNdisPacket(u8 *pHeader, UINT HeaderLen,
+				       u8 *pData, UINT DataLen);
 
 int Sniff2BytesFromNdisBuffer(
 	IN  PNDIS_BUFFER			pFirstBuffer,
