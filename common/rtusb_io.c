@@ -159,29 +159,23 @@ u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 
 	========================================================================
 */
-int mt7610u_write32(
-	IN struct rtmp_adapter*pAd,
-	IN USHORT Offset,
-	IN u32 Value)
+void mt7610u_write32(
+	struct rtmp_adapter *pAd,
+	USHORT Offset,
+	u32 _val)
 {
-	int Status;
-	u32 localVal;
-
-	localVal = Value;
+	u32 val = cpu2le32(_val);
 
 	/* MT76xx HW has 4 byte alignment constrained */
-	/* ULLI : ralink/mediatek MESS about ENDIANESS */
 
-	Status = RTUSB_VendorRequest(
+	RTUSB_VendorRequest(
 			pAd,
 			DEVICE_VENDOR_REQUEST_OUT,
 			0x6,
 			0,
 			Offset,
-			&Value,
+			&val,
 			4);
-
-	return Status;
 }
 
 /*
