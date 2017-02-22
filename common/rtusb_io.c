@@ -250,10 +250,9 @@ done:
 
 u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 {
-	int status;
 	u16 localData;
 
-	status = RTUSB_VendorRequest(
+	RTUSB_VendorRequest(
 			pAd,
 			DEVICE_VENDOR_REQUEST_IN,
 			0x9,
@@ -261,12 +260,6 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 			offset,
 			&localData,
 			2);
-
-	/*
-	 * ULLI : previous lines returns only valad data on success,
-	 * ULLI : which is bogus, as the return value is not checked
-	 * ULLI : so use return this value directly for this value
-	 */
 
 	return le2cpu16(localData);
 }
