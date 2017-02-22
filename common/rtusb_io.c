@@ -125,11 +125,10 @@ int RTUSBSingleWrite(
 */
 u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 {
-	int status = 0;
+	int status;
 	u32 val;
-	u32
 
-	Status = RTUSB_VendorRequest(
+	status = RTUSB_VendorRequest(
 		pAd,
 		DEVICE_VENDOR_REQUEST_IN,
 		0x7,
@@ -138,7 +137,7 @@ u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 		&val,
 		4);
 
-	if (Status != 0)
+	if (status != 0)
 		val = 0xffffffff;
 
 	return le2cpu32(val);
