@@ -6019,8 +6019,7 @@ int RTUSBSingleWrite(
 	IN	USHORT			Offset,
 	IN	USHORT			Value);
 
-int	RTUSBVenderReset(
-	IN	struct rtmp_adapter *pAd);
+void mt7610u_vendor_reset(struct rtmp_adapter *pAd);
 
 int RTUSBSetHardWareRegister(
 	IN	struct rtmp_adapter *pAdapter,

@@ -45,12 +45,9 @@
 	========================================================================
 */
 
-int	RTUSBVenderReset(
-	IN	struct rtmp_adapter *pAd)
+void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 {
-	int	Status;
-	DBGPRINT_RAW(RT_DEBUG_ERROR, ("-->RTUSBVenderReset\n"));
-	Status = RTUSB_VendorRequest(
+	RTUSB_VendorRequest(
 		pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
 		0x01,
@@ -58,9 +55,6 @@ int	RTUSBVenderReset(
 		0,
 		NULL,
 		0);
-
-	DBGPRINT_RAW(RT_DEBUG_ERROR, ("<--RTUSBVenderReset\n"));
-	return Status;
 }
 
 int RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,

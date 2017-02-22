@@ -138,7 +138,7 @@ loadfw_protect:
 		goto error0;
 	}
 
-	RTUSBVenderReset(ad);
+	mt7610u_vendor_reset(ad);
 	mdelay(5);
 
 	/* Get FW information */
