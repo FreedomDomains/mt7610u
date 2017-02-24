@@ -5972,12 +5972,8 @@ void RtmpTimerQInit(
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 
 
-
-int RTUSBMultiWrite(
-	IN	struct rtmp_adapter *pAd,
-	IN	USHORT			Offset,
-	IN	u8 *		pData,
-	IN	USHORT			length);
+void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
+		    u8 *key, int keylen);
 
 int RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
