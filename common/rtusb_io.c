@@ -57,11 +57,23 @@ void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 		0);
 }
 
+
+static void RTUSBSingleWrite(struct rtmp_adapter *pAd, 
+		     USHORT Offset, u16 Value)
+{
+	RTUSB_VendorRequest(
+		pAd,
+		DEVICE_VENDOR_REQUEST_OUT,
+		0x2,
+		Value,
+		Offset,
+		NULL,
+		0);
+}
+
 int RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *pData, USHORT length)
 {
-	int	Status;
-
 	USHORT index = 0,Value;
 	u8 *pSrc = pData;
 	USHORT resude = 0;
@@ -71,36 +83,14 @@ int RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 
 	do {
 		Value =(USHORT)( *pSrc  | (*(pSrc + 1) << 8));
-		Status = RTUSBSingleWrite(pAd,Offset + index, Value);
+		RTUSBSingleWrite(pAd,Offset + index, Value);
 		index +=2;
 		length -= 2;
 		pSrc = pSrc + 2;
         }while(length > 0);
 
-	return Status;
+	return 0;
 }
-
-
-int RTUSBSingleWrite(
-	IN 	struct rtmp_adapter	*pAd,
-	IN	USHORT			Offset,
-	IN	USHORT			Value)
-{
-	int	Status;
-
-	Status = RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_OUT,
-		0x2,
-		Value,
-		Offset,
-		NULL,
-		0);
-
-	return Status;
-
-}
-
 
 /*
 	========================================================================

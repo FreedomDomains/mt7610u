@@ -6014,11 +6014,6 @@ void mt7610u_write32(
 
 u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset);
 
-int RTUSBSingleWrite(
-	IN 	struct rtmp_adapter	*pAd,
-	IN	USHORT			Offset,
-	IN	USHORT			Value);
-
 void mt7610u_vendor_reset(struct rtmp_adapter *pAd);
 
 int RTUSBSetHardWareRegister(

@@ -177,16 +177,6 @@
 		(_pRadarDetect->bDfsInit == false) ||						\
 		(_pRadarDetect->DFSAPRestart == 1))
 
-#define INIT_DFS_EVENT_BUFF_SHARED_MEMORY(_pAd, _StartOffset, _NumOfPages, _InitVal)	\
-{																						\
-	UINT32 i = 0;																			\
-	for (i = _StartOffset; i < _StartOffset + (_NumOfPages*384); i++)							\
-		RTUSBSingleWrite(_pAd, i, _InitVal, false);											\
-																						\
-	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID, 0x01010101);							\
-	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID + 4, 0x01010101);						\
-}
-
 typedef enum _DFS_VERSION {
 	SOFTWARE_DFS = 0,
 	HARDWARE_DFS_V1,
