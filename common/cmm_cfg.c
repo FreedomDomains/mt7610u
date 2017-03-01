@@ -605,8 +605,6 @@ INT RTMP_COM_IoctlHandle(
 {
 	struct os_cookie *pObj = pAd->OS_Cookie;
 	INT Status = NDIS_STATUS_SUCCESS, i;
-	u8 PermanentAddress[ETH_ALEN];
-	u16 Addr01, Addr23, Addr45;
 
 
 	pObj = pObj; /* avoid compile warning */
@@ -963,23 +961,6 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_INF_P2P_CHECK:
 			if (Data != INT_P2P)
 				return NDIS_STATUS_FAILURE;
-			break;
-
-		case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
-
-			Addr01 = mt7610u_read_eeprom16(pAd, 0x04);
-			Addr23 = mt7610u_read_eeprom16(pAd, 0x06);
-			Addr45 = mt7610u_read_eeprom16(pAd, 0x08);
-
-			PermanentAddress[0] = (u8)(Addr01 & 0xff);
-			PermanentAddress[1] = (u8)(Addr01 >> 8);
-			PermanentAddress[2] = (u8)(Addr23 & 0xff);
-			PermanentAddress[3] = (u8)(Addr23 >> 8);
-			PermanentAddress[4] = (u8)(Addr45 & 0xff);
-			PermanentAddress[5] = (u8)(Addr45 >> 8);
-
-			for(i=0; i<6; i++)
-				*(u8 *)(pData+i) = PermanentAddress[i];
 			break;
 
 		case CMD_RTPRIV_IOCTL_SIOCGIWNAME:
