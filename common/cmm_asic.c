@@ -47,7 +47,6 @@ void AsicUpdateAutoFallBackTable(
 	LgCfg0.word = 0xedcba988;
 	LgCfg1.word = 0x00002100;
 
-#if	defined(MT76x0) || defined(MT76x2)
 	/*
 		0x1360
 		[23:20] - Auto fall back MCS as VHT 1SS MCS=9
@@ -55,7 +54,6 @@ void AsicUpdateAutoFallBackTable(
 	*/
 	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 		LgCfg1.word = 0x00872100;
-#endif /* MT76x0 */
 
 #ifdef NEW_RATE_ADAPT_SUPPORT
 	/* Use standard fallback if using new rate table */

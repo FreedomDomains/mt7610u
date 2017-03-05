@@ -148,12 +148,10 @@ int RtmpChipOpsHook(void *pCB)
 	if (pAd->MACVersion == 0xffffffff)
 		return -1;
 
-#ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
 		MT76x0_Init(pAd);
 		goto done;
 	}
-#endif /* MT76x0 */
 
 done:
 	DBGPRINT(RT_DEBUG_TRACE, ("Chip VCO calibration mode = %d!\n", pChipCap->FlgIsVcoReCalMode));

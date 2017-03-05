@@ -341,7 +341,6 @@ INT build_vht_op_ie(struct rtmp_adapter*pAd, u8 *buf)
 		case 2:
 			vht_op.basic_mcs_set.mcs_ss2 = VHT_MCS_CAP_7;
 		case 1:
-#if	defined(MT76x0) || defined(MT76x2)
 			if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 			{
 				/*
@@ -350,7 +349,6 @@ INT build_vht_op_ie(struct rtmp_adapter*pAd, u8 *buf)
 				vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_9;
 			}
 			else
-#endif
 			vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_7;
 			break;
 	}
@@ -419,7 +417,6 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 	{
 		case 1:
 			vht_cap_ie.mcs_set.rx_high_rate = 292;
-#if	defined(MT76x0) || defined(MT76x2)
 			if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 			{
 				/*
@@ -428,7 +425,6 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 				vht_cap_ie.mcs_set.rx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
 			}
 			else
-#endif /* MT76x0 */
 			vht_cap_ie.mcs_set.rx_mcs_map.mcs_ss1 = VHT_MCS_CAP_7;
 			break;
 		case 2:
@@ -445,7 +441,6 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 	{
 		case 1:
 			vht_cap_ie.mcs_set.tx_high_rate = 292;
-#if	defined(MT76x0) || defined(MT76x2)
 			if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
 			{
 				/*
@@ -454,7 +449,6 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 				vht_cap_ie.mcs_set.tx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
 			}
 			else
-#endif /* MT76x0 */
 			vht_cap_ie.mcs_set.tx_mcs_map.mcs_ss1 = VHT_MCS_CAP_7;
 			break;
 		case 2:

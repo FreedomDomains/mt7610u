@@ -387,10 +387,9 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	Antenna.word = 0;
 	Antenna.field.TxPath = NicCfg0.field.TxPath;
 	Antenna.field.RxPath = NicCfg0.field.RxPath;
-#ifdef MT76x0
+
 	if (IS_MT76x0(pAd))
 		MT76x0_AntennaSelCtrl(pAd);
-#endif /* MT76x0 */
 
 	/* ULLI : looks Mediatek wants to reduce streams, needed ?? */
 
@@ -447,7 +446,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	pAd->RfIcType = (u8) Antenna.field.RfIcType;
 
-#ifdef MT76x0
 	if (IS_MT7650(pAd))
 			pAd->RfIcType = RFIC_7650;
 
@@ -457,7 +455,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	if (IS_MT7610U(pAd))
 		pAd->RfIcType = RFIC_7610U;
 
-#endif /* MT76x0 */
 
 	/* check if the chip supports 5G band */
 	if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode))
@@ -483,11 +480,9 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->RFICType = RFIC_24GHZ;
 	}
 
-#ifdef MT76x0
 	if (IS_MT76x0(pAd)) {
 		mt76x0_read_tx_alc_info_from_eeprom(pAd);
 	} else
-#endif /* MT76x0 */
 	/* Read TSSI reference and TSSI boundary for temperature compensation. This is ugly*/
 	/* 0. 11b/g*/
 	{
@@ -585,7 +580,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	{
 		value = mt7610u_read_eeprom16(pAd, EEPROM_RSSI_BG_OFFSET+2);
-#ifdef MT76x0
 		/*
 			External LNA gain for 5GHz Band(CH100~CH128)
 		*/
@@ -594,7 +588,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 			pAd->ALNAGain1 = (value >> 8);
 		}
 		else
-#endif /* MT76x0 */
 		{
 /*		if (IS_RT2860(pAd))  RT2860 supports 3 Rx and the 2.4 GHz RSSI #2 offset is in the EEPROM 0x48*/
 			pAd->BGRssiOffset[2] = value & 0x00ff;
@@ -620,7 +613,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	{
 		value = mt7610u_read_eeprom16(pAd, (EEPROM_RSSI_A_OFFSET+2));
-#ifdef MT76x0
 		if (IS_MT76x0(pAd))
 		{
 			/*
@@ -629,7 +621,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 			pAd->ALNAGain2 = (value >> 8);
 		}
 		else
-#endif /* MT76x0 */
 		{
 			pAd->ARssiOffset[2] = value & 0x00ff;
 			pAd->ALNAGain2 = (value >> 8);
@@ -661,7 +652,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	RTMPGetLEDSetting(pAd);
 #endif /* LED_CONTROL_SUPPORT */
 
-#ifdef MT76x0
 	if (IS_MT76x0(pAd))
 	{
 		value = mt7610u_read_eeprom16(pAd, 0xD0);
@@ -689,7 +679,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: a_band_mid_ch = %d, a_band_high_ch = %d\n",
 			__FUNCTION__, pAd->chipCap.a_band_mid_ch, pAd->chipCap.a_band_high_ch));
 	}
-#endif /* MT76x0 */
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICReadEEPROMParameters\n"));
 }
@@ -2082,11 +2071,10 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	pAd->Dot11_H.RDMode = RD_NORMAL_MODE;
 	pAd->Dot11_H.bDFSIndoor = 1;
 
-#ifdef MT76x0
 	pAd->chipCap.LastTemperatureforVCO = 0x7FFF;
 	pAd->chipCap.LastTemperatureforCal = 0x7FFF;
 	pAd->chipCap.NowTemperature = 0x7FFF;
-#endif /* MT76x0 */
+
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- UserCfgInit\n"));
 }
 

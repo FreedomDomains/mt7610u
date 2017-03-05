@@ -2164,10 +2164,8 @@ typedef struct _TX_POWER_CONTROL_OVER_MAC_ENTRY {
 
 
 
-#ifdef MT76x0
 #undef MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS
 #define MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS	6
-#endif /* MT76x0 */
 
 /* */
 /* The configuration of the transmit power control over MAC */
@@ -6623,8 +6621,6 @@ bool CmdRspEventHandle(struct rtmp_adapter*pAd);
 
 #endif  /* __RTMP_H__ */
 
-#ifdef MT76x0
 INT set_temp_sensor_proc(
 	IN struct rtmp_adapter	*pAd,
 	IN char *		arg);
-#endif /* MT76x0 */

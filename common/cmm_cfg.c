@@ -1050,7 +1050,6 @@ INT Set_SiteSurvey_Proc(
     return true;
 }
 
-#ifdef MT76x0
 INT set_temp_sensor_proc(
 	IN struct rtmp_adapter	*pAd,
 	IN char *		arg)
@@ -1068,5 +1067,4 @@ INT set_temp_sensor_proc(
 
 	return true;
 }
-#endif /* MT76x0 */
 

@@ -43,9 +43,7 @@ struct _RSSI_SAMPLE;
 
 #include "chip/rt65xx.h"
 
-#ifdef MT76x0
 #include "chip/mt76x0.h"
-#endif
 
 
 
@@ -197,7 +195,6 @@ enum RXWI_FRQ_OFFSET_FIELD {
 };
 
 
-#ifdef MT76x0
 #define EEPROM_MT76x0_TEMPERATURE_OFFSET	0xd1 /* signed value */
 #define EEPROM_MT76x0_A_BAND_MB				0xdc
 #define EEPROM_MT76x0_A_BAND_HB				0xdd
@@ -207,7 +204,6 @@ enum RXWI_FRQ_OFFSET_FIELD {
 #define EEPROM_MT76x0_2G_SLOPE_OFFSET		0x6E
 #define EEPROM_MT76x0_5G_SLOPE_OFFSET		0xf0
 #define EEPROM_MT76x0_5G_CHANNEL_BOUNDARY 	0xd4
-#endif /* MT76x0 */
 
 #define EEPROM_A_TSSI_BOUND1		0xd4
 #define EEPROM_A_TSSI_BOUND2		0xd6
@@ -429,7 +425,6 @@ struct rtmp_chip_cap {
 
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
-#ifdef MT76x0
 	bool bDoTemperatureSensor;
 	SHORT TemperatureOffset;
 	SHORT LastTemperatureforVCO;
@@ -438,7 +433,6 @@ struct rtmp_chip_cap {
 	u8 a_band_mid_ch;
 	u8 a_band_high_ch;
 	u8 ext_pa_current_setting;
-#endif /* MT76x0 */
 };
 
 typedef void (*CHIP_SPEC_FUNC)(void *pAd, void *pData, ULONG Data);

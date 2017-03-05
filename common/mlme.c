@@ -671,17 +671,14 @@ void MlmePeriodicExec(void *FunctionContext)
 		{
 			if ((pAd->Mlme.OneSecPeriodicRound % 5) == 0)
 			{
-#ifdef MT76x0
 #ifdef CONFIG_STA_SUPPORT
 				if (IS_MT76x0U(pAd))
 					MT76x0_dynamic_vga_tuning(pAd);
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* MT76x0 */
 			}
 
 			if ((pAd->Mlme.OneSecPeriodicRound % 10) == 0)
 			{
-#ifdef MT76x0
 				if (IS_MT76x0(pAd) &&
 					pAd->chipCap.bDoTemperatureSensor)
 				{
@@ -704,7 +701,6 @@ void MlmePeriodicExec(void *FunctionContext)
 
 				}
 				else
-#endif /* MT76x0 */
 				{
 				}
 			}
