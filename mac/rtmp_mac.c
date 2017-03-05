@@ -99,22 +99,8 @@ void RTMPWriteTxWI(
 	/* John tune the performace with Intel Client in 20 MHz performance*/
 #ifdef DOT11_N_SUPPORT
 	BASize = pAd->CommonCfg.TxBASize;
-	if (IS_RT65XX(pAd))
-	{
-		if (BASize > 31)
-			BASize =31;
-	}
-	else
-	if (pAd->MACVersion == 0x28720200)
-	{
-		if (BASize > 13)
-			BASize =13;
-	}
-	else
-	{
-		if( BASize >7 )
-			BASize =7;
-	}
+	if (BASize > 31)
+		BASize =31;
 
 	pTxWI->TxWIBAWinSize = BASize;
 	pTxWI->TxWIShortGI = pTransmit->field.ShortGI;

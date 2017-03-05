@@ -366,10 +366,7 @@ CHAR ConvertToRssi(struct rtmp_adapter*pAd, CHAR Rssi, u8 rssi_idx)
 		2.4G : RSSI_report = RSSI_bpp + EEPROM_0x46[15:8 or 7:0] - EEPROM_0x44[7:0]
 		5G : RSSI_report = RSSI_bbp + EEPROM_0x4A[15:8 or 7:0] - EEPROM_0x44 or 0x48 or 0x4c[15:8]
 	*/
-	if (IS_RT65XX(pAd))
-		return (Rssi + RssiOffset - LNAGain);
-	else
-		return (-12 - RssiOffset - LNAGain - Rssi);
+	return (Rssi + RssiOffset - LNAGain);
 }
 
 

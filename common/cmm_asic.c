@@ -372,7 +372,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 				// TODO: shiang-6590, fix me for this protection mechanism
-				if (IS_RT65XX(pAd))
 				{
 					PROT_CFG_STRUC vht_port_cfg;
 
@@ -412,7 +411,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 				// TODO: shiang-6590, fix me for this protection mechanism
-				if (IS_RT65XX(pAd))
 				{
 					// Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
 					PROT_CFG_STRUC vht_port_cfg;
@@ -460,7 +458,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = false;
 
 				// TODO: shiang-6590, fix me for this protection mechanism
-				if (IS_RT65XX(pAd))
 				{
 					PROT_CFG_STRUC vht_port_cfg;
 
@@ -503,7 +500,6 @@ void AsicUpdateProtect(
 				pAd->CommonCfg.IOTestParm.bRTSLongProtOn = true;
 
 				// TODO: shiang-6590, fix me for this protection mechanism
-				if (IS_RT65XX(pAd))
 				{
 					// Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
 					PROT_CFG_STRUC vht_port_cfg;
@@ -554,7 +550,6 @@ void AsicUpdateProtect(
 		}
 	}
 
-	if (IS_RT65XX(pAd))
 	{
 		MacReg = mt7610u_read32(pAd, TX_PROT_CFG8);
 		MacReg &= (~0x18000000);

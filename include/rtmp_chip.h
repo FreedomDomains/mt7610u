@@ -49,11 +49,6 @@ struct _RSSI_SAMPLE;
 
 #include "mcu/mcu.h"
 
-#define IS_RT65XX(_pAd)		((((_pAd)->MACVersion & 0xFFFF0000) == 0x65900000) ||\
-							 (((_pAd)->MACVersion & 0xfffff000) == 0x85592000) ||\
-							 (((_pAd)->MACVersion & 0xffff0000) == 0x76500000) ||\
-							 (((_pAd)->MACVersion & 0xffff0000) == 0x76620000))
-
 #define IS_MT76x0(_pAd)		((((_pAd)->MACVersion & 0xffff0000) == 0x65900000) ||\
 							 (((_pAd)->MACVersion & 0xffff0000) == 0x76500000))
 #define IS_MT7650(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76500000)

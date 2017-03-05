@@ -1051,23 +1051,12 @@ int	NICInitializeAsic(
 	NICInitBBP(pAd);
 
 
-	if (IS_RT65XX(pAd) ||
-		((pAd->MACVersion >= RALINK_2880E_VERSION) &&
-		(pAd->MACVersion < RALINK_3070_VERSION))) /* 3*3*/
 	{
 		/* enlarge MAX_LEN_CFG*/
 		u32 csr;
 
 		csr = mt7610u_read32(pAd, MAX_LEN_CFG);
-		if (IS_RT65XX(pAd))
-		{
-			csr |= 0x3fff;
-		}
-		else
-		{
-			csr &= 0xFFF;
-			csr |= 0x2000;
-		}
+		csr |= 0x3fff;
 		mt7610u_write32(pAd, MAX_LEN_CFG, csr);
 	}
 
@@ -1175,135 +1164,6 @@ void NICUpdateFifoStaCounters(
 		return;
 #endif /* CONFIG_STA_SUPPORT */
 
-
-	// TODO: shiang-6590, for 8592 now we have tx-status report packet from hardware!!
-	if (IS_RT65XX(pAd))
-		return;
-
-
-		do
-		{
-			StaFifo.word = mt7610u_read32(pAd, TX_STA_FIFO);
-
-			if (StaFifo.field.bValid == 0)
-				break;
-
-			wcid = (u8)StaFifo.field.wcid;
-
-#ifdef DBG_CTRL_SUPPORT
-#ifdef INCLUDE_DEBUG_QUEUE
-		if (pAd->CommonCfg.DebugFlags & DBF_DBQ_TXFIFO) {
-			dbQueueEnqueue(0x73, (u8 *)(&StaFifo.word));
-		}
-#endif /* INCLUDE_DEBUG_QUEUE */
-#endif /* DBG_CTRL_SUPPORT */
-
-		/* ignore NoACK and MGMT frame use 0xFF as WCID */
-			if ((StaFifo.field.TxAckRequired == 0) || (wcid >= MAX_LEN_OF_MAC_TABLE))
-			{
-				i++;
-				continue;
-			}
-
-			/* PID store Tx MCS Rate */
-			pid = (u8)StaFifo.field.PidType;
-
-			pEntry = &pAd->MacTab.Content[wcid];
-
-			pEntry->DebugFIFOCount++;
-
-
-#ifdef UAPSD_SUPPORT
-			UAPSD_SP_AUE_Handle(pAd, pEntry, StaFifo.field.TxSuccess);
-#endif /* UAPSD_SUPPORT */
-
-#ifdef CONFIG_STA_SUPPORT
-			if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
-				continue;
-#endif /* CONFIG_STA_SUPPORT */
-
-			if (!StaFifo.field.TxSuccess)
-			{
-				pEntry->FIFOCount++;
-				pEntry->OneSecTxFailCount++;
-
-				if (pEntry->FIFOCount >= 1)
-				{
-					DBGPRINT(RT_DEBUG_TRACE, ("#"));
-#ifdef DOT11_N_SUPPORT
-					pEntry->NoBADataCountDown = 64;
-#endif /* DOT11_N_SUPPORT */
-
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
-
-					/* Update the continuous transmission counter.*/
-					pEntry->ContinueTxFailCnt++;
-
-					if(pEntry->PsMode == PWR_ACTIVE)
-					{
-#ifdef DOT11_N_SUPPORT
-						int tid;
-						for (tid=0; tid<NUM_OF_TID; tid++)
-							BAOriSessionTearDown(pAd, pEntry->Aid,  tid, false, false);
-#endif /* DOT11_N_SUPPORT */
-					}
-				}
-			}
-			else
-			{
-#ifdef DOT11_N_SUPPORT
-				if ((pEntry->PsMode != PWR_SAVE) && (pEntry->NoBADataCountDown > 0))
-				{
-					pEntry->NoBADataCountDown--;
-					if (pEntry->NoBADataCountDown==0)
-					{
-						DBGPRINT(RT_DEBUG_TRACE, ("@\n"));
-					}
-				}
-#endif /* DOT11_N_SUPPORT */
-				pEntry->FIFOCount = 0;
-				pEntry->OneSecTxNoRetryOkCount++;
-
-
-				/* update NoDataIdleCount when sucessful send packet to STA.*/
-				pEntry->NoDataIdleCount = 0;
-				pEntry->ContinueTxFailCnt = 0;
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
-			}
-
-			succMCS = StaFifo.field.SuccessRate & 0x7F;
-
-			if (StaFifo.field.TxSuccess)
-			{
-				pEntry->TXMCSExpected[pid]++;
-				if (pid == succMCS)
-					pEntry->TXMCSSuccessful[pid]++;
-				else
-					pEntry->TXMCSAutoFallBack[pid][succMCS]++;
-			}
-			else
-			{
-				pEntry->TXMCSFailed[pid]++;
-			}
-
-
-			reTry = pid - succMCS;
-
-			if (reTry > 0)
-			{
-				/* MCS8 falls back to 0 */
-				if (pid>=8 && succMCS==0)
-					reTry -= 7;
-				else if ((pid >= 12) && succMCS <=7)
-					reTry -= 4;
-
-				pEntry->OneSecTxRetryOkCount += reTry;
-			}
-
-			i++;	/* ASIC store 16 stack*/
-		} while ( i < (TX_RING_SIZE<<1) );
 
 }
 

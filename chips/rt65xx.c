@@ -124,9 +124,6 @@ void MT76x0DisableTxRx(
 	bool bFree = true;
 	u8 CheckFreeTimes = 0;
 
-	if (!IS_RT65XX(pAd))
-		return;
-
 	DBGPRINT(RT_DEBUG_TRACE, ("----> %s\n", __FUNCTION__));
 
 	if (Level == RTMP_HALT)
