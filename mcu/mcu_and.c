@@ -1628,44 +1628,6 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_set_radio_state(struct rtmp_adapter*ad, u32 op)
-{
-	u32 level = 1;
-	u32 listen_interval = 0;
-	u32 pre_tbtt_lead_time = 0;
-	u8 tim_byte_offset = 0;
-	u8 tim_byte_pattern = 0;
-	struct cmd_msg *msg;
-	unsigned int var_len;
-	u32 value;
-	int ret = 0;
-
-	/* Power operation and Power Level */
-	var_len = 8;
-
-	msg = mt7610u_mcu_alloc_cmd_msg(ad, var_len);
-
-	if (!msg) {
-		ret = NDIS_STATUS_RESOURCES;
-		goto error;
-	}
-
-	mt7610u_mcu_init_cmd_msg(msg, CMD_POWER_SAVING_OP, false, 0, false, false, 0, NULL, NULL);
-
-	/* Power operation */
-	value = cpu2le32(op);
-	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-
-	/* Power Level */
-	value = cpu2le32(level);
-	mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-
-	ret = mt7610u_mcu_send_cmd_msg(ad, msg);
-
-error:
-	return ret;
-}
-
 int mt7610u_mcu_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 {
 	struct cmd_msg *msg;
