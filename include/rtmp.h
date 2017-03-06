@@ -779,7 +779,7 @@ typedef struct _BBP_R66_TUNING {
 #endif /* DOT11_N_SUPPORT */
 
 /* structure to store channel TX power */
-typedef struct _CHANNEL_TX_POWER {
+struct CHANNEL_TX_POWER {
 	USHORT RemainingTimeForUse;	/*unit: sec */
 	u8 Channel;
 	bool bEffectedChannel;	/* For BW 40 operating in 2.4GHz , the "effected channel" is the channel that is covered in 40Mhz. */
@@ -811,7 +811,7 @@ typedef struct _CHANNEL_TX_POWER {
 
 	u8 Flags;
 
-} CHANNEL_TX_POWER, *PCHANNEL_TX_POWER;
+};
 
 /* Channel list subset */
 typedef struct _CHANNEL_LIST_SUB {
@@ -2516,8 +2516,8 @@ struct rtmp_adapter {
 	/* RX Antenna = DIVERSITY ON */
 	SOFT_RX_ANT_DIVERSITY RxAnt;
 
-	CHANNEL_TX_POWER TxPower[MAX_NUM_OF_CHANNELS];	/* Store Tx power value for all channels. */
-	CHANNEL_TX_POWER ChannelList[MAX_NUM_OF_CHANNELS];	/* list all supported channels for site survey */
+	struct CHANNEL_TX_POWER TxPower[MAX_NUM_OF_CHANNELS];	/* Store Tx power value for all channels. */
+	struct CHANNEL_TX_POWER ChannelList[MAX_NUM_OF_CHANNELS];	/* list all supported channels for site survey */
 
 
 
