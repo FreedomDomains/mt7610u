@@ -393,22 +393,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	/* ULLI : looks Mediatek wants to reduce streams, needed ?? */
 
-	/* Choose the desired Tx&Rx stream.*/
-	if ((pAd->CommonCfg.TxStream == 0) || (pAd->CommonCfg.TxStream > Antenna.field.TxPath))
-		pAd->CommonCfg.TxStream = Antenna.field.TxPath;
-
-	if ((pAd->CommonCfg.RxStream == 0) || (pAd->CommonCfg.RxStream > Antenna.field.RxPath))
-	{
-		pAd->CommonCfg.RxStream = Antenna.field.RxPath;
-
-		if ((pAd->MACVersion != RALINK_3883_VERSION) &&
-			(pAd->MACVersion != RALINK_2883_VERSION) &&
-			(pAd->CommonCfg.RxStream > 2))
-		{
-			/* only 2 Rx streams for RT2860 series*/
-			pAd->CommonCfg.RxStream = 2;
-		}
-	}
+	pAd->CommonCfg.TxStream = Antenna.field.TxPath;
+	pAd->CommonCfg.RxStream = Antenna.field.RxPath;
 
 	/* EEPROM offset 0x36 - NIC Configuration 1 */
 	NicConfig2.word = pAd->EEPROMDefaultValue[EEPROM_NIC_CFG2_OFFSET];
