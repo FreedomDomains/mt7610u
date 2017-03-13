@@ -157,9 +157,6 @@ void MT76x0_ShowDmaIndexCupIndex(
 
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
-void MT76x0_AntennaSelCtrl(
-	IN struct rtmp_adapter *pAd);
-
 void MT76x0_dynamic_vga_tuning(
 	IN struct rtmp_adapter *pAd);
 

@@ -388,9 +388,6 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	Antenna.field.TxPath = NicCfg0.field.TxPath;
 	Antenna.field.RxPath = NicCfg0.field.RxPath;
 
-	if (IS_MT76x0(pAd))
-		MT76x0_AntennaSelCtrl(pAd);
-
 	/* ULLI : looks Mediatek wants to reduce streams, needed ?? */
 
 	pAd->CommonCfg.TxStream = Antenna.field.TxPath;

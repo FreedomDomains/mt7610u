@@ -1993,68 +1993,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 */
 }
 
-
-void MT76x0_AntennaSelCtrl(struct rtmp_adapter *pAd)
-{
-	USHORT e2p_val = 0;
-	u32 WlanFunCtrl = 0, CmbCtrl = 0, CoexCfg0 = 0, CoexCfg3 = 0;
-	u32 ret;
-
-	ret = down_interruptible(&pAd->wlan_en_atomic);
-	if (ret != 0) {
-		DBGPRINT(RT_DEBUG_ERROR, ("wlan_en_atomic get failed(ret=%d)\n", ret));
-		return;
-	}
-
-	WlanFunCtrl = mt7610u_read32(pAd, WLAN_FUN_CTRL);
-	CmbCtrl = mt7610u_read32(pAd, CMB_CTRL);
-	CoexCfg0 = mt7610u_read32(pAd, COEXCFG0);
-	CoexCfg3 = mt7610u_read32(pAd, COEXCFG3);
-
-	CoexCfg0 &= ~BIT(2);
-	CmbCtrl &= ~(BIT(14) | BIT(12));
-	WlanFunCtrl &= ~(BIT(6) | BIT(5));
-	CoexCfg3 &= ~(BIT(5) | BIT(4) | BIT(3) | BIT(2) | BIT(1));
-
-	/*
-		0x23[7]
-		0x1: Chip is in dual antenna mode
-		0x0: Chip is in single antenna mode
-	*/
-	e2p_val = mt7610u_read_eeprom16(pAd, 0x22);
-
-	if (e2p_val & 0x8000) {
-		if (pAd->NicConfig2.field.AntOpt == 0 &&
-		    pAd->NicConfig2.field.AntDiversity == 1) {
-			CmbCtrl |= BIT(12); /* 0x20[12]=1 */
-		} else {
-			CoexCfg3 |= BIT(4); /* 0x4C[4]=1 */
-		}
-
-		CoexCfg3 |= BIT(3); /* 0x4C[3]=1 */
-
-		if (WMODE_CAP_2G(pAd->CommonCfg.PhyMode))
-			WlanFunCtrl |= BIT(6); /* 0x80[6]=1 */
-
-		DBGPRINT(RT_DEBUG_TRACE, ("%s - Dual antenna mode\n", __FUNCTION__));
-	} else {
-		if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode)) {
-			CoexCfg3 |= (BIT(3) | BIT(4)); /* 0x4C[3]=1, 0x4C[4]=1 */
-		} else {
-			WlanFunCtrl |= BIT(6); /* 0x80[6]=1 */
-			CoexCfg3 |= BIT(1); /* 0x4C[1]=1 */
-		}
-		DBGPRINT(RT_DEBUG_TRACE, ("%s - Single antenna mode\n", __FUNCTION__));
-	}
-
-	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl);
-	mt7610u_write32(pAd, CMB_CTRL, CmbCtrl);
-	mt7610u_write32(pAd, COEXCFG0, CoexCfg0);
-	mt7610u_write32(pAd, COEXCFG3, CoexCfg3);
-
-	up(&pAd->wlan_en_atomic);
-}
-
 void MT76x0_dynamic_vga_tuning(struct rtmp_adapter *pAd)
 {
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
