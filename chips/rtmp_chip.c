@@ -136,6 +136,7 @@ void RtmpChipOpsHook(struct rtmp_adapter*pAd)
 		return;
 
 	pAd->MACVersion = mt7610u_read32(pAd, MAC_CSR0);
+	DBGPRINT(RT_DEBUG_OFF, ("MACVersion = 0x%08x\n", pAd->MACVersion));
 
 	MT76x0_Init(pAd);
 }
