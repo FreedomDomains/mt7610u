@@ -660,7 +660,7 @@ do {	\
 		_pAd->chipOps.MCU_CtrlExit(_pAd);	\
 } while (0)
 
-int RtmpChipOpsHook(void *pCB);
+void RtmpChipOpsHook(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
 bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);

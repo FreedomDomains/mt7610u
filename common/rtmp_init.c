@@ -2370,25 +2370,17 @@ void CfgInitHook(struct rtmp_adapter *pAd)
 }
 
 
-static INT RtmpChipOpsRegister(struct rtmp_adapter*pAd)
+static void RtmpChipOpsRegister(struct rtmp_adapter*pAd)
 {
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
-	int ret = 0;
 
 	memset(pChipOps, 0, sizeof(*pChipOps));
 	memset(pChipCap, 0, sizeof(*pChipCap));
 
-	ret = RtmpChipOpsHook(pAd);
-
-	if (ret) {
-		DBGPRINT(RT_DEBUG_ERROR, ("chipOps hook error\n"));
-		return ret;
-	}
+	RtmpChipOpsHook(pAd);
 
 	ChipOpsMCUHook(pAd);
-
-	return ret;
 }
 
 INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd)
@@ -2414,10 +2406,7 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd)
 
 		mt7610u_chip_onoff(pAd, true, false);
 
-	ret = RtmpChipOpsRegister(pAd);
-
-	if (ret)
-		return false;
+	RtmpChipOpsRegister(pAd);
 
 #ifdef MCS_LUT_SUPPORT
 	if (pAd->chipCap.asic_caps & fASIC_CAP_MCS_LUT) {

@@ -129,31 +129,13 @@ Return Value:
 Note:
 ========================================================================
 */
-int RtmpChipOpsHook(void *pCB)
+void RtmpChipOpsHook(struct rtmp_adapter*pAd)
 {
-	struct rtmp_adapter*pAd = (struct rtmp_adapter*)pCB;
-	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
-	u32 MacValue;
-	int ret = 0;
-
-
 	/* sanity check */
 	if (WaitForAsicReady(pAd) == false)
-		return -1;
+		return;
 
-	MacValue = mt7610u_read32(pAd, MAC_CSR0);
-	pAd->MACVersion = MacValue;
+	pAd->MACVersion = mt7610u_read32(pAd, MAC_CSR0);
 
-	if (pAd->MACVersion == 0xffffffff)
-		return -1;
-
-	if (IS_MT76x0(pAd)) {
-		MT76x0_Init(pAd);
-		goto done;
-	}
-
-done:
-	DBGPRINT(RT_DEBUG_TRACE, ("Chip VCO calibration mode = %d!\n", pChipCap->FlgIsVcoReCalMode));
-	return ret;
+	MT76x0_Init(pAd);
 }
