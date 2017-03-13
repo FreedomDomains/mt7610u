@@ -76,7 +76,7 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		key += 2;
 		idx += 2;
 		keylen -= 2;
-		
+
         } while(keylen > 0);
 }
 
@@ -581,7 +581,6 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 /* All transfers must be aborted or cancelled before attempting to reset the pipe.*/
 static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
-	u32 MACValue;
 	int ntStatus;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("CmdThread : CMDTHREAD_RESET_BULK_IN === >\n"));
@@ -607,7 +606,6 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 
 	/* Wait 10ms before reading register.*/
 	RTMPusecDelay(10000);
-	MACValue =  mt7610u_read32(pAd, MAC_CSR0);
 
 	/* It must be removed. Or ATE will have no RX success. */
 	if ((NT_SUCCESS(ntStatus) == true) &&
