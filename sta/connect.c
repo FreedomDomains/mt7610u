@@ -175,7 +175,7 @@ void MlmeCntlMachinePerformAction(
 				DBGPRINT(RT_DEBUG_TRACE, ("MT2_SCAN_CONF INFRA_ON -- Send PSM Data frame for off channel RM, SCAN_IN_PROGRESS=%d!\n",
 											RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)));
 
-				OS_WAIT(20);
+				msleep_interruptible(20);
 				DBGPRINT(RT_DEBUG_TRACE, ("%s -- Send null frame pAd->StaCfg.Psm=%d\n", __FUNCTION__,pAd->StaCfg.Psm));
 
 			}
