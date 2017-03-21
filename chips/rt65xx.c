@@ -114,9 +114,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
 
-void MT76x0DisableTxRx(
-	struct rtmp_adapter*pAd,
-	u8 Level)
+void MT76x0DisableTxRx(struct rtmp_adapter*pAd,	u8 Level)
 {
 	u32 MacReg = 0;
 	u32 MTxCycle;
@@ -126,8 +124,7 @@ void MT76x0DisableTxRx(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("----> %s\n", __FUNCTION__));
 
-	if (Level == RTMP_HALT)
-	{
+	if (Level == RTMP_HALT) {
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_ACTIVE);
 	}
 
@@ -141,8 +138,7 @@ void MT76x0DisableTxRx(
 	/*
 		Check page count in TxQ,
 	*/
-	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
-	{
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		bFree = true;
 		MacReg = mt7610u_read32(pAd, 0x438);
 		if (MacReg != 0)
@@ -155,15 +151,13 @@ void MT76x0DisableTxRx(
 			bFree = false;
 		if (bFree)
 			break;
-		if (MacReg == 0xFFFFFFFF)
-		{
+		if (MacReg == 0xFFFFFFFF) {
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 			return;
 		}
 	}
 
-	if (MTxCycle >= 2000)
-	{
+	if (MTxCycle >= 2000) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Check TxQ page count max\n"));
 		MacReg = mt7610u_read32(pAd, 0x0a30);
 		DBGPRINT(RT_DEBUG_TRACE, ("0x0a30 = 0x%08x\n", MacReg));
@@ -179,40 +173,33 @@ void MT76x0DisableTxRx(
 	/*
 		Check MAC Tx idle
 	*/
-	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
-	{
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		MacReg = mt7610u_read32(pAd, MAC_STATUS_CFG);
 		if (MacReg & 0x1)
 			RTMPusecDelay(50);
 		else
 			break;
 
-		if (MacReg == 0xFFFFFFFF)
-		{
+		if (MacReg == 0xFFFFFFFF) {
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 			return;
 		}
 	}
 
-	if (MTxCycle >= 2000)
-	{
+	if (MTxCycle >= 2000) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Tx idle max(0x%08x)\n", MacReg));
 		bResetWLAN = true;
 	}
 
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false)
-	{
-		if (Level == RTMP_HALT)
-		{
+	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false) {
+		if (Level == RTMP_HALT) {
 			/*
 				Disable MAC TX/RX
 			*/
 			MacReg = mt7610u_read32(pAd, MAC_SYS_CTRL);
 			MacReg &= ~(0x0000000c);
 			mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
-		}
-		else
-		{
+		} else {
 			/*
 				Disable MAC RX
 			*/
@@ -225,8 +212,7 @@ void MT76x0DisableTxRx(
 	/*
 		Check page count in RxQ,
 	*/
-	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
-	{
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		bFree = true;
 		MacReg = mt7610u_read32(pAd, 0x430);
 
@@ -249,8 +235,7 @@ void MT76x0DisableTxRx(
 		if (bFree)
 			CheckFreeTimes++;
 
-		if (MacReg == 0xFFFFFFFF)
-		{
+		if (MacReg == 0xFFFFFFFF) {
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 			return;
 		}
@@ -261,8 +246,7 @@ void MT76x0DisableTxRx(
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
 
-	if (MTxCycle >= 2000)
-	{
+	if (MTxCycle >= 2000) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Check RxQ page count max\n"));
 
 		MacReg = mt7610u_read32(pAd, 0x0a30);
@@ -279,22 +263,19 @@ void MT76x0DisableTxRx(
 	/*
 		Check MAC Rx idle
 	*/
-	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
-	{
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		MacReg = mt7610u_read32(pAd, MAC_STATUS_CFG);
 		if (MacReg & 0x2)
 			RTMPusecDelay(50);
 		else
 			break;
-		if (MacReg == 0xFFFFFFFF)
-		{
+		if (MacReg == 0xFFFFFFFF) {
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 			return;
 		}
 	}
 
-	if (MTxCycle >= 2000)
-	{
+	if (MTxCycle >= 2000) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Check MAC Rx idle max(0x%08x)\n", MacReg));
 		bResetWLAN = true;
 	}
@@ -302,8 +283,7 @@ void MT76x0DisableTxRx(
 	StopDmaRx(pAd, Level);
 
 	if ((Level == RTMP_HALT) &&
-		(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false))
-	{
+	    (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false)) {
 
 		/*
  		 * Disable RF/MAC and do not do reset WLAN under below cases
@@ -311,8 +291,9 @@ void MT76x0DisableTxRx(
  		 * 2. suspend including wow application
  		 * 3. radion off command
  		 */
-		if ((pAd->chipCap.IsComboChip) || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_SUSPEND)
-				|| RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
+		if ((pAd->chipCap.IsComboChip) ||
+		    RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_SUSPEND) ||
+		    RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
 			bResetWLAN = 0;
 
 		mt7610u_chip_onoff(pAd, false, bResetWLAN);
