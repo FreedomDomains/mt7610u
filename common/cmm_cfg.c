@@ -524,7 +524,6 @@ INT	RT_CfgSetMacAddress(
 		arg = arg + 3;
 	}
 
-	pAd->bLocalAdminMAC = true;
 	return true;
 }
 

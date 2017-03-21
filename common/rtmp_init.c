@@ -307,16 +307,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("E2PROM MAC: =%02x:%02x:%02x:%02x:%02x:%02x\n",
 								PRINT_MAC(pAd->PermanentAddress)));
 
-	/* Assign the actually working MAC Address */
-	if (pAd->bLocalAdminMAC)
-	{
-		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Configuration file(.dat). \n"));
-	}
-	else
-	{
-		memcpy(pAd->CurrentAddress, pAd->PermanentAddress, ETH_ALEN);
-		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from EEPROM. \n"));
-	}
+	memcpy(pAd->CurrentAddress, pAd->PermanentAddress, ETH_ALEN);
+	DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from EEPROM. \n"));
 
 	/* Set the current MAC to ASIC */
 	csr2.field.Byte0 = pAd->CurrentAddress[0];
@@ -1591,7 +1583,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		}
 	}
 
-	pAd->bLocalAdminMAC = false;
 	pAd->EepromAccess = false;
 
 	pAd->Antenna.word = 0;
