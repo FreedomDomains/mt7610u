@@ -591,19 +591,6 @@ do {	\
 			__pAd->chipOps.RadarGLRTCompensate(__pAd);	\
 } while (0)
 
-
-#define CHIP_CALIBRATION(__pAd, __CalibrationID, __parameter) \
-do {	\
-	if(__pAd->chipOps.MCU_Calibration != NULL) \
-		__pAd->chipOps.MCU_Calibration(__pAd, __CalibrationID, __parameter); \
-} while (0)
-
-#define RTMP_CHIP_CALIBRATION(__pAd, __CalibrationID, __parameter) \
-do {	\
-	if(__pAd->chipOps.MCU_Calibration != NULL) \
-		__pAd->chipOps.MCU_Calibration(__pAd, __CalibrationID, __parameter); \
-} while (0)
-
 #define BURST_WRITE(_pAd, _Offset, _pData, _Cnt)	\
 do {												\
 		if (_pAd->chipOps.MCU_BurstWrite != NULL)		\

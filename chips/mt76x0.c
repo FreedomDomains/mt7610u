@@ -2112,7 +2112,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		/*
 			2 R-calibration
 		*/
-		RTMP_CHIP_CALIBRATION(pAd, R_CALIBRATION, 0x0);
+		mt7610u_mcu_calibration(pAd, R_CALIBRATION, 0x0);
 
 		/*
 			3 VCO calibration (mode 3)
@@ -2152,7 +2152,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 			4. RXDC Calibration parameter
 				0:Back Ground Disable
 		*/
-		RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 0);
+		mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 0);
 
 		/*
 			5. LC-Calibration parameter
@@ -2174,7 +2174,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		*/
 
 		// TODO: check PA setting from EEPROM @20121016
-		RTMP_CHIP_CALIBRATION(pAd, LC_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, LC_CALIBRATION, band_nr);
 
 		/*
 			6,7. BW-Calibration
@@ -2209,7 +2209,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					9: A-Band (High) Restore Calibration
 		*/
 
-		RTMP_CHIP_CALIBRATION(pAd, LOFT_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, LOFT_CALIBRATION, band_nr);
 
 		/*
 			9. TXIQ-Calibration parameter
@@ -2227,7 +2227,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					9: A-Band (High) Restore Calibration
 		*/
 
-		RTMP_CHIP_CALIBRATION(pAd, TXIQ_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, TXIQ_CALIBRATION, band_nr);
 
 		/*
 			10. TX Group-Delay Calibation parameter
@@ -2245,7 +2245,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					9: A-Band (High) Restore Calibration
 		*/
 
-		RTMP_CHIP_CALIBRATION(pAd, TX_GROUP_DELAY_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, TX_GROUP_DELAY_CALIBRATION, band_nr);
 
 		/*
 			11. RXIQ-Calibration parameter
@@ -2263,7 +2263,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					9: A-Band (High) Restore Calibration
 		*/
 
-		RTMP_CHIP_CALIBRATION(pAd, RXIQ_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, RXIQ_CALIBRATION, band_nr);
 
 		/*
 			12. RX Group-Delay Calibation parameter
@@ -2281,7 +2281,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 					9: A-Band (High) Restore Calibration
 		*/
 
-		RTMP_CHIP_CALIBRATION(pAd, RX_GROUP_DELAY_CALIBRATION, band_nr);
+		mt7610u_mcu_calibration(pAd, RX_GROUP_DELAY_CALIBRATION, band_nr);
 
 		/*
 			14. TX 2G DPD - Only 2.4G needs to do DPD Calibration.
@@ -2301,7 +2301,7 @@ RXDC_Calibration:
 		17. RXDC Calibration parameter
 			1:Back Ground Enable
 	*/
-	RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 1);
+	mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 1);
 
 
 	up(&pAd->cal_atomic);
