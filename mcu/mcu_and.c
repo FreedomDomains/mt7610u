@@ -70,6 +70,35 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 	return Status;
 }
 
+
+/*
+	========================================================================
+
+	Routine Description: Write Firmware to NIC.
+
+	Arguments:
+
+	Return Value:
+
+	IRQL =
+
+	Note:
+
+	========================================================================
+*/
+
+static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
+{
+	RTUSB_VendorRequest(
+		pAd,
+		DEVICE_VENDOR_REQUEST_OUT,
+		0x01,
+		0x1,
+		0,
+		NULL,
+		0);
+}
+
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
 {
 	const struct firmware *fw;

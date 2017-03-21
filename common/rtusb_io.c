@@ -29,34 +29,6 @@
 
 #define MAX_VENDOR_REQ_RETRY_COUNT  10
 
-/*
-	========================================================================
-
-	Routine Description: Write Firmware to NIC.
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-
-void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
-{
-	RTUSB_VendorRequest(
-		pAd,
-		DEVICE_VENDOR_REQUEST_OUT,
-		0x01,
-		0x1,
-		0,
-		NULL,
-		0);
-}
-
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *key, int keylen)
 {
