@@ -5044,10 +5044,6 @@ INT RT_CfgSetWPAPSKKey(
 INT	RT_CfgSetFixedTxPhyMode(
 	IN	char *		arg);
 
-INT	RT_CfgSetMacAddress(
-	IN 	struct rtmp_adapter *	pAd,
-	IN	char *		arg);
-
 INT	RT_CfgSetTxMCSProc(
 	IN	char *		arg,
 	OUT	bool 		*pAutoRate);
