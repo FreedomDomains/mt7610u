@@ -32,16 +32,13 @@
 
 
 static int RTMPAllocUsbBulkBufStruct(
-	IN struct rtmp_adapter*pAd,
-	IN struct urb **ppUrb,
-	IN void **ppXBuffer,
-	IN INT	bufLen,
-	IN dma_addr_t *pDmaAddr,
-	IN char *pBufName)
+	struct usb_device *udev,
+	struct urb **ppUrb,
+	void **ppXBuffer,
+	INT	bufLen,
+	dma_addr_t *pDmaAddr,
+	char *pBufName)
 {
-	struct os_cookie *pObj = pAd->OS_Cookie;
-
-
 	*ppUrb = usb_alloc_urb(0, GFP_ATOMIC);
 	if (*ppUrb == NULL)
 	{
@@ -49,7 +46,7 @@ static int RTMPAllocUsbBulkBufStruct(
 		return NDIS_STATUS_RESOURCES;
 	}
 
-	*ppXBuffer = usb_alloc_coherent(pObj->pUsb_Dev, bufLen, GFP_ATOMIC, pDmaAddr);
+	*ppXBuffer = usb_alloc_coherent(udev, bufLen, GFP_ATOMIC, pDmaAddr);
 	if (*ppXBuffer == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc Bulk buffer for %s!\n", pBufName));
 		return NDIS_STATUS_RESOURCES;
@@ -554,6 +551,7 @@ int	RTMPAllocTxRxRingMemory(
 	PTX_CONTEXT pPsPollContext = &(pAd->PsPollContext);
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &(pAd->CmdRspEventContext);
 	INT i, acidx;
+	struct usb_device *udev =  pAd->OS_Cookie->pUsb_Dev;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> RTMPAllocTxRxRingMemory\n"));
 
@@ -571,7 +569,7 @@ int	RTMPAllocTxRxRingMemory(
 
 			memset(pHTTXContext, 0, sizeof(HT_TX_CONTEXT));
 			/*Allocate URB and bulk buffer*/
-			Status = RTMPAllocUsbBulkBufStruct(pAd,
+			Status = RTMPAllocUsbBulkBufStruct(udev,
 												&pHTTXContext->pUrb,
 												(void **)&pHTTXContext->TransferBuffer,
 												sizeof(HTTX_BUFFER),
@@ -601,7 +599,7 @@ int	RTMPAllocTxRxRingMemory(
 
 		memset(pNullContext, 0, sizeof(TX_CONTEXT));
 		/*Allocate URB*/
-		Status = RTMPAllocUsbBulkBufStruct(pAd,
+		Status = RTMPAllocUsbBulkBufStruct(udev,
 											&pNullContext->pUrb,
 											(void **)&pNullContext->TransferBuffer,
 											sizeof(TX_BUFFER),
@@ -615,7 +613,7 @@ int	RTMPAllocTxRxRingMemory(
 
 		memset(pPsPollContext, 0, sizeof(TX_CONTEXT));
 		/*Allocate URB*/
-		Status = RTMPAllocUsbBulkBufStruct(pAd,
+		Status = RTMPAllocUsbBulkBufStruct(udev,
 											&pPsPollContext->pUrb,
 											(void **)&pPsPollContext->TransferBuffer,
 											sizeof(TX_BUFFER),
@@ -632,7 +630,7 @@ int	RTMPAllocTxRxRingMemory(
 			PRX_CONTEXT  pRxContext = &(pAd->RxContext[i]);
 
 			/*Allocate URB*/
-			Status = RTMPAllocUsbBulkBufStruct(pAd,
+			Status = RTMPAllocUsbBulkBufStruct(udev,
 												&pRxContext->pUrb,
 												(void **)&pRxContext->TransferBuffer,
 												MAX_RXBULK_SIZE,
@@ -644,7 +642,7 @@ int	RTMPAllocTxRxRingMemory(
 		}
 
 		/* Init command response event related parameters */
-		Status = RTMPAllocUsbBulkBufStruct(pAd,
+		Status = RTMPAllocUsbBulkBufStruct(udev,
 										   &pCmdRspEventContext->pUrb,
 										   (void **)&pCmdRspEventContext->CmdRspBuffer,
 										   CMD_RSP_BULK_SIZE,
