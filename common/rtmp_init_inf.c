@@ -72,11 +72,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	/* Disable interrupts here which is as soon as possible*/
 	/* This statement should never be true. We might consider to remove it later*/
 
-#ifdef RESOURCE_PRE_ALLOC
 	Status = RTMPInitTxRxRingMemory(pAd);
-#else
-	Status = RTMPAllocTxRxRingMemory(pAd);
-#endif /* RESOURCE_PRE_ALLOC */
 
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
@@ -331,11 +327,7 @@ err3:
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 err2:
 	MCU_CTRL_EXIT(pAd);
-#ifdef RESOURCE_PRE_ALLOC
 	RTMPResetTxRxRingMemory(pAd);
-#else
-	RTMPFreeTxRxRingMemory(pAd);
-#endif /* RESOURCE_PRE_ALLOC */
 
 err1:
 
@@ -478,12 +470,7 @@ void RTMPDrvSTAClose(
 		RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE);
 	}
 
-#ifdef RESOURCE_PRE_ALLOC
 	RTMPResetTxRxRingMemory(pAd);
-#else
-	/* Free Ring or USB buffers*/
-	RTMPFreeTxRxRingMemory(pAd);
-#endif /* RESOURCE_PRE_ALLOC */
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 

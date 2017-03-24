@@ -3262,10 +3262,8 @@ char *get_bw_str(int bandwidth);
 int RTMPAllocTxRxRingMemory(
 	IN  struct rtmp_adapter *  pAd);
 
-#ifdef RESOURCE_PRE_ALLOC
 int RTMPInitTxRxRingMemory(
 	IN struct rtmp_adapter*pAd);
-#endif /* RESOURCE_PRE_ALLOC */
 
 int	RTMPReadParametersHook(
 	IN	struct rtmp_adapter *pAd);
@@ -5254,10 +5252,8 @@ void RTMPMaintainPMKIDCache(
 #define RTMPMaintainPMKIDCache(_pAd)
 #endif /* DOT1X_SUPPORT */
 
-#ifdef RESOURCE_PRE_ALLOC
 void RTMPResetTxRxRingMemory(
 	IN  struct rtmp_adapter  *pAd);
-#endif /* RESOURCE_PRE_ALLOC */
 
 void RTMPFreeTxRxRingMemory(
     IN  struct rtmp_adapter *  pAd);
