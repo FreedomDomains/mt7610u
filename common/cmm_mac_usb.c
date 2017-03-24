@@ -52,14 +52,12 @@ static int RTMPAllocUsbBulkBufStruct(
 
 
 static int RTMPFreeUsbBulkBufStruct(
-	IN struct rtmp_adapter*pAd,
+	struct usb_device *udev,
 	IN struct urb **ppUrb,
 	IN u8 **ppXBuffer,
 	IN INT bufLen,
 	IN dma_addr_t data_dma)
 {
-	struct os_cookie *pObj = pAd->OS_Cookie;
-
 	if (*ppUrb != NULL) {
 		RTUSB_UNLINK_URB(*ppUrb);
 		usb_free_urb(*ppUrb);
@@ -67,7 +65,7 @@ static int RTMPFreeUsbBulkBufStruct(
 	}
 
 	if (*ppXBuffer != NULL) {
-		usb_free_coherent(pObj->pUsb_Dev, bufLen, *ppXBuffer, data_dma);
+		usb_free_coherent(udev, bufLen, *ppXBuffer, data_dma);
 		*ppXBuffer = NULL;
 	}
 
@@ -187,6 +185,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 	PTX_CONTEXT			pNullContext   = &pAd->NullContext;
 	PTX_CONTEXT			pPsPollContext = &pAd->PsPollContext;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
+	struct usb_device *udev =  pAd->OS_Cookie->pUsb_Dev;
 
 	DBGPRINT(RT_DEBUG_ERROR, ("---> RTMPFreeTxRxRingMemory\n"));
 
@@ -195,7 +194,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 		PRX_CONTEXT  pRxContext = &(pAd->RxContext[i]);
 
 		if (pRxContext)
-			RTMPFreeUsbBulkBufStruct(pAd,
+			RTMPFreeUsbBulkBufStruct(udev,
 				&pRxContext->pUrb,
 				(u8 **)&pRxContext->TransferBuffer,
 				MAX_RXBULK_SIZE,
@@ -203,7 +202,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 	}
 
 	/* Command Response */
-	RTMPFreeUsbBulkBufStruct(pAd,
+	RTMPFreeUsbBulkBufStruct(udev,
 				 &pCmdRspEventContext->pUrb,
 				 (u8 **)&pCmdRspEventContext->CmdRspBuffer,
 				 CMD_RSP_BULK_SIZE,
@@ -212,14 +211,14 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 
 
 	/* Free PsPoll frame resource*/
-	RTMPFreeUsbBulkBufStruct(pAd,
+	RTMPFreeUsbBulkBufStruct(udev,
 				&pPsPollContext->pUrb,
 				(u8 **)&pPsPollContext->TransferBuffer,
 				sizeof(TX_BUFFER),
 				pPsPollContext->data_dma);
 
 	/* Free NULL frame resource*/
-	RTMPFreeUsbBulkBufStruct(pAd,
+	RTMPFreeUsbBulkBufStruct(udev,
 				&pNullContext->pUrb,
 				(u8 **)&pNullContext->TransferBuffer,
 				sizeof(TX_BUFFER),
@@ -252,7 +251,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 	for (acidx = 0; acidx < 4; acidx++) {
 		PHT_TX_CONTEXT pHTTXContext = &(pAd->TxContext[acidx]);
 		if (pHTTXContext)
-			RTMPFreeUsbBulkBufStruct(pAd,
+			RTMPFreeUsbBulkBufStruct(udev,
 					&pHTTXContext->pUrb,
 					(u8 **)&pHTTXContext->TransferBuffer,
 					sizeof(HTTX_BUFFER),
@@ -354,6 +353,7 @@ int NICInitTransmit(struct rtmp_adapter *pAd)
 	void *pTransferBuffer;
 	struct urb *pUrb;
 	dma_addr_t data_dma;
+	struct usb_device *udev =  pAd->OS_Cookie->pUsb_Dev;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitTransmit\n"));
 
@@ -477,7 +477,7 @@ err:
 		for (i = 0; i < MGMT_RING_SIZE; i++) {
 			pMLMEContext = (PTX_CONTEXT) pAd->MgmtRing.Cell[i].AllocVa;
 			if (pMLMEContext)
-				RTMPFreeUsbBulkBufStruct(pAd,
+				RTMPFreeUsbBulkBufStruct(udev,
 						&pMLMEContext->pUrb,
 						(u8 **)&pMLMEContext->TransferBuffer,
 						sizeof(TX_BUFFER),
