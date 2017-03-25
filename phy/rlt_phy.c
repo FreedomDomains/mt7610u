@@ -196,15 +196,12 @@ INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
 //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
 //DBGPRINT(RT_DEBUG_OFF, ("%s(): ext_ch=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, ext_ch, agc));
 
-	return true;
 }
 
-
-INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw)
+void mt7610u_bbp_set_bw(struct rtmp_adapter *pAd, u8 bw)
 {
 	mt7610u_mcu_fun_set(pAd, BW_SETTING, bw);
 	pAd->CommonCfg.BBPCurrentBW = bw;
-	return true;
 }
 
 

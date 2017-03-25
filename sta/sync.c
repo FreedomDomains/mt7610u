@@ -107,7 +107,7 @@ void BeaconTimeout(void *FunctionContext)
 	if ((pAd->CommonCfg.BBPCurrentBW == BW_40)
 	)
 	{
-		rtmp_bbp_set_bw(pAd, BW_40);
+		mt7610u_bbp_set_bw(pAd, BW_40);
 
 		AsicSwitchChannel(pAd, pAd->CommonCfg.CentralChannel, false);
 		AsicLockChannel(pAd, pAd->CommonCfg.CentralChannel);
@@ -365,7 +365,7 @@ void MlmeForceScanReqAction(
 		}
 
 		/* Let BBP register at 20MHz to do scan */
-		rtmp_bbp_set_bw(pAd, BW_20);
+		mt7610u_bbp_set_bw(pAd, BW_20);
 		DBGPRINT(RT_DEBUG_TRACE, ("SYNC - BBP R4 to 20MHz.l\n"));
 #ifdef DOT11_N_SUPPORT
 		/* Before scan, reset trigger event table. */
@@ -483,7 +483,7 @@ void MlmeScanReqAction(
 		}
 
 		/* Let BBP register at 20MHz to do scan */
-		rtmp_bbp_set_bw(pAd, BW_20);
+		mt7610u_bbp_set_bw(pAd, BW_20);
 		DBGPRINT(RT_DEBUG_TRACE, ("SYNC - BBP R4 to 20MHz.l\n"));
 
 #ifdef DOT11_N_SUPPORT
@@ -575,7 +575,7 @@ void MlmeJoinReqAction(
 	if (bChangeInitBW == true)
 	{
 		/* Let BBP register at 20MHz to do scan */
-		rtmp_bbp_set_bw(pAd, BW_20);
+		mt7610u_bbp_set_bw(pAd, BW_20);
 		DBGPRINT(RT_DEBUG_TRACE, ("%s(): Set BBP BW=20MHz\n", __FUNCTION__));
 
 		/* switch channel and waiting for beacon timer */
@@ -2752,7 +2752,7 @@ void CntlChannelWidth(
 	}
 
 	if (rf_channel != 0) {
-		rtmp_bbp_set_bw(pAd, rf_bw);
+		mt7610u_bbp_set_bw(pAd, rf_bw);
 
 		/* Tx/ RX : control channel setting */
 		rtmp_bbp_set_ctrlch(pAd, ext_ch);

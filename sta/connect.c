@@ -778,7 +778,7 @@ void CntlMlmeRoamingProc(
 
 	{
 		/*Let BBP register at 20MHz to do (fast) roaming. */
-		rtmp_bbp_set_bw(pAd, BW_20);
+		mt7610u_bbp_set_bw(pAd, BW_20);
 
 		memmove(&pAd->MlmeAux.SsidBssTab, &pAd->MlmeAux.RoamTab,
 			       sizeof (pAd->MlmeAux.RoamTab));
@@ -2271,7 +2271,7 @@ void LinkDown(
 	// TODO: shiang-6590, why we need to fallback to BW_20 here? How about the BW_10?
 	if (pAd->CommonCfg.BBPCurrentBW != BW_20) {
 		{
-			rtmp_bbp_set_bw(pAd, BW_20);
+			mt7610u_bbp_set_bw(pAd, BW_20);
 		}
 	}
 #endif /* DOT11_N_SUPPORT */
@@ -3013,7 +3013,7 @@ void AdjustChannelRelatedValue(
 				__FUNCTION__, rf_bw, rf_channel, pAd->CommonCfg.vht_bw, pAd->CommonCfg.Channel,
 				pAd->CommonCfg.vht_cent_ch));
 
-	rtmp_bbp_set_bw(pAd, rf_bw);
+	mt7610u_bbp_set_bw(pAd, rf_bw);
 	rtmp_bbp_set_ctrlch(pAd, ext_ch);
 	rtmp_mac_set_ctrlch(pAd, ext_ch);
 

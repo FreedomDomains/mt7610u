@@ -563,7 +563,7 @@ typedef union _BBP_R182_STRUC {
 
 struct _RMTP_ADAPTER;
 
-INT rtmp_bbp_set_bw(struct rtmp_adapter *pAd, INT bw);
+void mt7610u_bbp_set_bw(struct rtmp_adapter *pAd, u8 bw);
 INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch);
 INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath);
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);

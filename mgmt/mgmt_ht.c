@@ -294,7 +294,8 @@ void RTMPSetHT(
 		pAd->CommonCfg.vht_bw == VHT_BW_80 &&
 		pAd->CommonCfg.vht_cent_ch)
 		bw = BW_80;
-	rtmp_bbp_set_bw(pAd, bw);
+
+	mt7610u_bbp_set_bw(pAd, bw);
 
 
 	if(pHTPhyMode->STBC == STBC_USE)
