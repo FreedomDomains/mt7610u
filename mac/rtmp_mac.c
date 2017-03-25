@@ -406,7 +406,7 @@ INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
 }
 
 
-INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
+void mt7610u_mac_set_ctrlch(struct rtmp_adapter*pAd, int extch)
 {
 	u32 val, band_cfg;
 
@@ -428,8 +428,6 @@ INT rtmp_mac_set_ctrlch(struct rtmp_adapter*pAd, INT extch)
 
 	if (val != band_cfg)
 		mt7610u_write32(pAd, TX_BAND_CFG, val);
-
-	return true;
 }
 
 
