@@ -248,7 +248,6 @@ obj_cmm := \
 		chips/rtmp_chip.o\
 		common/txpower.o\
 		mac/rtmp_mac.o\
-		mgmt/mgmt_hw.o\
 		mgmt/mgmt_entrytb.o\
 		phy/rtmp_phy.o\
 		phy/rlt_phy.o\
