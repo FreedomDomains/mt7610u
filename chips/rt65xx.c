@@ -97,7 +97,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	MCU_CTRL_INIT(pAd);
+	mt7610u_mcu_ctrl_init(pAd);
 
 	ret = down_interruptible(&pAd->hw_atomic);
 	if (ret != 0) {

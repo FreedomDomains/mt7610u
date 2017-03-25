@@ -488,8 +488,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
-	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
-
 	void (*MCU_CtrlExit)(struct rtmp_adapter *ad);
 };
 
@@ -625,12 +623,6 @@ do {	\
 	{	\
 		__pAd->chipOps.SecondCCADetection(__pAd);	\
 	}	\
-} while (0)
-
-#define MCU_CTRL_INIT(_pAd)	\
-do {	\
-	if (_pAd->chipOps.MCU_CtrlInit != NULL)	\
-		_pAd->chipOps.MCU_CtrlInit(_pAd);	\
 } while (0)
 
 #define MCU_CTRL_EXIT(_pAd)	\

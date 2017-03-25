@@ -32,7 +32,6 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 
-	pChipOps->MCU_CtrlInit = mt7610u_mcu_ctrl_init;
 	pChipOps->MCU_CtrlExit = mt7610u_mcu_ctrl_exit;
 	pChipOps->MCU_Calibration = mt7610u_mcu_calibration;
 	pChipOps->MCU_BurstWrite =  mt7610u_mcu_burst_write;

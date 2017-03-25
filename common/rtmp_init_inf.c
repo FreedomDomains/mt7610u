@@ -67,7 +67,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	mt7610u_mcu_usb_loadfw(pAd);
 
-	MCU_CTRL_INIT(pAd);
+	mt7610u_mcu_ctrl_init(pAd);
 
 	/* Disable interrupts here which is as soon as possible*/
 	/* This statement should never be true. We might consider to remove it later*/
