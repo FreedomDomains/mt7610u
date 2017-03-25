@@ -983,7 +983,7 @@ int	NICInitializeAsic(
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
 
-	RANDOM_WRITE(pAd, MACRegTable, NUM_MAC_REG_PARMS);
+	mt7610u_mcu_random_write(pAd, MACRegTable, NUM_MAC_REG_PARMS);
 
 
 

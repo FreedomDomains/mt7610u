@@ -486,8 +486,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
-	int (*MCU_RandomWrite)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
-
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 
 	void (*MCU_CtrlInit)(struct rtmp_adapter *ad);
@@ -613,12 +611,6 @@ do {	\
 do {	\
 		if (_pAd->chipOps.RFReadModifyWrite != NULL)	\
 			_pAd->chipOps.RFReadModifyWrite(_pAd, _RegPair, _Num);	\
-} while (0)
-
-#define RANDOM_WRITE(_pAd, _RegPair, _Num)	\
-do {	\
-		if (_pAd->chipOps.MCU_RandomWrite != NULL)	\
-			_pAd->chipOps.MCU_RandomWrite(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RF_RANDOM_WRITE(_pAd, _RegPair, _Num)	\

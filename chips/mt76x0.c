@@ -1421,7 +1421,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 		Enable PBF and MAC clock
 		SYS_CTRL[11:10] = 0x3
 	*/
-	RANDOM_WRITE(pAd, MT76x0_MACRegTable, MT76x0_NUM_MAC_REG_PARMS);
+	mt7610u_mcu_random_write(pAd, MT76x0_MACRegTable, MT76x0_NUM_MAC_REG_PARMS);
 
 	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
@@ -1490,7 +1490,7 @@ static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
 
 	INT IdReg;
 
-	RANDOM_WRITE(pAd, MT76x0_BBP_Init_Tab, MT76x0_BBP_Init_Tab_Size);
+	mt7610u_mcu_random_write(pAd, MT76x0_BBP_Init_Tab, MT76x0_BBP_Init_Tab_Size);
 
 	for (IdReg = 0; IdReg < MT76x0_BPP_SWITCH_Tab_Size; IdReg++) {
 		if (((RF_G_BAND | RF_BW_20) & MT76x0_BPP_SWITCH_Tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
@@ -1499,7 +1499,7 @@ static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
 		}
 	}
 
-	RANDOM_WRITE(pAd, MT76x0_DCOC_Tab, MT76x0_DCOC_Tab_Size);
+	mt7610u_mcu_random_write(pAd, MT76x0_DCOC_Tab, MT76x0_DCOC_Tab_Size);
 
 
 	return;
