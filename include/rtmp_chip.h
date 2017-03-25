@@ -487,8 +487,6 @@ struct rtmp_chip_ops {
 	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
-
-	void (*MCU_CtrlExit)(struct rtmp_adapter *ad);
 };
 
 #define RTMP_CHIP_ENABLE_AP_MIMOPS(__pAd, __ReduceCorePower)	\
@@ -623,12 +621,6 @@ do {	\
 	{	\
 		__pAd->chipOps.SecondCCADetection(__pAd);	\
 	}	\
-} while (0)
-
-#define MCU_CTRL_EXIT(_pAd)	\
-do {	\
-	if (_pAd->chipOps.MCU_CtrlExit != NULL)	\
-		_pAd->chipOps.MCU_CtrlExit(_pAd);	\
 } while (0)
 
 void RtmpChipOpsHook(struct rtmp_adapter *pAd);

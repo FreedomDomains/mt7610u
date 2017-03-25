@@ -46,7 +46,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 	RTMP_SET_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
-	MCU_CTRL_EXIT(pAd);
+	mt7610u_mcu_ctrl_exit(pAd);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF);
 

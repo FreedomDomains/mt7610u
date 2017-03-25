@@ -326,7 +326,7 @@ err3:
 #ifdef RTMP_TIMER_TASK_SUPPORT
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 err2:
-	MCU_CTRL_EXIT(pAd);
+	mt7610u_mcu_ctrl_exit(pAd);
 	RTMPResetTxRxRingMemory(pAd);
 
 err1:
