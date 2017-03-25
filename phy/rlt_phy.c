@@ -28,12 +28,28 @@
 #include "rt_config.h"
 
 
+static int mt7610u_bbp_is_ready(struct rtmp_adapter *pAd)
+{
+	INT idx = 0;
+	u32 val;
+
+	do
+	{
+		val = RTMP_BBP_IO_READ32(pAd, CORE_R0);
+		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
+			return false;
+		DBGPRINT(RT_DEBUG_TRACE, ("BBP version = %x\n", val));
+	} while ((++idx < 20) && ((val == 0xffffffff) || (val == 0x0)));
+
+	return (((val == 0xffffffff) || (val == 0x0)) ? false : true);
+}
+
 int NICInitBBP(struct rtmp_adapter*pAd)
 {
 	INT idx;
 
 	/* Read BBP register, make sure BBP is up and running before write new data*/
-	if (rlt_bbp_is_ready(pAd) == false)
+	if (mt7610u_bbp_is_ready(pAd) == false)
 		return NDIS_STATUS_FAILURE;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): Init BBP Registers\n", __FUNCTION__));
@@ -123,7 +139,7 @@ static u8 vht_prim_ch_val[] = {
 };
 
 
-INT rtmp_bbp_set_ctrlch(struct rtmp_adapter *pAd, INT ext_ch)
+void mt7610u_bbp_set_ctrlch(struct rtmp_adapter *pAd, u8 ext_ch)
 {
 	u32 agc, agc_r0 = 0;
 	u32 be, be_r0 = 0;
@@ -272,23 +288,6 @@ INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX chain)
 	}
 
 	return true;
-}
-
-
-INT rlt_bbp_is_ready(struct rtmp_adapter *pAd)
-{
-	INT idx = 0;
-	u32 val;
-
-	do
-	{
-		val = RTMP_BBP_IO_READ32(pAd, CORE_R0);
-		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-			return false;
-		DBGPRINT(RT_DEBUG_TRACE, ("BBP version = %x\n", val));
-	} while ((++idx < 20) && ((val == 0xffffffff) || (val == 0x0)));
-
-	return (((val == 0xffffffff) || (val == 0x0)) ? false : true);
 }
 
 

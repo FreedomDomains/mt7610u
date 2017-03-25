@@ -3014,7 +3014,7 @@ void AdjustChannelRelatedValue(
 				pAd->CommonCfg.vht_cent_ch));
 
 	mt7610u_bbp_set_bw(pAd, rf_bw);
-	rtmp_bbp_set_ctrlch(pAd, ext_ch);
+	mt7610u_bbp_set_ctrlch(pAd, ext_ch);
 	rtmp_mac_set_ctrlch(pAd, ext_ch);
 
 	AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, false);
