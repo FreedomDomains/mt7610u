@@ -64,7 +64,7 @@ int NICInitBBP(struct rtmp_adapter*pAd)
 }
 
 
-INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
+void mt7610u_bbp_set_txdac(struct rtmp_adapter *pAd, int tx_dac)
 {
 	u32 txbe, txbe_r5 = 0;
 
@@ -84,8 +84,6 @@ INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 
 	if (txbe != txbe_r5)
 		RTMP_BBP_IO_WRITE32(pAd, TXBE_R5, txbe);
-
-	return true;
 }
 
 

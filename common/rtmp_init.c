@@ -754,9 +754,9 @@ void NICInitAsicFromEEPROM(
 		/* Handle the difference when 1T*/
 		{
 			if(pAd->Antenna.field.TxPath == 1)
-				rtmp_bbp_set_txdac(pAd, 0);
+				mt7610u_bbp_set_txdac(pAd, 0);
 			else
-				rtmp_bbp_set_txdac(pAd, 2);
+				mt7610u_bbp_set_txdac(pAd, 2);
 		}
 
 		DBGPRINT(RT_DEBUG_TRACE, ("Use Hw Radio Control Pin=%d; if used Pin=%d;\n",

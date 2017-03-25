@@ -1845,12 +1845,12 @@ void LinkUp(
 	{
 		{
 			if (pAd->Antenna.field.TxPath >= 2)
-				rtmp_bbp_set_txdac(pAd, 2);
+				mt7610u_bbp_set_txdac(pAd, 2);
 			else
-				rtmp_bbp_set_txdac(pAd, 0);
+				mt7610u_bbp_set_txdac(pAd, 0);
 		}
 	} else {
-		rtmp_bbp_set_txdac(pAd, 0);
+		mt7610u_bbp_set_txdac(pAd, 0);
 	}
 
 #ifdef DOT11_N_SUPPORT
@@ -2280,9 +2280,9 @@ void LinkDown(
 		/* Reset DAC */
 		{
 			if (pAd->Antenna.field.TxPath >= 2)
-				rtmp_bbp_set_txdac(pAd, 2);
+				mt7610u_bbp_set_txdac(pAd, 2);
 			else
-				rtmp_bbp_set_txdac(pAd, 0);
+				mt7610u_bbp_set_txdac(pAd, 0);
 		}
 	}
 
