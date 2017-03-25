@@ -565,7 +565,7 @@ struct _RMTP_ADAPTER;
 
 void mt7610u_bbp_set_bw(struct rtmp_adapter *pAd, u8 bw);
 void mt7610u_bbp_set_ctrlch(struct rtmp_adapter *pAd, u8 ext_ch);
-INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath);
+void mt7610u_bbp_set_rxpath(struct rtmp_adapter *pAd, int rxpath);
 INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac);
 INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX idx);
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx);

@@ -89,7 +89,7 @@ INT rtmp_bbp_set_txdac(struct rtmp_adapter *pAd, INT tx_dac)
 }
 
 
-INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
+void mt7610u_bbp_set_rxpath(struct rtmp_adapter *pAd, int rxpath)
 {
 	u32 agc, agc_r0 = 0;
 
@@ -106,8 +106,6 @@ INT rtmp_bbp_set_rxpath(struct rtmp_adapter *pAd, INT rxpath)
 //DBGPRINT(RT_DEBUG_OFF, ("%s(): rxpath=%d, Set AGC1_R0=0x%x, agc_r0=0x%x\n", __FUNCTION__, rxpath, agc, agc_r0));
 //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
 //DBGPRINT(RT_DEBUG_OFF, ("%s(): rxpath=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, rxpath, agc));
-
-	return true;
 }
 
 
