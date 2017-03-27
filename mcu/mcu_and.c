@@ -347,7 +347,7 @@ loadfw_protect:
 			}
 
 			if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
-				RTUSB_UNLINK_URB(urb);
+				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
 				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, cur_len = %d\n", __FUNCTION__, sent_len, ilm_len, cur_len));
@@ -480,7 +480,7 @@ loadfw_protect:
 			}
 
 			if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
-				RTUSB_UNLINK_URB(urb);
+				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
 				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, cur_len = %d\n", __FUNCTION__, sent_len, dlm_len, cur_len));
@@ -1130,7 +1130,7 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 		spin_unlock_irqrestore(lock, flags);
 		if ((msg->state == WAIT_CMD_OUT_AND_ACK) || (msg->state == WAIT_CMD_OUT) ||
 						(msg->state == TX_START) || (msg->state == RX_START))
-			RTUSB_UNLINK_URB(msg->urb);
+			usb_kill_urb(msg->urb);
 		spin_lock_irqsave(lock, flags);
 	}
 	spin_unlock_irqrestore(lock, flags);
@@ -1312,7 +1312,7 @@ retransmit:
 			ret = NDIS_STATUS_FAILURE;
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 				if (msg->state == WAIT_CMD_OUT_AND_ACK) {
-					RTUSB_UNLINK_URB(msg->urb);
+					usb_kill_urb(msg->urb);
 				} else if (msg->state == WAIT_ACK) {
 					mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 				}

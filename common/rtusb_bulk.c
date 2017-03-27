@@ -1222,7 +1222,7 @@ void RTUSBCancelPendingBulkInIRP(
 		pRxContext = &(pAd->RxContext[i]);
 		if(pRxContext->IRPPending == true)
 		{
-			RTUSB_UNLINK_URB(pRxContext->pUrb);
+			usb_kill_urb(pRxContext->pUrb);
 			pRxContext->IRPPending = false;
 			pRxContext->InUse = false;
 			/*NdisInterlockedDecrement(&pAd->PendingRx);*/
@@ -1233,7 +1233,7 @@ void RTUSBCancelPendingBulkInIRP(
 	if (pCmdRspEventContext->IRPPending == true)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("Unlink cmd rsp urb\n"));
-		RTUSB_UNLINK_URB(pCmdRspEventContext->pUrb);
+		usb_kill_urb(pCmdRspEventContext->pUrb);
 		pCmdRspEventContext->IRPPending = false;
 		pCmdRspEventContext->InUse = false;
 	}
@@ -1283,7 +1283,7 @@ void RTUSBCancelPendingBulkOutIRP(
 			/*	when the last IRP on the list has been	cancelled; that's how we exit this loop*/
 
 
-			RTUSB_UNLINK_URB(pHTTXContext->pUrb);
+			usb_kill_urb(pHTTXContext->pUrb);
 
 			/* Sleep 200 microseconds to give cancellation time to work*/
 			RTMPusecDelay(200);
@@ -1304,7 +1304,7 @@ void RTUSBCancelPendingBulkOutIRP(
 			/*	when the last IRP on the list has been	cancelled; that's how we exit this loop*/
 
 
-			RTUSB_UNLINK_URB(pMLMEContext->pUrb);
+			usb_kill_urb(pMLMEContext->pUrb);
 			pMLMEContext->IRPPending = false;
 
 			/* Sleep 200 microsecs to give cancellation time to work*/
@@ -1316,11 +1316,11 @@ void RTUSBCancelPendingBulkOutIRP(
 
 	pNullContext = &(pAd->NullContext);
 	if (pNullContext->IRPPending == true)
-		RTUSB_UNLINK_URB(pNullContext->pUrb);
+		usb_kill_urb(pNullContext->pUrb);
 
 	pPsPollContext = &(pAd->PsPollContext);
 	if (pPsPollContext->IRPPending == true)
-		RTUSB_UNLINK_URB(pPsPollContext->pUrb);
+		usb_kill_urb(pPsPollContext->pUrb);
 
 	for (Idx = 0; Idx < 4; Idx++)
 	{

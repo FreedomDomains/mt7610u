@@ -897,9 +897,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 
 /* unlink urb */
 
-#define RTUSB_UNLINK_URB(pUrb)		usb_kill_urb(pUrb)
-
-
 /* Prototypes of completion funuc. */
 #define RtmpUsbBulkOutDataPacketComplete		RTUSBBulkOutDataPacketComplete
 #define RtmpUsbBulkOutMLMEPacketComplete		RTUSBBulkOutMLMEPacketComplete

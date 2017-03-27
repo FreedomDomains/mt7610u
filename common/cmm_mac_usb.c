@@ -59,7 +59,7 @@ static int RTMPFreeUsbBulkBufStruct(
 	IN dma_addr_t data_dma)
 {
 	if (*ppUrb != NULL) {
-		RTUSB_UNLINK_URB(*ppUrb);
+		usb_kill_urb(*ppUrb);
 		usb_free_urb(*ppUrb);
 		*ppUrb = NULL;
 	}
@@ -100,19 +100,19 @@ void RTMPResetTxRxRingMemory(struct rtmp_adapter* pAd)
 	for (i = 0; i < (RX_RING_SIZE); i++) {
 		PRX_CONTEXT  pRxContext = &(pAd->RxContext[i]);
 		if (pRxContext->pUrb)
-			RTUSB_UNLINK_URB(pRxContext->pUrb);
+			usb_kill_urb(pRxContext->pUrb);
 	}
 
 	if (pCmdRspEventContext->pUrb)
-		RTUSB_UNLINK_URB(pCmdRspEventContext->pUrb);
+		usb_kill_urb(pCmdRspEventContext->pUrb);
 
 	/* unlink PsPoll urb resource*/
 	if (pPsPollContext && pPsPollContext->pUrb)
-		RTUSB_UNLINK_URB(pPsPollContext->pUrb);
+		usb_kill_urb(pPsPollContext->pUrb);
 
 	/* Free NULL frame urb resource*/
 	if (pNullContext && pNullContext->pUrb)
-		RTUSB_UNLINK_URB(pNullContext->pUrb);
+		usb_kill_urb(pNullContext->pUrb);
 
 
 	/* Free mgmt frame resource*/
@@ -120,7 +120,7 @@ void RTMPResetTxRxRingMemory(struct rtmp_adapter* pAd)
 		PTX_CONTEXT pMLMEContext = (PTX_CONTEXT)pAd->MgmtRing.Cell[i].AllocVa;
 		if (pMLMEContext) {
 			if (pMLMEContext->pUrb != NULL) {
-				RTUSB_UNLINK_URB(pMLMEContext->pUrb);
+				usb_kill_urb(pMLMEContext->pUrb);
 				usb_free_urb(pMLMEContext->pUrb);
 				pMLMEContext->pUrb = NULL;
 			}
@@ -140,7 +140,7 @@ void RTMPResetTxRxRingMemory(struct rtmp_adapter* pAd)
 	for (acidx = 0; acidx < 4; acidx++) {
 		PHT_TX_CONTEXT pHTTXContext = &(pAd->TxContext[acidx]);
 		if (pHTTXContext && pHTTXContext->pUrb)
-			RTUSB_UNLINK_URB(pHTTXContext->pUrb);
+			usb_kill_urb(pHTTXContext->pUrb);
 	}
 
 	for (i = 0; i < 6; i++) {
@@ -229,7 +229,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 		PTX_CONTEXT pMLMEContext = (PTX_CONTEXT)pAd->MgmtRing.Cell[i].AllocVa;
 		if (pMLMEContext) {
 			if (pMLMEContext->pUrb != NULL) {
-				RTUSB_UNLINK_URB(pMLMEContext->pUrb);
+				usb_kill_urb(pMLMEContext->pUrb);
 				usb_free_urb(pMLMEContext->pUrb);
 				pMLMEContext->pUrb = NULL;
 			}
