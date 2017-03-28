@@ -3381,9 +3381,6 @@ void RTMPReleaseTimer(
 void RTMPEnableRxTx(
 	IN struct rtmp_adapter *pAd);
 
-void AntCfgInit(
-	IN  struct rtmp_adapter *  pAd);
-
 /* */
 /* prototype in action.c */
 /* */

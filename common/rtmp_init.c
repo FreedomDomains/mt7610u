@@ -688,9 +688,6 @@ void NICInitAsicFromEEPROM(
 
 	NicConfig2.word = pAd->NicConfig2.word;
 
-	/* finally set primary ant */
-	AntCfgInit(pAd);
-
 	if (pAd->chipOps.AsicRfInit)
 		pAd->chipOps.AsicRfInit(pAd);
 
@@ -2434,40 +2431,3 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 
 	return true;
 }
-
-void AntCfgInit(
-IN  struct rtmp_adapter *  pAd)
-{
-	{
-		if (pAd->NicConfig2.field.AntOpt== 1) /* ant selected by efuse */
-		{
-			if (pAd->NicConfig2.field.AntDiversity == 0) /* main */
-			{
-				pAd->RxAnt.Pair1PrimaryRxAnt = 0;
-				pAd->RxAnt.Pair1SecondaryRxAnt = 1;
-			}
-			else/* aux */
-			{
-				pAd->RxAnt.Pair1PrimaryRxAnt = 1;
-				pAd->RxAnt.Pair1SecondaryRxAnt = 0;
-			}
-		}
-		else if (pAd->NicConfig2.field.AntDiversity == 0) /* Ant div off: default ant is main */
-		{
-			pAd->RxAnt.Pair1PrimaryRxAnt = 0;
-			pAd->RxAnt.Pair1SecondaryRxAnt = 1;
-		}
-		else if (pAd->NicConfig2.field.AntDiversity == 1)/* Ant div on */
-		{/* eeprom on, but sw ant div support is not enabled: default ant is main */
-			pAd->RxAnt.Pair1PrimaryRxAnt = 0;
-			pAd->RxAnt.Pair1SecondaryRxAnt = 1;
-		}
-	}
-
-	DBGPRINT(RT_DEBUG_OFF, ("%s: primary/secondary ant %d/%d\n",
-					__FUNCTION__,
-					pAd->RxAnt.Pair1PrimaryRxAnt,
-					pAd->RxAnt.Pair1SecondaryRxAnt));
-}
-
-
