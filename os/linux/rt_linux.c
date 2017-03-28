@@ -280,9 +280,9 @@ struct sk_buff * duplicate_pkt(
 	     __dev_alloc_skb(HdrLen + DataSize + 2, MEM_ALLOC_FLAG)) != NULL) {
 
 		skb_reserve(skb, 2);
-		memmove(GET_OS_PKT_DATATAIL(skb), pHeader802_3, HdrLen);
+		memmove(skb_tail_pointer(skb), pHeader802_3, HdrLen);
 		skb_put(skb, HdrLen);
-		memmove(GET_OS_PKT_DATATAIL(skb), pData, DataSize);
+		memmove(skb_tail_pointer(skb), pData, DataSize);
 		skb_put(skb, DataSize);
 		skb->dev = pNetDev;	/*get_netdev_from_bssid(pAd, FromWhichBSSID); */
 		pPacket = skb;
