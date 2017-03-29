@@ -616,16 +616,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 #define GET_OS_PKT_TYPE(_pkt) \
 		((_pkt))
 
-#define RTMP_OS_PKT_INIT(__pRxPacket, __pNetDev, __pData, __DataSize)		\
-{																			\
-	struct sk_buff * __pRxPkt;													\
-	__pRxPkt = (__pRxPacket);									\
-	__pRxPkt->dev = __pNetDev;									\
-	__pRxPkt->data = __pData;									\
-	__pRxPkt->len = __DataSize;									\
-	skb_set_tail_pointer(__pRxPacket, __DataSize);							\
-}
-
 #define get_unaligned32							get_unaligned
 #define get_unalignedlong						get_unaligned
 
