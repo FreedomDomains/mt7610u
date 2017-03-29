@@ -871,12 +871,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 
 ******************************************************************************/
 
-#define RTMP_USB_PKT_COPY(__pNetDev, __pNetPkt, __Len, __pData)			\
-{																		\
-	memcpy(skb_put(__pNetPkt, __Len), __pData, __Len);					\
-	__pNetPkt->dev = __pNetDev;							\
-}
-
 #define BULKAGGRE_SIZE				60 /* 100 */
 
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
