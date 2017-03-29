@@ -553,7 +553,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 		goto error0;
 	}
 
-	OS_PKT_RESERVE(net_pkt, cap->cmd_header_len);
+	skb_reserve(net_pkt, cap->cmd_header_len);
 
 	msg = kmalloc(sizeof(*msg), GFP_ATOMIC);
 
