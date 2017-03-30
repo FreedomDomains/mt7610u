@@ -553,7 +553,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 /* All transfers must be aborted or cancelled before attempting to reset the pipe.*/
 static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
-	int ntStatus;
+	int ntStatus = NDIS_STATUS_SUCCESS;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("CmdThread : CMDTHREAD_RESET_BULK_IN === >\n"));
 
