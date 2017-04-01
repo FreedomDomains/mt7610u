@@ -33,7 +33,7 @@ static u8 CommandRspBulkInAddr = 0x85;
 
 void usb_uploadfw_complete(struct urb *urb)
 {
-	RTMP_OS_COMPLETION *load_fw_done = urb->context;
+	struct completion *load_fw_done = urb->context;
 
 	RTMP_OS_COMPLETE(load_fw_done);
 }
@@ -116,7 +116,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
 	USB_DMA_CFG_STRUC cfg;
 	u32 ilm_len = 0, dlm_len = 0;
 	u16 fw_ver, build_ver;
-	RTMP_OS_COMPLETION load_fw_done;
+	struct completion load_fw_done;
 	USB_DMA_CFG_STRUC UsbCfg;
 	u8 *fw_image = NULL;
 

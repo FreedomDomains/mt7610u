@@ -370,11 +370,6 @@ INT RtmpOsSemaWaitInterruptible(struct semaphore *pSemOrg);
 void RtmpOsSemaWakeUp(struct semaphore *pSemOrg);
 void RtmpOsMlmeUp(RTMP_OS_TASK *pMlmeQTask);
 
-void RtmpOsInitCompletion(RTMP_OS_COMPLETION *pCompletion);
-void RtmpOsExitCompletion(RTMP_OS_COMPLETION *pCompletion);
-void RtmpOsComplete(RTMP_OS_COMPLETION *pCompletion);
-ULONG RtmpOsWaitForCompletionTimeout(RTMP_OS_COMPLETION *pCompletion, ULONG Timeout);
-
 /* OS Task */
 bool RtmpOsTaskletSche(RTMP_NET_TASK_STRUCT *pTasklet);
 

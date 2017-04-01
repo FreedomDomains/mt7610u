@@ -449,7 +449,7 @@ struct os_cookie {
 	INT						ioctl_if_type;
 	INT 					ioctl_if;
 
-	 RTMP_OS_COMPLETION SentToMCUDone;
+	struct completion SentToMCUDone;
 };
 
 /***********************************************************************************

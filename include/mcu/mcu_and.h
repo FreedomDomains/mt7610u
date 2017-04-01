@@ -127,7 +127,7 @@ struct cmd_msg {
 	u16 rsp_payload_len;
 	bool need_wait;
 	bool need_rsp;
-	RTMP_OS_COMPLETION ack_done;
+	struct completion ack_done;
 	char *rsp_payload;
 	MSG_RSP_HANDLER rsp_handler;
 	enum cmd_msg_state state;
