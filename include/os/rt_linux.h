@@ -576,7 +576,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
  * Device Register I/O Access related definitions and data structures.
  **********************************************************************************/
 
-#define RTMP_USB_URB_STATUS_GET(__pUrb)			((struct urb *)__pUrb)->status
 #define RTMP_USB_URB_LEN_GET(__pUrb)			((struct urb *)__pUrb)->actual_length
 
 

@@ -164,27 +164,6 @@ void RtmpOsUsbInitRxDesc(
 /*
 ========================================================================
 Routine Description:
-	Get the status from the URB.
-
-Arguments:
-	pUrb			- USB URB
-
-Return Value:
-	the status
-
-Note:
-========================================================================
-*/
-int RtmpOsUsbUrbStatusGet(
-	IN	void 				*pUrb)
-{
-	return RTMP_USB_URB_STATUS_GET(pUrb);
-}
-
-
-/*
-========================================================================
-Routine Description:
 	Get the data length from the URB.
 
 Arguments:
