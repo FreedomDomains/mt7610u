@@ -99,8 +99,6 @@ struct mt7610u_mcu_ctrl {
 	unsigned long tx_kickout_fail_count;
 	unsigned long tx_timeout_fail_count;
 	unsigned long rx_receive_fail_count;
-	unsigned long alloc_cmd_msg;
-	unsigned long free_cmd_msg;
 };
 
 

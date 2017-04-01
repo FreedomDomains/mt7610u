@@ -578,8 +578,6 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigne
 	msg->priv = ad;
 	msg->skb = net_pkt;
 
-	ctl->alloc_cmd_msg++;
-
 	return msg;
 
 error2:
@@ -629,7 +627,6 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 	kfree(msg);
 
 	dev_kfree_skb_any(net_pkt);
-	ctl->free_cmd_msg++;
 }
 
 static inline void mt7610u_mcu_inc_error_count(struct mt7610u_mcu_ctrl *ctl, enum cmd_msg_error_type type)
@@ -1183,8 +1180,6 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	ctl->tx_kickout_fail_count = 0;
 	ctl->tx_timeout_fail_count = 0;
 	ctl->rx_receive_fail_count = 0;
-	ctl->alloc_cmd_msg = 0;
-	ctl->free_cmd_msg = 0;
 	OS_SET_BIT(MCU_INIT, &ctl->flags);
 	usb_rx_cmd_msgs_receive(ad);
 	up(&(ad->mcu_atomic));
@@ -1217,8 +1212,6 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	DBGPRINT(RT_DEBUG_OFF, ("tx_kickout_fail_count = %ld\n", ctl->tx_kickout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
-	DBGPRINT(RT_DEBUG_OFF, ("alloc_cmd_msg = %ld\n", ctl->alloc_cmd_msg));
-	DBGPRINT(RT_DEBUG_OFF, ("free_cmd_msg = %ld\n", ctl->free_cmd_msg));
 	up(&(ad->mcu_atomic));
 }
 
