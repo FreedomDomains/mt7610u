@@ -233,7 +233,7 @@ loadfw_protect:
 
 	DBGPRINT(RT_DEBUG_OFF, ("loading fw"));
 
-	RTMP_OS_INIT_COMPLETION(&load_fw_done);
+	init_completion(&load_fw_done);
 
 	if (cap->load_iv)
 		cur_len = 0x40;
@@ -590,7 +590,7 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wai
 	msg->timeout = timeout;
 
 	if (need_wait)
-		RTMP_OS_INIT_COMPLETION(&msg->ack_done);
+		init_completion(&msg->ack_done);
 
 	msg->need_rsp = need_rsp;
 	msg->rsp_payload_len = rsp_payload_len;

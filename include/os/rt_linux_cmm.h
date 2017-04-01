@@ -132,9 +132,6 @@ typedef struct _OS_RSTRUC  {
 
 typedef struct completion RTMP_OS_COMPLETION;
 
-#define RTMP_OS_INIT_COMPLETION(__pCompletion)	\
-		init_completion(__pCompletion)
-
 #define RTMP_OS_COMPLETE(__pCompletion)	\
 		complete(__pCompletion)
 
