@@ -160,26 +160,6 @@ void RtmpOsUsbInitRxDesc(
 						DmaAddr);
 }
 
-/*
-========================================================================
-Routine Description:
-	Get the data pointer from the URB.
-
-Arguments:
-	pUrb			- USB URB
-
-Return Value:
-	the data pointer
-
-Note:
-========================================================================
-*/
-void *RtmpOsUsbUrbDataGet(
-	IN	void 				*pUrb)
-{
-	return RTMP_USB_URB_DATA_GET(pUrb);
-}
-
 
 /*
 ========================================================================
