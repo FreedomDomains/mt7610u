@@ -190,7 +190,8 @@ enum BW_SETTING {
 /*
  * Command type table
  */
-enum CMD_TYPE {
+
+enum mcu_cmd_type {
 	CMD_FUN_SET_OP = 1,
 	CMD_BURST_WRITE = 8,
 	CMD_READ_MODIFY_WRITE,

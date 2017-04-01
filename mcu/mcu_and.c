@@ -581,9 +581,11 @@ error0:
 	return NULL;
 }
 
-static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, u8 type, bool need_wait, u16 timeout,
-							   bool need_retransmit, bool need_rsp, u16 rsp_payload_len,
-							   char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
+static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type,
+				     bool need_wait, u16 timeout,
+				     bool need_retransmit, bool need_rsp,
+				     u16 rsp_payload_len,
+				     char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
 	msg->type = type;
 	msg->need_wait= need_wait;
