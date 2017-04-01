@@ -35,7 +35,7 @@ void usb_uploadfw_complete(struct urb *urb)
 {
 	struct completion *load_fw_done = urb->context;
 
-	RTMP_OS_COMPLETE(load_fw_done);
+	complete(load_fw_done);
 }
 
 static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
@@ -837,7 +837,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_m
 				}
 
 				if (msg->need_wait)
-					RTMP_OS_COMPLETE(&msg->ack_done);
+					complete(&msg->ack_done);
 				else
 					mt7610u_mcu_free_cmd_msg(msg);
 
@@ -1047,7 +1047,7 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 			msg->state = TX_KICKOUT_FAIL;
 			mt7610u_mcu_inc_error_count(ctl, ERROR_TX_KICKOUT_FAIL);
-			RTMP_OS_COMPLETE(&msg->ack_done);
+			complete(&msg->ack_done);
 		}
 
 		DBGPRINT(RT_DEBUG_ERROR, ("kick out cmd msg fail(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
@@ -1094,7 +1094,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 			mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 			msg->state = TX_KICKOUT_FAIL;
 			mt7610u_mcu_inc_error_count(ctl, ERROR_TX_KICKOUT_FAIL);
-			RTMP_OS_COMPLETE(&msg->ack_done);
+			complete(&msg->ack_done);
 		}
 
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
