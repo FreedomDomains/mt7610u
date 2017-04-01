@@ -164,26 +164,6 @@ void RtmpOsUsbInitRxDesc(
 /*
 ========================================================================
 Routine Description:
-	Get the data length from the URB.
-
-Arguments:
-	pUrb			- USB URB
-
-Return Value:
-	the data length
-
-Note:
-========================================================================
-*/
-ULONG RtmpOsUsbUrbLenGet(
-	IN	void 				*pUrb)
-{
-	return RTMP_USB_URB_LEN_GET(pUrb);
-}
-
-/*
-========================================================================
-Routine Description:
 	Get USB Vendor ID.
 
 Arguments:

@@ -865,7 +865,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 	mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
 
-	skb_put(net_pkt, RTMP_USB_URB_LEN_GET(urb));
+	skb_put(net_pkt, urb->actual_length);
 
 	if (urb->status == 0) {
 		state = RX_DONE;
