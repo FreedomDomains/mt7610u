@@ -346,7 +346,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
+			if (!wait_for_completion_timeout(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
 				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
@@ -474,7 +474,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
+			if (!wait_for_completion_timeout(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
 				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
@@ -1291,7 +1291,7 @@ retransmit:
 		unsigned long expire;
 		unsigned long timeout = msg->timeout;
 		expire = timeout ? RTMPMsecsToJiffies(timeout) : RTMPMsecsToJiffies(CMD_MSG_TIMEOUT);
-		if (!RTMP_OS_WAIT_FOR_COMPLETION_TIMEOUT(&msg->ack_done, expire)) {
+		if (!wait_for_completion_timeout(&msg->ack_done, expire)) {
 			ret = NDIS_STATUS_FAILURE;
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 				if (msg->state == WAIT_CMD_OUT_AND_ACK) {
