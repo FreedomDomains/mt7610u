@@ -367,11 +367,6 @@ loadfw_protect:
 
 	}
 
-	RTMP_OS_EXIT_COMPLETION(&load_fw_done);
-
-	/* Re-Initialize completion */
-	RTMP_OS_INIT_COMPLETION(&load_fw_done);
-
 	cur_len = 0x00;
 
 	/* Loading DLM */
@@ -499,8 +494,6 @@ loadfw_protect:
 
 	}
 
-	RTMP_OS_EXIT_COMPLETION(&load_fw_done);
-
 	/* Upload new 64 bytes interrupt vector or reset andes */
 	DBGPRINT(RT_DEBUG_OFF, ("\n"));
 	usb_load_ivb(ad, fw_image);
@@ -618,9 +611,6 @@ void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 	struct sk_buff * net_pkt = msg->skb;
 	struct rtmp_adapter*ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
-
-	if (msg->need_wait)
-		RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
 
 	usb_free_urb(msg->urb);
 
