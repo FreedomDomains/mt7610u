@@ -338,9 +338,6 @@ typedef struct _CMD_RSP_CONTEXT
 /*
   *	Device Hardware Interface Related MACRO
   */
-#define RTMP_IRQ_INIT(pAd)				do{}while(0)
-#define RTMP_IRQ_ENABLE(pAd)			do{}while(0)
-
 
 /*
   *	MLME Related MACRO

@@ -616,7 +616,6 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_IRQ_INIT:
 		/* init IRQ */
-			RTMP_IRQ_INIT(pAd);
 			break;
 
 		case CMD_RTPRIV_IOCTL_IRQ_RELEASE:

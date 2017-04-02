@@ -355,7 +355,6 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
 	/* Enable Interrupt*/
-	RTMP_IRQ_ENABLE(pAd);
 
 	/* Now Enable RxTx*/
 	RTMPEnableRxTx(pAd);
