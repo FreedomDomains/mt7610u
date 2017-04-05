@@ -2353,9 +2353,7 @@ go_original_path:
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
-void StopDmaRx(
-	IN struct rtmp_adapter*pAd,
-	IN u8 Level)
+void StopDmaRx(struct rtmp_adapter*pAd)
 {
 	struct sk_buff *	skb;
 	RX_BLK			RxBlk, *pRxBlk;
@@ -2409,15 +2407,6 @@ void StopDmaRx(
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:RX DMA busy!! DMA_CFG = 0x%08x\n", __FUNCTION__, MacReg));
-	}
-
-	if (Level == RTMP_HALT)
-	{
-		/*
-			Disable DMA RX
-		*/
-
-
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==== %s\n", __FUNCTION__));

@@ -626,6 +626,6 @@ INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, bool enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
 
 void StopDmaTx(struct rtmp_adapter *pAd);
-void StopDmaRx(struct rtmp_adapter *pAd, u8 Level);
+void StopDmaRx(struct rtmp_adapter *pAd);
 
 #endif /* __RTMP_CHIP_H__ */
