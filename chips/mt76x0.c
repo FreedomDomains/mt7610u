@@ -1905,7 +1905,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 	pChipCap->SnrFormula = SNR_FORMULA2;
 	pChipCap->VcoPeriod = 10;
-	pChipCap->FlgIsVcoReCalMode = VCO_CAL_MODE_3;
 
 	pChipCap->asic_caps |= (fASIC_CAP_PMF_ENC);
 

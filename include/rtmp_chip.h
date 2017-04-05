@@ -328,11 +328,6 @@ struct rtmp_chip_cap {
 
 	/* VCO calibration mode */
 	u8	VcoPeriod; /* default 10s */
-#define VCO_CAL_DISABLE		0	/* not support */
-#define VCO_CAL_MODE_1		1	/* toggle RF7[0] */
-#define VCO_CAL_MODE_2		2	/* toggle RF3[7] */
-#define VCO_CAL_MODE_3		3	/* toggle RF4[7] */
-	u8	FlgIsVcoReCalMode;
 
 	enum ASIC_CAP asic_caps;
 	enum PHY_CAP phy_caps;
