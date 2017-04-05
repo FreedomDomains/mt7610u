@@ -2423,9 +2423,7 @@ void StopDmaRx(
 	DBGPRINT(RT_DEBUG_TRACE, ("<==== %s\n", __FUNCTION__));
 }
 
-void StopDmaTx(
-	IN struct rtmp_adapter*pAd,
-	IN u8 Level)
+void StopDmaTx(struct rtmp_adapter*pAd)
 {
 	u32 MacReg = 0, MTxCycle = 0;
 	u8 IdleNums = 0;
@@ -2458,11 +2456,6 @@ void StopDmaTx(
 	if (MTxCycle >= 2000)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("TX DMA busy!! DMA_CFG(%x)\n", MacReg));
-	}
-
-	if (Level == RTMP_HALT)
-	{
-
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<==== %s\n", __FUNCTION__));
