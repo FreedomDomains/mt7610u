@@ -99,7 +99,7 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC {
 } EEPROM_NIC_CONFIG0_STRUC, *PEEPROM_NIC_CONFIG0_STRUC;
 #endif
 
-void MT76x0DisableTxRx(struct rtmp_adapter *pAd, u8 Level);
+void MT76x0DisableTxRx(struct rtmp_adapter *pAd);
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
 #endif

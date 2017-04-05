@@ -1612,10 +1612,6 @@ enum WIFI_MODE{
 #define MCAST_HTMIX		3
 #endif /* MCAST_RATE_SPECIFIC */
 
-/* For AsicRadioOff/AsicRadioOn function */
-#define RTMP_HALT		    2
-/* -- */
-
 /* definition for WpaSupport flag */
 #define WPA_SUPPLICANT_DISABLE				0x00
 #define WPA_SUPPLICANT_ENABLE				0x01
