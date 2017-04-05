@@ -75,20 +75,6 @@ int	RTUSBFreeDescRequest(
 
 	pHTTXContext = &pAd->TxContext[BulkOutPipeId];
 	RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags);
-#ifdef USB_BULK_BUF_ALIGMENT
-	if( ((pHTTXContext->CurWriteIdx< pHTTXContext->NextBulkIdx  ) &&   (pHTTXContext->NextBulkIdx - pHTTXContext->CurWriteIdx == 1))
-		|| ((pHTTXContext->CurWriteIdx ==(BUF_ALIGMENT_RINGSIZE -1) ) &&  (pHTTXContext->NextBulkIdx == 0 )))
-	{
-		RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << BulkOutPipeId));
-
-	}
-	else if (pHTTXContext->bCurWriting == true)
-	{
-		DBGPRINT(RT_DEBUG_TRACE,("BUF_ALIGMENT RTUSBFreeD c3 --> QueIdx=%d, CWPos=%ld, NBOutPos=%ld!\n", BulkOutPipeId, pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition));
-		RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << BulkOutPipeId));
-	}
-
-#else
 	if ((pHTTXContext->CurWritePosition < pHTTXContext->NextBulkOutPosition) && ((pHTTXContext->CurWritePosition + req_cnt + LOCAL_TXBUF_SIZE) > pHTTXContext->NextBulkOutPosition))
 	{
 
@@ -103,7 +89,6 @@ int	RTUSBFreeDescRequest(
 		DBGPRINT(RT_DEBUG_TRACE,("RTUSBFreeD c3 --> QueIdx=%d, CWPos=%ld, NBOutPos=%ld!\n", BulkOutPipeId, pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition));
 		RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << BulkOutPipeId));
 	}
-#endif /* USB_BULK_BUF_ALIGMENT */
 	else
 	{
 		Status = NDIS_STATUS_SUCCESS;
@@ -197,11 +182,7 @@ void rlt_usb_write_txinfo(
 	pTxInfo->txinfo_nmac_pkt.next_vld = false; /*NextValid;   Need to check with Jan about this.*/
 	pTxInfo->txinfo_nmac_pkt.tx_burst = TxBurst;
 	pTxInfo->txinfo_nmac_pkt.wiv = bWiv;
-#ifndef USB_BULK_BUF_ALIGMENT
 	pTxInfo->txinfo_nmac_pkt.rsv0 = 0;
-#else
-	pTxInfo->bFragLasAlignmentsectiontRound = 0;
-#endif /* USB_BULK_BUF_ALIGMENT */
 }
 
 
@@ -298,19 +279,6 @@ static inline int RtmpUSBCanDoWrite(
 {
 	int	canWrite = NDIS_STATUS_RESOURCES;
 
-#ifdef USB_BULK_BUF_ALIGMENT
-	if( ((pHTTXContext->CurWriteIdx< pHTTXContext->NextBulkIdx  ) &&   (pHTTXContext->NextBulkIdx - pHTTXContext->CurWriteIdx == 1))
-		|| ((pHTTXContext->CurWriteIdx ==(BUF_ALIGMENT_RINGSIZE -1) ) &&  (pHTTXContext->NextBulkIdx == 0 )))
-	{
-		DBGPRINT(RT_DEBUG_ERROR,("RtmpUSBCanDoWrite USB_BULK_BUF_ALIGMENT c1!\n"));
-		RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << QueIdx));
-	}
-	else if (pHTTXContext->bCurWriting == true)
-	{
-		DBGPRINT(RT_DEBUG_ERROR,("RtmpUSBCanDoWrite USB_BULK_BUF_ALIGMENT c3!!\n"));
-
-	}
-#else
 
 	if (((pHTTXContext->CurWritePosition) < pHTTXContext->NextBulkOutPosition) && (pHTTXContext->CurWritePosition + LOCAL_TXBUF_SIZE) > pHTTXContext->NextBulkOutPosition)
 	{
@@ -332,7 +300,6 @@ static inline int RtmpUSBCanDoWrite(
 		RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << QueIdx));
 	}
 
-#endif /* USB_BULK_BUF_ALIGMENT */
 	else
 	{
 		canWrite = NDIS_STATUS_SUCCESS;
@@ -358,11 +325,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 	int		Status;
 	unsigned long	IrqFlags;
 	u32			USBDMApktLen = 0, DMAHdrLen, padding;
-#ifdef USB_BULK_BUF_ALIGMENT
-	bool 		bLasAlignmentsectiontRound = false;
-#else
 	bool 		TxQLastRound = false;
-#endif /* USB_BULK_BUF_ALIGMENT */
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
@@ -384,7 +347,6 @@ USHORT	RtmpUSB_WriteFragTxResource(
 		{
 			pHTTXContext->bCurWriting = true;
 
-#ifndef USB_BULK_BUF_ALIGMENT
 			/* Reserve space for 8 bytes padding.*/
 			if ((pHTTXContext->ENextBulkOutPosition == pHTTXContext->CurWritePosition))
 			{
@@ -392,7 +354,6 @@ USHORT	RtmpUSB_WriteFragTxResource(
 				pHTTXContext->CurWritePosition += 8;
 				fillOffset += 8;
 			}
-#endif /* USB_BULK_BUF_ALIGMENT */
 			pTxBlk->Priv = 0;
 			pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 		}
@@ -446,35 +407,11 @@ USHORT	RtmpUSB_WriteFragTxResource(
 	{
 		pTxInfo->txinfo_nmac_pkt.tx_burst = 0;
 
-#ifdef USB_BULK_BUF_ALIGMENT
-		/*
-			when CurWritePosition > 0x6000  mean that it is at the max bulk out  size,
-			we CurWriteIdx must move to the next alignment section.
-			Otherwirse,  CurWriteIdx will be moved to the next section at databulkout.
-
-
-			(((pHTTXContext->CurWritePosition + 3906)& 0x00007fff) & 0xffff6000) == 0x00006000)
-			we must make sure that the last fragNun packet just over the 0x6000
-			otherwise it will error because the last frag packet will at the section but will not bulk out.
-			ex:   when secoend packet writeresouce and it > 0x6000
-				And the last packet writesource and it also > 0x6000  at this time CurWriteIdx++
-				but when data bulk out , because at second packet it will > 0x6000 , the last packet will not bulk out.
-
-		*/
-
-		if ( ((pHTTXContext->CurWritePosition + 3906)  & 0x00006000) == 0x00006000)
-		{
-
-			bLasAlignmentsectiontRound = true;
-			pTxInfo->bFragLasAlignmentsectiontRound = 1;
-		}
-#else
 		if ((pHTTXContext->CurWritePosition + pTxBlk->Priv + 3906)> MAX_TXBULK_LIMIT)
 		{
 			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 			TxQLastRound = true;
 		}
-#endif /* USB_BULK_BUF_ALIGMENT */
 	}
 	else
 	{
@@ -502,16 +439,8 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 		/* Update the pHTTXContext->CurWritePosition. 3906 used to prevent the NextBulkOut is a A-RALINK/A-MSDU Frame.*/
 		pHTTXContext->CurWritePosition += pTxBlk->Priv;
-#ifndef USB_BULK_BUF_ALIGMENT
 		if (TxQLastRound == true)
 			pHTTXContext->CurWritePosition = 8;
-#endif /* USB_BULK_BUF_ALIGMENT */
-#ifdef USB_BULK_BUF_ALIGMENT
-		if(bLasAlignmentsectiontRound == true)
-		{
-			pHTTXContext->CurWritePosition = ((CUR_WRITE_IDX_INC(pHTTXContext->CurWriteIdx, BUF_ALIGMENT_RINGSIZE)) * 0x8000);
-		}
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 
@@ -548,9 +477,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 	unsigned long	IrqFlags;
 	int Status;
 	u32 hdr_copy_len, hdr_len, dma_len = 0, padding;
-#ifndef USB_BULK_BUF_ALIGMENT
 	bool bTxQLastRound = false;
-#endif /* USB_BULK_BUF_ALIGMENT */
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
@@ -572,7 +499,6 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		pTxInfo = (union txinfo_nmac *)buf;
 		pTxWI= (struct txwi_nmac *)&buf[TXINFO_SIZE];
 
-#ifndef USB_BULK_BUF_ALIGMENT
 		/* Reserve space for 8 bytes padding.*/
 		if ((pHTTXContext->ENextBulkOutPosition == pHTTXContext->CurWritePosition))
 		{
@@ -580,7 +506,6 @@ USHORT RtmpUSB_WriteSingleTxResource(
 			pHTTXContext->CurWritePosition += 8;
 			fillOffset += 8;
 		}
-#endif /* USB_BULK_BUF_ALIGMENT */
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 
 		pWirelessPacket = &pHTTXContext->TransferBuffer->field.WirelessPacket[fillOffset];
@@ -598,13 +523,11 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(dma_len), false, FIFO_EDCA, false /*NextValid*/,  false);
 
 
-#ifndef USB_BULK_BUF_ALIGMENT
 		if ((pHTTXContext->CurWritePosition + 3906 + pTxBlk->Priv) > MAX_TXBULK_LIMIT)
 		{
 			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 			bTxQLastRound = true;
 		}
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 		memmove(pWirelessPacket, pTxBlk->HeaderBuf, hdr_copy_len);
 #ifdef RT_BIG_ENDIAN
@@ -623,9 +546,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		/*	6. Next time when do bulk-out, it found the bCopyPad==true and will copy the SavedPad[] to pTxContext->NextBulkOutPosition.*/
 		/*		and the packet will wrong.*/
 		pHTTXContext->CurWriteRealPos += hdr_copy_len;
-#ifndef USB_BULK_BUF_ALIGMENT
 		RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 #ifdef TX_PKT_SG
 		if (pTxBlk->pkt_info.BufferCount > 1) {
@@ -657,31 +578,14 @@ USHORT RtmpUSB_WriteSingleTxResource(
 			pWirelessPacket += pTxBlk->SrcBufLen;
 		}
 
-#ifndef USB_BULK_BUF_ALIGMENT
 		memset(pWirelessPacket, 0, padding + 8);
 		RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 		pHTTXContext->CurWritePosition += pTxBlk->Priv;
 #ifdef UAPSD_SUPPORT
 #endif /* UAPSD_SUPPORT */
-#ifdef USB_BULK_BUF_ALIGMENT
-		/*
-			when CurWritePosition > 0x6000  mean that it is at the max bulk out size,
-			we CurWriteIdx must move to the next alignment section.
-			Otherwirse,  CurWriteIdx will be moved to the next section at databulkout.
-
-			Writingflag = true ,mean that when we writing resource ,and databulkout happen,
-			So we bulk out when this packet finish.
-		*/
-		if ( (pHTTXContext->CurWritePosition  & 0x00006000) == 0x00006000)
-		{
-			pHTTXContext->CurWritePosition = ((CUR_WRITE_IDX_INC(pHTTXContext->CurWriteIdx, BUF_ALIGMENT_RINGSIZE)) * 0x8000);
-		}
-#else
 		if (bTxQLastRound)
 			pHTTXContext->CurWritePosition = 8;
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 		pHTTXContext->bCurWriting = false;
@@ -734,7 +638,6 @@ USHORT RtmpUSB_WriteMultiTxResource(
 			pTxInfo = (union txinfo_nmac *)(&pTxBlk->HeaderBuf[0]);
 			pTxWI= (struct txwi_nmac *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]);
 
-#ifndef USB_BULK_BUF_ALIGMENT
 			/* Reserve space for 8 bytes padding.*/
 			if ((pHTTXContext->ENextBulkOutPosition == pHTTXContext->CurWritePosition))
 			{
@@ -742,7 +645,6 @@ USHORT RtmpUSB_WriteMultiTxResource(
 				pHTTXContext->CurWritePosition += 8;
 				pHTTXContext->ENextBulkOutPosition += 8;
 			}
-#endif /* USB_BULK_BUF_ALIGMENT */
 			fillOffset = pHTTXContext->CurWritePosition;
 			pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 
@@ -855,12 +757,10 @@ void RtmpUSB_FinalWriteTxResource(
 	if (pHTTXContext->bCurWriting == true)
 	{
 		fillOffset = pHTTXContext->CurWritePosition;
-#ifndef USB_BULK_BUF_ALIGMENT
 		if (((pHTTXContext->ENextBulkOutPosition == pHTTXContext->CurWritePosition) || ((pHTTXContext->ENextBulkOutPosition-8) == pHTTXContext->CurWritePosition))
 			&& (pHTTXContext->bCopySavePad == true))
 			pWirelessPacket = (u8 *)(&pHTTXContext->SavedPad[0]);
 		else
-#endif /* USB_BULK_BUF_ALIGMENT */
 			pWirelessPacket = (u8 *)(&pHTTXContext->TransferBuffer->field.WirelessPacket[fillOffset]);
 
 
@@ -888,27 +788,11 @@ void RtmpUSB_FinalWriteTxResource(
 		/* Update the pHTTXContext->CurWritePosition*/
 
 		pHTTXContext->CurWritePosition += (TXINFO_SIZE + USBDMApktLen);
-#ifdef USB_BULK_BUF_ALIGMENT
-		/*
-			when CurWritePosition > 0x6000  mean that it is at the max bulk out size,
-			we CurWriteIdx must move to the next alignment section.
-			Otherwirse,  CurWriteIdx will be moved to the next section at databulkout.
-
-			Writingflag = true ,mean that when we writing resource ,and databulkout happen,
-			So we bulk out when this packet finish.
-		*/
-
-		if ( (pHTTXContext->CurWritePosition  & 0x00006000) == 0x00006000)
-		{
-			pHTTXContext->CurWritePosition = ((CUR_WRITE_IDX_INC(pHTTXContext->CurWriteIdx, BUF_ALIGMENT_RINGSIZE)) * 0x8000);
-		}
-#else
 		if ((pHTTXContext->CurWritePosition + 3906)> MAX_TXBULK_LIMIT)
 		{	/* Add 3906 for prevent the NextBulkOut packet size is a A-RALINK/A-MSDU Frame.*/
 			pHTTXContext->CurWritePosition = 8;
 			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
 		}
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 

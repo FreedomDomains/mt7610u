@@ -1180,9 +1180,6 @@ enum WIFI_MODE{
 #define NO_EXPLICIT_ACK             0x40	/* b6:5 = 10 */
 #define BLOCK_ACK                   0x60	/* b6:5 = 11 */
 
-#ifdef USB_BULK_BUF_ALIGMENT
-#define BUF_ALIGMENT_RINGSIZE         6	/*BUF_ALIGMENT_RINGSIZE must  >= 3 */
-#endif /* USB_BULK_BUF_ALIGMENT */
 
 
 /* STA_CSR4.field.TxResult */
