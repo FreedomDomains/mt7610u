@@ -1613,10 +1613,7 @@ enum WIFI_MODE{
 #endif /* MCAST_RATE_SPECIFIC */
 
 /* For AsicRadioOff/AsicRadioOn function */
-#define DOT11POWERSAVE		0
-#define GUIRADIO_OFF		1
 #define RTMP_HALT		    2
-#define GUI_IDLE_POWER_SAVE		3
 /* -- */
 
 /* definition for WpaSupport flag */
