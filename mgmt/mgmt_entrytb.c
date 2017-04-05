@@ -436,8 +436,6 @@ bool MacTableDeleteEntry(
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 
 		if (pEntry->EnqueueEapolStartTimerRunning != EAPOL_START_DISABLE)
 		{

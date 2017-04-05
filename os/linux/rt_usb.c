@@ -204,8 +204,6 @@ static void rtusb_dataout_complete(unsigned long data)
 		FREE_HTTX_RING(pAd, BulkOutPipeId, pHTTXContext);
 		/*RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags); */
 
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 
 	}
 	else	/* STATUS_OTHER */
@@ -463,10 +461,6 @@ static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
 	RTMP_IRQ_LOCK(&pAd->BulkOutLock[MGMTPIPEIDX], IrqFlags);
 
 
-#ifdef UAPSD_SUPPORT
-	/* Qos Null frame with EOSP shall have valid Wcid value. reference RtmpUSBMgmtKickOut() API. */
-	/* otherwise will be value of MCAST_WCID. */
-#endif /* UAPSD_SUPPORT */
 
 
 	if (Status != USB_ST_NOERROR)

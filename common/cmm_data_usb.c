@@ -444,8 +444,6 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 
 		/* Finally, set bCurWriting as false*/
 	pHTTXContext->bCurWriting = false;
@@ -582,8 +580,6 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[QueIdx], IrqFlags);
 
 		pHTTXContext->CurWritePosition += pTxBlk->Priv;
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 		if (bTxQLastRound)
 			pHTTXContext->CurWritePosition = 8;
 
@@ -796,8 +792,6 @@ void RtmpUSB_FinalWriteTxResource(
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;
 
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 
 
 		/*	Zero the last padding.*/
@@ -899,18 +893,6 @@ int RtmpUSBMgmtKickOut(
 	pMLMEContext->InUse = true;
 	pMLMEContext->bWaitingBulkOut = true;
 
-#ifdef UAPSD_SUPPORT
-		/*
-			If the packet is QoS Null frame, we mark the packet with its WCID;
-			If not, we mark the packet with bc/mc WCID = 0.
-
-			We will handle it in rtusb_mgmt_dma_done_tasklet().
-
-			Even AP send a QoS Null frame but not EOSP frame in USB mode,
-			then we will call UAPSD_SP_Close() and we will check
-			pEntry->bAPSDFlagSPStart() so do not worry about it.
-		*/
-#endif /* UAPSD_SUPPORT */
 
 /*
 	pAd->RalinkCounters.KickTxCount++;

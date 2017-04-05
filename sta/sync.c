@@ -2165,18 +2165,6 @@ void PeerBeacon(
 				*/
 				if (ie_list->MessageToMe)
 				{
-#ifdef UAPSD_SUPPORT
-					if (pAd->StaCfg.UapsdInfo.bAPSDCapable &&
-						pAd->CommonCfg.APEdcaParm.bAPSDCapable &&
-						pAd->CommonCfg.bAPSDAC_BE &&
-						pAd->CommonCfg.bAPSDAC_BK &&
-						pAd->CommonCfg.bAPSDAC_VI &&
-						pAd->CommonCfg.bAPSDAC_VO)
-					{
-						pAd->CommonCfg.bNeedSendTriggerFrame = true;
-					}
-					else
-#endif /* UAPSD_SUPPORT */
 					{
 						if (pAd->StaCfg.WindowsBatteryPowerMode == Ndis802_11PowerModeFast_PSP)
 						{

@@ -1614,11 +1614,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 	pAd->Dot11_H.ChMovingTime = 65;
 
-#ifdef UAPSD_SUPPORT
-#ifdef CONFIG_STA_SUPPORT
-	pAd->StaCfg.UapsdInfo.bAPSDCapable = false;
-#endif /* CONFIG_STA_SUPPORT */
-#endif /* UAPSD_SUPPORT */
 	pAd->CommonCfg.bNeedSendTriggerFrame = false;
 	pAd->CommonCfg.TriggerTimerCount = 0;
 	pAd->CommonCfg.bAPSDForcePowerSave = false;

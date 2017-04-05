@@ -592,10 +592,6 @@ static u8 TxPktClassification(
 		bHTRate = true;
 		if (RTMP_GET_PACKET_MOREDATA(pPacket) || (pMacEntry->PsMode == PWR_SAVE))
 			TxFrameType = TX_LEGACY_FRAME;
-#ifdef UAPSD_SUPPORT
-		else if (RTMP_GET_PACKET_EOSP(pPacket))
-			TxFrameType = TX_LEGACY_FRAME;
-#endif /* UAPSD_SUPPORT */
 #ifdef WFA_VHT_PF
 		else if (pAd->force_amsdu == true)
 			return TX_AMSDU_FRAME;
@@ -743,12 +739,6 @@ bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 			{
 				TX_BLK_SET_FLAG(pTxBlk, fTX_bMoreData);
 			}
-#ifdef UAPSD_SUPPORT
-			if (RTMP_GET_PACKET_EOSP(pPacket))
-			{
-				TX_BLK_SET_FLAG(pTxBlk, fTX_bWMM_UAPSD_EOSP);
-			}
-#endif /* UAPSD_SUPPORT */
 		}
 		else if (pTxBlk->TxFrameType == TX_FRAG_FRAME)
 		{
@@ -2100,19 +2090,6 @@ void RtmpEnqueueNullFrame(
 		pNullFr->Duration = RTMPCalcDuration(pAd, TxRate, 14);
 
 
-#ifdef UAPSD_SUPPORT
-		if (bQosNull)
-		{
-			u8 *qos_p = ((u8 *)pNullFr) + Length;
-
-			pNullFr->FC.SubType = SUBTYPE_QOS_NULL;
-
-			/* copy QOS control bytes */
-			qos_p[0] = ((bEOSP) ? (1 << 4) : 0) | OldUP;
-			qos_p[1] = 0;
-			Length += 2;
-		} /* End of if */
-#endif /* UAPSD_SUPPORT */
 
 		DBGPRINT(RT_DEBUG_INFO, ("send NULL Frame @%d Mbps to AID#%d...\n", RateIdToMbps[TxRate], PID & 0x3f));
 		MiniportMMRequest(pAd, MapUserPriorityToAccessCategory[7], (u8 *)pNullFr, Length);

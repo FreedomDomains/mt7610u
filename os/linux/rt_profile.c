@@ -256,8 +256,6 @@ void RTMPFreeAdapter(struct rtmp_adapter *pAd)
 		pAd->DeQueueRunning[index] = false;
 	}
 
-#ifdef UAPSD_SUPPORT
-#endif /* UAPSD_SUPPORT */
 
 #ifdef DOT11_N_SUPPORT
 #endif /* DOT11_N_SUPPORT */

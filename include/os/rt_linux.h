@@ -423,9 +423,6 @@ struct os_cookie {
 	RTMP_NET_TASK_STRUCT hcca_dma_done_task;
 	RTMP_NET_TASK_STRUCT tbtt_task;
 
-#ifdef UAPSD_SUPPORT
-	RTMP_NET_TASK_STRUCT uapsd_eosp_sent_task;
-#endif /* UAPSD_SUPPORT */
 
 
 	RTMP_NET_TASK_STRUCT null_frame_complete_task;
@@ -650,21 +647,6 @@ void linux_pci_unmap_single(void *handle, dma_addr_t dma_addr, size_t size, int 
 
 
 
-#ifdef UAPSD_SUPPORT
-/* if we queue a U-APSD packet to any software queue, we will set the U-APSD
-   flag and its physical queue ID for it */
-#define RTMP_SET_PACKET_UAPSD(_p, _flg_uapsd, _que_id) \
-                    ((_p)->cb[CB_OFF+9] = ((_flg_uapsd<<7) | _que_id))
-
-#define RTMP_SET_PACKET_QOS_NULL(_p)     ((_p)->cb[CB_OFF+9] = 0xff)
-#define RTMP_GET_PACKET_QOS_NULL(_p)	 ((_p)->cb[CB_OFF+9])
-#define RTMP_SET_PACKET_NON_QOS_NULL(_p) ((_p)->cb[CB_OFF+9] = 0x00)
-#define RTMP_GET_PACKET_UAPSD_Flag(_p)   ((((_p)->cb[CB_OFF+9]) & 0x80) >> 7)
-#define RTMP_GET_PACKET_UAPSD_QUE_ID(_p) (((_p)->cb[CB_OFF+9]) & 0x7f)
-
-#define RTMP_SET_PACKET_EOSP(_p, _flg)   ((_p)->cb[CB_OFF+10] = _flg)
-#define RTMP_GET_PACKET_EOSP(_p)         ((_p)->cb[CB_OFF+10])
-#endif /* UAPSD_SUPPORT */
 
 /* */
 /*	Sepcific Pakcet Type definition */

@@ -269,10 +269,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* Various AP function init*/
 
-#ifdef UAPSD_SUPPORT
-        UAPSD_Init(pAd);
-#endif /* UAPSD_SUPPORT */
-
 	/* assign function pointers*/
 
 

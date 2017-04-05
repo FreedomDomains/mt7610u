@@ -51,18 +51,6 @@ int RtmpInsertPsQueue(
 	IN u8 QueIdx)
 {
 	ULONG IrqFlags;
-#ifdef UAPSD_SUPPORT
-	/* put the U-APSD packet to its U-APSD queue by AC ID */
-	u32 ac_id = QueIdx - QID_AC_BE; /* should be >= 0 */
-
-
-	if (UAPSD_MR_IS_UAPSD_AC(pMacEntry, ac_id))
-	{
-		UAPSD_PacketEnqueue(pAd, pMacEntry, pPacket, ac_id);
-
-	}
-	else
-#endif /* UAPSD_SUPPORT */
 	{
 		if (pMacEntry->PsQueue.Number >= MAX_PACKETS_IN_PS_QUEUE)
 		{
@@ -144,35 +132,6 @@ void RtmpHandleRxPsPoll(
 		*/
 		pMacEntry->ContinueTxFailCnt = 0;
 
-#ifdef UAPSD_SUPPORT
-		if (UAPSD_MR_IS_ALL_AC_UAPSD(isActive, pMacEntry))
-		{
-			/*
-				IEEE802.11e spec.
-				11.2.1.7 Receive operation for STAs in PS mode during the CP
-				When a non-AP QSTA that is using U-APSD and has all ACs
-				delivery-enabled detects that the bit corresponding to its AID
-				is set in the TIM, the non-AP QSTA shall issue a trigger frame
-				or a PS-Poll frame to retrieve the buffered MSDU or management
-				frames.
-
-				WMM Spec. v1.1a 070601
-				3.6.2	U-APSD STA Operation
-				3.6.2.3	In case one or more ACs are not
-				delivery-enabled ACs, the WMM STA may retrieve MSDUs and
-				MMPDUs belonging to those ACs by sending PS-Polls to the WMM AP.
-				In case all ACs are delivery enabled ACs, WMM STA should only
-				use trigger frames to retrieve MSDUs and MMPDUs belonging to
-				those ACs, and it should not send PS-Poll frames.
-
-				Different definitions in IEEE802.11e and WMM spec.
-				But we follow the WiFi WMM Spec.
-			*/
-
-			DBGPRINT(RT_DEBUG_TRACE, ("All AC are UAPSD, can not use PS-Poll\n"));
-			return; /* all AC are U-APSD, can not use PS-Poll */
-		} /* End of if */
-#endif /* UAPSD_SUPPORT */
 
 		/*NdisAcquireSpinLock(&pAd->MacTabLock); */
 		/*NdisAcquireSpinLock(&pAd->TxSwQueueLock); */
@@ -181,34 +140,9 @@ void RtmpHandleRxPsPoll(
 		{
 			if (pMacEntry->PsQueue.Head)
 			{
-#ifdef UAPSD_SUPPORT
-				u32 NumOfOldPsPkt;
-				NumOfOldPsPkt = pAd->TxSwQueue[QID_AC_BE].Number;
-#endif /* UAPSD_SUPPORT */
 				pEntry = RemoveHeadQueue(&pMacEntry->PsQueue);
 				InsertTailQueueAc(pAd, pMacEntry, &pAd->TxSwQueue[QID_AC_BE], pEntry);
 
-#ifdef UAPSD_SUPPORT
-				/* we need to call RTMPDeQueuePacket() immediately as below */
-				if (NumOfOldPsPkt != pAd->TxSwQueue[QID_AC_BE].Number)
-				{
-					if (RTMP_GET_PACKET_DHCP(pEntry) ||
-					    RTMP_GET_PACKET_EAPOL(pEntry) ||
-					    RTMP_GET_PACKET_WAI(pEntry)) {
-						/*
-							These packets will use 1M/6M rate to send.
-							If you use 1M(2.4G)/6M(5G) to send, no statistics
-							count in NICUpdateFifoStaCounters().
-
-							So we can not count it for UAPSD; Or the SP will
-							not closed until timeout.
-						*/
-						;
-					}
-					else
-						UAPSD_MR_MIX_PS_POLL_RCV(pAd, pMacEntry);
-				}
-#endif /* UAPSD_SUPPORT */
 			}
 			else
 			{
@@ -229,13 +163,6 @@ void RtmpHandleRxPsPoll(
 		}
 		else
 		{
-#ifdef UAPSD_SUPPORT
-			/* deliver all queued UAPSD packets */
-			UAPSD_AllPacketDeliver(pAd, pMacEntry);
-
-			/* end the SP if exists */
-			UAPSD_MR_ENTRY_RESET(pAd, pMacEntry);
-#endif /* UAPSD_SUPPORT */
 
 			while(pMacEntry->PsQueue.Head)
 			{
