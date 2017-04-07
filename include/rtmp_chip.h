@@ -459,8 +459,6 @@ struct rtmp_chip_ops {
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 
-	void (*AsicExtraPowerOverMAC)(struct rtmp_adapter *pAd);
-
 	/* high power tuning */
 	void (*HighPowerTuning)(struct rtmp_adapter *pAd, struct _RSSI_SAMPLE *pRssi);
 
@@ -518,12 +516,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.ATEReadExternalTSSI != NULL)	\
 			__pAd->chipOps.ATEReadExternalTSSI(__pAd, __pData);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_EXTRA_POWER_OVER_MAC(__pAd)	\
-do {	\
-		if (__pAd->chipOps.AsicExtraPowerOverMAC != NULL)	\
-			__pAd->chipOps.AsicExtraPowerOverMAC(__pAd);	\
 } while (0)
 
 #define RTMP_CHIP_ASIC_GET_TSSI_RATIO(__pAd, __DeltaPwr)	\

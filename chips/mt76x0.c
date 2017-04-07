@@ -1983,9 +1983,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 	/* MAC */
 
-	/* Chip tuning */
-	pChipOps->AsicExtraPowerOverMAC = MT76x0_AsicExtraPowerOverMAC;
-
 /*
 	Following callback functions already initiailized in RtmpChipOpsHook()
 	1. Power save related
