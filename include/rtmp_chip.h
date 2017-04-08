@@ -468,7 +468,6 @@ struct rtmp_chip_ops {
 	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
-	int (*MCU_Calibration)(struct rtmp_adapter *pAd, u32 CalibrationID, u32 Parameter);
 	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
 
 	int (*MCU_BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
