@@ -27,8 +27,3 @@
 
 #include	"rt_config.h"
 
-void ChipOpsMCUHook(struct rtmp_adapter *pAd)
-{
-
-	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-}

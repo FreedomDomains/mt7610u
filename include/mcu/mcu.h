@@ -41,7 +41,6 @@ enum PWR_OP {
 
 struct rtmp_adapter;
 
-void ChipOpsMCUHook(struct rtmp_adapter *pAd);
 void MCUCtrlInit(struct rtmp_adapter *pAd);
 void MCUCtrlExit(struct rtmp_adapter *pAd);
 

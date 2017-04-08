@@ -2357,8 +2357,6 @@ static void RtmpChipOpsRegister(struct rtmp_adapter*pAd)
 	memset(pChipCap, 0, sizeof(*pChipCap));
 
 	RtmpChipOpsHook(pAd);
-
-	ChipOpsMCUHook(pAd);
 }
 
 INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd)
