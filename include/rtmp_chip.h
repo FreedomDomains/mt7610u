@@ -473,8 +473,6 @@ struct rtmp_chip_ops {
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
 	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
-
-	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 };
 
 #define RTMP_CHIP_ENABLE_AP_MIMOPS(__pAd, __ReduceCorePower)	\
@@ -577,12 +575,6 @@ do {	\
 do {	\
 		if (_pAd->chipOps.RFReadModifyWrite != NULL)	\
 			_pAd->chipOps.RFReadModifyWrite(_pAd, _RegPair, _Num);	\
-} while (0)
-
-#define RF_RANDOM_WRITE(_pAd, _RegPair, _Num)	\
-do {	\
-		if (_pAd->chipOps.MCU_RFRandomWrite != NULL)	\
-			_pAd->chipOps.MCU_RFRandomWrite(_pAd, _RegPair, _Num);	\
 } while (0)
 
 #define RTMP_SECOND_CCA_DETECTION(__pAd)	\

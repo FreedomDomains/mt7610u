@@ -43,7 +43,7 @@ int rlt_rf_write(
 		reg.Register = regID;
 		reg.Value = value;
 
-		RF_RANDOM_WRITE(pAd, &reg, 1);
+		mt7610u_mcu_rf_random_write(pAd, &reg, 1);
 	} else {
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
 		UINT i = 0;

@@ -1036,7 +1036,7 @@ void SelectBandMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 
 	if (Channel <= 14) {
 		/* Select 2.4GHz */
-		RF_RANDOM_WRITE(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
+		mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
 
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x45);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x44);
@@ -1047,7 +1047,7 @@ void SelectBandMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
 	} else {
 		/* Select 5GHz */
-		RF_RANDOM_WRITE(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
+		mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
 
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x44);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x45);
@@ -1333,13 +1333,13 @@ static void NICInitMT76x0RFRegisters(struct rtmp_adapter *pAd)
 	u8 RFValue;
 
 
-	RF_RANDOM_WRITE(pAd, MT76x0_RF_Central_RegTb, MT76x0_RF_Central_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_Central_RegTb, MT76x0_RF_Central_RegTb_Size);
 
-	RF_RANDOM_WRITE(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
 
-	RF_RANDOM_WRITE(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
 
-	RF_RANDOM_WRITE(pAd, MT76x0_RF_VGA_Channel_0_RegTb, MT76x0_RF_VGA_Channel_0_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_VGA_Channel_0_RegTb, MT76x0_RF_VGA_Channel_0_RegTb_Size);
 
 	for (IdReg = 0; IdReg < MT76x0_RF_BW_Switch_Size; IdReg++) {
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[IdReg].BwBand) {
