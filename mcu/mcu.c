@@ -31,6 +31,4 @@ void ChipOpsMCUHook(struct rtmp_adapter *pAd)
 {
 
 	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
-
-	pChipOps->MCU_ReadModifyWrite = mt7610u_mcu_read_modify_write;
 }
