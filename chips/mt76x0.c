@@ -30,7 +30,7 @@
 #define MT7650_EFUSE_CTRL	0x0024
 #define LDO_CTRL1			0x0070
 
-static RTMP_REG_PAIR	MT76x0_MACRegTable[] = {
+static struct rtmp_reg_pair MT76x0_MACRegTable[] = {
 	{ PBF_SYS_CTRL,		0x80c00 },
 	{ PBF_CFG,		0x77723c1f },
 	{ FCE_PSE_CTRL,		0x1 },
@@ -70,9 +70,9 @@ static RTMP_REG_PAIR	MT76x0_MACRegTable[] = {
 	{ LDO_CTRL1,		0x6B006464 },	/* Default LDO_DIG supply 1.26V, change to 1.2V */
 };
 
-static u8 MT76x0_NUM_MAC_REG_PARMS = (sizeof(MT76x0_MACRegTable) / sizeof(RTMP_REG_PAIR));
+static u8 MT76x0_NUM_MAC_REG_PARMS = (sizeof(MT76x0_MACRegTable) / sizeof(struct rtmp_reg_pair));
 
-static RTMP_REG_PAIR MT76x0_DCOC_Tab[] = {
+static struct rtmp_reg_pair MT76x0_DCOC_Tab[] = {
 	{ CAL_R47,	0x000010F0 },
 	{ CAL_R48,	0x00008080 },
 	{ CAL_R49,	0x00000F07 },
@@ -83,9 +83,9 @@ static RTMP_REG_PAIR MT76x0_DCOC_Tab[] = {
 	{ CAL_R54,	0x00002828 },
 	{ CAL_R55,	0x00005050 },
 };
-static u8 MT76x0_DCOC_Tab_Size = (sizeof(MT76x0_DCOC_Tab) / sizeof(RTMP_REG_PAIR));
+static u8 MT76x0_DCOC_Tab_Size = (sizeof(MT76x0_DCOC_Tab) / sizeof(struct rtmp_reg_pair));
 
-static RTMP_REG_PAIR MT76x0_BBP_Init_Tab[] = {
+static struct rtmp_reg_pair MT76x0_BBP_Init_Tab[] = {
 	{ CORE_R1,	0x00000002 },
 	{ CORE_R4,	0x00000000 },
 	{ CORE_R24,	0x00000000 },
@@ -157,7 +157,7 @@ static RTMP_REG_PAIR MT76x0_BBP_Init_Tab[] = {
 	{ RXO_R21,	0x00000001 },
 	{ RXO_R24,	0x00000006 },
 };
-static u8 MT76x0_BBP_Init_Tab_Size = (sizeof(MT76x0_BBP_Init_Tab) / sizeof(RTMP_REG_PAIR));
+static u8 MT76x0_BBP_Init_Tab_Size = (sizeof(MT76x0_BBP_Init_Tab) / sizeof(struct rtmp_reg_pair));
 
 
 MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[] = {

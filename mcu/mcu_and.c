@@ -1515,7 +1515,7 @@ error:
 }
 
 int mt7610u_mcu_random_write(struct rtmp_adapter*ad,
-			RTMP_REG_PAIR *reg_pair, u32 num)
+			struct rtmp_reg_pair *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;

@@ -473,7 +473,7 @@ struct rtmp_chip_ops {
 
 	int (*MCU_BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
 
-	int (*MCU_RandomRead)(struct rtmp_adapter *ad, RTMP_REG_PAIR *RegPair, u32 Num);
+	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
 	int (*MCU_RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
 

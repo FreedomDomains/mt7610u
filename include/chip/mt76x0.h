@@ -142,7 +142,7 @@ typedef struct _RT6590_RF_SWITCH_ITEM {
 
 typedef struct _MT76x0_BBP_Table {
 	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
-	RTMP_REG_PAIR RegDate;
+	struct rtmp_reg_pair RegDate;
 } MT76x0_BBP_Table, *PMT76x0_BBP_Table;
 
 void MT76x0_Init(struct rtmp_adapter *pAd);

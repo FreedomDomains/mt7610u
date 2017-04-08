@@ -37,7 +37,7 @@ char*   CipherName[] = {"none","wep64","wep128","TKIP","AES","CKIP64","CKIP128",
 /*
 	ASIC register initialization sets
 */
-RTMP_REG_PAIR MACRegTable[] = {
+struct rtmp_reg_pair MACRegTable[] = {
 #if defined(HW_BEACON_OFFSET) && (HW_BEACON_OFFSET == 0x200)
 	{BCN_OFFSET0,			0xf8f0e8e0}, /* 0x3800(e0), 0x3A00(e8), 0x3C00(f0), 0x3E00(f8), 512B for each beacon */
 	{BCN_OFFSET1,			0x6f77d0c8}, /* 0x3200(c8), 0x3400(d0), 0x1DC0(77), 0x1BC0(6f), 512B for each beacon */
@@ -94,7 +94,7 @@ RTMP_REG_PAIR MACRegTable[] = {
 
 
 #ifdef CONFIG_STA_SUPPORT
-RTMP_REG_PAIR	STAMACRegTable[] =	{
+struct rtmp_reg_pair STAMACRegTable[] =	{
 	{WMM_AIFSN_CFG,	0x00002273},
 	{WMM_CWMIN_CFG,	0x00002344},
 	{WMM_CWMAX_CFG,	0x000034aa},
@@ -102,9 +102,9 @@ RTMP_REG_PAIR	STAMACRegTable[] =	{
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#define	NUM_MAC_REG_PARMS		(sizeof(MACRegTable) / sizeof(RTMP_REG_PAIR))
+#define	NUM_MAC_REG_PARMS		(sizeof(MACRegTable) / sizeof(struct rtmp_reg_pair))
 #ifdef CONFIG_STA_SUPPORT
-#define	NUM_STA_MAC_REG_PARMS	(sizeof(STAMACRegTable) / sizeof(RTMP_REG_PAIR))
+#define	NUM_STA_MAC_REG_PARMS	(sizeof(STAMACRegTable) / sizeof(struct rtmp_reg_pair))
 #endif /* CONFIG_STA_SUPPORT */
 
 
@@ -802,7 +802,7 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 
 
 	{
-		RTMP_REG_PAIR bcn_mac_reg_tb[] = {
+		struct rtmp_reg_pair bcn_mac_reg_tb[] = {
 			{BCN_OFFSET0, 0x18100800},
 			{BCN_OFFSET1, 0x38302820},
 			{BCN_OFFSET2, 0x58504840},
