@@ -472,8 +472,6 @@ struct rtmp_chip_ops {
 
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
-	int (*MCU_RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
-
 	int (*MCU_ReadModifyWrite)(struct rtmp_adapter *ad, R_M_W_REG *RegPair, u32 Num);
 
 	int (*MCU_RFRandomWrite)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
@@ -567,12 +565,6 @@ do {	\
 do {	\
 		if(__pAd->chipOps.RadarGLRTCompensate != NULL)	\
 			__pAd->chipOps.RadarGLRTCompensate(__pAd);	\
-} while (0)
-
-#define RF_RANDOM_READ(_pAd, _RegPair, _Num)	\
-do {											\
-		if (_pAd->chipOps.MCU_RFRandomRead != NULL)	\
-			_pAd->chipOps.MCU_RFRandomRead(_pAd, _RegPair, _Num); \
 } while (0)
 
 #define READ_MODIFY_WRITE(_pAd, _RegPair, _Num)	\

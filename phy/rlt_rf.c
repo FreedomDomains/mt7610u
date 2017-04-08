@@ -118,7 +118,7 @@ int rlt_rf_read(
 		BANK_RF_REG_PAIR reg;
 		reg.Bank = bank;
 		reg.Register = regID;
-		RF_RANDOM_READ(pAd, &reg, 1);
+		mt7610u_mcu_rf_random_read(pAd, &reg, 1);
 
 		*pValue = reg.Value;
 	} else {
