@@ -1175,6 +1175,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	OS_SET_BIT(MCU_INIT, &ctl->flags);
 	usb_rx_cmd_msgs_receive(ad);
 	up(&(ad->mcu_atomic));
+	ctl->power_on = false;
 }
 
 void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
@@ -1205,6 +1206,7 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	DBGPRINT(RT_DEBUG_OFF, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
 	DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
 	up(&(ad->mcu_atomic));
+	ctl->power_on = false;
 }
 
 static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
