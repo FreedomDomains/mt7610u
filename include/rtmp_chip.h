@@ -470,8 +470,6 @@ struct rtmp_chip_ops {
 
 	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
 
-	int (*MCU_BurstWrite)(struct rtmp_adapter *ad, u32 Offset, u32 *Data, u32 Cnt);
-
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
 	int (*MCU_RFRandomRead)(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *RegPair, u32 Num);
@@ -569,12 +567,6 @@ do {	\
 do {	\
 		if(__pAd->chipOps.RadarGLRTCompensate != NULL)	\
 			__pAd->chipOps.RadarGLRTCompensate(__pAd);	\
-} while (0)
-
-#define BURST_WRITE(_pAd, _Offset, _pData, _Cnt)	\
-do {												\
-		if (_pAd->chipOps.MCU_BurstWrite != NULL)		\
-			_pAd->chipOps.MCU_BurstWrite(_pAd, _Offset, _pData, _Cnt);\
 } while (0)
 
 #define RF_RANDOM_READ(_pAd, _RegPair, _Num)	\

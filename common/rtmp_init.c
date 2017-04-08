@@ -1039,7 +1039,7 @@ int	NICInitializeAsic(
 			MACValue[Index + 1] = 0x00ffffff;
 		}
 
-		BURST_WRITE(pAd, MAC_WCID_BASE, MACValue, 254 * 2);
+		mt7610u_mcu_burst_write(pAd, MAC_WCID_BASE, MACValue, 254 * 2);
 }
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1069,7 +1069,7 @@ int	NICInitializeAsic(
 			for (Index = 0; Index < 4; Index++)
 				MACValue[Index] = 0;
 
-			BURST_WRITE(pAd, SHARED_KEY_MODE_BASE, MACValue, 4);
+			mt7610u_mcu_burst_write(pAd, SHARED_KEY_MODE_BASE, MACValue, 4);
 		}
 
 		/* Clear all pairwise key table when initial*/
@@ -1079,7 +1079,7 @@ int	NICInitializeAsic(
 			for (Index = 0; Index < 256; Index++)
 				MACValue[Index] = 1;
 
-			BURST_WRITE(pAd, MAC_WCID_ATTRIBUTE_BASE, MACValue, 256);
+			mt7610u_mcu_burst_write(pAd, MAC_WCID_ATTRIBUTE_BASE, MACValue, 256);
 		}
 
 	}
