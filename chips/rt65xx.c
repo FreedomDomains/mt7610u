@@ -114,6 +114,105 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
 
+
+static void StopDmaRx(struct rtmp_adapter*pAd)
+{
+	struct sk_buff *	skb;
+	RX_BLK			RxBlk, *pRxBlk;
+	u32 RxPending = 0, MacReg = 0, MTxCycle = 0;
+	bool bReschedule = false;
+	bool bCmdRspPacket = false;
+	u8 IdleNums = 0;
+
+	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
+
+	/*
+		process whole rx ring
+	*/
+	while (1)
+	{
+		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
+			return;
+		pRxBlk = &RxBlk;
+		skb = GetPacketFromRxRing(pAd, pRxBlk, &bReschedule, &RxPending, &bCmdRspPacket);
+		if ((RxPending == 0) && (bReschedule == false))
+			break;
+		else
+			dev_kfree_skb_any(skb);
+	}
+
+	/*
+		Check DMA Rx idle
+	*/
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
+	{
+
+		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
+		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
+		if ((MacReg & 0x40000000) && (IdleNums < 10))
+		{
+			IdleNums++;
+			RTMPusecDelay(50);
+		}
+		else
+		{
+			break;
+		}
+
+		if (MacReg == 0xFFFFFFFF)
+		{
+			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
+			return;
+		}
+	}
+
+	if (MTxCycle >= 2000)
+	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s:RX DMA busy!! DMA_CFG = 0x%08x\n", __FUNCTION__, MacReg));
+	}
+
+	DBGPRINT(RT_DEBUG_TRACE, ("<==== %s\n", __FUNCTION__));
+}
+
+static void StopDmaTx(struct rtmp_adapter*pAd)
+{
+	u32 MacReg = 0, MTxCycle = 0;
+	u8 IdleNums = 0;
+
+	DBGPRINT(RT_DEBUG_TRACE, ("====> %s\n", __FUNCTION__));
+
+
+	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
+	{
+
+		MacReg = mt7610u_read32(pAd, USB_DMA_CFG);
+		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
+		if (((MacReg & 0x80000000) == 0) && IdleNums > 10)
+		{
+			break;
+		}
+		else
+		{
+			IdleNums++;
+			RTMPusecDelay(50);
+		}
+
+		if (MacReg == 0xFFFFFFFF)
+		{
+			//RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
+			return;
+		}
+	}
+
+	if (MTxCycle >= 2000)
+	{
+		DBGPRINT(RT_DEBUG_ERROR, ("TX DMA busy!! DMA_CFG(%x)\n", MacReg));
+	}
+
+	DBGPRINT(RT_DEBUG_TRACE, ("<==== %s\n", __FUNCTION__));
+}
+
+
 void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 {
 	u32 MacReg = 0;
