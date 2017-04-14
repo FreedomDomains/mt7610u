@@ -178,8 +178,8 @@ void RtmpHandleRxPsPoll(
 			} /* End of while */
 		} /* End of if */
 
-		/*NdisReleaseSpinLock(&pAd->TxSwQueueLock); */
-		/*NdisReleaseSpinLock(&pAd->MacTabLock); */
+		/*RTMP_SEM_UNLOCK(&pAd->TxSwQueueLock); */
+		/*RTMP_SEM_UNLOCK(&pAd->MacTabLock); */
 
 		if ((Aid > 0) && (Aid < MAX_LEN_OF_MAC_TABLE) &&
 			(pMacEntry->PsQueue.Number == 0))

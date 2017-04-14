@@ -1863,7 +1863,7 @@ bool StaAddMacTableEntry(
 		pAd->MacTab.Size ++;
 	}
 
-	NdisReleaseSpinLock(&pAd->MacTabLock);
+	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT

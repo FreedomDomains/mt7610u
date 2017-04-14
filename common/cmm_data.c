@@ -2320,7 +2320,7 @@ INT ip_assembly(
 							break;
 						InsertTailQueueAc(pAd, pEntry, &pAd->TxSwQueue[QueIdx], pBackupPktEntry);
 					}
-					NdisReleaseSpinLock(&pAd->TxSwQueueLock[QueIdx]);
+					RTMP_SEM_UNLOCK(&pAd->TxSwQueueLock[QueIdx]);
 
 					return 0;
 				}

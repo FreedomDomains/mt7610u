@@ -229,13 +229,13 @@ void ba_reordering_resource_release(struct rtmp_adapter *pAd)
 			}
 		}
 	}
-	NdisReleaseSpinLock(&pAd->BATabLock);
+	RTMP_SEM_UNLOCK(&pAd->BATabLock);
 
 	ASSERT(pBAEntry->list.qlen == 0);
 	/* II. free memory of reordering mpdu table */
 	RTMP_SEM_LOCK(&pAd->mpdu_blk_pool.lock);
 	kfree(pAd->mpdu_blk_pool.mem);
-	NdisReleaseSpinLock(&pAd->mpdu_blk_pool.lock);
+	RTMP_SEM_UNLOCK(&pAd->mpdu_blk_pool.lock);
 }
 
 
@@ -301,7 +301,7 @@ static struct reordering_mpdu *ba_mpdu_blk_alloc(struct rtmp_adapter *pAd)
 		/* reset mpdu_blk */
 		memset(mpdu_blk, 0, sizeof(struct reordering_mpdu));
 	}
-	NdisReleaseSpinLock(&pAd->mpdu_blk_pool.lock);
+	RTMP_SEM_UNLOCK(&pAd->mpdu_blk_pool.lock);
 	return mpdu_blk;
 }
 
@@ -312,7 +312,7 @@ static void ba_mpdu_blk_free(struct rtmp_adapter *pAd, struct reordering_mpdu *m
 	RTMP_SEM_LOCK(&pAd->mpdu_blk_pool.lock);
 /*	blk_count--; */
 	ba_enqueue(&pAd->mpdu_blk_pool.freelist, mpdu_blk);
-	NdisReleaseSpinLock(&pAd->mpdu_blk_pool.lock);
+	RTMP_SEM_UNLOCK(&pAd->mpdu_blk_pool.lock);
 }
 
 
@@ -344,7 +344,7 @@ static USHORT ba_indicate_reordering_mpdus_in_order(
 			ba_mpdu_blk_free(pAd, mpdu_blk);
 	}
 
-	NdisReleaseSpinLock(&pBAEntry->RxReRingLock);
+	RTMP_SEM_UNLOCK(&pBAEntry->RxReRingLock);
 
 	/* update last indicated sequence */
 	return LastIndSeq;
@@ -375,7 +375,7 @@ static void ba_indicate_reordering_mpdus_le_seq(
 				break;
 			}
 	}
-	NdisReleaseSpinLock(&pBAEntry->RxReRingLock);
+	RTMP_SEM_UNLOCK(&pBAEntry->RxReRingLock);
 }
 
 
@@ -400,7 +400,7 @@ static void ba_refresh_reordering_mpdus(
 	}
 	ASSERT(pBAEntry->list.qlen == 0);
 	pBAEntry->LastIndSeq = RESET_RCV_SEQ;
-	NdisReleaseSpinLock(&pBAEntry->RxReRingLock);
+	RTMP_SEM_UNLOCK(&pBAEntry->RxReRingLock);
 }
 
 
@@ -748,7 +748,7 @@ BA_REC_ENTRY *BATableAllocRecEntry(
 	}
 
 done:
-	NdisReleaseSpinLock(&pAd->BATabLock);
+	RTMP_SEM_UNLOCK(&pAd->BATabLock);
 	return pBAEntry;
 }
 
@@ -782,7 +782,7 @@ BA_ORI_ENTRY *BATableAllocOriEntry(
 	}
 
 done:
-	NdisReleaseSpinLock(&pAd->BATabLock);
+	RTMP_SEM_UNLOCK(&pAd->BATabLock);
 	return pBAEntry;
 }
 
@@ -822,7 +822,7 @@ void BATableFreeOriEntry(
 
 		pBAEntry->ORI_BA_Status = Originator_NONE;
 		pBAEntry->Token = 0;
-		NdisReleaseSpinLock(&pAd->BATabLock);
+		RTMP_SEM_UNLOCK(&pAd->BATabLock);
 	}
 }
 
@@ -852,7 +852,7 @@ void BATableFreeRecEntry(
 		pAd->BATable.numAsRecipient -= 1;
 
 		pBAEntry->REC_BA_Status = Recipient_NONE;
-		NdisReleaseSpinLock(&pAd->BATabLock);
+		RTMP_SEM_UNLOCK(&pAd->BATabLock);
 	}
 }
 
@@ -1030,7 +1030,7 @@ void BARecSessionTearDown(
 
 		RTMP_DEL_BA_SESSION_FROM_ASIC(pAd, Wcid, TID);
 
-		NdisReleaseSpinLock(&pAd->BATabLock);
+		RTMP_SEM_UNLOCK(&pAd->BATabLock);
 
 	}
 
@@ -1590,7 +1590,7 @@ static void ba_enqueue_reordering_packet(
 		}
 
 		ASSERT((0<= pBAEntry->list.qlen)  && (pBAEntry->list.qlen <= pBAEntry->BAWinSize));
-		NdisReleaseSpinLock(&pBAEntry->RxReRingLock);
+		RTMP_SEM_UNLOCK(&pBAEntry->RxReRingLock);
 	}
 	else
 	{

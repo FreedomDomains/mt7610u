@@ -266,14 +266,14 @@ void MlmeHandler(struct rtmp_adapter*pAd)
 	RTMP_SEM_LOCK(&pAd->Mlme.TaskLock);
 	if(pAd->Mlme.bRunning)
 	{
-		NdisReleaseSpinLock(&pAd->Mlme.TaskLock);
+		RTMP_SEM_UNLOCK(&pAd->Mlme.TaskLock);
 		return;
 	}
 	else
 	{
 		pAd->Mlme.bRunning = true;
 	}
-	NdisReleaseSpinLock(&pAd->Mlme.TaskLock);
+	RTMP_SEM_UNLOCK(&pAd->Mlme.TaskLock);
 
 	while (!MlmeQueueEmpty(&pAd->Mlme.Queue))
 	{
@@ -371,7 +371,7 @@ void MlmeHandler(struct rtmp_adapter*pAd)
 
 	RTMP_SEM_LOCK(&pAd->Mlme.TaskLock);
 	pAd->Mlme.bRunning = false;
-	NdisReleaseSpinLock(&pAd->Mlme.TaskLock);
+	RTMP_SEM_UNLOCK(&pAd->Mlme.TaskLock);
 }
 
 /*
@@ -3611,7 +3611,7 @@ bool MlmeEnqueue(
 		memmove(Queue->Entry[Tail].Msg, Msg, MsgLen);
 	}
 
-	NdisReleaseSpinLock(&(Queue->Lock));
+	RTMP_SEM_UNLOCK(&(Queue->Lock));
 	return true;
 }
 
@@ -3710,7 +3710,7 @@ bool MlmeEnqueueForRecv(
 		memmove(Queue->Entry[Tail].Msg, Msg, MsgLen);
 	}
 
-	NdisReleaseSpinLock(&(Queue->Lock));
+	RTMP_SEM_UNLOCK(&(Queue->Lock));
 	RTMP_MLME_HANDLER(pAd);
 
 	return true;
@@ -3739,7 +3739,7 @@ bool MlmeDequeue(
 	{
 		Queue->Head = 0;
 	}
-	NdisReleaseSpinLock(&(Queue->Lock));
+	RTMP_SEM_UNLOCK(&(Queue->Lock));
 	return true;
 }
 
@@ -3822,7 +3822,7 @@ bool MlmeQueueEmpty(
 
 	RTMP_SEM_LOCK(&(Queue->Lock));
 	Ans = (Queue->Num == 0);
-	NdisReleaseSpinLock(&(Queue->Lock));
+	RTMP_SEM_UNLOCK(&(Queue->Lock));
 
 	return Ans;
 }
@@ -3848,7 +3848,7 @@ bool MlmeQueueFull(
 		Ans = ((Queue->Num >= (MAX_LEN_OF_MLME_QUEUE / 2)) || Queue->Entry[Queue->Tail].Occupied);
 	else
 		Ans = (Queue->Num == MAX_LEN_OF_MLME_QUEUE);
-	NdisReleaseSpinLock(&(Queue->Lock));
+	RTMP_SEM_UNLOCK(&(Queue->Lock));
 
 	return Ans;
 }
@@ -3870,7 +3870,7 @@ void MlmeQueueDestroy(
 	pQueue->Num  = 0;
 	pQueue->Head = 0;
 	pQueue->Tail = 0;
-	NdisReleaseSpinLock(&(pQueue->Lock));
+	RTMP_SEM_UNLOCK(&(pQueue->Lock));
 }
 
 
