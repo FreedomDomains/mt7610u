@@ -531,7 +531,7 @@ void STAHandleRxDataFrame(
 			pDlsEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
 			if (pDlsEntry && (pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)) {
 				Update_Rssi_Sample(pAd, &pDlsEntry->RssiSample, pRxWI);
-				NdisAcquireSpinLock(&pAd->MacTabLock);
+				RTMP_SEM_LOCK(&pAd->MacTabLock);
 				pDlsEntry->NoDataIdleCount = 0;
 				NdisReleaseSpinLock(&pAd->MacTabLock);
 			}

@@ -133,8 +133,8 @@ void RtmpHandleRxPsPoll(
 		pMacEntry->ContinueTxFailCnt = 0;
 
 
-		/*NdisAcquireSpinLock(&pAd->MacTabLock); */
-		/*NdisAcquireSpinLock(&pAd->TxSwQueueLock); */
+		/*RTMP_SEM_LOCK(&pAd->MacTabLock); */
+		/*RTMP_SEM_LOCK(&pAd->TxSwQueueLock); */
 		RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
 		if (isActive == false)
 		{

@@ -263,7 +263,7 @@ void MlmeHandler(struct rtmp_adapter*pAd)
 	/* Only accept MLME and Frame from peer side, no other (control/data) frame should*/
 	/* get into this state machine*/
 
-	NdisAcquireSpinLock(&pAd->Mlme.TaskLock);
+	RTMP_SEM_LOCK(&pAd->Mlme.TaskLock);
 	if(pAd->Mlme.bRunning)
 	{
 		NdisReleaseSpinLock(&pAd->Mlme.TaskLock);
@@ -369,7 +369,7 @@ void MlmeHandler(struct rtmp_adapter*pAd)
 		}
 	}
 
-	NdisAcquireSpinLock(&pAd->Mlme.TaskLock);
+	RTMP_SEM_LOCK(&pAd->Mlme.TaskLock);
 	pAd->Mlme.bRunning = false;
 	NdisReleaseSpinLock(&pAd->Mlme.TaskLock);
 }
@@ -3590,7 +3590,7 @@ bool MlmeEnqueue(
 		return false;
 	}
 
-	NdisAcquireSpinLock(&(Queue->Lock));
+	RTMP_SEM_LOCK(&(Queue->Lock));
 	Tail = Queue->Tail;
 	Queue->Tail++;
 	Queue->Num++;
@@ -3681,7 +3681,7 @@ bool MlmeEnqueueForRecv(
 
 	/* OK, we got all the informations, it is time to put things into queue*/
 
-	NdisAcquireSpinLock(&(Queue->Lock));
+	RTMP_SEM_LOCK(&(Queue->Lock));
 	Tail = Queue->Tail;
 	Queue->Tail++;
 	Queue->Num++;
@@ -3731,7 +3731,7 @@ bool MlmeDequeue(
 	IN MLME_QUEUE *Queue,
 	OUT MLME_QUEUE_ELEM **Elem)
 {
-	NdisAcquireSpinLock(&(Queue->Lock));
+	RTMP_SEM_LOCK(&(Queue->Lock));
 	*Elem = &(Queue->Entry[Queue->Head]);
 	Queue->Num--;
 	Queue->Head++;
@@ -3820,7 +3820,7 @@ bool MlmeQueueEmpty(
 {
 	bool Ans;
 
-	NdisAcquireSpinLock(&(Queue->Lock));
+	RTMP_SEM_LOCK(&(Queue->Lock));
 	Ans = (Queue->Num == 0);
 	NdisReleaseSpinLock(&(Queue->Lock));
 
@@ -3843,7 +3843,7 @@ bool MlmeQueueFull(
 {
 	bool Ans;
 
-	NdisAcquireSpinLock(&(Queue->Lock));
+	RTMP_SEM_LOCK(&(Queue->Lock));
 	if (SendId == 0)
 		Ans = ((Queue->Num >= (MAX_LEN_OF_MLME_QUEUE / 2)) || Queue->Entry[Queue->Tail].Occupied);
 	else
@@ -3866,7 +3866,7 @@ bool MlmeQueueFull(
 void MlmeQueueDestroy(
 	IN MLME_QUEUE *pQueue)
 {
-	NdisAcquireSpinLock(&(pQueue->Lock));
+	RTMP_SEM_LOCK(&(pQueue->Lock));
 	pQueue->Num  = 0;
 	pQueue->Head = 0;
 	pQueue->Tail = 0;

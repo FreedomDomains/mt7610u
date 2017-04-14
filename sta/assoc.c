@@ -1697,7 +1697,7 @@ bool StaAddMacTableEntry(
 		return false;
 #endif /* DOT11_N_SUPPORT */
 
-	NdisAcquireSpinLock(&pAd->MacTabLock);
+	RTMP_SEM_LOCK(&pAd->MacTabLock);
 	if (pEntry) {
 		memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
 		pEntry->PortSecured = WPA_802_1X_PORT_SECURED;

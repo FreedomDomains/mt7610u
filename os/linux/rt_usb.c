@@ -134,7 +134,7 @@ void RtmpMgmtTaskExit(
 	pTask = &pAd->cmdQTask;
 	RTMP_OS_TASK_LEGALITY(pTask)
 	{
-		NdisAcquireSpinLock(&pAd->CmdQLock);
+		RTMP_SEM_LOCK(&pAd->CmdQLock);
 		pAd->CmdQ.CmdQState = RTMP_TASK_STAT_STOPED;
 		NdisReleaseSpinLock(&pAd->CmdQLock);
 
@@ -904,7 +904,7 @@ INT RTUSBCmdThread(
 
 	RtmpOSTaskCustomize(pTask);
 
-	NdisAcquireSpinLock(&pAd->CmdQLock);
+	RTMP_SEM_LOCK(&pAd->CmdQLock);
 	pAd->CmdQ.CmdQState = RTMP_TASK_STAT_RUNNING;
 	NdisReleaseSpinLock(&pAd->CmdQLock);
 
@@ -924,7 +924,7 @@ INT RTUSBCmdThread(
 	if (!pAd->PM_FlgSuspend) {	/* Clear the CmdQElements. */
 		struct rtmp_queue_elem *pCmdQElmt = NULL;
 
-		NdisAcquireSpinLock(&pAd->CmdQLock);
+		RTMP_SEM_LOCK(&pAd->CmdQLock);
 		pAd->CmdQ.CmdQState = RTMP_TASK_STAT_STOPED;
 		while(pAd->CmdQ.size) {
 			RTThreadDequeueCmd(&pAd->CmdQ, &pCmdQElmt);

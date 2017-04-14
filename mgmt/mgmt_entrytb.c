@@ -141,7 +141,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 #endif /* CONFIG_STA_SUPPORT */
 
 	/* allocate one MAC entry*/
-	NdisAcquireSpinLock(&pAd->MacTabLock);
+	RTMP_SEM_LOCK(&pAd->MacTabLock);
 	for (i = FirstWcid; i< MaxWcidNum; i++)   /* skip entry#0 so that "entry index == AID" for fast lookup*/
 	{
 		/* pick up the first available vacancy*/
@@ -353,7 +353,7 @@ bool MacTableDeleteEntry(
 	if (wcid >= MAX_LEN_OF_MAC_TABLE)
 		return false;
 
-	NdisAcquireSpinLock(&pAd->MacTabLock);
+	RTMP_SEM_LOCK(&pAd->MacTabLock);
 
 	HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
 	/*pEntry = pAd->MacTab.Hash[HashIdx];*/
@@ -497,7 +497,7 @@ void MacTableReset(
 	bool     Cancelled;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("MacTableReset\n"));
-	/*NdisAcquireSpinLock(&pAd->MacTabLock);*/
+	/*RTMP_SEM_LOCK(&pAd->MacTabLock);*/
 
 
 	for (i=1; i<MAX_LEN_OF_MAC_TABLE; i++)

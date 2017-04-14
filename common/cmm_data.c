@@ -2313,7 +2313,7 @@ INT ip_assembly(
 					}
 
 					/* move backup fragments to SwTxQueue[] */
-					NdisAcquireSpinLock(&pAd->TxSwQueueLock[QueIdx]);
+					RTMP_SEM_LOCK(&pAd->TxSwQueueLock[QueIdx]);
 					while (1) {
 						pBackupPktEntry = RemoveHeadQueue(pTempqueue);
 						if (pBackupPktEntry == NULL)

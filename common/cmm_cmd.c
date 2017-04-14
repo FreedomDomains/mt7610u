@@ -131,7 +131,7 @@ int RTEnqueueInternalCmd(
 	cmdqelmt->command = Oid;
 
 	if (cmdqelmt != NULL) {
-		NdisAcquireSpinLock(&pAd->CmdQLock);
+		RTMP_SEM_LOCK(&pAd->CmdQLock);
 		if (pAd->CmdQ.CmdQState & RTMP_TASK_CAN_DO_INSERT) {
 			EnqueueCmd((&pAd->CmdQ), cmdqelmt);
 			status = NDIS_STATUS_SUCCESS;
