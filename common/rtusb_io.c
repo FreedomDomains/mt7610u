@@ -29,6 +29,14 @@
 
 #define MAX_VENDOR_REQ_RETRY_COUNT  10
 
+/* Known USB Vendor Commands */
+#define MT7610U_VENDOR_DEVICE_MODE	0x01
+#define MT7610U_VENDOR_SINGLE_WRITE	0x02
+#define MT7610U_VENDOR_WRITE_MAC	0x06
+#define MT7610U_VENDOR_READ_MAC		0x07
+#define MT7610U_VENDOR_WRITE_EEPROM	0x08	/* Not used */
+#define MT7610U_VENDOR_READ_EEPROM	0x09
+
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *key, int keylen)
 {
@@ -39,7 +47,7 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 
 		RTUSB_VendorRequest(pAd,
 				    DEVICE_VENDOR_REQUEST_OUT,
-				    0x2,
+				    MT7610U_VENDOR_SINGLE_WRITE,
 				    val,
 				    Offset + idx,
 				    NULL,
@@ -75,7 +83,7 @@ u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 	status = RTUSB_VendorRequest(
 		pAd,
 		DEVICE_VENDOR_REQUEST_IN,
-		0x7,
+		MT7610U_VENDOR_READ_MAC,
 		0,
 		Offset,
 		&val,
@@ -115,7 +123,7 @@ void mt7610u_write32(
 	RTUSB_VendorRequest(
 			pAd,
 			DEVICE_VENDOR_REQUEST_OUT,
-			0x6,
+			MT7610U_VENDOR_WRITE_MAC,
 			0,
 			Offset,
 			&val,
@@ -205,7 +213,7 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 	RTUSB_VendorRequest(
 			pAd,
 			DEVICE_VENDOR_REQUEST_IN,
-			0x9,
+			MT7610U_VENDOR_READ_EEPROM,
 			0,
 			offset,
 			&localData,

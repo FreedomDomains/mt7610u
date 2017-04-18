@@ -31,6 +31,14 @@
 static u8 CommandBulkOutAddr = 0x8;
 static u8 CommandRspBulkInAddr = 0x85;
 
+/* Known USB Vendor Commands */
+#define MT7610U_VENDOR_DEVICE_MODE	0x01
+#define MT7610U_VENDOR_SINGLE_WRITE	0x02
+#define MT7610U_VENDOR_WRITE_MAC	0x06
+#define MT7610U_VENDOR_READ_MAC		0x07
+#define MT7610U_VENDOR_WRITE_EEPROM	0x08	/* Not used */
+#define MT7610U_VENDOR_READ_EEPROM	0x09
+
 #define MT7610U_VENDOR_WRITE_FCE	0x42
 
 void usb_uploadfw_complete(struct urb *urb)
@@ -49,7 +57,7 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 	if (cap->load_iv) {
 		Status = RTUSB_VendorRequest(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
-				 0x01,
+				 MT7610U_VENDOR_DEVICE_MODE,
 				 0x12,
 				 0x00,
 				 fw_image + 32,
@@ -57,7 +65,7 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 	} else {
 		Status = RTUSB_VendorRequest(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
-				 0x01,
+				 MT7610U_VENDOR_DEVICE_MODE,
 				 0x12,
 				 0x00,
 				 NULL,
@@ -94,7 +102,7 @@ static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 	RTUSB_VendorRequest(
 		pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
-		0x01,
+		MT7610U_VENDOR_DEVICE_MODE,
 		0x1,
 		0,
 		NULL,
