@@ -31,6 +31,8 @@
 static u8 CommandBulkOutAddr = 0x8;
 static u8 CommandRspBulkInAddr = 0x85;
 
+#define MT7610U_VENDOR_WRITE_FCE	0x42
+
 void usb_uploadfw_complete(struct urb *urb)
 {
 	struct completion *load_fw_done = urb->context;
@@ -264,7 +266,7 @@ loadfw_protect:
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
-					 0x42,
+					 MT7610U_VENDOR_WRITE_FCE,
 					 value,
 					 0x230,
 					 NULL,
@@ -281,7 +283,7 @@ loadfw_protect:
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
-					 0x42,
+					 MT7610U_VENDOR_WRITE_FCE,
 					 value,
 					 0x232,
 					 NULL,
@@ -302,7 +304,7 @@ loadfw_protect:
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
-					 0x42,
+					 MT7610U_VENDOR_WRITE_FCE,
 					 value,
 					 0x234,
 					 NULL,
@@ -318,7 +320,7 @@ loadfw_protect:
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
-					 0x42,
+					 MT7610U_VENDOR_WRITE_FCE,
 					 value,
 					 0x236,
 					 NULL,
@@ -392,7 +394,7 @@ loadfw_protect:
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
-					 0x42,
+					 MT7610U_VENDOR_WRITE_FCE,
 					 value,
 					 0x230,
 					 NULL,
@@ -409,7 +411,7 @@ loadfw_protect:
 			/* Set FCE DMA descriptor */
 			ret = RTUSB_VendorRequest(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
-					  0x42,
+					  MT7610U_VENDOR_WRITE_FCE,
 					  value,
 					  0x232,
 					  NULL,
@@ -430,7 +432,7 @@ loadfw_protect:
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
-					  0x42,
+					  MT7610U_VENDOR_WRITE_FCE,
 					  value,
 					  0x234,
 					  NULL,
@@ -446,7 +448,7 @@ loadfw_protect:
 			/* Set FCE DMA length */
 			ret = RTUSB_VendorRequest(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
-					  0x42,
+					  MT7610U_VENDOR_WRITE_FCE,
 					  value,
 					  0x236,
 					  NULL,
