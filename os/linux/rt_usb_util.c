@@ -106,33 +106,6 @@ void RtmpOsUsbEmptyUrbCheck(
 	remove_wait_queue (&unlink_wakeup, &wait);
 }
 
-
-void RtmpOsUsbInitHTTxDesc(
-	struct urb *pUrb,
-	struct usb_device *pUsb_Dev,
-	UINT BulkOutEpAddr,
-	u8 *pSrc,
-	ULONG BulkOutSize,
-	USB_COMPLETE_HANDLER Func,
-	void *pTxContext,
-	dma_addr_t TransferDma)
-{
-	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
-
-
-	ASSERT(pUrb);
-
-	/*Initialize a tx bulk urb */
-	RTUSB_FILL_HTTX_BULK_URB(pUrb,
-						pUsb_Dev,
-						BulkOutEpAddr,
-						pSrc,
-						BulkOutSize,
-						(usb_complete_t)Func,
-						pTxContext,
-						DmaAddr);
-}
-
 /*
 ========================================================================
 Routine Description:

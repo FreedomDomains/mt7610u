@@ -731,17 +731,6 @@ void RtmpOsUsbEmptyUrbCheck(
 	IN	spinlock_t		*pBulkInLock,
 	IN	u8 			*pPendingRx);
 
-
-void RtmpOsUsbInitHTTxDesc(
-	struct urb *pUrb,
-	struct usb_device *pUsb_Dev,
-	UINT BulkOutEpAddr,
-	u8 *pSrc,
-	ULONG BulkOutSize,
-	USB_COMPLETE_HANDLER Func,
-	void *pTxContext,
-	dma_addr_t TransferDma);
-
 u32 RtmpOsGetUsbDevVendorID(
 	IN void *pUsbDev);
 
