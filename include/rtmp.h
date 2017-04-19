@@ -5918,14 +5918,9 @@ int RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	u32			Value);
 
-int RTUSB_VendorRequest(
-	IN	struct rtmp_adapter *pAd,
-	IN	u8 		ReservedBits,
-	IN	u8 		Request,
-	IN	u16		Value,
-	IN	u16		Index,
-	IN	void *		TransferBuffer,
-	IN	u32		TransferBufferLength);
+int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 ReservedBits,
+	u8 Request, u16 Value, u16 Index, void *TransferBuffer,
+	u32 TransferBufferLength);
 
 void RTUSBDequeueCmd(struct rtmp_command_queue *cmdq,
 	struct rtmp_queue_elem	*pcmdqelmt);

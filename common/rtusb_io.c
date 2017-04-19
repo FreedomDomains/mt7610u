@@ -256,14 +256,9 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 
 	========================================================================
 */
-int RTUSB_VendorRequest(
-	struct rtmp_adapter *pAd,
-	u8 RequestType,
-	u8 Request,
-	u16 Value,
-	u16 Index,
-	void *TransferBuffer,
-	u32 TransferBufferLength)
+int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 RequestType, u8 Request,
+			u16 Value, u16 Index, void *TransferBuffer,
+			u32 TransferBufferLength)
 {
 	int ret = 0;
 	struct usb_device *udev = pAd->OS_Cookie->pUsb_Dev;
