@@ -742,17 +742,6 @@ void RtmpOsUsbInitHTTxDesc(
 	void *pTxContext,
 	dma_addr_t TransferDma);
 
-void RtmpOsUsbInitRxDesc(
-	struct urb *pUrb,
-	struct usb_device *pUsb_Dev,
-	UINT BulkInEpAddr,
-	u8 *pTransferBuffer,
-	u32 BufSize,
-	USB_COMPLETE_HANDLER Func,
-	void *pRxContext,
-	dma_addr_t TransferDma);
-
-
 u32 RtmpOsGetUsbDevVendorID(
 	IN void *pUsbDev);
 

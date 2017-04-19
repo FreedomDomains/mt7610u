@@ -133,34 +133,6 @@ void RtmpOsUsbInitHTTxDesc(
 						DmaAddr);
 }
 
-
-void RtmpOsUsbInitRxDesc(
-	struct urb *pUrb,
-	struct usb_device *pUsb_Dev,
-	UINT BulkInEpAddr,
-	u8 *pTransferBuffer,
-	u32 BufSize,
-	USB_COMPLETE_HANDLER Func,
-	void *pRxContext,
-	dma_addr_t TransferDma)
-{
-	dma_addr_t DmaAddr = (dma_addr_t)(TransferDma);
-
-
-	ASSERT(pUrb);
-
-	/*Initialize a rx bulk urb */
-	RTUSB_FILL_RX_BULK_URB(pUrb,
-						pUsb_Dev,
-						BulkInEpAddr,
-						pTransferBuffer,
-						BufSize,
-						(usb_complete_t)Func,
-						pRxContext,
-						DmaAddr);
-}
-
-
 /*
 ========================================================================
 Routine Description:
