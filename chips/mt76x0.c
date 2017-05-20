@@ -2079,13 +2079,13 @@ void MT76x0_VCO_CalibrationMode3(struct rtmp_adapter *pAd, u8 Channel)
 	return;
 }
 
-void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
-	bool bFullCal)
+void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel)
 {
 	u32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
+	int band_nr = (Channel > 14) ? 1 : 0;
 	u32 ret;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d, bPowerOn = %d, bFullCal = %d\n", __FUNCTION__, Channel, bPowerOn, bFullCal));
+	DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d\n", __FUNCTION__, Channel));
 
 	ret = down_interruptible(&pAd->cal_atomic);
 	if (ret != 0) {
@@ -2093,28 +2093,23 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		return;
 	}
 
-	if (!(bPowerOn || bFullCal))
-		goto RXDC_Calibration;
+	/*
+		Do Power on calibration.
+		The calibration sequence is very important, please do NOT change it.
+		1 XTAL Setup (already done in AsicRfInit)
+		2 R-calibration
+		3 VCO calibration
+	*/
 
-	if (bPowerOn) {
-		/*
-			Do Power on calibration.
-			The calibration sequence is very important, please do NOT change it.
-			1 XTAL Setup (already done in AsicRfInit)
-			2 R-calibration
-			3 VCO calibration
-		*/
+	/*
+		2 R-calibration
+	*/
+	mt7610u_mcu_calibration(pAd, R_CALIBRATION, 0x0);
 
-		/*
-			2 R-calibration
-		*/
-		mt7610u_mcu_calibration(pAd, R_CALIBRATION, 0x0);
-
-		/*
-			3 VCO calibration (mode 3)
-		*/
-		MT76x0_VCO_CalibrationMode3(pAd, Channel);
-	}
+	/*
+		3 VCO calibration (mode 3)
+	*/
+	MT76x0_VCO_CalibrationMode3(pAd, Channel);
 
 	reg_tx_alc = mt7610u_read32(pAd, TX_ALC_CFG_0); /* We need to restore 0x13b0 after calibration. */
 	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
@@ -2142,150 +2137,147 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		16 On-chip temp sensor reading --> not ready yet @20130129
 		17 RX DCOC calibration
 	*/
-	if (bFullCal) {
-		int band_nr = (Channel > 14) ? 1 : 0;
-		/*
-			4. RXDC Calibration parameter
-				0:Back Ground Disable
-		*/
-		mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 0);
+	/*
+		4. RXDC Calibration parameter
+			0:Back Ground Disable
+	*/
+	mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 0);
 
-		/*
-			5. LC-Calibration parameter
-				Bit[0:7]
-					0: 2G
-					1: 5G + External PA
-					2: 5G + Internal PA
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		5. LC-Calibration parameter
+			Bit[0:7]
+				0: 2G
+				1: 5G + External PA
+				2: 5G + Internal PA
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		// TODO: check PA setting from EEPROM @20121016
-		mt7610u_mcu_calibration(pAd, LC_CALIBRATION, band_nr);
+	// TODO: check PA setting from EEPROM @20121016
+	mt7610u_mcu_calibration(pAd, LC_CALIBRATION, band_nr);
 
-		/*
-			6,7. BW-Calibration
-				Bit[0:7] (0:RX, 1:TX)
-				Bit[8:15] (0:BW20, 1:BW40, 2:BW80)
-				Bit[16:23]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		6,7. BW-Calibration
+			Bit[0:7] (0:RX, 1:TX)
+			Bit[8:15] (0:BW20, 1:BW40, 2:BW80)
+			Bit[16:23]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		/*
-			8. RF LOFT-Calibration parameter
-				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		8. RF LOFT-Calibration parameter
+			Bit[0:7] (0:G-Band, 1: A-Band)
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		mt7610u_mcu_calibration(pAd, LOFT_CALIBRATION, band_nr);
+	mt7610u_mcu_calibration(pAd, LOFT_CALIBRATION, band_nr);
 
-		/*
-			9. TXIQ-Calibration parameter
-				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		9. TXIQ-Calibration parameter
+			Bit[0:7] (0:G-Band, 1: A-Band)
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		mt7610u_mcu_calibration(pAd, TXIQ_CALIBRATION, band_nr);
+	mt7610u_mcu_calibration(pAd, TXIQ_CALIBRATION, band_nr);
 
-		/*
-			10. TX Group-Delay Calibation parameter
-				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		10. TX Group-Delay Calibation parameter
+			Bit[0:7] (0:G-Band, 1: A-Band)
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		mt7610u_mcu_calibration(pAd, TX_GROUP_DELAY_CALIBRATION, band_nr);
+	mt7610u_mcu_calibration(pAd, TX_GROUP_DELAY_CALIBRATION, band_nr);
 
-		/*
-			11. RXIQ-Calibration parameter
-				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		11. RXIQ-Calibration parameter
+			Bit[0:7] (0:G-Band, 1: A-Band)
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		mt7610u_mcu_calibration(pAd, RXIQ_CALIBRATION, band_nr);
+	mt7610u_mcu_calibration(pAd, RXIQ_CALIBRATION, band_nr);
 
-		/*
-			12. RX Group-Delay Calibation parameter
-				Bit[0:7] (0:G-Band, 1: A-Band)
-				Bit[8:15]
-					0: Full Calibration
-					1: Partial Calibration
-					2: G-Band Full Calibration + Save
-					3: A-Band (Low) Full Calibration + Save
-					4: A-Band (Mid) Full Calibration + Save
-					5: A-Band (High) Full Calibration + Save
-					6: G-Band Restore Calibration
-					7: A-Band (Low) Restore Calibration
-					8: A-Band (Mid) Restore Calibration
-					9: A-Band (High) Restore Calibration
-		*/
+	/*
+		12. RX Group-Delay Calibation parameter
+			Bit[0:7] (0:G-Band, 1: A-Band)
+			Bit[8:15]
+				0: Full Calibration
+				1: Partial Calibration
+				2: G-Band Full Calibration + Save
+				3: A-Band (Low) Full Calibration + Save
+				4: A-Band (Mid) Full Calibration + Save
+				5: A-Band (High) Full Calibration + Save
+				6: G-Band Restore Calibration
+				7: A-Band (Low) Restore Calibration
+				8: A-Band (Mid) Restore Calibration
+				9: A-Band (High) Restore Calibration
+	*/
 
-		mt7610u_mcu_calibration(pAd, RX_GROUP_DELAY_CALIBRATION, band_nr);
+	mt7610u_mcu_calibration(pAd, RX_GROUP_DELAY_CALIBRATION, band_nr);
 
-		/*
-			14. TX 2G DPD - Only 2.4G needs to do DPD Calibration.
-				Bit[0:7] (1~14 Channel)
-				Bit[8:15] (0:BW20, 1:BW40)
-				NOTE: disable DPD calibration for USB products
-		*/
-	}
+	/*
+		14. TX 2G DPD - Only 2.4G needs to do DPD Calibration.
+			Bit[0:7] (1~14 Channel)
+			Bit[8:15] (0:BW20, 1:BW40)
+			NOTE: disable DPD calibration for USB products
+	*/
 
 	/* Restore 0x2124 & TX_ALC_CFG_0 after calibration completed */
 	mt7610u_write32(pAd, 0x2124, reg_val);

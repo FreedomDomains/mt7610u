@@ -166,9 +166,7 @@ void MT76x0_VCO_CalibrationMode3(
 
 void MT76x0_Calibration(
 	IN struct rtmp_adapter *pAd,
-	IN u8 Channel,
-	IN bool bPowerOn,
-	IN bool bFullCal);
+	IN u8 Channel);
 
 void MT76x0_TempSensor(
 	IN struct rtmp_adapter *pAd);
