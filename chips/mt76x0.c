@@ -1619,7 +1619,7 @@ static void MT76x0_ChipSwitchChannel(
 	MT76x0_VCO_CalibrationMode3(pAd, Channel);
 
 	if (bScan)
-		MT76x0_Calibration(pAd, Channel, false, false);
+		mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 1);
 
 	RTMPusecDelay(1000);
 
