@@ -1619,7 +1619,7 @@ static void MT76x0_ChipSwitchChannel(
 	MT76x0_VCO_CalibrationMode3(pAd, Channel);
 
 	if (bScan)
-		MT76x0_Calibration(pAd, Channel, false, false, false);
+		MT76x0_Calibration(pAd, Channel, false, false);
 
 	RTMPusecDelay(1000);
 
@@ -2080,7 +2080,7 @@ void MT76x0_VCO_CalibrationMode3(struct rtmp_adapter *pAd, u8 Channel)
 }
 
 void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
-	bool bDoTSSI, bool bFullCal)
+	bool bFullCal)
 {
 	u32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
 	u32 ret;
@@ -2093,7 +2093,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel, bool bPowerOn,
 		return;
 	}
 
-	if (!(bPowerOn || bDoTSSI || bFullCal))
+	if (!(bPowerOn || bFullCal))
 		goto RXDC_Calibration;
 
 	if (bPowerOn) {

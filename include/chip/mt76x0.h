@@ -168,7 +168,6 @@ void MT76x0_Calibration(
 	IN struct rtmp_adapter *pAd,
 	IN u8 Channel,
 	IN bool bPowerOn,
-	IN bool bDoTSSI,
 	IN bool bFullCal);
 
 void MT76x0_TempSensor(
