@@ -2638,10 +2638,10 @@ static void adjust_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 
 	DBGPRINT(RT_DEBUG_OFF, ("*** %s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
 		__func__,
-		(band == A_BAND) ? "5G" : "2.4G",
+		(band == NL80211_BAND_5GHZ) ? "5G" : "2.4G",
 		temp_minus_bdy[7], temp_minus_bdy[6], temp_minus_bdy[5],
 		temp_minus_bdy[4], temp_minus_bdy[3], temp_minus_bdy[2], temp_minus_bdy[1],
-		(band == A_BAND) ? (CHAR)pAd->TssiRefA : (CHAR)pAd->TssiRefG,
+		(band == NL80211_BAND_5GHZ) ? (CHAR)pAd->TssiRefA : (CHAR)pAd->TssiRefG,
 		temp_plus_bdy[1], temp_plus_bdy[2], temp_plus_bdy[3], temp_plus_bdy[4],
 		temp_plus_bdy[5], temp_plus_bdy[6], temp_plus_bdy[7], temp_reference));
 
@@ -2660,17 +2660,17 @@ static void adjust_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 		ASSERT(temp_plus_bdy[idx] <= upper_bound);
 	}
 
-	if (band == A_BAND)
+	if (band == NL80211_BAND_5GHZ)
 		pAd->TssiRefA = temp_minus_bdy[0];
 	else
 		pAd->TssiRefG = temp_minus_bdy[0];
 
 	DBGPRINT(RT_DEBUG_OFF,("%s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
 		__FUNCTION__,
-		(band == A_BAND) ? "5G" : "2.4G",
+		(band == NL80211_BAND_5GHZ) ? "5G" : "2.4G",
 		temp_minus_bdy[7], temp_minus_bdy[6], temp_minus_bdy[5],
 		temp_minus_bdy[4], temp_minus_bdy[3], temp_minus_bdy[2], temp_minus_bdy[1],
-		(band == A_BAND) ? (CHAR)pAd->TssiRefA : (CHAR)pAd->TssiRefG,
+		(band == NL80211_BAND_5GHZ) ? (CHAR)pAd->TssiRefA : (CHAR)pAd->TssiRefG,
 		temp_plus_bdy[1], temp_plus_bdy[2], temp_plus_bdy[3], temp_plus_bdy[4],
 		temp_plus_bdy[5], temp_plus_bdy[6], temp_plus_bdy[7], temp_reference));
 }
@@ -2746,7 +2746,7 @@ bool load_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 
 	DBGPRINT(RT_DEBUG_OFF, ("%s(): load %s %s table from eeprom 0x%x to 0x%x (start_idx = %d)\n",
 		__FUNCTION__,
-		(band == A_BAND) ? "5G" : "2.4G",
+		(band == NL80211_BAND_5GHZ) ? "5G" : "2.4G",
 		(table_sign == 1) ? "plus" : "minus",
 		e2p_start_addr, e2p_end_addr, start_idx));
 
@@ -2811,15 +2811,15 @@ void mt76x0_temp_tx_alc_init(struct rtmp_adapter *pAd)
 	pAd->DeltaPwrBeforeTempComp = 0;
 	pAd->LastTempCompDeltaPwr = 0;
 
-	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[0],
+	adjust_temp_tx_alc_table(pAd, NL80211_BAND_5GHZ, pAd->TssiMinusBoundaryA[0],
 								pAd->TssiPlusBoundaryA[0], pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryA[0], pAd->TssiPlusBoundaryA[0]);
 
-	adjust_temp_tx_alc_table(pAd, A_BAND, pAd->TssiMinusBoundaryA[1],
+	adjust_temp_tx_alc_table(pAd, NL80211_BAND_5GHZ, pAd->TssiMinusBoundaryA[1],
 								pAd->TssiPlusBoundaryA[1], pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryA[1], pAd->TssiPlusBoundaryA[1]);
 
-	adjust_temp_tx_alc_table(pAd, BG_BAND, pAd->TssiMinusBoundaryG,
+	adjust_temp_tx_alc_table(pAd, NL80211_BAND_2GHZ, pAd->TssiMinusBoundaryG,
 								pAd->TssiPlusBoundaryG, pAd->TssiCalibratedOffset);
 	adjust_mp_temp(pAd, pAd->TssiMinusBoundaryG, pAd->TssiPlusBoundaryG);
 }
@@ -2859,21 +2859,21 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 
 		/* Load group#1 settings of A band */
 		load_temp_tx_alc_table(
-			pAd, A_BAND, 0xF6, 0xF0, pAd->TssiMinusBoundaryA[0], 1, sizeof(pAd->TssiMinusBoundaryA[0]));
+			pAd, NL80211_BAND_5GHZ, 0xF6, 0xF0, pAd->TssiMinusBoundaryA[0], 1, sizeof(pAd->TssiMinusBoundaryA[0]));
 		load_temp_tx_alc_table(
-			pAd, A_BAND, 0xF7, 0xFD, pAd->TssiPlusBoundaryA[0], 1, sizeof(pAd->TssiPlusBoundaryA[0]));
+			pAd, NL80211_BAND_5GHZ, 0xF7, 0xFD, pAd->TssiPlusBoundaryA[0], 1, sizeof(pAd->TssiPlusBoundaryA[0]));
 
 		/* Load group#2 settings of A band */
 		load_temp_tx_alc_table(
-			pAd, A_BAND, 0x104, 0xFE, pAd->TssiMinusBoundaryA[1], 1, sizeof(pAd->TssiMinusBoundaryA[1]));
+			pAd, NL80211_BAND_5GHZ, 0x104, 0xFE, pAd->TssiMinusBoundaryA[1], 1, sizeof(pAd->TssiMinusBoundaryA[1]));
 		load_temp_tx_alc_table(
-			pAd, A_BAND, 0x105, 0x10B, pAd->TssiPlusBoundaryA[1], 1, sizeof(pAd->TssiPlusBoundaryA[1]));
+			pAd, NL80211_BAND_5GHZ, 0x105, 0x10B, pAd->TssiPlusBoundaryA[1], 1, sizeof(pAd->TssiPlusBoundaryA[1]));
 
 		/* Load group settings of G band */
 		load_temp_tx_alc_table(
-			pAd, BG_BAND, 0x1B6, 0x1B0, pAd->TssiMinusBoundaryG, 1, sizeof(pAd->TssiMinusBoundaryG));
+			pAd, NL80211_BAND_2GHZ, 0x1B6, 0x1B0, pAd->TssiMinusBoundaryG, 1, sizeof(pAd->TssiMinusBoundaryG));
 		load_temp_tx_alc_table(
-			pAd, BG_BAND, 0x1B7, 0x1BD, pAd->TssiPlusBoundaryG, 1, sizeof(pAd->TssiPlusBoundaryG));
+			pAd, NL80211_BAND_2GHZ, 0x1B7, 0x1BD, pAd->TssiPlusBoundaryG, 1, sizeof(pAd->TssiPlusBoundaryG));
 
 		mt76x0_temp_tx_alc_init(pAd);
 	} else
