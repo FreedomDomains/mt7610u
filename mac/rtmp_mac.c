@@ -380,32 +380,6 @@ void RTMPWriteTxWI_Cache(
 
 }
 
-
-INT rtmp_mac_set_band(struct rtmp_adapter*pAd, int  band)
-{
-	u32 val, band_cfg;
-
-
-	band_cfg = mt7610u_read32(pAd, TX_BAND_CFG);
-	val = band_cfg & (~0x6);
-	switch (band)
-	{
-		case BAND_5G:
-			val |= 0x02;
-			break;
-		case BAND_24G:
-		default:
-			val |= 0x4;
-			break;
-	}
-
-	if (val != band_cfg)
-		mt7610u_write32(pAd, TX_BAND_CFG, val);
-
-	return true;
-}
-
-
 void mt7610u_mac_set_ctrlch(struct rtmp_adapter*pAd, int extch)
 {
 	u32 val, band_cfg;

@@ -1026,14 +1026,32 @@ void InitFce(
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: <--\n", __FUNCTION__));
 }
 
+void _mt7610u_phy_set_band(struct rtmp_adapter*pAd, int  band)
+{
+	u32 val, band_cfg;
+
+
+	band_cfg = mt7610u_read32(pAd, TX_BAND_CFG);
+	val = band_cfg & (~0x6);
+	switch (band) {
+	case BAND_5G:
+		val |= 0x02;
+		break;
+	case BAND_24G:
+	default:
+		val |= 0x4;
+		break;
+	}
+
+	if (val != band_cfg)
+		mt7610u_write32(pAd, TX_BAND_CFG, val);
+}
 
 /*
 	Select 2.4/5GHz band
 */
-void SelectBandMT76x0(struct rtmp_adapter *pAd, u8 Channel)
+void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 {
-	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
-
 	if (Channel <= 14) {
 		/* Select 2.4GHz */
 		mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
@@ -1041,7 +1059,7 @@ void SelectBandMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x45);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x44);
 
-		rtmp_mac_set_band(pAd, BAND_24G);
+		_mt7610u_phy_set_band(pAd, BAND_24G);
 
 		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00050007);
 		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
@@ -1052,13 +1070,11 @@ void SelectBandMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x44);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x45);
 
-		rtmp_mac_set_band(pAd, BAND_5G);
+		_mt7610u_phy_set_band(pAd, BAND_5G);
 
 		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00000005);
 		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x01010102);
 	}
-
-	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
 }
 
 /*
@@ -1566,7 +1582,7 @@ static void MT76x0_ChipSwitchChannel(
 	/*
 		Configure 2.4/5GHz before accessing other MAC/BB/RF registers
 	*/
-	SelectBandMT76x0(pAd, Channel);
+	mt7610u_phy_set_band(pAd, Channel);
 
 	/*
 		Set RF channel frequency parameters (Rdiv, N, K, D and Ksd)
