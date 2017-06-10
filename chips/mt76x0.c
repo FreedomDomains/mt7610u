@@ -70,8 +70,6 @@ static struct rtmp_reg_pair MT76x0_MACRegTable[] = {
 	{ LDO_CTRL1,		0x6B006464 },	/* Default LDO_DIG supply 1.26V, change to 1.2V */
 };
 
-static u8 MT76x0_NUM_MAC_REG_PARMS = (sizeof(MT76x0_MACRegTable) / sizeof(struct rtmp_reg_pair));
-
 static struct rtmp_reg_pair MT76x0_DCOC_Tab[] = {
 	{ CAL_R47,	0x000010F0 },
 	{ CAL_R48,	0x00008080 },
@@ -83,7 +81,6 @@ static struct rtmp_reg_pair MT76x0_DCOC_Tab[] = {
 	{ CAL_R54,	0x00002828 },
 	{ CAL_R55,	0x00005050 },
 };
-static u8 MT76x0_DCOC_Tab_Size = (sizeof(MT76x0_DCOC_Tab) / sizeof(struct rtmp_reg_pair));
 
 static struct rtmp_reg_pair MT76x0_BBP_Init_Tab[] = {
 	{ CORE_R1,	0x00000002 },
@@ -157,8 +154,6 @@ static struct rtmp_reg_pair MT76x0_BBP_Init_Tab[] = {
 	{ RXO_R21,	0x00000001 },
 	{ RXO_R24,	0x00000006 },
 };
-static u8 MT76x0_BBP_Init_Tab_Size = (sizeof(MT76x0_BBP_Init_Tab) / sizeof(struct rtmp_reg_pair));
-
 
 MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[] = {
 	{RF_G_BAND | RF_BW_20 | RF_BW_40,		{ AGC1_R8, 0x0E344EF0} },
@@ -229,8 +224,6 @@ MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[] = {
 	{RF_G_BAND | RF_BW_20 | RF_BW_40,		{ RXFE_R0, 0x3D5000E0} },
 	{RF_A_BAND | RF_BW_20 | RF_BW_40 | RF_BW_80,	{ RXFE_R0, 0x895000E0} },
 };
-
-u8 MT76x0_BPP_SWITCH_Tab_Size = (sizeof(MT76x0_BPP_SWITCH_Tab) / sizeof(MT76x0_BBP_Table));
 
 /* Bank	Register Value(Hex) */
 static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
@@ -317,7 +310,6 @@ static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
 	{ RF_BANK0,	RF_R72, 0xD0 },
 	{ RF_BANK0,	RF_R73, 0x93 },
 };
-static u32 MT76x0_RF_Central_RegTb_Size = (sizeof(MT76x0_RF_Central_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
 /*
@@ -417,7 +409,6 @@ static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
 	{ RF_BANK5,	RF_R69, 0xF0 },
 	{ RF_BANK5,	RF_R127, 0x04 },
 };
-static u32 MT76x0_RF_2G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_2G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
 /*
@@ -493,7 +484,6 @@ static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
 	{ RF_BANK6,	RF_R64, 0xF1 },
 	{ RF_BANK6,	RF_R65, 0x0F },
 };
-static u32 MT76x0_RF_5G_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_5G_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static BANK_RF_REG_PAIR MT76x0_RF_VGA_Channel_0_RegTb[] = {
 /*
@@ -541,7 +531,6 @@ static BANK_RF_REG_PAIR MT76x0_RF_VGA_Channel_0_RegTb[] = {
 	{ RF_BANK7,	RF_R73, 0x34 },
 	{ RF_BANK7,	RF_R74, 0x00 },
 };
-static u32 MT76x0_RF_VGA_Channel_0_RegTb_Size = (sizeof(MT76x0_RF_VGA_Channel_0_RegTb) / sizeof(BANK_RF_REG_PAIR));
 
 static MT76x0_FREQ_ITEM MT76x0_Frequency_Plan[] = {
 	{1,	RF_G_BAND,	0x02, 0x3F, 0x28, 0xDD, 0xE2, 0x40, 0x02, 0x40, 0x02, 0, 0, 1, 0x28, 0, 0x30, 0, 0, 0x3}, /* Freq 2412 */
@@ -674,8 +663,6 @@ static MT76x0_FREQ_ITEM MT76x0_Frequency_Plan[] = {
 	{172, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x30, 0x97, 0xD2, 0x40, 0x04, 0x40, 0x0A, 0, 0, 1, 0x30, 0, 0x30, 0, 0, 0x3}, /* Freq 5860 */
 	{173, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x68, 0xDD, 0xD2, 0x40, 0x10, 0x40, 0x15, 0, 0, 1, 0x30, 0, 0x30, 0, 0, 0x3}, /* Freq 5865 */
 };
-u8 NUM_OF_MT76x0_CHNL = (sizeof(MT76x0_Frequency_Plan) / sizeof(MT76x0_FREQ_ITEM));
-
 
 static MT76x0_FREQ_ITEM MT76x0_SDM_Frequency_Plan[] = {
 	{1,	RF_G_BAND,	0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x28, 0, 0x0, 0x8, 0xCCCC,  0x3}, /* Freq 2412 */
@@ -808,15 +795,12 @@ static MT76x0_FREQ_ITEM MT76x0_SDM_Frequency_Plan[] = {
 	{172, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x30, 0, 0x0, 0x8, 0x35555, 0x3}, /* Freq 5860 */
 	{173, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x30, 0, 0x0, 0x8, 0x38000, 0x3}, /* Freq 5865 */
 };
-u8 NUM_OF_MT76x0_SDM_CHNL = (sizeof(MT76x0_SDM_Frequency_Plan) / sizeof(MT76x0_FREQ_ITEM));
 
 static u8 MT76x0_SDM_Channel[] = {
 	183, 185,  43,  45,  54,  55,  57,  58,
 	102, 103, 105, 106, 115, 117, 126, 127,
 	129, 130, 139, 141, 150, 151, 153, 154,
 	163, 165 };
-
-static u8 MT76x0_SDM_Channel_Size = (sizeof(MT76x0_SDM_Channel) / sizeof(u8));
 
 static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_BW_Switch[] = {
 	/*   Bank, 		Register,	Bw/Band, 	Value */
@@ -872,7 +856,6 @@ static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_BW_Switch[] = {
 	{ RF_BANK7,	RF_R77,	BW_40,			0x40},
 	{ RF_BANK7,	RF_R77,	BW_80,			0x10},
 };
-u8 MT76x0_RF_BW_Switch_Size = (sizeof(MT76x0_RF_BW_Switch) / sizeof(MT76x0_RF_SWITCH_ITEM));
 
 static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_Band_Switch[] = {
 	/*   Bank, 	Register,	Bw/Band, 	Value */
@@ -936,7 +919,6 @@ static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_Band_Switch[] = {
 	{ RF_BANK7,	RF_R79,		RF_G_BAND,	0x00 },
 	{ RF_BANK7,	RF_R79,		RF_A_BAND,	0x55 },
 };
-u8 MT76x0_RF_Band_Switch_Size = (sizeof(MT76x0_RF_Band_Switch) / sizeof(MT76x0_RF_SWITCH_ITEM));
 
 /*
 	External PA
@@ -998,14 +980,11 @@ static MT76x0_RF_SWITCH_ITEM MT76x0_RF_EXT_PA_RegTb[] = {
 	{ RF_BANK6,	RF_R59,		RF_A_BAND_11J,	0x07 },
 };
 
-static u32 MT76x0_RF_EXT_PA_RegTb_Size = (sizeof(MT76x0_RF_EXT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
-
 /*
 	Internal PA
 */
 static MT76x0_RF_SWITCH_ITEM MT76x0_RF_INT_PA_RegTb[] = {
 };
-static u32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / sizeof(MT76x0_RF_SWITCH_ITEM));
 
 //
 // Initialize FCE
@@ -1054,8 +1033,9 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 {
 	if (Channel <= 14) {
 		/* Select 2.4GHz */
-		mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
-
+		mt7610u_mcu_rf_random_write(pAd,
+			MT76x0_RF_2G_Channel_0_RegTb,
+			ARRAY_SIZE(MT76x0_RF_2G_Channel_0_RegTb));
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x45);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x44);
 
@@ -1065,8 +1045,9 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
 	} else {
 		/* Select 5GHz */
-		mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
-
+		mt7610u_mcu_rf_random_write(pAd,
+			MT76x0_RF_5G_Channel_0_RegTb,
+			ARRAY_SIZE(MT76x0_RF_5G_Channel_0_RegTb));
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x44);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x45);
 
@@ -1096,16 +1077,21 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
 
-	for (i = 0; i < MT76x0_SDM_Channel_Size; i++) {
+	for (i = 0; i < ARRAY_SIZE(MT76x0_SDM_Channel); i++) {
 		if (Channel == MT76x0_SDM_Channel[i]) {
 			bSDM = true;
 			break;
 		}
 	}
 
-	for (i = 0; i < NUM_OF_MT76x0_CHNL; i++) {
+	for (i = 0; i < ARRAY_SIZE(MT76x0_Frequency_Plan); i++) {
 		if (Channel == MT76x0_Frequency_Plan[i].Channel) {
 			RfBand = MT76x0_Frequency_Plan[i].Band;
+
+			/*
+			 * ULLI : note both tables must
+			 * ULLI : be in sync with channel numbers
+			 */
 
 			if (bSDM)
 				pMT76x0_freq_item = &(MT76x0_SDM_Frequency_Plan[i]);
@@ -1245,22 +1231,22 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 	}
 
 
-	for (i = 0; i < MT76x0_RF_BW_Switch_Size; i++) {
+	for (i = 0; i < ARRAY_SIZE(MT76x0_RF_BW_Switch); i++) {
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[i].BwBand) {
 			rlt_rf_write(pAd,
-						MT76x0_RF_BW_Switch[i].Bank,
-						MT76x0_RF_BW_Switch[i].Register,
-						MT76x0_RF_BW_Switch[i].Value);
+				     MT76x0_RF_BW_Switch[i].Bank,
+				     MT76x0_RF_BW_Switch[i].Register,
+				     MT76x0_RF_BW_Switch[i].Value);
 		} else if ((pAd->CommonCfg.BBPCurrentBW == (MT76x0_RF_BW_Switch[i].BwBand & 0xFF)) &&
 				 (RfBand & MT76x0_RF_BW_Switch[i].BwBand)) {
 			rlt_rf_write(pAd,
-						MT76x0_RF_BW_Switch[i].Bank,
-						MT76x0_RF_BW_Switch[i].Register,
-						MT76x0_RF_BW_Switch[i].Value);
+				     MT76x0_RF_BW_Switch[i].Bank,
+				     MT76x0_RF_BW_Switch[i].Register,
+				     MT76x0_RF_BW_Switch[i].Value);
 		}
 	}
 
-	for (i = 0; i < MT76x0_RF_Band_Switch_Size; i++) {
+	for (i = 0; i < ARRAY_SIZE(MT76x0_RF_Band_Switch); i++) {
 		if (MT76x0_RF_Band_Switch[i].BwBand & RfBand) {
 			rlt_rf_write(pAd,
 				     MT76x0_RF_Band_Switch[i].Bank,
@@ -1278,7 +1264,7 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		((pAd->chipCap.PAType == EXT_PA_5G_ONLY) && (RfBand & RF_G_BAND)) ||
 		((pAd->chipCap.PAType == EXT_PA_2G_ONLY) && (RfBand & RF_A_BAND))) {
 		/* Internal PA */
-		for (i = 0; i < MT76x0_RF_INT_PA_RegTb_Size; i++) {
+		for (i = 0; i < ARRAY_SIZE(MT76x0_RF_INT_PA_RegTb); i++) {
 			if (MT76x0_RF_INT_PA_RegTb[i].BwBand & RfBand) {
 				rlt_rf_write(pAd,
 							MT76x0_RF_INT_PA_RegTb[i].Bank,
@@ -1309,7 +1295,7 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 		}
 
 		/* External PA */
-		for (i = 0; i < MT76x0_RF_EXT_PA_RegTb_Size; i++) {
+		for (i = 0; i < ARRAY_SIZE(MT76x0_RF_EXT_PA_RegTb); i++) {
 			if (MT76x0_RF_EXT_PA_RegTb[i].BwBand & RfBand) {
 				rlt_rf_write(pAd,
 					     MT76x0_RF_EXT_PA_RegTb[i].Bank,
@@ -1348,16 +1334,23 @@ static void NICInitMT76x0RFRegisters(struct rtmp_adapter *pAd)
 	u32 IdReg;
 	u8 RFValue;
 
+	mt7610u_mcu_rf_random_write(pAd,
+				MT76x0_RF_Central_RegTb,
+				ARRAY_SIZE(MT76x0_RF_Central_RegTb));
 
-	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_Central_RegTb, MT76x0_RF_Central_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd,
+				MT76x0_RF_2G_Channel_0_RegTb,
+				ARRAY_SIZE(MT76x0_RF_2G_Channel_0_RegTb));
 
-	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_2G_Channel_0_RegTb, MT76x0_RF_2G_Channel_0_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd,
+				MT76x0_RF_5G_Channel_0_RegTb,
+				ARRAY_SIZE(MT76x0_RF_5G_Channel_0_RegTb));
 
-	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_5G_Channel_0_RegTb, MT76x0_RF_5G_Channel_0_RegTb_Size);
+	mt7610u_mcu_rf_random_write(pAd,
+				MT76x0_RF_VGA_Channel_0_RegTb,
+				ARRAY_SIZE(MT76x0_RF_VGA_Channel_0_RegTb));
 
-	mt7610u_mcu_rf_random_write(pAd, MT76x0_RF_VGA_Channel_0_RegTb, MT76x0_RF_VGA_Channel_0_RegTb_Size);
-
-	for (IdReg = 0; IdReg < MT76x0_RF_BW_Switch_Size; IdReg++) {
+	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_RF_BW_Switch); IdReg++) {
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[IdReg].BwBand) {
 			rlt_rf_write(pAd,
 				     MT76x0_RF_BW_Switch[IdReg].Bank,
@@ -1372,7 +1365,7 @@ static void NICInitMT76x0RFRegisters(struct rtmp_adapter *pAd)
 		}
 	}
 
-	for (IdReg = 0; IdReg < MT76x0_RF_Band_Switch_Size; IdReg++) {
+	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_RF_Band_Switch); IdReg++) {
 		if (MT76x0_RF_Band_Switch[IdReg].BwBand & RF_G_BAND) {
 			rlt_rf_write(pAd,
 				     MT76x0_RF_Band_Switch[IdReg].Bank,
@@ -1437,7 +1430,9 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 		Enable PBF and MAC clock
 		SYS_CTRL[11:10] = 0x3
 	*/
-	mt7610u_mcu_random_write(pAd, MT76x0_MACRegTable, MT76x0_NUM_MAC_REG_PARMS);
+	mt7610u_mcu_random_write(pAd,
+				 MT76x0_MACRegTable,
+				 ARRAY_SIZE(MT76x0_MACRegTable));
 
 	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
@@ -1506,16 +1501,20 @@ static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
 
 	INT IdReg;
 
-	mt7610u_mcu_random_write(pAd, MT76x0_BBP_Init_Tab, MT76x0_BBP_Init_Tab_Size);
+	mt7610u_mcu_random_write(pAd,
+				 MT76x0_BBP_Init_Tab,
+				 ARRAY_SIZE(MT76x0_BBP_Init_Tab));
 
-	for (IdReg = 0; IdReg < MT76x0_BPP_SWITCH_Tab_Size; IdReg++) {
+	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); IdReg++) {
 		if (((RF_G_BAND | RF_BW_20) & MT76x0_BPP_SWITCH_Tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
 			RTMP_BBP_IO_WRITE32(pAd, MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Register,
 					MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Value);
 		}
 	}
 
-	mt7610u_mcu_random_write(pAd, MT76x0_DCOC_Tab, MT76x0_DCOC_Tab_Size);
+	mt7610u_mcu_random_write(pAd,
+				 MT76x0_DCOC_Tab,
+				 ARRAY_SIZE(MT76x0_DCOC_Tab));
 
 
 	return;
@@ -1605,7 +1604,7 @@ static void MT76x0_ChipSwitchChannel(
 		RegValue &= (~0x20);
 	RTMP_BBP_IO_WRITE32(pAd, CORE_R1, RegValue);
 
-	for (Index = 0; Index < MT76x0_BPP_SWITCH_Tab_Size; Index++) {
+	for (Index = 0; Index < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); Index++) {
 		if (((rf_phy_mode | rf_bw) & MT76x0_BPP_SWITCH_Tab[Index].BwBand) == (rf_phy_mode | rf_bw)) {
 			if ((MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register == AGC1_R8)) {
 				u32 eLNAgain = (MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value & 0x0000FF00) >> 8;
