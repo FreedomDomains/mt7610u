@@ -1463,69 +1463,6 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_read_modify_write(struct rtmp_adapter*ad,
-				  R_M_W_REG *reg_pair, u32 num)
-{
-	struct cmd_msg *msg;
-	unsigned int var_len = num * 12, cur_len = 0, sent_len;
-	u32 value, i, cur_index = 0;
-	struct rtmp_chip_cap *cap = &ad->chipCap;
-	int ret = 0;
-	bool last_packet = false;
-
-	if (!reg_pair)
-		return -1;
-
-	while (cur_len < var_len) {
-		sent_len =
-			(var_len - cur_len) > cap->InbandPacketMaxLen ?
-			cap->InbandPacketMaxLen :
-			(var_len - cur_len);
-
-		if ((sent_len < cap->InbandPacketMaxLen) ||
-		    (cur_len + cap->InbandPacketMaxLen) == var_len)
-			last_packet = true;
-
-		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
-
-		if (!msg) {
-			ret = NDIS_STATUS_RESOURCES;
-			goto error;
-		}
-
-		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg,
-					CMD_READ_MODIFY_WRITE, true, 0,
-					true, true, 0, NULL, NULL);
-		else
-			mt7610u_mcu_init_cmd_msg(msg,
-					CMD_READ_MODIFY_WRITE, false, 0,
-					false, false, 0, NULL, NULL);
-
-		for (i = 0; i < (sent_len / 12); i++) {
-			/* Address */
-			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
-			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-
-			/* ClearBitMask */
-			value = cpu2le32(reg_pair[i + cur_index].ClearBitMask);
-			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-
-			/* UpdateData */
-			value = cpu2le32(reg_pair[i + cur_index].Value);
-			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
-		}
-
-		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
-
-		cur_index += (sent_len / 12);
-		cur_len += cap->InbandPacketMaxLen;
-	}
-
-error:
-	return ret;
-}
-
 int mt7610u_mcu_random_write(struct rtmp_adapter*ad,
 			struct rtmp_reg_pair *reg_pair, u32 num)
 {

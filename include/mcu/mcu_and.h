@@ -247,8 +247,6 @@ int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg);
 int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 cnt);
 int mt7610u_mcu_random_read(struct rtmp_adapter *ad, struct rtmp_reg_pair *reg_pair, u32 num);
 int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
-int mt7610u_mcu_read_modify_write(struct rtmp_adapter *ad, R_M_W_REG *reg_pair, u32 num);
-int mt7610u_mcu_rf_read_modify_write(struct rtmp_adapter *ad, RF_R_M_W_REG *reg_pair, u32 num);
 int mt7610u_mcu_random_write(struct rtmp_adapter *ad, struct rtmp_reg_pair *reg_pair, u32 num);
 int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num);
 int mt7610u_mcu_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param);
