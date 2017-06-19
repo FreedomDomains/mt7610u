@@ -30,7 +30,7 @@
 #define MT7650_EFUSE_CTRL	0x0024
 #define LDO_CTRL1			0x0070
 
-static struct rtmp_reg_pair MT76x0_MACRegTable[] = {
+static struct rtmp_reg_pair mt7610_mac_cr_table[] = {
 	{ PBF_SYS_CTRL,		0x80c00 },
 	{ PBF_CFG,		0x77723c1f },
 	{ FCE_PSE_CTRL,		0x1 },
@@ -1430,9 +1430,8 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 		Enable PBF and MAC clock
 		SYS_CTRL[11:10] = 0x3
 	*/
-	mt7610u_mcu_random_write(pAd,
-				 MT76x0_MACRegTable,
-				 ARRAY_SIZE(MT76x0_MACRegTable));
+	mt7610u_mcu_random_write(pAd,  mt7610_mac_cr_table,
+				 ARRAY_SIZE(mt7610_mac_cr_table));
 
 	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
