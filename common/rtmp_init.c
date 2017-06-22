@@ -177,9 +177,6 @@ int RTMPAllocAdapterBlock(struct os_cookie *handle, struct rtmp_adapter **ppAdap
 			initList(&pAd->RscTimerCreateList);
 
 			pAd->OS_Cookie = handle;
-#ifdef WORKQUEUE_BH
-			handle->pAd_va = pAd;
-#endif /* WORKQUEUE_BH */
 		}
 		pAd->BeaconBuf = pBeaconBuf;
 		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (u32)sizeof(struct rtmp_adapter)));

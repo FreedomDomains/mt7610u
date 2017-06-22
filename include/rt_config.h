@@ -113,9 +113,6 @@
 
 
 
-#ifdef WORKQUEUE_BH
-#include <linux/workqueue.h>
-#endif /* WORKQUEUE_BH / */
 
 
 #include "mac_ral/fce.h"
