@@ -1025,9 +1025,7 @@ void mt7610u_mcu_bh_schedule(struct rtmp_adapter*ad)
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
 		return;
 
-	if ((!mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq) ||
-	     !mt7610u_mcu_queue_empty(ctl, &ctl->tx_doneq)) &&
-	    OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
+	if (!mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq)) {
 		RTMP_NET_TASK_DATA_ASSIGN(&ctl->cmd_msg_task, (unsigned long)(ad));
 		RTMP_OS_TASKLET_SCHE(&ctl->cmd_msg_task);
 	}
