@@ -48,7 +48,7 @@ void usb_uploadfw_complete(struct urb *urb)
 	complete(load_fw_done);
 }
 
-static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
+static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 {
 	int Status = NDIS_STATUS_SUCCESS;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
@@ -73,8 +73,8 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 	}
 
 	if (Status) {
-			DBGPRINT(RT_DEBUG_ERROR, ("Upload IVB Fail\n"));
-			return Status;
+		DBGPRINT(RT_DEBUG_ERROR, ("Upload IVB Fail\n"));
+		return Status;
 	}
 
 	return Status;
@@ -82,20 +82,20 @@ static int usb_load_ivb(struct rtmp_adapter*ad, u8 *fw_image)
 
 
 /*
-	========================================================================
-
-	Routine Description: Write Firmware to NIC.
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
+ *	========================================================================
+ *
+ *	Routine Description: Write Firmware to NIC.
+ *
+ *	Arguments:
+ *
+ *	Return Value:
+ *
+ *	IRQL =
+ *
+ *	Note:
+ *
+ *	========================================================================
+ */
 
 static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 {
@@ -109,7 +109,7 @@ static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 		0);
 }
 
-int mt7610u_mcu_usb_loadfw(struct rtmp_adapter*ad)
+int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 {
 	const struct firmware *fw;
 	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
@@ -149,7 +149,8 @@ loadfw_protect:
 		mac_value = mt7610u_read32(ad, SEMAPHORE_00);
 		loop++;
 
-		if (((mac_value & 0x01) == 0) && (loop < GET_SEMAPHORE_RETRY_MAX)) {
+		if (((mac_value & 0x01) == 0) &&
+		    (loop < GET_SEMAPHORE_RETRY_MAX)) {
 			mdelay(1);
 			goto loadfw_protect;
 		}
@@ -173,21 +174,21 @@ loadfw_protect:
 	/* Check MCU if ready */
 	mac_value = mt7610u_read32(ad, COM_REG0);
 
-	if (((mac_value & 0x01) == 0x01) && (cap->IsComboChip)) {
+	if (((mac_value & 0x01) == 0x01) &&
+	    (cap->IsComboChip))
 		goto error0;
-	}
 
 	mt7610u_vendor_reset(ad);
 	mdelay(5);
 
 	/* Get FW information */
-	ilm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image))));;
+	ilm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image))));
 
 	dlm_len = le32_to_cpu(*((u32 *) (((u8 *) fw_image) + 4)));
 
 	fw_ver = le16_to_cpu(*((u16 *) (((u8 *) fw_image) + 10)));
 
-	build_ver = le16_to_cpu(*((u16 *) (((u8 *) fw_image) +8)));
+	build_ver = le16_to_cpu(*((u16 *) (((u8 *) fw_image) + 8)));
 
 	DBGPRINT(RT_DEBUG_OFF, ("fw version:%d.%d.%02d ", (fw_ver & 0xf000) >> 8,
 						(fw_ver & 0x0f00) >> 8, fw_ver & 0x00ff));
@@ -253,7 +254,9 @@ loadfw_protect:
 	/* Loading ILM */
 	while (1) {
 		s32 sent_len_max = UPLOAD_FW_UNIT - sizeof(*tx_info) - USB_END_PADDING;
-		sent_len = (ilm_len - cur_len) >=  sent_len_max ? sent_len_max : (ilm_len - cur_len);
+
+		sent_len = ((ilm_len - cur_len) >=  sent_len_max) ?
+				sent_len_max : (ilm_len - cur_len);
 
 		if (sent_len > 0) {
 			tx_info = (struct txinfo_nmac_cmd *)fw_data;
@@ -359,8 +362,10 @@ loadfw_protect:
 			if (!wait_for_completion_timeout(&load_fw_done, RTMPMsecsToJiffies(UPLOAD_FW_TIMEOUT))) {
 				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
-				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, cur_len = %d\n", __FUNCTION__, sent_len, ilm_len, cur_len));
+				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n",
+					UPLOAD_FW_TIMEOUT));
+				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, cur_len = %d\n",
+					__func__, sent_len, ilm_len, cur_len));
 
 				goto error2;
 			}
@@ -382,6 +387,7 @@ loadfw_protect:
 	/* Loading DLM */
 	while (1) {
 		s32 sent_len_max = UPLOAD_FW_UNIT - sizeof(*tx_info) - USB_END_PADDING;
+
 		sent_len = (dlm_len - cur_len) >= sent_len_max ? sent_len_max : (dlm_len - cur_len);
 
 		if (sent_len > 0) {
@@ -488,7 +494,7 @@ loadfw_protect:
 				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, cur_len = %d\n", __FUNCTION__, sent_len, dlm_len, cur_len));
+				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, cur_len = %d\n", __func__, sent_len, dlm_len, cur_len));
 
 				goto error2;
 			}
@@ -498,7 +504,7 @@ loadfw_protect:
 			mac_value++;
 			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 			mdelay(5);
-		} else 	{
+		} else {
 			break;
 		}
 
@@ -518,7 +524,7 @@ loadfw_protect:
 		loop++;
 	} while (loop <= 100);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: COM_REG0(0x%x) = 0x%x\n", __FUNCTION__, COM_REG0, mac_value));
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: COM_REG0(0x%x) = 0x%x\n", __func__, COM_REG0, mac_value));
 
 	if ((mac_value & 0x01) != 0x01)
 		ret = NDIS_STATUS_FAILURE;
@@ -542,14 +548,14 @@ error0:
 	return ret;
 }
 
-static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter*ad, unsigned int length)
+static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsigned int length)
 {
 	struct cmd_msg *msg = NULL;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct urb *urb = NULL;
 
-	struct sk_buff * net_pkt = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
+	struct sk_buff *net_pkt = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
 
 	if (!net_pkt) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate net_pkt\n"));
@@ -598,7 +604,7 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type
 				     char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
 	msg->type = type;
-	msg->need_wait= need_wait;
+	msg->need_wait = need_wait;
 	msg->timeout = timeout;
 
 	if (need_wait)
@@ -612,7 +618,7 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type
 
 static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int len)
 {
-	struct sk_buff * net_pkt = msg->skb;
+	struct sk_buff *net_pkt = msg->skb;
 
 	if (data)
 		memcpy(skb_put(net_pkt, len), data, len);
@@ -620,8 +626,8 @@ static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned
 
 void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
-	struct sk_buff * net_pkt = msg->skb;
-	struct rtmp_adapter*ad = msg->priv;
+	struct sk_buff *net_pkt = msg->skb;
+	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	usb_free_urb(msg->urb);
@@ -648,12 +654,12 @@ static spinlock_t *mt7610u_mcu_get_spin_lock(struct mt7610u_mcu_ctrl *ctl, DL_LI
 	else if (list == &ctl->rx_doneq)
 		lock = &ctl->rx_doneq_lock;
 	else
-		DBGPRINT(RT_DEBUG_ERROR, ("%s:illegal list\n", __FUNCTION__));
+		DBGPRINT(RT_DEBUG_ERROR, ("%s:illegal list\n", __func__));
 
 	return lock;
 }
 
-static inline u8 mt7610u_mcu_get_cmd_msg_seq(struct rtmp_adapter*ad)
+static inline u8 mt7610u_mcu_get_cmd_msg_seq(struct rtmp_adapter *ad)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;
@@ -684,7 +690,7 @@ static void mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = msg->priv;
+	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
@@ -706,7 +712,7 @@ static void mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = msg->priv;
+	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
@@ -743,7 +749,7 @@ static void mt7610u_mcu_unlink_cmd_msg(struct cmd_msg *msg, DL_LIST *list)
 {
 	unsigned long flags;
 	spinlock_t *lock;
-	struct rtmp_adapter*ad = msg->priv;
+	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
@@ -779,9 +785,9 @@ static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct mt7610u_mcu_ctrl *ctl,
 	return msg;
 }
 
-void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_msg)
+void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_msg)
 {
-	struct sk_buff * net_pkt = rx_msg->skb;
+	struct sk_buff *net_pkt = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
 	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) net_pkt->data;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
@@ -791,7 +797,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_m
 #endif
 
 
-	if ((rx_info->info_type != CMD_PACKET)) {
+	if (rx_info->info_type != CMD_PACKET) {
 		DBGPRINT(RT_DEBUG_ERROR, ("packet is not command response/self event\n"));
 		return;
 	}
@@ -831,9 +837,9 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter*ad, struct cmd_msg *rx_m
 
 static void usb_rx_cmd_msg_complete(struct urb *urb)
 {
-	struct sk_buff * net_pkt = urb->context;
+	struct sk_buff *net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
-	struct rtmp_adapter*ad = msg->priv;
+	struct rtmp_adapter *ad = msg->priv;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
@@ -862,9 +868,8 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, 512);
 
-		if (!msg) {
+		if (!msg)
 			return;
-		}
 
 		net_pkt = msg->skb;
 
@@ -885,7 +890,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags))
 				ctl->rx_receive_fail_count++;
 
-			DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __func__, ret));
 			mt7610u_mcu_queue_tail_cmd_msg(&ctl->rx_doneq, msg, RX_RECEIVE_FAIL);
 		}
 
@@ -894,13 +899,13 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	mt7610u_mcu_bh_schedule(ad);
 }
 
-static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
+static int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad)
 {
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
-	struct sk_buff * net_pkt = NULL;
+	struct sk_buff *net_pkt = NULL;
 	int ret = 0;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
@@ -932,14 +937,14 @@ static int usb_rx_cmd_msg_submit(struct rtmp_adapter*ad)
 		if (OS_TEST_BIT(MCU_INIT, &ctl->flags))
 			ctl->rx_receive_fail_count++;
 
-		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __func__, ret));
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rx_doneq, msg, RX_RECEIVE_FAIL);
 	}
 
 	return ret;
 }
 
-int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
+int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad)
 {
 	int ret = 0;
 	int i;
@@ -956,7 +961,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter*ad)
 
 void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 {
-	struct rtmp_adapter*ad = (struct rtmp_adapter*)param;
+	struct rtmp_adapter *ad = (struct rtmp_adapter *)param;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 
@@ -992,7 +997,7 @@ void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 	}
 }
 
-void mt7610u_mcu_bh_schedule(struct rtmp_adapter*ad)
+void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
@@ -1007,9 +1012,9 @@ void mt7610u_mcu_bh_schedule(struct rtmp_adapter*ad)
 
 static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 {
-	struct sk_buff * net_pkt = urb->context;
+	struct sk_buff *net_pkt = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
-	struct rtmp_adapter*ad = msg->priv;
+	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
@@ -1047,7 +1052,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct os_cookie *pObj = ad->OS_Cookie;
 	int ret = 0;
-	struct sk_buff * net_pkt = msg->skb;
+	struct sk_buff *net_pkt = msg->skb;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
@@ -1085,13 +1090,13 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 			complete(&msg->ack_done);
 		}
 
-		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+		DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __func__, ret));
 	}
 
 	return ret;
 }
 
-void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
+void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter *ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
@@ -1111,7 +1116,7 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter*ad, DL_LIST *list)
 	spin_unlock_irqrestore(lock, flags);
 }
 
-void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
+void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter *ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
@@ -1129,7 +1134,7 @@ void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter*ad, DL_LIST *list)
 	spin_unlock_irqrestore(lock, flags);
 }
 
-void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
+void mt7610u_mcu_ctrl_init(struct rtmp_adapter *ad)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
@@ -1167,7 +1172,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter*ad)
 	ctl->power_on = false;
 }
 
-void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
+void mt7610u_mcu_ctrl_exit(struct rtmp_adapter *ad)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
@@ -1198,10 +1203,10 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter*ad)
 	ctl->power_on = false;
 }
 
-static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter*ad)
+static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 {
 	struct cmd_msg *msg = NULL;
-	struct sk_buff * net_pkt = NULL;
+	struct sk_buff *net_pkt = NULL;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = NDIS_STATUS_SUCCESS;
 	struct txinfo_nmac_cmd *tx_info;
@@ -1278,20 +1283,19 @@ retransmit:
 	mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(ad);
 
 	/* Wait for response */
-	if (need_wait)
-	{
+	if (need_wait) {
 		enum cmd_msg_state state;
 		unsigned long expire;
 		unsigned long timeout = msg->timeout;
+
 		expire = timeout ? RTMPMsecsToJiffies(timeout) : RTMPMsecsToJiffies(CMD_MSG_TIMEOUT);
 		if (!wait_for_completion_timeout(&msg->ack_done, expire)) {
 			ret = NDIS_STATUS_FAILURE;
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
-				if (msg->state == WAIT_CMD_OUT_AND_ACK) {
+				if (msg->state == WAIT_CMD_OUT_AND_ACK)
 					usb_kill_urb(msg->urb);
-				} else if (msg->state == WAIT_ACK) {
+				else if (msg->state == WAIT_ACK)
 					mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
-				}
 			}
 
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags))
@@ -1299,18 +1303,16 @@ retransmit:
 
 			state = TX_TIMEOUT_FAIL;
 		} else {
-			if (msg->state == TX_KICKOUT_FAIL) {
+			if (msg->state == TX_KICKOUT_FAIL)
 				state = TX_KICKOUT_FAIL;
-			} else {
+			else
 				state = TX_DONE;
-			}
 		}
 
-		if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
+		if (OS_TEST_BIT(MCU_INIT, &ctl->flags))
 			mt7610u_mcu_queue_tail_cmd_msg(&ctl->tx_doneq, msg, state);
-		} else {
+		else
 			mt7610u_mcu_free_cmd_msg(msg);
-		}
 	}
 
 	up(&(ad->mcu_atomic));
@@ -1318,7 +1320,7 @@ retransmit:
 	return ret;
 }
 
-int mt7610u_mcu_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 cnt)
+int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 cnt)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len, offset_num, cur_len = 0, sent_len;
@@ -1351,12 +1353,10 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter*ad, u32 offset, u32 *data, u32 c
 			goto error;
 		}
 
-		if (last_packet) {
+		if (last_packet)
 			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true, 0, true, true, 0, NULL, NULL);
-		}else {
+		else
 			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, false, 0, false, false, 0, NULL, NULL);
-		}
-
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
 		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1382,12 +1382,11 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 	u32 i;
 	BANK_RF_REG_PAIR *reg_pair = (BANK_RF_REG_PAIR *)msg->rsp_payload;
 
-	for (i = 0; i < msg->rsp_payload_len / 8; i++) {
+	for (i = 0; i < msg->rsp_payload_len / 8; i++)
 		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
-	}
 }
 
-int mt7610u_mcu_rf_random_read(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, receive_len;
@@ -1444,7 +1443,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_random_write(struct rtmp_adapter*ad,
+int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 			struct rtmp_reg_pair *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
@@ -1503,7 +1502,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_rf_random_write(struct rtmp_adapter*ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, cur_len = 0, sent_len;
@@ -1572,7 +1571,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
+int mt7610u_mcu_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param)
 {
 	struct cmd_msg *msg;
 	u32 value;
@@ -1588,7 +1587,7 @@ int mt7610u_mcu_fun_set(struct rtmp_adapter*ad, u32 fun_id, u32 param)
 
 	if (fun_id != Q_SELECT)
 		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0,
-				         true, true, 0, NULL, NULL);
+					 true, true, 0, NULL, NULL);
 	else
 		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0,
 					 false, false, 0, NULL, NULL);
@@ -1607,7 +1606,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_calibration(struct rtmp_adapter*ad, enum mt7610u_mcu_calibration cal_id, u32 param)
+int mt7610u_mcu_calibration(struct rtmp_adapter *ad, enum mt7610u_mcu_calibration cal_id, u32 param)
 {
 	struct cmd_msg *msg;
 	u32 value;
@@ -1640,7 +1639,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_led_op(struct rtmp_adapter*ad, u32 led_idx, u32 link_status)
+int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status)
 {
 	struct cmd_msg *msg;
 	u32 value;
