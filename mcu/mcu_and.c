@@ -943,18 +943,13 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad)
 {
 	bool tmp;
 	int ret = 0;
-	int i;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
-	for (i = 0; i < 1; i++) {
-		tmp = mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq);
-		if (!tmp)
-			break;
+	tmp = mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq);
+	if (!tmp)
+		return ret;
 
-		ret = usb_rx_cmd_msg_submit(ad);
-		if (ret)
-			break;
-	}
+	ret = usb_rx_cmd_msg_submit(ad);
 
 	return ret;
 }
