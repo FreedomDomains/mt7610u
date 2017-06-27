@@ -50,12 +50,12 @@ void usb_uploadfw_complete(struct urb *urb)
 
 static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 {
-	int Status = NDIS_STATUS_SUCCESS;
+	int status = NDIS_STATUS_SUCCESS;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 
 
 	if (cap->load_iv) {
-		Status = RTUSB_VendorRequest(ad,
+		status = RTUSB_VendorRequest(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT7610U_VENDOR_DEVICE_MODE,
 				 0x12,
@@ -63,7 +63,7 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 				 fw_image + 32,
 				 64);
 	} else {
-		Status = RTUSB_VendorRequest(ad,
+		status = RTUSB_VendorRequest(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT7610U_VENDOR_DEVICE_MODE,
 				 0x12,
@@ -72,12 +72,10 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 				 0x00);
 	}
 
-	if (Status) {
+	if (status)
 		DBGPRINT(RT_DEBUG_ERROR, ("Upload IVB Fail\n"));
-		return Status;
-	}
 
-	return Status;
+	return status;
 }
 
 
@@ -555,14 +553,14 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsign
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct urb *urb = NULL;
 
-	struct sk_buff *net_pkt = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
+	struct sk_buff *skb = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
 
-	if (!net_pkt) {
+	if (!skb) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate net_pkt\n"));
 		goto error0;
 	}
 
-	skb_reserve(net_pkt, cap->cmd_header_len);
+	skb_reserve(skb, cap->cmd_header_len);
 
 	msg = kmalloc(sizeof(*msg), GFP_ATOMIC);
 
@@ -571,7 +569,7 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsign
 		goto error1;
 	}
 
-	CMD_MSG_CB(net_pkt)->msg = msg;
+	CMD_MSG_CB(skb)->msg = msg;
 
 	memset(msg, 0x00, sizeof(*msg));
 
@@ -585,14 +583,14 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsign
 	msg->urb = urb;
 
 	msg->priv = ad;
-	msg->skb = net_pkt;
+	msg->skb = skb;
 
 	return msg;
 
 error2:
 	kfree(msg);
 error1:
-	dev_kfree_skb_any(net_pkt);
+	dev_kfree_skb_any(skb);
 error0:
 	return NULL;
 }
@@ -618,23 +616,20 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type
 
 static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned int len)
 {
-	struct sk_buff *net_pkt = msg->skb;
+	struct sk_buff *skb = msg->skb;
 
 	if (data)
-		memcpy(skb_put(net_pkt, len), data, len);
+		memcpy(skb_put(skb, len), data, len);
 }
 
 void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
-	struct sk_buff *net_pkt = msg->skb;
+	struct sk_buff *skb = msg->skb;
 	struct rtmp_adapter *ad = msg->priv;
-	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 	usb_free_urb(msg->urb);
-
 	kfree(msg);
-
-	dev_kfree_skb_any(net_pkt);
+	dev_kfree_skb_any(skb);
 }
 
 static spinlock_t *mt7610u_mcu_get_spin_lock(struct mt7610u_mcu_ctrl *ctl, DL_LIST *list)
@@ -679,14 +674,14 @@ get_seq:
 }
 
 static void _mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
-										enum cmd_msg_state state)
+					    enum cmd_msg_state state)
 {
 	msg->state = state;
 	DlListAddTail(list, &msg->list);
 }
 
 static void mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
-										enum cmd_msg_state state)
+					   enum cmd_msg_state state)
 {
 	unsigned long flags;
 	spinlock_t *lock;
@@ -701,14 +696,14 @@ static void mt7610u_mcu_queue_tail_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
 }
 
 static void _mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
-										enum cmd_msg_state state)
+					    enum cmd_msg_state state)
 {
 	msg->state = state;
 	DlListAdd(list, &msg->list);
 }
 
 static void mt7610u_mcu_queue_head_cmd_msg(DL_LIST *list, struct cmd_msg *msg,
-										enum cmd_msg_state state)
+					   enum cmd_msg_state state)
 {
 	unsigned long flags;
 	spinlock_t *lock;
@@ -787,9 +782,9 @@ static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct mt7610u_mcu_ctrl *ctl,
 
 void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_msg)
 {
-	struct sk_buff *net_pkt = rx_msg->skb;
+	struct sk_buff *skb = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
-	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) net_pkt->data;
+	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) skb->data;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
@@ -805,7 +800,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 	if (rx_info->self_gen) {
 		/* if have callback function */
 		RTEnqueueInternalCmd(ad, CMDTHREAD_RESPONSE_EVENT_CALLBACK,
-								net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
+				     skb->data + sizeof(*rx_info), rx_info->pkt_len);
 	} else {
 		spin_lock_irq(&ctl->ackq_lock);
 		DlListForEachSafe(msg, msg_tmp, &ctl->ackq, struct cmd_msg, list) {
@@ -814,7 +809,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 				spin_unlock_irq(&ctl->ackq_lock);
 
 				if ((msg->rsp_payload_len == rx_info->pkt_len) && (msg->rsp_payload_len != 0)) {
-					msg->rsp_handler(msg, net_pkt->data + sizeof(*rx_info), rx_info->pkt_len);
+					msg->rsp_handler(msg, skb->data + sizeof(*rx_info), rx_info->pkt_len);
 				} else if ((msg->rsp_payload_len == 0) && (rx_info->pkt_len == 8)) {
 					DBGPRINT(RT_DEBUG_INFO, ("command response(ack) success\n"));
 				} else {
@@ -837,10 +832,10 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 
 static void usb_rx_cmd_msg_complete(struct urb *urb)
 {
-	struct sk_buff *net_pkt = urb->context;
-	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
+	struct sk_buff *skb = urb->context;
+	struct cmd_msg *msg = CMD_MSG_CB(skb)->msg;
 	struct rtmp_adapter *ad = msg->priv;
-	struct os_cookie *pObj = ad->OS_Cookie;
+	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
@@ -849,7 +844,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 	mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
 
-	skb_put(net_pkt, urb->actual_length);
+	skb_put(skb, urb->actual_length);
 
 	if (urb->status == 0) {
 		state = RX_DONE;
@@ -871,15 +866,15 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 		if (!msg)
 			return;
 
-		net_pkt = msg->skb;
+		skb = msg->skb;
 
 		RTUSB_FILL_BULK_URB(msg->urb,
-			pObj->pUsb_Dev,
-			usb_rcvbulkpipe(pObj->pUsb_Dev, CommandRspBulkInAddr),
-			net_pkt->data,
+			udev,
+			usb_rcvbulkpipe(udev, CommandRspBulkInAddr),
+			skb->data,
 			512,
 			usb_rx_cmd_msg_complete,
-			net_pkt);
+			skb);
 
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
@@ -902,10 +897,10 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 static int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad)
 {
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
-	struct os_cookie *pObj = ad->OS_Cookie;
+	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
-	struct sk_buff *net_pkt = NULL;
+	struct sk_buff *skb = NULL;
 	int ret = 0;
 
 	if (!OS_TEST_BIT(MCU_INIT, &ctl->flags))
@@ -918,15 +913,15 @@ static int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad)
 		return ret;
 	}
 
-	net_pkt = msg->skb;
+	skb = msg->skb;
 
 	RTUSB_FILL_BULK_URB(msg->urb,
-			pObj->pUsb_Dev,
-			usb_rcvbulkpipe(pObj->pUsb_Dev, CommandRspBulkInAddr),
-			net_pkt->data,
+			udev,
+			usb_rcvbulkpipe(udev, CommandRspBulkInAddr),
+			skb->data,
 			512,
 			usb_rx_cmd_msg_complete,
-			net_pkt);
+			skb);
 
 	mt7610u_mcu_queue_tail_cmd_msg(&ctl->rxq, msg, RX_START);
 
@@ -1027,8 +1022,8 @@ void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad)
 
 static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 {
-	struct sk_buff *net_pkt = urb->context;
-	struct cmd_msg *msg = CMD_MSG_CB(net_pkt)->msg;
+	struct sk_buff *skb = urb->context;
+	struct cmd_msg *msg = CMD_MSG_CB(skb)->msg;
 	struct rtmp_adapter *ad = msg->priv;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
@@ -1065,21 +1060,21 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
-	struct os_cookie *pObj = ad->OS_Cookie;
+	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
 	int ret = 0;
-	struct sk_buff *net_pkt = msg->skb;
+	struct sk_buff *skb = msg->skb;
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
-	memset(skb_put(net_pkt, 4), 0x00, 4);
+	memset(skb_put(skb, 4), 0x00, 4);
 
 	RTUSB_FILL_BULK_URB(msg->urb,
-			pObj->pUsb_Dev,
-			usb_sndbulkpipe(pObj->pUsb_Dev, CommandBulkOutAddr),
-			net_pkt->data,
-			net_pkt->len,
+			udev,
+			usb_sndbulkpipe(udev, CommandBulkOutAddr),
+			skb->data,
+			skb->len,
 			usb_kick_out_cmd_msg_complete,
-			net_pkt);
+			skb);
 
 	if (msg->need_rsp)
 		mt7610u_mcu_queue_tail_cmd_msg(&ctl->ackq, msg, WAIT_CMD_OUT_AND_ACK);
@@ -1221,7 +1216,7 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter *ad)
 static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 {
 	struct cmd_msg *msg = NULL;
-	struct sk_buff *net_pkt = NULL;
+	struct sk_buff *skb = NULL;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = NDIS_STATUS_SUCCESS;
 	struct txinfo_nmac_cmd *tx_info;
@@ -1248,19 +1243,19 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 			continue;
 		}
 
-		net_pkt = msg->skb;
+		skb = msg->skb;
 
 		if (msg->need_rsp)
 			msg->seq = mt7610u_mcu_get_cmd_msg_seq(ad);
 		else
 			msg->seq = 0;
 
-		tx_info = (struct txinfo_nmac_cmd *)skb_push(net_pkt, sizeof(*tx_info));
+		tx_info = (struct txinfo_nmac_cmd *)skb_push(skb, sizeof(*tx_info));
 		tx_info->info_type = CMD_PACKET;
 		tx_info->d_port = CPU_TX_PORT;
 		tx_info->cmd_type = msg->type;
 		tx_info->cmd_seq = msg->seq;
-		tx_info->pkt_len = net_pkt->len - sizeof(*tx_info);
+		tx_info->pkt_len = skb->len - sizeof(*tx_info);
 
 #ifdef RT_BIG_ENDIAN
 		RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
