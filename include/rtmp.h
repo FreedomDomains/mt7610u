@@ -2341,7 +2341,7 @@ struct rtmp_adapter {
 	struct semaphore cal_atomic;
 	struct semaphore wlan_en_atomic;
 	struct semaphore mcu_atomic;
-	void *UsbVendorReqBuf;
+	void *vend_buf;
 /*	wait_queue_head_t	 *wait; */
 	void *wait;
 
@@ -5912,9 +5912,8 @@ int RTUSBWriteRFRegister(
 	IN	struct rtmp_adapter *pAd,
 	IN	u32			Value);
 
-int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 ReservedBits,
-	u8 Request, u16 Value, u16 Index, void *TransferBuffer,
-	u32 TransferBufferLength);
+int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
+			u16 value, u16 index, void *data, u16 size);
 
 void RTUSBDequeueCmd(struct rtmp_command_queue *cmdq,
 	struct rtmp_queue_elem	*pcmdqelmt);

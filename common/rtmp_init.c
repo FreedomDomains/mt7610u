@@ -2371,8 +2371,8 @@ INT RtmpRaDevCtrlInit(struct rtmp_adapter *pAd)
 	sema_init(&(pAd->cal_atomic), 1);
 	sema_init(&(pAd->wlan_en_atomic), 1);
 	sema_init(&(pAd->mcu_atomic), 1);
-	pAd->UsbVendorReqBuf = kmalloc(MAX_PARAM_BUFFER_SIZE - 1, GFP_ATOMIC);
-	if (pAd->UsbVendorReqBuf == NULL) {
+	pAd->vend_buf = kmalloc(MAX_PARAM_BUFFER_SIZE - 1, GFP_ATOMIC);
+	if (pAd->vend_buf == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate vendor request temp buffer failed!\n"));
 		return false;
 	}
@@ -2404,8 +2404,8 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 		mt7610u_chip_onoff(pAd, false, false);
 	}
 
-	if (pAd->UsbVendorReqBuf)
-		kfree(pAd->UsbVendorReqBuf);
+	kfree(pAd->vend_buf);
+	pAd->vend_buf = NULL;
 
 	/*
 		Free ProbeRespIE Table

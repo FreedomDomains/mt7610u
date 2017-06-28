@@ -55,21 +55,17 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 
 
 	if (cap->load_iv) {
-		status = RTUSB_VendorRequest(ad,
+		status = mt7610u_vendor_request(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT7610U_VENDOR_DEVICE_MODE,
-				 0x12,
-				 0x00,
-				 fw_image + 32,
-				 64);
+				 0x12, 0x00,
+				 fw_image + 32, 64);
 	} else {
-		status = RTUSB_VendorRequest(ad,
+		status = mt7610u_vendor_request(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT7610U_VENDOR_DEVICE_MODE,
-				 0x12,
-				 0x00,
-				 NULL,
-				 0x00);
+				 0x12, 0x00,
+				 NULL, 0x00);
 	}
 
 	if (status)
@@ -97,14 +93,11 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 
 static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 {
-	RTUSB_VendorRequest(
-		pAd,
+	mt7610u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
 		MT7610U_VENDOR_DEVICE_MODE,
-		0x1,
-		0,
-		NULL,
-		0);
+		0x1, 0,
+		NULL, 0);
 }
 
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
@@ -273,13 +266,11 @@ loadfw_protect:
 			value = (cur_len + cap->ilm_offset) & 0xFFFF;
 
 			/* Set FCE DMA descriptor */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 MT7610U_VENDOR_WRITE_FCE,
-					 value,
-					 0x230,
-					 NULL,
-					 0);
+					 value, 0x230,
+					 NULL, 0);
 
 
 			if (ret) {
@@ -290,13 +281,11 @@ loadfw_protect:
 			value = (((cur_len + cap->ilm_offset) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA descriptor */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 MT7610U_VENDOR_WRITE_FCE,
-					 value,
-					 0x232,
-					 NULL,
-					 0);
+					 value, 0x232,
+					 NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
@@ -311,13 +300,11 @@ loadfw_protect:
 			value = ((sent_len << 16) & 0xFFFF);
 
 			/* Set FCE DMA length */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 MT7610U_VENDOR_WRITE_FCE,
-					 value,
-					 0x234,
-					 NULL,
-					 0);
+					 value, 0x234,
+					 NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
@@ -327,13 +314,11 @@ loadfw_protect:
 			value = (((sent_len << 16) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA length */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 MT7610U_VENDOR_WRITE_FCE,
-					 value,
-					 0x236,
-					 NULL,
-					 0);
+					 value, 0x236,
+					 NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
@@ -404,13 +389,11 @@ loadfw_protect:
 			value = ((cur_len + cap->dlm_offset) & 0xFFFF);
 
 			/* Set FCE DMA descriptor */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					 DEVICE_VENDOR_REQUEST_OUT,
 					 MT7610U_VENDOR_WRITE_FCE,
-					 value,
-					 0x230,
-					 NULL,
-					 0);
+					 value, 0x230,
+					 NULL, 0);
 
 
 			if (ret) {
@@ -421,13 +404,11 @@ loadfw_protect:
 			value = (((cur_len + cap->dlm_offset) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA descriptor */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  MT7610U_VENDOR_WRITE_FCE,
-					  value,
-					  0x232,
-					  NULL,
-					  0);
+					  value, 0x232,
+					  NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
@@ -442,13 +423,11 @@ loadfw_protect:
 			value = ((sent_len << 16) & 0xFFFF);
 
 			/* Set FCE DMA length */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  MT7610U_VENDOR_WRITE_FCE,
-					  value,
-					  0x234,
-					  NULL,
-					  0);
+					  value, 0x234,
+					  NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
@@ -458,13 +437,11 @@ loadfw_protect:
 			value = (((sent_len << 16) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA length */
-			ret = RTUSB_VendorRequest(ad,
+			ret = mt7610u_vendor_request(ad,
 					  DEVICE_VENDOR_REQUEST_OUT,
 					  MT7610U_VENDOR_WRITE_FCE,
-					  value,
-					  0x236,
-					  NULL,
-					  0);
+					  value, 0x236,
+					  NULL, 0);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));

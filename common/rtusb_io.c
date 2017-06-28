@@ -45,13 +45,11 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 	do {
 		val =(u16)( *key  | (*(key + 1) << 8));
 
-		RTUSB_VendorRequest(pAd,
+		mt7610u_vendor_request(pAd,
 				    DEVICE_VENDOR_REQUEST_OUT,
 				    MT7610U_VENDOR_SINGLE_WRITE,
-				    val,
-				    Offset + idx,
-				    NULL,
-				    0);
+				    val, Offset + idx,
+				    NULL, 0);
 
 		key += 2;
 		idx += 2;
@@ -80,14 +78,11 @@ u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 	int status;
 	u32 val;
 
-	status = RTUSB_VendorRequest(
-		pAd,
+	status = mt7610u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_IN,
 		MT7610U_VENDOR_READ_MAC,
-		0,
-		Offset,
-		&val,
-		4);
+		0, Offset,
+		&val, 4);
 
 	if (status != 0)
 		val = 0xffffffff;
@@ -120,14 +115,11 @@ void mt7610u_write32(
 
 	/* MT76xx HW has 4 byte alignment constrained */
 
-	RTUSB_VendorRequest(
-			pAd,
+	mt7610u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_OUT,
 			MT7610U_VENDOR_WRITE_MAC,
-			0,
-			Offset,
-			&val,
-			4);
+			0, Offset,
+			&val, 4);
 }
 
 /*
@@ -210,14 +202,11 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 {
 	u16 localData;
 
-	RTUSB_VendorRequest(
-			pAd,
+	mt7610u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_IN,
 			MT7610U_VENDOR_READ_EEPROM,
-			0,
-			offset,
-			&localData,
-			2);
+			0, offset,
+			&localData, 2);
 
 	return le2cpu16(localData);
 }
@@ -225,7 +214,7 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 /*
     ========================================================================
  	Routine Description:
-		RTUSB_VendorRequest - Builds a ralink specific request, sends it off to USB endpoint zero and waits for completion
+		mt7610u_vendor_request - Builds a ralink specific request, sends it off to USB endpoint zero and waits for completion
 
 	Arguments:
 		@pAd:
@@ -250,23 +239,18 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 		otherwise system will hang, do be careful.
 
 		TransferBuffer may located in stack region which may not in DMA'able region in some embedded platforms,
-		so need to copy TransferBuffer to UsbVendorReqBuf allocated by kmalloc to do DMA transfer.
+		so need to copy TransferBuffer to vend_buf allocated by kmalloc to do DMA transfer.
 		Use UsbVendorReq_semaphore to protect this region which may be accessed by multi task.
-		Normally, coherent issue is resloved by low-level HC driver, so do not flush this zone by RTUSB_VendorRequest.
+		Normally, coherent issue is resloved by low-level HC driver, so do not flush this zone by mt7610u_vendor_request.
 
 	========================================================================
 */
-int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 RequestType, u8 Request,
-			u16 Value, u16 Index, void *TransferBuffer,
-			u32 TransferBufferLength)
+
+int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
+			u16 value, u16 index, void *data, u16 size)
 {
 	int ret = 0;
 	struct usb_device *udev = pAd->OS_Cookie->pUsb_Dev;
-
-	if (in_interrupt()) {
-		DBGPRINT(RT_DEBUG_ERROR, ("BUG: RTUSB_VendorRequest is called from invalid context\n"));
-		return NDIS_STATUS_FAILURE;
-	}
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)) {
 		DBGPRINT(RT_DEBUG_ERROR, ("WIFI device has been disconnected\n"));
@@ -275,9 +259,7 @@ int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 RequestType, u8 Request,
 		DBGPRINT(RT_DEBUG_ERROR, ("MCU has entered sleep mode\n"));
 		return NDIS_STATUS_FAILURE;
 	} else {
-
 		int RetryCount = 0; /* RTUSB_CONTROL_MSG retry counts*/
-		ASSERT(TransferBufferLength <MAX_PARAM_BUFFER_SIZE);
 
 		ret = down_interruptible(&(pAd->UsbVendorReq_semaphore));
 		if (ret != 0) {
@@ -285,28 +267,27 @@ int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 RequestType, u8 Request,
 			return NDIS_STATUS_FAILURE;
 		}
 
-		if ((TransferBufferLength > 0) && (RequestType == DEVICE_VENDOR_REQUEST_OUT))
-			memmove(pAd->UsbVendorReqBuf, TransferBuffer, TransferBufferLength);
+		if ((size > 0) && (requesttype == DEVICE_VENDOR_REQUEST_OUT))
+			memmove(pAd->vend_buf, data, size);
 
 		do {
-			unsigned int pipe = (RequestType == DEVICE_VENDOR_REQUEST_OUT) ?
+			unsigned int pipe = (requesttype == DEVICE_VENDOR_REQUEST_OUT) ?
 					     usb_sndctrlpipe(udev, 0) :
 					     usb_rcvctrlpipe(udev, 0);
 
 			ret = usb_control_msg(udev,
 					    pipe,
-					    Request,
-					    RequestType,
-					    Value,
-					    Index,
-					    pAd->UsbVendorReqBuf,
-					    TransferBufferLength,
+					    request,
+					    requesttype,
+					    value,
+					    index,
+					    pAd->vend_buf,
+					    size,
 					    CONTROL_TIMEOUT_JIFFIES);
 
 			if (ret < 0 ) {
 				DBGPRINT(RT_DEBUG_OFF, ("#\n"));
-				if (ret == RTMP_USB_CONTROL_MSG_ENODEV)
-				{
+				if (ret == -ENODEV) {
 					RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 					break;
 				}
@@ -315,21 +296,19 @@ int RTUSB_VendorRequest(struct rtmp_adapter *pAd, u8 RequestType, u8 Request,
 			}
 		} while((ret < 0 ) && (RetryCount < MAX_VENDOR_REQ_RETRY_COUNT));
 
-		if ( (!(ret < 0)) && (TransferBufferLength > 0) && (RequestType == DEVICE_VENDOR_REQUEST_IN))
-			memmove(TransferBuffer, pAd->UsbVendorReqBuf, TransferBufferLength);
+		if (ret >= 0 && size > 0 && requesttype == DEVICE_VENDOR_REQUEST_IN)
+			memmove(data, pAd->vend_buf, size);
 
 		up(&(pAd->UsbVendorReq_semaphore));
 
 		if (ret < 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("RTUSB_VendorRequest failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
-						ret, (RequestType == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), Request, Index, pAd->Flags));
-			if (Request == 0x2)
-				DBGPRINT(RT_DEBUG_ERROR, ("\tRequest Value=0x%04x!\n", Value));
+			DBGPRINT(RT_DEBUG_ERROR, ("mt7610u_vendor_request failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
+						ret, (requesttype == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), request, index, pAd->Flags));
 
-			if ((!TransferBuffer) && (TransferBufferLength > 0))
-				;
+			if (request == MT7610U_VENDOR_SINGLE_WRITE)
+				DBGPRINT(RT_DEBUG_ERROR, ("\tRequest Value=0x%04x!\n", value));
 
-			if (ret == RTMP_USB_CONTROL_MSG_ENODEV)
+			if (ret == -ENODEV)
 					RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST);
 
 		}
