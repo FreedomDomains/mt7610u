@@ -402,7 +402,6 @@ struct rtmp_chip_cap {
 
 #ifdef CONFIG_ANDES_SUPPORT
 	u32 WlanMemmapOffset;
-	u32 InbandPacketMaxLen; /* must be 48 multible */
 	u8 CmdRspRxRing;
 	bool IsComboChip;
 	u8 load_iv;

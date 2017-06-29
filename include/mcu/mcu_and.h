@@ -255,4 +255,9 @@ int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status);
 void mt7610u_mcu_cmd_msg_bh(unsigned long param);
 int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad);
 void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
+
+#define MT_INBAND_PACKET_MAX_LEN	192	/* must be 48 multible */
+#define MT_COMMAND_BULK_OUT_ADDR	0x8
+#define MT_COMMAND_RSP_BULK_IN_ADDR	0x85
+
 #endif
