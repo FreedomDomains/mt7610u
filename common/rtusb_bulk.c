@@ -59,20 +59,6 @@ void RTUSBInitTxDesc(
 	/* Store BulkOut PipeId*/
 	pTxContext->BulkOutPipeId = BulkOutPipeId;
 
-	if (pTxContext->bAggregatible)
-	{
-		pSrc = &pTxContext->TransferBuffer->Aggregation[2];
-
-		RTUSB_FILL_TX_BULK_URB(pUrb,
-						pObj->pUsb_Dev,
-						WMM0ACBulkOutAddr[BulkOutPipeId],
-						pSrc,
-						pTxContext->BulkOutSize,
-						Func,
-						pTxContext,
-						(pTxContext->data_dma + TX_BUFFER_NORMSIZE + 2));
-	}
-	else
 	{
 		pSrc = (u8 *) pTxContext->TransferBuffer->field.WirelessPacket;
 
