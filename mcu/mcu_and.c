@@ -572,14 +572,14 @@ error0:
 }
 
 static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type,
-				     bool need_wait, u16 timeout,
+				     bool need_wait,
 				     bool need_retransmit, bool need_rsp,
 				     u16 rsp_payload_len,
 				     char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
 	msg->type = type;
 	msg->need_wait = need_wait;
-	msg->timeout = timeout;
+	msg->timeout = 0;
 
 	if (need_wait)
 		init_completion(&msg->ack_done);
@@ -1318,9 +1318,11 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true, 0, true, true, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true,
+						 true, true, 0, NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, false, 0, false, false, 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, false,
+						false, false, 0, NULL, NULL);
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
 		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1374,10 +1376,8 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pa
 			goto error;
 		}
 
-		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true, 0,
-					 true, true, receive_len,
-					 (char *)&reg_pair[cur_index],
-					 mt7610u_mcu_rf_random_read_callback);
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true,
+					 true, true, receive_len, (char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
 			value = 0;
@@ -1438,13 +1438,11 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
-						true, 0, true, true, 0,
-						NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
+						 true, true, 0, NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
-						 false, 0, false, false,
-						 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false,
+						 false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			/* Address */
@@ -1496,13 +1494,11 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_p
 		}
 
 		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
-						 true, 0, true, true, 0,
-						 NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
+						 true, true, 0, NULL, NULL);
 		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE,
-						 false, 0, false, false,
-						 0, NULL, NULL);
+			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false,
+						 false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			value = 0;
@@ -1550,10 +1546,10 @@ int mt7610u_mcu_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param)
 	}
 
 	if (fun_id != Q_SELECT)
-		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true, 0,
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true,
 					 true, true, 0, NULL, NULL);
 	else
-		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false, 0,
+		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false,
 					 false, false, 0, NULL, NULL);
 
 	/* Function ID */
@@ -1586,8 +1582,8 @@ int mt7610u_mcu_calibration(struct rtmp_adapter *ad, enum mt7610u_mcu_calibratio
 		goto error;
 	}
 
-	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true, 0, true,
-				 true, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true,
+				 true, true, 0, NULL, NULL);
 
 	/* Calibration ID */
 	value = cpu2le32(cal_id);
@@ -1616,8 +1612,8 @@ int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status)
 		goto error;
 	}
 
-	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false, 0, false,
-				 false, 0, NULL, NULL);
+	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false,
+				 false, false, 0, NULL, NULL);
 
 	/* Led index */
 	value = cpu2le32(led_idx);
