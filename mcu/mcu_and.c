@@ -579,7 +579,6 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type
 {
 	msg->type = type;
 	msg->need_wait = need_wait;
-	msg->timeout = 0;
 
 	if (need_wait)
 		init_completion(&msg->ack_done);
@@ -1250,9 +1249,8 @@ retransmit:
 	if (need_wait) {
 		enum cmd_msg_state state;
 		unsigned long expire;
-		unsigned long timeout = msg->timeout;
 
-		expire = timeout ? RTMPMsecsToJiffies(timeout) : RTMPMsecsToJiffies(CMD_MSG_TIMEOUT);
+		expire = RTMPMsecsToJiffies(CMD_MSG_TIMEOUT);
 		if (!wait_for_completion_timeout(&msg->ack_done, expire)) {
 			ret = NDIS_STATUS_FAILURE;
 			if (OS_TEST_BIT(MCU_INIT, &ctl->flags)) {
