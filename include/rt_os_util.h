@@ -36,8 +36,6 @@ void RtmpUtilInit(void);
 void RTMPusecDelay(
 	IN	ULONG					usec);
 
-ULONG RTMPMsecsToJiffies(UINT msec);
-
 void RtmpOsWait(
 	IN	u32					Time);
 
