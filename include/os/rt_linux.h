@@ -808,7 +808,6 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 #define BULKAGGRE_SIZE				60 /* 100 */
 
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
-#define RTUSB_FILL_BULK_URB(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context) usb_fill_bulk_urb(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context)
 
 #define RT28XX_PUT_DEVICE(dev_p)
 
