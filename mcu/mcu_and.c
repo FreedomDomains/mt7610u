@@ -108,7 +108,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	u8 *fw_data;
 	struct txinfo_nmac_cmd *tx_info;
 	s32 sent_len;
-	u32 cur_len = 0;
+	u32 pos = 0;
 	u32 mac_value, loop = 0;
 	u16 value;
 	int ret = 0;
@@ -237,16 +237,16 @@ loadfw_protect:
 	init_completion(&load_fw_done);
 
 	if (cap->load_iv)
-		cur_len = 0x40;
+		pos = 0x40;
 	else
-		cur_len = 0x00;
+		pos = 0x00;
 
 	/* Loading ILM */
 	while (1) {
 		s32 sent_len_max = UPLOAD_FW_UNIT - sizeof(*tx_info) - USB_END_PADDING;
 
-		sent_len = ((ilm_len - cur_len) >=  sent_len_max) ?
-				sent_len_max : (ilm_len - cur_len);
+		sent_len = ((ilm_len - pos) >=  sent_len_max) ?
+				sent_len_max : (ilm_len - pos);
 
 		if (sent_len > 0) {
 			tx_info = (struct txinfo_nmac_cmd *)fw_data;
@@ -257,12 +257,12 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + pos, sent_len);
 
 			/* four zero bytes for end padding */
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
-			value = (cur_len + cap->ilm_offset) & 0xFFFF;
+			value = (pos + cap->ilm_offset) & 0xFFFF;
 
 			/* Set FCE DMA descriptor */
 			ret = mt7610u_vendor_request(ad,
@@ -277,7 +277,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			value = (((cur_len + cap->ilm_offset) & 0xFFFF0000) >> 16);
+			value = (((pos + cap->ilm_offset) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA descriptor */
 			ret = mt7610u_vendor_request(ad,
@@ -291,7 +291,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			cur_len += sent_len;
+			pos += sent_len;
 
 			while ((sent_len % 4) != 0)
 				sent_len++;
@@ -346,8 +346,8 @@ loadfw_protect:
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n",
 					UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, cur_len = %d\n",
-					__func__, sent_len, ilm_len, cur_len));
+				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, pos = %d\n",
+					__func__, sent_len, ilm_len, pos));
 
 				goto error2;
 			}
@@ -364,13 +364,13 @@ loadfw_protect:
 
 	}
 
-	cur_len = 0x00;
+	pos = 0x00;
 
 	/* Loading DLM */
 	while (1) {
 		s32 sent_len_max = UPLOAD_FW_UNIT - sizeof(*tx_info) - USB_END_PADDING;
 
-		sent_len = (dlm_len - cur_len) >= sent_len_max ? sent_len_max : (dlm_len - cur_len);
+		sent_len = (dlm_len - pos) >= sent_len_max ? sent_len_max : (dlm_len - pos);
 
 		if (sent_len > 0) {
 			tx_info = (struct txinfo_nmac_cmd *)fw_data;
@@ -381,11 +381,11 @@ loadfw_protect:
 #ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
 #endif
-			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
+			memmove(fw_data + sizeof(*tx_info), fw_image + FW_INFO_SIZE + ilm_len + pos, sent_len);
 
 			memset(fw_data + sizeof(*tx_info) + sent_len, 0, USB_END_PADDING);
 
-			value = ((cur_len + cap->dlm_offset) & 0xFFFF);
+			value = ((pos + cap->dlm_offset) & 0xFFFF);
 
 			/* Set FCE DMA descriptor */
 			ret = mt7610u_vendor_request(ad,
@@ -400,7 +400,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			value = (((cur_len + cap->dlm_offset) & 0xFFFF0000) >> 16);
+			value = (((pos + cap->dlm_offset) & 0xFFFF0000) >> 16);
 
 			/* Set FCE DMA descriptor */
 			ret = mt7610u_vendor_request(ad,
@@ -414,7 +414,7 @@ loadfw_protect:
 				goto error2;
 			}
 
-			cur_len += sent_len;
+			pos += sent_len;
 
 			while ((sent_len % 4) != 0)
 				sent_len++;
@@ -468,7 +468,7 @@ loadfw_protect:
 				usb_kill_urb(urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, cur_len = %d\n", __func__, sent_len, dlm_len, cur_len));
+				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, pos = %d\n", __func__, sent_len, dlm_len, pos));
 
 				goto error2;
 			}
@@ -1265,7 +1265,7 @@ retransmit:
 int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 cnt)
 {
 	struct cmd_msg *msg;
-	unsigned int var_len, offset_num, cur_len = 0, sent_len;
+	unsigned int var_len, offset_num, pos = 0, sent_len;
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
@@ -1281,11 +1281,11 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 
 	else
 		var_len = sizeof(offset) * offset_num + 4 * cnt;
 
-	while (cur_len < var_len) {
-		sent_len = (var_len - cur_len) > MT_INBAND_PACKET_MAX_LEN
-									? MT_INBAND_PACKET_MAX_LEN : (var_len - cur_len);
+	while (pos < var_len) {
+		sent_len = (var_len - pos) > MT_INBAND_PACKET_MAX_LEN
+									? MT_INBAND_PACKET_MAX_LEN : (var_len - pos);
 
-		if ((sent_len < MT_INBAND_PACKET_MAX_LEN) || ((cur_len + MT_INBAND_PACKET_MAX_LEN) == var_len))
+		if ((sent_len < MT_INBAND_PACKET_MAX_LEN) || ((pos + MT_INBAND_PACKET_MAX_LEN) == var_len))
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1314,7 +1314,7 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 
 
 
 		cur_index += ((sent_len - 4) / 4);
-		cur_len += MT_INBAND_PACKET_MAX_LEN;
+		pos += MT_INBAND_PACKET_MAX_LEN;
 	}
 
 error:
@@ -1333,7 +1333,7 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
-	unsigned int var_len = num * 8, cur_len = 0, receive_len;
+	unsigned int var_len = num * 8, pos = 0, receive_len;
 	u32 i, value, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
@@ -1341,11 +1341,11 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pa
 	if (!reg_pair)
 		return -1;
 
-	while (cur_len < var_len) {
+	while (pos < var_len) {
 		receive_len =
-			(var_len - cur_len) > MT_INBAND_PACKET_MAX_LEN ?
+			(var_len - pos) > MT_INBAND_PACKET_MAX_LEN ?
 			MT_INBAND_PACKET_MAX_LEN :
-			(var_len - cur_len);
+			(var_len - pos);
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, receive_len);
 
@@ -1378,7 +1378,7 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pa
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 		cur_index += receive_len / 8;
-		cur_len += MT_INBAND_PACKET_MAX_LEN;
+		pos += MT_INBAND_PACKET_MAX_LEN;
 	}
 
 error:
@@ -1389,7 +1389,7 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 			struct rtmp_reg_pair *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
-	unsigned int var_len = num * 8, cur_len = 0, sent_len;
+	unsigned int var_len = num * 8, pos = 0, sent_len;
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
@@ -1398,14 +1398,14 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 	if (!reg_pair)
 		return -1;
 
-	while (cur_len < var_len) {
+	while (pos < var_len) {
 		sent_len =
-			(var_len - cur_len) > MT_INBAND_PACKET_MAX_LEN ?
+			(var_len - pos) > MT_INBAND_PACKET_MAX_LEN ?
 			MT_INBAND_PACKET_MAX_LEN :
-			(var_len - cur_len);
+			(var_len - pos);
 
 		if ((sent_len < MT_INBAND_PACKET_MAX_LEN) ||
-		    (cur_len + MT_INBAND_PACKET_MAX_LEN) == var_len)
+		    (pos + MT_INBAND_PACKET_MAX_LEN) == var_len)
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1435,7 +1435,7 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 		cur_index += (sent_len / 8);
-		cur_len += MT_INBAND_PACKET_MAX_LEN;
+		pos += MT_INBAND_PACKET_MAX_LEN;
 	}
 
 error:
@@ -1445,7 +1445,7 @@ error:
 int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
-	unsigned int var_len = num * 8, cur_len = 0, sent_len;
+	unsigned int var_len = num * 8, pos = 0, sent_len;
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
@@ -1454,14 +1454,14 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_p
 	if (!reg_pair)
 		return -1;
 
-	while (cur_len < var_len) {
+	while (pos < var_len) {
 		sent_len =
-			(var_len - cur_len) > MT_INBAND_PACKET_MAX_LEN ?
+			(var_len - pos) > MT_INBAND_PACKET_MAX_LEN ?
 			MT_INBAND_PACKET_MAX_LEN :
-			(var_len - cur_len);
+			(var_len - pos);
 
 		if ((sent_len < MT_INBAND_PACKET_MAX_LEN) ||
-		    (cur_len + MT_INBAND_PACKET_MAX_LEN) == var_len)
+		    (pos + MT_INBAND_PACKET_MAX_LEN) == var_len)
 			last_packet = true;
 
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
@@ -1502,7 +1502,7 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_p
 		ret = mt7610u_mcu_send_cmd_msg(ad, msg);
 
 		cur_index += (sent_len / 8);
-		cur_len += MT_INBAND_PACKET_MAX_LEN;
+		pos += MT_INBAND_PACKET_MAX_LEN;
 	}
 
 error:
