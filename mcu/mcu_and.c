@@ -107,7 +107,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	dma_addr_t fw_dma;
 	u8 *fw_data;
 	struct txinfo_nmac_cmd *tx_info;
-	s32 sent_len;
+	int sent_len;
 	u32 pos = 0;
 	u32 mac_value, loop = 0;
 	u16 value;
@@ -293,8 +293,7 @@ loadfw_protect:
 
 			pos += sent_len;
 
-			while ((sent_len % 4) != 0)
-				sent_len++;
+			sent_len = roundup(sent_len, 4);
 
 			value = ((sent_len << 16) & 0xFFFF);
 
@@ -416,8 +415,7 @@ loadfw_protect:
 
 			pos += sent_len;
 
-			while ((sent_len % 4) != 0)
-				sent_len++;
+			sent_len = roundup(sent_len, 4);
 
 			value = ((sent_len << 16) & 0xFFFF);
 
