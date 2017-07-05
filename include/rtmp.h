@@ -6546,6 +6546,12 @@ INT set_rf(struct rtmp_adapter*pAd, char *arg);
 
 bool CmdRspEventHandle(struct rtmp_adapter*pAd);
 
+static struct usb_device *mt7610u_to_usb_dev(struct rtmp_adapter *ad)
+{
+	return ad->OS_Cookie->pUsb_Dev;
+}
+
+
 #endif  /* __RTMP_H__ */
 
 INT set_temp_sensor_proc(

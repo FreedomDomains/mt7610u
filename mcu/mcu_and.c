@@ -102,7 +102,7 @@ static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 {
 	const struct firmware *fw;
-	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct urb *urb;
 	dma_addr_t fw_dma;
 	u8 *fw_data;
@@ -794,7 +794,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	struct sk_buff *skb = urb->context;
 	struct cmd_msg *msg = CMD_MSG_CB(skb)->msg;
 	struct rtmp_adapter *ad = msg->priv;
-	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
@@ -852,7 +852,7 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 static int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad)
 {
 	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
-	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
 	struct sk_buff *skb = NULL;
@@ -990,7 +990,7 @@ static void usb_kick_out_cmd_msg_complete(struct urb *urb)
 static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
-	struct usb_device *udev = ad->OS_Cookie->pUsb_Dev;
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	int pipe;
 	int ret = 0;
 	struct sk_buff *skb = msg->skb;

@@ -250,7 +250,7 @@ int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
 			u16 value, u16 index, void *data, u16 size)
 {
 	int ret = 0;
-	struct usb_device *udev = pAd->OS_Cookie->pUsb_Dev;
+	struct usb_device *udev = mt7610u_to_usb_dev(pAd);
 
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)) {
 		DBGPRINT(RT_DEBUG_ERROR, ("WIFI device has been disconnected\n"));
