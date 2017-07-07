@@ -202,7 +202,9 @@ static int CFG80211_OpsVirtualInfChg(
 	IN struct wiphy					*pWiphy,
 	IN struct net_device			*pNetDevIn,
 	IN enum nl80211_iftype			Type,
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(4,12,0))
 	IN u32							*pFlags,
+#endif
 	struct vif_params				*pParams)
 {
 	struct rtmp_adapter  *pAd;
@@ -236,8 +238,24 @@ static int CFG80211_OpsVirtualInfChg(
 
 	pNetDev->ieee80211_ptr->iftype = Type;
 
-	if (pFlags != NULL)
-	{
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,12,0))
+	if (pParams->flags &MONITOR_FLAG_CHANGED) {
+		Filter = 0;
+
+		if (((pParams->flags) & NL80211_MNTR_FLAG_FCSFAIL) == NL80211_MNTR_FLAG_FCSFAIL)
+                       Filter |= RT_CMD_80211_FILTER_FCSFAIL;
+
+		if (((pParams->flags) & NL80211_MNTR_FLAG_FCSFAIL) == NL80211_MNTR_FLAG_PLCPFAIL)
+			Filter |= RT_CMD_80211_FILTER_PLCPFAIL;
+
+		if (((pParams->flags) & NL80211_MNTR_FLAG_CONTROL) == NL80211_MNTR_FLAG_CONTROL)
+                       Filter |= RT_CMD_80211_FILTER_CONTROL;
+
+		if (((pParams->flags) & NL80211_MNTR_FLAG_CONTROL) == NL80211_MNTR_FLAG_OTHER_BSS)
+			Filter |= RT_CMD_80211_FILTER_OTHER_BSS;
+       }
+#else
+	if (pFlags != NULL) {
 		Filter = 0;
 
 		if (((*pFlags) & NL80211_MNTR_FLAG_FCSFAIL) == NL80211_MNTR_FLAG_FCSFAIL)
@@ -251,7 +269,8 @@ static int CFG80211_OpsVirtualInfChg(
 
 		if (((*pFlags) & NL80211_MNTR_FLAG_CONTROL) == NL80211_MNTR_FLAG_OTHER_BSS)
 			Filter |= RT_CMD_80211_FILTER_OTHER_BSS;
-	} /* End of if */
+	}
+#endif
 
 	RTMP_DRIVER_80211_VIF_SET(pAd, Filter, Type);
 
