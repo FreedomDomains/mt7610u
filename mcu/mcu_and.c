@@ -766,7 +766,11 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 				     skb->data + sizeof(*rx_info), rx_info->pkt_len);
 	} else {
 		spin_lock_irq(&ctl->ackq_lock);
-		DlListForEachSafe(msg, msg_tmp, &ctl->ackq, struct cmd_msg, list) {
+
+		for (msg = DlListEntry((&ctl->ackq)->Next, struct cmd_msg, list), msg_tmp = DlListEntry(msg->list.Next, struct cmd_msg, list);
+			&msg->list != &ctl->ackq;
+			msg = msg_tmp, msg_tmp = DlListEntry(msg_tmp->list.Next, struct cmd_msg, list)) {
+
 			if (msg->seq == rx_info->cmd_seq) {
 				_mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 				spin_unlock_irq(&ctl->ackq_lock);
@@ -1047,7 +1051,11 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter *ad, DL_LIST *list)
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
+
+	for (msg = DlListEntry(list->Next, struct cmd_msg, list), msg_tmp = DlListEntry(msg->list.Next, struct cmd_msg, list);
+		&msg->list != &ctl->ackq;
+		msg = msg_tmp, msg_tmp = DlListEntry(msg_tmp->list.Next, struct cmd_msg, list)) {
+
 		spin_unlock_irqrestore(lock, flags);
 		if ((msg->state == WAIT_CMD_OUT_AND_ACK) || (msg->state == WAIT_CMD_OUT) ||
 						(msg->state == TX_START) || (msg->state == RX_START))
@@ -1067,7 +1075,11 @@ void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter *ad, DL_LIST *list)
 	lock = mt7610u_mcu_get_spin_lock(ctl, list);
 
 	spin_lock_irqsave(lock, flags);
-	DlListForEachSafe(msg, msg_tmp, list, struct cmd_msg, list) {
+
+	for (msg = DlListEntry(list->Next, struct cmd_msg, list), msg_tmp = DlListEntry(msg->list.Next, struct cmd_msg, list);
+		&msg->list != &ctl->ackq;
+		msg = msg_tmp, msg_tmp = DlListEntry(msg_tmp->list.Next, struct cmd_msg, list)) {
+
 		_mt7610u_mcu_unlink_cmd_msg(msg, list);
 		mt7610u_mcu_free_cmd_msg(msg);
 	}
