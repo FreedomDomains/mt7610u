@@ -180,11 +180,6 @@ static inline bool DlListEmpty(struct _DL_LIST *List)
     (DlListEmpty((list)) ? NULL : \
      DlListEntry((list)->Next, type, member))
 
-#define DlListForEach(item, list, type, member) \
-    for (item = DlListEntry((list)->Next, type, member); \
-         &item->member != (list); \
-         item = DlListEntry(item->member.Next, type, member))
-
 #define DlListForEachSafe(item, n, list, type, member) \
     for (item = DlListEntry((list)->Next, type, member), \
              n = DlListEntry(item->member.Next, type, member); \
