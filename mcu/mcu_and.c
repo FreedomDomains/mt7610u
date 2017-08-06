@@ -40,7 +40,9 @@
 
 #define MT7610U_VENDOR_WRITE_FCE	0x42
 
-void usb_uploadfw_complete(struct urb *urb)
+static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
+
+static void usb_uploadfw_complete(struct urb *urb)
 {
 	struct completion *load_fw_done = urb->context;
 
@@ -595,7 +597,7 @@ static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned
 		memcpy(skb_put(skb, len), data, len);
 }
 
-void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
+static void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
 	struct sk_buff *skb = msg->skb;
 	struct rtmp_adapter *ad = msg->priv;
@@ -915,7 +917,7 @@ int usb_rx_cmd_msgs_receive(struct rtmp_adapter *ad)
 	return ret;
 }
 
-void mt7610u_mcu_cmd_msg_bh(unsigned long param)
+static void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 {
 	struct rtmp_adapter *ad = (struct rtmp_adapter *)param;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
@@ -945,7 +947,7 @@ void mt7610u_mcu_cmd_msg_bh(unsigned long param)
 	}
 }
 
-void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad)
+static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	bool tmp;
@@ -1041,7 +1043,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	return ret;
 }
 
-void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter *ad, DL_LIST *list)
+static void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter *ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
@@ -1065,7 +1067,7 @@ void mt7610u_mcu_usb_unlink_urb(struct rtmp_adapter *ad, DL_LIST *list)
 	spin_unlock_irqrestore(lock, flags);
 }
 
-void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter *ad, DL_LIST *list)
+static void mt7610u_mcu_cleanup_cmd_msg(struct rtmp_adapter *ad, DL_LIST *list)
 {
 	unsigned long flags;
 	struct cmd_msg *msg, *msg_tmp;
@@ -1214,7 +1216,7 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 	return ret;
 }
 
-int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
+static int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
