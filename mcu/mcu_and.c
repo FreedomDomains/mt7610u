@@ -166,6 +166,122 @@ static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 		NULL, 0);
 }
 
+static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
+			    const struct mt7610u_dma_buf *dma_buf,
+			    const void *data, u32 len, u32 dst_addr)
+{
+	DECLARE_COMPLETION_ONSTACK(cmpl);
+	struct mt7610u_dma_buf buf = *dma_buf; /* we need to fake length */
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
+	u16 value;
+	u32 mac_value;
+	int ret = 0;
+	__le32 reg;
+
+	reg = cpu_to_le32(FIELD_PREP(MT_TXD_INFO_TYPE, CMD_PACKET) |
+			  FIELD_PREP(MT_TXD_INFO_D_PORT, CPU_TX_PORT) |
+			  FIELD_PREP(MT_TXD_INFO_LEN, len));
+
+	memmove(buf.buf, &reg, sizeof(reg));
+	memmove(buf.buf + sizeof(reg), data, len);
+
+	/* four zero bytes for end padding */
+	memset(buf.buf + sizeof(reg) + len, 0, USB_END_PADDING);
+
+	value = dst_addr & 0xFFFF;
+
+	/* Set FCE DMA descriptor */
+	ret = mt7610u_vendor_request(ad,
+			 DEVICE_VENDOR_REQUEST_OUT,
+			 MT7610U_VENDOR_WRITE_FCE,
+			 value, 0x230,
+			 NULL, 0);
+
+
+	if (ret) {
+		DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
+		return ret;
+	}
+
+	value = ((dst_addr & 0xFFFF0000) >> 16);
+
+	/* Set FCE DMA descriptor */
+	ret = mt7610u_vendor_request(ad,
+			 DEVICE_VENDOR_REQUEST_OUT,
+			 MT7610U_VENDOR_WRITE_FCE,
+			 value, 0x232,
+			 NULL, 0);
+
+	if (ret) {
+		DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
+		return ret;
+	}
+
+	len = roundup(len, 4);
+
+	value = ((len << 16) & 0xFFFF);
+
+	/* Set FCE DMA length */
+	ret = mt7610u_vendor_request(ad,
+			 DEVICE_VENDOR_REQUEST_OUT,
+			 MT7610U_VENDOR_WRITE_FCE,
+			 value, 0x234,
+			 NULL, 0);
+
+	if (ret) {
+		DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
+		return ret;
+	}
+
+	value = (((len << 16) & 0xFFFF0000) >> 16);
+
+	/* Set FCE DMA length */
+	ret = mt7610u_vendor_request(ad,
+			 DEVICE_VENDOR_REQUEST_OUT,
+			 MT7610U_VENDOR_WRITE_FCE,
+			 value, 0x236,
+			 NULL, 0);
+
+	if (ret) {
+		DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
+		return ret;
+	}
+
+	/* Initialize URB descriptor */
+	RTUSB_FILL_HTTX_BULK_URB(buf.urb,
+			 udev,
+			 MT_COMMAND_BULK_OUT_ADDR,
+			 buf.buf,
+			 len + sizeof(reg) + USB_END_PADDING,
+			 usb_uploadfw_complete,
+			 &cmpl,
+			 buf.dma);
+
+	ret = usb_submit_urb(buf.urb, GFP_ATOMIC);
+
+	if (ret) {
+		DBGPRINT(RT_DEBUG_ERROR, ("__mt7610u_dma_fw() submit urb fail\n"));
+
+	}
+
+	if (!wait_for_completion_timeout(&cmpl,  msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
+		usb_kill_urb(buf.urb);
+		DBGPRINT(RT_DEBUG_ERROR, ("__mt7610u_dma_fw() timeout(%dms)\n",
+			UPLOAD_FW_TIMEOUT));
+
+		return ret;
+	}
+	DBGPRINT(RT_DEBUG_OFF, ("."));
+
+	mac_value = mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
+	mac_value++;
+	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
+
+	mdelay(5);
+
+	return 0;
+}
+
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 {
 	const struct firmware *fw;
@@ -174,7 +290,6 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	int sent_len;
 	u32 pos = 0;
 	u32 mac_value, loop = 0;
-	u16 value;
 	int ret = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	USB_DMA_CFG_STRUC cfg;
@@ -302,113 +417,13 @@ loadfw_protect:
 				sent_len_max : (ilm_len - pos);
 
 		if (sent_len > 0) {
-			__le32 reg;
+			__mt7610u_dma_fw(ad, &dma_buf,
+					 fw_image + FW_INFO_SIZE + pos, sent_len,
+					 pos + cap->ilm_offset);
 
-			reg = cpu_to_le32(FIELD_PREP(MT_TXD_INFO_TYPE, CMD_PACKET) |
-					  FIELD_PREP(MT_TXD_INFO_D_PORT, CPU_TX_PORT) |
-					  FIELD_PREP(MT_TXD_INFO_LEN, sent_len));
-
-			memmove(dma_buf.buf, &reg, sizeof(reg));
-			memmove(dma_buf.buf + sizeof(reg), fw_image + FW_INFO_SIZE + pos, sent_len);
-
-			/* four zero bytes for end padding */
-			memset(dma_buf.buf + sizeof(reg) + sent_len, 0, USB_END_PADDING);
-
-			value = (pos + cap->ilm_offset) & 0xFFFF;
-
-			/* Set FCE DMA descriptor */
-			ret = mt7610u_vendor_request(ad,
-					 DEVICE_VENDOR_REQUEST_OUT,
-					 MT7610U_VENDOR_WRITE_FCE,
-					 value, 0x230,
-					 NULL, 0);
-
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
-				goto error2;
-			}
-
-			value = (((pos + cap->ilm_offset) & 0xFFFF0000) >> 16);
-
-			/* Set FCE DMA descriptor */
-			ret = mt7610u_vendor_request(ad,
-					 DEVICE_VENDOR_REQUEST_OUT,
-					 MT7610U_VENDOR_WRITE_FCE,
-					 value, 0x232,
-					 NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
-				goto error2;
-			}
 
 			pos += sent_len;
 
-			sent_len = roundup(sent_len, 4);
-
-			value = ((sent_len << 16) & 0xFFFF);
-
-			/* Set FCE DMA length */
-			ret = mt7610u_vendor_request(ad,
-					 DEVICE_VENDOR_REQUEST_OUT,
-					 MT7610U_VENDOR_WRITE_FCE,
-					 value, 0x234,
-					 NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
-				goto error2;
-			}
-
-			value = (((sent_len << 16) & 0xFFFF0000) >> 16);
-
-			/* Set FCE DMA length */
-			ret = mt7610u_vendor_request(ad,
-					 DEVICE_VENDOR_REQUEST_OUT,
-					 MT7610U_VENDOR_WRITE_FCE,
-					 value, 0x236,
-					 NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
-				goto error2;
-			}
-
-			/* Initialize URB descriptor */
-			RTUSB_FILL_HTTX_BULK_URB(dma_buf.urb,
-					 udev,
-					 MT_COMMAND_BULK_OUT_ADDR,
-					 dma_buf.buf,
-					 sent_len + sizeof(reg) + USB_END_PADDING,
-					 usb_uploadfw_complete,
-					 &load_fw_done,
-					 dma_buf.dma);
-
-			ret = usb_submit_urb(dma_buf.urb, GFP_ATOMIC);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
-				goto error2;
-			}
-
-			if (!wait_for_completion_timeout(&load_fw_done,  msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
-				usb_kill_urb(dma_buf.urb);
-				ret = NDIS_STATUS_FAILURE;
-				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n",
-					UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb, sent_len = %d, ilm_ilm = %d, pos = %d\n",
-					__func__, sent_len, ilm_len, pos));
-
-				goto error2;
-			}
-			DBGPRINT(RT_DEBUG_OFF, ("."));
-
-			mac_value = mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
-			mac_value++;
-			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
-
-			mdelay(5);
 		} else {
 			break;
 		}
@@ -424,109 +439,11 @@ loadfw_protect:
 		sent_len = (dlm_len - pos) >= sent_len_max ? sent_len_max : (dlm_len - pos);
 
 		if (sent_len > 0) {
-			__le32 reg;
-
-			reg = cpu_to_le32(FIELD_PREP(MT_TXD_INFO_TYPE, CMD_PACKET) |
-					  FIELD_PREP(MT_TXD_INFO_D_PORT, CPU_TX_PORT) |
-					  FIELD_PREP(MT_TXD_INFO_LEN, sent_len));
-
-			memmove(dma_buf.buf, &reg, sizeof(reg));
-			memmove(dma_buf.buf + sizeof(reg), fw_image + FW_INFO_SIZE + ilm_len + pos, sent_len);
-
-			memset(dma_buf.buf + sizeof(reg) + sent_len, 0, USB_END_PADDING);
-
-			value = ((pos + cap->dlm_offset) & 0xFFFF);
-
-			/* Set FCE DMA descriptor */
-			ret = mt7610u_vendor_request(ad,
-					 DEVICE_VENDOR_REQUEST_OUT,
-					 MT7610U_VENDOR_WRITE_FCE,
-					 value, 0x230,
-					 NULL, 0);
-
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
-				goto error2;
-			}
-
-			value = (((pos + cap->dlm_offset) & 0xFFFF0000) >> 16);
-
-			/* Set FCE DMA descriptor */
-			ret = mt7610u_vendor_request(ad,
-					  DEVICE_VENDOR_REQUEST_OUT,
-					  MT7610U_VENDOR_WRITE_FCE,
-					  value, 0x232,
-					  NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma descriptor fail\n"));
-				goto error2;
-			}
+			__mt7610u_dma_fw(ad, &dma_buf,
+					 fw_image + FW_INFO_SIZE + ilm_len + pos, sent_len,
+					 pos + cap->dlm_offset);
 
 			pos += sent_len;
-
-			sent_len = roundup(sent_len, 4);
-
-			value = ((sent_len << 16) & 0xFFFF);
-
-			/* Set FCE DMA length */
-			ret = mt7610u_vendor_request(ad,
-					  DEVICE_VENDOR_REQUEST_OUT,
-					  MT7610U_VENDOR_WRITE_FCE,
-					  value, 0x234,
-					  NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
-				goto error2;
-			}
-
-			value = (((sent_len << 16) & 0xFFFF0000) >> 16);
-
-			/* Set FCE DMA length */
-			ret = mt7610u_vendor_request(ad,
-					  DEVICE_VENDOR_REQUEST_OUT,
-					  MT7610U_VENDOR_WRITE_FCE,
-					  value, 0x236,
-					  NULL, 0);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("set fce dma length fail\n"));
-				goto error2;
-			}
-
-			/* Initialize URB descriptor */
-			RTUSB_FILL_HTTX_BULK_URB(dma_buf.urb,
-					 udev,
-					 MT_COMMAND_BULK_OUT_ADDR,
-					 dma_buf.buf,
-					 sent_len + sizeof(reg) + USB_END_PADDING,
-					 usb_uploadfw_complete,
-					 &load_fw_done,
-					 dma_buf.dma);
-
-			ret = usb_submit_urb(dma_buf.urb, GFP_ATOMIC);
-
-			if (ret) {
-				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
-				goto error2;
-			}
-
-			if (!wait_for_completion_timeout(&load_fw_done, msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
-				usb_kill_urb(dma_buf.urb);
-				ret = NDIS_STATUS_FAILURE;
-				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
-				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, pos = %d\n", __func__, sent_len, dlm_len, pos));
-
-				goto error2;
-			}
-			DBGPRINT(RT_DEBUG_OFF, ("."));
-
-			mac_value = mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
-			mac_value++;
-			mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
-			mdelay(5);
 		} else {
 			break;
 		}
