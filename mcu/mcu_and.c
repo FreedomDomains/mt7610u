@@ -50,6 +50,36 @@ static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
 #define MT_TXD_INFO_D_PORT		GENMASK(29, 27)
 #define MT_TXD_INFO_TYPE		GENMASK(31, 30)
 
+inline int mt7610u_dma_skb_wrap(struct sk_buff *skb,
+				       enum D_PORT d_port,
+				       enum INFO_TYPE type, u32 flags)
+{
+	u32 info;
+
+	/* Buffer layout:
+	 *	|   4B   | xfer len |      pad       |  4B  |
+	 *	| TXINFO | pkt/cmd  | zero pad to 4B | zero |
+	 *
+	 * length field of TXINFO should be set to 'xfer len'.
+	 */
+
+	info = flags |
+		FIELD_PREP(MT_TXD_INFO_LEN, round_up(skb->len, 4)) |
+		FIELD_PREP(MT_TXD_INFO_D_PORT, d_port) |
+		FIELD_PREP(MT_TXD_INFO_TYPE, type);
+
+	put_unaligned_le32(info, skb_push(skb, sizeof(info)));
+	return skb_put_padto(skb, round_up(skb->len, 4) + 4);
+}
+
+static inline void mt7610u_dma_skb_wrap_cmd(struct sk_buff *skb,
+					    u8 seq, enum mcu_cmd_type cmd)
+{
+	WARN_ON(mt7610u_dma_skb_wrap(skb, CPU_TX_PORT, CMD_PACKET,
+				     FIELD_PREP(MT_TXD_CMD_INFO_SEQ, seq) |
+				     FIELD_PREP(MT_TXD_CMD_INFO_TYPE, cmd)));
+}
+
 static void usb_uploadfw_complete(struct urb *urb)
 {
 	struct completion *load_fw_done = urb->context;
@@ -1201,16 +1231,7 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 		else
 			msg->seq = 0;
 
-		tx_info = (struct txinfo_nmac_cmd *)skb_push(skb, sizeof(*tx_info));
-		tx_info->info_type = CMD_PACKET;
-		tx_info->d_port = CPU_TX_PORT;
-		tx_info->cmd_type = msg->type;
-		tx_info->cmd_seq = msg->seq;
-		tx_info->pkt_len = skb->len - sizeof(*tx_info);
-
-#ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((u8 *)tx_info, TYPE_TXINFO);
-#endif
+		mt7610u_dma_skb_wrap_cmd(skb, msg->seq, msg->type);
 
 		ret = usb_kick_out_cmd_msg(ad, msg);
 
