@@ -170,7 +170,6 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 {
 	const struct firmware *fw;
 	struct usb_device *udev = mt7610u_to_usb_dev(ad);
-	struct urb *urb;
 	struct mt7610u_dma_buf dma_buf;
 	int sent_len;
 	u32 pos = 0;
@@ -280,19 +279,10 @@ loadfw_protect:
 		mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
 	}
 
-	/* Allocate URB */
-	urb = usb_alloc_urb(0, GFP_ATOMIC);
-
-	if (!urb) {
-		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate URB\n"));
-		ret = NDIS_STATUS_RESOURCES;
-		goto error0;
-	}
-
 	/* Allocate TransferBuffer */
 	if (mt7610u_usb_alloc_buf(ad, UPLOAD_FW_UNIT, &dma_buf)) {
 		ret = -ENOMEM;
-		goto error1;
+		goto error0;
 	}
 
 	DBGPRINT(RT_DEBUG_OFF, ("loading fw"));
@@ -386,7 +376,7 @@ loadfw_protect:
 			}
 
 			/* Initialize URB descriptor */
-			RTUSB_FILL_HTTX_BULK_URB(urb,
+			RTUSB_FILL_HTTX_BULK_URB(dma_buf.urb,
 					 udev,
 					 MT_COMMAND_BULK_OUT_ADDR,
 					 dma_buf.buf,
@@ -395,7 +385,7 @@ loadfw_protect:
 					 &load_fw_done,
 					 dma_buf.dma);
 
-			ret = usb_submit_urb(urb, GFP_ATOMIC);
+			ret = usb_submit_urb(dma_buf.urb, GFP_ATOMIC);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
@@ -403,7 +393,7 @@ loadfw_protect:
 			}
 
 			if (!wait_for_completion_timeout(&load_fw_done,  msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
-				usb_kill_urb(urb);
+				usb_kill_urb(dma_buf.urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n",
 					UPLOAD_FW_TIMEOUT));
@@ -507,7 +497,7 @@ loadfw_protect:
 			}
 
 			/* Initialize URB descriptor */
-			RTUSB_FILL_HTTX_BULK_URB(urb,
+			RTUSB_FILL_HTTX_BULK_URB(dma_buf.urb,
 					 udev,
 					 MT_COMMAND_BULK_OUT_ADDR,
 					 dma_buf.buf,
@@ -516,7 +506,7 @@ loadfw_protect:
 					 &load_fw_done,
 					 dma_buf.dma);
 
-			ret = usb_submit_urb(urb, GFP_ATOMIC);
+			ret = usb_submit_urb(dma_buf.urb, GFP_ATOMIC);
 
 			if (ret) {
 				DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
@@ -524,7 +514,7 @@ loadfw_protect:
 			}
 
 			if (!wait_for_completion_timeout(&load_fw_done, msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
-				usb_kill_urb(urb);
+				usb_kill_urb(dma_buf.urb);
 				ret = NDIS_STATUS_FAILURE;
 				DBGPRINT(RT_DEBUG_ERROR, ("upload fw timeout(%dms)\n", UPLOAD_FW_TIMEOUT));
 				DBGPRINT(RT_DEBUG_INFO, ("%s: submit urb, sent_len = %d, dlm_len = %d, pos = %d\n", __func__, sent_len, dlm_len, pos));
@@ -565,10 +555,6 @@ loadfw_protect:
 error2:
 	/* Free TransferBuffer */
 	mt7610u_usb_free_buf(ad, &dma_buf);
-
-error1:
-	/* Free URB */
-	usb_free_urb(urb);
 
 error0:
 	release_firmware(fw);
