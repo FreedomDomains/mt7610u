@@ -1959,9 +1959,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	pChipCap->dlm_offset = 0x80000;
 #endif /* CONFIG_ANDES_SUPPORT */
 
-	pChipCap->cmd_header_len = sizeof(struct txinfo_nmac_cmd);
-	pChipCap->cmd_padding_len = 4;
-
 	if (IS_MT7650(pAd))
 		pChipCap->fw_name = MT7650_FIRMWARE_NAME;
 

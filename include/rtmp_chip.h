@@ -409,9 +409,6 @@ struct rtmp_chip_cap {
 	u32 dlm_offset;
 #endif
 
-	u8 cmd_header_len;
-	u8 cmd_padding_len;
-
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
 	bool bDoTemperatureSensor;

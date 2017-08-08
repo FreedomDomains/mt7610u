@@ -534,14 +534,18 @@ static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsign
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct urb *urb = NULL;
 
-	struct sk_buff *skb = dev_alloc_skb(cap->cmd_header_len + length + cap->cmd_padding_len);
+	/* ULLI :
+	 * orignal drver used 4 bytes padding, we need 8 bytes due
+	 * skb_panic in skb_put() mt7610u_dma_skb_wrap_cmd()
+	 * wll check ths later on */
+	struct sk_buff *skb = dev_alloc_skb(MT_DMA_HDR_LEN + length + 8);
 
 	if (!skb) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate net_pkt\n"));
 		goto error0;
 	}
 
-	skb_reserve(skb, cap->cmd_header_len);
+	skb_reserve(skb, MT_DMA_HDR_LEN);
 
 	msg = kmalloc(sizeof(*msg), GFP_ATOMIC);
 
