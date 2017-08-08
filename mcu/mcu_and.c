@@ -107,13 +107,6 @@ static inline void mt7610u_dma_skb_wrap_cmd(struct sk_buff *skb,
 				     FIELD_PREP(MT_TXD_CMD_INFO_TYPE, cmd)));
 }
 
-static void usb_uploadfw_complete(struct urb *urb)
-{
-	struct completion *load_fw_done = urb->context;
-
-	complete(load_fw_done);
-}
-
 static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 {
 	int status = NDIS_STATUS_SUCCESS;
@@ -164,6 +157,13 @@ static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 		MT7610U_VENDOR_DEVICE_MODE,
 		0x1, 0,
 		NULL, 0);
+}
+
+void mt7610u_complete_urb(struct urb *urb)
+{
+	struct completion *cmpl = urb->context;
+
+	complete(cmpl);
 }
 
 static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
@@ -253,7 +253,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 			 MT_COMMAND_BULK_OUT_ADDR,
 			 buf.buf,
 			 len + sizeof(reg) + USB_END_PADDING,
-			 usb_uploadfw_complete,
+			 mt7610u_complete_urb,
 			 &cmpl,
 			 buf.dma);
 
