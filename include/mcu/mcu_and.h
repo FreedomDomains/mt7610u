@@ -35,25 +35,6 @@ struct rtmp_adapter;
 #define MCU_WAIT_ACK_CMD_THRESHOLD 0x0f
 #define MCU_RX_CMD_THRESHOLD 0x0f
 
-
-#ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD_PKT{
-	u32 info_type:2;
-	u32 d_port:3;
-	u32 cmd_type:7;
-	u32 cmd_seq:4;
-	u32 pkt_len:16;
-}TXINFO_NMAC_CMD_PKT;
-#else
-typedef struct __attribute__ ((packed)) _TXINFO_NMAC_CMD_PKT {
-	u32 pkt_len:16;
-	u32 cmd_seq:4;
-	u32 cmd_type:7;
-	u32 d_port:3;
-	u32 info_type:2;
-}TXINFO_NMAC_CMD_PKT;
-#endif /* RT_BIG_ENDIAN */
-
 enum cmd_msg_state {
 	ILLEGAL,
 	TX_START,
