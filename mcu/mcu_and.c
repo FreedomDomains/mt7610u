@@ -484,8 +484,6 @@ error0:
 static struct cmd_msg *mt7610u_mcu_alloc_cmd_msg(struct rtmp_adapter *ad, unsigned int length)
 {
 	struct cmd_msg *msg = NULL;
-	struct rtmp_chip_cap *cap = &ad->chipCap;
-	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct urb *urb = NULL;
 
 	/* ULLI :
@@ -563,7 +561,6 @@ static void mt7610u_mcu_append_cmd_msg(struct cmd_msg *msg, char *data, unsigned
 static void mt7610u_mcu_free_cmd_msg(struct cmd_msg *msg)
 {
 	struct sk_buff *skb = msg->skb;
-	struct rtmp_adapter *ad = msg->priv;
 
 	usb_free_urb(msg->urb);
 	kfree(msg);
@@ -768,10 +765,8 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 	struct cmd_msg *msg = CMD_MSG_CB(skb)->msg;
 	struct rtmp_adapter *ad = msg->priv;
 	struct usb_device *udev = mt7610u_to_usb_dev(ad);
-	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	enum cmd_msg_state state;
-	unsigned long flags;
 	int ret = 0;
 
 	mt7610u_mcu_unlink_cmd_msg(msg, &ctl->rxq);
@@ -824,7 +819,6 @@ static void usb_rx_cmd_msg_complete(struct urb *urb)
 
 static int usb_rx_cmd_msg_submit(struct rtmp_adapter *ad)
 {
-	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg = NULL;
@@ -967,7 +961,6 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	int pipe;
 	int ret = 0;
 	struct sk_buff *skb = msg->skb;
-	struct rtmp_chip_cap *pChipCap = &ad->chipCap;
 
 	/* append four zero bytes padding when usb aggregate enable */
 	memset(skb_put(skb, 4), 0x00, 4);
@@ -1124,7 +1117,6 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 	struct sk_buff *skb = NULL;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = NDIS_STATUS_SUCCESS;
-	struct txinfo_nmac_cmd *tx_info;
 
 	while (1) {
 		bool tmp;
@@ -1305,7 +1297,6 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pa
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, pos = 0, receive_len;
 	u32 i, value, cur_index = 0;
-	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 
 	if (!reg_pair)
@@ -1417,7 +1408,6 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_p
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, pos = 0, sent_len;
 	u32 value, i, cur_index = 0;
-	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
 	bool last_packet = false;
 
