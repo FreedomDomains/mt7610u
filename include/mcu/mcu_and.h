@@ -91,6 +91,7 @@ struct cmd_msg_cb {
 };
 
 #define USB_END_PADDING 4
+#define UPLOAD_PATCH_UNIT 2048
 #define FW_INFO_SIZE 32
 #define GET_SEMAPHORE_RETRY_MAX 600
 #define UPLOAD_FW_UNIT 14592

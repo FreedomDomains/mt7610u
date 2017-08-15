@@ -282,6 +282,36 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	return 0;
 }
 
+static int mt7610u_dma_fw(struct rtmp_adapter *ad,
+			  const struct mt7610u_dma_buf *dma_buf,
+			  const void *data, int len, u32 dst_addr)
+{
+	int pos = 0;
+	int ret = 0;
+	int sent_len_max = UPLOAD_PATCH_UNIT - MT_DMA_HDR_LEN - USB_END_PADDING;
+
+	while (len > 0) {
+		int sent_len = min(len, sent_len_max);
+
+		DBGPRINT(RT_DEBUG_OFF, ("pos = %d\n", pos));
+		DBGPRINT(RT_DEBUG_OFF, ("sent_len = %d\n", sent_len));
+
+		__mt7610u_dma_fw(ad, dma_buf,
+				data + pos, sent_len,
+				dst_addr + pos);
+		if (ret)
+			return ret;
+
+
+		pos += sent_len;
+		len -= sent_len;
+
+	}
+
+	return ret;
+}
+
+
 int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 {
 	const struct firmware *fw;
@@ -296,6 +326,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	struct completion load_fw_done;
 	USB_DMA_CFG_STRUC UsbCfg;
 	u8 *fw_image = NULL;
+	int fw_chunk_len;
 
 	dev_info(&udev->dev, "loading firmware %s\n", cap->fw_name);
 
@@ -402,50 +433,22 @@ loadfw_protect:
 
 	init_completion(&load_fw_done);
 
-	if (cap->load_iv)
-		pos = 0x40;
-	else
-		pos = 0x00;
+	pos = (cap->load_iv) ? 0x40 : 0x00;
+	fw_chunk_len = ilm_len - pos;
 
 	/* Loading ILM */
-	while (1) {
-		s32 sent_len_max = UPLOAD_FW_UNIT - MT_DMA_HDR_LEN - USB_END_PADDING;
+	mt7610u_dma_fw(ad, &dma_buf,
+		       fw_image + FW_INFO_SIZE + pos, fw_chunk_len,
+		       pos + cap->ilm_offset);
 
-		sent_len = min(ilm_len - pos, sent_len_max);
-
-		if (sent_len > 0) {
-			__mt7610u_dma_fw(ad, &dma_buf,
-					 fw_image + FW_INFO_SIZE + pos, sent_len,
-					 pos + cap->ilm_offset);
-
-
-			pos += sent_len;
-
-		} else {
-			break;
-		}
-
-	}
 
 	pos = 0x00;
+	fw_chunk_len = dlm_len - pos;
 
 	/* Loading DLM */
-	while (1) {
-		s32 sent_len_max = UPLOAD_FW_UNIT - sizeof(__le32) - USB_END_PADDING;
-
-		sent_len = min(dlm_len - pos, sent_len_max);
-
-		if (sent_len > 0) {
-			__mt7610u_dma_fw(ad, &dma_buf,
-					 fw_image + FW_INFO_SIZE + ilm_len + pos, sent_len,
-					 pos + cap->dlm_offset);
-
-			pos += sent_len;
-		} else {
-			break;
-		}
-
-	}
+	mt7610u_dma_fw(ad, &dma_buf,
+		       fw_image + FW_INFO_SIZE + ilm_len + pos, fw_chunk_len,
+		       pos + cap->dlm_offset);
 
 	/* Upload new 64 bytes interrupt vector or reset andes */
 	DBGPRINT(RT_DEBUG_OFF, ("\n"));
