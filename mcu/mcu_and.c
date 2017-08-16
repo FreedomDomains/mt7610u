@@ -317,13 +317,12 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	const struct firmware *fw;
 	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct mt7610u_dma_buf dma_buf;
-	int sent_len, pos = 0, ilm_len = 0, dlm_len = 0;
+	int pos = 0, ilm_len = 0, dlm_len = 0;
 	u32 mac_value, loop = 0;
 	int ret = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	USB_DMA_CFG_STRUC cfg;
 	u16 fw_ver, build_ver;
-	struct completion load_fw_done;
 	USB_DMA_CFG_STRUC UsbCfg;
 	u8 *fw_image = NULL;
 	int fw_chunk_len;
@@ -430,8 +429,6 @@ loadfw_protect:
 	}
 
 	DBGPRINT(RT_DEBUG_OFF, ("loading fw"));
-
-	init_completion(&load_fw_done);
 
 	pos = (cap->load_iv) ? 0x40 : 0x00;
 	fw_chunk_len = ilm_len - pos;
