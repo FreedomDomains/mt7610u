@@ -434,18 +434,23 @@ loadfw_protect:
 	fw_chunk_len = ilm_len - pos;
 
 	/* Loading ILM */
-	mt7610u_dma_fw(ad, &dma_buf,
-		       fw_image + FW_INFO_SIZE + pos, fw_chunk_len,
-		       pos + cap->ilm_offset);
+	ret = mt7610u_dma_fw(ad, &dma_buf,
+			     fw_image + FW_INFO_SIZE + pos, fw_chunk_len,
+			     pos + cap->ilm_offset);
 
+	if (ret < 0)
+		goto  error2;
 
 	pos = 0x00;
 	fw_chunk_len = dlm_len - pos;
 
 	/* Loading DLM */
-	mt7610u_dma_fw(ad, &dma_buf,
-		       fw_image + FW_INFO_SIZE + ilm_len + pos, fw_chunk_len,
-		       pos + cap->dlm_offset);
+	ret = mt7610u_dma_fw(ad, &dma_buf,
+			     fw_image + FW_INFO_SIZE + ilm_len + pos, fw_chunk_len,
+			     pos + cap->dlm_offset);
+
+	if (ret < 0)
+		goto  error2;
 
 	/* Upload new 64 bytes interrupt vector or reset andes */
 	DBGPRINT(RT_DEBUG_OFF, ("\n"));
