@@ -428,9 +428,6 @@ void RTMP_P2P_Remove(
 }
 
 /* usb */
-#define RTMP_DRIVER_USB_CONFIG_INIT(__pAd, __pConfig)						\
-	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_USB_CONFIG_INIT, 0, __pConfig, 0)
-
 #define RTMP_DRIVER_USB_SUSPEND(__pAd, __bIsRunning)						\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_USB_SUSPEND, 0, NULL, __bIsRunning)
 
