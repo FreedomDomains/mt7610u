@@ -716,7 +716,7 @@ void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 
 	UsbCfg.field.UDMA_TX_WL_DROP = 0;
 	/* usb version is 1.1,do not use bulk in aggregation */
-	if (pAd->BulkInMaxPacketSize == 512)
+	if (pAd->in_max_packet == 512)
 			UsbCfg.field.RxBulkAggEn = 1;
 	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
 	UsbCfg.field.RxBulkAggLmt = (MAX_RXBULK_SIZE /1024)-3;

@@ -928,7 +928,7 @@ int	NICInitializeAsic(
 	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
 
 	/* USB1.1 do not use bulk in aggregation */
-	if (pAd->BulkInMaxPacketSize == 512)
+	if (pAd->in_max_packet == 512)
 		UsbCfg.field.RxBulkAggEn = 1;
 
 	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */

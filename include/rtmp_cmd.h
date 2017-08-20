@@ -550,11 +550,10 @@ typedef struct __RT_CMD_MBSS_KICKOUT {
 } RT_CMD_MBSS_KICKOUT;
 
 typedef struct __RT_CMD_USB_DEV_CONFIG {
-	IN UINT NumberOfPipes;
-	IN u8 BulkInEpAddr[2];
-	IN USHORT BulkInMaxPacketSize;
-	IN u8 BulkOutEpAddr[6];
-	IN USHORT BulkOutMaxPacketSize;
+	u8 in_eps[2];
+	u16 in_max_packet;
+	u8 out_eps[6];
+	u16 out_max_packet;
 } RT_CMD_USB_DEV_CONFIG;
 
 typedef struct __RT_CMD_CFG80211_CONFIG {
