@@ -25,7 +25,7 @@
  *************************************************************************/
 
 #include	"rt_config.h"
-
+#include "bitfield.h"
 
 static int RTMPAllocUsbBulkBufStruct(
 	struct usb_device *udev,
@@ -699,8 +699,7 @@ Note:
 void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 {
 	WPDMA_GLO_CFG_STRUC GloCfg;
-	USB_DMA_CFG_STRUC	UsbCfg;
-
+	u32 val;
 
 	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x4);
 
@@ -711,20 +710,18 @@ void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 
 	RTMPusecDelay(50);
 
-	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
+	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
+	val = FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_LMT, (MAX_RXBULK_SIZE / 1024) - 3) |
+	      FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_TOUT, 0x80) |	/* 2006-10-18 */
+	      MT_USB_DMA_CFG_RX_BULK_EN |
+	      MT_USB_DMA_CFG_TX_BULK_EN;
 
-
-	UsbCfg.field.UDMA_TX_WL_DROP = 0;
 	/* usb version is 1.1,do not use bulk in aggregation */
 	if (pAd->in_max_packet == 512)
-			UsbCfg.field.RxBulkAggEn = 1;
-	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
-	UsbCfg.field.RxBulkAggLmt = (MAX_RXBULK_SIZE /1024)-3;
-	UsbCfg.field.RxBulkAggTOut = 0x80; /* 2006-10-18 */
-	UsbCfg.field.RxBulkEn = 1;
-	UsbCfg.field.TxBulkEn = 1;
+		val |= MT_USB_DMA_CFG_RX_BULK_AGG_EN;
 
-	mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
+
+	mt7610u_write32(pAd, USB_DMA_CFG, val);
 
 	//mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
 }

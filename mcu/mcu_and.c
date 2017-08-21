@@ -321,9 +321,8 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 	u32 mac_value, loop = 0;
 	int ret = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
-	USB_DMA_CFG_STRUC cfg;
+	u32 val;
 	u16 fw_ver, build_ver;
-	USB_DMA_CFG_STRUC UsbCfg;
 	u8 *fw_image = NULL;
 	int fw_chunk_len;
 
@@ -361,11 +360,10 @@ loadfw_protect:
 	mt7610u_write32(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
-	UsbCfg.word = mt7610u_read32(ad, USB_DMA_CFG);
-	UsbCfg.field.RxBulkAggTOut = 0x20;
-	UsbCfg.field.TxBulkEn = 1;
-	UsbCfg.field.RxBulkEn = 1;
-	mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
+	val = MT_USB_DMA_CFG_RX_BULK_EN |
+	      MT_USB_DMA_CFG_TX_BULK_EN |
+	      FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_TOUT, 0x20);
+	mt7610u_write32(ad, USB_DMA_CFG, val);
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
@@ -411,15 +409,13 @@ loadfw_protect:
 	mt7610u_write32(ad, FCE_SKIP_FS, 0x03);
 
 	if (IS_MT76x0(ad)) {
-		UsbCfg.word = mt7610u_read32(ad, USB_DMA_CFG);
+		val = mt7610u_read32(ad, USB_DMA_CFG);
 
-		cfg.field.UDMA_TX_WL_DROP = 1;
+		val |= MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
+		mt7610u_write32(ad, USB_DMA_CFG, val);
 
-		mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
-
-		cfg.field.UDMA_TX_WL_DROP = 0;
-
-		mt7610u_write32(ad, USB_DMA_CFG, UsbCfg.word);
+		val &= ~MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
+		mt7610u_write32(ad, USB_DMA_CFG, val);
 	}
 
 	/* Allocate TransferBuffer */

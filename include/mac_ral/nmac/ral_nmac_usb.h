@@ -100,45 +100,21 @@ typedef union _CMB_CTRL_STRUC{
 #define USB_DMA_CFG 0x0238
 #define U3DMA_WLCFG 0x9018
 
-#ifdef RT_BIG_ENDIAN
-typedef	union _USB_DMA_CFG_STRUC {
-	struct {
-		u32 TxBusy:1;			/* USB DMA TX FSM busy. debug only */
-		u32 RxBusy:1;			/* USB DMA RX FSM busy. debug only */
-		u32 EpoutValid:6;		/* OUT endpoint data valid. debug only */
-		u32 TxBulkEn:1;			/* Enable USB DMA Tx */
-		u32 RxBulkEn:1;			/* Enable USB DMA Rx */
-		u32 RxBulkAggEn:1;		/* Enable Rx Bulk Aggregation */
-		u32 WL_LPK_EN:1;
-		u32 TxClear:1;        	/* Clear USB DMA TX path */
-		u32 RX_DROP_OR_PADDING:1 /* Drop current WL RX packets in UDMA */
-		u32 WAKEUP_EN:1;			/* USB wakeup host enable */
-		u32 UDMA_TX_WL_DROP:1;	/* Drop current WL TX packets in UDMA */
-		u32 RxBulkAggLmt:8;		/* Rx Bulk Aggregation Limit  in unit of 1024 bytes */
-		u32 RxBulkAggTOut:8;		/* Rx Bulk Aggregation TimeOut  in unit of 33ns */
-	} field;
-	u32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
-#else
-typedef	union _USB_DMA_CFG_STRUC {
-	struct {
-		u32 RxBulkAggTOut:8;			/* Rx Bulk Aggregation TimeOut  in unit of 33ns */
-		u32 RxBulkAggLmt:8;			/* Rx Bulk Aggregation Limit  in unit of 256 bytes */
-		u32 UDMA_TX_WL_DROP:1;		/* Drop current WL TX packets in UDMA */
-		u32 WAKEUP_EN:1;				/* USB wakeup host enable */
-		u32 RX_DROP_OR_PADDING:1; 	/* Drop current WL RX packets in UDMA */
-		u32 TxClear:1;				/* Clear USB DMA TX path */
-		u32 WL_LPK_EN:1;
-		u32 RxBulkAggEn:1;			/* Enable Rx Bulk Aggregation */
-		u32 RxBulkEn:1;				/* Enable USB DMA Rx */
-		u32 TxBulkEn:1;				/* Enable USB DMA Tx */
-		u32 EpoutValid:6;        	/* OUT endpoint data valid */
-		u32 RxBusy:1;				/* USB DMA RX FSM busy */
-		u32 TxBusy:1;				/* USB DMA TX FSM busy */
-	} field;
-	u32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
-#endif
+#define MT_USB_DMA_CFG_RX_BULK_AGG_TOUT	GENMASK(7, 0)	/* Rx Bulk Aggregation TimeOut  in unit of 33ns */
+#define MT_USB_DMA_CFG_RX_BULK_AGG_LMT	GENMASK(15, 8)	/* Rx Bulk Aggregation Limit  in unit of 256 bytes */
+#define MT_USB_DMA_CFG_UDMA_TX_WL_DROP	BIT(16)		/* Drop current WL TX packets in UDMA */
+#define MT_USB_DMA_CFG_WAKEUP_EN	BIT(17)		/* USB wakeup host enable */
+#define MT_USB_DMA_CFG_RX_DROP_OR_PAD	BIT(18)		/* Drop current WL RX packets in UDMA */
+#define MT_USB_DMA_CFG_TX_CLR		BIT(19)		/* Clear USB DMA TX path */
+#define MT_USB_DMA_CFG_WL_LPK_EN	BIT(20)		/* Halt TXOP count down when TX buffer is full.*/	
+#define MT_USB_DMA_CFG_RX_BULK_AGG_EN	BIT(21)		/* Enable Rx Bulk Aggregation */
+#define MT_USB_DMA_CFG_RX_BULK_EN	BIT(22)		/* Enable USB DMA Rx */
+#define MT_USB_DMA_CFG_TX_BULK_EN	BIT(23)		/* Enable USB DMA Tx */
+#define MT_USB_DMA_CFG_EP_OUT_VALID	GENMASK(29, 24)	/* OUT endpoint data valid */
+#define MT_USB_DMA_CFG_RX_BUSY		BIT(30)		/* USB DMA RX FSM busy */
+#define MT_USB_DMA_CFG_TX_BUSY		BIT(31)		/* USB DMA TX FSM busy */
+
+
 
 #endif /*__RAL_OMAC_USB_H__ */
 

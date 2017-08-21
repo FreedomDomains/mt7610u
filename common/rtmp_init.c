@@ -26,6 +26,7 @@
 
 
 #include	"rt_config.h"
+#include "bitfield.h"
 
 #define RT3090A_DEFAULT_INTERNAL_LNA_GAIN	0x0A
 u8 NUM_BIT8[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
@@ -897,7 +898,7 @@ int	NICInitializeAsic(
 	ULONG			Index = 0;
 	u32			MACValue = 0;
 	u32			Counter = 0;
-	USB_DMA_CFG_STRUC UsbCfg;
+	u32 val;
 
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
@@ -925,41 +926,36 @@ int	NICInitializeAsic(
 
 	mdelay(200);
 
-	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
+	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
+	val = FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_LMT, (MAX_RXBULK_SIZE / 1024) - 3) |
+	      FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_TOUT, 0x80) |
+	      MT_USB_DMA_CFG_RX_BULK_EN |
+	      MT_USB_DMA_CFG_TX_BULK_EN;
 
 	/* USB1.1 do not use bulk in aggregation */
-	if (pAd->in_max_packet == 512)
-		UsbCfg.field.RxBulkAggEn = 1;
+	if (pAd->in_max_packet >= 512)
+		val |= MT_USB_DMA_CFG_RX_BULK_AGG_EN;
+	else {
+		DBGPRINT(RT_DEBUG_OFF, ("disable usb rx aggregagion\n"));
+	}
 
-	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
-		UsbCfg.field.RxBulkAggLmt = (MAX_RXBULK_SIZE /1024)-3;
-	UsbCfg.field.RxBulkAggTOut = 0x80;
-
-	UsbCfg.field.RxBulkEn = 1;
-	UsbCfg.field.TxBulkEn = 1;
-
-	mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
+	mt7610u_write32(pAd, USB_DMA_CFG, val);
 
 
 	/* check MCU if ready */
 	MACValue = mt7610u_read32(pAd, COM_REG0);
 
-	UsbCfg.word = mt7610u_read32(pAd, USB_DMA_CFG);
+	val = mt7610u_read32(pAd, USB_DMA_CFG);
 
 	if (IS_MT76x0(pAd)) {
-		UsbCfg.field.RX_DROP_OR_PADDING = 1;
+		val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
+		mt7610u_write32(pAd, USB_DMA_CFG, val);
 
-		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
-
-
-		UsbCfg.field.RX_DROP_OR_PADDING = 0;
-
-		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
-
+		val &= ~MT_USB_DMA_CFG_RX_DROP_OR_PAD;
+		mt7610u_write32(pAd, USB_DMA_CFG, val);
 	} else if (IS_MT76x2(pAd)){
-		UsbCfg.field.RX_DROP_OR_PADDING = 1;
-		mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
-
+		val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
+		mt7610u_write32(pAd, USB_DMA_CFG, val);
 	}
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
