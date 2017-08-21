@@ -989,20 +989,14 @@ static MT76x0_RF_SWITCH_ITEM MT76x0_RF_INT_PA_RegTb[] = {
 //
 // Initialize FCE
 //
-void InitFce(
-	struct rtmp_adapter *pAd)
+
+static void mt7610u_init_fce(struct rtmp_adapter *ad)
 {
-	L2_STUFFING_STRUC L2Stuffing;
+	u32 val;
 
-	L2Stuffing.word = 0;
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: -->\n", __FUNCTION__));
-
-	L2Stuffing.word = mt7610u_read32(pAd, FCE_L2_STUFF);
-	L2Stuffing.field.FS_WR_MPDU_LEN_EN = 0;
-	mt7610u_write32(pAd, FCE_L2_STUFF, L2Stuffing.word);
-
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: <--\n", __FUNCTION__));
+	val = mt7610u_read32(ad, MT_FCE_L2_STUFF);
+	val &= ~MT_FCE_L2_STUFF_WR_MPDU_LEN_EN;
+	mt7610u_write32(ad, MT_FCE_L2_STUFF, val);
 }
 
 void _mt7610u_phy_set_band(struct rtmp_adapter*pAd, int  band)
@@ -1455,7 +1449,7 @@ static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
 	MacReg |= (0x0000F000);
 	mt7610u_write32(pAd, EXT_CCA_CFG, MacReg);
 
-	InitFce(pAd);
+	mt7610u_init_fce(pAd);
 
 	/*
 		TxRing 9 is for Mgmt frame.
