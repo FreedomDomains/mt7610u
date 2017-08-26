@@ -1859,8 +1859,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	/*RTMPSetTimer(&pAd->RECBATimer, REORDER_EXEC_INTV);*/
 
 
-	pAd->CommonCfg.bWiFiTest = false;
-
 	pAd->RxAnt.Pair1PrimaryRxAnt = 0;
 	pAd->RxAnt.Pair1SecondaryRxAnt = 1;
 

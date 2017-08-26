@@ -1396,8 +1396,6 @@ struct common_config {
 	u32 cfg_vht;
 	VHT_CAP_INFO vht_info;
 
-	bool bWiFiTest;	/* Enable this parameter for WiFi test */
-
 	/* Tx & Rx Stream number selection */
 	u8 TxStream;
 	u8 RxStream;
