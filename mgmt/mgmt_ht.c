@@ -166,9 +166,7 @@ u8 get_cent_ch_by_htinfo(
 
 	========================================================================
 */
-void RTMPSetHT(
-	IN struct rtmp_adapter*pAd,
-	IN OID_SET_HT_PHYMODE *pHTPhyMode)
+void RTMPSetHT(struct rtmp_adapter*pAd, OID_SET_HT_PHYMODE *pHTPhyMode)
 {
 	u8 RxStream = pAd->CommonCfg.RxStream;
 	INT bw;
@@ -177,9 +175,9 @@ void RTMPSetHT(
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : HT_mode(%d), ExtOffset(%d), MCS(%d), BW(%d), STBC(%d), SHORTGI(%d)\n",
-										pHTPhyMode->HtMode, pHTPhyMode->ExtOffset,
-										pHTPhyMode->MCS, pHTPhyMode->BW,
-										pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
+				pHTPhyMode->HtMode, pHTPhyMode->ExtOffset,
+				pHTPhyMode->MCS, pHTPhyMode->BW,
+				pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
 
 	/* Don't zero supportedHyPhy structure.*/
 	memset(ht_cap, 0, sizeof(HT_CAPABILITY_IE));
@@ -187,25 +185,19 @@ void RTMPSetHT(
 	memset(&pAd->CommonCfg.NewExtChanOffset, 0, sizeof(pAd->CommonCfg.NewExtChanOffset));
 	memset(rt_ht_cap, 0, sizeof(RT_HT_CAPABILITY));
 
-   	if (pAd->CommonCfg.bRdg)
-	{
+	if (pAd->CommonCfg.bRdg) {
 		ht_cap->ExtHtCapInfo.PlusHTC = 1;
 		ht_cap->ExtHtCapInfo.RDGSupport = 1;
-	}
-	else
-	{
+	} else {
 		ht_cap->ExtHtCapInfo.PlusHTC = 0;
 		ht_cap->ExtHtCapInfo.RDGSupport = 0;
 	}
 
 
-	if (RxStream == 1)
-	{
+	if (RxStream == 1) {
 		ht_cap->HtCapParm.MaxRAmpduFactor = 2;
 		rt_ht_cap->MaxRAmpduFactor = 2;
-	}
-	else
-	{
+	} else {
 		ht_cap->HtCapParm.MaxRAmpduFactor = 3;
 		rt_ht_cap->MaxRAmpduFactor = 3;
 	}
@@ -223,42 +215,37 @@ void RTMPSetHT(
 	ht_cap->HtCapParm.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : AMsduSize = %d, MimoPs = %d, MpduDensity = %d, MaxRAmpduFactor = %d\n",
-													rt_ht_cap->AmsduSize,
-													rt_ht_cap->MimoPs,
-													rt_ht_cap->MpduDensity,
-													rt_ht_cap->MaxRAmpduFactor));
+				rt_ht_cap->AmsduSize,
+				rt_ht_cap->MimoPs,
+				rt_ht_cap->MpduDensity,
+				rt_ht_cap->MaxRAmpduFactor));
 
-	if(pHTPhyMode->HtMode == HTMODE_GF)
-	{
+	if(pHTPhyMode->HtMode == HTMODE_GF) {
 		ht_cap->HtCapInfo.GF = 1;
 		rt_ht_cap->GF = 1;
-	}
-	else
+	} else
 		rt_ht_cap->GF = 0;
 
 	/* Decide Rx MCSSet*/
-	switch (RxStream)
-	{
-		case 3:
-			ht_cap->MCSSet[2] =  0xff;
-		case 2:
-			ht_cap->MCSSet[1] =  0xff;
-		case 1:
-		default:
-			ht_cap->MCSSet[0] =  0xff;
-			break;
+	switch (RxStream) {
+	case 3:
+		ht_cap->MCSSet[2] =  0xff;
+	case 2:
+		ht_cap->MCSSet[1] =  0xff;
+	case 1:
+	default:
+		ht_cap->MCSSet[0] =  0xff;
+		break;
 	}
 
-	if (pAd->CommonCfg.bForty_Mhz_Intolerant && (pHTPhyMode->BW == BW_40))
-	{
+	if (pAd->CommonCfg.bForty_Mhz_Intolerant && (pHTPhyMode->BW == BW_40)) {
 		pHTPhyMode->BW = BW_20;
 		ht_cap->HtCapInfo.Forty_Mhz_Intolerant = 1;
 	}
 
 	// TODO: shiang-6590, how about the "bw" when channel 14 for JP region???
 	bw = BW_20;
-	if(pHTPhyMode->BW == BW_40)
-	{
+	if (pHTPhyMode->BW == BW_40) {
 		ht_cap->MCSSet[4] = 0x1; /* MCS 32*/
 		ht_cap->HtCapInfo.ChannelWidth = 1;
 		if (pAd->CommonCfg.Channel <= 14)
@@ -272,15 +259,11 @@ void RTMPSetHT(
 
 		/* Turn on BBP 40MHz mode now only as AP . */
 		/* Sta can turn on BBP 40MHz after connection with 40MHz AP. Sta only broadcast 40MHz capability before connection.*/
-		if ((pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd)
-		)
-		{
+		if ((pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd)) {
 			mt7610u_bbp_set_ctrlch(pAd, pHTPhyMode->ExtOffset);
 				bw = BW_40;
 		}
-	}
-	else
-	{
+	} else {
 		ht_cap->HtCapInfo.ChannelWidth = 0;
 		rt_ht_cap->ChannelWidth = 0;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
@@ -297,16 +280,11 @@ void RTMPSetHT(
 
 	mt7610u_bbp_set_bw(pAd, bw);
 
-
-	if(pHTPhyMode->STBC == STBC_USE)
-	{
-		if (pAd->Antenna.field.TxPath >= 2)
-		{
+	if(pHTPhyMode->STBC == STBC_USE) {
+		if (pAd->Antenna.field.TxPath >= 2) {
 			ht_cap->HtCapInfo.TxSTBC = 1;
 			rt_ht_cap->TxSTBC = 1;
-		}
-		else
-		{
+		} else {
 			ht_cap->HtCapInfo.TxSTBC = 0;
 			rt_ht_cap->TxSTBC = 0;
 		}
@@ -318,32 +296,24 @@ void RTMPSetHT(
 				2: support for 1SS, 2SS
 				3: support for 1SS, 2SS, 3SS
 		*/
-		if (pAd->Antenna.field.RxPath >= 1)
-		{
+		if (pAd->Antenna.field.RxPath >= 1) {
 			ht_cap->HtCapInfo.RxSTBC = 1;
 			rt_ht_cap->RxSTBC = 1;
-		}
-		else
-		{
+		} else {
 			ht_cap->HtCapInfo.RxSTBC = 0;
 			rt_ht_cap->RxSTBC = 0;
 		}
-	}
-	else
-	{
+	} else {
 		rt_ht_cap->TxSTBC = 0;
 		rt_ht_cap->RxSTBC = 0;
 	}
 
-	if(pHTPhyMode->SHORTGI == GI_400)
-	{
+	if (pHTPhyMode->SHORTGI == GI_400) {
 		ht_cap->HtCapInfo.ShortGIfor20 = 1;
 		ht_cap->HtCapInfo.ShortGIfor40 = 1;
 		rt_ht_cap->ShortGIfor20 = 1;
 		rt_ht_cap->ShortGIfor40 = 1;
-	}
-	else
-	{
+	} else {
 		ht_cap->HtCapInfo.ShortGIfor20 = 0;
 		ht_cap->HtCapInfo.ShortGIfor40 = 0;
 		rt_ht_cap->ShortGIfor20 = 0;
@@ -355,35 +325,32 @@ void RTMPSetHT(
 	/* 1, the extension channel above the control channel. */
 
 	/* EDCA parameters used for AP's own transmission*/
-	if (pAd->CommonCfg.APEdcaParm.bValid == false)
-	{
+	if (pAd->CommonCfg.APEdcaParm.bValid == false) {
 		pAd->CommonCfg.APEdcaParm.bValid = true;
-		pAd->CommonCfg.APEdcaParm.Aifsn[0] = 3;
-		pAd->CommonCfg.APEdcaParm.Aifsn[1] = 7;
-		pAd->CommonCfg.APEdcaParm.Aifsn[2] = 1;
-		pAd->CommonCfg.APEdcaParm.Aifsn[3] = 1;
+		pAd->CommonCfg.APEdcaParm.Aifsn[QID_AC_BE] = 3;
+		pAd->CommonCfg.APEdcaParm.Aifsn[QID_AC_BK] = 7;
+		pAd->CommonCfg.APEdcaParm.Aifsn[QID_AC_VI] = 1;
+		pAd->CommonCfg.APEdcaParm.Aifsn[QID_AC_VO] = 1;
 
-		pAd->CommonCfg.APEdcaParm.Cwmin[0] = 4;
-		pAd->CommonCfg.APEdcaParm.Cwmin[1] = 4;
-		pAd->CommonCfg.APEdcaParm.Cwmin[2] = 3;
-		pAd->CommonCfg.APEdcaParm.Cwmin[3] = 2;
+		pAd->CommonCfg.APEdcaParm.Cwmin[QID_AC_BE] = 4;
+		pAd->CommonCfg.APEdcaParm.Cwmin[QID_AC_BK] = 4;
+		pAd->CommonCfg.APEdcaParm.Cwmin[QID_AC_VI] = 3;
+		pAd->CommonCfg.APEdcaParm.Cwmin[QID_AC_VO] = 2;
 
-		pAd->CommonCfg.APEdcaParm.Cwmax[0] = 6;
-		pAd->CommonCfg.APEdcaParm.Cwmax[1] = 10;
-		pAd->CommonCfg.APEdcaParm.Cwmax[2] = 4;
-		pAd->CommonCfg.APEdcaParm.Cwmax[3] = 3;
+		pAd->CommonCfg.APEdcaParm.Cwmax[QID_AC_BE] = 6;
+		pAd->CommonCfg.APEdcaParm.Cwmax[QID_AC_BK] = 10;
+		pAd->CommonCfg.APEdcaParm.Cwmax[QID_AC_VI] = 4;
+		pAd->CommonCfg.APEdcaParm.Cwmax[QID_AC_VO] = 3;
 
-		pAd->CommonCfg.APEdcaParm.Txop[0]  = 0;
-		pAd->CommonCfg.APEdcaParm.Txop[1]  = 0;
-		pAd->CommonCfg.APEdcaParm.Txop[2]  = 94;
-		pAd->CommonCfg.APEdcaParm.Txop[3]  = 47;
+		pAd->CommonCfg.APEdcaParm.Txop[QID_AC_BE]  = 0;
+		pAd->CommonCfg.APEdcaParm.Txop[QID_AC_BK]  = 0;
+		pAd->CommonCfg.APEdcaParm.Txop[QID_AC_VI]  = 94;
+		pAd->CommonCfg.APEdcaParm.Txop[QID_AC_VO]  = 47;
 	}
 	AsicSetEdcaParm(pAd, &pAd->CommonCfg.APEdcaParm);
 
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 		RTMPSetIndividualHT(pAd, 0);
 	}
 #endif /* CONFIG_STA_SUPPORT */
