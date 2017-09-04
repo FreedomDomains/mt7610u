@@ -257,8 +257,6 @@ void RTMPFreeAdapter(struct rtmp_adapter *pAd)
 	}
 
 
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 
 	if (pAd->iw_stats)
 	{

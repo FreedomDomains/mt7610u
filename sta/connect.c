@@ -1104,7 +1104,6 @@ void CntlWaitStartProc(
 				return;
 			}
 
-#ifdef DOT11_N_SUPPORT
 			rt_phy_info = &pAd->StaActive.SupportedPhyInfo;
 			memset(&rt_phy_info->MCSSet[0], 0, 16);
 			if (WMODE_CAP_N(pAd->CommonCfg.PhyMode)
@@ -1140,7 +1139,6 @@ void CntlWaitStartProc(
 				}
 			}
 			else
-#endif /* DOT11_N_SUPPORT */
 			{
 				pAd->StaActive.SupportedPhyInfo.bHtEnable = false;
 			}
@@ -1439,20 +1437,16 @@ void LinkUp(
 
 	COPY_SETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
 
-#ifdef DOT11_N_SUPPORT
 	COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 
 	if (BssType == BSS_ADHOC) {
 		OPSTATUS_SET_FLAG(pAd, fOP_STATUS_ADHOC_ON);
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_INFRA_ON);
 
-#ifdef DOT11_N_SUPPORT
 		if (WMODE_CAP_N(pAd->CommonCfg.PhyMode)
 		    && (pAd->StaCfg.bAdhocN == true))
 			AdhocTurnOnQos(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 		InitChannelRelatedValue(pAd);
 	} else {
@@ -1467,9 +1461,7 @@ void LinkUp(
 		  BssType, pAd->StaActive.Aid, pAd->CommonCfg.Ssid,
 		  pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel));
 
-#ifdef DOT11_N_SUPPORT
 	DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK UP !!! (Density =%d, )\n", pAd->MacTab.Content[BSSID_WCID].MpduDensity));
-#endif /* DOT11_N_SUPPORT */
 
 	/*
 		We cannot move AsicSetBssid to PeerBeaconAtJoinAction because
@@ -1487,7 +1479,6 @@ void LinkUp(
 	*/
 	AsicUpdateProtect(pAd, 0, (OFDMSETPROTECT | CCKSETPROTECT), true, false);
 
-#ifdef DOT11_N_SUPPORT
 	if ((pAd->StaActive.SupportedPhyInfo.bHtEnable == true)) {
 		/* Update HT protectionfor based on AP's operating mode. */
 		if (pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent == 1) {
@@ -1499,7 +1490,6 @@ void LinkUp(
 					  pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode, ALLN_SETPROTECT, false,
 					  false);
 	}
-#endif /* DOT11_N_SUPPORT */
 
 /*
 	memset(&pAd->DrsCounters, 0, sizeof (COUNTER_DRS));
@@ -1751,11 +1741,9 @@ void LinkUp(
 
 
 		MlmeUpdateTxRates(pAd, true, BSS0);
-#ifdef DOT11_N_SUPPORT
 		MlmeUpdateHtTxRates(pAd, BSS0);
 		DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK UP !! (StaActive.bHtEnable =%d)\n",
 			  pAd->StaActive.SupportedPhyInfo.bHtEnable));
-#endif /* DOT11_N_SUPPORT */
 
 
 		if (pAd->CommonCfg.bAggregationCapable) {
@@ -1775,11 +1763,9 @@ void LinkUp(
 		}
 
 		if (pAd->MlmeAux.APRalinkIe != 0x0) {
-#ifdef DOT11_N_SUPPORT
 			if (CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE)) {
 				AsicEnableRDG(pAd);
 			}
-#endif /* DOT11_N_SUPPORT */
 			OPSTATUS_SET_FLAG(pAd, fCLIENT_STATUS_RALINK_CHIPSET);
 			CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_RALINK_CHIPSET);
 		} else {
@@ -1789,12 +1775,10 @@ void LinkUp(
 	}
 
 
-#ifdef DOT11_N_SUPPORT
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("NDIS_STATUS_MEDIA_CONNECT Event B!.BACapability = %x. ClientStatusFlags = %lx\n",
 		  pAd->CommonCfg.BACapability.word,
 		  pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef LED_CONTROL_SUPPORT
 	/* Set LED */
@@ -1821,14 +1805,12 @@ void LinkUp(
 	pEntry->MaxHTPhyMode.word = pAd->StaCfg.HTPhyMode.word;
 	if (pAd->StaCfg.bAutoTxRateSwitch == false) {
 		pEntry->bAutoTxRateSwitch = false;
-#ifdef DOT11_N_SUPPORT
 		if (pEntry->HTPhyMode.field.MCS == 32)
 			pEntry->HTPhyMode.field.ShortGI = GI_800;
 
 		if ((pEntry->HTPhyMode.field.MCS > MCS_7)
 		    || (pEntry->HTPhyMode.field.MCS == 32))
 			pEntry->HTPhyMode.field.STBC = STBC_NONE;
-#endif /* DOT11_N_SUPPORT */
 		/* If the legacy mode is set, overwrite the transmit setting of this entry. */
 		if (pEntry->HTPhyMode.field.MODE <= MODE_OFDM)
 			RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
@@ -1852,7 +1834,6 @@ void LinkUp(
 		mt7610u_bbp_set_txdac(pAd, 0);
 	}
 
-#ifdef DOT11_N_SUPPORT
 	if ((pAd->StaActive.SupportedPhyInfo.bHtEnable == true)) {
 		if (pEntry->MaxRAmpduFactor == 0) {
 			/* If HT AP doesn't support MaxRAmpduFactor = 1, we need to set max PSDU to 0. */
@@ -1869,11 +1850,9 @@ void LinkUp(
 			 ("!!!MaxRAmpduFactor= %d \n",
 			  pEntry->MaxRAmpduFactor));
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	/* Txop can only be modified when RDG is off, WMM is disable and TxBurst is enable */
 	/* if 1. Legacy AP WMM on,  or 2. 11n AP, AMPDU disable.  Force turn off burst no matter what bEnableTxBurst is. */
-#ifdef DOT11_N_SUPPORT
 	if (!((pAd->CommonCfg.RxStream == 1) && (pAd->CommonCfg.TxStream == 1))
 	    && (pAd->StaCfg.bForceTxBurst == false)
 	    &&
@@ -1887,7 +1866,6 @@ void LinkUp(
 
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 1\n"));
 	} else
-#endif /* DOT11_N_SUPPORT */
 	if (pAd->CommonCfg.bEnableTxBurst) {
 		Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
@@ -1902,7 +1880,6 @@ void LinkUp(
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 3\n"));
 	}
 
-#ifdef DOT11_N_SUPPORT
 	/* Re-check to turn on TX burst or not. */
 	if ((pAd->CommonCfg.IOTestParm.bLastAtheros == true)
 	    && ((STA_WEP_ON(pAd)) || (STA_TKIP_ON(pAd)))) {
@@ -1919,7 +1896,6 @@ void LinkUp(
 	} else {
 		pAd->CommonCfg.IOTestParm.bNextDisableRxBA = false;
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	pAd->CommonCfg.IOTestParm.bLastAtheros = false;
 
@@ -1965,7 +1941,6 @@ void LinkUp(
 	/*RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_GO_TO_SLEEP_NOW); */
 
 
-#ifdef DOT11_N_SUPPORT
 	if (INFRA_ON(pAd)) {
 		if ((pAd->CommonCfg.bBssCoexEnable == true)
 		    && (pAd->CommonCfg.Channel <= 14)
@@ -1990,7 +1965,6 @@ void LinkUp(
 				  pAd->MlmeAux.ExtCapInfo.BssCoexistMgmtSupport));
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 	/*
@@ -2187,7 +2161,6 @@ void LinkDown(
 	pAd->Mlme.PeriodicRound = 0;
 	pAd->Mlme.OneSecPeriodicRound = 0;
 
-#ifdef DOT11_N_SUPPORT
 	memset(&pAd->MlmeAux.HtCapability, 0, sizeof (HT_CAPABILITY_IE));
 	memset(&pAd->MlmeAux.AddHtInfo, 0, sizeof (ADD_HT_INFO_IE));
 	pAd->MlmeAux.HtCapabilityLen = 0;
@@ -2196,7 +2169,6 @@ void LinkDown(
 	DBGPRINT(RT_DEBUG_TRACE, ("LinkDownCleanMlmeAux.ExtCapInfo!\n"));
 	memset((u8 *) (&pAd->MlmeAux.ExtCapInfo), 0,
 		       sizeof (EXT_CAP_INFO_ELEMENT));
-#endif /* DOT11_N_SUPPORT */
 
 	/* Reset WPA-PSK state. Only reset when supplicant enabled */
 	if (pAd->StaCfg.WpaState != SS_NOTUSE) {
@@ -2266,14 +2238,12 @@ void LinkDown(
 	pAd->CommonCfg.MlmeRate = pAd->CommonCfg.BasicMlmeRate;
 	pAd->CommonCfg.RtsRate = pAd->CommonCfg.BasicMlmeRate;
 
-#ifdef DOT11_N_SUPPORT
 	// TODO: shiang-6590, why we need to fallback to BW_20 here? How about the BW_10?
 	if (pAd->CommonCfg.BBPCurrentBW != BW_20) {
 		{
 			mt7610u_bbp_set_bw(pAd, BW_20);
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	{
 		/* Reset DAC */
@@ -2289,28 +2259,22 @@ void LinkDown(
 	RTMPSetPiggyBack(pAd, false);
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_PIGGYBACK_INUSED);
 
-#ifdef DOT11_N_SUPPORT
 	pAd->CommonCfg.BACapability.word = pAd->CommonCfg.REGBACapability.word;
-#endif /* DOT11_N_SUPPORT */
 
 	/* Restore all settings in the following. */
 	AsicUpdateProtect(pAd, 0,
 			  (ALLN_SETPROTECT | CCKSETPROTECT | OFDMSETPROTECT),
 			  true, false);
-#ifdef DOT11_N_SUPPORT
 	AsicDisableRDG(pAd);
-#endif /* DOT11_N_SUPPORT */
 	pAd->CommonCfg.IOTestParm.bCurrentAtheros = false;
 	pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = false;
 
-#ifdef DOT11_N_SUPPORT
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SCAN_2040);
 	pAd->CommonCfg.BSSCoexist2040.word = 0;
 	TriEventInit(pAd);
 	for (i = 0; i < (pAd->ChannelListNum - 1); i++) {
 		pAd->ChannelList[i].bEffectedChannel = false;
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	mt7610u_write32(pAd, MAX_LEN_CFG, 0x1fff);
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
@@ -2442,8 +2406,6 @@ void IterateOnBssTab(
 	else
 	{
 		/* no more BSS */
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 		{
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("CNTL - All roaming failed, restore to channel %d, Total BSS[%02d]\n",
@@ -2494,8 +2456,6 @@ void IterateOnBssTab2(
 		u8 rf_channel = 0, rf_bw;
 		INT ext_ch;
 
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 		{
 			rf_channel = pAd->CommonCfg.Channel;
 			rf_bw = BW_20;
@@ -2769,7 +2729,6 @@ ULONG MakeIbssBeacon(
 		FrameLen += tmp;
 	}
 
-#ifdef DOT11_N_SUPPORT
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode)
 	    && (pAd->StaCfg.bAdhocN == true)) {
 		ULONG TmpLen;
@@ -2818,7 +2777,6 @@ ULONG MakeIbssBeacon(
 #endif
 		FrameLen += TmpLen;
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	/*beacon use reserved WCID 0xff */
 	if (pAd->CommonCfg.Channel > 14) {
@@ -2855,7 +2813,6 @@ void InitChannelRelatedValue(struct rtmp_adapter*pAd)
 
 	pAd->CommonCfg.CentralChannel = pAd->MlmeAux.CentralChannel;
 	pAd->CommonCfg.Channel = pAd->MlmeAux.Channel;
-#ifdef DOT11_N_SUPPORT
 	/* Change to AP channel */
 	if ((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel)
 	    && (pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth == BW_40)) {
@@ -2870,7 +2827,6 @@ void InitChannelRelatedValue(struct rtmp_adapter*pAd)
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_BELOW;
 	} else
-#endif /* DOT11_N_SUPPORT */
 	{
 	    	rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_20;
@@ -2980,7 +2936,6 @@ void AdjustChannelRelatedValue(
 
 	pAd->CommonCfg.CentralChannel = ExtraCh;
 	pAd->CommonCfg.Channel = PriCh;
-#ifdef DOT11_N_SUPPORT
 	/* Change to AP channel */
 	if ((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel) && (BandWidth == BW_40))
 	{
@@ -2995,7 +2950,6 @@ void AdjustChannelRelatedValue(
 		ext_ch = EXTCHA_BELOW;
 	}
 	else
-#endif /* DOT11_N_SUPPORT */
 	{
 		rf_channel = pAd->CommonCfg.Channel;
 		rf_bw = BW_20;

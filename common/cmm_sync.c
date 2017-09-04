@@ -114,10 +114,8 @@ void BuildChannelList(
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
 				}
 
-#ifdef DOT11_N_SUPPORT
 						if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
 							pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
-#endif /* DOT11_N_SUPPORT */
 
 				pAd->ChannelList[index+i].MaxTxPwr = 20;
 			}
@@ -187,10 +185,8 @@ void BuildChannelList(
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
 				}
 
-#ifdef DOT11_N_SUPPORT
 				if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
 					pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
-#endif /* DOT11_N_SUPPORT */
 
 				for (j=0; j<15; j++)
 				{
@@ -276,7 +272,6 @@ u8 NextChannel(
 	{
 		if (channel == pAd->ChannelList[i].Channel)
 		{
-#ifdef DOT11_N_SUPPORT
 			/* Only scan effected channel if this is a SCAN_2040_BSS_COEXIST*/
 			/* 2009 PF#2: Nee to handle the second channel of AP fall into affected channel range.*/
 			if ((pAd->MlmeAux.ScanType == SCAN_2040_BSS_COEXIST) && (pAd->ChannelList[i+1].Channel >14))
@@ -285,7 +280,6 @@ u8 NextChannel(
 				continue;
 			}
 			else
-#endif /* DOT11_N_SUPPORT */
 			{
 				/* Record this channel's idx in ChannelList array.*/
 			next_channel = pAd->ChannelList[i+1].Channel;

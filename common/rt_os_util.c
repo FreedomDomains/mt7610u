@@ -79,12 +79,10 @@ void RtmpDrvMaxRateGet(
                }
        } else
 
-#ifdef DOT11_N_SUPPORT
 	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
 		/* rate_index = 16 + ((u8)pHtPhyMode->field.BW *16) + ((u8)pHtPhyMode->field.ShortGI *32) + ((u8)pHtPhyMode->field.MCS); */
 		rate_index = 16 + ((u8)BW *24) + ((u8)ShortGI *48) + ((u8)MCS);
 	} else
-#endif /* DOT11_N_SUPPORT */
 		if (MODE == MODE_OFDM)
 			rate_index = (u8)(MCS) + 4;
 		else

@@ -170,12 +170,10 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 		return false;
 	}
 
-#ifdef DOT11_N_SUPPORT
 	if (ScanType == SCAN_2040_BSS_COEXIST)
 	{
 		DBGPRINT(RT_DEBUG_INFO, ("SYNC - SCAN_2040_BSS_COEXIST !! Prepare to send Probe Request\n"));
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	/* There is no need to send broadcast probe request if active scan is in effect.*/
 	SsidLen = 0;
@@ -214,7 +212,6 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 			FrameLen += Tmp;
 		}
 	}
-#ifdef DOT11_N_SUPPORT
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode))
 	{
 		ULONG	Tmp;
@@ -302,7 +299,6 @@ static INT scan_active(struct rtmp_adapter*pAd, u8 OpMode, u8 ScanType)
 			FrameLen += Tmp;
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 		(pAd->MlmeAux.Channel > 14)) {

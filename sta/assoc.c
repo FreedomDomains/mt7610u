@@ -354,7 +354,6 @@ void MlmeAssocReqAction(
 			FrameLen += tmp;
 		}
 
-#ifdef DOT11_N_SUPPORT
 		/* HT */
 		if ((pAd->MlmeAux.HtCapabilityLen > 0)
 		    && WMODE_CAP_N(pAd->CommonCfg.PhyMode)) {
@@ -396,7 +395,6 @@ void MlmeAssocReqAction(
 				FrameLen += build_vht_ies(pAd, (u8 *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
 			}
 		}
-#endif /* DOT11_N_SUPPORT */
 
 		{
 			ULONG TmpLen;
@@ -748,7 +746,6 @@ void MlmeReassocReqAction(
 					  9, &WmeIe[0], END_OF_ARGS);
 			FrameLen += tmp;
 		}
-#ifdef DOT11_N_SUPPORT
 		/* HT */
 		if ((pAd->MlmeAux.HtCapabilityLen > 0)
 		    && WMODE_CAP_N(pAd->CommonCfg.PhyMode)) {
@@ -792,7 +789,6 @@ void MlmeReassocReqAction(
 				FrameLen += build_vht_ies(pAd, (u8 *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
 			}
 		}
-#endif /* DOT11_N_SUPPORT */
 
 		if (false
 		 )
@@ -1029,13 +1025,11 @@ void PeerAssocRspAction(
 		if (MAC_ADDR_EQUAL(Addr2, pAd->MlmeAux.Bssid)) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("%s():ASSOC - receive ASSOC_RSP to me (status=%d)\n", __FUNCTION__, Status));
-#ifdef DOT11_N_SUPPORT
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("%s():MacTable [%d].AMsduSize = %d. ClientStatusFlags = 0x%lx \n",
 				  __FUNCTION__, Elem->Wcid,
 				  pAd->MacTab.Content[BSSID_WCID].AMsduSize,
 				  pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
-#endif /* DOT11_N_SUPPORT */
 			RTMPCancelTimer(&pAd->MlmeAux.AssocTimer, &TimerCancelled);
 
 
@@ -1306,7 +1300,6 @@ void AssocPostProc(
 	pAd->MlmeAux.Aid = Aid;
 	pAd->MlmeAux.CapabilityInfo = CapabilityInfo & SUPPORTED_CAPABILITY_INFO;
 
-#ifdef DOT11_N_SUPPORT
 	/* Some HT AP might lost WMM IE. We add WMM ourselves. beacuase HT requires QoS on. */
 	if ((HtCapabilityLen > 0) && (pEdcaParm->bValid == false)) {
 		pEdcaParm->bValid = true;
@@ -1331,7 +1324,6 @@ void AssocPostProc(
 		pEdcaParm->Txop[3] = 48;
 
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	memmove(&pAd->MlmeAux.APEdcaParm, pEdcaParm, sizeof (EDCA_PARM));
 
@@ -1345,7 +1337,6 @@ void AssocPostProc(
 	memmove(pAd->MlmeAux.ExtRate, ExtRate, ExtRateLen);
 	RTMPCheckRates(pAd, pAd->MlmeAux.ExtRate, &pAd->MlmeAux.ExtRateLen);
 
-#ifdef DOT11_N_SUPPORT
 	if (HtCapabilityLen > 0) {
 		RTMPCheckHt(pAd, BSSID_WCID, pHtCapability, pAddHtInfo);
 	}
@@ -1364,7 +1355,6 @@ void AssocPostProc(
 	if (ie_list->vht_cap_len > 0 && ie_list->vht_op_len > 0) {
 		RTMPCheckVht(pAd, BSSID_WCID, &ie_list->vht_cap, &ie_list->vht_op);
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	/* Set New WPA information */
 	Idx = BssTableSearch(&pAd->ScanTab, pAddr2, pAd->MlmeAux.Channel);
@@ -1690,12 +1680,10 @@ bool StaAddMacTableEntry(
 	    && (MaxSupportedRate < RATE_FIRST_OFDM_RATE))
 		return false;
 
-#ifdef DOT11_N_SUPPORT
 	/* 11n only */
 	if (WMODE_HT_ONLY(pAd->CommonCfg.PhyMode)
 	    && (HtCapabilityLen == 0))
 		return false;
-#endif /* DOT11_N_SUPPORT */
 
 	RTMP_SEM_LOCK(&pAd->MacTabLock);
 	if (pEntry) {
@@ -1722,7 +1710,6 @@ bool StaAddMacTableEntry(
 		CLIENT_STATUS_CLEAR_FLAG(pEntry, fCLIENT_STATUS_PIGGYBACK_CAPABLE);
 	}
 
-#ifdef DOT11_N_SUPPORT
 	memset(&pEntry->HTCapability, 0, sizeof (pEntry->HTCapability));
 	/* If this Entry supports 802.11n, upgrade to HT rate. */
 	if (((pAd->StaCfg.WepStatus != Ndis802_11WEPEnabled)
@@ -1788,7 +1775,6 @@ bool StaAddMacTableEntry(
 	} else {
 		pAd->MacTab.fAnyStationIsLegacy = true;
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
 	pEntry->CurrTxRate = pEntry->MaxSupportedRate;

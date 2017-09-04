@@ -116,13 +116,11 @@ INT	Set_Channel_Proc(
 			{
 				u8 rf_channel;
 
-#ifdef DOT11_N_SUPPORT
 				N_ChannelCheck(pAd);
 				if (WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
 					pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
 					rf_channel = N_SetCenCh(pAd, pAd->CommonCfg.Channel);
 				else
-#endif /* DOT11_N_SUPPORT */
 					rf_channel = pAd->CommonCfg.Channel;
 
 				AsicSwitchChannel(pAd, rf_channel, false);
@@ -1099,12 +1097,10 @@ void RTMPSetPhyMode(
 		case (WMODE_G):
 		case (WMODE_B | WMODE_G):
 		case (WMODE_A | WMODE_B | WMODE_G):
-#ifdef DOT11_N_SUPPORT
 		case (WMODE_GN):
 		case (WMODE_A | WMODE_B | WMODE_G | WMODE_GN | WMODE_AN):
 		case (WMODE_B | WMODE_G | WMODE_GN):
 		case (WMODE_G | WMODE_GN):
-#endif /* DOT11_N_SUPPORT */
 			pAd->CommonCfg.SupRate[0]  = 0x82;	  /* 1 mbps, in units of 0.5 Mbps, basic rate*/
 			pAd->CommonCfg.SupRate[1]  = 0x84;	  /* 2 mbps, in units of 0.5 Mbps, basic rate*/
 			pAd->CommonCfg.SupRate[2]  = 0x8B;	  /* 5.5 mbps, in units of 0.5 Mbps, basic rate*/
@@ -1134,11 +1130,9 @@ void RTMPSetPhyMode(
 			break;
 
 		case (WMODE_A):
-#ifdef DOT11_N_SUPPORT
 		case (WMODE_A | WMODE_AN):
 		case (WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
 		case (WMODE_AN):
-#endif /* DOT11_N_SUPPORT */
 		case (WMODE_A | WMODE_AN | WMODE_AC):
 		case (WMODE_AN | WMODE_AC):
 			pAd->CommonCfg.SupRate[0]  = 0x8C;	  /* 6 mbps, in units of 0.5 Mbps, basic rate*/
@@ -1168,9 +1162,7 @@ void RTMPSetPhyMode(
 
 
 
-#ifdef DOT11_N_SUPPORT
 	SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 	SetCommonVHT(pAd);
 }
@@ -1475,9 +1467,7 @@ void RTMPIoctlGetMacTable(
 			memcpy(pDst->Addr, &pEntry->Addr, ETH_ALEN);
 			pDst->Aid = (u8)pEntry->Aid;
 			pDst->Psm = pEntry->PsMode;
-#ifdef DOT11_N_SUPPORT
 			pDst->MimoPs = pEntry->MmpsMode;
-#endif /* DOT11_N_SUPPORT */
 
 			/* Fill in RSSI per entry*/
 			pDst->AvgRssi0 = pEntry->RssiSample.AvgRssi0;
@@ -1550,7 +1540,6 @@ LabelOK:
 #endif/*AR9_MAPI_SUPPORT*/
 #endif/* INF_AR9 */
 
-#ifdef DOT11_N_SUPPORT
 INT	Set_BASetup_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg)
@@ -2304,7 +2293,6 @@ INT Set_HT_BssCoexApCntThr_Proc(
 	return true;
 }
 
-#endif /* DOT11_N_SUPPORT */
 
 
 INT	Set_VhtBw_Proc(
@@ -2936,14 +2924,12 @@ void  getRate(HTTRANSMIT_SETTING HTSetting, ULONG* fLastTxRxRate)
 	int rate_index = 0;
 	int value = 0;
 
-#ifdef DOT11_N_SUPPORT
     if (HTSetting.field.MODE >= MODE_HTMIX)
     {
 /*    	rate_index = 12 + ((u8)ht_setting.field.BW *16) + ((u8)ht_setting.field.ShortGI *32) + ((u8)ht_setting.field.MCS);*/
     	rate_index = 12 + ((u8)HTSetting.field.BW *24) + ((u8)HTSetting.field.ShortGI *48) + ((u8)HTSetting.field.MCS);
     }
     else
-#endif /* DOT11_N_SUPPORT */
     if (HTSetting.field.MODE == MODE_OFDM)
     	rate_index = (u8)(HTSetting.field.MCS) + 4;
     else if (HTSetting.field.MODE == MODE_CCK)
@@ -2960,7 +2946,6 @@ void  getRate(HTTRANSMIT_SETTING HTSetting, ULONG* fLastTxRxRate)
 	return;
 }
 
-#ifdef DOT11_N_SUPPORT
 void assoc_ht_info_debugshow(
 	IN struct rtmp_adapter *pAd,
 	IN MAC_TABLE_ENTRY *pEntry,
@@ -3040,7 +3025,6 @@ INT	Set_BurstMode_Proc(
 
 	return true;
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 void assoc_vht_info_debugshow(

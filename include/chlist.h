@@ -93,12 +93,10 @@ void BuildBeaconChList(
 	OUT	PULONG pBufLen);
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 void N_ChannelCheck(struct rtmp_adapter*pAd);
 u8 N_SetCenCh(struct rtmp_adapter*pAd, u8 channel);
 bool N_ChannelGroupCheck(struct rtmp_adapter*pAd, u8 channel);
 
-#endif /* DOT11_N_SUPPORT */
 
 u8 GetCuntryMaxTxPwr(
 	IN struct rtmp_adapter *pAd,

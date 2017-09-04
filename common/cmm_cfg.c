@@ -26,7 +26,6 @@
 
 
 #include "rt_config.h"
-#ifdef DOT11_N_SUPPORT
 #define MAX_AGG_CNT	32
 /* DisplayTxAgg - display Aggregation statistics from MAC */
 void DisplayTxAgg (struct rtmp_adapter*pAd)
@@ -44,7 +43,6 @@ void DisplayTxAgg (struct rtmp_adapter*pAd)
 	printk("====================\n");
 
 }
-#endif /* DOT11_N_SUPPORT */
 
 static bool RT_isLegalCmdBeforeInfUp(
        IN char *SetCmd);

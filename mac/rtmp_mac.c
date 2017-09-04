@@ -97,7 +97,6 @@ void RTMPWriteTxWI(
 
 	pTxWI->TxWINSEQ = NSeq;
 	/* John tune the performace with Intel Client in 20 MHz performance*/
-#ifdef DOT11_N_SUPPORT
 	BASize = pAd->CommonCfg.TxBASize;
 	if (BASize > 31)
 		BASize =31;
@@ -106,7 +105,6 @@ void RTMPWriteTxWI(
 	pTxWI->TxWIShortGI = pTransmit->field.ShortGI;
 	pTxWI->TxWISTBC = pTransmit->field.STBC;
 
-#endif /* DOT11_N_SUPPORT */
 
 	pTxWI->TxWIWirelessCliID = WCID;
 	pTxWI->TxWIMPDUByteCnt = Length;
@@ -114,16 +112,13 @@ void RTMPWriteTxWI(
 
 	/* If CCK or OFDM, BW must be 20*/
 	pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-#ifdef DOT11_N_SUPPORT
 	if (pTxWI->TxWIBW)
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
-#endif /* DOT11_N_SUPPORT */
 
 	pTxWI->TxWIMCS = pTransmit->field.MCS;
 	pTxWI->TxWIPHYMODE = pTransmit->field.MODE;
 	pTxWI->TxWICFACK = CfAck;
 
-#ifdef DOT11_N_SUPPORT
 	if (pMac)
 	{
         if (pAd->CommonCfg.bMIMOPSEnable)
@@ -148,7 +143,6 @@ void RTMPWriteTxWI(
 			pTxWI->TxWIMpduDensity = pMac->MpduDensity;
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 
 	pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
@@ -161,9 +155,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
-#ifdef DOT11_N_SUPPORT
 	u8 BASize;
-#endif /* DOT11_N_SUPPORT */
 	u8 TXWISize = sizeof(struct txwi_nmac);
 
 
@@ -208,7 +200,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 
 	/* If CCK or OFDM, BW must be 20 */
 	pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-#ifdef DOT11_N_SUPPORT
 	if (pTxWI->TxWIBW)
 		pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
@@ -223,10 +214,8 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 
 	pTxWI->TxWIBAWinSize = BASize;
 
-#endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_N_SUPPORT
 	if (pMacEntry)
 	{
 		if ((pMacEntry->MmpsMode == MMPS_DYNAMIC) && (pTransmit->field.MCS > 7))
@@ -247,7 +236,6 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct txwi_nmac *pTxWI, TX_BLK
 
 		pTxWI->TxWIMpduDensity = pMacEntry->MpduDensity;
 	}
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef DBG_DIAGNOSE
 	if (pTxBlk->QueIdx== 0)
@@ -288,8 +276,6 @@ void RTMPWriteTxWI_Cache(
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 
 
 	/* update TXWI */
@@ -313,7 +299,6 @@ void RTMPWriteTxWI_Cache(
 
 	}
 
-#ifdef DOT11_N_SUPPORT
 	pTxWI->TxWIAMPDU = ((pMacEntry->NoBADataCountDown == 0) ? true: false);
 
 	pTxWI->TxWIMIMOps = 0;
@@ -340,7 +325,6 @@ void RTMPWriteTxWI_Cache(
 		}
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef DBG_DIAGNOSE
 	if (pTxBlk->QueIdx== 0)

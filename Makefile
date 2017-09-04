@@ -27,9 +27,6 @@ HAS_MCAST_RATE_SPECIFIC_SUPPORT=n
 #Support for IEEE802.11e DLS
 HAS_QOS_DLS_SUPPORT=n
 
-#Support features of 802.11n
-HAS_DOT11_N_SUPPORT=y
-
 HAS_KTHREAD_SUPPORT=n
 
 #Support for Auto channel select enhance
@@ -125,13 +122,8 @@ ifeq ($(HAS_QOS_DLS_SUPPORT),y)
 WFLAGS += -DQOS_DLS_SUPPORT
 endif
 
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
-WFLAGS += -DDOT11_N_SUPPORT
-
 ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 WFLAGS += -DNEW_RATE_ADAPT_SUPPORT
-endif
-
 endif
 
 ifeq ($(HAS_TSSI_ANTENNA_VARIATION),y)
@@ -261,14 +253,8 @@ ifeq ($(HAS_DFS_SUPPORT),y)
 obj_cmm += 	common/cmm_dfs.o
 endif
 
-#ifdef DOT11_N_SUPPORT
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
-obj_cmm += \
-		common/ba_action.o\
-		mgmt/mgmt_ht.o
-
-endif
-#endif // DOT11_N_SUPPORT //
+obj_cmm += common/ba_action.o\
+	   mgmt/mgmt_ht.o
 
 obj_vht += 	mgmt/mgmt_vht.o\
 		common/vht.o

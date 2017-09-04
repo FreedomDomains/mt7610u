@@ -28,7 +28,6 @@
 #include "rt_config.h"
 
 
-#ifdef DOT11_N_SUPPORT
 
 
 INT ht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILITY_IE *peer, RT_HT_CAPABILITY *my)
@@ -607,5 +606,4 @@ void RTMPUpdateHTIE(
         DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <== \n"));
 }
 
-#endif /* DOT11_N_SUPPORT */
 

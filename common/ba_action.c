@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef DOT11_N_SUPPORT
 
 #include "rt_config.h"
 
@@ -1797,5 +1796,4 @@ void BaReOrderingBufferMaintain(
         }
     }
 }
-#endif /* DOT11_N_SUPPORT */
 

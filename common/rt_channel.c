@@ -1674,10 +1674,8 @@ static u8 FillChList(
 		pAd->ChannelList[j].MaxTxPwr = pChDesp->MaxTxPwr;
 		pAd->ChannelList[j].DfsReq = pChDesp->DfsReq;
 		pAd->ChannelList[j].RegulatoryDomain = regulatoryDomain;
-#ifdef DOT11_N_SUPPORT
 		if (N_ChannelGroupCheck(pAd, pAd->ChannelList[j].Channel))
 			pAd->ChannelList[j].Flags |= CHANNEL_40M_CAP;
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef RT_CFG80211_SUPPORT
 		CFG80211OS_ChanInfoInit(
@@ -1816,7 +1814,6 @@ void BuildBeaconChList(
 }
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 static bool IsValidChannel(
 	IN struct rtmp_adapter *pAd,
 	IN u8 channel)
@@ -1980,7 +1977,6 @@ u8 N_SetCenCh(struct rtmp_adapter*pAd, u8 prim_ch)
 
 	return pAd->CommonCfg.CentralChannel;
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 u8 GetCuntryMaxTxPwr(

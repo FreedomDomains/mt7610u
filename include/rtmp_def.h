@@ -1258,12 +1258,10 @@ enum WIFI_MODE{
 #define MCS_VHT_2SS_MCS8	18
 #define MCS_VHT_2SS_MCS9	19
 
-#ifdef DOT11_N_SUPPORT
 /* OID_HTPHYMODE */
 /* MODE */
 #define HTMODE_MM	0
 #define HTMODE_GF	1
-#endif /* DOT11_N_SUPPORT */
 
 /* Fixed Tx MODE - HT, CCK or OFDM */
 #define FIXED_TXMODE_HT	0
@@ -1287,26 +1285,21 @@ enum WIFI_MODE{
 #define RF_MODE_CCK	1
 #define RF_MODE_OFDM	2
 
-#ifdef DOT11_N_SUPPORT
 #define HT_BW_20		0
 #define HT_BW_40		1
-#endif /* DOT11_N_SUPPORT */
 
 #define VHT_BW_2040	0
 #define VHT_BW_80		1
 #define VHT_BW_160		2
 #define VHT_BW_8080	3
 
-#ifdef DOT11_N_SUPPORT
 /* SHORTGI */
 #define GI_400		GAP_INTERVAL_400	/* only support in HT mode */
 #define GI_BOTH		GAP_INTERVAL_BOTH
-#endif /* DOT11_N_SUPPORT */
 #define GI_800		GAP_INTERVAL_800
 
 /* STBC */
 #define STBC_NONE	0
-#ifdef DOT11_N_SUPPORT
 #define STBC_USE	1	/* limited use in rt2860b phy */
 #define RXSTBC_ONE	1	/* rx support of one spatial stream */
 #define RXSTBC_TWO	2	/* rx support of 1 and 2 spatial stream */
@@ -1327,7 +1320,6 @@ enum WIFI_MODE{
 #define	AMSDU_0	0
 #define	AMSDU_1		1
 
-#endif /* DOT11_N_SUPPORT */
 
 /* MCS use 7 bits */
 #define TXRATEMIMO		0x80

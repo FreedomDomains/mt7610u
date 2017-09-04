@@ -68,13 +68,11 @@ void ActionStateMachineInit(
 		StateMachineSetAction(S, ACT_IDLE, MT2_PEER_DLS_CATE, (STATE_MACHINE_FUNC)PeerDLSAction);
 #endif /* QOS_DLS_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_BA_CATE, (STATE_MACHINE_FUNC)PeerBAAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_HT_CATE, (STATE_MACHINE_FUNC)PeerHTAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_MLME_ADD_BA_CATE, (STATE_MACHINE_FUNC)MlmeADDBAAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_MLME_ORI_DELBA_CATE, (STATE_MACHINE_FUNC)MlmeDELBAAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_MLME_REC_DELBA_CATE, (STATE_MACHINE_FUNC)MlmeDELBAAction);
-#endif /* DOT11_N_SUPPORT */
 
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_PUBLIC_CATE, (STATE_MACHINE_FUNC)PeerPublicAction);
 	StateMachineSetAction(S, ACT_IDLE, MT2_PEER_RM_CATE, (STATE_MACHINE_FUNC)PeerRMAction);
@@ -89,7 +87,6 @@ void ActionStateMachineInit(
 
 }
 
-#ifdef DOT11_N_SUPPORT
 void MlmeADDBAAction(
     IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem)
@@ -278,7 +275,6 @@ void MlmeDELBAAction(
 		DBGPRINT(RT_DEBUG_TRACE, ("BA - MlmeDELBAAction() . 3 DELBA sent. Initiator(%d)\n", pInfo->Initiator));
     	}
 }
-#endif /* DOT11_N_SUPPORT */
 
 void MlmeQOSAction(
     IN struct rtmp_adapter *pAd,
@@ -341,7 +337,6 @@ void PeerDLSAction(
 
 
 
-#ifdef DOT11_N_SUPPORT
 void PeerBAAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
@@ -690,7 +685,6 @@ void ChannelSwitchAction(
 					pAd->CommonCfg.CentralChannel));
 	}
 }
-#endif /* DOT11_N_SUPPORT */
 
 void PeerPublicAction(
 	IN struct rtmp_adapter *pAd,
@@ -704,7 +698,6 @@ void PeerPublicAction(
 
 	switch(Action)
 	{
-#ifdef DOT11_N_SUPPORT
 		case ACTION_BSS_2040_COEXIST:	/* Format defined in IEEE 7.4.7a.1 in 11n Draf3.03*/
 			{
 				/*u8 BssCoexist;*/
@@ -747,7 +740,6 @@ void PeerPublicAction(
 #endif /* CONFIG_STA_SUPPORT */
 			}
 			break;
-#endif /* DOT11_N_SUPPORT */
 
 		case ACTION_WIFI_DIRECT:
 
@@ -784,7 +776,6 @@ void PeerRMAction(
 	return;
 }
 
-#ifdef DOT11_N_SUPPORT
 static void respond_ht_information_exchange_action(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem)
@@ -1014,7 +1005,6 @@ void SendRefreshBAR(
 		}
 	}
 }
-#endif /* DOT11_N_SUPPORT */
 
 void ActHeaderInit(
     IN	struct rtmp_adapter *pAd,

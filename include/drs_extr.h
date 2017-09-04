@@ -116,7 +116,6 @@ extern u8 RateSwitchTable11B[];
 extern u8 RateSwitchTable11G[];
 extern u8 RateSwitchTable11BG[];
 
-#ifdef DOT11_N_SUPPORT
 extern u8 RateSwitchTable11BGN1S[];
 extern u8 RateSwitchTable11BGN2S[];
 extern u8 RateSwitchTable11BGN2SForABand[];
@@ -150,7 +149,6 @@ extern u8 RateTableVht2S[];
 									(pTable)==RateSwitchTableAdapt11N2S || \
 									(pTable)==RateSwitchTableAdapt11N3S)
 #endif /* NEW_RATE_ADAPT_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
 
 /* FUNCTION */

@@ -316,10 +316,8 @@ bool APPsIndicate(
 	IN ULONG Wcid,
     IN  u8           Psm);
 
-#ifdef DOT11_N_SUPPORT
 void APUpdateOperationMode(
     IN struct rtmp_adapter *pAd);
-#endif /* DOT11_N_SUPPORT */
 
 void APUpdateCapabilityAndErpIe(
 	IN struct rtmp_adapter *pAd);

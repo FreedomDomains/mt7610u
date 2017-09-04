@@ -185,12 +185,10 @@ void STARxDataFrameAnnounce(
 #endif /* QOS_DLS_SUPPORT */
 	} else {
 		RX_BLK_SET_FLAG(pRxBlk, fRX_EAP);
-#ifdef DOT11_N_SUPPORT
 		if (RX_BLK_TEST_FLAG(pRxBlk, fRX_AMPDU)
 		    && (pAd->CommonCfg.bDisableReordering == 0)) {
 			Indicate_AMPDU_Packet(pAd, pRxBlk, FromWhichBSSID);
 		} else
-#endif /* DOT11_N_SUPPORT */
 		{
 			/* Determin the destination of the EAP frame */
 			/*  to WPA state machine or upper layer */
@@ -424,12 +422,10 @@ void STAHandleRxDataFrame(
 		} else
 #endif /* AGGREGATION_SUPPORT */
 		{
-#ifdef DOT11_N_SUPPORT
 			RX_BLK_SET_FLAG(pRxBlk, fRX_HTC);
 			/* skip HTC contorl field */
 			pRxBlk->pData += 4;
 			pRxBlk->DataSize -= 4;
-#endif /* DOT11_N_SUPPORT */
 		}
 	}
 
@@ -440,11 +436,9 @@ void STAHandleRxDataFrame(
 		RX_BLK_SET_FLAG(pRxBlk, fRX_PAD);
 		pRxBlk->pData += 2;
 	}
-#ifdef DOT11_N_SUPPORT
 	if (pRxInfo->BA) {
 		RX_BLK_SET_FLAG(pRxBlk, fRX_AMPDU);
 	}
-#endif /* DOT11_N_SUPPORT */
 
 #if defined(SOFT_ENCRYPT) || defined(ADHOC_WPA2PSK_SUPPORT)
 	/* Use software to decrypt the encrypted frame if necessary.
@@ -682,9 +676,7 @@ void STAHandleRxControlFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-#ifdef DOT11_N_SUPPORT
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
-#endif /* DOT11_N_SUPPORT */
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * skb = pRxBlk->skb;
 	bool retStatus;
@@ -692,13 +684,11 @@ void STAHandleRxControlFrame(
 
 	switch (pHeader->FC.SubType) {
 	case SUBTYPE_BLOCK_ACK_REQ:
-#ifdef DOT11_N_SUPPORT
 		{
 			retStatus = CntlEnqueueForRecv(pAd, pRxWI->RxWIWirelessCliID, (pRxWI->RxWIMPDUByteCnt), (PFRAME_BA_REQ) pHeader);
 			status = (retStatus == true) ? NDIS_STATUS_SUCCESS : NDIS_STATUS_FAILURE;
 		}
 		break;
-#endif /* DOT11_N_SUPPORT */
 	case SUBTYPE_BLOCK_ACK:
 	case SUBTYPE_ACK:
 	default:
@@ -1112,11 +1102,9 @@ int STASendPacket(
 		NumberOfFrag = 1;	/* Aggregation overwhelms fragmentation */
 	else if (CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_AMSDU_INUSED))
 		NumberOfFrag = 1;	/* Aggregation overwhelms fragmentation */
-#ifdef DOT11_N_SUPPORT
 	else if ((pAd->StaCfg.HTPhyMode.field.MODE == MODE_HTMIX)
 		 || (pAd->StaCfg.HTPhyMode.field.MODE == MODE_HTGREENFIELD))
 		NumberOfFrag = 1;	/* MIMO RATE overwhelms fragmentation */
-#endif /* DOT11_N_SUPPORT */
 	else {
 		/*
 		   The calculated "NumberOfFrag" is a rough estimation because of various
@@ -1185,7 +1173,6 @@ int STASendPacket(
 		RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 	}
 
-#ifdef DOT11_N_SUPPORT
 	if ((pAd->CommonCfg.BACapability.field.AutoBA == true) &&
 	    (pEntry->NoBADataCountDown == 0) && IS_HT_STA(pEntry)) {
 		if (((pEntry->TXBAbitmap & (1 << UserPriority)) == 0) &&
@@ -1203,7 +1190,6 @@ int STASendPacket(
 					  false);
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	pAd->RalinkCounters.OneSecOsTxCount[QueIdx]++;	/* TODO: for debug only. to be removed */
 	return NDIS_STATUS_SUCCESS;
@@ -1534,7 +1520,6 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 }
 
 
-#ifdef DOT11_N_SUPPORT
 void STABuildCache802_11Header(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk,
@@ -1609,7 +1594,6 @@ void STABuildCache802_11Header(
 	else
 		pHeader80211->FC.PwrMgmt = (RtmpPktPmBitCheck(pAd) == true);
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 static inline u8 *STA_Build_ARalink_Frame_Header(
@@ -1669,7 +1653,6 @@ static inline u8 *STA_Build_ARalink_Frame_Header(
 }
 
 
-#ifdef DOT11_N_SUPPORT
 static inline u8 *STA_Build_AMSDU_Frame_Header(
 	IN struct rtmp_adapter*pAd,
 	IN TX_BLK *pTxBlk)
@@ -2117,7 +2100,6 @@ void STA_AMSDU_Frame_Tx(
 	/* Kick out Tx */
 		HAL_KickOutTx(pAd, pTxBlk, pTxBlk->QueIdx);
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
@@ -2836,7 +2818,6 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 	}
 
 	switch (pTxBlk->TxFrameType) {
-#ifdef DOT11_N_SUPPORT
 	case TX_AMPDU_FRAME:
 		STA_AMPDU_Frame_Tx(pAd, pTxBlk);
 
@@ -2844,7 +2825,6 @@ int STAHardTransmit(struct rtmp_adapter*pAd, TX_BLK *pTxBlk, u8 QueIdx)
 	case TX_AMSDU_FRAME:
 		STA_AMSDU_Frame_Tx(pAd, pTxBlk);
 		break;
-#endif /* DOT11_N_SUPPORT */
 	case TX_LEGACY_FRAME:
 		{
 			STA_Legacy_Frame_Tx(pAd, pTxBlk);

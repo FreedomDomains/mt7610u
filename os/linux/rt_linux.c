@@ -625,11 +625,9 @@ void send_monitor_packets(struct net_device *ndev, struct sk_buff *skb,
 		ph->noise.len = 4;
 		ph->noise.data = 0;
 
-#ifdef DOT11_N_SUPPORT
 		if (PHYMODE >= MODE_HTMIX) {
 			rate_index = 12 + ((u8) BW * 24) + ((u8) ShortGI * 48) + ((u8) MCS);
 		} else
-#endif /* DOT11_N_SUPPORT */
 		if (PHYMODE == MODE_OFDM)
 			rate_index = (u8) (MCS) + 4;
 		else
@@ -2008,7 +2006,6 @@ bool CFG80211_SupBandInit(
 		pBand->channels = pChannels;
 		pBand->bitrates = pRates;
 
-#ifdef DOT11_N_SUPPORT
 		/* for HT, assign pBand->ht_cap */
 		pBand->ht_cap.ht_supported = true;
 		pBand->ht_cap.cap = IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
@@ -2042,7 +2039,6 @@ bool CFG80211_SupBandInit(
 		}
 
 		pBand->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
-#endif /* DOT11_N_SUPPORT */
 
 		pWiphy->bands[NL80211_BAND_2GHZ] = pBand;
 	}
@@ -2062,7 +2058,6 @@ bool CFG80211_SupBandInit(
 		pBand->bitrates = &pRates[4];
 
 		/* for HT, assign pBand->ht_cap */
-#ifdef DOT11_N_SUPPORT
 		/* for HT, assign pBand->ht_cap */
 		pBand->ht_cap.ht_supported = true;
 		pBand->ht_cap.cap = IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
@@ -2093,7 +2088,6 @@ bool CFG80211_SupBandInit(
 		}
 
 		pBand->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
-#endif /* DOT11_N_SUPPORT */
 
 		pWiphy->bands[NL80211_BAND_5GHZ] = pBand;
 	}

@@ -158,7 +158,6 @@ bool PeerAssocRspSanity(
 			}
 			break;
 
-#ifdef DOT11_N_SUPPORT
 		case IE_HT_CAP:
 		case IE_HT_CAP2:
 			if (pEid->Len >= SIZE_HT_CAP_IE) {	/* Note: allow extension.!! */
@@ -217,7 +216,6 @@ bool PeerAssocRspSanity(
 				DBGPRINT(RT_DEBUG_WARN, ("%s():wrong IE_VHT_OP\n", __FUNCTION__));
 			}
 			break;
-#endif /* DOT11_N_SUPPORT */
 
 		case IE_VENDOR_SPECIFIC:
 			/* handle WME PARAMTER ELEMENT */

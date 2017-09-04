@@ -638,7 +638,6 @@ void demo_mode_cfg(struct rtmp_adapter*pAd)
 #endif /* CUSTOMER_DEMO */
 
 
-#ifdef DOT11_N_SUPPORT
 static void HTParametersHook(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *	  pValueStr,
@@ -986,7 +985,6 @@ static void HTParametersHook(
 		DBGPRINT(RT_DEBUG_TRACE, ("HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == true) ? "ON" : "OFF" ));
 	}
 
-#ifdef DOT11_N_SUPPORT
 			if (RTMPGetKeyParameter("OBSSScanParam", pValueStr, 32, pInput, true))
 			{
 				int ObssScanValue, idx;
@@ -1093,10 +1091,8 @@ static void HTParametersHook(
 		pAd->CommonCfg.bRalinkBurstMode = ((Value == 1) ? 1 : 0);
 		DBGPRINT(RT_DEBUG_TRACE, ("HT: RaBurstMode= %d\n", pAd->CommonCfg.bRalinkBurstMode));
 	}
-#endif /* DOT11_N_SUPPORT */
 
 }
-#endif /* DOT11_N_SUPPORT */
 
 void RTMPSetCountryCode(struct rtmp_adapter*pAd, char *CountryCode)
 {
@@ -1457,9 +1453,7 @@ int	RTMPSetProfileParameters(
 		}
 
 
-#ifdef DOT11_N_SUPPORT
 				HTParametersHook(pAd, tmpbuf, pBuffer);
-#endif /* DOT11_N_SUPPORT */
 
 				VHTParametersHook(pAd, tmpbuf, pBuffer);
 

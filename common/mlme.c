@@ -40,9 +40,7 @@ u8 WME_PARM_ELEM[] = {0x00, 0x50, 0xf2, 0x02, 0x01, 0x01};
 u8 BROADCOM_OUI[]  = {0x00, 0x90, 0x4c};
 u8 WPS_OUI[] = {0x00, 0x50, 0xf2, 0x04};
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 u8 PRE_N_HT_OUI[]	= {0x00, 0x90, 0x4c};
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 u8 OfdmRateToRxwiMCS[12] = {
@@ -79,13 +77,11 @@ USHORT RateIdTo500Kbps[] = { 2, 4, 11, 22, 12, 18, 24, 36, 48, 72, 96, 108, 144,
 u8 SsidIe = IE_SSID;
 u8 SupRateIe = IE_SUPP_RATES;
 u8 ExtRateIe = IE_EXT_SUPP_RATES;
-#ifdef DOT11_N_SUPPORT
 u8 HtCapIe = IE_HT_CAP;
 u8 AddHtInfoIe = IE_ADD_HT;
 u8 NewExtChanIe = IE_SECONDARY_CH_OFFSET;
 u8 BssCoexistIe = IE_2040_BSS_COEXIST;
 u8 ExtHtCapIe = IE_EXT_CAPABILITY;
-#endif /* DOT11_N_SUPPORT */
 u8 ExtCapIe = IE_EXT_CAPABILITY;
 u8 ErpIe = IE_ERP;
 u8 DsIe = IE_DS_PARM;
@@ -627,10 +623,8 @@ void MlmePeriodicExec(void *FunctionContext)
 		RTMP_SECOND_CCA_DETECTION(pAd);
 
 
-#ifdef DOT11_N_SUPPORT
    		/* Need statistics after read counter. So put after NICUpdateRawCounters*/
 		ORIBATimerTimeout(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 	/*
 		if (pAd->RalinkCounters.MgmtRingFullCount >= 2)
@@ -930,7 +924,6 @@ void STAMlmePeriodicExec(
 		}
 
 
-#ifdef DOT11_N_SUPPORT
 /*for 1X1 STA pass 11n wifi wmm, need to change txop per case;*/
 /* 1x1 device for 802.11n WMM Test*/
 	if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
@@ -983,7 +976,6 @@ void STAMlmePeriodicExec(
 			}
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 		/* TODO: for debug only. to be removed*/
 		pAd->RalinkCounters.OneSecOsTxCount[QID_AC_BE] = 0;
@@ -1134,7 +1126,6 @@ void STAMlmePeriodicExec(
 
 SKIP_AUTO_SCAN_CONN:
 
-#ifdef DOT11_N_SUPPORT
     if ((pAd->MacTab.Content[BSSID_WCID].TXBAbitmap !=0) && (pAd->MacTab.fAnyBASession == false)
 		&& (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF)))
 	{
@@ -1147,11 +1138,9 @@ SKIP_AUTO_SCAN_CONN:
 		pAd->MacTab.fAnyBASession = false;
 		AsicUpdateProtect(pAd, pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode,  ALLN_SETPROTECT, false, false);
 	}
-#endif /* DOT11_N_SUPPORT */
 
 
 
-#ifdef DOT11_N_SUPPORT
 	/* Perform 20/40 BSS COEX scan every Dot11BssWidthTriggerScanInt	*/
 	if ((OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_SCAN_2040)) &&
 		(pAd->CommonCfg.Dot11BssWidthTriggerScanInt != 0) &&
@@ -1181,7 +1170,6 @@ SKIP_AUTO_SCAN_CONN:
 							pAd->RalinkCounters.LastOneSecTotalTxCount,
 							pAd->RalinkCounters.LastOneSecRxOkDataCnt));
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	return;
 }
@@ -1978,7 +1966,6 @@ void MlmeUpdateTxRates(
 				pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word ));
 }
 
-#ifdef DOT11_N_SUPPORT
 /*
 	==========================================================================
 	Description:
@@ -2170,7 +2157,6 @@ void BATableExit(
 		;
 	}
 }
-#endif /* DOT11_N_SUPPORT */
 
 /* IRQL = DISPATCH_LEVEL*/
 void MlmeRadioOff(
@@ -2476,7 +2462,6 @@ void BssEntrySet(
 
 	pBss->AddHtInfoLen = 0;
 	pBss->HtCapabilityLen = 0;
-#ifdef DOT11_N_SUPPORT
 	if (ie_list->HtCapabilityLen> 0)
 	{
 		pBss->HtCapabilityLen = ie_list->HtCapabilityLen;
@@ -2515,7 +2500,6 @@ void BssEntrySet(
 			}
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	BssCipherParse(pBss);
 
@@ -2710,7 +2694,6 @@ ULONG BssTableSetEntry(
 
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 void  TriEventInit(
 	IN	struct rtmp_adapter *pAd)
 {
@@ -2782,7 +2765,6 @@ INT TriEventTableSetEntry(
 
 	return 0;
 }
-#endif /* DOT11_N_SUPPORT */
 
 /* IRQL = DISPATCH_LEVEL*/
 void BssTableSsidSort(
@@ -2839,7 +2821,6 @@ void BssTableSsidSort(
 			}
 #endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 			/* 2.4G/5G N only mode*/
 			if ((pInBss->HtCapabilityLen == 0) &&
 				(WMODE_HT_ONLY(pAd->CommonCfg.PhyMode)))
@@ -2854,7 +2835,6 @@ void BssTableSsidSort(
 				DBGPRINT(RT_DEBUG_TRACE,("STA is in GN-only Mode, this AP is in B mode.\n"));
 				continue;
 			}
-#endif /* DOT11_N_SUPPORT */
 
 
 
@@ -2939,7 +2919,6 @@ void BssTableSsidSort(
 			BSS_ENTRY *pOutBss = &OutTab->BssEntry[OutTab->BssNr];
 
 
-#ifdef DOT11_N_SUPPORT
 			/* 2.4G/5G N only mode*/
 			if ((pInBss->HtCapabilityLen == 0) &&
 				WMODE_HT_ONLY(pAd->CommonCfg.PhyMode))
@@ -2954,7 +2933,6 @@ void BssTableSsidSort(
 				DBGPRINT(RT_DEBUG_TRACE,("STA is in GN-only Mode, this AP is in B mode.\n"));
 				continue;
 			}
-#endif /* DOT11_N_SUPPORT */
 
 			/* New for WPA2*/
 			/* Check the Authmode first*/
@@ -4186,7 +4164,6 @@ void RTMPCheckRates(
 }
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 bool RTMPCheckChannel(
 	IN struct rtmp_adapter *pAd,
 	IN u8 	CentralChannel,
@@ -4389,7 +4366,6 @@ bool RTMPCheckVht(
 
 	return true;
 }
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 /*
@@ -4424,10 +4400,8 @@ void RTMPUpdateMlmeRate(
 			MinimumRate = RATE_1;
 			break;
 		case (WMODE_B | WMODE_G):
-#ifdef DOT11_N_SUPPORT
 		case (WMODE_B | WMODE_G | WMODE_GN | WMODE_A |WMODE_AN):
 		case (WMODE_B | WMODE_G | WMODE_GN):
-#endif /* DOT11_N_SUPPORT */
 			if ((pAd->MlmeAux.SupRateLen == 4) &&
 				(pAd->MlmeAux.ExtRateLen == 0))
 				/* B only AP*/
@@ -4441,13 +4415,11 @@ void RTMPUpdateMlmeRate(
 				MinimumRate = RATE_6;
 			break;
 		case (WMODE_A):
-#ifdef DOT11_N_SUPPORT
 		case (WMODE_GN):	/* rt2860 need to check mlmerate for 802.11n*/
 		case (WMODE_G | WMODE_GN):
 		case (WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
 		case (WMODE_A |WMODE_AN):
 		case (WMODE_AN):
-#endif /* DOT11_N_SUPPORT */
 			ProperMlmeRate = RATE_24;
 			MinimumRate = RATE_6;
 			break;

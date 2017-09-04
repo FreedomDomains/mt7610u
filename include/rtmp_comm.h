@@ -162,10 +162,8 @@ Ndis802_11InfrastructureMax	/* Not a real value, defined as upper bound */
 /* Preamble MODE in TxD */
 #define MODE_CCK	0
 #define MODE_OFDM   1
-#ifdef DOT11_N_SUPPORT
 #define MODE_HTMIX	2
 #define MODE_HTGREENFIELD	3
-#endif /* DOT11_N_SUPPORT */
 #define MODE_VHT	4
 
 #ifdef NO_CONSISTENT_MEM_SUPPORT

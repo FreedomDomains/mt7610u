@@ -124,7 +124,6 @@ extern u8 SsidIe;
 extern u8 SupRateIe;
 extern u8 ExtRateIe;
 
-#ifdef DOT11_N_SUPPORT
 extern u8 HtCapIe;
 extern u8 AddHtInfoIe;
 extern u8 NewExtChanIe;
@@ -133,7 +132,6 @@ extern u8 ExtHtCapIe;
 #ifdef CONFIG_STA_SUPPORT
 extern u8 PRE_N_HT_OUI[];
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 extern u8 ExtCapIe;
 
 extern u8 ErpIe;
@@ -290,7 +288,6 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
     (_idx) = (_idx+1) % (_RingSize);       \
 }
 
-#ifdef DOT11_N_SUPPORT
 /* StaActive.SupportedHtPhy.MCSSet is copied from AP beacon.  Don't need to update here. */
 #define COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(_pAd)                                 \
 {                                                                                       \
@@ -314,7 +311,6 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
 	_pAd->MacTab.Content[BSSID_WCID].MmpsMode= (u8)(_pHtCapability->HtCapInfo.MimoPs);	\
 	_pAd->MacTab.Content[BSSID_WCID].MaxRAmpduFactor = (u8)(_pHtCapability->HtCapParm.MaxRAmpduFactor);	\
 }
-#endif /* DOT11_N_SUPPORT */
 
 #define COPY_VHT_FROM_MLME_AUX_TO_ACTIVE_CFG(_pAd)                                 \
 {                                                                                       \
@@ -765,11 +761,9 @@ typedef struct _BBP_R66_TUNING {
 } BBP_R66_TUNING, *PBBP_R66_TUNING;
 
 
-#ifdef DOT11_N_SUPPORT
 #define EFFECTED_CH_SECONDARY 0x1
 #define EFFECTED_CH_PRIMARY	0x2
 #define EFFECTED_CH_LEGACY		0x4
-#endif /* DOT11_N_SUPPORT */
 
 /* structure to store channel TX power */
 struct CHANNEL_TX_POWER {
@@ -894,7 +888,6 @@ typedef struct _MLME_STRUCT {
 	bool AutoWakeupTimerRunning;
 } MLME_STRUCT, *PMLME_STRUCT;
 
-#ifdef DOT11_N_SUPPORT
 /***************************************************************************
   *	802.11 N related data structures
   **************************************************************************/
@@ -1066,7 +1059,6 @@ typedef struct _BssCoexChRange_ {
 #define PEER_IS_HT_RATE(_pMacEntry)	\
 	(_pMacEntry->HTPhyMode.field.MODE >= MODE_HTMIX)
 
-#endif /* DOT11_N_SUPPORT */
 
 /*This structure is for all 802.11n card InterOptibilityTest action. Reset all Num every n second.  (Details see MLMEPeriodic) */
 typedef struct _IOT_STRUC {
@@ -1283,10 +1275,8 @@ struct common_config {
 	ULONG TxPowerDefault;	/* keep for TxPowerPercentage */
 	u8 PwrConstraint;
 
-#ifdef DOT11_N_SUPPORT
 	BACAP_STRUC BACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
 	BACAP_STRUC REGBACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
-#endif /* DOT11_N_SUPPORT */
 
 	bool force_vht;
 	u8 vht_bw;
@@ -1308,9 +1298,7 @@ struct common_config {
 	u8 RDDurRegion; /* Region of radar detection */
 	ULONG DisableOLBCDetect;	/* 0: enable OLBC detect; 1 disable OLBC detect */
 
-#ifdef DOT11_N_SUPPORT
 	bool bRdg;
-#endif /* DOT11_N_SUPPORT */
 	bool bWmmCapable;	/* 0:disable WMM, 1:enable WMM */
 	QOS_CAPABILITY_PARM APQosCapability;	/* QOS capability of the current associated AP */
 	EDCA_PARM APEdcaParm;	/* EDCA parameters of the current associated AP */
@@ -1332,7 +1320,6 @@ struct common_config {
 	RADAR_DETECT_STRUCT RadarDetect;
 #endif /* DFS_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 	/* HT */
 	RT_HT_CAPABILITY DesiredHtPhy;
 	HT_CAPABILITY_IE HtCapability;
@@ -1391,7 +1378,6 @@ struct common_config {
 
 	bool bRalinkBurstMode;
 	u32 RestoreBurstMode;
-#endif /* DOT11_N_SUPPORT */
 
 	u32 cfg_vht;
 	VHT_CAP_INFO vht_info;
@@ -1688,10 +1674,8 @@ typedef struct _STA_ADMIN_CONFIG {
 	ULONG BeaconLostTime;	/* seconds */
 	bool bForceTxBurst;	/* 1: force enble TX PACKET BURST, 0: disable */
 	bool bAutoConnectIfNoSSID;
-#ifdef DOT11_N_SUPPORT
 	u8 RegClass;		/*IE_SUPP_REG_CLASS: 2009 PF#3: For 20/40 Intolerant Channel Report */
 	bool bAdhocN;
-#endif /* DOT11_N_SUPPORT */
 	bool bAdhocCreator;	/*true indicates divice is Creator. */
 
 
@@ -1840,13 +1824,11 @@ typedef struct _MAC_TABLE_ENTRY {
 	u32 StaIdleTimeout;	/* idle timeout per entry */
 
 
-#ifdef DOT11_N_SUPPORT
 	bool bSendBAR;
 	USHORT NoBADataCountDown;
 
 	u32 CachedBuf[16];	/* UINT (4 bytes) for alignment */
 
-#endif /* DOT11_N_SUPPORT */
 
 	UINT FIFOCount;
 	UINT DebugFIFOCount;
@@ -1928,7 +1910,6 @@ typedef struct _MAC_TABLE_ENTRY {
 
 	HTTRANSMIT_SETTING HTPhyMode, MaxHTPhyMode, MinHTPhyMode;	/* For transmit phy setting in TXWI. */
 
-#ifdef DOT11_N_SUPPORT
 	/* HT EWC MIMO-N used parameters */
 	USHORT RXBAbitmap;	/* fill to on-chip  RXWI_BA_BITMASK in 8.1.3RX attribute entry format */
 	USHORT TXBAbitmap;	/* This bitmap as originator, only keep in software used to mark AMPDU bit in TXWI */
@@ -1951,7 +1932,6 @@ typedef struct _MAC_TABLE_ENTRY {
 
 	VHT_CAP_IE vht_cap_ie;
 
-#endif /* DOT11_N_SUPPORT */
 
 
 	bool bAutoTxRateSwitch;
@@ -2040,7 +2020,6 @@ typedef struct _MAC_TABLE {
 	bool fAnyStationBadAtheros;	/* Check if any Station is atheros 802.11n Chip.  We need to use RTS/CTS with Atheros 802,.11n chip. */
 	bool fAnyTxOPForceDisable;	/* Check if it is necessary to disable BE TxOP */
 	bool fAllStationAsRalink;	/* Check if all stations are ralink-chipset */
-#ifdef DOT11_N_SUPPORT
 	bool fAnyStationIsLegacy;	/* Check if I use legacy rate to transmit to my BSS Station/ */
 	bool fAnyStationNonGF;	/* Check if any Station can't support GF. */
 	bool fAnyStation20Only;	/* Check if any Station can't support GF. */
@@ -2049,7 +2028,6 @@ typedef struct _MAC_TABLE {
 	bool fAnyStaFortyIntolerant;	/* Check if still has any station set the Intolerant bit on! */
 	bool fAllStationGainGoodMCS; /* Check if all stations more than MCS threshold */
 
-#endif				/* DOT11_N_SUPPORT */
 
 	USHORT			MsduLifeTime; /* life time for PS packet */
 
@@ -2592,11 +2570,9 @@ struct rtmp_adapter {
 	MAC_TABLE MacTab;	/* ASIC on-chip WCID entry table.  At TX, ASIC always use key according to this on-chip table. */
 	spinlock_t MacTabLock;
 
-#ifdef DOT11_N_SUPPORT
 	BA_TABLE BATable;
 	spinlock_t BATabLock;
 	RALINK_TIMER_STRUCT RECBATimer;
-#endif /* DOT11_N_SUPPORT */
 
 	/* DOT11_H */
 	DOT11_H Dot11_H;
@@ -2686,9 +2662,7 @@ struct rtmp_adapter {
 
 	u8 	TssiGain;
 
-#ifdef DOT11_N_SUPPORT
 	struct reordering_mpdu_pool mpdu_blk_pool;
-#endif /* DOT11_N_SUPPORT */
 
 	/* statistics count */
 
@@ -3353,7 +3327,6 @@ void MlmeQOSAction(
     IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
-#ifdef DOT11_N_SUPPORT
 void PeerAddBAReqAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem);
@@ -3369,7 +3342,6 @@ void PeerDelBAAction(
 void PeerBAAction(
     IN struct rtmp_adapter *pAd,
     IN MLME_QUEUE_ELEM *Elem);
-#endif /* DOT11_N_SUPPORT */
 
 void SendPSMPAction(
 	IN struct rtmp_adapter *pAd,
@@ -3396,11 +3368,9 @@ void PeerBSSTranAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem);
 
-#ifdef DOT11_N_SUPPORT
 void PeerHTAction(
 	IN struct rtmp_adapter *pAd,
 	IN MLME_QUEUE_ELEM *Elem);
-#endif /* DOT11_N_SUPPORT */
 
 void PeerQOSAction(
     IN struct rtmp_adapter *pAd,
@@ -3422,7 +3392,6 @@ void DlsParmFill(
 #endif /* QOS_DLS_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 void RECBATimerTimeout(void *FunctionContext);
 
 void ORIBATimerTimeout(
@@ -3481,7 +3450,6 @@ void AsicEnableRalinkBurstMode(
 
 void AsicDisableRalinkBurstMode(
 	IN struct rtmp_adapter *pAd);
-#endif /* DOT11_N_SUPPORT */
 
 void ActHeaderInit(
     IN	struct rtmp_adapter *pAd,
@@ -3514,7 +3482,6 @@ bool QosBADataParse(
 	IN USHORT Datasize,
 	IN UINT   CurRxIndex);
 
-#ifdef DOT11_N_SUPPORT
 bool CntlEnqueueForRecv(
     IN	struct rtmp_adapter *pAd,
 	IN ULONG Wcid,
@@ -3523,7 +3490,6 @@ bool CntlEnqueueForRecv(
 
 void BaAutoManSwitch(
 	IN	struct rtmp_adapter *pAd);
-#endif /* DOT11_N_SUPPORT */
 
 void HTIOTCheck(
 	IN	struct rtmp_adapter *pAd,
@@ -3781,13 +3747,11 @@ void AsicSetExtendedMacAddr(
 	IN u32 Idx);
 #endif /* MAC_REPEATER_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 void AsicEnableRDG(
 	IN struct rtmp_adapter *pAd);
 
 void AsicDisableRDG(
 	IN struct rtmp_adapter *pAd);
-#endif /* DOT11_N_SUPPORT */
 
 void AsicDisableSync(
 	IN  struct rtmp_adapter *  pAd);
@@ -3867,14 +3831,12 @@ void MlmeRadioOn(
 void BssTableInit(
 	IN BSS_TABLE *Tab);
 
-#ifdef DOT11_N_SUPPORT
 void BATableInit(
 	IN struct rtmp_adapter *pAd,
     IN BA_TABLE *Tab);
 
 void BATableExit(
 	IN struct rtmp_adapter*pAd);
-#endif /* DOT11_N_SUPPORT */
 
 ULONG BssTableSearch(
 	IN BSS_TABLE *Tab,
@@ -3914,7 +3876,6 @@ ULONG BssTableSetEntry(
 	IN PNDIS_802_11_VARIABLE_IEs pVIE);
 
 
-#ifdef DOT11_N_SUPPORT
 void BATableInsertEntry(
     IN	struct rtmp_adapter *pAd,
 	IN USHORT Aid,
@@ -3940,7 +3901,6 @@ INT TriEventTableSetEntry(
 	IN u8 		RegClass,
 	IN u8 ChannelNo);
 
-#endif /* DOT11_N_SUPPORT */
 
 void BssTableSsidSort(
 	IN  struct rtmp_adapter *  pAd,
@@ -4613,14 +4573,12 @@ bool PeerBeaconAndProbeRspSanity(
 	OUT PNDIS_802_11_VARIABLE_IEs pVIE);
 
 
-#ifdef DOT11_N_SUPPORT
 bool PeerBeaconAndProbeRspSanity2(
 	IN struct rtmp_adapter *pAd,
 	IN void *Msg,
 	IN ULONG MsgLen,
 	IN OVERLAP_BSS_SCAN_IE *BssScan,
 	OUT u8 	*RegClass);
-#endif /* DOT11_N_SUPPORT */
 
 bool PeerAddBAReqActionSanity(
     IN struct rtmp_adapter *pAd,
@@ -4800,11 +4758,9 @@ void MlmeUpdateTxRates(
 	IN 	bool 	 	bLinkUp,
 	IN	u8 		apidx);
 
-#ifdef DOT11_N_SUPPORT
 void MlmeUpdateHtTxRates(
 	IN struct rtmp_adapter *		pAd,
 	IN	u8 			apidx);
-#endif /* DOT11_N_SUPPORT */
 
 void    RTMPCheckRates(
 	IN      struct rtmp_adapter *  pAd,
@@ -5021,7 +4977,6 @@ char *GetEncryptType(
 char *GetAuthMode(
 	CHAR auth);
 
-#ifdef DOT11_N_SUPPORT
 void RTMPSetHT(
 	IN	struct rtmp_adapter *pAd,
 	IN	OID_SET_HT_PHYMODE *pHTPhyMode);
@@ -5039,7 +4994,6 @@ INT get_ht_cent_ch(struct rtmp_adapter*pAd, u8 *rf_bw, u8 *ext_ch);
 INT ht_mode_adjust(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILITY_IE *peer, RT_HT_CAPABILITY *my);
 INT set_ht_fixed_mcs(struct rtmp_adapter*pAd, MAC_TABLE_ENTRY *pEntry, u8 fixed_mcs, u8 mcs_bound);
 INT get_ht_max_mcs(struct rtmp_adapter*pAd, u8 *desire_mcs, u8 *cap_mcs);
-#endif /* DOT11_N_SUPPORT */
 
 void RTMPDisableDesiredHtInfo(
 	IN	struct rtmp_adapter *pAd);
@@ -5206,19 +5160,16 @@ bool RTMP_FillTxBlkInfo(
 void announce_802_3_packet(struct rtmp_adapter *pAd, struct sk_buff *skb,
                           u8 OpMode);
 
-#ifdef DOT11_N_SUPPORT
 UINT BA_Reorder_AMSDU_Annnounce(
 	IN	struct rtmp_adapter *pAd,
 	IN	struct sk_buff *	pPacket,
 	IN	u8 		OpMode);
-#endif /* DOT11_N_SUPPORT */
 
 struct net_device *get_netdev_from_bssid(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 		FromWhichBSSID);
 
 
-#ifdef DOT11_N_SUPPORT
 void ba_flush_reordering_timeout_mpdus(
 	IN struct rtmp_adapter *pAd,
 	IN PBA_REC_ENTRY	pBAEntry,
@@ -5249,7 +5200,6 @@ void BARecSessionTearDown(
 	IN		u8 		Wcid,
 	IN		u8 		TID,
 	IN		bool 		bPassive);
-#endif /* DOT11_N_SUPPORT */
 
 bool ba_reordering_resource_init(struct rtmp_adapter *pAd, int num);
 void ba_reordering_resource_release(struct rtmp_adapter *pAd);
@@ -5463,7 +5413,6 @@ INT	Set_ResetStatCounter_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
 
-#ifdef DOT11_N_SUPPORT
 INT	Set_BASetup_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
@@ -5585,7 +5534,6 @@ INT	Set_HtDisallowTKIP_Proc(
 INT	Set_BurstMode_Proc(
 	IN	struct rtmp_adapter *pAd,
 	IN	char *		arg);
-#endif /* DOT11_N_SUPPORT */
 
 
 INT Set_VhtBw_Proc(struct rtmp_adapter*pAd, char *arg);
@@ -5608,11 +5556,9 @@ void RTMPSendDLSTearDownFrame(
 	IN	struct rtmp_adapter *pAd,
 	IN	u8 *		pDA);
 
-#ifdef DOT11_N_SUPPORT
 void QueryBATABLE(
 	IN  struct rtmp_adapter *pAd,
 	OUT PQUERYBA_TABLE pBAT);
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 INT	    WpaCheckEapCode(
@@ -5625,7 +5571,6 @@ INT	    WpaCheckEapCode(
 
 
 
-#ifdef DOT11_N_SUPPORT
 void Handle_BSS_Width_Trigger_Events(struct rtmp_adapter*pAd);
 
 void build_ext_channel_switch_ie(
@@ -5637,13 +5582,11 @@ void assoc_ht_info_debugshow(
 	IN MAC_TABLE_ENTRY *pEntry,
 	IN u8 ht_cap_len,
 	IN HT_CAPABILITY_IE *pHTCapability);
-#endif /* DOT11_N_SUPPORT */
 
 bool APRxDoneInterruptHandle(struct rtmp_adapter*pAd);
 bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc);
 bool RxDoneInterruptHandle(struct rtmp_adapter*pAd);
 
-#ifdef DOT11_N_SUPPORT
 /* AMPDU packet indication */
 void Indicate_AMPDU_Packet(
 	IN	struct rtmp_adapter *pAd,
@@ -5658,7 +5601,6 @@ void Indicate_AMSDU_Packet(
 
 void BaReOrderingBufferMaintain(
     IN struct rtmp_adapter *pAd);
-#endif /* DOT11_N_SUPPORT */
 
 /* Normal legacy Rx packet indication */
 void Indicate_Legacy_Packet(
@@ -6359,11 +6301,9 @@ INT Set_FragTest_Proc(
     IN  struct rtmp_adapter *  pAdapter,
     IN  char *         arg);
 
-#ifdef DOT11_N_SUPPORT
 INT Set_TGnWifiTest_Proc(
     IN  struct rtmp_adapter *  pAd,
     IN  char *         arg);
-#endif /* DOT11_N_SUPPORT */
 
 INT Set_LongRetryLimit_Proc(
 	IN	struct rtmp_adapter *pAdapter,

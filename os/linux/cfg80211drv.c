@@ -180,10 +180,8 @@ bool CFG80211DRV_OpsSetChannel(
 	u8 IfType;
 	u8 ChannelType;
 	STRING ChStr[5] = { 0 };
-#ifdef DOT11_N_SUPPORT
 	u8 BW_Old;
 	bool FlgIsChanged;
-#endif /* DOT11_N_SUPPORT */
 
 
 	/* init */
@@ -192,7 +190,6 @@ bool CFG80211DRV_OpsSetChannel(
 	IfType = pChan->IfType;
 	ChannelType = pChan->ChanType;
 
-#ifdef DOT11_N_SUPPORT
 	if (IfType != RT_CMD_80211_IFTYPE_MONITOR)
 	{
 		/* get channel BW */
@@ -245,7 +242,6 @@ bool CFG80211DRV_OpsSetChannel(
 	if (FlgIsChanged == true)
 		SetCommonHT(pAd);
 	/* End of if */
-#endif /* DOT11_N_SUPPORT */
 
 	/* switch to the channel */
 	sprintf(ChStr, "%d", ChanId);
@@ -255,7 +251,6 @@ bool CFG80211DRV_OpsSetChannel(
 	} /* End of if */
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 	if ((IfType == RT_CMD_80211_IFTYPE_STATION) && (FlgIsChanged == true))
 	{
 		/*
@@ -267,7 +262,6 @@ bool CFG80211DRV_OpsSetChannel(
 		*/
 		Set_SSID_Proc(pAd, (char *)pAd->CommonCfg.Ssid);
 	} /* End of if */
-#endif /* DOT11_N_SUPPORT */
 
 	if (IfType == RT_CMD_80211_IFTYPE_ADHOC)
 	{

@@ -435,13 +435,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 			DBGPRINT_RAW(RT_DEBUG_ERROR,
 						("%s():Err! chip not support 5G band (%d)!\n",
 						__FUNCTION__, pAd->RfIcType));
-#ifdef DOT11_N_SUPPORT
 			/* change to bgn mode */
 			Set_WirelessMode_Proc(pAd, "9");
-#else
-			/* change to bg mode */
-			Set_WirelessMode_Proc(pAd, "0");
-#endif /* DOT11_N_SUPPORT */
 			pAd->RFICType = RFIC_24GHZ;
 		}
 		pAd->RFICType = RFIC_24GHZ | RFIC_5GHZ;
@@ -1499,9 +1494,7 @@ ULONG	RTMPCompareMemory(
 void UserCfgExit(
 	IN struct rtmp_adapter*pAd)
 {
-#ifdef DOT11_N_SUPPORT
 	BATableExit(pAd);
-#endif /* DOT11_N_SUPPORT */
 }
 
 /*
@@ -1616,7 +1609,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 	memset(&pAd->BeaconTxWI, 0, TXWISize);
 
-#ifdef DOT11_N_SUPPORT
 	memset(&pAd->CommonCfg.HtCapability, 0, sizeof(pAd->CommonCfg.HtCapability));
 	pAd->HTCEnable = false;
 	pAd->bBroadComHT = false;
@@ -1658,7 +1650,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->CommonCfg.TxBASize = 7;
 
 	pAd->CommonCfg.REGBACapability.word = pAd->CommonCfg.BACapability.word;
-#endif /* DOT11_N_SUPPORT */
 
 	/*pAd->CommonCfg.HTPhyMode.field.BW = BW_20;*/
 	/*pAd->CommonCfg.HTPhyMode.field.MCS = MCS_AUTO;*/
@@ -1809,9 +1800,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 		pAd->StaCfg.bForceTxBurst = false;
 		pAd->StaCfg.bNotFirstScan = false;
 		pAd->StaCfg.bImprovedScan = false;
-#ifdef DOT11_N_SUPPORT
 		pAd->StaCfg.bAdhocN = true;
-#endif /* DOT11_N_SUPPORT */
 		pAd->StaCfg.bFastConnect = false;
 		pAd->StaCfg.bAdhocCreator = false;
 	}

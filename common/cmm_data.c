@@ -318,9 +318,7 @@ int MlmeHardTransmitMgmtRing(
 		/* Fixed W52 with Activity scan issue in ABG_MIXED and ABGN_MIXED mode.*/
 		// TODO: shiang-6590, why we need this condition check here?
 		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_B | WMODE_G)
-#ifdef DOT11_N_SUPPORT
 			|| WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_B | WMODE_G | WMODE_AN | WMODE_GN)
-#endif /* DOT11_N_SUPPORT */
 			|| WMODE_CAP(pAd->CommonCfg.PhyMode, WMODE_AC)
 		)
 		{
@@ -567,9 +565,7 @@ static u8 TxPktClassification(
 	u8 		TxFrameType = TX_UNKOWN_FRAME;
 	u8 		Wcid;
 	MAC_TABLE_ENTRY	*pMacEntry = NULL;
-#ifdef DOT11_N_SUPPORT
 	bool 		bHTRate = false;
-#endif /* DOT11_N_SUPPORT */
 
 	Wcid = RTMP_GET_PACKET_WCID(pPacket);
 	if (Wcid == MCAST_WCID)
@@ -583,7 +579,6 @@ static u8 TxPktClassification(
 	{	/* It's a specific packet need to force low rate, i.e., bDHCPFrame, bEAPOLFrame, bWAIFrame*/
 		TxFrameType = TX_LEGACY_FRAME;
 	}
-#ifdef DOT11_N_SUPPORT
 	else if (IS_HT_RATE(pMacEntry))
 	{	/* it's a 11n capable packet*/
 
@@ -604,7 +599,6 @@ static u8 TxPktClassification(
 		else
 			TxFrameType = TX_LEGACY_FRAME;
 	}
-#endif /* DOT11_N_SUPPORT */
 	else
 	{	/* it's a legacy b/g packet.*/
 		if ((CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_AGGREGATION_CAPABLE) && pAd->CommonCfg.bAggregationCapable) &&
@@ -623,9 +617,7 @@ static u8 TxPktClassification(
 	/* Currently, our fragment only support when a unicast packet send as NOT-ARALINK, NOT-AMSDU and NOT-AMPDU.*/
 	if ((RTMP_GET_PACKET_FRAGMENTS(pPacket) > 1)
 		 && (TxFrameType == TX_LEGACY_FRAME)
-#ifdef DOT11_N_SUPPORT
 		&& ((pMacEntry->TXBAbitmap & (1<<(RTMP_GET_PACKET_UP(pPacket)))) == 0)
-#endif /* DOT11_N_SUPPORT */
 		)
 		TxFrameType = TX_FRAG_FRAME;
 
@@ -715,7 +707,6 @@ bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 			{	/* Specific packet, i.e., bDHCPFrame, bEAPOLFrame, bWAIFrame, need force low rate.*/
 				pTxBlk->pTransmit = &pAd->MacTab.Content[MCAST_WCID].HTPhyMode;
 
-#ifdef DOT11_N_SUPPORT
 				/* Modify the WMM bit for ICV issue. If we have a packet with EOSP field need to set as 1, how to handle it? */
 				if (IS_HT_STA(pTxBlk->pMacEntry) &&
 					(CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_RALINK_CHIPSET)) &&
@@ -724,16 +715,13 @@ bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 					TX_BLK_CLEAR_FLAG(pTxBlk, fTX_bWMM);
 					TX_BLK_SET_FLAG(pTxBlk, fTX_bForceNonQoS);
 				}
-#endif /* DOT11_N_SUPPORT */
 			}
 
-#ifdef DOT11_N_SUPPORT
 			if ( (IS_HT_RATE(pMacEntry) == false) &&
 				(CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_PIGGYBACK_CAPABLE)))
 			{	/* Currently piggy-back only support when peer is operate in b/g mode.*/
 				TX_BLK_SET_FLAG(pTxBlk, fTX_bPiggyBack);
 			}
-#endif /* DOT11_N_SUPPORT */
 
 			if (RTMP_GET_PACKET_MOREDATA(pPacket))
 			{
@@ -1157,7 +1145,6 @@ void RTMPResumeMsduTransmission(
 }
 
 
-#ifdef DOT11_N_SUPPORT
 UINT deaggregate_AMSDU_announce(
 	IN	struct rtmp_adapter *pAd,
 	struct sk_buff *		pPacket,
@@ -1299,7 +1286,6 @@ void Indicate_AMSDU_Packet(
 	RTMP_SET_PACKET_IF(pRxBlk->skb, FromWhichBSSID);
 	nMSDU = deaggregate_AMSDU_announce(pAd, pRxBlk->skb, pRxBlk->pData, pRxBlk->DataSize, pRxBlk->OpMode);
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 /*
@@ -1658,7 +1644,6 @@ void Indicate_Legacy_Packet(
 
 	STATS_INC_RX_PACKETS(pAd, FromWhichBSSID);
 
-#ifdef DOT11_N_SUPPORT
 	if (pAd->CommonCfg.bDisableReordering == 0)
 	{
 		PBA_REC_ENTRY		pBAEntry;
@@ -1688,7 +1673,6 @@ void Indicate_Legacy_Packet(
 			}
 		}
 	}
-#endif /* DOT11_N_SUPPORT */
 
 	RT_80211_TO_8023_PACKET(pAd, VLAN_VID, VLAN_Priority,
 							pRxBlk, Header802_3, FromWhichBSSID, TPID);
@@ -1709,22 +1693,18 @@ void CmmRxnonRalinkFrameIndicate(
 	IN	RX_BLK			*pRxBlk,
 	IN	u8 		FromWhichBSSID)
 {
-#ifdef DOT11_N_SUPPORT
 	if (RX_BLK_TEST_FLAG(pRxBlk, fRX_AMPDU) && (pAd->CommonCfg.bDisableReordering == 0))
 	{
 		Indicate_AMPDU_Packet(pAd, pRxBlk, FromWhichBSSID);
 	}
 	else
-#endif /* DOT11_N_SUPPORT */
 	{
-#ifdef DOT11_N_SUPPORT
 		if (RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU))
 		{
 			/* handle A-MSDU*/
 			Indicate_AMSDU_Packet(pAd, pRxBlk, FromWhichBSSID);
 		}
 		else
-#endif /* DOT11_N_SUPPORT */
 		{
 			Indicate_Legacy_Packet(pAd, pRxBlk, FromWhichBSSID);
 		}

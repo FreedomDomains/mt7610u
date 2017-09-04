@@ -604,7 +604,6 @@ bool PeerBeaconAndProbeRspSanity_Old(
         				*pRalinkIe = 0xf0000000; /* Set to non-zero value (can't set bit0-2) to represent this is Ralink Chip. So at linkup, we will set ralinkchip flag.*/
                 }
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 		/* This HT IE is before IEEE draft set HT IE value.2006-09-28 by Jan.*/
 
                 /* Other vendors had production before IE_HT_CAP value is assigned. To backward support those old-firmware AP,*/
@@ -624,7 +623,6 @@ bool PeerBeaconAndProbeRspSanity_Old(
                         *AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
                     }
                 }
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
                 else if (memcmp(pEid->Octet, WPA_OUI, 4) == 0)
                 {
@@ -1163,7 +1161,6 @@ bool PeerBeaconAndProbeRspSanity(
 					ie_list->RalinkIe = 0xf0000000; /* Set to non-zero value (can't set bit0-2) to represent this is Ralink Chip. So at linkup, we will set ralinkchip flag.*/
 			}
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 			/* This HT IE is before IEEE draft set HT IE value.2006-09-28 by Jan.*/
 
 			/* Other vendors had production before IE_HT_CAP value is assigned. To backward support those old-firmware AP,*/
@@ -1184,7 +1181,6 @@ bool PeerBeaconAndProbeRspSanity(
 					ie_list->AddHtInfoLen = SIZE_ADD_HT_INFO_IE;
 				}
 			}
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 			else if (memcmp(pEid->Octet, WPA_OUI, 4) == 0)
 			{

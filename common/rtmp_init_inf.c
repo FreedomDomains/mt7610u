@@ -43,11 +43,9 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* Init BssTab & ChannelInfo tabbles for auto channel select.*/
 
-#ifdef DOT11_N_SUPPORT
 	/* Allocate BA Reordering memory*/
 	if (ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != true)
 		goto err1;
-#endif /* DOT11_N_SUPPORT */
 
 	/* Make sure MAC gets ready.*/
 	index = 0;
@@ -170,7 +168,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	else
 		pAd->CommonCfg.NumOfBulkInIRP = 1;
 
-#ifdef DOT11_N_SUPPORT
    	/*Init Ba Capability parameters.*/
 /*	RT28XX_BA_INIT(pAd);*/
 	pAd->CommonCfg.DesiredHtPhy.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
@@ -181,7 +178,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	pAd->CommonCfg.HtCapability.HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
 	pAd->CommonCfg.HtCapability.HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
 	pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (u8)pAd->CommonCfg.BACapability.field.MpduDensity;
-#endif /* DOT11_N_SUPPORT */
 
 	/* after reading Registry, we now know if in AP mode or STA mode*/
 
@@ -211,11 +207,9 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 		goto err6;
 	}
 
-#ifdef DOT11_N_SUPPORT
 	DBGPRINT(RT_DEBUG_OFF, ("MCS Set = %02x %02x %02x %02x %02x\n", pAd->CommonCfg.HtCapability.MCSSet[0],
            pAd->CommonCfg.HtCapability.MCSSet[1], pAd->CommonCfg.HtCapability.MCSSet[2],
            pAd->CommonCfg.HtCapability.MCSSet[3], pAd->CommonCfg.HtCapability.MCSSet[4]));
-#endif /* DOT11_N_SUPPORT */
 
 
 
@@ -294,8 +288,6 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 	mt7610u_write32(pAd, HT_FBK_CFG1, 0xedcba980);
 #endif // RANGE_EXTEND //
 
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 
 	DBGPRINT_S(Status, ("<==== rt28xx_init, Status=%x\n", Status));
 
@@ -327,10 +319,8 @@ err2:
 
 err1:
 
-#ifdef DOT11_N_SUPPORT
 	if(pAd->mpdu_blk_pool.mem)
 		kfree(pAd->mpdu_blk_pool.mem); /* free BA pool*/
-#endif /* DOT11_N_SUPPORT */
 
 	/* shall not set priv to NULL here because the priv didn't been free yet.*/
 	/*net_dev->priv = 0;*/
@@ -473,10 +463,8 @@ void RTMPDrvSTAClose(
 	skb_queue_purge(&pAd->rx0_recycle);
 #endif /* WLAN_SKB_RECYCLE */
 
-#ifdef DOT11_N_SUPPORT
 	/* Free BA reorder resource*/
 	ba_reordering_resource_release(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 	UserCfgExit(pAd); /* must after ba_reordering_resource_release */
 
