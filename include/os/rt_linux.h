@@ -852,12 +852,6 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, struct urb 
 
 /* Fill Bulk URB Macro */
 
-#define RTUSB_URB_DMA_MAPPING(pUrb)	\
-	{	\
-		pUrb->transfer_dma	= 0;	\
-		pUrb->transfer_flags &= (~URB_NO_TRANSFER_DMA_MAP);	\
-	}
-
 #define USB_CONTROL_MSG		usb_control_msg
 
 
