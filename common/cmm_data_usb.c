@@ -175,14 +175,14 @@ void rlt_usb_write_txinfo(
 	nmac_info->cso = 0;
 	nmac_info->tso = 0;
 
-	pTxInfo->txinfo_nmac_pkt.pkt_len = USBDMApktLen;
-	pTxInfo->txinfo_nmac_pkt.QSEL = QueueSel;
+	nmac_info->pkt_len = USBDMApktLen;
+	nmac_info->QSEL = QueueSel;
 	if (QueueSel != FIFO_EDCA)
 		DBGPRINT(RT_DEBUG_TRACE, ("====> QueueSel != FIFO_EDCA <====\n"));
-	pTxInfo->txinfo_nmac_pkt.next_vld = false; /*NextValid;   Need to check with Jan about this.*/
-	pTxInfo->txinfo_nmac_pkt.tx_burst = TxBurst;
-	pTxInfo->txinfo_nmac_pkt.wiv = bWiv;
-	pTxInfo->txinfo_nmac_pkt.rsv0 = 0;
+	nmac_info->next_vld = false; /*NextValid;   Need to check with Jan about this.*/
+	nmac_info->tx_burst = TxBurst;
+	nmac_info->wiv = bWiv;
+	nmac_info->rsv0 = 0;
 }
 
 
