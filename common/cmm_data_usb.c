@@ -182,7 +182,7 @@ void rlt_usb_write_txinfo(
 	nmac_info->next_vld = false; /*NextValid;   Need to check with Jan about this.*/
 	nmac_info->tx_burst = TxBurst;
 	nmac_info->wiv = bWiv;
-	nmac_info->rsv0 = 0;
+	nmac_info->sw_lst_rnd = 0;
 }
 
 
@@ -409,7 +409,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 
 		if ((pHTTXContext->CurWritePosition + pTxBlk->Priv + 3906)> MAX_TXBULK_LIMIT)
 		{
-			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
+			pTxInfo->txinfo_nmac_pkt.sw_lst_rnd = 1;
 			TxQLastRound = true;
 		}
 	}
@@ -523,7 +523,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 
 		if ((pHTTXContext->CurWritePosition + 3906 + pTxBlk->Priv) > MAX_TXBULK_LIMIT)
 		{
-			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
+			pTxInfo->txinfo_nmac_pkt.sw_lst_rnd = 1;
 			bTxQLastRound = true;
 		}
 
@@ -787,7 +787,7 @@ void RtmpUSB_FinalWriteTxResource(
 		if ((pHTTXContext->CurWritePosition + 3906)> MAX_TXBULK_LIMIT)
 		{	/* Add 3906 for prevent the NextBulkOut packet size is a A-RALINK/A-MSDU Frame.*/
 			pHTTXContext->CurWritePosition = 8;
-			pTxInfo->txinfo_nmac_pkt.rsv0 = 1;
+			pTxInfo->txinfo_nmac_pkt.sw_lst_rnd = 1;
 		}
 
 		pHTTXContext->CurWriteRealPos = pHTTXContext->CurWritePosition;

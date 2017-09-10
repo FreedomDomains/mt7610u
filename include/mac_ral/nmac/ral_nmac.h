@@ -55,7 +55,7 @@ struct __attribute__ ((packed)) txinfo_nmac_pkt {
 	u32 cso:1;
 	u32 tso:1;
 	u32 pkt_80211:1;
-	u32 rsv0:1;
+	u32 sw_lst_rnd:1;
 	u32 tx_burst:1;
 	u32 next_vld:1;
 	u32 pkt_len:16;
@@ -65,7 +65,7 @@ struct __attribute__ ((packed)) txinfo_nmac_pkt {
 	u32 pkt_len:16;
 	u32 next_vld:1;
 	u32 tx_burst:1;
-	u32 rsv0:1;
+	u32 sw_lst_rnd:1;
 	u32 pkt_80211:1;
 	u32 tso:1;
 	u32 cso:1;

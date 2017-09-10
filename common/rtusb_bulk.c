@@ -323,11 +323,11 @@ void RTUSBBulkOutDataPacket(
 		if (TmpBulkEndPos != pHTTXContext->CurWritePosition)
 			pTxInfo->txinfo_nmac_pkt.next_vld = 1;
 
-		if (pTxInfo->txinfo_nmac_pkt.rsv0 == 1)
+		if (pTxInfo->txinfo_nmac_pkt.sw_lst_rnd == 1)
 		{
 			if (pHTTXContext->CurWritePosition == 8)
 				pTxInfo->txinfo_nmac_pkt.next_vld = 0;
-			pTxInfo->txinfo_nmac_pkt.rsv0 = 0;
+			pTxInfo->txinfo_nmac_pkt.sw_lst_rnd = 0;
 
 			bTxQLastRound = true;
 			pHTTXContext->ENextBulkOutPosition = 8;
