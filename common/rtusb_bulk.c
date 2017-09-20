@@ -133,8 +133,6 @@ void RTUSBInitRxDesc(
 	========================================================================
 */
 
-#define BULK_OUT_UNLOCK(pLock, IrqFlags)	RTMP_IRQ_UNLOCK((pLock), IrqFlags)
-
 
 void RTUSBBulkOutDataPacket(
 	IN	struct rtmp_adapter *pAd,
@@ -159,7 +157,7 @@ void RTUSBBulkOutDataPacket(
 	RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	if ((pAd->BulkOutPending[BulkOutPipeId] == true) || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NEED_STOP_TX))
 	{
-		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		return;
 	}
 	pAd->BulkOutPending[BulkOutPipeId] = true;
@@ -169,10 +167,10 @@ void RTUSBBulkOutDataPacket(
 		)
 	{
 		pAd->BulkOutPending[BulkOutPipeId] = false;
-		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		return;
 	}
-	BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+	RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 
 
 	pHTTXContext = &(pAd->TxContext[BulkOutPipeId]);
@@ -182,7 +180,7 @@ void RTUSBBulkOutDataPacket(
 		|| ((pHTTXContext->ENextBulkOutPosition-8) == pHTTXContext->CurWritePosition)
 		)  /* druing writing. */
 	{
-		BULK_OUT_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
+		RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
 
 		RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		pAd->BulkOutPending[BulkOutPipeId] = false;
@@ -191,7 +189,7 @@ void RTUSBBulkOutDataPacket(
 		RTUSB_CLEAR_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_FRAG << BulkOutPipeId));
 		RTUSB_CLEAR_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << BulkOutPipeId));
 
-		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		return;
 	}
 
@@ -288,7 +286,7 @@ void RTUSBBulkOutDataPacket(
 
 		if (pTxInfo->txinfo_nmac_pkt.pkt_len <= 8)
 		{
-			BULK_OUT_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
+			RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
 			DBGPRINT(RT_DEBUG_ERROR /*RT_DEBUG_TRACE*/,("e2, txinfo_nmac_pkt.pkt_len==0, Size=%ld, bCSPad=%d, CWPos=%ld, NBPos=%ld, CWRPos=%ld!\n",
 					pHTTXContext->BulkOutSize, pHTTXContext->bCopySavePad, pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition, pHTTXContext->CurWriteRealPos));
 			{
@@ -299,7 +297,7 @@ void RTUSBBulkOutDataPacket(
 			pAd->bForcePrintTX = true;
 			RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 			pAd->BulkOutPending[BulkOutPipeId] = false;
-			BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+			RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 			/*DBGPRINT(RT_DEBUG_LOUD,("Out:pTxInfo->txinfo_nmac_pkt.pkt_len=%d!\n", pTxInfo->txinfo_nmac_pkt.pkt_len));*/
 			return;
 		}
@@ -398,7 +396,7 @@ void RTUSBBulkOutDataPacket(
 
 
 	pAd->watchDogTxPendingCnt[BulkOutPipeId] = 1;
-	BULK_OUT_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
+	RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
 
 	/* Init Tx context descriptor*/
 	RTUSBInitHTTxDesc(pAd, pHTTXContext, BulkOutPipeId, ThisBulkSize, (usb_complete_t)RtmpUsbBulkOutDataPacketComplete);
@@ -411,14 +409,14 @@ void RTUSBBulkOutDataPacket(
 		RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		pAd->BulkOutPending[BulkOutPipeId] = false;
 		pAd->watchDogTxPendingCnt[BulkOutPipeId] = 0;
-		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 
 		return;
 	}
 
 	RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	pHTTXContext->IRPPending = true;
-	BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+	RTMP_IRQ_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	pAd->BulkOutReq++;
 
 }
