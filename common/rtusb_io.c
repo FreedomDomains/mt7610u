@@ -593,7 +593,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 			int				ret = 0;
 			unsigned long	IrqFlags;
 
-			RTMP_IRQ_LOCK(&pAd->BulkInLock, IrqFlags);
+			spin_lock_bh(&pAd->BulkInLock);
 			pRxContext = &(pAd->RxContext[pAd->NextRxBulkInIndex]);
 
 			if ((pAd->PendingRx > 0) || (pRxContext->Readable == true) || (pRxContext->InUse == true))
@@ -613,7 +613,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 			pUrb = pRxContext->pUrb;
 			if ((ret = usb_submit_urb(pUrb, GFP_ATOMIC))!=0)
 			{	/* fail*/
-				RTMP_IRQ_LOCK(&pAd->BulkInLock, IrqFlags);
+				spin_lock_bh(&pAd->BulkInLock);
 				pRxContext->InUse = false;
 				pRxContext->IRPPending = false;
 				pAd->PendingRx--;

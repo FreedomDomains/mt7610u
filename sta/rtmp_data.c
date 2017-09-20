@@ -1158,7 +1158,7 @@ int STASendPacket(
 
 	{
 		/* Make sure SendTxWait queue resource won't be used by other threads */
-		RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
+		spin_lock_bh(&pAd->irq_lock);
 		if (pAd->TxSwQueue[QueIdx].Number >= pAd->TxSwQMaxLen) {
 			RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 #ifdef BLOCK_NET_IF
@@ -1243,8 +1243,7 @@ int RTMPFreeTXDRequest(
 	case QID_HCCA:
 		{
 			pHTTXContext = &pAd->TxContext[QueIdx];
-			RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[QueIdx],
-				      IrqFlags);
+			spin_lock_bh(&pAd->TxContextQueueLock[QueIdx]);
 			if ((pHTTXContext->CurWritePosition !=
 			     pHTTXContext->ENextBulkOutPosition)
 			    || (pHTTXContext->IRPPending == true)) {

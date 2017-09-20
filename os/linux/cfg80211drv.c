@@ -1012,7 +1012,7 @@ void CFG80211_RegRuleApply(
 	if (pAd == NULL)
 		return;
 
-	RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
+	spin_lock_bh(&pAd->irq_lock);
 
 	/* zero first */
 	memset(pAd->ChannelList, 0,

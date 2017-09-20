@@ -60,7 +60,7 @@ int RtmpInsertPsQueue(
 		else
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("legacy ps> queue a packet!\n"));
-			RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
+			spin_lock_bh(&pAd->irq_lock);
 			InsertTailQueue(&pMacEntry->PsQueue, PACKET_TO_QUEUE_ENTRY(pPacket));
 			RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 		}
@@ -135,7 +135,7 @@ void RtmpHandleRxPsPoll(
 
 		/*RTMP_SEM_LOCK(&pAd->MacTabLock); */
 		/*RTMP_SEM_LOCK(&pAd->TxSwQueueLock); */
-		RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
+		spin_lock_bh(&pAd->irq_lock);
 		if (isActive == false)
 		{
 			if (pMacEntry->PsQueue.Head)

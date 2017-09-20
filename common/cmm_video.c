@@ -60,7 +60,7 @@ void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN u32 qLen)
 	QUEUE_HEADER *pTxQ, *pEntry;
 	struct sk_buff * pPacket;
 
-	RTMP_IRQ_LOCK(&pAd->irq_lock, IrqFlags);
+	spin_lock_bh(&pAd->irq_lock);
 	pAd->TxSwQMaxLen = qLen;
 	for (qIdx = 0; qIdx < NUM_OF_TX_RING; qIdx++)
 	{
