@@ -1685,7 +1685,7 @@ bool StaAddMacTableEntry(
 	    && (HtCapabilityLen == 0))
 		return false;
 
-	RTMP_SEM_LOCK(&pAd->MacTabLock);
+	spin_lock_bh(&pAd->MacTabLock);
 	if (pEntry) {
 		memset(pEntry->R_Counter, 0, sizeof(pEntry->R_Counter));
 		pEntry->PortSecured = WPA_802_1X_PORT_SECURED;

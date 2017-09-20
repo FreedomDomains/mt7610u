@@ -2047,7 +2047,7 @@ void RTMPInitTimer(
 	IN	void *				pData,
 	IN	bool 				Repeat)
 {
-	RTMP_SEM_LOCK(&TimerSemLock);
+	spin_lock_bh(&TimerSemLock);
 
 	RTMP_TimerListAdd(pAd, pTimer);
 
@@ -2091,7 +2091,7 @@ void RTMPSetTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	IN	ULONG					Value)
 {
-	RTMP_SEM_LOCK(&TimerSemLock);
+	spin_lock_bh(&TimerSemLock);
 
 	if (pTimer->Valid)
 	{
@@ -2153,7 +2153,7 @@ void RTMPModTimer(
 	bool Cancel;
 
 
-	RTMP_SEM_LOCK(&TimerSemLock);
+	spin_lock_bh(&TimerSemLock);
 
 	if (pTimer->Valid)
 	{
@@ -2205,7 +2205,7 @@ void RTMPCancelTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	OUT	bool 				*pCancelled)
 {
-	RTMP_SEM_LOCK(&TimerSemLock);
+	spin_lock_bh(&TimerSemLock);
 
 	if (pTimer->Valid)
 	{
@@ -2238,7 +2238,7 @@ void RTMPReleaseTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	OUT	bool 				*pCancelled)
 {
-	RTMP_SEM_LOCK(&TimerSemLock);
+	spin_lock_bh(&TimerSemLock);
 
 	if (pTimer->Valid)
 	{

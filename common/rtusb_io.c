@@ -435,7 +435,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 	{
 		pHTTXContext = &(pAd->TxContext[pAd->bulkResetPipeid]);
 
-		/*RTMP_SEM_LOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
+		/*spin_lock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
 		RTMP_INT_LOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 		if ( pAd->BulkOutPending[pAd->bulkResetPipeid] == false)
 		{
@@ -1042,7 +1042,7 @@ void CMDHandler(struct rtmp_adapter *pAd)
 	while (pAd && pAd->CmdQ.size > 0) {
 		NdisStatus = NDIS_STATUS_SUCCESS;
 
-		RTMP_SEM_LOCK(&pAd->CmdQLock);
+		spin_lock_bh(&pAd->CmdQLock);
 		RTThreadDequeueCmd(&pAd->CmdQ, &cmdqelmt);
 		RTMP_SEM_UNLOCK(&pAd->CmdQLock);
 

@@ -245,10 +245,6 @@ struct os_lock  {
 /*  spin_lock enhanced for Nested spin lock */
 /* */
 
-#define OS_SEM_LOCK(__lock)						\
-{												\
-	spin_lock_bh((spinlock_t *)(__lock));		\
-}
 
 #define OS_SEM_UNLOCK(__lock)					\
 {												\

@@ -273,7 +273,7 @@ int MlmeHardTransmitMgmtRing(
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pSrcBufVA, &SrcBufLen);
 
 	/* Make sure MGMT ring resource won't be used by other threads*/
-	RTMP_SEM_LOCK(&pAd->MgmtRingLock);
+	spin_lock_bh(&pAd->MgmtRingLock);
 	if (pSrcBufVA == NULL)
 	{
 		/* The buffer shouldn't be NULL*/
@@ -2293,7 +2293,7 @@ INT ip_assembly(
 					}
 
 					/* move backup fragments to SwTxQueue[] */
-					RTMP_SEM_LOCK(&pAd->TxSwQueueLock[QueIdx]);
+					spin_lock_bh(&pAd->TxSwQueueLock[QueIdx]);
 					while (1) {
 						pBackupPktEntry = RemoveHeadQueue(pTempqueue);
 						if (pBackupPktEntry == NULL)

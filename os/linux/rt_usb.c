@@ -134,7 +134,7 @@ void RtmpMgmtTaskExit(
 	pTask = &pAd->cmdQTask;
 	RTMP_OS_TASK_LEGALITY(pTask)
 	{
-		RTMP_SEM_LOCK(&pAd->CmdQLock);
+		spin_lock_bh(&pAd->CmdQLock);
 		pAd->CmdQ.CmdQState = RTMP_TASK_STAT_STOPED;
 		RTMP_SEM_UNLOCK(&pAd->CmdQLock);
 
@@ -344,7 +344,7 @@ static void rtusb_pspoll_frame_done_tasklet(unsigned long data)
 		}
 	}
 
-	RTMP_SEM_LOCK(&pAd->BulkOutLock[0]);
+	spin_lock_bh(&pAd->BulkOutLock[0]);
 	pAd->BulkOutPending[0] = false;
 	RTMP_SEM_UNLOCK(&pAd->BulkOutLock[0]);
 
@@ -904,7 +904,7 @@ INT RTUSBCmdThread(
 
 	RtmpOSTaskCustomize(pTask);
 
-	RTMP_SEM_LOCK(&pAd->CmdQLock);
+	spin_lock_bh(&pAd->CmdQLock);
 	pAd->CmdQ.CmdQState = RTMP_TASK_STAT_RUNNING;
 	RTMP_SEM_UNLOCK(&pAd->CmdQLock);
 
@@ -924,7 +924,7 @@ INT RTUSBCmdThread(
 	if (!pAd->PM_FlgSuspend) {	/* Clear the CmdQElements. */
 		struct rtmp_queue_elem *pCmdQElmt = NULL;
 
-		RTMP_SEM_LOCK(&pAd->CmdQLock);
+		spin_lock_bh(&pAd->CmdQLock);
 		pAd->CmdQ.CmdQState = RTMP_TASK_STAT_STOPED;
 		while(pAd->CmdQ.size) {
 			RTThreadDequeueCmd(&pAd->CmdQ, &pCmdQElmt);
