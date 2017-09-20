@@ -38,9 +38,6 @@ static u8 WMM0ACBulkOutAddr[4] = {
 static u8 DataBulkInAddr = 0x84;
 
 #include	"rt_config.h"
-/* Match total 6 bulkout endpoint to corresponding queue.*/
-u8 EpToQueue[6]={FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_MGMT};
-
 
 void RTUSBInitTxDesc(
 	IN	struct rtmp_adapter *pAd,
@@ -282,7 +279,7 @@ void RTUSBBulkOutDataPacket(
 			break;
 		}
 
-		if (pTxInfo->txinfo_nmac_pkt.QSEL != FIFO_EDCA)
+		if (pTxInfo->txinfo_nmac_pkt.QSEL != MT_QSEL_EDCA)
 		{
 			DBGPRINT(RT_DEBUG_ERROR, ("%s(): ====> pTxInfo->QueueSel(%d)!= FIFO_EDCA!!!!\n",
 										__FUNCTION__, pTxInfo->txinfo_nmac_pkt.QSEL));
@@ -316,7 +313,7 @@ void RTUSBBulkOutDataPacket(
 		pLastTxInfo = pTxInfo;
 
 		/* Make sure we use EDCA QUEUE.  */
-		pTxInfo->txinfo_nmac_pkt.QSEL = FIFO_EDCA;
+		pTxInfo->txinfo_nmac_pkt.QSEL = MT_QSEL_EDCA;
 		ThisBulkSize += (pTxInfo->txinfo_nmac_pkt.pkt_len+4);
 		TmpBulkEndPos += (pTxInfo->txinfo_nmac_pkt.pkt_len+4);
 
