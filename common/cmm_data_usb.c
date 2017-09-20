@@ -151,14 +151,8 @@ bool RTUSBNeedQueueBackForAgg(struct rtmp_adapter*pAd, u8 BulkOutPipeId)
 
 	========================================================================
 */
-void rlt_usb_write_txinfo(
-	IN struct rtmp_adapter*pAd,
-	IN union txinfo_nmac *pTxInfo,
-	IN USHORT USBDMApktLen,
-	IN bool bWiv,
-	IN u8 QueueSel,
-	IN u8 NextValid,
-	IN u8 TxBurst)
+static void rlt_usb_write_txinfo(union txinfo_nmac *pTxInfo,
+	USHORT USBDMApktLen, bool bWiv, u8 QueueSel)
 {
 	struct txinfo_nmac_pkt *nmac_info;
 
@@ -174,7 +168,7 @@ void rlt_usb_write_txinfo(
 	if (QueueSel != MT_QSEL_EDCA)
 		DBGPRINT(RT_DEBUG_TRACE, ("====> QueueSel != FIFO_EDCA <====\n"));
 	nmac_info->next_vld = false; /*NextValid;   Need to check with Jan about this.*/
-	nmac_info->tx_burst = TxBurst;
+	nmac_info->tx_burst = false;
 	nmac_info->wiv = bWiv;
 	nmac_info->sw_lst_rnd = 0;
 }
@@ -214,8 +208,8 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 	pTxWI = (struct txwi_nmac *)&buf[TXINFO_SIZE];
 	memset(buf, 0, 100);
 	data_len = sizeof (PSPOLL_FRAME);
-	rlt_usb_write_txinfo(pAd, pTxInfo, data_len + TXWISize + TSO_SIZE, true,
-						ep2dmaq(MGMTPIPEIDX), false, false);
+	rlt_usb_write_txinfo(pTxInfo, data_len + TXWISize + TSO_SIZE, true,
+						ep2dmaq(MGMTPIPEIDX));
 	RTMPWriteTxWI(pAd, pTxWI, false, false, false, false, true, false, 0,
 		      BSSID_WCID, data_len, 0, 0,
 		      (u8) pAd->CommonCfg.MlmeTransmit.field.MCS,
@@ -248,9 +242,9 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 	memset(buf, 0, 100);
 	pTxInfo = (union txinfo_nmac *)buf;
 	pTxWI = (struct txwi_nmac *)&buf[TXINFO_SIZE];
-	rlt_usb_write_txinfo(pAd, pTxInfo,
+	rlt_usb_write_txinfo(pTxInfo,
 			(USHORT)(data_len + TXWISize + TSO_SIZE), true,
-			ep2dmaq(MGMTPIPEIDX), false, false);
+			ep2dmaq(MGMTPIPEIDX));
 	RTMPWriteTxWI(pAd, pTxWI, false, false, false, false, true, false, 0,
 		      BSSID_WCID, data_len, 0, 0,
 		      (u8)pAd->CommonCfg.MlmeTransmit.field.MCS,
@@ -395,7 +389,7 @@ USHORT	RtmpUSB_WriteFragTxResource(
 	pTxBlk->Priv += (TXINFO_SIZE + USBDMApktLen);
 
 	/* For TxInfo, the length of USBDMApktLen = TXWI_SIZE + 802.11 header + payload*/
-	rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(USBDMApktLen), false, MT_QSEL_EDCA, false /*NextValid*/,  false);
+	rlt_usb_write_txinfo(pTxInfo, (USHORT)(USBDMApktLen), false, MT_QSEL_EDCA);
 
 	if (fragNum == pTxBlk->TotalFragNum)
 	{
@@ -512,7 +506,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		pTxBlk->Priv = (TXINFO_SIZE + dma_len);
 
 		/* For TxInfo, the length of USBDMApktLen = TXWI_SIZE + TSO_SIZE + 802.11 header + payload */
-		rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(dma_len), false, MT_QSEL_EDCA, false /*NextValid*/,  false);
+		rlt_usb_write_txinfo(pTxInfo, (USHORT)(dma_len), false, MT_QSEL_EDCA);
 
 
 		if ((pHTTXContext->CurWritePosition + 3906 + pTxBlk->Priv) > MAX_TXBULK_LIMIT)
@@ -657,7 +651,7 @@ USHORT RtmpUSB_WriteMultiTxResource(
 			pTxBlk->Priv = TXINFO_SIZE + TXWISize + hwHdrLen;
 
 			/*	pTxInfo->USBDMApktLen now just a temp value and will to correct latter.*/
-			rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(pTxBlk->Priv), false, MT_QSEL_EDCA, false /*NextValid*/,  false);
+			rlt_usb_write_txinfo(pTxInfo, (USHORT)(pTxBlk->Priv), false, MT_QSEL_EDCA);
 
 			/* Copy it.*/
 			memmove(pWirelessPacket, pTxBlk->HeaderBuf, pTxBlk->Priv);
@@ -858,7 +852,7 @@ int RtmpUSBMgmtKickOut(
 
 	/* Build our URB for USBD*/
 	BulkOutSize = (SrcBufLen + 3) & (~3);
-	rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(BulkOutSize - TXINFO_SIZE), true, ep2dmaq(MGMTPIPEIDX), false,  false);
+	rlt_usb_write_txinfo(pTxInfo, (USHORT)(BulkOutSize - TXINFO_SIZE), true, ep2dmaq(MGMTPIPEIDX));
 
 	BulkOutSize += 4; /* Always add 4 extra bytes at every packet.*/
 
@@ -932,7 +926,7 @@ void RtmpUSBNullFrameKickOut(
 
 		memset(&pWirelessPkt[0], 0, 100);
 		pTxInfo = (union txinfo_nmac *)&pWirelessPkt[0];
-		rlt_usb_write_txinfo(pAd, pTxInfo, (USHORT)(frameLen + TXWISize + TSO_SIZE), true, ep2dmaq(MGMTPIPEIDX), false,  false);
+		rlt_usb_write_txinfo(pTxInfo, (USHORT)(frameLen + TXWISize + TSO_SIZE), true, ep2dmaq(MGMTPIPEIDX));
 		pTxInfo->txinfo_nmac_pkt.QSEL = MT_QSEL_EDCA;
 		pTxWI = (struct txwi_nmac *)&pWirelessPkt[TXINFO_SIZE];
 		RTMPWriteTxWI(pAd, pTxWI,  false, false, false, false, true, false, 0, BSSID_WCID, frameLen,
