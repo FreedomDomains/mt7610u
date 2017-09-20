@@ -133,8 +133,6 @@ void RTUSBInitRxDesc(
 	========================================================================
 */
 
-#define BULK_OUT_LOCK(pLock, IrqFlags)		RTMP_IRQ_LOCK((pLock), IrqFlags)
-
 #define BULK_OUT_UNLOCK(pLock, IrqFlags)	RTMP_IRQ_UNLOCK((pLock), IrqFlags)
 
 
@@ -158,7 +156,7 @@ void RTUSBBulkOutDataPacket(
 
 
 
-	BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+	RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	if ((pAd->BulkOutPending[BulkOutPipeId] == true) || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NEED_STOP_TX))
 	{
 		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
@@ -179,14 +177,14 @@ void RTUSBBulkOutDataPacket(
 
 	pHTTXContext = &(pAd->TxContext[BulkOutPipeId]);
 
-	BULK_OUT_LOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
+	RTMP_IRQ_LOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
 	if ((pHTTXContext->ENextBulkOutPosition == pHTTXContext->CurWritePosition)
 		|| ((pHTTXContext->ENextBulkOutPosition-8) == pHTTXContext->CurWritePosition)
 		)  /* druing writing. */
 	{
 		BULK_OUT_UNLOCK(&pAd->TxContextQueueLock[BulkOutPipeId], IrqFlags2);
 
-		BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		pAd->BulkOutPending[BulkOutPipeId] = false;
 
 		/* Clear Data flag*/
@@ -299,7 +297,7 @@ void RTUSBBulkOutDataPacket(
 					,pHTTXContext->SavedPad[4], pHTTXContext->SavedPad[5], pHTTXContext->SavedPad[6],pHTTXContext->SavedPad[7]));
 			}
 			pAd->bForcePrintTX = true;
-			BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+			RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 			pAd->BulkOutPending[BulkOutPipeId] = false;
 			BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 			/*DBGPRINT(RT_DEBUG_LOUD,("Out:pTxInfo->txinfo_nmac_pkt.pkt_len=%d!\n", pTxInfo->txinfo_nmac_pkt.pkt_len));*/
@@ -410,7 +408,7 @@ void RTUSBBulkOutDataPacket(
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("RTUSBBulkOutDataPacket: Submit Tx URB failed %d\n", ret));
 
-		BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+		RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 		pAd->BulkOutPending[BulkOutPipeId] = false;
 		pAd->watchDogTxPendingCnt[BulkOutPipeId] = 0;
 		BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
@@ -418,7 +416,7 @@ void RTUSBBulkOutDataPacket(
 		return;
 	}
 
-	BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
+	RTMP_IRQ_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	pHTTXContext->IRPPending = true;
 	BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
 	pAd->BulkOutReq++;
