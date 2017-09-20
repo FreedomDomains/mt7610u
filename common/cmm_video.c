@@ -77,7 +77,7 @@ void TxSwQDepthAdjust(IN struct rtmp_adapter*pAd, IN u32 qLen)
 				break;
 		}
 	}
-	RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
+	spin_unlock_bh(&pAd->irq_lock);
 
 	DBGPRINT(RT_DEBUG_OFF, ("%s():Set TxSwQMaxLen as %d\n",
 			__FUNCTION__, pAd->TxSwQMaxLen));

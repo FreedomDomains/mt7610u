@@ -509,7 +509,7 @@ int MlmeHardTransmitMgmtRing(
 #define DEQUEUE_UNLOCK(lock, bIntContext, IrqFlags)				\
 			do{													\
 				if (bIntContext == false)						\
-					RTMP_IRQ_UNLOCK((lock), IrqFlags);	\
+					spin_unlock_bh((lock));	\
 			}while(0)
 
 

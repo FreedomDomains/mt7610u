@@ -598,7 +598,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 
 			if ((pAd->PendingRx > 0) || (pRxContext->Readable == true) || (pRxContext->InUse == true))
 			{
-				RTMP_IRQ_UNLOCK(&pAd->BulkInLock, IrqFlags);
+				spin_unlock_bh(&pAd->BulkInLock);
 				return NDIS_STATUS_SUCCESS;
 			}
 
@@ -606,7 +606,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 			pRxContext->IRPPending = true;
 			pAd->PendingRx++;
 			pAd->BulkInReq++;
-			RTMP_IRQ_UNLOCK(&pAd->BulkInLock, IrqFlags);
+			spin_unlock_bh(&pAd->BulkInLock);
 
 			/* Init Rx context descriptor*/
 			RTUSBInitRxDesc(pAd, pRxContext);
@@ -618,7 +618,7 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 				pRxContext->IRPPending = false;
 				pAd->PendingRx--;
 				pAd->BulkInReq--;
-				RTMP_IRQ_UNLOCK(&pAd->BulkInLock, IrqFlags);
+				spin_unlock_bh(&pAd->BulkInLock);
 				DBGPRINT(RT_DEBUG_ERROR, ("CMDTHREAD_RESET_BULK_IN: Submit Rx URB failed(%d), status=%d\n", ret, pUrb->status));
 			}
 			else

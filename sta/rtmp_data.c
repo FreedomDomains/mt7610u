@@ -1160,7 +1160,7 @@ int STASendPacket(
 		/* Make sure SendTxWait queue resource won't be used by other threads */
 		spin_lock_bh(&pAd->irq_lock);
 		if (pAd->TxSwQueue[QueIdx].Number >= pAd->TxSwQMaxLen) {
-			RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
+			spin_unlock_bh(&pAd->irq_lock);
 #ifdef BLOCK_NET_IF
 			StopNetIfQueue(pAd, QueIdx, pPacket);
 #endif /* BLOCK_NET_IF */
@@ -1170,7 +1170,7 @@ int STASendPacket(
 		} else {
 				InsertTailQueueAc(pAd, pEntry, &pAd->TxSwQueue[QueIdx], PACKET_TO_QUEUE_ENTRY(pPacket));
 		}
-		RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
+		spin_unlock_bh(&pAd->irq_lock);
 	}
 
 	if ((pAd->CommonCfg.BACapability.field.AutoBA == true) &&
@@ -1251,8 +1251,7 @@ int RTMPFreeTXDRequest(
 			} else {
 				Status = NDIS_STATUS_SUCCESS;
 			}
-			RTMP_IRQ_UNLOCK(&pAd->TxContextQueueLock[QueIdx],
-					IrqFlags);
+			spin_unlock_bh(&pAd->TxContextQueueLock[QueIdx]);
 		}
 		break;
 

@@ -258,11 +258,6 @@ struct os_lock  {
 
 /* sample, use semaphore lock to replace IRQ lock, 2007/11/15 */
 
-#define OS_IRQ_UNLOCK(__lock, __irqflag)		\
-{												\
-	spin_unlock_bh((spinlock_t *)(__lock));		\
-}
-
 #define OS_INT_LOCK(__lock, __irqflags)			\
 {												\
 	spin_lock_irqsave((spinlock_t *)__lock, __irqflags);	\

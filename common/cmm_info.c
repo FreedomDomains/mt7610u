@@ -3112,7 +3112,7 @@ INT Set_RateAdaptInterval(
 			spin_lock_bh(&pAd->irq_lock);
 			pAd->ra_interval = ra_time;
 			pAd->ra_fast_interval = ra_qtime;
-			RTMP_IRQ_UNLOCK(&pAd->irq_lock, irqFlags);
+			spin_unlock_bh(&pAd->irq_lock);
 			return true;
 		}
 	}
