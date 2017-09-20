@@ -446,7 +446,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 			/* no matter what, clean the flag*/
 			RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BULKOUT_RESET);
 
-			/*RTMP_SEM_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
+			/*spin_unlock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
 			RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 			{
@@ -485,7 +485,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		}
 		else
 		{
-			/*RTMP_SEM_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
+			/*spin_unlock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
 			/*RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);*/
 
 			DBGPRINT(RT_DEBUG_ERROR, ("CmdThread : TX DATA RECOVER FAIL for BulkReq(0x%lx) because BulkOutPending[%d] is true!\n",
@@ -1044,7 +1044,7 @@ void CMDHandler(struct rtmp_adapter *pAd)
 
 		spin_lock_bh(&pAd->CmdQLock);
 		RTThreadDequeueCmd(&pAd->CmdQ, &cmdqelmt);
-		RTMP_SEM_UNLOCK(&pAd->CmdQLock);
+		spin_unlock_bh(&pAd->CmdQLock);
 
 		if (cmdqelmt == NULL)
 			break;

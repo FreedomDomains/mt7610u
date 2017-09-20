@@ -277,7 +277,7 @@ int MlmeHardTransmitMgmtRing(
 	if (pSrcBufVA == NULL)
 	{
 		/* The buffer shouldn't be NULL*/
-			RTMP_SEM_UNLOCK(&pAd->MgmtRingLock);
+			spin_unlock_bh(&pAd->MgmtRingLock);
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -433,7 +433,7 @@ int MlmeHardTransmitMgmtRing(
 		&& (pAd->CommonCfg.bIEEE80211H == 1)
 		&& (pAd->Dot11_H.RDMode != RD_NORMAL_MODE))
 	{
-		RTMP_SEM_UNLOCK(&pAd->MgmtRingLock);
+		spin_unlock_bh(&pAd->MgmtRingLock);
 		return NDIS_STATUS_FAILURE;
 	}
 
@@ -490,7 +490,7 @@ int MlmeHardTransmitMgmtRing(
 
 	/* Make sure to release MGMT ring resource*/
 /*	if (!IrqState)*/
-		RTMP_SEM_UNLOCK(&pAd->MgmtRingLock);
+		spin_unlock_bh(&pAd->MgmtRingLock);
 	return NDIS_STATUS_SUCCESS;
 }
 
@@ -2300,7 +2300,7 @@ INT ip_assembly(
 							break;
 						InsertTailQueueAc(pAd, pEntry, &pAd->TxSwQueue[QueIdx], pBackupPktEntry);
 					}
-					RTMP_SEM_UNLOCK(&pAd->TxSwQueueLock[QueIdx]);
+					spin_unlock_bh(&pAd->TxSwQueueLock[QueIdx]);
 
 					return 0;
 				}

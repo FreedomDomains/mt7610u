@@ -1816,7 +1816,7 @@ void LinkUp(
 			RTMPUpdateLegacyTxSetting((u8) pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode, pEntry);
 	} else
 		pEntry->bAutoTxRateSwitch = true;
-	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+	spin_unlock_bh(&pAd->MacTabLock);
 
 	/*  Let Link Status Page display first initial rate. */
 	pAd->LastTxRate = (USHORT) (pEntry->HTPhyMode.word);
@@ -1924,7 +1924,7 @@ void LinkUp(
 
 	spin_lock_bh(&pAd->MacTabLock);
 	pEntry->PortSecured = pAd->StaCfg.PortSecured;
-	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+	spin_unlock_bh(&pAd->MacTabLock);
 
 	/* */
 	/* Patch Atheros AP TX will breakdown issue. */
@@ -2209,7 +2209,7 @@ void LinkDown(
 	spin_lock_bh(&pAd->MacTabLock);
 	memset(&pAd->MacTab.Content[BSSID_WCID], 0, sizeof(MAC_TABLE_ENTRY));
 	pAd->MacTab.Content[BSSID_WCID].PortSecured = pAd->StaCfg.PortSecured;
-	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+	spin_unlock_bh(&pAd->MacTabLock);
 
 	pAd->StaCfg.MicErrCnt = 0;
 

@@ -328,7 +328,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 
 	}
 
-	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+	spin_unlock_bh(&pAd->MacTabLock);
 	return pEntry;
 }
 
@@ -465,7 +465,7 @@ bool MacTableDeleteEntry(
 		}
 	}
 
-	RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+	spin_unlock_bh(&pAd->MacTabLock);
 
 	/*Reset operating mode when no Sta.*/
 	if (pAd->MacTab.Size == 0)

@@ -527,7 +527,7 @@ void STAHandleRxDataFrame(
 				Update_Rssi_Sample(pAd, &pDlsEntry->RssiSample, pRxWI);
 				spin_lock_bh(&pAd->MacTabLock);
 				pDlsEntry->NoDataIdleCount = 0;
-				RTMP_SEM_UNLOCK(&pAd->MacTabLock);
+				spin_unlock_bh(&pAd->MacTabLock);
 			}
 		} else
 #endif

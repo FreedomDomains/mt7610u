@@ -138,7 +138,7 @@ int RTEnqueueInternalCmd(
 		} else {
 			status = NDIS_STATUS_FAILURE;
 		}
-		RTMP_SEM_UNLOCK(&pAd->CmdQLock);
+		spin_unlock_bh(&pAd->CmdQLock);
 
 		if (status == NDIS_STATUS_FAILURE) {
 			if (cmdqelmt->buffer)
