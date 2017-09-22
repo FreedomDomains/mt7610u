@@ -192,6 +192,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 						  pRxContext->TransferBuffer,
 						  pRxContext->data_dma);
 				pRxContext->TransferBuffer = NULL;
+			}
 		}
 	}
 
@@ -263,7 +264,7 @@ void RTMPFreeTxRxRingMemory(struct rtmp_adapter *pAd)
 	/* Free Tx frame resource*/
 	for (acidx = 0; acidx < 4; acidx++) {
 		PHT_TX_CONTEXT pHTTXContext = &(pAd->TxContext[acidx]);
-		if (pHTTXContext)
+		if (pHTTXContext) {
 			if (pHTTXContext->pUrb) {
 				usb_kill_urb(pHTTXContext->pUrb);
 				usb_free_urb(pHTTXContext->pUrb);
