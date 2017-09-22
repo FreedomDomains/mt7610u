@@ -388,26 +388,23 @@ void RTMPToWirelessSta(
 			break;
 
 
-			if (bClearFrame)
-				RTMP_SET_PACKET_CLEAR_EAP_FRAME(pPacket, 1);
-			else
-				RTMP_SET_PACKET_CLEAR_EAP_FRAME(pPacket, 0);
-		{
-			RTMP_SET_PACKET_NET_DEVICE_MBSSID(pPacket, MAIN_MBSSID);	/* set a default value*/
-			if(pEntry->apidx != 0)
+		if (bClearFrame)
+			RTMP_SET_PACKET_CLEAR_EAP_FRAME(pPacket, 1);
+		else
+			RTMP_SET_PACKET_CLEAR_EAP_FRAME(pPacket, 0);
+
+		RTMP_SET_PACKET_NET_DEVICE_MBSSID(pPacket, MAIN_MBSSID);	/* set a default value*/
+		if(pEntry->apidx != 0)
         		RTMP_SET_PACKET_NET_DEVICE_MBSSID(pPacket, pEntry->apidx);
 
         	RTMP_SET_PACKET_WCID(pPacket, (u8)pEntry->Aid);
-			RTMP_SET_PACKET_MOREDATA(pPacket, false);
-		}
+		RTMP_SET_PACKET_MOREDATA(pPacket, false);
 
 #ifdef CONFIG_STA_SUPPORT
-		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-		{
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 			/* send out the packet*/
 			Status = STASendPacket(pAd, pPacket);
-			if (Status == NDIS_STATUS_SUCCESS)
-			{
+			if (Status == NDIS_STATUS_SUCCESS) {
 				u8   Index;
 
 				/* Dequeue one frame from TxSwQueue0..3 queue and process it*/
@@ -415,9 +412,8 @@ void RTMPToWirelessSta(
 				/* 1. Here, right after queueing the frame.*/
 				/* 2. At the end of TxRingTxDone service routine.*/
 				/* 3. Upon NDIS call RTMPSendPackets*/
-				if((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)) &&
-					(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS)))
-				{
+				if ((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS)) &&
+				    (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS))) {
 					for(Index = 0; Index < 5; Index ++)
 						if(pAd->TxSwQueue[Index].Number > 0)
 							RTMPDeQueuePacket(pAd, false, Index, MAX_TX_PROCESS);
@@ -426,7 +422,7 @@ void RTMPToWirelessSta(
 		}
 #endif /* CONFIG_STA_SUPPORT */
 
-    } while (false);
+	} while (false);
 }
 
 /*
@@ -1226,8 +1222,8 @@ void WPAStart2WayGroupHS(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> WPAStart2WayGroupHS\n"));
 
-    if ((!pEntry) || !IS_ENTRY_CLIENT(pEntry))
-        return;
+	if ((!pEntry) || !IS_ENTRY_CLIENT(pEntry))
+		return;
 
 
 	/* Allocate memory for output*/
@@ -1244,35 +1240,26 @@ void WPAStart2WayGroupHS(
 	ADD_ONE_To_64BIT_VAR(pEntry->R_Counter);
 
 	/* Construct EAPoL message - Group Msg 1*/
-	ConstructEapolMsg(pEntry,
-					  group_cipher,
-					  EAPOL_GROUP_MSG_1,
-					  default_key,
-					  (u8 *)gnonce_ptr,
-					  TxTsc,
-					  (u8 *)gtk_ptr,
-					  NULL,
-					  0,
-				  	  pEapolFrame);
+	ConstructEapolMsg(pEntry, group_cipher, EAPOL_GROUP_MSG_1,
+			  default_key, (u8 *)gnonce_ptr, TxTsc,
+			  (u8 *)gtk_ptr, NULL, 0, pEapolFrame);
 
 	/* Make outgoing frame*/
-	if (pBssid == NULL)
-	{
+	if (pBssid == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: pBssid == NULL!\n", __FUNCTION__));
 		return;
 	}
 
-    MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pBssid, EAPOL);
-    RTMPToWirelessSta(pAd, pEntry,
-					  Header802_3, LENGTH_802_3,
-					  (u8 *)pEapolFrame,
-					  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, false);
+	MAKE_802_3_HEADER(Header802_3, pEntry->Addr, pBssid, EAPOL);
+	RTMPToWirelessSta(pAd, pEntry, Header802_3, LENGTH_802_3,
+			  (u8 *)pEapolFrame,
+			  CONV_ARRARY_TO_UINT16(pEapolFrame->Body_Len) + 4, false);
 
 	kfree(mpool);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart2WayGroupHS : send out Group Message 1 \n"));
+	DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart2WayGroupHS : send out Group Message 1 \n"));
 
-    return;
+	return;
 }
 
 /*
