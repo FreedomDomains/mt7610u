@@ -77,16 +77,17 @@ void RtmpDrvMaxRateGet(
                } else if (BW == 2 /* 80Mhz */) {
                        rate_index = 131 + ((u8)ShortGI * 29) + ((u8)MCS);
                }
-       } else
-
-	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
-		/* rate_index = 16 + ((u8)pHtPhyMode->field.BW *16) + ((u8)pHtPhyMode->field.ShortGI *32) + ((u8)pHtPhyMode->field.MCS); */
-		rate_index = 16 + ((u8)BW *24) + ((u8)ShortGI *48) + ((u8)MCS);
-	} else
-		if (MODE == MODE_OFDM)
-			rate_index = (u8)(MCS) + 4;
-		else
-			rate_index = (u8)(MCS);
+	} else {
+		if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
+			/* rate_index = 16 + ((u8)pHtPhyMode->field.BW *16) + ((u8)pHtPhyMode->field.ShortGI *32) + ((u8)pHtPhyMode->field.MCS); */
+			rate_index = 16 + ((u8)BW *24) + ((u8)ShortGI *48) + ((u8)MCS);
+		} else {
+			if (MODE == MODE_OFDM)
+				rate_index = (u8)(MCS) + 4;
+			else
+				rate_index = (u8)(MCS);
+		}
+	}
 
 	if (rate_index < 0)
 		rate_index = 0;

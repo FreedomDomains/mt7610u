@@ -611,57 +611,51 @@ int rt_ioctl_giwscan(struct net_device *dev,
 	/*check if the interface is down */
 /*    if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
 /* because android will set scan and get scan when interface down */
-	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
-    {
-       	DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
-        return -ENETDOWN;
+	if (RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS) {
+		DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
+		return -ENETDOWN;
 	}
 
 	pIoctlScan->priv_flags = RT_DEV_PRIV_FLAGS_GET(dev);
 	pIoctlScan->pBssTable = NULL;
 	if (RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWSCAN, 0,
-							pIoctlScan, 0,
-							RT_DEV_PRIV_FLAGS_GET(dev)) != NDIS_STATUS_SUCCESS)
-	{
+				 pIoctlScan, 0, RT_DEV_PRIV_FLAGS_GET(dev)) != NDIS_STATUS_SUCCESS) {
 		status = -EINVAL;
 		goto go_out;
 	}
 
 
-	if (pIoctlScan->BssNr == 0)
-	{
+	if (pIoctlScan->BssNr == 0) {
 		data->length = 0;
 		status = 0;
 		goto go_out;
 	}
 
-    if (data->length > 0)
-        end_buf = extra + data->length;
-    else
-        end_buf = extra + IW_SCAN_MAX_DATA;
+	if (data->length > 0)
+		end_buf = extra + data->length;
+	else
+		end_buf = extra + IW_SCAN_MAX_DATA;
 
-	for (i = 0; i < pIoctlScan->BssNr; i++)
-	{
-		if (current_ev >= end_buf)
-        {
+	for (i = 0; i < pIoctlScan->BssNr; i++) {
+		if (current_ev >= end_buf) {
 			status = -E2BIG;
 			goto go_out;
-        }
+		}
 
 		/*MAC address */
 		/*================================ */
 		memset(&iwe, 0, sizeof(iwe));
 		iwe.cmd = SIOCGIWAP;
 		iwe.u.ap_addr.sa_family = ARPHRD_ETHER;
-				memcpy(iwe.u.ap_addr.sa_data, &pIoctlScan->pBssTable[i].Bssid, ETH_ALEN);
+		memcpy(iwe.u.ap_addr.sa_data, &pIoctlScan->pBssTable[i].Bssid, ETH_ALEN);
 
-        previous_ev = current_ev;
+		previous_ev = current_ev;
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_ADDR_LEN);
-        if (current_ev == previous_ev)
-        {
-            status = -E2BIG;
+
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
 			goto go_out;
-        }
+		}
 
 		/*
 		Protocol:
@@ -678,65 +672,55 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		iwe.cmd = SIOCGIWNAME;
 
 
-	{
-		RT_CMD_STA_IOCTL_BSS_TABLE *pBssEntry=&pIoctlScan->pBssTable[i];
-		bool isGonly=false;
-		int rateCnt=0;
+		{
+			RT_CMD_STA_IOCTL_BSS_TABLE *pBssEntry=&pIoctlScan->pBssTable[i];
+			bool isGonly = false;
+			int rateCnt = 0;
 
-		if (pBssEntry->Channel>14)
-		{
-			if (pBssEntry->HtCapabilityLen!=0)
-				strcpy(iwe.u.name,"802.11a/n");
-			else
-				strcpy(iwe.u.name,"802.11a");
-		}
-		else
-		{
-			/*
-				if one of non B mode rate is set supported rate . it mean G only.
-			*/
-			for (rateCnt=0;rateCnt<pBssEntry->SupRateLen;rateCnt++)
-			{
+			if (pBssEntry->Channel>14) {
+				if (pBssEntry->HtCapabilityLen!=0)
+					strcpy(iwe.u.name,"802.11a/n");
+				else
+					strcpy(iwe.u.name,"802.11a");
+			} else {
 				/*
-					6Mbps(140) 9Mbps(146) and >=12Mbps(152) are supported rate , it mean G only.
+					if one of non B mode rate is set supported rate . it mean G only.
 				*/
-				if (pBssEntry->SupRate[rateCnt]==140 || pBssEntry->SupRate[rateCnt]==146 || pBssEntry->SupRate[rateCnt]>=152)
-					isGonly=true;
-			}
+				for (rateCnt = 0; rateCnt < pBssEntry->SupRateLen; rateCnt++) {
+					/*
+						6Mbps(140) 9Mbps(146) and >=12Mbps(152) are supported rate , it mean G only.
+					*/
+					if (pBssEntry->SupRate[rateCnt]==140 || pBssEntry->SupRate[rateCnt]==146 || pBssEntry->SupRate[rateCnt]>=152)
+						isGonly=true;
+				}
 
-			for (rateCnt=0;rateCnt<pBssEntry->ExtRateLen;rateCnt++)
-			{
-				if (pBssEntry->ExtRate[rateCnt]==140 || pBssEntry->ExtRate[rateCnt]==146 || pBssEntry->ExtRate[rateCnt]>=152)
-					isGonly=true;
-			}
+				for (rateCnt=0;rateCnt<pBssEntry->ExtRateLen;rateCnt++) {
+					if (pBssEntry->ExtRate[rateCnt]==140 || pBssEntry->ExtRate[rateCnt]==146 || pBssEntry->ExtRate[rateCnt]>=152)
+						isGonly=true;
+				}
 
 
-			if (pBssEntry->HtCapabilityLen!=0)
-			{
-				if (isGonly==true)
-					strcpy(iwe.u.name,"802.11g/n");
-				else
-					strcpy(iwe.u.name,"802.11b/g/n");
-			}
-			else
-			{
-				if (isGonly==true)
-					strcpy(iwe.u.name,"802.11g");
-				else
-				{
-					if (pBssEntry->SupRateLen==4 && pBssEntry->ExtRateLen==0)
-						strcpy(iwe.u.name,"802.11b");
+				if (pBssEntry->HtCapabilityLen!=0) {
+					if (isGonly==true)
+						strcpy(iwe.u.name,"802.11g/n");
 					else
-						strcpy(iwe.u.name,"802.11b/g");
+						strcpy(iwe.u.name,"802.11b/g/n");
+				} else {
+					if (isGonly==true)
+						strcpy(iwe.u.name,"802.11g");
+					else {
+						if (pBssEntry->SupRateLen==4 && pBssEntry->ExtRateLen==0)
+							strcpy(iwe.u.name,"802.11b");
+						else
+							strcpy(iwe.u.name,"802.11b/g");
+					}
 				}
 			}
 		}
-	}
 
 		previous_ev = current_ev;
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_ADDR_LEN);
-		if (current_ev == previous_ev)
-		{
+		if (current_ev == previous_ev) {
 	   		status = -E2BIG;
 			goto go_out;
 		}
@@ -748,39 +732,34 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		iwe.u.data.length = pIoctlScan->pBssTable[i].SsidLen;
 		iwe.u.data.flags = 1;
 
-        previous_ev = current_ev;
+		previous_ev = current_ev;
 		current_ev = IWE_STREAM_ADD_POINT(info, current_ev,end_buf, &iwe, (char *) pIoctlScan->pBssTable[i].Ssid);
-        if (current_ev == previous_ev)
-        {
-            status = -E2BIG;
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
 			goto go_out;
-        }
+		}
 
 		/*Network Type */
 		/*================================ */
 		memset(&iwe, 0, sizeof(iwe));
 		iwe.cmd = SIOCGIWMODE;
-		if (pIoctlScan->pBssTable[i].BssType == Ndis802_11IBSS)
-		{
+
+		if (pIoctlScan->pBssTable[i].BssType == Ndis802_11IBSS) {
 			iwe.u.mode = IW_MODE_ADHOC;
-		}
-		else if (pIoctlScan->pBssTable[i].BssType == Ndis802_11Infrastructure)
-		{
+		} else if (pIoctlScan->pBssTable[i].BssType == Ndis802_11Infrastructure) {
 			iwe.u.mode = IW_MODE_INFRA;
-		}
-		else
-		{
+		} else {
 			iwe.u.mode = IW_MODE_AUTO;
 		}
 		iwe.len = IW_EV_UINT_LEN;
 
-        previous_ev = current_ev;
+		previous_ev = current_ev;
 		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev, end_buf, &iwe,  IW_EV_UINT_LEN);
-        if (current_ev == previous_ev)
-        {
-            status = -E2BIG;
+
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
 			goto go_out;
-        }
+		}
 
 		/*Channel and Frequency */
 		/*================================ */
@@ -794,28 +773,28 @@ int rt_ioctl_giwscan(struct net_device *dev,
 								(void *)&m, ch, RT_DEV_PRIV_FLAGS_GET(dev));
 			iwe.u.freq.m = m * 100;
 			iwe.u.freq.e = 1;
-		iwe.u.freq.i = 0;
-		previous_ev = current_ev;
-		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_FREQ_LEN);
-        if (current_ev == previous_ev)
-	        {
-	            status = -E2BIG;
+			iwe.u.freq.i = 0;
+			previous_ev = current_ev;
+			current_ev = IWE_STREAM_ADD_EVENT(info, current_ev,end_buf, &iwe, IW_EV_FREQ_LEN);
+
+			if (current_ev == previous_ev) {
+				status = -E2BIG;
 				goto go_out;
-		}
+			}
 		}
 
-        /*Add quality statistics */
-        /*================================ */
-        memset(&iwe, 0, sizeof(iwe));
-    	iwe.cmd = IWEVQUAL;
-    	iwe.u.qual.level = 0;
-    	iwe.u.qual.noise = 0;
+		/*Add quality statistics */
+		/*================================ */
+		memset(&iwe, 0, sizeof(iwe));
+		iwe.cmd = IWEVQUAL;
+		iwe.u.qual.level = 0;
+		iwe.u.qual.noise = 0;
 		set_quality(pAd, &iwe.u.qual, &pIoctlScan->pBssTable[i].Signal);
-    	current_ev = IWE_STREAM_ADD_EVENT(info, current_ev, end_buf, &iwe, IW_EV_QUAL_LEN);
-	if (current_ev == previous_ev)
-		{
-	            status = -E2BIG;
-				goto go_out;
+		current_ev = IWE_STREAM_ADD_EVENT(info, current_ev, end_buf, &iwe, IW_EV_QUAL_LEN);
+
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
 		}
 
 		/*Encyption key */
@@ -827,42 +806,41 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		else
 			iwe.u.data.flags = IW_ENCODE_DISABLED;
 
-        previous_ev = current_ev;
-        current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf,&iwe, (char *)pIoctlScan->MainSharedKey[(iwe.u.data.flags & IW_ENCODE_INDEX)-1]);
-        if (current_ev == previous_ev)
-        {
-            status = -E2BIG;
+	        previous_ev = current_ev;
+	        current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf,&iwe, (char *)pIoctlScan->MainSharedKey[(iwe.u.data.flags & IW_ENCODE_INDEX)-1]);
+
+	        if (current_ev == previous_ev) {
+			status = -E2BIG;
 			goto go_out;
-        }
+		}
 
 		/*Bit Rate */
 		/*================================ */
-		if (pIoctlScan->pBssTable[i].SupRateLen)
-        {
-            u8 tmpRate = pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1];
+		if (pIoctlScan->pBssTable[i].SupRateLen) {
+			u8 tmpRate = pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1];
+
 			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = SIOCGIWRATE;
-    		current_val = current_ev + IW_EV_LCP_LEN;
-            if (tmpRate == 0x82)
-                iwe.u.bitrate.value =  1 * 1000000;
-            else if (tmpRate == 0x84)
-                iwe.u.bitrate.value =  2 * 1000000;
-            else if (tmpRate == 0x8B)
-                iwe.u.bitrate.value =  5.5 * 1000000;
-            else if (tmpRate == 0x96)
-                iwe.u.bitrate.value =  11 * 1000000;
-            else
-    		    iwe.u.bitrate.value =  (tmpRate/2) * 1000000;
 
-			if (pIoctlScan->pBssTable[i].ExtRateLen)
-			{
+			current_val = current_ev + IW_EV_LCP_LEN;
+			if (tmpRate == 0x82)
+				iwe.u.bitrate.value =  1 * 1000000;
+			else if (tmpRate == 0x84)
+				iwe.u.bitrate.value =  2 * 1000000;
+			else if (tmpRate == 0x8B)
+				iwe.u.bitrate.value =  5.5 * 1000000;
+			else if (tmpRate == 0x96)
+				iwe.u.bitrate.value =  11 * 1000000;
+			else
+				iwe.u.bitrate.value =  (tmpRate/2) * 1000000;
+
+			if (pIoctlScan->pBssTable[i].ExtRateLen) {
 				u8 tmpSupRate =(pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1]& 0x7f);
 				u8 tmpExtRate =(pIoctlScan->pBssTable[i].ExtRate[pIoctlScan->pBssTable[i].ExtRateLen-1]& 0x7f);
 				iwe.u.bitrate.value = (tmpSupRate > tmpExtRate) ? (tmpSupRate)*500000 : (tmpExtRate)*500000;
 			}
 
-			if (tmpRate == 0x6c && pIoctlScan->pBssTable[i].HtCapabilityLen > 0)
-			{
+			if (tmpRate == 0x6c && pIoctlScan->pBssTable[i].HtCapabilityLen > 0) {
 				int rate_count = RT_RateSize/sizeof(__s32);
 /*				HT_CAP_INFO capInfo = pIoctlScan->pBssTable[i].HtCapability.HtCapInfo; */
 				int shortGI = pIoctlScan->pBssTable[i].ChannelWidth ? pIoctlScan->pBssTable[i].ShortGIfor40 : pIoctlScan->pBssTable[i].ShortGIfor20;
@@ -878,107 +856,100 @@ int rt_ioctl_giwscan(struct net_device *dev,
 
 			iwe.u.bitrate.disabled = 0;
 			current_val = IWE_STREAM_ADD_VALUE(info, current_ev,
-				current_val, end_buf, &iwe,
+			current_val, end_buf, &iwe,
     			IW_EV_PARAM_LEN);
 
         	if((current_val-current_ev)>IW_EV_LCP_LEN)
-            	current_ev = current_val;
-        	else
-        	{
-                status = -E2BIG;
-				goto go_out;
-        }
+			current_ev = current_val;
+		else {
+			status = -E2BIG;
+			goto go_out;
+		}
         }
 
 #ifdef IWEVGENIE
         /*WPA IE */
-		if (pIoctlScan->pBssTable[i].WpaIeLen > 0)
-        {
-			memset(&iwe, 0, sizeof(iwe));
-			memset(&custom[0], 0, MAX_CUSTOM_LEN);
-			memcpy(custom, &(pIoctlScan->pBssTable[i].pWpaIe[0]),
-						   pIoctlScan->pBssTable[i].WpaIeLen);
-			iwe.cmd = IWEVGENIE;
-			iwe.u.data.length = pIoctlScan->pBssTable[i].WpaIeLen;
-			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
-			if (current_ev == previous_ev)
-			{
-                status = -E2BIG;
-				goto go_out;
-		}
-		}
 
-		/*WPA2 IE */
-        if (pIoctlScan->pBssTable[i].RsnIeLen > 0)
-        {
+	if (pIoctlScan->pBssTable[i].WpaIeLen > 0) {
+		memset(&iwe, 0, sizeof(iwe));
+		memset(&custom[0], 0, MAX_CUSTOM_LEN);
+		memcpy(custom, &(pIoctlScan->pBssTable[i].pWpaIe[0]),
+					   pIoctlScan->pBssTable[i].WpaIeLen);
+		iwe.cmd = IWEVGENIE;
+		iwe.u.data.length = pIoctlScan->pBssTable[i].WpaIeLen;
+		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
+		}
+	}
+
+	/*WPA2 IE */
+        if (pIoctlScan->pBssTable[i].RsnIeLen > 0) {
         	memset(&iwe, 0, sizeof(iwe));
-			memset(&custom[0], 0, MAX_CUSTOM_LEN);
-			memcpy(custom, &(pIoctlScan->pBssTable[i].pRsnIe[0]),
-						   pIoctlScan->pBssTable[i].RsnIeLen);
-			iwe.cmd = IWEVGENIE;
-			iwe.u.data.length = pIoctlScan->pBssTable[i].RsnIeLen;
-			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
-			if (current_ev == previous_ev)
-			{
-                status = -E2BIG;
-				goto go_out;
-        }
+		memset(&custom[0], 0, MAX_CUSTOM_LEN);
+		memcpy(custom, &(pIoctlScan->pBssTable[i].pRsnIe[0]),
+					   pIoctlScan->pBssTable[i].RsnIeLen);
+		iwe.cmd = IWEVGENIE;
+		iwe.u.data.length = pIoctlScan->pBssTable[i].RsnIeLen;
+		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
+		}
         }
 
-		/*WPS IE */
-		if (pIoctlScan->pBssTable[i].WpsIeLen > 0)
-        {
+	/*WPS IE */
+	if (pIoctlScan->pBssTable[i].WpsIeLen > 0) {
         	memset(&iwe, 0, sizeof(iwe));
-			memset(&custom[0], 0, MAX_CUSTOM_LEN);
-			memcpy(custom, &(pIoctlScan->pBssTable[i].pWpsIe[0]),
-						   pIoctlScan->pBssTable[i].WpsIeLen);
-			iwe.cmd = IWEVGENIE;
-			iwe.u.data.length = pIoctlScan->pBssTable[i].WpsIeLen;
-			current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
-			if (current_ev == previous_ev)
-			{
-                status = -E2BIG;
-				goto go_out;
-        }
+		memset(&custom[0], 0, MAX_CUSTOM_LEN);
+		memcpy(custom, &(pIoctlScan->pBssTable[i].pWpsIe[0]),
+					   pIoctlScan->pBssTable[i].WpsIeLen);
+		iwe.cmd = IWEVGENIE;
+		iwe.u.data.length = pIoctlScan->pBssTable[i].WpsIeLen;
+		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe, custom);
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
+		}
         }
 #else
         /*WPA IE */
 		/*================================ */
-        if (pIoctlScan->pBssTable[i].WpaIeLen > 0)
-        {
+        if (pIoctlScan->pBssTable[i].WpaIeLen > 0) {
     		memset(&iwe, 0, sizeof(iwe));
-			memset(&custom[0], 0, MAX_CUSTOM_LEN);
+		memset(&custom[0], 0, MAX_CUSTOM_LEN);
     		iwe.cmd = IWEVCUSTOM;
-            iwe.u.data.length = (pIoctlScan->pBssTable[i].WpaIeLen * 2) + 7;
-            memmove(custom, "wpa_ie=", 7);
-            for (idx = 0; idx < pIoctlScan->pBssTable[i].WpaIeLen; idx++)
-                sprintf(custom, "%s%02x", custom, pIoctlScan->pBssTable[i].pWpaIe[idx]);
-            previous_ev = current_ev;
-    		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe,  custom);
-            if (current_ev == previous_ev)
-            {
-                status = -E2BIG;
-				goto go_out;
-        }
+		iwe.u.data.length = (pIoctlScan->pBssTable[i].WpaIeLen * 2) + 7;
+		memmove(custom, "wpa_ie=", 7);
+		for (idx = 0; idx < pIoctlScan->pBssTable[i].WpaIeLen; idx++)
+			sprintf(custom, "%s%02x", custom, pIoctlScan->pBssTable[i].pWpaIe[idx]);
+
+		previous_ev = current_ev;
+		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe,  custom);
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
+		}
         }
 
         /*WPA2 IE */
-        if (pIoctlScan->pBssTable[i].RsnIeLen > 0)
-        {
+        if (pIoctlScan->pBssTable[i].RsnIeLen > 0) {
     		memset(&iwe, 0, sizeof(iwe));
-			memset(&custom[0], 0, MAX_CUSTOM_LEN);
+		memset(&custom[0], 0, MAX_CUSTOM_LEN);
     		iwe.cmd = IWEVCUSTOM;
-            iwe.u.data.length = (pIoctlScan->pBssTable[i].RsnIeLen * 2) + 7;
-            memmove(custom, "rsn_ie=", 7);
-			for (idx = 0; idx < pIoctlScan->pBssTable[i].RsnIeLen; idx++)
-                sprintf(custom, "%s%02x", custom, pIoctlScan->pBssTable[i].pRsnIe[idx]);
-            previous_ev = current_ev;
+		iwe.u.data.length = (pIoctlScan->pBssTable[i].RsnIeLen * 2) + 7;
+		memmove(custom, "rsn_ie=", 7);
+
+		for (idx = 0; idx < pIoctlScan->pBssTable[i].RsnIeLen; idx++)
+			sprintf(custom, "%s%02x", custom, pIoctlScan->pBssTable[i].pRsnIe[idx]);
+
+		previous_ev = current_ev;
     		current_ev = IWE_STREAM_ADD_POINT(info, current_ev, end_buf, &iwe,  custom);
-            if (current_ev == previous_ev)
-            {
-                status = -E2BIG;
-				goto go_out;
-        }
+		if (current_ev == previous_ev) {
+			status = -E2BIG;
+			goto go_out;
+		}
         }
 
 
