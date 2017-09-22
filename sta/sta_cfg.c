@@ -3146,10 +3146,10 @@ RtmpIoctl_rt_ioctl_siwrate(
 		pAd->StaCfg.DesiredTransmitSetting.field.MCS = MCS_AUTO;
 		pAd->StaCfg.bAutoTxRateSwitch = true;
 		if ((!WMODE_CAP_N(pAd->CommonCfg.PhyMode)) ||
-			(pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.MODE <= MODE_OFDM))
+		    (pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.MODE <= MODE_OFDM)) {
 			RTMPSetDesiredRates(pAd, -1);
-
 			SetCommonHT(pAd);
+		}
 	} else {
 		if (fixed) {
 			pAd->StaCfg.bAutoTxRateSwitch = false;
