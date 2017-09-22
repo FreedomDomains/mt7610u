@@ -60,13 +60,9 @@ void BuildChannelList(
 	memset(pAd->ChannelList, 0, MAX_NUM_OF_CHANNELS * sizeof(struct CHANNEL_TX_POWER));
 
 	/* if not 11a-only mode, channel list starts from 2.4Ghz band*/
-	if (!WMODE_5G_ONLY(pAd->CommonCfg.PhyMode))
-	{
-		for (i = 0; i < Country_Region_GroupNum_2GHZ; i++)
-		{
-			if ((pAd->CommonCfg.CountryRegion & 0x7f) ==
-				Country_Region_ChDesc_2GHZ[i].RegionIndex)
-			{
+	if (!WMODE_5G_ONLY(pAd->CommonCfg.PhyMode)) {
+		for (i = 0; i < Country_Region_GroupNum_2GHZ; i++) {
+			if ((pAd->CommonCfg.CountryRegion & 0x7f) == Country_Region_ChDesc_2GHZ[i].RegionIndex) {
 				pChDesc = Country_Region_ChDesc_2GHZ[i].pChDesc;
 				num = TotalChNum(pChDesc);
 				bRegionFound = true;
@@ -74,48 +70,42 @@ void BuildChannelList(
 			}
 		}
 
-		if (!bRegionFound)
-		{
+		if (!bRegionFound) {
 			DBGPRINT(RT_DEBUG_ERROR,("CountryRegion=%d not support", pAd->CommonCfg.CountryRegion));
 			return;
 		}
 
-		if (num > 0)
-		{
+		if (num > 0) {
 			pChannelList = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
-			if (!pChannelList)
-			{
+			if (!pChannelList) {
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelList failed\n", __FUNCTION__));
 				return;
 			}
 
 			pChannelListFlag = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
-			if (!pChannelListFlag)
-			{
+			if (!pChannelListFlag) {
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelListFlag failed\n", __FUNCTION__));
 				kfree(pChannelList);
 				return;
 			}
 
-			for (i = 0; i < num; i++)
-			{
+			for (i = 0; i < num; i++) {
 				pChannelList[i] = GetChannel_2GHZ(pChDesc, i);
 				pChannelListFlag[i] = GetChannelFlag(pChDesc, i);
 			}
 
-			for (i = 0; i < num; i++)
-			{
-				for (j = 0; j < MAX_NUM_OF_CHANNELS; j++)
-				{
-					if (pChannelList[i] == pAd->TxPower[j].Channel)
+			for (i = 0; i < num; i++) {
+				for (j = 0; j < MAX_NUM_OF_CHANNELS; j++) {
+					if (pChannelList[i] == pAd->TxPower[j].Channel) {
 						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct CHANNEL_TX_POWER));
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
+					}
 				}
 
-						if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
-							pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
+				if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
+					pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
 
 				pAd->ChannelList[index+i].MaxTxPwr = 20;
 			}
@@ -129,13 +119,9 @@ void BuildChannelList(
 		num = 0;
 	}
 
-	if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode))
-	{
-		for (i = 0; i < Country_Region_GroupNum_5GHZ; i++)
-		{
-			if ((pAd->CommonCfg.CountryRegionForABand & 0x7f) ==
-				Country_Region_ChDesc_5GHZ[i].RegionIndex)
-			{
+	if (WMODE_CAP_5G(pAd->CommonCfg.PhyMode)) {
+		for (i = 0; i < Country_Region_GroupNum_5GHZ; i++) {
+			if ((pAd->CommonCfg.CountryRegionForABand & 0x7f) == Country_Region_ChDesc_5GHZ[i].RegionIndex) {
 				pChDesc = Country_Region_ChDesc_5GHZ[i].pChDesc;
 				num = TotalChNum(pChDesc);
 				bRegionFound = true;
@@ -143,53 +129,46 @@ void BuildChannelList(
 			}
 		}
 
-		if (!bRegionFound)
-		{
+		if (!bRegionFound) {
 			DBGPRINT(RT_DEBUG_ERROR,("CountryRegionABand=%d not support", pAd->CommonCfg.CountryRegionForABand));
 			return;
 		}
 
-		if (num > 0)
-		{
+		if (num > 0) {
 			u8 RadarCh[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
 			pChannelList = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
-			if (!pChannelList)
-			{
+			if (!pChannelList) {
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelList failed\n", __FUNCTION__));
 				return;
 			}
 
 			pChannelListFlag = kmalloc(num * sizeof(u8), GFP_ATOMIC);
 
-			if (!pChannelListFlag)
-			{
+			if (!pChannelListFlag) {
 				DBGPRINT(RT_DEBUG_ERROR,("%s:Allocate memory for ChannelListFlag failed\n", __FUNCTION__));
 				kfree(pChannelList);
 				return;
 			}
 
-			for (i = 0; i < num; i++)
-			{
+			for (i = 0; i < num; i++) {
 				pChannelList[i] = GetChannel_5GHZ(pChDesc, i);
 				pChannelListFlag[i] = GetChannelFlag(pChDesc, i);
 			}
 
 
-			for (i=0; i<num; i++)
-			{
-				for (j=0; j<MAX_NUM_OF_CHANNELS; j++)
-				{
-					if (pChannelList[i] == pAd->TxPower[j].Channel)
+			for (i=0; i<num; i++) {
+				for (j=0; j<MAX_NUM_OF_CHANNELS; j++) {
+					if (pChannelList[i] == pAd->TxPower[j].Channel) {
 						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct CHANNEL_TX_POWER));
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
+					}
 				}
 
 				if (N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
 					pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
 
-				for (j=0; j<15; j++)
-				{
+				for (j=0; j<15; j++) {
 					if (pChannelList[i] == RadarCh[j])
 						pAd->ChannelList[index+i].DfsReq = true;
 				}
@@ -207,8 +186,7 @@ void BuildChannelList(
 		pAd->CommonCfg.CountryRegion, pAd->CommonCfg.CountryRegionForABand, pAd->RfIcType, pAd->CommonCfg.PhyMode, pAd->ChannelListNum));
 
 #ifdef RT_CFG80211_SUPPORT
-	for (i=0;i<pAd->ChannelListNum;i++)
-	{
+	for (i=0;i<pAd->ChannelListNum;i++) {
 		CFG80211OS_ChanInfoInit(
 					pAd->pCfg80211_CB,
 					i,
@@ -220,8 +198,7 @@ void BuildChannelList(
 #endif /* RT_CFG80211_SUPPORT */
 
 #ifdef DBG
-	for (i=0;i<pAd->ChannelListNum;i++)
-	{
+	for (i=0;i<pAd->ChannelListNum;i++) {
 		DBGPRINT_RAW(RT_DEBUG_TRACE,("BuildChannel # %d :: Pwr0 = %d, Pwr1 =%d, Flags = %x\n ",
 									 pAd->ChannelList[i].Channel,
 									 pAd->ChannelList[i].Power,
