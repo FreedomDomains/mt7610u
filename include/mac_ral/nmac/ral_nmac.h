@@ -439,28 +439,6 @@ struct __attribute__ ((packed)) rxwi_nmac {
 };
 #endif /* RT_BIG_ENDIAN */
 
-
-#define RxWIMPDUByteCnt			MPDUtotalByteCnt
-#define RxWIWirelessCliID		wcid
-#define RxWIKeyIndex			key_idx
-#define RxWIMCS				mcs
-#define RxWILDPC			ldpc
-#define RxWIBW				bw
-#define RxWIBSSID			bss_idx
-#define RxWISGI				sgi
-#define RxWIPhyMode			phy_mode
-#define RxWISTBC			stbc
-#define RxWITID				tid
-#define RxWIRSSI0			rssi[0]
-#define RxWIRSSI1			rssi[1]
-#define RxWIRSSI2			rssi[2]
-#define RxWIRSSI3			rssi[3]
-#define RxWISNR0			bbp_rxinfo[0]
-#define RxWISNR1			bbp_rxinfo[1]
-#define RxWISNR2			bbp_rxinfo[2]
-#define RxWIFOFFSET			bbp_rxinfo[3]
-
-
 typedef struct __attribute__ ((packed)) _HW_RATE_CTRL_STRUCT_{
 #ifdef RT_BIG_ENDIAN
 	UINT16 PHYMODE:3;

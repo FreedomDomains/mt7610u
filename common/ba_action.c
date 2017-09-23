@@ -1636,8 +1636,8 @@ void Indicate_AMPDU_Packet(
 	PBA_REC_ENTRY pBAEntry = NULL;
 	UINT16 Sequence = pRxBlk->pHeader->Sequence;
 	ULONG Now32;
-	u8 Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
-	u8 TID = pRxBlk->pRxWI->RxWITID;
+	u8 Wcid = pRxBlk->pRxWI->wcid;
+	u8 TID = pRxBlk->pRxWI->tid;
 
 
 	if (!RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU) &&  (pRxBlk->DataSize > MAX_RX_PKT_LEN))

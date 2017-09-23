@@ -1053,9 +1053,9 @@ struct sk_buff *GetPacketFromRxRing(
 #ifdef RT_BIG_ENDIAN
 	RTMPWIEndianChange(pData, sizeof(struct rxwi_nmac));
 #endif /* RT_BIG_ENDIAN */
-	if (pRxWI->RxWIMPDUByteCnt > ThisFrameLen) {
+	if (pRxWI->MPDUtotalByteCnt > ThisFrameLen) {
 		DBGPRINT(RT_DEBUG_ERROR, ("%s():pRxWIMPDUtotalByteCount(%d) large than RxDMALen(%ld)\n",
-									__FUNCTION__, pRxWI->RxWIMPDUByteCnt, ThisFrameLen));
+									__FUNCTION__, pRxWI->MPDUtotalByteCnt, ThisFrameLen));
 		return NULL;
 	}
 #ifdef RT_BIG_ENDIAN
@@ -1126,7 +1126,7 @@ int	RTMPCheckRxError(
 	if (pRxInfo->Crc)
 	{
 		/* Check RSSI for Noise Hist statistic collection.*/
-		dBm = (INT) (pRxWI->RxWIRSSI0) - pAd->BbpRssiToDbmDelta;
+		dBm = (INT) (pRxWI->rssi[0]) - pAd->BbpRssiToDbmDelta;
 		if (dBm <= -87)
 			pAd->StaCfg.RPIDensity[0] += 1;
 		else if (dBm <= -82)
@@ -1148,7 +1148,7 @@ int	RTMPCheckRxError(
 	}
 
 	/* Add Rx size to channel load counter, we should ignore error counts*/
-	pAd->StaCfg.CLBusyBytes += (pRxWI->RxWIMPDUByteCnt + 14);
+	pAd->StaCfg.CLBusyBytes += (pRxWI->MPDUtotalByteCnt + 14);
 
 #ifndef CLIENT_WDS
 	if (pHeader->FC.ToDs
@@ -1160,7 +1160,7 @@ int	RTMPCheckRxError(
 #endif /* CLIENT_WDS */
 
 	/* Paul 04-03 for OFDM Rx length issue*/
-	if (pRxWI->RxWIMPDUByteCnt > MAX_AGGREGATION_SIZE)
+	if (pRxWI->MPDUtotalByteCnt > MAX_AGGREGATION_SIZE)
 	{
 		DBGPRINT_RAW(RT_DEBUG_ERROR, ("received packet too long\n"));
 		return NDIS_STATUS_FAILURE;
@@ -1177,7 +1177,7 @@ int	RTMPCheckRxError(
 		/* MIC Error*/
 		if ((pRxInfo->CipherErr == 2) && pRxInfo->MyBss)
 		{
-			pWpaKey = &pAd->SharedKey[BSS0][pRxWI->RxWIKeyIndex];
+			pWpaKey = &pAd->SharedKey[BSS0][pRxWI->key_idx];
 #ifdef WPA_SUPPLICANT_SUPPORT
             if (pAd->StaCfg.WpaSupplicantUP)
                 WpaSendMicFailureToWpaSupplicant(pAd->net_dev,
@@ -1189,7 +1189,7 @@ int	RTMPCheckRxError(
 		}
 
 		if (pRxInfo->Decrypted &&
-			(pAd->SharedKey[BSS0][pRxWI->RxWIKeyIndex].CipherAlg == CIPHER_AES) &&
+			(pAd->SharedKey[BSS0][pRxWI->key_idx].CipherAlg == CIPHER_AES) &&
 			(pHeader->Sequence == pAd->FragFrame.Sequence))
 		{
 

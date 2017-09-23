@@ -1768,10 +1768,10 @@ void PeerBeacon(
 
 
 			memset(&RxWI, 0, RXWISize);
-			RxWI.RxWIRSSI0 = Elem->Rssi0;
-			RxWI.RxWIRSSI1 = Elem->Rssi1;
-			RxWI.RxWIRSSI2 = Elem->Rssi2;
-			RxWI.RxWIPhyMode = 0; /* Prevent SNR calculate error. */
+			RxWI.rssi[0] = Elem->Rssi0;
+			RxWI.rssi[1] = Elem->Rssi1;
+			RxWI.rssi[2] = Elem->Rssi2;
+			RxWI.phy_mode = 0; /* Prevent SNR calculate error. */
 
 			if (INFRA_ON(pAd)) {
 				MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[BSSID_WCID];

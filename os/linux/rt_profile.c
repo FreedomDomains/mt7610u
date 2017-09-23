@@ -204,9 +204,9 @@ void STA_MonPktSend(
 
 	/* init */
 	MaxRssi = RTMPMaxRssi(pAd,
-			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI0, RSSI_0),
-			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI1, RSSI_1),
-			      ConvertToRssi(pAd, pRxBlk->pRxWI->RxWIRSSI2, RSSI_2));
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->rssi[0], RSSI_0),
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->rssi[1], RSSI_1),
+			      ConvertToRssi(pAd, pRxBlk->pRxWI->rssi[2], RSSI_2));
 
 	ndev = get_netdev_from_bssid(pAd, BSS0);
 	skb = pRxBlk->skb;
@@ -214,13 +214,13 @@ void STA_MonPktSend(
 	pData = pRxBlk->pData;
 	DataSize = pRxBlk->DataSize;
 	L2PAD = pRxBlk->pRxInfo->L2PAD;
-	PHYMODE = pRxBlk->pRxWI->RxWIPhyMode;
-	BW = pRxBlk->pRxWI->RxWIBW;
-	ShortGI = pRxBlk->pRxWI->RxWISGI;
-	MCS = pRxBlk->pRxWI->RxWIMCS;
+	PHYMODE = pRxBlk->pRxWI->phy_mode;
+	BW = pRxBlk->pRxWI->bw;
+	ShortGI = pRxBlk->pRxWI->sgi;
+	MCS = pRxBlk->pRxWI->mcs;
 	AMPDU = pRxBlk->pRxInfo->AMPDU;
-	STBC = pRxBlk->pRxWI->RxWISTBC;
-	RSSI1 = pRxBlk->pRxWI->RxWIRSSI1;
+	STBC = pRxBlk->pRxWI->stbc;
+	RSSI1 = pRxBlk->pRxWI->rssi[1];
 	BssMonitorFlag11n = 0;
 	pDevName = ndev->name;;
 	Channel = pAd->CommonCfg.Channel;

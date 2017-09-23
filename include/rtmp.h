@@ -2780,7 +2780,7 @@ typedef struct _RX_BLK_{
 	USHORT Flags;
 	u8 UserPriority;	/* for calculate TKIP MIC using */
 	u8 OpMode;	/* 0:OPMODE_STA 1:OPMODE_AP */
-	u8 wcid;		/* copy of pRxWI->RxWIWirelessCliID */
+	u8 wcid;		/* copy of pRxWI->wcid */
 	u8 mcs;
 	u8 U2M;
 } RX_BLK;

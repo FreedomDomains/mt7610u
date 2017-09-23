@@ -108,11 +108,11 @@ void STARxEAPOLFrameIndicate(
 		{
 			pTmpBuf = pRxBlk->pData - LENGTH_802_11;
 			memmove(pTmpBuf, pRxBlk->pHeader, LENGTH_802_11);
-			REPORT_MGMT_FRAME_TO_MLME(pAd, pRxWI->RxWIWirelessCliID,
+			REPORT_MGMT_FRAME_TO_MLME(pAd, pRxWI->wcid,
 						  pTmpBuf,
 						  pRxBlk->DataSize +
-						  LENGTH_802_11, pRxWI->RxWIRSSI0,
-						  pRxWI->RxWIRSSI1, pRxWI->RxWIRSSI2,
+						  LENGTH_802_11, pRxWI->rssi[0],
+						  pRxWI->rssi[1], pRxWI->rssi[2],
 						  0,
 						  OPMODE_STA);
 			DBGPRINT_RAW(RT_DEBUG_TRACE,
@@ -211,7 +211,7 @@ bool STACheckTkipMICValue(
 	PCIPHER_KEY pWpaKey;
 	u8 *pDA, *pSA;
 
-	pWpaKey = &pAd->SharedKey[BSS0][pRxBlk->pRxWI->RxWIKeyIndex];
+	pWpaKey = &pAd->SharedKey[BSS0][pRxBlk->pRxWI->key_idx];
 
 	pDA = pHeader->Addr1;
 	if (RX_BLK_TEST_FLAG(pRxBlk, fRX_INFRA)) {
@@ -272,8 +272,8 @@ void STAHandleRxDataFrame(
 
 	if ((pHeader->FC.FrDs == 1) && (pHeader->FC.ToDs == 1)) {
 #ifdef CLIENT_WDS
-			if ((pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)
-			    && IS_ENTRY_CLIENT(&pAd->MacTab.Content[pRxWI->RxWIWirelessCliID])) {
+			if ((pRxWI->wcid < MAX_LEN_OF_MAC_TABLE)
+			    && IS_ENTRY_CLIENT(&pAd->MacTab.Content[pRxWI->wcid])) {
 			RX_BLK_SET_FLAG(pRxBlk, fRX_WDS);
 		} else
 #endif /* CLIENT_WDS */
@@ -288,14 +288,14 @@ void STAHandleRxDataFrame(
 
 #ifdef QOS_DLS_SUPPORT
 		if (RTMPRcvFrameDLSCheck
-		    (pAd, pHeader, pRxWI->RxWIMPDUByteCnt, pRxD)) {
+		    (pAd, pHeader, pRxWI->MPDUtotalByteCnt, pRxD)) {
 			return;
 		}
 #endif /* QOS_DLS_SUPPORT */
 
 		/* Drop not my BSS frames */
-		if (pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)
-			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
+		if (pRxWI->wcid < MAX_LEN_OF_MAC_TABLE)
+			pEntry = &pAd->MacTab.Content[pRxWI->wcid];
 
 		if (pRxInfo->MyBss == 0) {
 			{
@@ -344,8 +344,8 @@ void STAHandleRxDataFrame(
 		}
 
 		/*/ find pEntry */
-		if (pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE) {
-			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
+		if (pRxWI->wcid < MAX_LEN_OF_MAC_TABLE) {
+			pEntry = &pAd->MacTab.Content[pRxWI->wcid];
 
 		} else {
 			dev_kfree_skb_any(skb);
@@ -360,7 +360,7 @@ void STAHandleRxDataFrame(
 				RX_BLK_SET_FLAG(pRxBlk, fRX_DLS);
 			else
 #endif
-				ASSERT(pRxWI->RxWIWirelessCliID == BSSID_WCID);
+				ASSERT(pRxWI->wcid == BSSID_WCID);
 		}
 
 	}
@@ -415,7 +415,7 @@ void STAHandleRxDataFrame(
 	/* 3. Order bit: A-Ralink or HTC+ */
 	if (pHeader->FC.Order) {
 #ifdef AGGREGATION_SUPPORT
-		if ((pRxWI->RxWIPhyMode <= MODE_OFDM)
+		if ((pRxWI->phy_mode <= MODE_OFDM)
 		    && (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_AGGREGATION_INUSED)))
 		{
 			RX_BLK_SET_FLAG(pRxBlk, fRX_ARALINK);
@@ -512,18 +512,18 @@ void STAHandleRxDataFrame(
 	}
 	else if (pRxInfo->U2M)
 	{
-		pAd->LastRxRate = (ULONG)((pRxWI->RxWIMCS) +
-									(pRxWI->RxWIBW << 7) +
-									(pRxWI->RxWISGI << 9) +
-									(pRxWI->RxWISTBC << 10) +
-									(pRxWI->RxWIPhyMode << 14));
+		pAd->LastRxRate = (ULONG)((pRxWI->mcs) +
+									(pRxWI->bw << 7) +
+									(pRxWI->sgi << 9) +
+									(pRxWI->stbc << 10) +
+									(pRxWI->phy_mode << 14));
 
 #if defined(DOT11Z_TDLS_SUPPORT) || defined(QOS_DLS_SUPPORT)
 		if (RX_BLK_TEST_FLAG(pRxBlk, fRX_DLS)) {
 			MAC_TABLE_ENTRY *pDlsEntry = NULL;
 
-			pDlsEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
-			if (pDlsEntry && (pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)) {
+			pDlsEntry = &pAd->MacTab.Content[pRxWI->wcid];
+			if (pDlsEntry && (pRxWI->wcid < MAX_LEN_OF_MAC_TABLE)) {
 				Update_Rssi_Sample(pAd, &pDlsEntry->RssiSample, pRxWI);
 				spin_lock_bh(&pAd->MacTabLock);
 				pDlsEntry->NoDataIdleCount = 0;
@@ -551,8 +551,8 @@ void STAHandleRxDataFrame(
 
 		Update_Rssi_Sample(pAd, &pAd->StaCfg.RssiSample, pRxWI);
 
-		pAd->StaCfg.LastSNR0 = (u8) (pRxWI->RxWISNR0);
-		pAd->StaCfg.LastSNR1 = (u8) (pRxWI->RxWISNR1);
+		pAd->StaCfg.LastSNR0 = (u8) (pRxWI->bbp_rxinfo[0]);
+		pAd->StaCfg.LastSNR1 = (u8) (pRxWI->bbp_rxinfo[1]);
 
 		pAd->RalinkCounters.OneSecRxOkDataCnt++;
 
@@ -560,7 +560,7 @@ void STAHandleRxDataFrame(
 		{
 			pEntry->LastRxRate = pAd->LastRxRate;
 
-			pEntry->freqOffset = (CHAR)(pRxWI->RxWIFOFFSET);
+			pEntry->freqOffset = (CHAR)(pRxWI->bbp_rxinfo[3]);
 			pEntry->freqOffsetValid = true;
 
 		}
@@ -578,7 +578,7 @@ void STAHandleRxDataFrame(
 		}
 
 		if (skb) {
-			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
+			pEntry = &pAd->MacTab.Content[pRxWI->wcid];
 
 			/* process complete frame */
 			if (bFragment && (pRxInfo->Decrypted)
@@ -638,32 +638,32 @@ void STAHandleRxMgmtFrame(
 		    && (pAd->RxAnt.EvaluatePeriod == 0)) {
 			Update_Rssi_Sample(pAd, &pAd->StaCfg.RssiSample, pRxWI);
 
-			pAd->StaCfg.LastSNR0 = (u8) (pRxWI->RxWISNR0);
-			pAd->StaCfg.LastSNR1 = (u8) (pRxWI->RxWISNR1);
+			pAd->StaCfg.LastSNR0 = (u8) (pRxWI->bbp_rxinfo[0]);
+			pAd->StaCfg.LastSNR1 = (u8) (pRxWI->bbp_rxinfo[1]);
 		}
 
 		if ((pHeader->FC.SubType == SUBTYPE_BEACON) &&
 		    (ADHOC_ON(pAd)) &&
-		    (pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)) {
+		    (pRxWI->wcid < MAX_LEN_OF_MAC_TABLE)) {
 			MAC_TABLE_ENTRY *pEntry = NULL;
-			pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];
+			pEntry = &pAd->MacTab.Content[pRxWI->wcid];
 			if (pEntry)
 				Update_Rssi_Sample(pAd, &pEntry->RssiSample, pRxWI);
 		}
 
 		/* First check the size, it MUST not exceed the mlme queue size */
-		if (pRxWI->RxWIMPDUByteCnt > MGMT_DMA_BUFFER_SIZE) {
-			DBGPRINT_ERR(("STAHandleRxMgmtFrame: frame too large, size = %d \n", pRxWI->RxWIMPDUByteCnt));
+		if (pRxWI->MPDUtotalByteCnt > MGMT_DMA_BUFFER_SIZE) {
+			DBGPRINT_ERR(("STAHandleRxMgmtFrame: frame too large, size = %d \n", pRxWI->MPDUtotalByteCnt));
 			break;
 		}
 
 
-		MinSNR = min((CHAR) pRxWI->RxWISNR0, (CHAR) pRxWI->RxWISNR1);
+		MinSNR = min((CHAR) pRxWI->bbp_rxinfo[0], (CHAR) pRxWI->bbp_rxinfo[1]);
 		/* Signal in MLME_QUEUE isn't used, therefore take this item to save min SNR. */
-		REPORT_MGMT_FRAME_TO_MLME(pAd, pRxWI->RxWIWirelessCliID, pHeader,
-					  pRxWI->RxWIMPDUByteCnt,
-					  pRxWI->RxWIRSSI0, pRxWI->RxWIRSSI1,
-					  pRxWI->RxWIRSSI2, MinSNR,
+		REPORT_MGMT_FRAME_TO_MLME(pAd, pRxWI->wcid, pHeader,
+					  pRxWI->MPDUtotalByteCnt,
+					  pRxWI->rssi[0], pRxWI->rssi[1],
+					  pRxWI->rssi[2], MinSNR,
 					  OPMODE_STA);
 
 	} while (false);
@@ -685,7 +685,7 @@ void STAHandleRxControlFrame(
 	switch (pHeader->FC.SubType) {
 	case SUBTYPE_BLOCK_ACK_REQ:
 		{
-			retStatus = CntlEnqueueForRecv(pAd, pRxWI->RxWIWirelessCliID, (pRxWI->RxWIMPDUByteCnt), (PFRAME_BA_REQ) pHeader);
+			retStatus = CntlEnqueueForRecv(pAd, pRxWI->wcid, (pRxWI->MPDUtotalByteCnt), (PFRAME_BA_REQ) pHeader);
 			status = (retStatus == true) ? NDIS_STATUS_SUCCESS : NDIS_STATUS_FAILURE;
 		}
 		break;
@@ -801,18 +801,18 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		RxBlk.pHeader = pHeader;
 		RxBlk.skb = skb;
 		RxBlk.pData = (u8 *) pHeader;
-		RxBlk.DataSize = pRxWI->RxWIMPDUByteCnt;
+		RxBlk.DataSize = pRxWI->MPDUtotalByteCnt;
 		RxBlk.pRxInfo = pRxInfo;
 		RxBlk.Flags = 0;
 		SET_PKT_OPMODE_STA(&RxBlk);
 
 		/* Increase Total receive byte counter after real data received no mater any error or not */
-		pAd->RalinkCounters.ReceivedByteCount += pRxWI->RxWIMPDUByteCnt;
-		pAd->RalinkCounters.OneSecReceivedByteCount += pRxWI->RxWIMPDUByteCnt;
+		pAd->RalinkCounters.ReceivedByteCount += pRxWI->MPDUtotalByteCnt;
+		pAd->RalinkCounters.OneSecReceivedByteCount += pRxWI->MPDUtotalByteCnt;
 		pAd->RalinkCounters.RxCount++;
 		INC_COUNTER64(pAd->WlanCounters.ReceivedFragmentCount);
 
-		if (pRxWI->RxWIMPDUByteCnt < 14) {
+		if (pRxWI->MPDUtotalByteCnt < 14) {
 			Status = NDIS_STATUS_FAILURE;
 
 			/* ULLI : fix memory leak, free skb */

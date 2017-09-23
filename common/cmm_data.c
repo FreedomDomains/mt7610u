@@ -1648,8 +1648,8 @@ void Indicate_Legacy_Packet(
 	{
 		PBA_REC_ENTRY		pBAEntry;
 		ULONG				Now32;
-		u8 			Wcid = pRxBlk->pRxWI->RxWIWirelessCliID;
-		u8 			TID = pRxBlk->pRxWI->RxWITID;
+		u8 			Wcid = pRxBlk->pRxWI->wcid;
+		u8 			TID = pRxBlk->pRxWI->tid;
 		USHORT				Idx;
 
 #define REORDERING_PACKET_TIMEOUT		((100 * OS_HZ)/1000)	/* system ticks -- 100 ms*/
@@ -1667,7 +1667,7 @@ void Indicate_Legacy_Packet(
 	   				)
 				{
 					DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
-												pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
+												pRxBlk->Flags, pRxBlk->pRxWI->tid, pRxBlk->pRxInfo->AMPDU));
 					ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
 				}
 			}
@@ -1916,14 +1916,14 @@ void Indicate_EAPOL_Packet(
 {
 	MAC_TABLE_ENTRY *pEntry = NULL;
 
-	if (pRxBlk->pRxWI->RxWIWirelessCliID >= MAX_LEN_OF_MAC_TABLE)
+	if (pRxBlk->pRxWI->wcid >= MAX_LEN_OF_MAC_TABLE)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: invalid wcid.\n"));
 		dev_kfree_skb_any(pRxBlk->skb);
 		return;
 	}
 
-	pEntry = &pAd->MacTab.Content[pRxBlk->pRxWI->RxWIWirelessCliID];
+	pEntry = &pAd->MacTab.Content[pRxBlk->pRxWI->wcid];
 	if (pEntry == NULL)
 	{
 		DBGPRINT(RT_DEBUG_WARN, ("Indicate_EAPOL_Packet: drop and release the invalid packet.\n"));
@@ -1936,7 +1936,7 @@ void Indicate_EAPOL_Packet(
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 	{
 		{
-			ASSERT((pRxBlk->pRxWI->RxWIWirelessCliID == BSSID_WCID));
+			ASSERT((pRxBlk->pRxWI->wcid == BSSID_WCID));
 			STARxEAPOLFrameIndicate(pAd, pEntry, pRxBlk, FromWhichBSSID);
 			return;
 	}
