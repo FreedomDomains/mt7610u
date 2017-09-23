@@ -281,7 +281,7 @@ struct __attribute__ ((packed)) mt7610u_rxfce_info_pkt {
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) rxfce_info_cmd {
+struct __attribute__ ((packed)) mt7610u_rxfce_info_cmd {
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 qsel:2;
@@ -293,7 +293,7 @@ struct __attribute__ ((packed)) rxfce_info_cmd {
 	u32 pkt_len:14;
 };
 #else
-struct __attribute__ ((packed)) rxfce_info_cmd {
+struct __attribute__ ((packed)) mt7610u_rxfce_info_cmd {
 	u32 pkt_len:14;
 	u32 rsv:1;
 	u32 self_gen:1;

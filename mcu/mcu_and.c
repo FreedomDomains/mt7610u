@@ -717,7 +717,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 {
 	struct sk_buff *skb = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
-	struct rxfce_info_cmd *rx_info = (struct rxfce_info_cmd *) skb->data;
+	struct mt7610u_rxfce_info_cmd *rx_info = (struct mt7610u_rxfce_info_cmd *) skb->data;
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN

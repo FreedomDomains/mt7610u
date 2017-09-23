@@ -917,7 +917,7 @@ static int RT_Mac80211_ConnResultInfom(IN struct rtmp_adapter *pAd, struct rtmp_
 
 static int CmdRspEventCallback(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 {
-	struct rxfce_info_cmd *pFceInfo = CMDQelmt->buffer;
+	struct mt7610u_rxfce_info_cmd *pFceInfo = CMDQelmt->buffer;
 
 	return NDIS_STATUS_SUCCESS;
 }
