@@ -1794,7 +1794,7 @@ void PeerBeacon(
 			    LinkDown(pAd, false);
 				MlmeQueueInit(pAd, &pAd->Mlme.Queue);
 				BssTableInit(&pAd->ScanTab);
-			    RTMPusecDelay(1000000);		/* use delay to prevent STA do reassoc */
+			    mdelay(1000);		/* use delay to prevent STA do reassoc */
 
 				/* channel sanity check */
 				for (index = 0 ; index < pAd->ChannelListNum; index++)

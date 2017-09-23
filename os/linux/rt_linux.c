@@ -128,19 +128,6 @@ static inline void __RTMP_OS_Release_Timer(struct timer_list * pTimer)
 	/* nothing to do */
 }
 
-
-/* Unify all delay routine by using udelay */
-void RTMPusecDelay(ULONG usec)
-{
-	ULONG i;
-
-	for (i = 0; i < (usec / 50); i++)
-		udelay(50);
-
-	if (usec % 50)
-		udelay(usec % 50);
-}
-
 ULONG RTMPMsecsToJiffies(u32 m)
 {
 

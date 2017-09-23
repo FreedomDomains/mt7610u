@@ -476,7 +476,7 @@ void MlmeHalt(
 
 	}
 
-	RTMPusecDelay(5000);    /*  5 msec to gurantee Ant Diversity timer canceled*/
+	mdelay(5);    /*  5 msec to gurantee Ant Diversity timer canceled*/
 
 	MlmeQueueDestroy(&pAd->Mlme.Queue);
 
@@ -734,7 +734,7 @@ void MlmePeriodicExec(void *FunctionContext)
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
 			{
 				mt7610u_write32(pAd, MAC_SYS_CTRL, 0x1);
-				RTMPusecDelay(1);
+				udelay(1);
 				MacReg = 0;
 				{
 					MacReg = 0xc;

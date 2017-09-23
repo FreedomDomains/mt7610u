@@ -718,7 +718,7 @@ void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 			return;
 	}
 
-	RTMPusecDelay(50);
+	udelay(50);
 
 	/* for last packet, PBF might use more than limited, so minus 2 to prevent from error */
 	val = FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_LMT, (MAX_RXBULK_SIZE / 1024) - 3) |
@@ -1004,7 +1004,7 @@ void RT28xxUsbMlmeRadioOFF(
 /*				kfree(pMsgElem);*/
 				kfree(pMsgElem);
 
-				RTMPusecDelay(1000);
+				mdelay(1);
 			}
 		}
 	}
@@ -1018,7 +1018,8 @@ void RT28xxUsbMlmeRadioOFF(
 		/* Link down first if any association exists*/
 		if (INFRA_ON(pAd) || ADHOC_ON(pAd))
 			LinkDown(pAd, false);
-		RTMPusecDelay(10000);
+
+		mdelay(10);
 
 		/*==========================================*/
 		/* Clean up old bss table*/
@@ -1069,7 +1070,7 @@ bool AsicCheckCommandOk(
 			break;
 		}
 
-		RTMPusecDelay(100);
+		udelay(100);
 		i++;
 	} while (i < 200);
 

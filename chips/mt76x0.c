@@ -1629,7 +1629,7 @@ static void MT76x0_ChipSwitchChannel(
 	if (bScan)
 		mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 1);
 
-	RTMPusecDelay(1000);
+	mdelay(1);
 
 	Value = mt7610u_read32(pAd, TX_ALC_CFG_0);
 	Value = Value & (~0x3F3F);
@@ -2077,7 +2077,7 @@ void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel)
 		RFValue = ((RFValue & ~(0x80)) | 0x80);
 		rlt_rf_write(pAd, RF_BANK0, RF_R04, RFValue);
 
-		RTMPusecDelay(2200);
+		udelay(2200);
 	}
 
 	return;
@@ -2117,7 +2117,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel)
 
 	reg_tx_alc = mt7610u_read32(pAd, TX_ALC_CFG_0); /* We need to restore 0x13b0 after calibration. */
 	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
-	RTMPusecDelay(500);
+	udelay(500);
 
 	reg_val = mt7610u_read32(pAd, 0x2124); /* We need to restore 0x2124 after calibration. */
 	MacReg = 0xFFFFFF7E; /* Disable 0x2704, 0x2708 controlled by MAC. */
@@ -2286,7 +2286,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel)
 	/* Restore 0x2124 & TX_ALC_CFG_0 after calibration completed */
 	mt7610u_write32(pAd, 0x2124, reg_val);
 	mt7610u_write32(pAd, TX_ALC_CFG_0, reg_tx_alc);
-	RTMPusecDelay(100000); // TODO: check response packet from FW
+	mdelay(100); // TODO: check response packet from FW
 
 RXDC_Calibration:
 	/*
@@ -2350,7 +2350,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
-		RTMPusecDelay(3);
+		udelay(3);
 	}
 
 	if (MTxCycle >= 2000) {
@@ -2444,7 +2444,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
-		RTMPusecDelay(3);
+		udelay(3);
 	}
 
 	if (wait >= 2000) {

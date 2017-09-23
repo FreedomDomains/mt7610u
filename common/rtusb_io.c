@@ -292,7 +292,7 @@ int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
 					break;
 				}
 				RetryCount++;
-				RTMPusecDelay(5000); /* wait for 5ms*/
+				mdelay(5); /* wait for 5ms*/
 			}
 		} while((ret < 0 ) && (RetryCount < MAX_VENDOR_REQ_RETRY_COUNT));
 
@@ -395,7 +395,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 			break;
 
 		Index++;
-		RTMPusecDelay(10000);
+		mdelay(10);
 	}while(Index < 100);
 
 	MACValue = mt7610u_read32(pAd, USB_DMA_CFG);
@@ -412,14 +412,14 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
 
 	/* Wait 1ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
-	RTMPusecDelay(1000);
+	mdelay(1);
 
 	MACValue &= (~0x80000);
 	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
 	DBGPRINT(RT_DEBUG_TRACE, ("\tSet 0x2a0 bit19. Clear USB DMA TX path\n"));
 
 	/* Wait 5ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
-	/*RTMPusecDelay(5000);*/
+	/*udelay(5000);*/
 
 	if ((pAd->bulkResetPipeid & BULKOUT_MGMT_RESET_FLAG) == BULKOUT_MGMT_RESET_FLAG)
 	{
@@ -553,13 +553,13 @@ static int ResetBulkInHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 		{
 			DBGPRINT_RAW(RT_DEBUG_ERROR, ("BulkIn IRP Pending!!!\n"));
 			RTUSBCancelPendingBulkInIRP(pAd);
-			RTMPusecDelay(100000);
+			mdelay(100);
 			pAd->PendingRx = 0;
 		}
 	}
 
 	/* Wait 10ms before reading register.*/
-	RTMPusecDelay(10000);
+	mdelay(10);
 
 	/* It must be removed. Or ATE will have no RX success. */
 	if ((NT_SUCCESS(ntStatus) == true) &&

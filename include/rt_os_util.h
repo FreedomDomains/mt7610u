@@ -33,9 +33,6 @@
 void RtmpUtilInit(void);
 
 /* OS Time */
-void RTMPusecDelay(
-	IN	ULONG					usec);
-
 void RtmpOsWait(
 	IN	u32					Time);
 

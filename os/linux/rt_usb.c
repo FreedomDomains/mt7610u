@@ -110,7 +110,7 @@ void RtmpMgmtTaskExit(
 	RTMP_OS_TASK	*pTask;
 
 	/* Sleep 50 milliseconds so pending io might finish normally */
-	RTMPusecDelay(50000);
+	mdelay(50);
 
 	/* We want to wait until all pending receives and sends to the */
 	/* device object. We cancel any */

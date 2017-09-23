@@ -1001,7 +1001,7 @@ int	NICInitializeAsic(
 			break;
 
 		DBGPRINT(RT_DEBUG_TRACE, ("Check MAC_STATUS_CFG  = Busy = %x\n", MACValue));
-		RTMPusecDelay(1000);
+		mdelay(1);
 	} while (Index++ < 100);
 
 
@@ -1012,7 +1012,7 @@ int	NICInitializeAsic(
 		mt7610u_write32(pAd, H2M_INT_SRC, 0);
 
 	/* Wait to be stable.*/
-	RTMPusecDelay(1000);
+	mdelay(1);
 	pAd->LastMCUCmd = 0x72;
 
 	NICInitBBP(pAd);

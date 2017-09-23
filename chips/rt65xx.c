@@ -147,7 +147,7 @@ static void StopDmaRx(struct rtmp_adapter*pAd)
 		//mt7610u_read32(pAd, USB_DMA_CFG, &MacReg);
 		if ((MacReg & 0x40000000) && (IdleNums < 10)) {
 			IdleNums++;
-			RTMPusecDelay(50);
+			udelay(50);
 		} else {
 			break;
 		}
@@ -175,7 +175,7 @@ static void StopDmaTx(struct rtmp_adapter*pAd)
 			break;
 		} else {
 			IdleNums++;
-			RTMPusecDelay(50);
+			udelay(50);
 		}
 
 		if (MacReg == 0xFFFFFFFF) {
@@ -250,7 +250,7 @@ void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		MacReg = mt7610u_read32(pAd, MAC_STATUS_CFG);
 		if (MacReg & 0x1)
-			RTMPusecDelay(50);
+			udelay(50);
 		else
 			break;
 
@@ -331,7 +331,7 @@ void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
 		MacReg = mt7610u_read32(pAd, MAC_STATUS_CFG);
 		if (MacReg & 0x2)
-			RTMPusecDelay(50);
+			udelay(50);
 		else
 			break;
 		if (MacReg == 0xFFFFFFFF) {
@@ -393,12 +393,12 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 			WlanFunCtrl.field.WLAN_RESET_RF = 1;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
 			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-			RTMPusecDelay(20);
+			udelay(20);
 			WlanFunCtrl.field.WLAN_RESET = 0;
 			WlanFunCtrl.field.WLAN_RESET_RF = 0;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(2) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
 			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-			RTMPusecDelay(20);
+			udelay(20);
 		}
 	}
 
@@ -421,7 +421,7 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
 	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-	RTMPusecDelay(20);
+	udelay(20);
 
 	if (enable) {
 		pAd->MACVersion = mt7610u_read32(pAd, MAC_CSR0);
@@ -445,7 +445,7 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 				if ((CmbCtrl.field.PLL_LD == 1) && (CmbCtrl.field.XTAL_RDY == 1))
 					break;
 
-				RTMPusecDelay(20);
+				udelay(20);
 			} while (index++ < MAX_CHECK_COUNT);
 
 			if (index >= MAX_CHECK_COUNT) {
@@ -460,13 +460,13 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 				WlanFunCtrl.field.WLAN_CLK_EN = 0;
 
 				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-				RTMPusecDelay(20);
+				udelay(20);
 
 				WlanFunCtrl.field.WLAN_CLK_EN = 1;
 				WlanFunCtrl.field.WLAN_EN = 1;
 
 				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
-				RTMPusecDelay(20);
+				udelay(20);
 			} else {
 				break;
 			}
