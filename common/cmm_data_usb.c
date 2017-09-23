@@ -986,7 +986,7 @@ struct sk_buff *GetPacketFromRxRing(
 	struct mt7610u_rxwi *pRxWI;
 	u8 RXWISize = sizeof(struct mt7610u_rxwi);
 	struct mt7610u_rxinfo *pRxInfo;
-	RXFCE_INFO *pRxFceInfo;
+	struct mt7610u_rxfce_info_pkt *pRxFceInfo;
 
 	*bCmdRspPacket = false;
 
@@ -1029,7 +1029,7 @@ struct sk_buff *GetPacketFromRxRing(
 	/* skip USB frame length field*/
 	pData += RXDMA_FIELD_SIZE;
 
-	pRxFceInfo = (RXFCE_INFO *)(pData + ThisFrameLen);
+	pRxFceInfo = (struct mt7610u_rxfce_info_pkt *)(pData + ThisFrameLen);
 
 	/* Check if command response or data packet */
 	if ((pRxFceInfo->info_type == CMD_PACKET) &&
@@ -1078,8 +1078,8 @@ struct sk_buff *GetPacketFromRxRing(
 	RTMPDescriptorEndianChange((u8 *)pRxInfo, TYPE_RXINFO);
 #endif /* RT_BIG_ENDIAN */
 
-	memmove((void *)&pRxBlk->hw_rx_info[0], (void *)pRxFceInfo, sizeof(RXFCE_INFO));
-	pRxBlk->pRxFceInfo = (RXFCE_INFO *)&pRxBlk->hw_rx_info[0];
+	memmove((void *)&pRxBlk->hw_rx_info[0], (void *)pRxFceInfo, sizeof(struct mt7610u_rxfce_info_pkt));
+	pRxBlk->pRxFceInfo = (struct mt7610u_rxfce_info_pkt *)&pRxBlk->hw_rx_info[0];
 
 	memmove(&pRxBlk->hw_rx_info[RXINFO_OFFSET], pRxInfo, RXINFO_SIZE);
 	pRxBlk->pRxInfo = (struct mt7610u_rxinfo *)&pRxBlk->hw_rx_info[RXINFO_OFFSET];

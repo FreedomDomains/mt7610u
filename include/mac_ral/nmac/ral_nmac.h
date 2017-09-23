@@ -245,7 +245,7 @@ struct __attribute__ ((packed)) txwi_nmac {
 
 
 #ifdef RT_BIG_ENDIAN
-typedef struct __attribute__ ((packed)) _RXFCE_INFO{
+struct __attribute__ ((packed)) mt7610u_rxfce_info_pkt {
 	u32 info_type:2;
 	u32 s_port:3;
 	u32 qsel:2;
@@ -260,9 +260,9 @@ typedef struct __attribute__ ((packed)) _RXFCE_INFO{
 
 	u32 rsv:2;
 	u32 pkt_len:14;
-}RXFCE_INFO;
+};
 #else
-typedef struct __attribute__ ((packed)) _RXFCE_INFO{
+struct __attribute__ ((packed)) mt7610u_rxfce_info_pkt {
 	u32 pkt_len:14;
 	u32 rsv:2;
 
@@ -277,7 +277,7 @@ typedef struct __attribute__ ((packed)) _RXFCE_INFO{
 	u32 qsel:2;
 	u32 s_port:3;
 	u32 info_type:2;
-}RXFCE_INFO;
+};
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN

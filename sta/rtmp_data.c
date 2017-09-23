@@ -731,7 +731,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	u8 *pData;
 	RX_BLK RxBlk;
 	u8 RXWISize = sizeof(struct mt7610u_rxwi);
-	RXFCE_INFO *pFceInfo;
+	struct mt7610u_rxfce_info_pkt *pFceInfo;
 	bool bCmdRspPacket = false;
 
 	RxProcessed = RxPending = 0;

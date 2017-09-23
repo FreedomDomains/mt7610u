@@ -2771,7 +2771,7 @@ struct rtmp_adapter {
 typedef struct _RX_BLK_{
 	u8 hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
 	struct mt7610u_rxinfo *pRxInfo;
-	RXFCE_INFO *pRxFceInfo;
+	struct mt7610u_rxfce_info_pkt *pRxFceInfo;
 	struct mt7610u_rxwi *pRxWI;
 	PHEADER_802_11 pHeader;
 	struct sk_buff *skb;
