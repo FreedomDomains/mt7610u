@@ -577,7 +577,7 @@ do {	\
 void RtmpChipOpsHook(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
-bool AsicWaitPDMAIdle(struct rtmp_adapter *pAd, INT round, INT wait_us);
+bool mt7610u_wait_pdma_usecs(struct rtmp_adapter *pAd, int round, int wait_us);
 INT AsicSetPreTbttInt(struct rtmp_adapter *pAd, bool enable);
 INT AsicReadAggCnt(struct rtmp_adapter *pAd, ULONG *aggCnt, int cnt_len);
 
