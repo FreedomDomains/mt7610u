@@ -67,7 +67,7 @@ union __attribute__ ((packed)) txinfo_nmac {
 
 #define RXINFO_SIZE			4
 #ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) rtmp_rxinfo {
+struct __attribute__ ((packed)) mt7610u_rxinfo {
 	u32		ip_sum_err:1;		/* IP checksum error */
 	u32		tcp_sum_err:1;	/* TCP checksum error */
 	u32		rsv:1;
@@ -99,7 +99,7 @@ struct __attribute__ ((packed)) rtmp_rxinfo {
 	u32		BA:1;
 };
 #else
-struct __attribute__ ((packed)) rtmp_rxinfo {
+struct __attribute__ ((packed)) mt7610u_rxinfo {
 	u32		BA:1;
 	u32		DATA:1;
 	u32		NULLDATA:1;

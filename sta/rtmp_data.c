@@ -262,7 +262,7 @@ void STAHandleRxDataFrame(
 	IN RX_BLK *pRxBlk)
 {
 	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
-	struct rtmp_rxinfo *pRxInfo = pRxBlk->pRxInfo;
+	struct mt7610u_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * skb = pRxBlk->skb;
 	bool bFragment = false;
@@ -725,7 +725,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	bool bReschedule = false;
 	RXD_STRUC *pRxD;
 	struct rxwi_nmac *pRxWI;
-	struct rtmp_rxinfo *pRxInfo;
+	struct mt7610u_rxinfo *pRxInfo;
 	struct sk_buff *skb;
 	HEADER_802_11 *pHeader;
 	u8 *pData;

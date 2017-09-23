@@ -2770,7 +2770,7 @@ struct rtmp_adapter {
   **************************************************************************/
 typedef struct _RX_BLK_{
 	u8 hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
-	struct rtmp_rxinfo *pRxInfo;
+	struct mt7610u_rxinfo *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
 	struct rxwi_nmac *pRxWI;
 	PHEADER_802_11 pHeader;
@@ -6009,7 +6009,7 @@ int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
 	IN struct rxwi_nmac *pRxWI,
-	struct rtmp_rxinfo *pRxInfo);
+	struct mt7610u_rxinfo *pRxInfo);
 
 
 /*////////////////////////////////////*/
