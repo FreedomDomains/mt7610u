@@ -762,11 +762,11 @@ void RtmpUSB_FinalWriteTxResource(
 
 
 		/*
-			Update TXWI->TxWIMPDUByteCnt,
+			Update TXWI->MPDUtotalByteCnt,
 				the length = 802.11 header + payload_of_all_batch_frames
 		*/
 		pTxWI= (struct txwi_nmac *)(pWirelessPacket + TXINFO_SIZE);
-		pTxWI->TxWIMPDUByteCnt = totalMPDUSize;
+		pTxWI->MPDUtotalByteCnt = totalMPDUSize;
 
 
 		/* Update the pHTTXContext->CurWritePosition*/

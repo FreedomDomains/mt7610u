@@ -210,29 +210,6 @@ struct __attribute__ ((packed)) txwi_nmac {
 };
 #endif
 
-#define TxWITIM				TIM
-#define TxWITxBfPTSca			TXBF_PT_SCA
-#define TxWIMPDUByteCnt			MPDUtotalByteCnt
-#define TxWIWirelessCliID		wcid
-#define TxWIFRAG			FRAG
-#define TxWICFACK			CFACK
-#define TxWITS				TS
-#define TxWIAMPDU			AMPDU
-#define TxWIACK				ACK
-#define TxWITXOP			txop
-#define TxWINSEQ			NSEQ
-#define TxWIBAWinSize			BAWinSize
-#define TxWIShortGI			ShortGI
-#define TxWISTBC			STBC
-#define TxWIPacketId			TxPktId
-#define TxWIBW				BW
-#define TxWILDPC			LDPC
-#define TxWIMCS				MCS
-#define TxWIPHYMODE			PHYMODE
-#define TxWIMIMOps			MIMOps
-#define TxWIMpduDensity			MpduDensity
-#define TxWILutEn			lut_en
-
 
 /*
 	Rx Memory layout:

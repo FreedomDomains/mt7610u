@@ -226,11 +226,11 @@ void RTUSBBulkOutDataPacket(
 		pTxWI = (struct txwi_nmac *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
 
 		if (pAd->bForcePrintTX == true)
-			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   pTxWI->TxWIAMPDU));
+			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   pTxWI->AMPDU));
 
 		/* add by Iverson, limit BulkOut size to 4k to pass WMM b mode 2T1R test items*/
 		/*if ((ThisBulkSize != 0)  && (pTxWI->AMPDU == 0))*/
-		if ((ThisBulkSize != 0) && (pTxWI->TxWIPHYMODE == MODE_CCK))
+		if ((ThisBulkSize != 0) && (pTxWI->PHYMODE == MODE_CCK))
 		{
 			if (((ThisBulkSize&0xffff8000) != 0) || ((ThisBulkSize&0x1000) == 0x1000))
 			{
@@ -303,8 +303,8 @@ void RTUSBBulkOutDataPacket(
 		}
 
 			/* Increase Total transmit byte counter*/
-		pAd->RalinkCounters.OneSecTransmittedByteCount +=  pTxWI->TxWIMPDUByteCnt;
-		pAd->RalinkCounters.TransmittedByteCount +=  pTxWI->TxWIMPDUByteCnt;
+		pAd->RalinkCounters.OneSecTransmittedByteCount +=  pTxWI->MPDUtotalByteCnt;
+		pAd->RalinkCounters.TransmittedByteCount +=  pTxWI->MPDUtotalByteCnt;
 
 		pLastTxInfo = pTxInfo;
 
