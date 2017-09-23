@@ -28,12 +28,12 @@
 #include "rt_config.h"
 
 
-INT get_pkt_phymode_by_rxwi(struct rxwi_nmac *rxwi)
+INT get_pkt_phymode_by_rxwi(struct mt7610u_rxwi *rxwi)
 {
 	return rxwi->phy_mode;
 }
 
-INT get_pkt_rssi_by_rxwi(struct rxwi_nmac *rxwi, INT size, CHAR *rssi)
+INT get_pkt_rssi_by_rxwi(struct mt7610u_rxwi *rxwi, INT size, CHAR *rssi)
 {
 	if (size < sizeof(rxwi->rssi)/ sizeof(u8))
 		memmove(rssi, &rxwi->rssi[0], size);
@@ -42,7 +42,7 @@ INT get_pkt_rssi_by_rxwi(struct rxwi_nmac *rxwi, INT size, CHAR *rssi)
 }
 
 
-INT get_pkt_snr_by_rxwi(struct rxwi_nmac *rxwi, INT size, u8 *snr)
+INT get_pkt_snr_by_rxwi(struct mt7610u_rxwi *rxwi, INT size, u8 *snr)
 {
 	// TODO: shiang-6590, fix me for SNR info of RXWI!!
 	if (size < 3)

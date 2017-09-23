@@ -1747,8 +1747,8 @@ void PeerBeacon(
 		*/
 		if (is_my_bssid)
 		{
-			struct rxwi_nmac RxWI;
-			u8 RXWISize = sizeof(struct rxwi_nmac);
+			struct mt7610u_rxwi RxWI;
+			u8 RXWISize = sizeof(struct mt7610u_rxwi);
 
 			OVERLAP_BSS_SCAN_IE	BssScan;
 			u8 				RegClass;

@@ -2772,7 +2772,7 @@ typedef struct _RX_BLK_{
 	u8 hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
 	struct mt7610u_rxinfo *pRxInfo;
 	RXFCE_INFO *pRxFceInfo;
-	struct rxwi_nmac *pRxWI;
+	struct mt7610u_rxwi *pRxWI;
 	PHEADER_802_11 pHeader;
 	struct sk_buff *skb;
 	u8 *pData;
@@ -5697,7 +5697,7 @@ void CmmRxRalinkFrameIndicate(
 void Update_Rssi_Sample(
 	IN struct rtmp_adapter*pAd,
 	IN RSSI_SAMPLE *pRssi,
-	IN struct rxwi_nmac *pRxWI);
+	IN struct mt7610u_rxwi *pRxWI);
 
 struct sk_buff * GetPacketFromRxRing(
 	IN struct rtmp_adapter*pAd,
@@ -6008,7 +6008,7 @@ void RT28xxUsbAsicWOWDisable(
 int RTMPCheckRxError(
 	IN struct rtmp_adapter*pAd,
 	IN PHEADER_802_11 pHeader,
-	IN struct rxwi_nmac *pRxWI,
+	IN struct mt7610u_rxwi *pRxWI,
 	struct mt7610u_rxinfo *pRxInfo);
 
 

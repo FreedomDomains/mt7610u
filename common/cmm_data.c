@@ -1524,7 +1524,7 @@ bool RTMPCheckEtherType(
 void Update_Rssi_Sample(
 	IN struct rtmp_adapter*pAd,
 	IN RSSI_SAMPLE *pRssi,
-	IN struct rxwi_nmac *pRxWI)
+	IN struct mt7610u_rxwi *pRxWI)
 {
 	CHAR rssi[3];
 	u8 snr[3];

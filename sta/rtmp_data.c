@@ -33,7 +33,7 @@ void STARxEAPOLFrameIndicate(
 	IN RX_BLK *pRxBlk,
 	IN u8 FromWhichBSSID)
 {
-	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
+	struct mt7610u_rxwi *pRxWI = pRxBlk->pRxWI;
 	u8 *pTmpBuf;
 
 
@@ -261,7 +261,7 @@ void STAHandleRxDataFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
+	struct mt7610u_rxwi *pRxWI = pRxBlk->pRxWI;
 	struct mt7610u_rxinfo *pRxInfo = pRxBlk->pRxInfo;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * skb = pRxBlk->skb;
@@ -612,7 +612,7 @@ void STAHandleRxMgmtFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
+	struct mt7610u_rxwi *pRxWI = pRxBlk->pRxWI;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * skb = pRxBlk->skb;
 	u8 MinSNR = 0;
@@ -676,7 +676,7 @@ void STAHandleRxControlFrame(
 	IN struct rtmp_adapter *pAd,
 	IN RX_BLK *pRxBlk)
 {
-	struct rxwi_nmac *pRxWI = pRxBlk->pRxWI;
+	struct mt7610u_rxwi *pRxWI = pRxBlk->pRxWI;
 	PHEADER_802_11 pHeader = pRxBlk->pHeader;
 	struct sk_buff * skb = pRxBlk->skb;
 	bool retStatus;
@@ -724,13 +724,13 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	u32 RxProcessed, RxPending;
 	bool bReschedule = false;
 	RXD_STRUC *pRxD;
-	struct rxwi_nmac *pRxWI;
+	struct mt7610u_rxwi *pRxWI;
 	struct mt7610u_rxinfo *pRxInfo;
 	struct sk_buff *skb;
 	HEADER_802_11 *pHeader;
 	u8 *pData;
 	RX_BLK RxBlk;
-	u8 RXWISize = sizeof(struct rxwi_nmac);
+	u8 RXWISize = sizeof(struct mt7610u_rxwi);
 	RXFCE_INFO *pFceInfo;
 	bool bCmdRspPacket = false;
 
@@ -771,7 +771,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 		pFceInfo = RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
 		pData = skb->data;
-		pRxWI = (struct rxwi_nmac *)pData;
+		pRxWI = (struct mt7610u_rxwi *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
 		// TODO: shiang-6590, handle packet from other ports

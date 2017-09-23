@@ -311,7 +311,7 @@ struct __attribute__ ((packed)) rxfce_info_cmd {
 	RXWI wireless information format.
 */
 #ifdef RT_BIG_ENDIAN
-struct rxwi_nmac __attribute__ ((packed)) {
+struct __attribute__ ((packed)) mt7610u_rxwi {
 	/* Word 0 */
 	u32 eof:1;
 	u32 rsv:1;
@@ -340,7 +340,7 @@ struct rxwi_nmac __attribute__ ((packed)) {
 	u8 bbp_rxinfo[16];
 };
 #else
-struct __attribute__ ((packed)) rxwi_nmac {
+struct __attribute__ ((packed)) mt7610u_rxwi {
 	/* Word 0 */
 	u32 wcid:8;
 	u32 key_idx:2;
