@@ -160,9 +160,7 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 void MT76x0_dynamic_vga_tuning(
 	IN struct rtmp_adapter *pAd);
 
-void MT76x0_VCO_CalibrationMode3(
-	IN struct rtmp_adapter *pAd,
-	IN u8 Channel);
+void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
 void MT76x0_Calibration(
 	IN struct rtmp_adapter *pAd,

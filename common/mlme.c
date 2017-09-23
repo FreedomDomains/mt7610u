@@ -700,7 +700,7 @@ void MlmePeriodicExec(void *FunctionContext)
 						DBGPRINT(RT_DEBUG_OFF, ("%s - Do VCORecalibration again!(LastTemperatureforVCO=%d, NowTemperature = %d)\n",
 							__FUNCTION__, pAd->chipCap.LastTemperatureforVCO, pAd->chipCap.NowTemperature));
 						pAd->chipCap.LastTemperatureforVCO = pAd->chipCap.NowTemperature;
-						MT76x0_VCO_CalibrationMode3(pAd, pAd->hw_cfg.cent_ch);
+						mt7610u_vco_calibration(pAd, pAd->hw_cfg.cent_ch);
 					}
 
 				}

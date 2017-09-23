@@ -1624,7 +1624,7 @@ static void MT76x0_ChipSwitchChannel(
 	/*
 		VCO calibration (mode 3)
 	*/
-	MT76x0_VCO_CalibrationMode3(pAd, Channel);
+	mt7610u_vco_calibration(pAd, Channel);
 
 	if (bScan)
 		mt7610u_mcu_calibration(pAd, RXDCOC_CALIBRATION, 1);
@@ -2018,7 +2018,7 @@ void MT76x0_dynamic_vga_tuning(struct rtmp_adapter *pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): RSSI=%d, BBP 2320=0x%x\n", __FUNCTION__, rssi, reg_val));
 }
 
-void MT76x0_VCO_CalibrationMode3(struct rtmp_adapter *pAd, u8 Channel)
+void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel)
 {
 	/*
 		VCO_Calibration_MT7650E2.docx:
@@ -2113,7 +2113,7 @@ void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel)
 	/*
 		3 VCO calibration (mode 3)
 	*/
-	MT76x0_VCO_CalibrationMode3(pAd, Channel);
+	mt7610u_vco_calibration(pAd, Channel);
 
 	reg_tx_alc = mt7610u_read32(pAd, TX_ALC_CFG_0); /* We need to restore 0x13b0 after calibration. */
 	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
