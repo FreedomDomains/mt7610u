@@ -46,7 +46,7 @@ enum D_PORT {
 #include "rtmp_type.h"
 
 #ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) txinfo_nmac_pkt {
+struct __attribute__ ((packed)) mt7610_txinfo_pkt {
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 QSEL:2;
@@ -61,7 +61,7 @@ struct __attribute__ ((packed)) txinfo_nmac_pkt {
 	u32 pkt_len:16;
 };
 #else
-struct __attribute__ ((packed)) txinfo_nmac_pkt {
+struct __attribute__ ((packed)) mt7610_txinfo_pkt {
 	u32 pkt_len:16;
 	u32 next_vld:1;
 	u32 tx_burst:1;
