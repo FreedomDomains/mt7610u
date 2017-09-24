@@ -78,7 +78,7 @@ struct __attribute__ ((packed)) mt7610_txinfo_pkt {
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) txinfo_nmac_cmd{
+struct __attribute__ ((packed)) mt7610_txinfo_cmd{
 	u32 info_type:2;
 	u32 d_port:3;
 	u32 cmd_type:7;
@@ -86,7 +86,7 @@ struct __attribute__ ((packed)) txinfo_nmac_cmd{
 	u32 pkt_len:16;
 };
 #else
-struct __attribute__ ((packed)) txinfo_nmac_cmd{
+struct __attribute__ ((packed)) mt7610_txinfo_cmd{
 	u32 pkt_len:16;
 	u32 cmd_seq:4;
 	u32 cmd_type:7;
@@ -347,27 +347,6 @@ struct __attribute__ ((packed)) mt7610u_rxwi {
 };
 #endif /* RT_BIG_ENDIAN */
 
-typedef struct __attribute__ ((packed)) _HW_RATE_CTRL_STRUCT_{
-#ifdef RT_BIG_ENDIAN
-	UINT16 PHYMODE:3;
-	UINT16 iTxBF:1;
-	UINT16 eTxBF:1;
-	UINT16 STBC:1;
-	UINT16 ShortGI:1;
-	UINT16 BW:2;			/* channel bandwidth 20/40/80 MHz */
-	UINT16 MCS:7;
-#else
-	UINT16 MCS:7;
-	UINT16 BW:2;
-	UINT16 ShortGI:1;
-	UINT16 STBC:1;
-	UINT16 eTxBF:1;
-	UINT16 iTxBF:1;
-	UINT16 PHYMODE:3;
-#endif /* RT_BIG_ENDIAN */
-}HW_RATE_CTRL_STRUCT;
-
-
 /* ================================================================================= */
 /* Register format */
 /* ================================================================================= */
@@ -557,44 +536,6 @@ typedef union _TSO_CTRL_STRUC {
 	|TXINO|TXWI|WIFI INFO|802.3 MAC Header|Pyaload|
 */
 
-#define WIFI_INFO_SIZE		0
-#ifdef RT_BIG_ENDIAN
-typedef union __attribute__ ((packed)) _WIFI_INFO_STRUC {
-	struct {
-    	u32 More_Data:1;
-    	u32 WEP:1;
-    	u32 PS:1;
-    	u32 RDG:1;
-    	u32 QoS:1;
-    	u32 EOSP:1;
-    	u32 TID:4;
-    	u32 Mode:2;
-    	u32 VLAN:1;
-    	u32 Rsv:3;
-    	u32 BssIdx:4;
-    	u32 Seq_Num:12;
-	} field;
-	u32 word;
-} WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
-#else
-typedef union __attribute__ ((packed)) _WIFI_INFO_STRUC {
-	struct {
-    	u32 Seq_Num:12;
-    	u32 BssIdx:4;
-    	u32 Rsv:3;
-    	u32 VLAN:1;
-    	u32 Mode:2;
-    	u32 TID:4;
-    	u32 EOSP:1;
-    	u32 QoS:1;
-    	u32 RDG:1;
-    	u32 PS:1;
-    	u32 WEP:1;
-    	u32 More_Data:1;
-	} field;
-	u32 word;
-} WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
-#endif /* RT_BIG_ENDIAN */
 
 /*
 	header translation control register
