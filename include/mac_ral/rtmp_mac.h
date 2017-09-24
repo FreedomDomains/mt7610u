@@ -56,7 +56,6 @@ enum mt76_qsel {
 #define TXINFO_SIZE			4
 union __attribute__ ((packed)) txinfo_nmac {
 	struct txinfo_nmac_pkt txinfo_nmac_pkt;
-	struct txinfo_nmac_cmd txinfo_nmac_cmd;
 	u32 word;
 };
 
