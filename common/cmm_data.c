@@ -127,7 +127,7 @@ int MiniportMMRequest(
 	struct sk_buff * pPacket;
 	int Status = NDIS_STATUS_SUCCESS;
 	ULONG FreeNum;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 	u8 rtmpHwHdr[40];
 	bool bUseDataQ = false, FlgDataQForce = false, FlgIsLocked = false;
 	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize + TSO_SIZE;
@@ -264,10 +264,10 @@ int MlmeHardTransmitMgmtRing(
 	HEADER_802_11 *pHeader_802_11;
 	bool bAckRequired, bInsertTimestamp;
 	u8 MlmeRate;
-	struct txwi_nmac *pFirstTxWI;
+	struct mt7610u_txwi *pFirstTxWI;
 	MAC_TABLE_ENTRY *pMacEntry = NULL;
 	u8 PID;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pSrcBufVA, &SrcBufLen);
@@ -290,7 +290,7 @@ int MlmeHardTransmitMgmtRing(
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	pFirstTxWI = (struct txwi_nmac *)(pSrcBufVA +  TXINFO_SIZE);
+	pFirstTxWI = (struct mt7610u_txwi *)(pSrcBufVA +  TXINFO_SIZE);
 	pHeader_802_11 = (PHEADER_802_11) (pSrcBufVA + TXINFO_SIZE + TSO_SIZE + TXWISize);
 
 	if (pHeader_802_11->Addr1[0] & 0x01)

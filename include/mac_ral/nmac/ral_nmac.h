@@ -112,7 +112,7 @@ struct __attribute__ ((packed)) rtmp_led_cmd{
 #endif /* RT_BIG_ENDIAN */
 
 #ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) txwi_nmac {
+struct __attribute__ ((packed)) mt7610u_txwi {
 	/* Word 0 */
 	u32		PHYMODE:3;
 	u32		iTxBF:1;
@@ -159,7 +159,7 @@ struct __attribute__ ((packed)) txwi_nmac {
 	u32		TxEAPId:8;
 };
 #else
-struct __attribute__ ((packed)) txwi_nmac {
+struct __attribute__ ((packed)) mt7610u_txwi {
 	/* Word	0 */
 	/* ex: 00 03 00 40 means txop = 3, PHYMODE = 1 */
 	u32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */

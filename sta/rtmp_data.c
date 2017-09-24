@@ -1426,7 +1426,7 @@ void STABuildCommon802_11Header(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	bool bDLSFrame = false;
 	INT DlsEntryIndex = 0;
 #endif /* QOS_DLS_SUPPORT */
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	/* MAKE A COMMON 802.11 HEADER */
 
@@ -1603,7 +1603,7 @@ static inline u8 *STA_Build_ARalink_Frame_Header(
 	struct sk_buff * pNextPacket;
 	u32 nextBufLen;
 	PQUEUE_ENTRY pQEntry;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -1657,7 +1657,7 @@ static inline u8 *STA_Build_AMSDU_Frame_Header(
 {
 	u8 *pHeaderBufPtr;
 	HEADER_802_11 *pHeader_802_11;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	STAFindCipherAlgorithm(pAd, pTxBlk);
 	STABuildCommon802_11Header(pAd, pTxBlk);
@@ -1707,7 +1707,7 @@ void STA_AMPDU_Frame_Tx(
 	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
 	bool 		bHTCPlus;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 
 	ASSERT(pTxBlk);
@@ -1933,9 +1933,9 @@ void STA_AMPDU_Frame_Tx(
 		if ((pMacEntry->isCached)
 		)
 		{
-			RTMPWriteTxWI_Cache(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Cache(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		} else {
-			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 			memset((u8 *) (&pMacEntry->CachedBuf[0]), 0, sizeof (pMacEntry->CachedBuf));
 			memmove((u8 *) (&pMacEntry->CachedBuf[0]), (u8 *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), (pHeaderBufPtr -(u8 *) (&pTxBlk->HeaderBuf[TXINFO_SIZE])));
@@ -2015,7 +2015,7 @@ void STA_AMSDU_Frame_Tx(
 			pHeaderBufPtr = STA_Build_AMSDU_Frame_Header(pAd, pTxBlk);
 
 			/* NOTE: TxWI->TxWIMPDUByteCnt will be updated after final frame was handled. */
-			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		} else {
 			pHeaderBufPtr = &pTxBlk->HeaderBuf[0];
 			padding = ROUND_UP(LENGTH_AMSDU_SUBFRAMEHEAD + subFramePayloadLen, 4) -
@@ -2107,7 +2107,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	USHORT FreeNumber = 0;
 	bool bVLANPkt;
 	PQUEUE_ENTRY pQEntry;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	ASSERT(pTxBlk);
 
@@ -2250,7 +2250,7 @@ void STA_Legacy_Frame_Tx(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 	   use Wcid as Key Index
 	 */
 
-	RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+	RTMPWriteTxWI_Data(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 	HAL_WriteTxResource(pAd, pTxBlk, true, &FreeNumber);
 
@@ -2318,7 +2318,7 @@ void STA_ARalink_Frame_Tx(
 			   It's ok write the TxWI here, because the TxWI->TxWIMPDUByteCnt
 			   will be updated after final frame was handled.
 			 */
-			RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+			RTMPWriteTxWI_Data(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 
 			/*
@@ -2413,7 +2413,7 @@ void STA_Fragment_Frame_Tx(
 	u8 *tmp_ptr = NULL;
 	u32 buf_offset = 0;
 #endif /* SOFT_ENCRYPT */
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	ASSERT(pTxBlk);
 
@@ -2673,7 +2673,7 @@ void STA_Fragment_Frame_Tx(
 		}
 #endif /* SOFT_ENCRYPT */
 
-		RTMPWriteTxWI_Data(pAd, (struct txwi_nmac *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+		RTMPWriteTxWI_Data(pAd, (struct mt7610u_txwi *) (&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 		HAL_WriteFragTxResource(pAd, pTxBlk, fragNum, &freeCnt);
 
 #ifdef DBG_CTRL_SUPPORT

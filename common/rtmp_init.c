@@ -1529,7 +1529,7 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 	UINT i;
 /*	EDCA_PARM DefaultEdcaParm;*/
     UINT key_index, bss_index;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> UserCfgInit\n"));
 

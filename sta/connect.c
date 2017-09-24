@@ -2611,7 +2611,7 @@ ULONG MakeIbssBeacon(
 	USHORT CapabilityInfo;
 	LARGE_INTEGER FakeTimestamp;
 	ULONG FrameLen = 0;
-	struct txwi_nmac *pTxWI = &pAd->BeaconTxWI;
+	struct mt7610u_txwi *pTxWI = &pAd->BeaconTxWI;
 	u8 *pBeaconFrame = pAd->BeaconBuf;
 	bool Privacy;
 	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES];

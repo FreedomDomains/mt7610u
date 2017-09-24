@@ -746,7 +746,7 @@ void RTUSBBssBeaconStart(struct rtmp_adapter*pAd)
 {
 	int apidx;
 	BEACON_SYNC_STRUCT	*pBeaconSync;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 /*	LARGE_INTEGER 	tsfTime, deltaTime;*/
 
 	pBeaconSync = pAd->CommonCfg.pBeaconSync;
@@ -790,7 +790,7 @@ void RTUSBBssBeaconInit(struct rtmp_adapter*pAd)
 {
 	BEACON_SYNC_STRUCT	*pBeaconSync;
 	int i, j;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	pAd->CommonCfg.pBeaconSync =
 		kmalloc(sizeof(BEACON_SYNC_STRUCT), GFP_ATOMIC);

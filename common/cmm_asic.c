@@ -876,11 +876,11 @@ void AsicEnableIbssSync(
 	UINT i;
 	ULONG beaconBaseLocation = 0;
 	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.MPDUtotalByteCnt;
-	u8 TXWISize = sizeof(struct txwi_nmac);
+	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 #ifdef RT_BIG_ENDIAN
 	{
-	struct txwi_nmac 	localTxWI;
+	struct mt7610u_txwi 	localTxWI;
 
 	memmove((u8 *)&localTxWI, (u8 *)&pAd->BeaconTxWI, TXWISize);
 	RTMPWIEndianChange(&localTxWI, sizeof(*localTxWI));
