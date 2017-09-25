@@ -36,7 +36,7 @@
 	with given size and specified rate.
 
 	Arguments:
-		pTxWI		Pointer to head of each MPDU to HW.
+		txwi		Pointer to head of each MPDU to HW.
 		Ack 		Setting for Ack requirement bit
 		Fragment	Setting for Fragment bit
 		RetryMode	Setting for retry mode
@@ -74,7 +74,7 @@ void RTMPWriteTxWI(
 	IN HTTRANSMIT_SETTING *pTransmit)
 {
 	PMAC_TABLE_ENTRY pMac = NULL;
-	struct mt7610u_txwi TxWI, *pTxWI;
+	struct mt7610u_txwi TxWI, *txwi;
 	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 	if (WCID < MAX_LEN_OF_MAC_TABLE)
@@ -87,37 +87,37 @@ void RTMPWriteTxWI(
 	*/
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);
 	memset(&TxWI, 0, TXWISize);
-	pTxWI = &TxWI;
-	pTxWI->FRAG= FRAG;
-	pTxWI->CFACK = CFACK;
-	pTxWI->TS= InsTimestamp;
-	pTxWI->AMPDU = AMPDU;
-	pTxWI->ACK = Ack;
-	pTxWI->txop= Txopmode;
+	txwi = &TxWI;
+	txwi->FRAG= FRAG;
+	txwi->CFACK = CFACK;
+	txwi->TS= InsTimestamp;
+	txwi->AMPDU = AMPDU;
+	txwi->ACK = Ack;
+	txwi->txop= Txopmode;
 
-	pTxWI->NSEQ = NSeq;
+	txwi->NSEQ = NSeq;
 	/* John tune the performace with Intel Client in 20 MHz performance*/
 	BASize = pAd->CommonCfg.TxBASize;
 	if (BASize > 31)
 		BASize =31;
 
-	pTxWI->BAWinSize = BASize;
-	pTxWI->ShortGI = pTransmit->field.ShortGI;
-	pTxWI->STBC = pTransmit->field.STBC;
+	txwi->BAWinSize = BASize;
+	txwi->ShortGI = pTransmit->field.ShortGI;
+	txwi->STBC = pTransmit->field.STBC;
 
 
-	pTxWI->wcid = WCID;
-	pTxWI->MPDUtotalByteCnt = Length;
-	pTxWI->TxPktId = PID;
+	txwi->wcid = WCID;
+	txwi->MPDUtotalByteCnt = Length;
+	txwi->TxPktId = PID;
 
 	/* If CCK or OFDM, BW must be 20*/
-	pTxWI->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-	if (pTxWI->BW)
-		pTxWI->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
+	txwi->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
+	if (txwi->BW)
+		txwi->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
-	pTxWI->MCS = pTransmit->field.MCS;
-	pTxWI->PHYMODE = pTransmit->field.MODE;
-	pTxWI->CFACK = CfAck;
+	txwi->MCS = pTransmit->field.MCS;
+	txwi->PHYMODE = pTransmit->field.MODE;
+	txwi->CFACK = CfAck;
 
 	if (pMac)
 	{
@@ -126,32 +126,32 @@ void RTMPWriteTxWI(
     		if ((pMac->MmpsMode == MMPS_DYNAMIC) && (pTransmit->field.MCS > 7))
 			{
 				/* Dynamic MIMO Power Save Mode*/
-				pTxWI->MIMOps = 1;
+				txwi->MIMOps = 1;
 			}
 			else if (pMac->MmpsMode == MMPS_STATIC)
 			{
 				/* Static MIMO Power Save Mode*/
 				if (pTransmit->field.MODE >= MODE_HTMIX && pTransmit->field.MCS > 7)
 				{
-					pTxWI->MCS = 7;
-					pTxWI->MIMOps = 0;
+					txwi->MCS = 7;
+					txwi->MIMOps = 0;
 				}
 			}
         }
-		/*pTxWI->MIMOps = (pMac->PsMode == PWR_MMPS)? 1:0;*/
+		/*txwi->MIMOps = (pMac->PsMode == PWR_MMPS)? 1:0;*/
 		{
-			pTxWI->MpduDensity = pMac->MpduDensity;
+			txwi->MpduDensity = pMac->MpduDensity;
 		}
 	}
 
 
-	pTxWI->TxPktId = pTxWI->MCS;
+	txwi->TxPktId = txwi->MCS;
 	memmove(pOutTxWI, &TxWI, TXWISize);
 //---Add by shiang for debug
 }
 
 
-void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_BLK *pTxBlk)
+void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *txwi, TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
@@ -159,7 +159,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 	u8 TXWISize = sizeof(struct mt7610u_txwi);
 
 
-	ASSERT(pTxWI);
+	ASSERT(txwi);
 
 	pTransmit = pTxBlk->pTransmit;
 	pMacEntry = pTxBlk->pMacEntry;
@@ -169,41 +169,41 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 		Todo: remove the following line if short preamble functionality works
 	*/
 	OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);
-	memset(pTxWI, 0, TXWISize);
+	memset(txwi, 0, TXWISize);
 
-	pTxWI->FRAG = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAllowFrag);
-	pTxWI->ACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
-	pTxWI->txop = pTxBlk->FrameGap;
+	txwi->FRAG = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAllowFrag);
+	txwi->ACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
+	txwi->txop = pTxBlk->FrameGap;
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
 	if (pMacEntry && IS_ENTRY_DLS(pMacEntry) &&
 		(pAd->StaCfg.BssType == BSS_INFRA))
-		pTxWI->wcid = BSSID_WCID;
+		txwi->wcid = BSSID_WCID;
 	else
 #endif /* QOS_DLS_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
-	pTxWI->wcid = pTxBlk->Wcid;
+	txwi->wcid = pTxBlk->Wcid;
 
-	pTxWI->MPDUtotalByteCnt = pTxBlk->MpduHeaderLen + pTxBlk->SrcBufLen;
-	pTxWI->CFACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bPiggyBack);
+	txwi->MPDUtotalByteCnt = pTxBlk->MpduHeaderLen + pTxBlk->SrcBufLen;
+	txwi->CFACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bPiggyBack);
 
 #ifdef WFA_VHT_PF
 	if (pAd->force_noack == true)
-		pTxWI->ACK = 0;
+		txwi->ACK = 0;
 #endif /* WFA_VHT_PF */
 
-	pTxWI->ShortGI = pTransmit->field.ShortGI;
-	pTxWI->STBC = pTransmit->field.STBC;
-	pTxWI->MCS = pTransmit->field.MCS;
-	pTxWI->PHYMODE = pTransmit->field.MODE;
+	txwi->ShortGI = pTransmit->field.ShortGI;
+	txwi->STBC = pTransmit->field.STBC;
+	txwi->MCS = pTransmit->field.MCS;
+	txwi->PHYMODE = pTransmit->field.MODE;
 
 	/* If CCK or OFDM, BW must be 20 */
-	pTxWI->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-	if (pTxWI->BW)
-		pTxWI->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
+	txwi->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
+	if (txwi->BW)
+		txwi->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
-	pTxWI->AMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? true : false);
+	txwi->AMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? true : false);
 	BASize = pAd->CommonCfg.TxBASize;
 	if((pTxBlk->TxFrameType == TX_AMPDU_FRAME) && (pMacEntry))
 	{
@@ -212,7 +212,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 		BASize = pAd->BATable.BAOriEntry[RABAOriIdx].BAWinSize;
 	}
 
-	pTxWI->BAWinSize = BASize;
+	txwi->BAWinSize = BASize;
 
 
 
@@ -221,7 +221,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 		if ((pMacEntry->MmpsMode == MMPS_DYNAMIC) && (pTransmit->field.MCS > 7))
 		{
 			/* Dynamic MIMO Power Save Mode*/
-			pTxWI->MIMOps = 1;
+			txwi->MIMOps = 1;
 		}
 		else if (pMacEntry->MmpsMode == MMPS_STATIC)
 		{
@@ -229,40 +229,40 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 			if ((pTransmit->field.MODE == MODE_HTMIX || pTransmit->field.MODE == MODE_HTGREENFIELD) &&
 				(pTransmit->field.MCS > 7))
 			{
-				pTxWI->MCS = 7;
-				pTxWI->MIMOps = 0;
+				txwi->MCS = 7;
+				txwi->MIMOps = 0;
 			}
 		}
 
-		pTxWI->MpduDensity = pMacEntry->MpduDensity;
+		txwi->MpduDensity = pMacEntry->MpduDensity;
 	}
 
 #ifdef DBG_DIAGNOSE
 	if (pTxBlk->QueIdx== 0)
 	{
 		pAd->DiagStruct.TxDataCnt[pAd->DiagStruct.ArrayCurIdx]++;
-		pAd->DiagStruct.TxMcsCnt[pAd->DiagStruct.ArrayCurIdx][pTxWI->MCS]++;
+		pAd->DiagStruct.TxMcsCnt[pAd->DiagStruct.ArrayCurIdx][txwi->MCS]++;
 	}
 #endif /* DBG_DIAGNOSE */
 
 	/* for rate adapation*/
-	pTxWI->TxPktId = pTxWI->MCS;
+	txwi->TxPktId = txwi->MCS;
 
 #ifdef MCS_LUT_SUPPORT
 	if ((RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT)) &&
-		(pTxWI->wcid < 128) &&
+		(txwi->wcid < 128) &&
 		(pMacEntry && pMacEntry->bAutoTxRateSwitch == true))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
 
-		rate_ctrl.field.MODE = pTxWI->PHYMODE;
-		rate_ctrl.field.STBC = pTxWI->STBC;
-		rate_ctrl.field.ShortGI = pTxWI->ShortGI;
-		rate_ctrl.field.BW = pTxWI->BW;
-		rate_ctrl.field.MCS = pTxWI->MCS;
+		rate_ctrl.field.MODE = txwi->PHYMODE;
+		rate_ctrl.field.STBC = txwi->STBC;
+		rate_ctrl.field.ShortGI = txwi->ShortGI;
+		rate_ctrl.field.BW = txwi->BW;
+		rate_ctrl.field.MCS = txwi->MCS;
 		if (rate_ctrl.word == pTransmit->word)
-			pTxWI->TxWILutEn = 1;
-		pTxWI->TxWILutEn = 0;
+			txwi->TxWILutEn = 1;
+		txwi->TxWILutEn = 0;
 	}
 #endif /* MCS_LUT_SUPPORT */
 
@@ -271,7 +271,7 @@ void RTMPWriteTxWI_Data(struct rtmp_adapter*pAd, struct mt7610u_txwi *pTxWI, TX_
 
 void RTMPWriteTxWI_Cache(
 	IN struct rtmp_adapter*pAd,
-	INOUT struct mt7610u_txwi *pTxWI,
+	INOUT struct mt7610u_txwi *txwi,
 	IN TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
@@ -284,27 +284,27 @@ void RTMPWriteTxWI_Cache(
 
 	if (pMacEntry->bAutoTxRateSwitch)
 	{
-		pTxWI->txop = IFS_HTTXOP;
+		txwi->txop = IFS_HTTXOP;
 
 		/* If CCK or OFDM, BW must be 20*/
-		pTxWI->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-		pTxWI->ShortGI = pTransmit->field.ShortGI;
-		pTxWI->STBC = pTransmit->field.STBC;
+		txwi->BW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
+		txwi->ShortGI = pTransmit->field.ShortGI;
+		txwi->STBC = pTransmit->field.STBC;
 
-		pTxWI->MCS = pTransmit->field.MCS;
-		pTxWI->PHYMODE = pTransmit->field.MODE;
+		txwi->MCS = pTransmit->field.MCS;
+		txwi->PHYMODE = pTransmit->field.MODE;
 
 		/* set PID for TxRateSwitching*/
-		pTxWI->TxPktId = pTransmit->field.MCS;
+		txwi->TxPktId = pTransmit->field.MCS;
 
 	}
 
-	pTxWI->AMPDU = ((pMacEntry->NoBADataCountDown == 0) ? true: false);
+	txwi->AMPDU = ((pMacEntry->NoBADataCountDown == 0) ? true: false);
 
-	pTxWI->MIMOps = 0;
+	txwi->MIMOps = 0;
 
-	if (pTxWI->BW)
-		pTxWI->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
+	if (txwi->BW)
+		txwi->BW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
     if (pAd->CommonCfg.bMIMOPSEnable)
     {
@@ -312,15 +312,15 @@ void RTMPWriteTxWI_Cache(
 		if ((pMacEntry->MmpsMode == MMPS_DYNAMIC) && (pTransmit->field.MCS > 7))
 		{
 			/* Dynamic MIMO Power Save Mode*/
-			pTxWI->MIMOps = 1;
+			txwi->MIMOps = 1;
 		}
 		else if (pMacEntry->MmpsMode == MMPS_STATIC)
 		{
 			/* Static MIMO Power Save Mode*/
 			if ((pTransmit->field.MODE >= MODE_HTMIX) && (pTransmit->field.MCS > 7))
 			{
-				pTxWI->MCS = 7;
-				pTxWI->MIMOps = 0;
+				txwi->MCS = 7;
+				txwi->MIMOps = 0;
 			}
 		}
     }
@@ -330,35 +330,35 @@ void RTMPWriteTxWI_Cache(
 	if (pTxBlk->QueIdx== 0)
 	{
 		pAd->DiagStruct.TxDataCnt[pAd->DiagStruct.ArrayCurIdx]++;
-		pAd->DiagStruct.TxMcsCnt[pAd->DiagStruct.ArrayCurIdx][pTxWI->MCS]++;
+		pAd->DiagStruct.TxMcsCnt[pAd->DiagStruct.ArrayCurIdx][txwi->MCS]++;
 	}
 #endif /* DBG_DIAGNOSE */
 
-	pTxWI->MPDUtotalByteCnt = pTxBlk->MpduHeaderLen + pTxBlk->SrcBufLen;
+	txwi->MPDUtotalByteCnt = pTxBlk->MpduHeaderLen + pTxBlk->SrcBufLen;
 
 
 #ifdef WFA_VHT_PF
 	if (pAd->force_noack == true)
-		pTxWI->ACK = 0;
+		txwi->ACK = 0;
 	else
 #endif /* WFA_VHT_PF */
-		pTxWI->ACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
+		txwi->ACK = TX_BLK_TEST_FLAG(pTxBlk, fTX_bAckRequired);
 
 #ifdef MCS_LUT_SUPPORT
 	if (RTMP_TEST_MORE_FLAG(pAd, fASIC_CAP_MCS_LUT) &&
-		(pTxWI->wcid < 128) &&
+		(txwi->wcid < 128) &&
 		(pMacEntry && pMacEntry->bAutoTxRateSwitch == true))
 	{
 		HTTRANSMIT_SETTING rate_ctrl;
 
-		rate_ctrl.field.MODE = pTxWI->PHYMODE;
-		rate_ctrl.field.STBC = pTxWI->STBC;
-		rate_ctrl.field.ShortGI = pTxWI->ShortGI;
-		rate_ctrl.field.BW = pTxWI->BW;
-		rate_ctrl.field.MCS = pTxWI->MCS;
+		rate_ctrl.field.MODE = txwi->PHYMODE;
+		rate_ctrl.field.STBC = txwi->STBC;
+		rate_ctrl.field.ShortGI = txwi->ShortGI;
+		rate_ctrl.field.BW = txwi->BW;
+		rate_ctrl.field.MCS = txwi->MCS;
 		if (rate_ctrl.word == pTransmit->word)
-			pTxWI->TxWILutEn = 1;
-		pTxWI->TxWILutEn = 0;
+			txwi->TxWILutEn = 1;
+		txwi->TxWILutEn = 0;
 	}
 #endif /* MCS_LUT_SUPPORT */
 

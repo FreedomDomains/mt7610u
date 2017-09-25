@@ -3576,7 +3576,7 @@ USHORT RTMPCalcDuration(
 
 void RTMPWriteTxWI(
 	IN struct rtmp_adapter*pAd,
-	IN struct mt7610u_txwi *pTxWI,
+	IN struct mt7610u_txwi *txwi,
 	IN bool FRAG,
 	IN bool CFACK,
 	IN bool InsTimestamp,
@@ -3596,13 +3596,13 @@ void RTMPWriteTxWI(
 
 void RTMPWriteTxWI_Data(
 	IN struct rtmp_adapter*pAd,
-	INOUT struct mt7610u_txwi *pTxWI,
+	INOUT struct mt7610u_txwi *txwi,
 	IN TX_BLK *pTxBlk);
 
 
 void RTMPWriteTxWI_Cache(
 	IN struct rtmp_adapter*pAd,
-	INOUT struct mt7610u_txwi *pTxWI,
+	INOUT struct mt7610u_txwi *txwi,
 	IN TX_BLK *pTxBlk);
 
 void RTMPSuspendMsduTransmission(
@@ -5391,7 +5391,7 @@ void dbQueueEnqueue(
 	IN u8 *data);
 
 void dbQueueEnqueueTxFrame(
-	IN u8 *pTxWI,
+	IN u8 *txwi,
 	IN u8 *pHeader_802_11);
 
 void dbQueueEnqueueRxFrame(

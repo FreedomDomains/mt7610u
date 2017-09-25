@@ -2611,7 +2611,7 @@ ULONG MakeIbssBeacon(
 	USHORT CapabilityInfo;
 	LARGE_INTEGER FakeTimestamp;
 	ULONG FrameLen = 0;
-	struct mt7610u_txwi *pTxWI = &pAd->BeaconTxWI;
+	struct mt7610u_txwi *txwi = &pAd->BeaconTxWI;
 	u8 *pBeaconFrame = pAd->BeaconBuf;
 	bool Privacy;
 	u8 SupRate[MAX_LEN_OF_SUPPORTED_RATES];
@@ -2780,7 +2780,7 @@ ULONG MakeIbssBeacon(
 
 	/*beacon use reserved WCID 0xff */
 	if (pAd->CommonCfg.Channel > 14) {
-		RTMPWriteTxWI(pAd, pTxWI, false, false, true, false, false,
+		RTMPWriteTxWI(pAd, txwi, false, false, true, false, false,
 			      true, 0, 0xff, FrameLen, PID_MGMT, PID_BEACON,
 			      RATE_1, IFS_HTTXOP, false,
 			      &pAd->CommonCfg.MlmeTransmit);
@@ -2788,14 +2788,14 @@ ULONG MakeIbssBeacon(
 		/* Set to use 1Mbps for Adhoc beacon. */
 		HTTRANSMIT_SETTING Transmit;
 		Transmit.word = 0;
-		RTMPWriteTxWI(pAd, pTxWI, false, false, true, false, false,
+		RTMPWriteTxWI(pAd, txwi, false, false, true, false, false,
 			      true, 0, 0xff, FrameLen, PID_MGMT, PID_BEACON,
 			      RATE_1, IFS_HTTXOP, false, &Transmit);
 	}
 
 #ifdef RT_BIG_ENDIAN
 	RTMPFrameEndianChange(pAd, pBeaconFrame, DIR_WRITE, false);
-	RTMPWIEndianChange(pAd, (u8 *) pTxWI, TYPE_TXWI);
+	RTMPWIEndianChange(pAd, (u8 *) txwi, TYPE_TXWI);
 #endif
 
 	DBGPRINT(RT_DEBUG_TRACE,

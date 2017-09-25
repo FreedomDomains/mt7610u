@@ -144,7 +144,7 @@ void RTUSBBulkOutDataPacket(
 	struct urb *		pUrb;
 	int				ret = 0;
 	struct mt7610_txinfo_pkt *pTxInfo, *pLastTxInfo = NULL;
-	struct mt7610u_txwi *pTxWI;
+	struct mt7610u_txwi *txwi;
 	ULONG			TmpBulkEndPos, ThisBulkSize;
 	unsigned long	IrqFlags = 0, IrqFlags2 = 0;
 	u8 *		pWirelessPkt, *pAppendant;
@@ -223,14 +223,14 @@ void RTUSBBulkOutDataPacket(
 	do
 	{
 		pTxInfo = (struct mt7610_txinfo_pkt *)&pWirelessPkt[TmpBulkEndPos];
-		pTxWI = (struct mt7610u_txwi *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
+		txwi = (struct mt7610u_txwi *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
 
 		if (pAd->bForcePrintTX == true)
-			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   pTxWI->AMPDU));
+			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   txwi->AMPDU));
 
 		/* add by Iverson, limit BulkOut size to 4k to pass WMM b mode 2T1R test items*/
-		/*if ((ThisBulkSize != 0)  && (pTxWI->AMPDU == 0))*/
-		if ((ThisBulkSize != 0) && (pTxWI->PHYMODE == MODE_CCK))
+		/*if ((ThisBulkSize != 0)  && (txwi->AMPDU == 0))*/
+		if ((ThisBulkSize != 0) && (txwi->PHYMODE == MODE_CCK))
 		{
 			if (((ThisBulkSize&0xffff8000) != 0) || ((ThisBulkSize&0x1000) == 0x1000))
 			{
@@ -238,7 +238,7 @@ void RTUSBBulkOutDataPacket(
 				pHTTXContext->ENextBulkOutPosition = TmpBulkEndPos;
 				break;
 			}
-			else if (((pAd->out_max_packet < 512) && ((ThisBulkSize&0xfffff800) != 0) ) /*|| ( (ThisBulkSize != 0)  && (pTxWI->AMPDU == 0))*/)
+			else if (((pAd->out_max_packet < 512) && ((ThisBulkSize&0xfffff800) != 0) ) /*|| ( (ThisBulkSize != 0)  && (txwi->AMPDU == 0))*/)
 			{
 				/* For USB 1.1 or peer which didn't support AMPDU, limit the BulkOut size. */
 				/* For performence in b/g mode, now just check for USB 1.1 and didn't care about the APMDU or not! 2008/06/04.*/
@@ -258,7 +258,7 @@ void RTUSBBulkOutDataPacket(
 
 			break;
 		}
-		else if (((pAd->out_max_packet < 512) && ((ThisBulkSize&0xfffff800) != 0) ) /*|| ( (ThisBulkSize != 0)  && (pTxWI->AMPDU == 0))*/)
+		else if (((pAd->out_max_packet < 512) && ((ThisBulkSize&0xfffff800) != 0) ) /*|| ( (ThisBulkSize != 0)  && (txwi->AMPDU == 0))*/)
 		{	/* For USB 1.1 or peer which didn't support AMPDU, limit the BulkOut size. */
 			/* For performence in b/g mode, now just check for USB 1.1 and didn't care about the APMDU or not! 2008/06/04.*/
 			pHTTXContext->ENextBulkOutPosition = TmpBulkEndPos;
@@ -303,8 +303,8 @@ void RTUSBBulkOutDataPacket(
 		}
 
 			/* Increase Total transmit byte counter*/
-		pAd->RalinkCounters.OneSecTransmittedByteCount +=  pTxWI->MPDUtotalByteCnt;
-		pAd->RalinkCounters.TransmittedByteCount +=  pTxWI->MPDUtotalByteCnt;
+		pAd->RalinkCounters.OneSecTransmittedByteCount +=  txwi->MPDUtotalByteCnt;
+		pAd->RalinkCounters.TransmittedByteCount +=  txwi->MPDUtotalByteCnt;
 
 		pLastTxInfo = pTxInfo;
 
@@ -327,14 +327,14 @@ void RTUSBBulkOutDataPacket(
 
 	#ifdef RT_BIG_ENDIAN
 			RTMPDescriptorEndianChange((u8 *)pTxInfo, TYPE_TXINFO);
-			RTMPWIEndianChange(pAd, (u8 *)pTxWI, TYPE_TXWI);
+			RTMPWIEndianChange(pAd, (u8 *)txwi, TYPE_TXWI);
 	#endif /* RT_BIG_ENDIAN */
 
 			break;
 		}
 #ifdef RT_BIG_ENDIAN
 		RTMPDescriptorEndianChange((u8 *)pTxInfo, TYPE_TXINFO);
-		RTMPWIEndianChange(pTxWI, sizeof(*pTxWI));
+		RTMPWIEndianChange(txwi, sizeof(*txwi));
 #endif /* RT_BIG_ENDIAN */
 
 	}while (true);
