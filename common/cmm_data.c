@@ -130,7 +130,7 @@ int MiniportMMRequest(
 	u8 TXWISize = sizeof(struct mt7610u_txwi);
 	u8 rtmpHwHdr[40];
 	bool bUseDataQ = false, FlgDataQForce = false, FlgIsLocked = false;
-	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize + TSO_SIZE;
+	int retryCnt = 0, hw_len = TXINFO_SIZE + TXWISize;
 
 
 	ASSERT(Length <= MGMT_DMA_BUFFER_SIZE);
@@ -291,7 +291,7 @@ int MlmeHardTransmitMgmtRing(
 #endif /* CONFIG_STA_SUPPORT */
 
 	pFirstTxWI = (struct mt7610u_txwi *)(pSrcBufVA +  TXINFO_SIZE);
-	pHeader_802_11 = (PHEADER_802_11) (pSrcBufVA + TXINFO_SIZE + TSO_SIZE + TXWISize);
+	pHeader_802_11 = (PHEADER_802_11) (pSrcBufVA + TXINFO_SIZE);
 
 	if (pHeader_802_11->Addr1[0] & 0x01)
 	{
@@ -466,7 +466,7 @@ int MlmeHardTransmitMgmtRing(
 	if (pMacEntry == NULL)
 	{
 		RTMPWriteTxWI(pAd, pFirstTxWI, false, false, bInsertTimestamp, false, bAckRequired, false,
-						0, RESERVED_WCID, (SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE), PID, 0,
+						0, RESERVED_WCID, (SrcBufLen - TXINFO_SIZE - TXWISize), PID, 0,
 						(u8)pAd->CommonCfg.MlmeTransmit.field.MCS, IFS_BACKOFF, false,
 						&pAd->CommonCfg.MlmeTransmit);
 	}
@@ -475,7 +475,7 @@ int MlmeHardTransmitMgmtRing(
 		/* dont use low rate to send QoS Null data frame */
 		RTMPWriteTxWI(pAd, pFirstTxWI, false, false,
 					bInsertTimestamp, false, bAckRequired, false,
-					0, pMacEntry->Aid, (SrcBufLen - TXINFO_SIZE - TXWISize - TSO_SIZE),
+					0, pMacEntry->Aid, (SrcBufLen - TXINFO_SIZE - TXWISize),
 					pMacEntry->MaxHTPhyMode.field.MCS, 0,
 					(u8)pMacEntry->MaxHTPhyMode.field.MCS,
 					IFS_BACKOFF, false, &pMacEntry->MaxHTPhyMode);

@@ -196,15 +196,15 @@ void ComposePsPoll(struct rtmp_adapter*pAd)
 	txwi = (struct mt7610u_txwi *)&buf[TXINFO_SIZE];
 	memset(buf, 0, 100);
 	data_len = sizeof (PSPOLL_FRAME);
-	rlt_usb_write_txinfo(txinfo, data_len + TXWISize + TSO_SIZE, true,
+	rlt_usb_write_txinfo(txinfo, data_len + TXWISize, true,
 						ep2dmaq(MGMTPIPEIDX));
 	RTMPWriteTxWI(pAd, txwi, false, false, false, false, true, false, 0,
 		      BSSID_WCID, data_len, 0, 0,
 		      (u8) pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, false, &pAd->CommonCfg.MlmeTransmit);
-	memmove((void *)&buf[TXWISize + TXINFO_SIZE + TSO_SIZE], (void *)&pAd->PsPollFrame, data_len);
+	memmove((void *)&buf[TXWISize + TXINFO_SIZE], (void *)&pAd->PsPollFrame, data_len);
 	/* Append 4 extra zero bytes. */
-	pAd->PsPollContext.BulkOutSize = TXINFO_SIZE + TXWISize + TSO_SIZE + data_len + 4;
+	pAd->PsPollContext.BulkOutSize = TXINFO_SIZE + TXWISize + data_len + 4;
 }
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -231,14 +231,14 @@ void ComposeNullFrame(struct rtmp_adapter*pAd)
 	txinfo = (struct mt7610_txinfo_pkt *)buf;
 	txwi = (struct mt7610u_txwi *)&buf[TXINFO_SIZE];
 	rlt_usb_write_txinfo(txinfo,
-			(USHORT)(data_len + TXWISize + TSO_SIZE), true,
+			(USHORT)(data_len + TXWISize), true,
 			ep2dmaq(MGMTPIPEIDX));
 	RTMPWriteTxWI(pAd, txwi, false, false, false, false, true, false, 0,
 		      BSSID_WCID, data_len, 0, 0,
 		      (u8)pAd->CommonCfg.MlmeTransmit.field.MCS,
 		      IFS_BACKOFF, false, &pAd->CommonCfg.MlmeTransmit);
 	memmove((void *)&buf[TXWISize + TXINFO_SIZE], (void *)&pAd->NullFrame, data_len);
-	pAd->NullContext.BulkOutSize = TXINFO_SIZE + TXWISize + TSO_SIZE + data_len + 4;
+	pAd->NullContext.BulkOutSize = TXINFO_SIZE + TXWISize + data_len + 4;
 }
 
 
@@ -485,7 +485,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 		pWirelessPacket = &pHTTXContext->TransferBuffer->field.WirelessPacket[fillOffset];
 
 		/* Build our URB for USBD */
-		hdr_len = TXWISize + TSO_SIZE + pTxBlk->MpduHeaderLen + pTxBlk->HdrPadLen;
+		hdr_len = TXWISize + pTxBlk->MpduHeaderLen + pTxBlk->HdrPadLen;
 		hdr_copy_len = TXINFO_SIZE + hdr_len;
 		dma_len = hdr_len + pTxBlk->SrcBufLen;
 		padding = (4 - (dma_len % 4)) & 0x03;	/* round up to 4 byte alignment*/
@@ -493,7 +493,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 
 		pTxBlk->Priv = (TXINFO_SIZE + dma_len);
 
-		/* For TxInfo, the length of USBDMApktLen = TXWI_SIZE + TSO_SIZE + 802.11 header + payload */
+		/* For TxInfo, the length of USBDMApktLen = TXWI_SIZE + 802.11 header + payload */
 		rlt_usb_write_txinfo(txinfo, (USHORT)(dma_len), false, MT_QSEL_EDCA);
 
 
@@ -505,7 +505,7 @@ USHORT RtmpUSB_WriteSingleTxResource(
 
 		memmove(pWirelessPacket, pTxBlk->HeaderBuf, hdr_copy_len);
 #ifdef RT_BIG_ENDIAN
-		RTMPFrameEndianChange(pAd, (u8 *)(pWirelessPacket + TXINFO_SIZE + TXWISize + TSO_SIZE), DIR_WRITE, false);
+		RTMPFrameEndianChange(pAd, (u8 *)(pWirelessPacket + TXINFO_SIZE + TXWISize), DIR_WRITE, false);
 #endif /* RT_BIG_ENDIAN */
 		pWirelessPacket += (hdr_copy_len);
 
@@ -914,7 +914,7 @@ void RtmpUSBNullFrameKickOut(
 
 		memset(&pWirelessPkt[0], 0, 100);
 		txinfo = (struct mt7610_txinfo_pkt *)&pWirelessPkt[0];
-		rlt_usb_write_txinfo(txinfo, (USHORT)(frameLen + TXWISize + TSO_SIZE), true, ep2dmaq(MGMTPIPEIDX));
+		rlt_usb_write_txinfo(txinfo, (USHORT)(frameLen + TXWISize), true, ep2dmaq(MGMTPIPEIDX));
 		txinfo->QSEL = MT_QSEL_EDCA;
 		txwi = (struct mt7610u_txwi *)&pWirelessPkt[TXINFO_SIZE];
 		RTMPWriteTxWI(pAd, txwi,  false, false, false, false, true, false, 0, BSSID_WCID, frameLen,
@@ -922,11 +922,11 @@ void RtmpUSBNullFrameKickOut(
 #ifdef RT_BIG_ENDIAN
 		RTMPWIEndianChange(txwi, sizeof(*txwi));
 #endif /* RT_BIG_ENDIAN */
-		memmove(&pWirelessPkt[TXWISize + TXINFO_SIZE + TSO_SIZE], pNullFrame, frameLen);
+		memmove(&pWirelessPkt[TXWISize + TXINFO_SIZE], pNullFrame, frameLen);
 #ifdef RT_BIG_ENDIAN
-		RTMPFrameEndianChange(pAd, (u8 *)&pWirelessPkt[TXINFO_SIZE + TXWISize + TSO_SIZE], DIR_WRITE, false);
+		RTMPFrameEndianChange(pAd, (u8 *)&pWirelessPkt[TXINFO_SIZE + TXWISize], DIR_WRITE, false);
 #endif /* RT_BIG_ENDIAN */
-		pAd->NullContext.BulkOutSize =  TXINFO_SIZE + TXWISize + TSO_SIZE + frameLen + 4;
+		pAd->NullContext.BulkOutSize =  TXINFO_SIZE + TXWISize + frameLen + 4;
 		pAd->NullContext.BulkOutSize = ( pAd->NullContext.BulkOutSize + 3) & (~3);
 
 		/* Fill out frame length information for global Bulk out arbitor*/
