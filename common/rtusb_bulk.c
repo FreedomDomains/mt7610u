@@ -223,7 +223,7 @@ void RTUSBBulkOutDataPacket(
 	do
 	{
 		txinfo = (struct mt7610_txinfo_pkt *)&pWirelessPkt[TmpBulkEndPos];
-		txwi = (struct mt7610u_txwi *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
+		txwi = (struct mt7610u_txwi *)&pWirelessPkt[TmpBulkEndPos + MT_DMA_HDR_LEN];
 
 		if (pAd->bForcePrintTX == true)
 			DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   txwi->AMPDU));
