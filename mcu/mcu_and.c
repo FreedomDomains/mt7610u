@@ -52,13 +52,6 @@
 
 static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
 
-#define MT_DMA_HDR_LEN			4
-#define MT_TXD_INFO_LEN			GENMASK(15, 0)
-#define MT_TXD_CMD_INFO_SEQ            	GENMASK(19, 16)
-#define MT_TXD_CMD_INFO_TYPE            GENMASK(26, 20)
-#define MT_TXD_INFO_D_PORT		GENMASK(29, 27)
-#define MT_TXD_INFO_TYPE		GENMASK(31, 30)
-
 struct mt7610u_dma_buf {
 	struct urb *urb;
 	void *buf;
