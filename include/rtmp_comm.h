@@ -297,9 +297,6 @@ typedef struct  _PACKET_INFO    {
 	UINT BufferCount;           /* Number of Buffer descriptor chained */
 	UINT TotalPacketLength ;     /* Self explained */
 	PNDIS_BUFFER pFirstBuffer;   /* Pointer to first buffer descriptor */
-#ifdef TX_PKT_SG
-	PKT_SG_T sg_list[MAX_SKB_FRAGS];
-#endif /* TX_PKT_SG */
 } PACKET_INFO, *PPACKET_INFO;
 
 

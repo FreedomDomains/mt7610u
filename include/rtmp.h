@@ -2865,9 +2865,6 @@ typedef struct _TX_BLK_
 	ULONG				Priv;						/* Hardware specific value saved in here. */
 
 	u8 			naf_type;
-#ifdef TX_PKT_SG
-	PACKET_INFO pkt_info;
-#endif /* TX_PKT_SG */
 	u8 			OpMode;
 
 } TX_BLK, *PTX_BLK;

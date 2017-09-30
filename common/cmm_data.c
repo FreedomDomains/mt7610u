@@ -633,9 +633,6 @@ bool RTMP_FillTxBlkInfo(struct rtmp_adapter*pAd, TX_BLK *pTxBlk)
 
 	pPacket = pTxBlk->pPacket;
 	RTMP_QueryPacketInfo(pPacket, &PacketInfo, &pTxBlk->pSrcBufHeader, &pTxBlk->SrcBufLen);
-#ifdef TX_PKT_SG
-	memmove( &pTxBlk->pkt_info, &PacketInfo, sizeof(PacketInfo));
-#endif /* TX_PKT_SG */
 	pTxBlk->Wcid = RTMP_GET_PACKET_WCID(pPacket);
 	pTxBlk->apidx = RTMP_GET_PACKET_IF(pPacket);
 	pTxBlk->UserPriority = RTMP_GET_PACKET_UP(pPacket);
