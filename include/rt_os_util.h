@@ -84,7 +84,7 @@ struct sk_buff *RTMPAllocateNdisPacket(u8 *pHeader, UINT HeaderLen,
 				       u8 *pData, UINT DataLen);
 
 int Sniff2BytesFromNdisBuffer(
-	IN  PNDIS_BUFFER			pFirstBuffer,
+	IN  char *			pFirstBuffer,
 	IN  u8           		DesiredOffset,
 	OUT u8 *         		pByte0,
 	OUT u8 *         		pByte1);

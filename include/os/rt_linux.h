@@ -95,7 +95,6 @@
 #define MT7610_FIRMWARE_NAME	"mt7610u.bin"
 #define MT7650_FIRMWARE_NAME	"mt7650u.bin"
 
-typedef struct usb_device	*PUSB_DEV;
 typedef struct usb_ctrlrequest devctrlrequest;
 
 /***********************************************************************************
@@ -124,7 +123,6 @@ extern	const struct iw_handler_def rt28xx_iw_handler_def;
 typedef struct pci_dev 		* PPCI_DEV;
 typedef	dma_addr_t			NDIS_PHYSICAL_ADDRESS;
 typedef	dma_addr_t			* PNDIS_PHYSICAL_ADDRESS;
-typedef char 				* PNDIS_BUFFER;
 
 typedef struct ifreq		NET_IOCTL;
 typedef struct ifreq		* PNET_IOCTL;

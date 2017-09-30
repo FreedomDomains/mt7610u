@@ -296,7 +296,7 @@ typedef struct  _PACKET_INFO    {
 	UINT PhysicalBufferCount;    /* Physical breaks of buffer descripor chained */
 	UINT BufferCount;           /* Number of Buffer descriptor chained */
 	UINT TotalPacketLength ;     /* Self explained */
-	PNDIS_BUFFER pFirstBuffer;   /* Pointer to first buffer descriptor */
+	char *pFirstBuffer;   /* Pointer to first buffer descriptor */
 } PACKET_INFO, *PPACKET_INFO;
 
 
