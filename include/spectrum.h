@@ -143,9 +143,6 @@ void PeerSpectrumAction(
 	Return	: None.
 	==========================================================================
  */
-INT Set_MeasureReq_Proc(
-	IN	struct rtmp_adapter *pAd,
-	IN	char *		arg);
 
 INT Set_TpcReq_Proc(
 	IN	struct rtmp_adapter *pAd,
