@@ -2337,10 +2337,8 @@ void CfgInitHook(struct rtmp_adapter *pAd)
 
 static void RtmpChipOpsRegister(struct rtmp_adapter*pAd)
 {
-	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 
-	memset(pChipOps, 0, sizeof(*pChipOps));
 	memset(pChipCap, 0, sizeof(*pChipCap));
 
 	RtmpChipOpsHook(pAd);

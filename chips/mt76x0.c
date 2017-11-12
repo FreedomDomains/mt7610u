@@ -1905,7 +1905,6 @@ Note:
 */
 void MT76x0_Init(struct rtmp_adapter *pAd)
 {
-	struct rtmp_chip_ops  *pChipOps = &pAd->chipOps;
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	u32 Value;
 

@@ -431,19 +431,6 @@ typedef enum _CHIP_SPEC_ID
 
 #define CHIP_SPEC_ID_NUM 	CHIP_SPEC_RESV_FUNC
 
-
-struct rtmp_chip_ops {
-	/*  Calibration access related callback functions */
-
-	/* The chip specific function list */
-	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
-
-	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
-
-	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
-
-};
-
 void RtmpChipOpsHook(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 

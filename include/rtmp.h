@@ -2274,7 +2274,6 @@ struct rtmp_adapter {
 
 	//bool PollIdle;
 
-	struct rtmp_chip_ops  chipOps;
 	struct rtmp_chip_cap chipCap;
 
 #ifdef CONFIG_STA_SUPPORT
