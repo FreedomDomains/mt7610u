@@ -225,8 +225,18 @@ MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[] = {
 	{RF_A_BAND | RF_BW_20 | RF_BW_40 | RF_BW_80,	{ RXFE_R0, 0x895000E0} },
 };
 
+
+/* ULLI : in mt7601u there in an method to write rf registers trough
+ * USB vendor request
+ */
+
+#define MT_MCU_MEMMAP_RF         0x80000000
+
+#define RF_REG_PAIR(bank, reg, value)				\
+	{ MT_MCU_MEMMAP_RF | (bank) << 16 | (reg), value }
+
 /* Bank	Register Value(Hex) */
-static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
+static BANK_RF_REG_PAIR mt7610u_rf_central[] = {
 /*
 	Bank 0 - For central blocks: BG, PLL, XTAL, LO, ADC/DAC
 */
@@ -311,7 +321,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_Central_RegTb[] = {
 	{ RF_BANK0,	RF_R73, 0x93 },
 };
 
-static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
+static BANK_RF_REG_PAIR mt7610u_rf_2g_channel[] = {
 /*
 	Bank 5 - Channel 0 2G RF registers
 */
@@ -410,7 +420,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_2G_Channel_0_RegTb[] = {
 	{ RF_BANK5,	RF_R127, 0x04 },
 };
 
-static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
+static BANK_RF_REG_PAIR mt7610u_rf_5g_channel[] = {
 /*
 	Bank 6 - Channel 0 5G RF registers
 */
@@ -485,7 +495,7 @@ static BANK_RF_REG_PAIR MT76x0_RF_5G_Channel_0_RegTb[] = {
 	{ RF_BANK6,	RF_R65, 0x0F },
 };
 
-static BANK_RF_REG_PAIR MT76x0_RF_VGA_Channel_0_RegTb[] = {
+static BANK_RF_REG_PAIR mt7160u_rf_vga[] = {
 /*
 	Bank 7 - Channel 0 VGA RF registers
 */
@@ -1028,8 +1038,8 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 	if (Channel <= 14) {
 		/* Select 2.4GHz */
 		mt7610u_mcu_rf_random_write(pAd,
-			MT76x0_RF_2G_Channel_0_RegTb,
-			ARRAY_SIZE(MT76x0_RF_2G_Channel_0_RegTb));
+			mt7610u_rf_2g_channel,
+			ARRAY_SIZE(mt7610u_rf_2g_channel));
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x45);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x44);
 
@@ -1040,8 +1050,8 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 	} else {
 		/* Select 5GHz */
 		mt7610u_mcu_rf_random_write(pAd,
-			MT76x0_RF_5G_Channel_0_RegTb,
-			ARRAY_SIZE(MT76x0_RF_5G_Channel_0_RegTb));
+			mt7610u_rf_5g_channel,
+			ARRAY_SIZE(mt7610u_rf_5g_channel));
 		rlt_rf_write(pAd, RF_BANK5, RF_R00, 0x44);
 		rlt_rf_write(pAd, RF_BANK6, RF_R00, 0x45);
 
@@ -1329,20 +1339,20 @@ static void NICInitMT76x0RFRegisters(struct rtmp_adapter *pAd)
 	u8 RFValue;
 
 	mt7610u_mcu_rf_random_write(pAd,
-				MT76x0_RF_Central_RegTb,
-				ARRAY_SIZE(MT76x0_RF_Central_RegTb));
+				mt7610u_rf_central,
+				ARRAY_SIZE(mt7610u_rf_central));
 
 	mt7610u_mcu_rf_random_write(pAd,
-				MT76x0_RF_2G_Channel_0_RegTb,
-				ARRAY_SIZE(MT76x0_RF_2G_Channel_0_RegTb));
+				mt7610u_rf_2g_channel,
+				ARRAY_SIZE(mt7610u_rf_2g_channel));
 
 	mt7610u_mcu_rf_random_write(pAd,
-				MT76x0_RF_5G_Channel_0_RegTb,
-				ARRAY_SIZE(MT76x0_RF_5G_Channel_0_RegTb));
+				mt7610u_rf_5g_channel,
+				ARRAY_SIZE(mt7610u_rf_5g_channel));
 
 	mt7610u_mcu_rf_random_write(pAd,
-				MT76x0_RF_VGA_Channel_0_RegTb,
-				ARRAY_SIZE(MT76x0_RF_VGA_Channel_0_RegTb));
+				mt7160u_rf_vga,
+				ARRAY_SIZE(mt7160u_rf_vga));
 
 	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_RF_BW_Switch); IdReg++) {
 		if (pAd->CommonCfg.BBPCurrentBW == MT76x0_RF_BW_Switch[IdReg].BwBand) {
