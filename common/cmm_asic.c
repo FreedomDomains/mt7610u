@@ -637,20 +637,6 @@ void AsicLockChannel(
 	==========================================================================
  */
 
-void AsicResetBBPAgent(struct rtmp_adapter *pAd)
-{
-	/* Still need to find why BBP agent keeps busy, but in fact, hardware still function ok. Now clear busy first.	*/
-	/* IF chipOps.AsicResetBbpAgent == NULL, run "else" part */
-
-	BBP_CSR_CFG_STRUC	BbpCsr;
-
-	DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));
-	BbpCsr.word = mt7610u_read32(pAd, H2M_BBP_AGENT);
-	BbpCsr.field.Busy = 0;
-	mt7610u_write32(pAd, H2M_BBP_AGENT, BbpCsr.word);
-}
-
-
 #ifdef CONFIG_STA_SUPPORT
 /*
 	==========================================================================

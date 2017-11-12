@@ -3708,9 +3708,6 @@ void AsicAntennaSelect(
 	IN  struct rtmp_adapter *  pAd,
 	IN  u8           Channel);
 
-void AsicResetBBPAgent(
-	IN struct rtmp_adapter *pAd);
-
 #ifdef CONFIG_STA_SUPPORT
 void AsicSleepThenAutoWakeup(
 	IN  struct rtmp_adapter *  pAd,
