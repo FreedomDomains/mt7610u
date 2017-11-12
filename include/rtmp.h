@@ -238,7 +238,6 @@ void DisplayTxAgg (struct rtmp_adapter*pAd);
 #define RTMP_CLEAR_FLAG(_M, _F)     ((_M)->Flags &= ~(_F))
 #define RTMP_CLEAR_FLAGS(_M)        ((_M)->Flags = 0)
 #define RTMP_TEST_FLAG(_M, _F)      (((_M)->Flags & (_F)) != 0)
-#define RTMP_TEST_FLAGS(_M, _F)     (((_M)->Flags & (_F)) == (_F))
 /* Macro for power save flag. */
 #define RTMP_SET_PSFLAG(_M, _F)       ((_M)->PSFlags |= (_F))
 #define RTMP_CLEAR_PSFLAG(_M, _F)     ((_M)->PSFlags &= ~(_F))
