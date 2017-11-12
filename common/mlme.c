@@ -629,9 +629,6 @@ void MlmePeriodicExec(void *FunctionContext)
 		/* Hint: throughput impact is very serious in the function */
 		NICUpdateRawCounters(pAd);
 
-		RTMP_SECOND_CCA_DETECTION(pAd);
-
-
    		/* Need statistics after read counter. So put after NICUpdateRawCounters*/
 		ORIBATimerTimeout(pAd);
 
@@ -716,8 +713,6 @@ void MlmePeriodicExec(void *FunctionContext)
 			STAMlmePeriodicExec(pAd);
 		}
 #endif /* CONFIG_STA_SUPPORT */
-
-		RTMP_SECOND_CCA_DETECTION(pAd);
 
 		MlmeResetRalinkCounters(pAd);
 

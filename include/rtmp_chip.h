@@ -446,8 +446,6 @@ struct rtmp_chip_ops {
 
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
-	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
-
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
 };
@@ -519,14 +517,6 @@ do {	\
 do {	\
 		if (_pAd->chipOps.RFReadModifyWrite != NULL)	\
 			_pAd->chipOps.RFReadModifyWrite(_pAd, _RegPair, _Num);	\
-} while (0)
-
-#define RTMP_SECOND_CCA_DETECTION(__pAd)	\
-do {	\
-	if (__pAd->chipOps.SecondCCADetection != NULL)	\
-	{	\
-		__pAd->chipOps.SecondCCADetection(__pAd);	\
-	}	\
 } while (0)
 
 void RtmpChipOpsHook(struct rtmp_adapter *pAd);
