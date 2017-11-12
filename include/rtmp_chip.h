@@ -440,7 +440,6 @@ struct rtmp_chip_ops {
 	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, bool FlgIsNeedLocked);
 #endif
 
-	void (*AsicRfInit)(struct rtmp_adapter *pAd);
 	void (*AsicBbpInit)(struct rtmp_adapter *pAd);
 	void (*AsicMacInit)(struct rtmp_adapter *pAd);
 

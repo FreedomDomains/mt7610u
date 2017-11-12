@@ -690,8 +690,7 @@ void NICInitAsicFromEEPROM(
 
 	NicConfig2.word = pAd->NicConfig2.word;
 
-	if (pAd->chipOps.AsicRfInit)
-		pAd->chipOps.AsicRfInit(pAd);
+	mt7610u_init_rf(pAd);
 
 
 #ifdef CONFIG_STA_SUPPORT
