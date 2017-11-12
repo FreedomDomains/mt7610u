@@ -435,9 +435,6 @@ typedef enum _CHIP_SPEC_ID
 struct rtmp_chip_ops {
 	/*  Calibration access related callback functions */
 
-	/* IQ Calibration */
-	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
-
 	/* high power tuning */
 	void (*HighPowerTuning)(struct rtmp_adapter *pAd, struct _RSSI_SAMPLE *pRssi);
 
@@ -484,12 +481,6 @@ do {	\
 do {	\
 		if (__pAd->chipOps.AsicFreqCalStop != NULL)	\
 			__pAd->chipOps.AsicFreqCalStop(__pAd);	\
-} while (0)
-
-#define RTMP_CHIP_IQ_CAL(__pAd, __pChannel)	\
-do {	\
-		if (__pAd->chipOps.ChipIQCalibration != NULL)	\
-			 __pAd->chipOps.ChipIQCalibration(__pAd, __pChannel);	\
 } while (0)
 
 #define RTMP_CHIP_HIGH_POWER_TUNING(__pAd, __pRssi)	\
