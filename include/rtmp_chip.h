@@ -435,15 +435,6 @@ typedef enum _CHIP_SPEC_ID
 struct rtmp_chip_ops {
 	/*  Calibration access related callback functions */
 
-	/* MCU related callback functions */
-#ifdef CONFIG_ANDES_SUPPORT
-	int (*sendCommandToAndesMcu)(struct rtmp_adapter *pAd, u8 QueIdx, u8 cmd, u8 *pData, USHORT DataLen, bool FlgIsNeedLocked);
-#endif
-
-	/* Power save */
-	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN bool ReduceCorePower);
-	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
-
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 
@@ -453,7 +444,6 @@ struct rtmp_chip_ops {
 	/* The chip specific function list */
 	CHIP_SPEC_FUNC ChipSpecFunc[CHIP_SPEC_ID_NUM];
 
-	void (*CckMrcStatusCtrl)(struct rtmp_adapter *pAd);
 	void (*RadarGLRTCompensate)(struct rtmp_adapter *pAd);
 
 	void (*SecondCCADetection)(struct rtmp_adapter *pAd);
@@ -461,18 +451,6 @@ struct rtmp_chip_ops {
 	int (*MCU_RandomRead)(struct rtmp_adapter *ad, struct rtmp_reg_pair *RegPair, u32 Num);
 
 };
-
-#define RTMP_CHIP_ENABLE_AP_MIMOPS(__pAd, __ReduceCorePower)	\
-do {	\
-		if (__pAd->chipOps.EnableAPMIMOPS != NULL)	\
-			__pAd->chipOps.EnableAPMIMOPS(__pAd, __ReduceCorePower);	\
-} while (0)
-
-#define RTMP_CHIP_DISABLE_AP_MIMOPS(__pAd)	\
-do {	\
-		if (__pAd->chipOps.DisableAPMIMOPS != NULL)	\
-			__pAd->chipOps.DisableAPMIMOPS(__pAd);	\
-} while (0)
 
 #define RTMP_CHIP_ASIC_TSSI_TABLE_INIT(__pAd)	\
 do {	\
@@ -529,12 +507,6 @@ do {	\
 			if (__pAd->chipOps.ChipSpecFunc[__FuncId] != NULL)	\
 				__pAd->chipOps.ChipSpecFunc[__FuncId](__pAd, __pData, __Data);	\
 		}	\
-} while (0)
-
-#define RTMP_CHIP_CCK_MRC_STATUS_CTRL(__pAd)	\
-do {	\
-		if(__pAd->chipOps.CckMrcStatusCtrl != NULL)	\
-			__pAd->chipOps.CckMrcStatusCtrl(__pAd);	\
 } while (0)
 
 #define RTMP_CHIP_RADAR_GLRT_COMPENSATE(__pAd) \
