@@ -295,8 +295,6 @@
 #define DSC_R0		(BBP_DSC + 0x00)
 #define DSC_R8		(BBP_DSC + 0x20)
 
-#define RTMP_BBP_IO_READ32(_p, _i)	mt7610u_read32(_p, _i)
-
 #define RF_BANK0	0
 #define RF_BANK1	1
 #define RF_BANK2	2

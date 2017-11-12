@@ -1590,7 +1590,7 @@ static void MT76x0_ChipSwitchChannel(
 	}
 
 	/* set Japan Tx filter at channel 14 */
-	RegValue = RTMP_BBP_IO_READ32(pAd, CORE_R1);
+	RegValue = mt7610u_read32(pAd, CORE_R1);
 	if (Channel == 14)
 		RegValue |= 0x20;
 	else
@@ -2347,7 +2347,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 			wait until 0x2088[4] = 0
 	*/
 	for (MTxCycle = 0; MTxCycle < 2000; MTxCycle++) {
-		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
+		reg_val = mt7610u_read32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
 		udelay(3);
@@ -2364,7 +2364,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 			WIFI_BBP_CR_READ(0x208c) //$Dout
 
 	*/
-	Dout = RTMP_BBP_IO_READ32(pAd, CORE_R35);
+	Dout = mt7610u_read32(pAd, CORE_R35);
 	Dout &= 0xFF;
 
 	if ((Dout & 0x80) == 0x00)
@@ -2441,7 +2441,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 			wait until 0x2088[4] = 0
 	*/
 	for (wait = 0; wait < 2000; wait++) {
-		reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R34);
+		reg_val = mt7610u_read32(pAd, CORE_R34);
 		if ((reg_val & 0x10) == 0)
 			break;
 		udelay(3);
@@ -2459,7 +2459,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 			WIFI_BBP_CR_READ(0x208c) //$Dout
 
 	*/
-	reg_val = RTMP_BBP_IO_READ32(pAd, CORE_R35);
+	reg_val = mt7610u_read32(pAd, CORE_R35);
 	reg_val &= 0xFF;
 	if ((reg_val & 0x80) == 0x80)
 		reg_val |= 0xFFFFFF00; /* Negative number */
