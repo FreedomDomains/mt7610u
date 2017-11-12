@@ -180,5 +180,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 void mt7610u_init_rf(struct rtmp_adapter *pAd);
 void mt7610u_init_bbp(struct rtmp_adapter *pAd);
 void mt7610u_init_mac(struct rtmp_adapter *pAd);
+void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
+				 u8 Channel, bool bScan);
 
 #endif /* __MT76x0_H__ */

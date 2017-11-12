@@ -1523,10 +1523,8 @@ void mt7610u_init_bbp(struct rtmp_adapter *pAd)
 	return;
 }
 
-static void MT76x0_ChipSwitchChannel(
-	struct rtmp_adapter *pAd,
-	u8 Channel,
-	bool bScan)
+void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
+				 u8 Channel, bool bScan)
 {
 	CHAR TxPwer = 0; /* Bbp94 = BBPR94_DEFAULT, TxPwer2 = DEFAULT_RF_TX_POWER; */
 	u8 RFValue = 0;
@@ -1984,14 +1982,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	*/
 	rlt_bcn_buf_init(pAd);
 
-	/*
-		init operator
-	*/
-
-	/* Channel */
-	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
-
-	/* MAC */
 
 /*
 	Following callback functions already initiailized in RtmpChipOpsHook()

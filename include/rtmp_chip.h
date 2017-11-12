@@ -444,9 +444,6 @@ struct rtmp_chip_ops {
 	void (*EnableAPMIMOPS)(struct rtmp_adapter *pAd, IN bool ReduceCorePower);
 	void (*DisableAPMIMOPS)(struct rtmp_adapter *pAd);
 
-	/* Channel */
-	void (*ChipSwitchChannel)(struct rtmp_adapter *pAd, u8 ch, bool bScan);
-
 	/* IQ Calibration */
 	void (*ChipIQCalibration)(struct rtmp_adapter *pAd, u8 Channel);
 

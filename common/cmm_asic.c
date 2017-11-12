@@ -594,10 +594,7 @@ void AsicSwitchChannel(
 	else
 		pAd->hw_cfg.cent_ch = Channel;
 
-	if (pAd->chipOps.ChipSwitchChannel)
-		pAd->chipOps.ChipSwitchChannel(pAd, Channel, bScan);
-	else
-		DBGPRINT(RT_DEBUG_ERROR, ("For this chip, no specified channel switch function!\n"));
+	mt7610u_chip_switch_channel(pAd, Channel, bScan);
 
 	/* R66 should be set according to Channel and use 20MHz when scanning*/
 	if (bScan)
