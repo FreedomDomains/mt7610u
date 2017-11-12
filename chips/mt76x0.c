@@ -1500,7 +1500,7 @@ static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
 
 	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); IdReg++) {
 		if (((RF_G_BAND | RF_BW_20) & MT76x0_BPP_SWITCH_Tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
-			RTMP_BBP_IO_WRITE32(pAd, MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Register,
+			mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Register,
 					MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Value);
 		}
 	}
@@ -1595,7 +1595,7 @@ static void MT76x0_ChipSwitchChannel(
 		RegValue |= 0x20;
 	else
 		RegValue &= (~0x20);
-	RTMP_BBP_IO_WRITE32(pAd, CORE_R1, RegValue);
+	mt7610u_write32(pAd, CORE_R1, RegValue);
 
 	for (Index = 0; Index < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); Index++) {
 		if (((rf_phy_mode | rf_bw) & MT76x0_BPP_SWITCH_Tab[Index].BwBand) == (rf_phy_mode | rf_bw)) {
@@ -1612,10 +1612,10 @@ static void MT76x0_ChipSwitchChannel(
 				} else
 					eLNAgain -= (pAd->BLNAGain*2);
 
-				RTMP_BBP_IO_WRITE32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
+				mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
 						(MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value&(~0x0000FF00))|(eLNAgain << 8));
 			} else {
-				RTMP_BBP_IO_WRITE32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
+				mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
 						MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value);
 			}
 		}
@@ -2340,7 +2340,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 		4. Select Level meter from ADC.q:
 			WIFI_BBP_CR_WRITE(0x2088,0x00080055)
 	*/
-	RTMP_BBP_IO_WRITE32(pAd, CORE_R34, 0x00080055);
+	mt7610u_write32(pAd, CORE_R34, 0x00080055);
 
 	/*
 		5. Wait until it's done:
@@ -2355,7 +2355,7 @@ void MT76x0_TempSensor(struct rtmp_adapter *pAd)
 
 	if (MTxCycle >= 2000) {
 		reg_val &= ~(0x10);
-		RTMP_BBP_IO_WRITE32(pAd, CORE_R34, reg_val);
+		mt7610u_write32(pAd, CORE_R34, reg_val);
 		goto done;
 	}
 
@@ -2434,7 +2434,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 		4. Select Level meter from ADC.q:
 			WIFI_BBP_CR_WRITE(0x2088,0x00080055)
 	*/
-	RTMP_BBP_IO_WRITE32(pAd, CORE_R34, 0x00080055);
+	mt7610u_write32(pAd, CORE_R34, 0x00080055);
 
 	/*
 		5. Wait until it's done:
@@ -2449,7 +2449,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 
 	if (wait >= 2000) {
 		reg_val &= ~(0x10);
-		RTMP_BBP_IO_WRITE32(pAd, CORE_R34, reg_val);
+		mt7610u_write32(pAd, CORE_R34, reg_val);
 		status = false;
 		goto done;
 	}
