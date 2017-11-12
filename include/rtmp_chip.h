@@ -444,63 +444,6 @@ struct rtmp_chip_ops {
 
 };
 
-#define RTMP_CHIP_ASIC_TSSI_TABLE_INIT(__pAd)	\
-do {	\
-		if (__pAd->chipOps.InitDesiredTSSITable != NULL)	\
-			__pAd->chipOps.InitDesiredTSSITable(__pAd);	\
-} while (0)
-
-#define RTMP_CHIP_ATE_TSSI_CALIBRATION(__pAd, __pData)	\
-do {	\
-		if (__pAd->chipOps.ATETssiCalibration != NULL)	\
-			__pAd->chipOps.ATETssiCalibration(__pAd, __pData);	\
-} while (0)
-
-#define RTMP_CHIP_ATE_TSSI_CALIBRATION_EXTEND(__pAd, __pData)	\
-do {	\
-		if (__pAd->chipOps.ATETssiCalibrationExtend != NULL)	\
-			__pAd->chipOps.ATETssiCalibrationExtend(__pAd, __pData);	\
-} while (0)
-
-#define RTMP_CHIP_ATE_READ_EXTERNAL_TSSI(__pAd, __pData)	\
-do {	\
-		if (__pAd->chipOps.ATEReadExternalTSSI != NULL)	\
-			__pAd->chipOps.ATEReadExternalTSSI(__pAd, __pData);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_GET_TSSI_RATIO(__pAd, __DeltaPwr)	\
-do {	\
-		if (__pAd->chipOps.AsicFreqCalStop != NULL)	\
-			__pAd->chipOps.TSSIRatio(__DeltaPwr);	\
-} while (0)
-
-#define RTMP_CHIP_ASIC_FREQ_CAL_STOP(__pAd)	\
-do {	\
-		if (__pAd->chipOps.AsicFreqCalStop != NULL)	\
-			__pAd->chipOps.AsicFreqCalStop(__pAd);	\
-} while (0)
-
-#define RTMP_CHIP_SPECIFIC(__pAd, __FuncId, __pData, __Data)	\
-do {	\
-		if ((__FuncId >= 0) && (__FuncId < CHIP_SPEC_RESV_FUNC))	\
-		{	\
-			if (__pAd->chipOps.ChipSpecFunc[__FuncId] != NULL)	\
-				__pAd->chipOps.ChipSpecFunc[__FuncId](__pAd, __pData, __Data);	\
-		}	\
-} while (0)
-
-#define RTMP_CHIP_RADAR_GLRT_COMPENSATE(__pAd) \
-do {	\
-		if(__pAd->chipOps.RadarGLRTCompensate != NULL)	\
-			__pAd->chipOps.RadarGLRTCompensate(__pAd);	\
-} while (0)
-
-#define RF_READ_MODIFY_WRITE(_pAd, _RegPair, _Num)	\
-do {	\
-		if (_pAd->chipOps.RFReadModifyWrite != NULL)	\
-			_pAd->chipOps.RFReadModifyWrite(_pAd, _RegPair, _Num);	\
-} while (0)
-
 void RtmpChipOpsHook(struct rtmp_adapter *pAd);
 void rlt_bcn_buf_init(struct rtmp_adapter *pAd);
 
