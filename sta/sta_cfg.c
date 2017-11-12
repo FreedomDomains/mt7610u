@@ -215,7 +215,7 @@ INT Set_NetworkType_Proc(
 	}
     else if (strcmp(arg, "Monitor") == 0)
 	{
-		BCN_TIME_CFG_STRUC csr;
+		u32 csr;
 		u8 rf_channel, rf_bw;
 		INT ext_ch;
 
@@ -281,11 +281,11 @@ INT Set_NetworkType_Proc(
 		/*mt7610u_write32(pAdapter, MAC_SYS_CTRL, Value); */
 
 		/* disable sync */
-		csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
-		csr.field.bBeaconGen = 0;
-		csr.field.bTBTTEnable = 0;
-		csr.field.TsfSyncMode = 0;
-		mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
+		csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+		csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
+			 MT_BEACON_TIME_CFG_TBTT_EN |
+			 MT_BEACON_TIME_CFG_SYNC_MODE);
+		mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 
 		pAd->StaCfg.BssType = BSS_MONITOR;
 		RTMP_OS_NETDEV_SET_TYPE_MONITOR(pAd->net_dev);

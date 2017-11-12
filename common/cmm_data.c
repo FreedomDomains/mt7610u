@@ -26,6 +26,16 @@
 
 
 #include "rt_config.h"
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,9,0))
+#include <linux/bitfield.h>
+#else
+/* Force a compilation error if a constant expression is not a power of 2 */
+#define __BUILD_BUG_ON_NOT_POWER_OF_2(n)	\
+	BUILD_BUG_ON(((n) & ((n) - 1)) != 0)
+#define BUILD_BUG_ON_NOT_POWER_OF_2(n)			\
+	BUILD_BUG_ON((n) == 0 || (((n) & ((n) - 1)) != 0))
+#include <bitfield.h>
+#endif
 
 
 u8 SNAP_802_1H[] = {0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00};
@@ -1957,22 +1967,22 @@ void ReSyncBeaconTime(
 		The updated BeaconInterval Value will affect Beacon Interval after two TBTT
 		beacasue the original BeaconInterval had been loaded into next TBTT_TIMER
 	*/
-	if (Offset == (BCN_TBTT_OFFSET-2))
-	{
-		BCN_TIME_CFG_STRUC csr;
-		csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
-		csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod << 4) - 1 ;	/* ASIC register in units of 1/16 TU = 64us*/
-		mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
-	}
-	else
-	{
-		if (Offset == (BCN_TBTT_OFFSET-1))
-		{
-			BCN_TIME_CFG_STRUC csr;
+	if (Offset == (BCN_TBTT_OFFSET-2)) {
+		u32 csr;
+		csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+		csr &= ~MT_BEACON_TIME_CFG_INTVAL;
+		csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
+				  (pAd->CommonCfg.BeaconPeriod << 4) - 1);	/* ASIC register in units of 1/16 TU = 64us*/
+		mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+	} else {
+		if (Offset == (BCN_TBTT_OFFSET-1)) {
+			u32 csr;
 
-			csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
-			csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod) << 4; /* ASIC register in units of 1/16 TU*/
-			mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
+			csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+			csr &= ~MT_BEACON_TIME_CFG_INTVAL;
+			csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
+					  (pAd->CommonCfg.BeaconPeriod) << 4); /* ASIC register in units of 1/16 TU*/
+			mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 		}
 	}
 }

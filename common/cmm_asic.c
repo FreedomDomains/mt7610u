@@ -798,7 +798,7 @@ void AsicDisableRDG(
 void AsicDisableSync(
 	IN struct rtmp_adapter *pAd)
 {
-	BCN_TIME_CFG_STRUC csr;
+	u32 csr;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->Disable TSF synchronization\n"));
 
@@ -806,13 +806,12 @@ void AsicDisableSync(
 	/*			  that NIC will never wakes up because TSF stops and no more */
 	/*			  TBTT interrupts*/
 	pAd->TbttTickCount = 0;
-	csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
-	csr.field.bBeaconGen = 0;
-	csr.field.bTBTTEnable = 0;
-	csr.field.TsfSyncMode = 0;
-	csr.field.bTsfTicking = 0;
-	mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
-
+	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+	csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
+		 MT_BEACON_TIME_CFG_TBTT_EN |
+                 MT_BEACON_TIME_CFG_SYNC_MODE |
+                 MT_BEACON_TIME_CFG_TIMER_EN);
+        mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*
@@ -826,23 +825,28 @@ void AsicDisableSync(
 void AsicEnableBssSync(
 	IN struct rtmp_adapter *pAd)
 {
-	BCN_TIME_CFG_STRUC csr;
+	u32 csr;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableBssSync(INFRA mode)\n"));
 
-	csr.word = mt7610u_read32(pAd, BCN_TIME_CFG);
+	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
 /*	mt7610u_write32(pAd, BCN_TIME_CFG, 0x00000000);*/
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-		csr.field.BeaconInterval = pAd->CommonCfg.BeaconPeriod << 4; /* ASIC register in units of 1/16 TU*/
-		csr.field.bTsfTicking = 1;
-		csr.field.TsfSyncMode = 1; /* sync TSF in INFRASTRUCTURE mode*/
-		csr.field.bBeaconGen  = 0; /* do NOT generate BEACON*/
-		csr.field.bTBTTEnable = 1;
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
+		csr &= ~MT_BEACON_TIME_CFG_INTVAL;
+		csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
+				  pAd->CommonCfg.BeaconPeriod << 4); /* ASIC register in units of 1/16 TU*/
+
+		csr |= MT_BEACON_TIME_CFG_TIMER_EN;
+
+		csr &= ~MT_BEACON_TIME_CFG_SYNC_MODE;
+		csr |= FIELD_PREP(MT_BEACON_TIME_CFG_SYNC_MODE, 1);	/* sync TSF in INFRASTRUCTURE mode*/
+
+		csr &= ~MT_BEACON_TIME_CFG_BEACON_TX; /* do NOT generate BEACON*/
+		csr |= MT_BEACON_TIME_CFG_TBTT_EN;
 	}
 #endif /* CONFIG_STA_SUPPORT */
-	mt7610u_write32(pAd, BCN_TIME_CFG, csr.word);
+	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*
@@ -860,7 +864,7 @@ void AsicEnableBssSync(
 void AsicEnableIbssSync(
 	IN struct rtmp_adapter *pAd)
 {
-	BCN_TIME_CFG_STRUC csr9;
+	u32 csr;
 	u8 *		ptr;
 	UINT i;
 	ULONG beaconBaseLocation = 0;
@@ -882,11 +886,11 @@ void AsicEnableIbssSync(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableIbssSync(ADHOC mode. MPDUtotalByteCnt = %d)\n", pAd->BeaconTxWI.MPDUtotalByteCnt));
 
-	csr9.word = mt7610u_read32(pAd, BCN_TIME_CFG);
-	csr9.field.bBeaconGen = 0;
-	csr9.field.bTBTTEnable = 0;
-	csr9.field.bTsfTicking = 0;
-	mt7610u_write32(pAd, BCN_TIME_CFG, csr9.word);
+	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+	csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
+		 MT_BEACON_TIME_CFG_TBTT_EN |
+		 MT_BEACON_TIME_CFG_TIMER_EN);
+	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 	beaconBaseLocation = HW_BEACON_BASE0(pAd);
 
 	/* move BEACON TXD and frame content to on-chip memory*/
@@ -925,16 +929,20 @@ void AsicEnableIbssSync(
 	/*mt7610u_write32(pAd, TBTT_SYNC_CFG, 0x00001010);*/
 
 	/* start sending BEACON*/
-	csr9.field.BeaconInterval = pAd->CommonCfg.BeaconPeriod << 4; /* ASIC register in units of 1/16 TU*/
-	csr9.field.bTsfTicking = 1;
+	csr &= ~MT_BEACON_TIME_CFG_INTVAL;
+	csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
+			  pAd->CommonCfg.BeaconPeriod << 4); /* ASIC register in units of 1/16 TU*/
+	csr |= MT_BEACON_TIME_CFG_TIMER_EN;
+
 	/*
 		(STA ad-hoc mode) Upon the reception of BEACON frame from associated BSS,
 		local TSF is updated with remote TSF only if the remote TSF is greater than local TSF
 	*/
-	csr9.field.TsfSyncMode = 2; /* sync TSF in IBSS mode*/
-	csr9.field.bTBTTEnable = 1;
-	csr9.field.bBeaconGen = 1;
-	mt7610u_write32(pAd, BCN_TIME_CFG, csr9.word);
+	csr &= ~MT_BEACON_TIME_CFG_SYNC_MODE;
+	csr |= FIELD_PREP(MT_BEACON_TIME_CFG_SYNC_MODE, 2);	/* sync TSF in IBSS mode*/
+	csr |= MT_BEACON_TIME_CFG_TBTT_EN;
+	csr |= MT_BEACON_TIME_CFG_BEACON_TX;
+	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*

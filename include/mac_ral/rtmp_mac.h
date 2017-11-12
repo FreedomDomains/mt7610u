@@ -761,35 +761,13 @@ typedef	union _IFS_SLOT_CFG_STRUC {
 
 
 /* BCN_TIME_CFG : Synchronization control register */
-#define BCN_TIME_CFG             0x1114
-#ifdef RT_BIG_ENDIAN
-typedef	union _BCN_TIME_CFG_STRUC {
-	struct {
-		u32 TxTimestampCompensate:8;
-		u32 :3;
-		u32 bBeaconGen:1;		/* Enable beacon generator */
-		u32 bTBTTEnable:1;
-		u32 TsfSyncMode:2;		/* Enable TSF sync, 00: disable, 01: infra mode, 10: ad-hoc mode */
-		u32 bTsfTicking:1;		/* Enable TSF auto counting */
-		u32 BeaconInterval:16;  /* in unit of 1/16 TU */
-	} field;
-	u32 word;
-} BCN_TIME_CFG_STRUC;
-#else
-typedef union _BCN_TIME_CFG_STRUC {
-	struct {
-		u32 BeaconInterval:16;
-		u32 bTsfTicking:1;
-		u32 TsfSyncMode:2;
-		u32 bTBTTEnable:1;
-		u32 bBeaconGen:1;
-		u32 :3;
-		u32 TxTimestampCompensate:8;
-	} field;
-	u32 word;
-} BCN_TIME_CFG_STRUC;
-#endif
-
+#define MT_BEACON_TIME_CFG		0x1114
+#define MT_BEACON_TIME_CFG_INTVAL	GENMASK(15, 0)
+#define MT_BEACON_TIME_CFG_TIMER_EN	BIT(16)
+#define MT_BEACON_TIME_CFG_SYNC_MODE	GENMASK(18, 17)
+#define MT_BEACON_TIME_CFG_TBTT_EN	BIT(19)
+#define MT_BEACON_TIME_CFG_BEACON_TX	BIT(20)
+#define MT_BEACON_TIME_CFG_TSF_COMP	GENMASK(31, 24)
 
 #define TBTT_SYNC_CFG		0x1118
 #define TSF_TIMER_DW0		0x111c	/* Local TSF timer lsb 32 bits. Read-only */
