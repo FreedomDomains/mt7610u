@@ -983,8 +983,7 @@ int	NICInitializeAsic(
 	AsicInitBcnBuf(pAd);
 
 	/* re-set specific MAC registers for individual chip */
-	if (pAd->chipOps.AsicMacInit != NULL)
-		pAd->chipOps.AsicMacInit(pAd);
+	mt7610u_init_mac(pAd);
 
 
 	/* Before program BBP, we need to wait BBP/RF get wake up.*/

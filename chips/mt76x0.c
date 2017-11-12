@@ -1425,7 +1425,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static void NICInitMT76x0MacRegisters(struct rtmp_adapter *pAd)
+void mt7610u_init_mac(struct rtmp_adapter *pAd)
 {
 	u32 MacReg = 0;
 	u16 trsw_mode = 0;
@@ -1990,8 +1990,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 	/* Channel */
 	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
-
-	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;
 
 	/* MAC */
 
