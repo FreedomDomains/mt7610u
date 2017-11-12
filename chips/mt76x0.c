@@ -1332,7 +1332,7 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
 }
 
-static void NICInitMT76x0RFRegisters(struct rtmp_adapter *pAd)
+static void mt7610u_init_rf(struct rtmp_adapter *pAd)
 {
 
 	u32 IdReg;
@@ -1993,7 +1993,7 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;
 	pChipOps->AsicBbpInit = NICInitMT76x0BbpRegisters;
-	pChipOps->AsicRfInit = NICInitMT76x0RFRegisters;
+	pChipOps->AsicRfInit = mt7610u_init_rf;
 
 	/* MAC */
 
