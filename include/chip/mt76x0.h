@@ -178,4 +178,5 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 
 void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd);
 void mt7610u_init_rf(struct rtmp_adapter *pAd);
+void mt7610u_init_bbp(struct rtmp_adapter *pAd);
 #endif /* __MT76x0_H__ */

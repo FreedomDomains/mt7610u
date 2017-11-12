@@ -54,8 +54,7 @@ int NICInitBBP(struct rtmp_adapter*pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): Init BBP Registers\n", __FUNCTION__));
 
-	if (pAd->chipOps.AsicBbpInit != NULL)
-		pAd->chipOps.AsicBbpInit(pAd);
+	mt7610u_init_bbp(pAd);
 
 	// TODO: shiang-6590, check these bbp registers if need to remap to new BBP_Registers
 

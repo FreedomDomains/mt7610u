@@ -1499,7 +1499,7 @@ Return Value:
 Note:
 ========================================================================
 */
-static void NICInitMT76x0BbpRegisters(struct rtmp_adapter *pAd)
+void mt7610u_init_bbp(struct rtmp_adapter *pAd)
 {
 
 	INT IdReg;
@@ -1992,7 +1992,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
 
 	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;
-	pChipOps->AsicBbpInit = NICInitMT76x0BbpRegisters;
 
 	/* MAC */
 
