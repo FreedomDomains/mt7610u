@@ -791,8 +791,6 @@ void STAMlmePeriodicExec(
 	int 	i;
 	bool bCheckBeaconLost = true;
 
-	RTMP_CHIP_HIGH_POWER_TUNING(pAd, &pAd->StaCfg.RssiSample);
-
 #ifdef WPA_SUPPLICANT_SUPPORT
     if (pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE)
 #endif /* WPA_SUPPLICANT_SUPPORT */
