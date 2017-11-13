@@ -394,7 +394,6 @@ struct rtmp_chip_cap {
 
 	u8 *fw_name;		/* ULLI : rename to catch compiler errors */
 
-	bool bDoTemperatureSensor;
 	SHORT TemperatureOffset;
 	SHORT LastTemperatureforVCO;
 	SHORT LastTemperatureforCal;
