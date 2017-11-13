@@ -1981,8 +1981,7 @@ void LinkUp(
 	}
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-	if (IS_MT76x0(pAd))
-		MT76x0_Calibration(pAd, pAd->hw_cfg.cent_ch);
+	MT76x0_Calibration(pAd, pAd->hw_cfg.cent_ch);
 
 	pAd->MacTab.MsduLifeTime = 5; /* default 5 seconds */
 

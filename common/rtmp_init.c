@@ -455,66 +455,8 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		pAd->RFICType = RFIC_24GHZ;
 	}
 
-	if (IS_MT76x0(pAd)) {
-		mt76x0_read_tx_alc_info_from_eeprom(pAd);
-	} else
-	/* Read TSSI reference and TSSI boundary for temperature compensation. This is ugly*/
-	/* 0. 11b/g*/
-	{
-		/* these are tempature reference value (0x00 ~ 0xFE)
-		   ex: 0x00 0x15 0x25 0x45 0x88 0xA0 0xB5 0xD0 0xF0
-		   TssiPlusBoundaryG [4] [3] [2] [1] [0] (smaller) +
-		   TssiMinusBoundaryG[0] [1] [2] [3] [4] (larger) */
-		{
-			Power.word = mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND1);
-			pAd->TssiMinusBoundaryG[4] = Power.field.Byte0;
-			pAd->TssiMinusBoundaryG[3] = Power.field.Byte1;
-			Power.word = mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND2);
-			pAd->TssiMinusBoundaryG[2] = Power.field.Byte0;
-			pAd->TssiMinusBoundaryG[1] = Power.field.Byte1;
-			Power.word = mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND3);
-			pAd->TssiRefG   = Power.field.Byte0; /* reference value [0] */
-			pAd->TssiPlusBoundaryG[1] = Power.field.Byte1;
-			Power.word = mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND4);
-			pAd->TssiPlusBoundaryG[2] = Power.field.Byte0;
-			pAd->TssiPlusBoundaryG[3] = Power.field.Byte1;
-			Power.word = mt7610u_read_eeprom16(pAd, EEPROM_G_TSSI_BOUND5);
-			pAd->TssiPlusBoundaryG[4] = Power.field.Byte0;
-			pAd->TxAgcStepG = Power.field.Byte1;
-			pAd->TxAgcCompensateG = 0;
-			pAd->TssiMinusBoundaryG[0] = pAd->TssiRefG;
-			pAd->TssiPlusBoundaryG[0]  = pAd->TssiRefG;
+	mt76x0_read_tx_alc_info_from_eeprom(pAd);
 
-			/* Disable TxAgc if the based value is not right*/
-			if (pAd->TssiRefG == 0xff)
-				pAd->bAutoTxAgcG = false;
-		}
-
-		DBGPRINT(RT_DEBUG_TRACE,("E2PROM: G Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
-			pAd->TssiMinusBoundaryG[4], pAd->TssiMinusBoundaryG[3], pAd->TssiMinusBoundaryG[2], pAd->TssiMinusBoundaryG[1],
-			pAd->TssiRefG,
-			pAd->TssiPlusBoundaryG[1], pAd->TssiPlusBoundaryG[2], pAd->TssiPlusBoundaryG[3], pAd->TssiPlusBoundaryG[4],
-			pAd->TxAgcStepG, pAd->bAutoTxAgcG));
-	}
-
-	if (IS_MT76x0(pAd))
-	{
-		; // TODO: wait TC6008 EEPROM format
-	}
-	else
-	/* 1. 11a*/
-	{
-		{
-		}
-
-#if 0 	/* ULLI : disabled */
-		DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
-			pAd->TssiMinusBoundaryA[4], pAd->TssiMinusBoundaryA[3], pAd->TssiMinusBoundaryA[2], pAd->TssiMinusBoundaryA[1],
-			pAd->TssiRefA,
-			pAd->TssiPlusBoundaryA[1], pAd->TssiPlusBoundaryA[2], pAd->TssiPlusBoundaryA[3], pAd->TssiPlusBoundaryA[4],
-			pAd->TxAgcStepA, pAd->bAutoTxAgcA));
-#endif
-	}
 	pAd->BbpRssiToDbmDelta = 0x0;
 
 	/* Read frequency offset setting for RF*/
@@ -558,16 +500,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 		/*
 			External LNA gain for 5GHz Band(CH100~CH128)
 		*/
-		if (IS_MT76x0(pAd))
-		{
-			pAd->ALNAGain1 = (value >> 8);
-		}
-		else
-		{
-/*		if (IS_RT2860(pAd))  RT2860 supports 3 Rx and the 2.4 GHz RSSI #2 offset is in the EEPROM 0x48*/
-			pAd->BGRssiOffset[2] = value & 0x00ff;
-			pAd->ALNAGain1 = (value >> 8);
-		}
+		pAd->ALNAGain1 = (value >> 8);
 	}
 
 	{
@@ -588,18 +521,10 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 
 	{
 		value = mt7610u_read_eeprom16(pAd, (EEPROM_RSSI_A_OFFSET+2));
-		if (IS_MT76x0(pAd))
-		{
-			/*
-				External LNA gain for 5GHz Band(CH132~CH165)
-			*/
-			pAd->ALNAGain2 = (value >> 8);
-		}
-		else
-		{
-			pAd->ARssiOffset[2] = value & 0x00ff;
-			pAd->ALNAGain2 = (value >> 8);
-		}
+		/*
+			External LNA gain for 5GHz Band(CH132~CH165)
+		*/
+		pAd->ALNAGain2 = (value >> 8);
 	}
 
 
@@ -627,33 +552,30 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	RTMPGetLEDSetting(pAd);
 #endif /* LED_CONTROL_SUPPORT */
 
-	if (IS_MT76x0(pAd))
+	value = mt7610u_read_eeprom16(pAd, 0xD0);
+	value = (value & 0xFF00) >> 8;
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET = 0x%x\n", __FUNCTION__, value));
+	if ((value & 0xFF) == 0xFF)
+		pAd->chipCap.TemperatureOffset = -10;
+	else
 	{
-		value = mt7610u_read_eeprom16(pAd, 0xD0);
-		value = (value & 0xFF00) >> 8;
-		DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET = 0x%x\n", __FUNCTION__, value));
-		if ((value & 0xFF) == 0xFF)
-			pAd->chipCap.TemperatureOffset = -10;
+		if ((value & 0x80) == 0x00)
+			value &= 0x7F; /* Positive number */
 		else
-		{
-			if ((value & 0x80) == 0x00)
-				value &= 0x7F; /* Positive number */
-			else
-				value |= 0xFF00; /* Negative number */
-			pAd->chipCap.TemperatureOffset = value;
-		}
-		DBGPRINT(RT_DEBUG_TRACE, ("%s: TemperatureOffset = 0x%x\n", __FUNCTION__, pAd->chipCap.TemperatureOffset));
-
-		value = mt7610u_read_eeprom16(pAd, EEPROM_MT76x0_A_BAND_MB);
-		pAd->chipCap.a_band_mid_ch = value & 0x00ff;
-		if (pAd->chipCap.a_band_mid_ch == 0xFF)
-			pAd->chipCap.a_band_mid_ch = 100;
-		pAd->chipCap.a_band_high_ch = (value >> 8);
-		if (pAd->chipCap.a_band_high_ch == 0xFF)
-			pAd->chipCap.a_band_high_ch = 137;
-		DBGPRINT(RT_DEBUG_TRACE, ("%s: a_band_mid_ch = %d, a_band_high_ch = %d\n",
-			__FUNCTION__, pAd->chipCap.a_band_mid_ch, pAd->chipCap.a_band_high_ch));
+			value |= 0xFF00; /* Negative number */
+		pAd->chipCap.TemperatureOffset = value;
 	}
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: TemperatureOffset = 0x%x\n", __FUNCTION__, pAd->chipCap.TemperatureOffset));
+
+	value = mt7610u_read_eeprom16(pAd, EEPROM_MT76x0_A_BAND_MB);
+	pAd->chipCap.a_band_mid_ch = value & 0x00ff;
+	if (pAd->chipCap.a_band_mid_ch == 0xFF)
+		pAd->chipCap.a_band_mid_ch = 100;
+	pAd->chipCap.a_band_high_ch = (value >> 8);
+	if (pAd->chipCap.a_band_high_ch == 0xFF)
+		pAd->chipCap.a_band_high_ch = 137;
+	DBGPRINT(RT_DEBUG_TRACE, ("%s: a_band_mid_ch = %d, a_band_high_ch = %d\n",
+		__FUNCTION__, pAd->chipCap.a_band_mid_ch, pAd->chipCap.a_band_high_ch));
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<-- NICReadEEPROMParameters\n"));
 }
@@ -950,13 +872,11 @@ int	NICInitializeAsic(
 
 	val = mt7610u_read32(pAd, USB_DMA_CFG);
 
-	if (IS_MT76x0(pAd)) {
-		val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
-		mt7610u_write32(pAd, USB_DMA_CFG, val);
+	val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
+	mt7610u_write32(pAd, USB_DMA_CFG, val);
 
-		val &= ~MT_USB_DMA_CFG_RX_DROP_OR_PAD;
-		mt7610u_write32(pAd, USB_DMA_CFG, val);
-	}
+	val &= ~MT_USB_DMA_CFG_RX_DROP_OR_PAD;
+	mt7610u_write32(pAd, USB_DMA_CFG, val);
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
@@ -2385,9 +2305,8 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
 	INT index;
 
-	if (IS_MT76x0(pAd) && pAd->WlanFunCtrl.field.WLAN_EN == 1) {
+	if (pAd->WlanFunCtrl.field.WLAN_EN == 1)
 		mt7610u_chip_onoff(pAd, false, false);
-	}
 
 	kfree(pAd->vend_buf);
 	pAd->vend_buf = NULL;

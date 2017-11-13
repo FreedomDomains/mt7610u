@@ -408,15 +408,13 @@ loadfw_protect:
 	/* FCE skip_fs_en */
 	mt7610u_write32(ad, FCE_SKIP_FS, 0x03);
 
-	if (IS_MT76x0(ad)) {
-		val = mt7610u_read32(ad, USB_DMA_CFG);
+	val = mt7610u_read32(ad, USB_DMA_CFG);
 
-		val |= MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
-		mt7610u_write32(ad, USB_DMA_CFG, val);
+	val |= MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
+	mt7610u_write32(ad, USB_DMA_CFG, val);
 
-		val &= ~MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
-		mt7610u_write32(ad, USB_DMA_CFG, val);
-	}
+	val &= ~MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
+	mt7610u_write32(ad, USB_DMA_CFG, val);
 
 	/* Allocate TransferBuffer */
 	if (mt7610u_usb_alloc_buf(ad, UPLOAD_FW_UNIT, &dma_buf)) {

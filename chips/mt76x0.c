@@ -1968,8 +1968,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	if (IS_MT7610(pAd))
 		pChipCap->fw_name = MT7610_FIRMWARE_NAME;
 
-	pChipCap->bDoTemperatureSensor = true;
-
 	pAd->rateAlg = RATE_ALG_GRP;
 
 	/*
@@ -2827,23 +2825,21 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 	bool status = true;
 	u16 e2p_value = 0;
 
-	if (IS_MT76x0(pAd)) {
-		e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
-		e2p_value = (e2p_value & 0xFF00) >> 8;
-		DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
-			__FUNCTION__, e2p_value));
+	e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
+	e2p_value = (e2p_value & 0xFF00) >> 8;
+	DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
+		__FUNCTION__, e2p_value));
 
-		if ((e2p_value & 0xFF) == 0xFF) {
-			pAd->chipCap.TemperatureOffset = -10;
-		} else {
-			if ((e2p_value & 0x80) == 0x80) /* Negative number */
-				e2p_value |= 0xFF00;
+	if ((e2p_value & 0xFF) == 0xFF) {
+		pAd->chipCap.TemperatureOffset = -10;
+	} else {
+		if ((e2p_value & 0x80) == 0x80) /* Negative number */
+			e2p_value |= 0xFF00;
 
-			pAd->chipCap.TemperatureOffset = (SHORT)e2p_value;
-		}
-		DBGPRINT(RT_DEBUG_OFF, ("%s: TemperatureOffset = 0x%x\n",
-			__FUNCTION__, pAd->chipCap.TemperatureOffset));
+		pAd->chipCap.TemperatureOffset = (SHORT)e2p_value;
 	}
+	DBGPRINT(RT_DEBUG_OFF, ("%s: TemperatureOffset = 0x%x\n",
+		__FUNCTION__, pAd->chipCap.TemperatureOffset));
 
 	if (pAd->bAutoTxAgcG | pAd->bAutoTxAgcA) {
 		e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);

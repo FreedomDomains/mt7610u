@@ -332,13 +332,10 @@ INT build_vht_op_ie(struct rtmp_adapter*pAd, u8 *buf)
 	case 2:
 		vht_op.basic_mcs_set.mcs_ss2 = VHT_MCS_CAP_7;
 	case 1:
-		if (IS_MT76x0(pAd)) {
-			/*
-				MT7650E2 support VHT_MCS8 & VHT_MCS9.
-			*/
-			vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_9;
-		} else
-			vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_7;
+		/*
+			MT7650E2 support VHT_MCS8 & VHT_MCS9.
+		*/
+		vht_op.basic_mcs_set.mcs_ss1 = VHT_MCS_CAP_9;
 		break;
 	}
 
@@ -404,15 +401,10 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 	switch  (pAd->CommonCfg.RxStream) {
 	case 1:
 		vht_cap_ie.mcs_set.rx_high_rate = 292;
-		if (IS_MT76x0(pAd))
-		{
-			/*
-				MT7650E2 support VHT_MCS8 & VHT_MCS9.
-			*/
-			vht_cap_ie.mcs_set.rx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
-		}
-		else
-		vht_cap_ie.mcs_set.rx_mcs_map.mcs_ss1 = VHT_MCS_CAP_7;
+		/*
+			MT7650E2 support VHT_MCS8 & VHT_MCS9.
+		*/
+		vht_cap_ie.mcs_set.rx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
 		break;
 	case 2:
 		vht_cap_ie.mcs_set.rx_high_rate = 585;
@@ -427,13 +419,10 @@ INT build_vht_cap_ie(struct rtmp_adapter*pAd, u8 *buf)
 	switch (pAd->CommonCfg.TxStream) {
 	case 1:
 		vht_cap_ie.mcs_set.tx_high_rate = 292;
-		if (IS_MT76x0(pAd)) {
-			/*
-				MT7650E2 support VHT_MCS8 & VHT_MCS9.
-			*/
-			vht_cap_ie.mcs_set.tx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
-		} else
-			vht_cap_ie.mcs_set.tx_mcs_map.mcs_ss1 = VHT_MCS_CAP_7;
+		/*
+			MT7650E2 support VHT_MCS8 & VHT_MCS9.
+		*/
+		vht_cap_ie.mcs_set.tx_mcs_map.mcs_ss1 = VHT_MCS_CAP_9;
 		break;
 	case 2:
 		vht_cap_ie.mcs_set.tx_high_rate = 585;

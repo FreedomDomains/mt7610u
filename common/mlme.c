@@ -671,16 +671,12 @@ void MlmePeriodicExec(void *FunctionContext)
 			if ((pAd->Mlme.OneSecPeriodicRound % 5) == 0)
 			{
 #ifdef CONFIG_STA_SUPPORT
-				if (IS_MT76x0U(pAd))
-					MT76x0_dynamic_vga_tuning(pAd);
+				MT76x0_dynamic_vga_tuning(pAd);
 #endif /* CONFIG_STA_SUPPORT */
 			}
 
-			if ((pAd->Mlme.OneSecPeriodicRound % 10) == 0)
-			{
-				if (IS_MT76x0(pAd) &&
-					pAd->chipCap.bDoTemperatureSensor)
-				{
+			if ((pAd->Mlme.OneSecPeriodicRound % 10) == 0) {
+				if (pAd->chipCap.bDoTemperatureSensor) {
 					INT32 temperature_diff = 0;
 					/*
 						For temperature sensor
@@ -689,18 +685,14 @@ void MlmePeriodicExec(void *FunctionContext)
 					MT76x0_TempSensor(pAd);
 
 					temperature_diff = (pAd->chipCap.NowTemperature - pAd->chipCap.LastTemperatureforVCO);
-					if ((temperature_diff > 20) ||
-						(temperature_diff < (-20)))
-					{
+					if (temperature_diff > 20 ||
+					    temperature_diff < (-20)) {
 						DBGPRINT(RT_DEBUG_OFF, ("%s - Do VCORecalibration again!(LastTemperatureforVCO=%d, NowTemperature = %d)\n",
 							__FUNCTION__, pAd->chipCap.LastTemperatureforVCO, pAd->chipCap.NowTemperature));
 						pAd->chipCap.LastTemperatureforVCO = pAd->chipCap.NowTemperature;
 						mt7610u_vco_calibration(pAd, pAd->hw_cfg.cent_ch);
 					}
 
-				}
-				else
-				{
 				}
 			}
 		}
