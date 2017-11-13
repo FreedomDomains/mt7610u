@@ -920,7 +920,7 @@ int	NICInitializeAsic(
 
 	// TODO: shiang, how about the value setting of pAd->MACVersion?? Original it assigned here
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s():MACVersion[Ver:Rev=0x%08x]\n",
+	DBGPRINT(RT_DEBUG_TRACE, ("%s():mac_rev[Ver:Rev=0x%08x]\n",
 			__FUNCTION__, pAd->mac_rev));
 	/* turn on bit13 (set to zero) after rt2860D. This is to solve high-current issue.*/
 	MACValue = mt7610u_read32(pAd, PBF_SYS_CTRL);

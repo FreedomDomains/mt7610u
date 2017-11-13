@@ -425,7 +425,7 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 
 	if (enable) {
 		pAd->mac_rev = mt7610u_read32(pAd, MT_MAC_CSR0);
-		DBGPRINT(RT_DEBUG_OFF, ("MACVersion = 0x%08x\n", pAd->mac_rev));
+		DBGPRINT(RT_DEBUG_OFF, ("mac_rev = 0x%08x\n", pAd->mac_rev));
 	}
 
 	if (enable == true) {

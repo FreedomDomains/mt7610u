@@ -58,22 +58,10 @@ struct _RSSI_SAMPLE;
 #define IS_MT7610(_pAd)		(((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000)
 #define IS_MT7610U(_pAd)	((((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000))
 #define IS_MT76x2(_pAd)		(((_pAd)->mac_rev & 0xffff0000) == 0x76620000)
-#define IS_MT7662(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76620000)
-#define IS_MT7662U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76620000))
-#define IS_MT7632(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76320000)
-#define IS_MT7632U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76320000))
-#define IS_MT7612(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76120000)
-#define IS_MT7612U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76120000))
 #define IS_MT76x0U(_pAd)	(IS_MT7650U(_pAd) || IS_MT7630U(_pAd) || IS_MT7610U(_pAd))
 #define IS_MT76xx(_pAd)		(IS_MT76x0(_pAd) || IS_MT76x2(_pAd))
 
 /* RT3592BC8 (WiFi + BT) */
-
-#define RT_REV_LT(_pAd, _chip, _rev)\
-	IS_##_chip(_pAd) && (((_pAd)->MACVersion & 0x0000FFFF) < (_rev))
-
-#define RT_REV_GTE(_pAd, _chip, _rev)\
-	IS_##_chip(_pAd) && (((_pAd)->MACVersion & 0x0000FFFF) >= (_rev))
 
 /* Dual-band NIC (RF/BBP/MAC are in the same chip.) */
 
@@ -92,9 +80,6 @@ struct _RSSI_SAMPLE;
 
 /* RT3593 over PCI bus */
 #define RT3593OverPCI(_pAd) (IS_RT3593(_pAd) && (_pAd->CommonCfg.bPCIeBus == false))
-
-/*RT3390,RT3370 */
-#define IS_RT3390(_pAd)				(((_pAd)->MACVersion & 0xFFFF0000) == 0x33900000)
 
 #define CCA_AVG_MAX_COUNT	5
 
