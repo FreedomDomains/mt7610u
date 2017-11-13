@@ -283,24 +283,8 @@ typedef	union _AC_TXOP_CSR1_STRUC {
 /* MAC  registers                                                                                                                                                                 */
 /*================================================================================= */
 /*  4.1 MAC SYSTEM  configuration registers (offset:0x1000) */
-#define MAC_CSR0            0x1000
-#ifdef RT_BIG_ENDIAN
-typedef	union _ASIC_VER_ID_STRUC {
-	struct {
-	    UINT16  ASICVer;        /* version */
-	    UINT16  ASICRev;        /* reversion */
-	} field;
-	u32 word;
-} ASIC_VER_ID_STRUC;
-#else
-typedef	union _ASIC_VER_ID_STRUC {
-	struct {
-	    UINT16  ASICRev;
-	    UINT16  ASICVer;
-	} field;
-	u32 word;
-} ASIC_VER_ID_STRUC;
-#endif
+#define MT_ASIC_VERSION		0x0000
+#define MT_MAC_CSR0           	0x1000
 
 #define MAC_SYS_CTRL            0x1004
 #define MAC_ADDR_DW0		0x1008

@@ -92,7 +92,7 @@ void rlt_bcn_buf_init(struct rtmp_adapter*pAd)
 INT WaitForAsicReady(
 	IN struct rtmp_adapter*pAd)
 {
-	u32 mac_val = 0, reg = MAC_CSR0;
+	u32 mac_val = 0;
 	int idx = 0;
 
 	do
@@ -100,7 +100,7 @@ INT WaitForAsicReady(
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return false;
 
-		mac_val = mt7610u_read32(pAd, reg);
+		mac_val = mt7610u_read32(pAd, MT_MAC_CSR0);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return true;
 
@@ -135,8 +135,8 @@ void RtmpChipOpsHook(struct rtmp_adapter*pAd)
 	if (WaitForAsicReady(pAd) == false)
 		return;
 
-	pAd->MACVersion = mt7610u_read32(pAd, MAC_CSR0);
-	DBGPRINT(RT_DEBUG_OFF, ("MACVersion = 0x%08x\n", pAd->MACVersion));
+	pAd->mac_rev = mt7610u_read32(pAd, MT_MAC_CSR0);
+	DBGPRINT(RT_DEBUG_OFF, ("MACVersion = 0x%08x\n", pAd->mac_rev));
 
 	MT76x0_Init(pAd);
 }

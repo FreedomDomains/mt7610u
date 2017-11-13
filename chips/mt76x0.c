@@ -1913,8 +1913,7 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 	/*
 		Init chip capabilities
 	*/
-	Value = mt7610u_read32(pAd, 0x00);
-	pChipCap->ChipID = Value;
+	pChipCap->asic_rev = mt7610u_read32(pAd, MT_ASIC_VERSION);
 
 	pChipCap->MaxNss = 1;
 

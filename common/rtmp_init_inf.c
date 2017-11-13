@@ -53,7 +53,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 		goto err1;
 
 	DBGPRINT(RT_DEBUG_OFF, ("MAC[Ver=0x%08x]\n",
-				pAd->MACVersion));
+				pAd->mac_rev));
 
 
 	if (MAX_LEN_OF_MAC_TABLE > MAX_AVAILABLE_CLIENT_WCID(pAd))

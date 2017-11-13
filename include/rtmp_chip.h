@@ -49,15 +49,15 @@ struct _RSSI_SAMPLE;
 
 #include "mcu/mcu.h"
 
-#define IS_MT76x0(_pAd)		((((_pAd)->MACVersion & 0xffff0000) == 0x65900000) ||\
-							 (((_pAd)->MACVersion & 0xffff0000) == 0x76500000))
-#define IS_MT7650(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76500000)
-#define IS_MT7650U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76500000))
-#define IS_MT7630(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76300000)
-#define IS_MT7630U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76300000))
-#define IS_MT7610(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76100000)
-#define IS_MT7610U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76100000))
-#define IS_MT76x2(_pAd)		(((_pAd)->MACVersion & 0xffff0000) == 0x76620000)
+#define IS_MT76x0(_pAd)		((((_pAd)->mac_rev & 0xffff0000) == 0x65900000) ||\
+							 (((_pAd)->mac_rev & 0xffff0000) == 0x76500000))
+#define IS_MT7650(_pAd)		(((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76500000)
+#define IS_MT7650U(_pAd)	((((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76500000))
+#define IS_MT7630(_pAd)		(((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76300000)
+#define IS_MT7630U(_pAd)	((((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76300000))
+#define IS_MT7610(_pAd)		(((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000)
+#define IS_MT7610U(_pAd)	((((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000))
+#define IS_MT76x2(_pAd)		(((_pAd)->mac_rev & 0xffff0000) == 0x76620000)
 #define IS_MT7662(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76620000)
 #define IS_MT7662U(_pAd)	((((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76620000))
 #define IS_MT7632(_pAd)		(((_pAd)->chipCap.ChipID & 0xffff0000) == 0x76320000)
@@ -309,7 +309,7 @@ struct RF_BANK_OFFSET {
 */
 
 struct rtmp_chip_cap {
-	u32 ChipID;
+	u32 asic_rev;
 
 	u32 MaxNumOfRfId;
 	u32 MaxNumOfBbpId;
