@@ -58,7 +58,6 @@ struct _RSSI_SAMPLE;
 #define IS_MT7610(_pAd)		(((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000)
 #define IS_MT7610U(_pAd)	((((_pAd)->chipCap.asic_rev & 0xffff0000) == 0x76100000))
 #define IS_MT76x0U(_pAd)	(IS_MT7650U(_pAd) || IS_MT7630U(_pAd) || IS_MT7610U(_pAd))
-#define IS_MT76xx(_pAd)		(IS_MT76x0(_pAd))
 
 /* RT3592BC8 (WiFi + BT) */
 
