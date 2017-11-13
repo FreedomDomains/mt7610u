@@ -6482,7 +6482,3 @@ static struct usb_device *mt7610u_to_usb_dev(struct rtmp_adapter *ad)
 
 
 #endif  /* __RTMP_H__ */
-
-INT set_temp_sensor_proc(
-	IN struct rtmp_adapter	*pAd,
-	IN char *		arg);

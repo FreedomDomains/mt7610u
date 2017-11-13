@@ -999,21 +999,3 @@ INT Set_SiteSurvey_Proc(
     return true;
 }
 
-INT set_temp_sensor_proc(
-	IN struct rtmp_adapter	*pAd,
-	IN char *		arg)
-{
-	if (simple_strtol(arg, 0, 10) == 0) {
-		pAd->chipCap.bDoTemperatureSensor = false;
-		pAd->chipCap.LastTemperatureforVCO = 0x7FFF;
-		pAd->chipCap.LastTemperatureforCal = 0x7FFF;
-		pAd->chipCap.NowTemperature = 0x7FFF;
-	}
-	else
-		pAd->chipCap.bDoTemperatureSensor = true;
-
-	DBGPRINT(RT_DEBUG_OFF, ("%s:: bDoTemperatureSensor = %d \n", __FUNCTION__, pAd->chipCap.bDoTemperatureSensor));
-
-	return true;
-}
-
