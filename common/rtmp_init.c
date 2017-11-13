@@ -497,7 +497,7 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 			pAd->TxAgcStepG, pAd->bAutoTxAgcG));
 	}
 
-	if (IS_MT76x0(pAd) || IS_MT76x2(pAd))
+	if (IS_MT76x0(pAd))
 	{
 		; // TODO: wait TC6008 EEPROM format
 	}
@@ -955,9 +955,6 @@ int	NICInitializeAsic(
 		mt7610u_write32(pAd, USB_DMA_CFG, val);
 
 		val &= ~MT_USB_DMA_CFG_RX_DROP_OR_PAD;
-		mt7610u_write32(pAd, USB_DMA_CFG, val);
-	} else if (IS_MT76x2(pAd)){
-		val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
 		mt7610u_write32(pAd, USB_DMA_CFG, val);
 	}
 
@@ -2388,7 +2385,7 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
 	INT index;
 
-	if ((IS_MT76x0(pAd) || IS_MT76x2(pAd))&& (pAd->WlanFunCtrl.field.WLAN_EN == 1)) {
+	if (IS_MT76x0(pAd) && pAd->WlanFunCtrl.field.WLAN_EN == 1) {
 		mt7610u_chip_onoff(pAd, false, false);
 	}
 
