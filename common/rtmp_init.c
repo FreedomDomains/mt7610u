@@ -2305,7 +2305,7 @@ bool RtmpRaDevCtrlExit(struct rtmp_adapter *pAd)
 {
 	INT index;
 
-	if (pAd->WlanFunCtrl.field.WLAN_EN == 1)
+	if (pAd->WlanFunCtrl & MT_WLAN_FUN_CTRL_WLAN_EN)
 		mt7610u_chip_onoff(pAd, false, false);
 
 	kfree(pAd->vend_buf);

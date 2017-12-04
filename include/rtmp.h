@@ -2495,7 +2495,7 @@ struct rtmp_adapter {
 	/* ---------------------------- */
 
 
-	union rtmp_wlan_func_ctrl WlanFunCtrl;
+	u32 WlanFunCtrl;
 
 	struct hw_setting hw_cfg;
 

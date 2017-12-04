@@ -340,44 +340,25 @@ struct __attribute__ ((packed)) mt7610u_rxwi {
 /* Register format */
 /* ================================================================================= */
 
+#define MT_WLAN_FUN_CTRL		0x0080
+#define MT_WLAN_FUN_CTRL_WLAN_EN	BIT(0)
+#define MT_WLAN_FUN_CTRL_WLAN_CLK_EN	BIT(1)
+#define MT_WLAN_FUN_CTRL_WLAN_RESET_RF	BIT(2)
 
-#define WLAN_FUN_CTRL		0x80
-#ifdef RT_BIG_ENDIAN
-union rtmp_wlan_func_ctrl {
-	struct{
-		u32 GPIO0_OUT_OE_N:8;
-		u32 GPIO0_OUT:8;
-		u32 GPIO0_IN:8;
-		u32 WLAN_ACC_BT:1;
-		u32 INV_TR_SW0:1;
-		u32 FRC_WL_ANT_SET:1;
-		u32 PCIE_APP0_CLK_REQ:1;
-		u32 WLAN_RESET:1;
-		u32 WLAN_RESET_RF:1;
-		u32 WLAN_CLK_EN:1;
-		u32 WLAN_EN:1;
-	}field;
-	u32 word;
-};
-#else
-union rtmp_wlan_func_ctrl{
-	struct{
-		u32 WLAN_EN:1;
-		u32 WLAN_CLK_EN:1;
-		u32 WLAN_RESET_RF:1;
-		u32 WLAN_RESET:1;
-		u32 PCIE_APP0_CLK_REQ:1;
-		u32 FRC_WL_ANT_SET:1;
-		u32 INV_TR_SW0:1;
-		u32 WLAN_ACC_BT:1;
-		u32 GPIO0_IN:8;
-		u32 GPIO0_OUT:8;
-		u32 GPIO0_OUT_OE_N:8;
-	}field;
-	u32 word;
-};
-#endif
+#define MT_WLAN_FUN_CTRL_WLAN_RESET	BIT(3) /* MT76x0 */
+#define MT_WLAN_FUN_CTRL_CSR_F20M_CKEN	BIT(3) /* MT76x2 */
 
+#define MT_WLAN_FUN_CTRL_PCIE_CLK_REQ	BIT(4)
+#define MT_WLAN_FUN_CTRL_FRC_WL_ANT_SEL	BIT(5)
+#define MT_WLAN_FUN_CTRL_INV_ANT_SEL	BIT(6)
+#define MT_WLAN_FUN_CTRL_WAKE_HOST	BIT(7)
+
+#define MT_WLAN_FUN_CTRL_THERM_RST	BIT(8) /* MT76x2 */
+#define MT_WLAN_FUN_CTRL_THERM_CKEN	BIT(9) /* MT76x2 */
+
+#define MT_WLAN_FUN_CTRL_GPIO_IN	GENMASK(15, 8) /* MT76x0 */
+#define MT_WLAN_FUN_CTRL_GPIO_OUT	GENMASK(23, 16) /* MT76x0 */
+#define MT_WLAN_FUN_CTRL_GPIO_OUT_EN	GENMASK(31, 24) /* MT76x0 */
 
 #define WLAN_FUN_INFO		0x84
 #ifdef RT_BIG_ENDIAN

@@ -72,7 +72,7 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
-	if (pAd->WlanFunCtrl.field.WLAN_EN == 0)
+	if (!(pAd->WlanFunCtrl & MT_WLAN_FUN_CTRL_WLAN_EN))
 		mt7610u_chip_onoff(pAd, true, false);
 
 	/* make some traffic to invoke EvtDeviceD0Entry callback function*/
@@ -368,7 +368,7 @@ void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 {
-	union rtmp_wlan_func_ctrl WlanFunCtrl = {.word=0};
+	u32 WlanFunCtrl;
 	u32 ret;
 
 	ret = down_interruptible(&pAd->wlan_en_atomic);
@@ -377,27 +377,27 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 		return;
 	}
 
-	WlanFunCtrl.word = mt7610u_read32(pAd, WLAN_FUN_CTRL);
+	WlanFunCtrl = mt7610u_read32(pAd, MT_WLAN_FUN_CTRL);
 	DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
-				__FUNCTION__, enable, reset, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
+				__FUNCTION__, enable, reset, pAd->WlanFunCtrl, WlanFunCtrl));
 
 	if (reset == true) {
-		WlanFunCtrl.field.GPIO0_OUT_OE_N = 0xFF;
-		WlanFunCtrl.field.FRC_WL_ANT_SET = 0;
+		WlanFunCtrl |= MT_WLAN_FUN_CTRL_GPIO_OUT_EN;
+		WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_INV_ANT_SEL;
 
-		if (pAd->WlanFunCtrl.field.WLAN_EN) {
+		if (pAd->WlanFunCtrl & MT_WLAN_FUN_CTRL_WLAN_EN) {
 			/*
 				Restore all HW default value and reset RF.
 			*/
-			WlanFunCtrl.field.WLAN_RESET = 1;
-			WlanFunCtrl.field.WLAN_RESET_RF = 1;
-			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+			WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_RESET;
+			WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_RESET_RF;
+			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl = 0x%x\n", WlanFunCtrl));
+			mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 			udelay(20);
-			WlanFunCtrl.field.WLAN_RESET = 0;
-			WlanFunCtrl.field.WLAN_RESET_RF = 0;
-			DBGPRINT(RT_DEBUG_TRACE, ("Reset(2) WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-			mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+			WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_RESET;
+			WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_RESET_RF;
+			DBGPRINT(RT_DEBUG_TRACE, ("Reset(2) WlanFunCtrl = 0x%x\n", WlanFunCtrl));
+			mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 			udelay(20);
 		}
 	}
@@ -407,20 +407,20 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 			Enable WLAN function and clock
 			WLAN_FUN_CTRL[1:0] = 0x3
 		*/
-		WlanFunCtrl.field.WLAN_CLK_EN = 1;
-		WlanFunCtrl.field.WLAN_EN = 1;
+		WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
+		WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_EN;
 	} else {
 		/*
 			Diable WLAN function and clock
 			WLAN_FUN_CTRL[1:0] = 0x0
 		*/
-		WlanFunCtrl.field.PCIE_APP0_CLK_REQ = 0;
-		WlanFunCtrl.field.WLAN_EN = 0;
-		WlanFunCtrl.field.WLAN_CLK_EN = 0;
+		WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_PCIE_CLK_REQ;
+		WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
+		WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_EN;
 	}
 
-	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl.word = 0x%x\n", WlanFunCtrl.word));
-	mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl = 0x%x\n", WlanFunCtrl));
+	mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 	udelay(20);
 
 	if (enable) {
@@ -455,17 +455,17 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 				/*
 					Disable WLAN then enable WLAN again
 				*/
-				WlanFunCtrl.field.PCIE_APP0_CLK_REQ = 0;
-				WlanFunCtrl.field.WLAN_EN = 0;
-				WlanFunCtrl.field.WLAN_CLK_EN = 0;
+				WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_PCIE_CLK_REQ;
+				WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
+				WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_EN;
 
-				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+				mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 				udelay(20);
 
-				WlanFunCtrl.field.WLAN_CLK_EN = 1;
-				WlanFunCtrl.field.WLAN_EN = 1;
+				WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
+				WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_EN;
 
-				mt7610u_write32(pAd, WLAN_FUN_CTRL, WlanFunCtrl.word);
+				mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 				udelay(20);
 			} else {
 				break;
@@ -474,11 +474,11 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 		while (true);
 	}
 
-	pAd->WlanFunCtrl.word = WlanFunCtrl.word;
-	WlanFunCtrl.word = mt7610u_read32(pAd, WLAN_FUN_CTRL);
+	pAd->WlanFunCtrl = WlanFunCtrl;
+	WlanFunCtrl = mt7610u_read32(pAd, MT_WLAN_FUN_CTRL);
 	DBGPRINT(RT_DEBUG_TRACE,
 		("<== %s():  pAd->WlanFunCtrl.word = 0x%x, Reg->WlanFunCtrl=0x%x!\n",
-		__FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
+		__FUNCTION__, pAd->WlanFunCtrl, WlanFunCtrl));
 
 
 	up(&pAd->wlan_en_atomic);
