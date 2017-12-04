@@ -2069,7 +2069,7 @@ void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel)
 		RFValue = ((RFValue & ~(0x80)) | 0x80);
 		rlt_rf_write(pAd, RF_BANK0, RF_R04, RFValue);
 
-		udelay(2200);
+		mdelay(3);
 	}
 
 	return;
