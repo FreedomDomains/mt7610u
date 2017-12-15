@@ -994,19 +994,6 @@ struct sk_buff *GetPacketFromRxRing(
 
 	pRxFceInfo = (struct mt7610u_rxfce_info_pkt *)(pData + ThisFrameLen);
 
-	/* Check if command response or data packet */
-	if ((pRxFceInfo->info_type == CMD_PACKET) &&
-	    (pAd->chipCap.CmdRspRxRing == RX_RING0)) {
-		//CmdRspEventCallbackHandle(pAd, RXDMA);
-
-		/* Update next packet read position.*/
-		pAd->ReadPosition += (sizeof(*pRxFceInfo) * 2 + pRxFceInfo->pkt_len);
-
-		*bCmdRspPacket = true;
-
-		return NULL;
-	}
-
 	pRxInfo = (struct mt7610u_rxinfo *)pData;
 
 	pData += RXINFO_SIZE;
