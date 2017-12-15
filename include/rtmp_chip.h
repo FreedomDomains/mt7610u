@@ -385,7 +385,6 @@ struct rtmp_chip_cap {
 
 #ifdef CONFIG_ANDES_SUPPORT
 	u32 WlanMemmapOffset;
-	u8 CmdRspRxRing;
 	bool IsComboChip;
 	u8 load_iv;
 	u32 ilm_offset;

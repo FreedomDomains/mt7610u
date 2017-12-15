@@ -1948,7 +1948,6 @@ void MT76x0_Init(struct rtmp_adapter *pAd)
 
 #ifdef CONFIG_ANDES_SUPPORT
 	pChipCap->WlanMemmapOffset = 0x410000;
-	pChipCap->CmdRspRxRing = RX_RING1;
 	if (IS_MT7610(pAd))
 		pChipCap->IsComboChip = false;
 	else
