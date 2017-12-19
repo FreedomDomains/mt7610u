@@ -1293,6 +1293,10 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
 }
 
+#define MT_RF_SELECT	BIT(31)
+#define MT_RF_BANK	GENMASK(23, 16)
+#define MT_RF_INDEX	GENMASK(15, 0)
+
 int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
@@ -1320,18 +1324,11 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pa
 					 true, true, receive_len, (char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
-			value = 0;
+			value  = cpu2le32(MT_RF_SELECT |
+					  FIELD_PREP(MT_RF_BANK, reg_pair[i + cur_index].Bank) |
+					  FIELD_PREP(MT_RF_INDEX, reg_pair[i + cur_index].Register)
+				 );
 
-			/* RF selection */
-			value = (value & ~0x80000000) | 0x80000000;
-
-			/* RF bank */
-			value = (value & ~0x00ff0000) | (reg_pair[i + cur_index].Bank << 16);
-
-			/* RF Index */
-			value = (value & ~0x0000ffff) | reg_pair[i + cur_index].Register;
-
-			value = cpu2le32(value);
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 			value = 0;
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1440,22 +1437,15 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_p
 						 false, false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
-			value = 0;
-			/* RF selection */
-			value = (value & ~0x80000000) | 0x80000000;
+			value  = cpu2le32(MT_RF_SELECT |
+					  FIELD_PREP(MT_RF_BANK, reg_pair[i + cur_index].Bank) |
+					  FIELD_PREP(MT_RF_INDEX, reg_pair[i + cur_index].Register)
+				 );
 
-			/* RF bank */
-			value = (value & ~0x00ff0000) | (reg_pair[i + cur_index].Bank << 16);
-
-			/* RF Index */
-			value = (value & ~0x000000ff) | reg_pair[i + cur_index].Register;
-
-			value = cpu2le32(value);
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
-			value = 0;
 			/* UpdateData */
-			value = (value & ~0x000000ff) | reg_pair[i + cur_index].Value;
+			value = reg_pair[i + cur_index].Value & 0xff;
 			value = cpu2le32(value);
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 		}
