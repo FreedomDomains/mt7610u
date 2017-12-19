@@ -1287,6 +1287,8 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 	u32 i;
 	BANK_RF_REG_PAIR *reg_pair = (BANK_RF_REG_PAIR *)msg->rsp_payload;
 
+	/* ULLI : horrible ..., the magic value 4 is the size of the rxfce/cmd header */
+
 	for (i = 0; i < msg->rsp_payload_len / 8; i++)
 		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
 }
