@@ -1055,7 +1055,6 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter *ad)
 		return;
 	}
 
-	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	ctl->cmd_seq = 0;
 	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
 
@@ -1091,7 +1090,6 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter *ad)
 		return;
 	}
 
-	RTMP_CLEAR_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 	OS_CLEAR_BIT(MCU_INIT, &ctl->flags);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->txq);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->kickq);
@@ -1124,9 +1122,8 @@ static int mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(struct rtmp_adapter *ad)
 		if (!msg)
 			break;
 
-		if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
-				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
-				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
+		if (RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST) ||
+		    RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
 			if (!msg->need_rsp)
 				mt7610u_mcu_free_cmd_msg(msg);
 			continue;
@@ -1173,9 +1170,8 @@ static int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg
 		return -1;
 	}
 
-	if (!RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)
-				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST)
-				|| RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
+	if (RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_NIC_NOT_EXIST) ||
+	    RTMP_TEST_FLAG(ad, fRTMP_ADAPTER_SUSPEND)) {
 		mt7610u_mcu_free_cmd_msg(msg);
 		up(&(ad->mcu_atomic));
 		return NDIS_STATUS_FAILURE;

@@ -37,57 +37,14 @@ int rlt_rf_write(
 {
 	int	 ret = 0;
 
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
+	{
 		BANK_RF_REG_PAIR reg;
 		reg.Bank = bank;
 		reg.Register = regID;
 		reg.Value = value;
 
 		mt7610u_mcu_rf_random_write(pAd, &reg, 1);
-	} else {
-		RLT_RF_CSR_CFG rfcsr = { { 0 } };
-		UINT i = 0;
-
-
-		ret = down_interruptible(&pAd->reg_atomic);
-		if (ret != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", ret));
-			return STATUS_UNSUCCESSFUL;
-		}
-
-		ASSERT((regID <= pAd->chipCap.MaxNumOfRfId));
-
-		ret = STATUS_UNSUCCESSFUL;
-		do
-		{
-			rfcsr.word = mt7610u_read32(pAd, RF_CSR_CFG);
-
-			if (!rfcsr.field.RF_CSR_KICK)
-				break;
-			i++;
-		}
-		while ((i < MAX_BUSY_COUNT) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)));
-
-		if ((i == MAX_BUSY_COUNT) || (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
-		{
-			DBGPRINT_RAW(RT_DEBUG_ERROR, ("Retry count exhausted or device removed!!!\n"));
-			goto done;
-		}
-
-		rfcsr.field.RF_CSR_WR = 1;
-		rfcsr.field.RF_CSR_KICK = 1;
-		rfcsr.field.RF_CSR_REG_BANK = bank;
-		rfcsr.field.RF_CSR_REG_ID = regID;
-
-
-		rfcsr.field.RF_CSR_DATA = value;
-		mt7610u_write32(pAd, RF_CSR_CFG, rfcsr.word);
-
-		ret = NDIS_STATUS_SUCCESS;
-
-done:
-		up(&pAd->reg_atomic);
-	}
+	} 
 
 	return ret;
 }
@@ -114,74 +71,14 @@ int rlt_rf_read(
 	IN u8 *pValue)
 {
 	int	 ret = 0;
-	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
+	{
 		BANK_RF_REG_PAIR reg;
 		reg.Bank = bank;
 		reg.Register = regID;
 		mt7610u_mcu_rf_random_read(pAd, &reg, 1);
 
 		*pValue = reg.Value;
-	} else {
-
-		RLT_RF_CSR_CFG rfcsr = { { 0 } };
-		UINT i=0, k=0;
-
-		i = down_interruptible(&pAd->reg_atomic);
-		if (i != 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", i));
-			return STATUS_UNSUCCESSFUL;
-		}
-
-		ASSERT((regID <= pAd->chipCap.MaxNumOfRfId));
-
-		for (i=0; i<MAX_BUSY_COUNT; i++)
-		{
-			if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-				goto done;
-
-			rfcsr.word = mt7610u_read32(pAd, RF_CSR_CFG);
-
-			if (rfcsr.field.RF_CSR_KICK == BUSY)
-					continue;
-
-			rfcsr.word = 0;
-			rfcsr.field.RF_CSR_WR = 0;
-			rfcsr.field.RF_CSR_KICK = 1;
-			rfcsr.field.RF_CSR_REG_ID = regID;
-			rfcsr.field.RF_CSR_REG_BANK = bank;
-			mt7610u_write32(pAd, RF_CSR_CFG, rfcsr.word);
-
-			for (k=0; k<MAX_BUSY_COUNT; k++)
-			{
-				if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
-					goto done;
-
-				rfcsr.word = mt7610u_read32(pAd, RF_CSR_CFG);
-
-				if (rfcsr.field.RF_CSR_KICK == IDLE)
-					break;
-			}
-
-			if ((rfcsr.field.RF_CSR_KICK == IDLE) &&
-				(rfcsr.field.RF_CSR_REG_ID == regID) &&
-				(rfcsr.field.RF_CSR_REG_BANK == bank))
-			{
-				*pValue = (u8)(rfcsr.field.RF_CSR_DATA);
-				break;
-			}
-		}
-
-		if (rfcsr.field.RF_CSR_KICK == BUSY)
-		{
-			DBGPRINT_ERR(("RF read R%d=0x%X fail, i[%d], k[%d]\n", regID, rfcsr.word,i,k));
-			goto done;
-		}
-		ret = STATUS_SUCCESS;
-
-done:
-		up(&pAd->reg_atomic);
 	}
-
 	return ret;
 }
 #endif /* RLT_RF */

@@ -44,7 +44,6 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 	}
 
 	RTMP_SET_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
-	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
 	mt7610u_mcu_ctrl_exit(pAd);
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
@@ -108,8 +107,6 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
 
 	up(&pAd->hw_atomic);
-
-	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }

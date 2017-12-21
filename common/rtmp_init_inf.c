@@ -437,8 +437,6 @@ void RTMPDrvSTAClose(
 	RTMPExitLEDMode(pAd);
 #endif // LED_CONTROL_SUPPORT
 
-	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
-
 	/* Close kernel threads*/
 	RtmpMgmtTaskExit(pAd);
 
