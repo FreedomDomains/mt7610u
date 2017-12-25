@@ -1786,44 +1786,6 @@ INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
 	return true;
 }
 
-void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd)
-{
-	u32 ExtraPwrOverMAC = 0;
-	u32 ExtraPwrOverTxPwrCfg7 = 0, ExtraPwrOverTxPwrCfg8 = 0, ExtraPwrOverTxPwrCfg9 = 0;
-
-	/*
-		For OFDM_54 and HT_MCS_7, extra fill the corresponding register value into MAC 0x13D4
-		bit 21:16 -> HT/VHT MCS 7
-		bit 5:0 -> OFDM 54
-	*/
-	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_1);
-	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for OFDM 54 */
-	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_2);
-	ExtraPwrOverTxPwrCfg7 |= (ExtraPwrOverMAC & 0x00003F00) << 8; /* Get Tx power for HT MCS 7 */
-	mt7610u_write32(pAd, TX_PWR_CFG_7, ExtraPwrOverTxPwrCfg7);
-
-	/*
-		For HT_MCS_15, extra fill the corresponding register value into MAC 0x13D8
-		bit 29:24 -> VHT 1SS MCS 9
-		bit 21:16 -> VHT 1SS MCS 8
-		bit 5:0 -> HT MCS 15
-	*/
-	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_3);
-	ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
-	mt7610u_write32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
-
-	/*
-		For STBC_MCS_7, extra fill the corresponding register value into MAC 0x13DC
-		bit 5:0 -> STBC MCS 7
-	*/
-	ExtraPwrOverMAC = mt7610u_read32(pAd, TX_PWR_CFG_4);
-	ExtraPwrOverTxPwrCfg9 |= (ExtraPwrOverMAC & 0x00003F00) >> 8; /* Get Tx power for STBC MCS 7 */
-	mt7610u_write32(pAd, TX_PWR_CFG_9, ExtraPwrOverTxPwrCfg9);
-
-	DBGPRINT(RT_DEBUG_INFO, ("0x13D4 = 0x%08X, 0x13D8 = 0x%08X, 0x13D4 = 0x%08X\n",
-			(UINT)ExtraPwrOverTxPwrCfg7, (UINT)ExtraPwrOverTxPwrCfg8, (UINT)ExtraPwrOverTxPwrCfg9));
-}
-
 static void calc_bw_delta_pwr(bool is_dec_delta, USHORT input_pwr,
 	USHORT bw_delta, CHAR *tx_pwr1, CHAR *tx_pwr2)
 {

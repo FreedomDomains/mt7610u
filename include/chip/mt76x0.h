@@ -148,8 +148,6 @@ typedef struct _MT76x0_BBP_Table {
 void MT76x0_Init(struct rtmp_adapter *pAd);
 INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd);
 
-void MT76x0_AsicExtraPowerOverMAC(struct rtmp_adapter *pAd);
-
 #ifdef DBG
 void MT76x0_ShowDmaIndexCupIndex(
 	struct rtmp_adapter *pAd);
