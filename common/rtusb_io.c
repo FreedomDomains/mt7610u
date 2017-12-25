@@ -125,66 +125,6 @@ void mt7610u_write32(
 /*
 	========================================================================
 
-	Routine Description: Write RF register through MAC
-
-	Arguments:
-
-	Return Value:
-
-	IRQL =
-
-	Note:
-
-	========================================================================
-*/
-int	RTUSBWriteRFRegister(
-	IN	struct rtmp_adapter *pAd,
-	IN	u32			Value)
-{
-	RF_CSR_CFG0_STRUC PhyCsr4;
-	UINT			i = 0;
-	int		status;
-
-	memset(&PhyCsr4, 0, sizeof(RF_CSR_CFG0_STRUC));
-
-	status = down_interruptible(&pAd->reg_atomic);
-	if (status != 0) {
-		DBGPRINT(RT_DEBUG_ERROR, ("reg_atomic get failed(ret=%d)\n", status));
-		return STATUS_UNSUCCESSFUL;
-	}
-
-	status = STATUS_UNSUCCESSFUL;
-	do
-	{
-		PhyCsr4.word = mt7610u_read32(pAd, RF_CSR_CFG0);
-		if (status >= 0)
-		{
-		if (!(PhyCsr4.field.Busy))
-			break;
-		}
-		DBGPRINT(RT_DEBUG_TRACE, ("RTUSBWriteRFRegister(RF_CSR_CFG0):retry count=%d!\n", i));
-		i++;
-	}
-	while ((i < RETRY_LIMIT) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)));
-
-	if ((i == RETRY_LIMIT) || (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
-	{
-		DBGPRINT_RAW(RT_DEBUG_ERROR, ("Retry count exhausted or device removed!!!\n"));
-		goto done;
-	}
-
-	mt7610u_write32(pAd, RF_CSR_CFG0, Value);
-	status = STATUS_SUCCESS;
-
-done:
-	up(&pAd->reg_atomic);
-
-	return status;
-}
-
-/*
-	========================================================================
-
 	Routine Description:
 
 	Arguments:

@@ -5839,10 +5839,6 @@ void RtmpTimerQInit(
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *key, int keylen);
 
-int RTUSBWriteRFRegister(
-	IN	struct rtmp_adapter *pAd,
-	IN	u32			Value);
-
 int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
 			u16 value, u16 index, void *data, u16 size);
 
