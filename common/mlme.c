@@ -798,7 +798,7 @@ void STAMlmePeriodicExec(
 		&& (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
 		)
 	{
-			MT76x0UsbAsicRadioOff(pAd, MLME_RADIO_OFF);
+			mt7610u_radio_off(pAd, MLME_RADIO_OFF);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("PSM - Issue Sleep command)\n"));
 	}

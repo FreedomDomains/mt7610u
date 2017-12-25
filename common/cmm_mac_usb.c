@@ -953,7 +953,7 @@ void RT28xxUsbMlmeRadioOn(struct rtmp_adapter *pAd)
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF))
 		return;
 
-	MT76x0UsbAsicRadioOn(pAd, MLME_RADIO_ON);
+	mt7610u_radio_on(pAd, MLME_RADIO_ON);
 
 	/* Clear Radio off flag*/
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
@@ -1034,7 +1034,7 @@ void RT28xxUsbMlmeRadioOFF(
 	RTMPSetLED(pAd, LED_RADIO_OFF);
 #endif /* LED_CONTROL_SUPPORT */
 
-	MT76x0UsbAsicRadioOff(pAd, MLME_RADIO_OFF);
+	mt7610u_radio_off(pAd, MLME_RADIO_OFF);
 }
 
 

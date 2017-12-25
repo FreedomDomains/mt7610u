@@ -683,11 +683,11 @@ INT RTMP_COM_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_ASICRADIO_OFF:
-			MT76x0UsbAsicRadioOff(pAd, SUSPEND_RADIO_OFF);
+			mt7610u_radio_off(pAd, SUSPEND_RADIO_OFF);
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_ASICRADIO_ON:
-			MT76x0UsbAsicRadioOn(pAd, RESUME_RADIO_ON);
+			mt7610u_radio_on(pAd, RESUME_RADIO_ON);
 			break;
 
 //#endif /* CONFIG_PM */

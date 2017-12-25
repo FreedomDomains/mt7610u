@@ -28,14 +28,15 @@
 
 #include	"rt_config.h"
 
+static void mt7610u_disbale_txrx(struct rtmp_adapter*pAd);
 
-void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
+void mt7610u_radio_off(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 ret;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
 
-	MT76x0DisableTxRx(pAd);
+	mt7610u_disbale_txrx(pAd);
 
 	ret = down_interruptible(&pAd->hw_atomic);
 	if (ret != 0) {
@@ -63,7 +64,7 @@ void MT76x0UsbAsicRadioOff(struct rtmp_adapter*pAd, u8 Stage)
 }
 
 
-void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
+void mt7610u_radio_on(struct rtmp_adapter*pAd, u8 Stage)
 {
 	u32 MACValue = 0;
 	u32 rx_filter_flag;
@@ -111,8 +112,11 @@ void MT76x0UsbAsicRadioOn(struct rtmp_adapter*pAd, u8 Stage)
 	DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
 
+/* ULLI : Warning
+ * We can use mt7612u functions here, there is some other IP on
+ * the USB3 interface which uses some other vendor commands */
 
-static void StopDmaRx(struct rtmp_adapter*pAd)
+static void mt7610u_stop_dma_rx(struct rtmp_adapter*pAd)
 {
 	struct sk_buff *	skb;
 	RX_BLK			RxBlk, *pRxBlk;
@@ -160,7 +164,7 @@ static void StopDmaRx(struct rtmp_adapter*pAd)
 
 }
 
-static void StopDmaTx(struct rtmp_adapter*pAd)
+static void mt7610u_stop_dma_tx(struct rtmp_adapter*pAd)
 {
 	u32 MacReg = 0, MTxCycle = 0;
 	u8 IdleNums = 0;
@@ -186,8 +190,7 @@ static void StopDmaTx(struct rtmp_adapter*pAd)
 
 }
 
-
-void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
+void mt7610u_disbale_txrx(struct rtmp_adapter*pAd)
 {
 	u32 MacReg = 0;
 	u32 MTxCycle;
@@ -204,7 +207,7 @@ void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 	DBGPRINT(RT_DEBUG_TRACE, ("%s Rx success = %ld\n",
 		__FUNCTION__, (ULONG)pAd->WlanCounters.ReceivedFragmentCount.QuadPart));
 
-	StopDmaTx(pAd);
+	mt7610u_stop_dma_tx(pAd);
 
 	/*
 		Check page count in TxQ,
@@ -342,7 +345,7 @@ void MT76x0DisableTxRx(struct rtmp_adapter*pAd)
 		bResetWLAN = true;
 	}
 
-	StopDmaRx(pAd);
+	mt7610u_stop_dma_rx(pAd);
 
 	if ((RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) == false)) {
 
