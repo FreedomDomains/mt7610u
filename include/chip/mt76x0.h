@@ -133,12 +133,12 @@ enum PA_TYPE {
 	UNKNOWN_TYPE_PA = 0x04,
 };
 
-typedef struct _RT6590_RF_SWITCH_ITEM {
+struct mt7610u_rf_switch_entry {
 	u8 Bank;
 	u8 Register;
 	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
 	u8 Value;
-} MT76x0_RF_SWITCH_ITEM, *PMT76x0_RF_SWITCH_ITEM;
+};
 
 struct mt7610u_bbp_pair {
 	u32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */

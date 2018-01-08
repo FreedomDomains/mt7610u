@@ -812,7 +812,7 @@ static u8 MT76x0_SDM_Channel[] = {
 	129, 130, 139, 141, 150, 151, 153, 154,
 	163, 165 };
 
-static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_BW_Switch[] = {
+static const struct mt7610u_rf_switch_entry MT76x0_RF_BW_Switch[] = {
 	/*   Bank, 		Register,	Bw/Band, 	Value */
 	{ RF_BANK0,	RF_R17,	RF_G_BAND | BW_20,	0x00 },
 	{ RF_BANK0,	RF_R17,	RF_G_BAND | BW_40,	0x00 },
@@ -867,7 +867,7 @@ static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_BW_Switch[] = {
 	{ RF_BANK7,	RF_R77,	BW_80,			0x10},
 };
 
-static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_Band_Switch[] = {
+static const struct mt7610u_rf_switch_entry MT76x0_RF_Band_Switch[] = {
 	/*   Bank, 	Register,	Bw/Band, 	Value */
 	{ RF_BANK0,	RF_R16,		RF_G_BAND,	0x20 },
 	{ RF_BANK0,	RF_R16,		RF_A_BAND,	0x20 },
@@ -933,7 +933,7 @@ static const MT76x0_RF_SWITCH_ITEM MT76x0_RF_Band_Switch[] = {
 /*
 	External PA
 */
-static MT76x0_RF_SWITCH_ITEM MT76x0_RF_EXT_PA_RegTb[] = {
+static struct mt7610u_rf_switch_entry MT76x0_RF_EXT_PA_RegTb[] = {
 	{ RF_BANK6,	RF_R45,		RF_A_BAND_LB,	0x63 },
 	{ RF_BANK6,	RF_R45,		RF_A_BAND_MB,	0x43 },
 	{ RF_BANK6,	RF_R45,		RF_A_BAND_HB,	0x33 },
@@ -993,7 +993,7 @@ static MT76x0_RF_SWITCH_ITEM MT76x0_RF_EXT_PA_RegTb[] = {
 /*
 	Internal PA
 */
-static MT76x0_RF_SWITCH_ITEM MT76x0_RF_INT_PA_RegTb[] = {
+static struct mt7610u_rf_switch_entry MT76x0_RF_INT_PA_RegTb[] = {
 };
 
 //
