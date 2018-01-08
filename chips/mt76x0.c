@@ -155,7 +155,7 @@ static struct rtmp_reg_pair MT76x0_BBP_Init_Tab[] = {
 	{ RXO_R24,	0x00000006 },
 };
 
-MT76x0_BBP_Table MT76x0_BPP_SWITCH_Tab[] = {
+struct mt7610u_bbp_pair mt7610u_bbp_sw_tab[] = {
 	{RF_G_BAND | RF_BW_20 | RF_BW_40,		{ AGC1_R8, 0x0E344EF0} },
 	{RF_A_BAND | RF_BW_20 | RF_BW_40 | RF_BW_80,	{ AGC1_R8, 0x122C54F2} },
 
@@ -1508,10 +1508,10 @@ void mt7610u_init_bbp(struct rtmp_adapter *pAd)
 				 MT76x0_BBP_Init_Tab,
 				 ARRAY_SIZE(MT76x0_BBP_Init_Tab));
 
-	for (IdReg = 0; IdReg < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); IdReg++) {
-		if (((RF_G_BAND | RF_BW_20) & MT76x0_BPP_SWITCH_Tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
-			mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Register,
-					MT76x0_BPP_SWITCH_Tab[IdReg].RegDate.Value);
+	for (IdReg = 0; IdReg < ARRAY_SIZE(mt7610u_bbp_sw_tab); IdReg++) {
+		if (((RF_G_BAND | RF_BW_20) & mt7610u_bbp_sw_tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
+			mt7610u_write32(pAd, mt7610u_bbp_sw_tab[IdReg].RegDate.Register,
+					mt7610u_bbp_sw_tab[IdReg].RegDate.Value);
 		}
 	}
 
@@ -1605,10 +1605,10 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 		RegValue &= (~0x20);
 	mt7610u_write32(pAd, CORE_R1, RegValue);
 
-	for (Index = 0; Index < ARRAY_SIZE(MT76x0_BPP_SWITCH_Tab); Index++) {
-		if (((rf_phy_mode | rf_bw) & MT76x0_BPP_SWITCH_Tab[Index].BwBand) == (rf_phy_mode | rf_bw)) {
-			if ((MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register == AGC1_R8)) {
-				u32 eLNAgain = (MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value & 0x0000FF00) >> 8;
+	for (Index = 0; Index < ARRAY_SIZE(mt7610u_bbp_sw_tab); Index++) {
+		if (((rf_phy_mode | rf_bw) & mt7610u_bbp_sw_tab[Index].BwBand) == (rf_phy_mode | rf_bw)) {
+			if ((mt7610u_bbp_sw_tab[Index].RegDate.Register == AGC1_R8)) {
+				u32 eLNAgain = (mt7610u_bbp_sw_tab[Index].RegDate.Value & 0x0000FF00) >> 8;
 
 				if (Channel > 14) {
 					if (Channel < pAd->chipCap.a_band_mid_ch)
@@ -1620,11 +1620,11 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 				} else
 					eLNAgain -= (pAd->BLNAGain*2);
 
-				mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
-						(MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value&(~0x0000FF00))|(eLNAgain << 8));
+				mt7610u_write32(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
+						(mt7610u_bbp_sw_tab[Index].RegDate.Value&(~0x0000FF00))|(eLNAgain << 8));
 			} else {
-				mt7610u_write32(pAd, MT76x0_BPP_SWITCH_Tab[Index].RegDate.Register,
-						MT76x0_BPP_SWITCH_Tab[Index].RegDate.Value);
+				mt7610u_write32(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
+						mt7610u_bbp_sw_tab[Index].RegDate.Value);
 			}
 		}
 	}
