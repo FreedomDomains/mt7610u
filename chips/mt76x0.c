@@ -236,7 +236,7 @@ struct mt7610u_bbp_pair mt7610u_bbp_sw_tab[] = {
 	{ MT_MCU_MEMMAP_RF | (bank) << 16 | (reg), value }
 
 /* Bank	Register Value(Hex) */
-static BANK_RF_REG_PAIR mt7610u_rf_central[] = {
+static struct mt7610u_rf_entry mt7610u_rf_central[] = {
 /*
 	Bank 0 - For central blocks: BG, PLL, XTAL, LO, ADC/DAC
 */
@@ -321,7 +321,7 @@ static BANK_RF_REG_PAIR mt7610u_rf_central[] = {
 	{ RF_BANK0,	RF_R73, 0x93 },
 };
 
-static BANK_RF_REG_PAIR mt7610u_rf_2g_channel[] = {
+static struct mt7610u_rf_entry mt7610u_rf_2g_channel[] = {
 /*
 	Bank 5 - Channel 0 2G RF registers
 */
@@ -420,7 +420,7 @@ static BANK_RF_REG_PAIR mt7610u_rf_2g_channel[] = {
 	{ RF_BANK5,	RF_R127, 0x04 },
 };
 
-static BANK_RF_REG_PAIR mt7610u_rf_5g_channel[] = {
+static struct mt7610u_rf_entry mt7610u_rf_5g_channel[] = {
 /*
 	Bank 6 - Channel 0 5G RF registers
 */
@@ -495,7 +495,7 @@ static BANK_RF_REG_PAIR mt7610u_rf_5g_channel[] = {
 	{ RF_BANK6,	RF_R65, 0x0F },
 };
 
-static BANK_RF_REG_PAIR mt7160u_rf_vga[] = {
+static struct mt7610u_rf_entry mt7160u_rf_vga[] = {
 /*
 	Bank 7 - Channel 0 VGA RF registers
 */

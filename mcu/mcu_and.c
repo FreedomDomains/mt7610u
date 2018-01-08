@@ -1281,7 +1281,8 @@ error:
 static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_payload, u16 rsp_payload_len)
 {
 	u32 i;
-	BANK_RF_REG_PAIR *reg_pair = (BANK_RF_REG_PAIR *)msg->rsp_payload;
+	struct mt7610u_rf_entry *reg_pair =
+		(struct mt7610u_rf_entry *)msg->rsp_payload;
 
 	/* ULLI : horrible ..., the magic value 4 is the size of the rxfce/cmd header */
 
@@ -1293,7 +1294,7 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 #define MT_RF_BANK	GENMASK(23, 16)
 #define MT_RF_INDEX	GENMASK(15, 0)
 
-int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, struct mt7610u_rf_entry *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, pos = 0, receive_len;
@@ -1397,7 +1398,7 @@ error:
 	return ret;
 }
 
-int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, BANK_RF_REG_PAIR *reg_pair, u32 num)
+int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, struct mt7610u_rf_entry *reg_pair, u32 num)
 {
 	struct cmd_msg *msg;
 	unsigned int var_len = num * 8, pos = 0, sent_len;

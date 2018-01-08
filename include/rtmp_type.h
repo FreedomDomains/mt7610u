@@ -152,11 +152,11 @@ typedef struct _QUEUE_HEADER {
 	ULONG Number;
 } QUEUE_HEADER, *PQUEUE_HEADER;
 
-typedef struct _BANK_RF_REG_PAIR {
+struct mt7610u_rf_entry {
 	u8 Bank;
 	u8 Register;
 	u8 Value;
-} BANK_RF_REG_PAIR, *PBANK_RF_REG_PAIR;
+};
 
 typedef struct _R_M_W_REG{
 	u32 Register;

@@ -38,7 +38,7 @@ int rlt_rf_write(
 	int	 ret = 0;
 
 	{
-		BANK_RF_REG_PAIR reg;
+		struct mt7610u_rf_entry  reg;
 		reg.Bank = bank;
 		reg.Register = regID;
 		reg.Value = value;
@@ -72,7 +72,7 @@ int rlt_rf_read(
 {
 	int	 ret = 0;
 	{
-		BANK_RF_REG_PAIR reg;
+		struct mt7610u_rf_entry  reg;
 		reg.Bank = bank;
 		reg.Register = regID;
 		mt7610u_mcu_rf_random_read(pAd, &reg, 1);
