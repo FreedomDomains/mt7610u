@@ -95,7 +95,7 @@ typedef struct _TSO_INFO_{
 	R28<1:0> R27<7:0> R26<7:0> (hex) sdm_k
 	R24<1:0> xo_div
 */
-typedef struct _MT76x0_FREQ_ITEM {
+struct mt7610u_freq_entry {
 	u8 Channel;
 	u32 Band;
 	u8 pllR37;
@@ -116,7 +116,7 @@ typedef struct _MT76x0_FREQ_ITEM {
 	u8 pllR28_b3b2; /* clksel option */
 	u32 Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
 	u8 pllR24_b1b0; /* xo_div */
-} MT76x0_FREQ_ITEM;
+};
 
 #define RF_G_BAND 		0x0100
 #define RF_A_BAND 		0x0200

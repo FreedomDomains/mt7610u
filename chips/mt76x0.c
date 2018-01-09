@@ -542,7 +542,7 @@ static struct mt7610u_rf_entry mt7160u_rf_vga[] = {
 	{ RF_BANK7,	RF_R74, 0x00 },
 };
 
-static MT76x0_FREQ_ITEM MT76x0_Frequency_Plan[] = {
+static struct mt7610u_freq_entry mt7610u_freq_plan[] = {
 	{1,	RF_G_BAND,	0x02, 0x3F, 0x28, 0xDD, 0xE2, 0x40, 0x02, 0x40, 0x02, 0, 0, 1, 0x28, 0, 0x30, 0, 0, 0x3}, /* Freq 2412 */
 	{2, 	RF_G_BAND,	0x02, 0x3F, 0x3C, 0xDD, 0xE4, 0x40, 0x07, 0x40, 0x02, 0, 0, 1, 0xA1, 0, 0x30, 0, 0, 0x1}, /* Freq 2417 */
 	{3, 	RF_G_BAND,	0x02, 0x3F, 0x3C, 0xDD, 0xE2, 0x40, 0x07, 0x40, 0x0B, 0, 0, 1, 0x50, 0, 0x30, 0, 0, 0x0}, /* Freq 2422 */
@@ -674,7 +674,7 @@ static MT76x0_FREQ_ITEM MT76x0_Frequency_Plan[] = {
 	{173, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x68, 0xDD, 0xD2, 0x40, 0x10, 0x40, 0x15, 0, 0, 1, 0x30, 0, 0x30, 0, 0, 0x3}, /* Freq 5865 */
 };
 
-static MT76x0_FREQ_ITEM MT76x0_SDM_Frequency_Plan[] = {
+static struct mt7610u_freq_entry mt7610u_sdm_freq_plan[] = {
 	{1,	RF_G_BAND,	0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x28, 0, 0x0, 0x8, 0xCCCC,  0x3}, /* Freq 2412 */
 	{2, 	RF_G_BAND,	0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x28, 0, 0x0, 0x8, 0x12222, 0x3}, /* Freq 2417 */
 	{3, 	RF_G_BAND,	0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x28, 0, 0x0, 0x8, 0x17777, 0x3}, /* Freq 2422 */
@@ -806,7 +806,7 @@ static MT76x0_FREQ_ITEM MT76x0_SDM_Frequency_Plan[] = {
 	{173, 	(RF_A_BAND | RF_A_BAND_HB),	 0x02, 0x3F, 0x7F, 0xDD, 0xC3, 0x40, 0x0, 0x80, 0x0, 0/*0 -> 1*/, 0, 0, 0x30, 0, 0x0, 0x8, 0x38000, 0x3}, /* Freq 5865 */
 };
 
-static u8 MT76x0_SDM_Channel[] = {
+static u8 mt7610u_sdm_channel[] = {
 	183, 185,  43,  45,  54,  55,  57,  58,
 	102, 103, 105, 106, 115, 117, 126, 127,
 	129, 130, 139, 141, 150, 151, 153, 154,
@@ -1077,20 +1077,20 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 	u32 i = 0, RfBand = 0, MacReg = 0;
 	u8 RFValue = 0;
 	bool bSDM = false;
-	MT76x0_FREQ_ITEM *pMT76x0_freq_item = NULL;
+	struct mt7610u_freq_entry *freq_entry = NULL;
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: -->\n", __FUNCTION__));
 
-	for (i = 0; i < ARRAY_SIZE(MT76x0_SDM_Channel); i++) {
-		if (Channel == MT76x0_SDM_Channel[i]) {
+	for (i = 0; i < ARRAY_SIZE(mt7610u_sdm_channel); i++) {
+		if (Channel == mt7610u_sdm_channel[i]) {
 			bSDM = true;
 			break;
 		}
 	}
 
-	for (i = 0; i < ARRAY_SIZE(MT76x0_Frequency_Plan); i++) {
-		if (Channel == MT76x0_Frequency_Plan[i].Channel) {
-			RfBand = MT76x0_Frequency_Plan[i].Band;
+	for (i = 0; i < ARRAY_SIZE(mt7610u_freq_plan); i++) {
+		if (Channel == mt7610u_freq_plan[i].Channel) {
+			RfBand = mt7610u_freq_plan[i].Band;
 
 			/*
 			 * ULLI : note both tables must
@@ -1098,38 +1098,38 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 			 */
 
 			if (bSDM)
-				pMT76x0_freq_item = &(MT76x0_SDM_Frequency_Plan[i]);
+				freq_entry = &(mt7610u_sdm_freq_plan[i]);
 			else
-				pMT76x0_freq_item = &(MT76x0_Frequency_Plan[i]);
+				freq_entry = &(mt7610u_freq_plan[i]);
 
-			rlt_rf_write(pAd, RF_BANK0, RF_R37, pMT76x0_freq_item->pllR37);
-			rlt_rf_write(pAd, RF_BANK0, RF_R36, pMT76x0_freq_item->pllR36);
-			rlt_rf_write(pAd, RF_BANK0, RF_R35, pMT76x0_freq_item->pllR35);
-			rlt_rf_write(pAd, RF_BANK0, RF_R34, pMT76x0_freq_item->pllR34);
-			rlt_rf_write(pAd, RF_BANK0, RF_R33, pMT76x0_freq_item->pllR33);
+			rlt_rf_write(pAd, RF_BANK0, RF_R37, freq_entry->pllR37);
+			rlt_rf_write(pAd, RF_BANK0, RF_R36, freq_entry->pllR36);
+			rlt_rf_write(pAd, RF_BANK0, RF_R35, freq_entry->pllR35);
+			rlt_rf_write(pAd, RF_BANK0, RF_R34, freq_entry->pllR34);
+			rlt_rf_write(pAd, RF_BANK0, RF_R33, freq_entry->pllR33);
 
 			/* R32<7:5> */
 			rlt_rf_read(pAd, RF_BANK0, RF_R32, &RFValue);
 			RFValue &= ~(0xE0);
-			RFValue |= pMT76x0_freq_item->pllR32_b7b5;
+			RFValue |= freq_entry->pllR32_b7b5;
 			rlt_rf_write(pAd, RF_BANK0, RF_R32, RFValue);
 
 			/* R32<4:0> pll_den: (Denomina - 8) */
 			rlt_rf_read(pAd, RF_BANK0, RF_R32, &RFValue);
 			RFValue &= ~(0x1F);
-			RFValue |= pMT76x0_freq_item->pllR32_b4b0;
+			RFValue |= freq_entry->pllR32_b4b0;
 			rlt_rf_write(pAd, RF_BANK0, RF_R32, RFValue);
 
 			/* R31<7:5> */
 			rlt_rf_read(pAd, RF_BANK0, RF_R31, &RFValue);
 			RFValue &= ~(0xE0);
-			RFValue |= pMT76x0_freq_item->pllR31_b7b5;
+			RFValue |= freq_entry->pllR31_b7b5;
 			rlt_rf_write(pAd, RF_BANK0, RF_R31, RFValue);
 
 			/* R31<4:0> pll_k(Nominator) */
 			rlt_rf_read(pAd, RF_BANK0, RF_R31, &RFValue);
 			RFValue &= ~(0x1F);
-			RFValue |= pMT76x0_freq_item->pllR31_b4b0;
+			RFValue |= freq_entry->pllR31_b4b0;
 			rlt_rf_write(pAd, RF_BANK0, RF_R31, RFValue);
 
 			/* R30<7> sdm_reset_n */
@@ -1140,65 +1140,65 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 				RFValue |= (0x80);
 				rlt_rf_write(pAd, RF_BANK0, RF_R30, RFValue);
 			} else {
-				RFValue |= pMT76x0_freq_item->pllR30_b7;
+				RFValue |= freq_entry->pllR30_b7;
 				rlt_rf_write(pAd, RF_BANK0, RF_R30, RFValue);
 			}
 
 			/* R30<6:2> sdmmash_prbs,sin */
 			rlt_rf_read(pAd, RF_BANK0, RF_R30, &RFValue);
 			RFValue &= ~(0x7C);
-			RFValue |= pMT76x0_freq_item->pllR30_b6b2;
+			RFValue |= freq_entry->pllR30_b6b2;
 			rlt_rf_write(pAd, RF_BANK0, RF_R30, RFValue);
 
 			/* R30<1> sdm_bp */
 			rlt_rf_read(pAd, RF_BANK0, RF_R30, &RFValue);
 			RFValue &= ~(0x02);
-			RFValue |= (pMT76x0_freq_item->pllR30_b1 << 1);
+			RFValue |= (freq_entry->pllR30_b1 << 1);
 			rlt_rf_write(pAd, RF_BANK0, RF_R30, RFValue);
 
 			/* R30<0> R29<7:0> (hex) pll_n */
-			RFValue = pMT76x0_freq_item->pll_n & 0x00FF;
+			RFValue = freq_entry->pll_n & 0x00FF;
 			rlt_rf_write(pAd, RF_BANK0, RF_R29, RFValue);
 
 			rlt_rf_read(pAd, RF_BANK0, RF_R30, &RFValue);
 			RFValue &= ~(0x1);
-			RFValue |= ((pMT76x0_freq_item->pll_n >> 8) & 0x0001);
+			RFValue |= ((freq_entry->pll_n >> 8) & 0x0001);
 			rlt_rf_write(pAd, RF_BANK0, RF_R30, RFValue);
 
 			/* R28<7:6> isi_iso */
 			rlt_rf_read(pAd, RF_BANK0, RF_R28, &RFValue);
 			RFValue &= ~(0xC0);
-			RFValue |= pMT76x0_freq_item->pllR28_b7b6;
+			RFValue |= freq_entry->pllR28_b7b6;
 			rlt_rf_write(pAd, RF_BANK0, RF_R28, RFValue);
 
 			/* R28<5:4> pfd_dly */
 			rlt_rf_read(pAd, RF_BANK0, RF_R28, &RFValue);
 			RFValue &= ~(0x30);
-			RFValue |= pMT76x0_freq_item->pllR28_b5b4;
+			RFValue |= freq_entry->pllR28_b5b4;
 			rlt_rf_write(pAd, RF_BANK0, RF_R28, RFValue);
 
 			/* R28<3:2> clksel option */
 			rlt_rf_read(pAd, RF_BANK0, RF_R28, &RFValue);
 			RFValue &= ~(0x0C);
-			RFValue |= pMT76x0_freq_item->pllR28_b3b2;
+			RFValue |= freq_entry->pllR28_b3b2;
 			rlt_rf_write(pAd, RF_BANK0, RF_R28, RFValue);
 
 			/* R28<1:0> R27<7:0> R26<7:0> (hex) sdm_k */
-			RFValue = pMT76x0_freq_item->Pll_sdm_k & 0x000000FF;
+			RFValue = freq_entry->Pll_sdm_k & 0x000000FF;
 			rlt_rf_write(pAd, RF_BANK0, RF_R26, RFValue);
 
-			RFValue = ((pMT76x0_freq_item->Pll_sdm_k >> 8) & 0x000000FF);
+			RFValue = ((freq_entry->Pll_sdm_k >> 8) & 0x000000FF);
 			rlt_rf_write(pAd, RF_BANK0, RF_R27, RFValue);
 
 			rlt_rf_read(pAd, RF_BANK0, RF_R28, &RFValue);
 			RFValue &= ~(0x3);
-			RFValue |= ((pMT76x0_freq_item->Pll_sdm_k >> 16) & 0x0003);
+			RFValue |= ((freq_entry->Pll_sdm_k >> 16) & 0x0003);
 			rlt_rf_write(pAd, RF_BANK0, RF_R28, RFValue);
 
 			/* R24<1:0> xo_div */
 			rlt_rf_read(pAd, RF_BANK0, RF_R24, &RFValue);
 			RFValue &= ~(0x3);
-			RFValue |= pMT76x0_freq_item->pllR24_b1b0;
+			RFValue |= freq_entry->pllR24_b1b0;
 			rlt_rf_write(pAd, RF_BANK0, RF_R24, RFValue);
 
 
@@ -1212,24 +1212,24 @@ void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
 				RfBand,
 				pAd->RfIcType,
 				pAd->Antenna.field.TxPath,
-				pMT76x0_freq_item->pllR37,
-				pMT76x0_freq_item->pllR36,
-				pMT76x0_freq_item->pllR35,
-				pMT76x0_freq_item->pllR34,
-				pMT76x0_freq_item->pllR33,
-				pMT76x0_freq_item->pllR32_b7b5,
-				pMT76x0_freq_item->pllR32_b4b0,
-				pMT76x0_freq_item->pllR31_b7b5,
-				pMT76x0_freq_item->pllR31_b4b0,
-				pMT76x0_freq_item->pllR30_b7,
-				pMT76x0_freq_item->pllR30_b6b2,
-				pMT76x0_freq_item->pllR30_b1,
-				pMT76x0_freq_item->pll_n,
-				pMT76x0_freq_item->pllR28_b7b6,
-				pMT76x0_freq_item->pllR28_b5b4,
-				pMT76x0_freq_item->pllR28_b3b2,
-				pMT76x0_freq_item->Pll_sdm_k,
-				pMT76x0_freq_item->pllR24_b1b0));
+				freq_entry->pllR37,
+				freq_entry->pllR36,
+				freq_entry->pllR35,
+				freq_entry->pllR34,
+				freq_entry->pllR33,
+				freq_entry->pllR32_b7b5,
+				freq_entry->pllR32_b4b0,
+				freq_entry->pllR31_b7b5,
+				freq_entry->pllR31_b4b0,
+				freq_entry->pllR30_b7,
+				freq_entry->pllR30_b6b2,
+				freq_entry->pllR30_b1,
+				freq_entry->pll_n,
+				freq_entry->pllR28_b7b6,
+				freq_entry->pllR28_b5b4,
+				freq_entry->pllR28_b3b2,
+				freq_entry->Pll_sdm_k,
+				freq_entry->pllR24_b1b0));
 			break;
 		}
 	}
