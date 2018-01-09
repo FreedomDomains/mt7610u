@@ -1072,7 +1072,7 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 	Loop Filter Config: R33, R34
 	Pll_idiv: frac comp R35[6:0]
 */
-void SetRfChFreqParametersMT76x0(struct rtmp_adapter *pAd, u8 Channel)
+void mt7610u_rf_set_channel_freq(struct rtmp_adapter *pAd, u8 Channel)
 {
 	u32 i = 0, RfBand = 0, MacReg = 0;
 	u8 RFValue = 0;
@@ -1587,7 +1587,7 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 	/*
 		Set RF channel frequency parameters (Rdiv, N, K, D and Ksd)
 	*/
-	SetRfChFreqParametersMT76x0(pAd, Channel);
+	mt7610u_rf_set_channel_freq(pAd, Channel);
 
 
 	for (Index = 0; Index < MAX_NUM_OF_CHANNELS; Index++) {
