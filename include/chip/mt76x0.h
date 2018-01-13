@@ -124,8 +124,7 @@ int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd);
 
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
-void MT76x0_dynamic_vga_tuning(
-	IN struct rtmp_adapter *pAd);
+void mt7610u_dynamic_vga_tuning(struct rtmp_adapter *pAd);
 
 void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel);
 

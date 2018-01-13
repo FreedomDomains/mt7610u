@@ -668,10 +668,9 @@ void MlmePeriodicExec(void *FunctionContext)
 
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF | fRTMP_ADAPTER_DISABLE_DEQUEUEPACKET) == false)
 		{
-			if ((pAd->Mlme.OneSecPeriodicRound % 5) == 0)
-			{
+			if ((pAd->Mlme.OneSecPeriodicRound % 5) == 0) {
 #ifdef CONFIG_STA_SUPPORT
-				MT76x0_dynamic_vga_tuning(pAd);
+				mt7610u_dynamic_vga_tuning(pAd);
 #endif /* CONFIG_STA_SUPPORT */
 			}
 

@@ -1946,7 +1946,7 @@ void mt7610u_init(struct rtmp_adapter *pAd)
 */
 }
 
-void MT76x0_dynamic_vga_tuning(struct rtmp_adapter *pAd)
+void mt7610u_dynamic_vga_tuning(struct rtmp_adapter *pAd)
 {
 	struct rtmp_chip_cap *pChipCap = &pAd->chipCap;
 	u32 reg_val = 0, init_vga = 0, rssi = 0;
