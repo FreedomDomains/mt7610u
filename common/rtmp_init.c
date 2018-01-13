@@ -837,7 +837,7 @@ int	NICInitializeAsic(
 
 	/*To avoid hang-on issue when interface up in kernel 2.4, */
 	/*we use a local variable "MacCsr0" instead of using "pAd->MACVersion" directly.*/
-	if (WaitForAsicReady(pAd) != true)
+	if (mt7610u_wait_for_asic_ready(pAd) != true)
 			return NDIS_STATUS_FAILURE;
 
 	// TODO: shiang, how about the value setting of pAd->MACVersion?? Original it assigned here

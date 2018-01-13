@@ -6217,8 +6217,7 @@ void ieee80211_notify_michael_failure(
 const CHAR* ether_sprintf(const u8 *mac);
 #endif/*HOSTAPD_SUPPORT*/
 
-INT WaitForAsicReady(
-	IN struct rtmp_adapter*pAd);
+int mt7610u_wait_for_asic_ready(struct rtmp_adapter*pAd);
 
 bool CHAN_PropertyCheck(
 	IN struct rtmp_adapter *pAd,

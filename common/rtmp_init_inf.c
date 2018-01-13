@@ -49,7 +49,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* Make sure MAC gets ready.*/
 	index = 0;
-	if (WaitForAsicReady(pAd) != true)
+	if (mt7610u_wait_for_asic_ready(pAd) != true)
 		goto err1;
 
 	DBGPRINT(RT_DEBUG_OFF, ("MAC[Ver=0x%08x]\n",
