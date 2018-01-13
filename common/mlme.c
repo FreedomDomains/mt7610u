@@ -681,7 +681,7 @@ void MlmePeriodicExec(void *FunctionContext)
 					For temperature sensor
 				*/
 
-				MT76x0_TempSensor(pAd);
+				mt7610u_temp_sensor(pAd);
 
 				temperature_diff = (pAd->chipCap.NowTemperature - pAd->chipCap.LastTemperatureforVCO);
 				if (temperature_diff > 20 ||

@@ -131,8 +131,7 @@ void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
 void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
-void MT76x0_TempSensor(
-	IN struct rtmp_adapter *pAd);
+void mt7610u_temp_sensor(struct rtmp_adapter *pAd);
 
 void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 

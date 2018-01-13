@@ -2252,7 +2252,7 @@ RXDC_Calibration:
 	up(&pAd->cal_atomic);
 }
 
-void MT76x0_TempSensor(struct rtmp_adapter *pAd)
+void mt7610u_temp_sensor(struct rtmp_adapter *pAd)
 {
 	u8 rf_b7_73 = 0, rf_b0_66 = 0, rf_b0_67 = 0;
 	u32 reg_val = 0;
