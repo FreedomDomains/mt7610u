@@ -138,5 +138,5 @@ void RtmpChipOpsHook(struct rtmp_adapter*pAd)
 	pAd->mac_rev = mt7610u_read32(pAd, MT_MAC_CSR0);
 	DBGPRINT(RT_DEBUG_OFF, ("mac_rev = 0x%08x\n", pAd->mac_rev));
 
-	MT76x0_Init(pAd);
+	mt7610u_init(pAd);
 }

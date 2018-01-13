@@ -145,7 +145,7 @@ struct mt7610u_bbp_pair {
 	struct rtmp_reg_pair RegDate;
 };
 
-void MT76x0_Init(struct rtmp_adapter *pAd);
+void mt7610u_init(struct rtmp_adapter *pAd);
 int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd);
 
 #ifdef DBG
