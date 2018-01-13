@@ -146,7 +146,7 @@ struct mt7610u_bbp_pair {
 };
 
 void MT76x0_Init(struct rtmp_adapter *pAd);
-INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd);
+int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd);
 
 #ifdef DBG
 void MT76x0_ShowDmaIndexCupIndex(

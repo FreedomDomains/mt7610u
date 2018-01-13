@@ -1670,7 +1670,7 @@ static u8 mt76x0_txpwr_chlist[] = {
 	 42,  58, 106, 122, 155,
 };
 
-INT MT76x0_ReadChannelPwr(struct rtmp_adapter *pAd)
+int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd)
 {
 	u32 i, choffset, idx, ss_offset_g, ss_num;
 	EEPROM_TX_PWR_STRUC Power;
