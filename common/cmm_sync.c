@@ -57,7 +57,7 @@ void BuildChannelList(
 	u8 *pChannelList;
 	u8 *pChannelListFlag;
 
-	memset(pAd->ChannelList, 0, MAX_NUM_OF_CHANNELS * sizeof(struct CHANNEL_TX_POWER));
+	memset(pAd->ChannelList, 0, MAX_NUM_OF_CHANNELS * sizeof(struct mt7610_channel_tx_power));
 
 	/* if not 11a-only mode, channel list starts from 2.4Ghz band*/
 	if (!WMODE_5G_ONLY(pAd->CommonCfg.PhyMode)) {
@@ -99,7 +99,7 @@ void BuildChannelList(
 			for (i = 0; i < num; i++) {
 				for (j = 0; j < MAX_NUM_OF_CHANNELS; j++) {
 					if (pChannelList[i] == pAd->TxPower[j].Channel) {
-						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct CHANNEL_TX_POWER));
+						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct mt7610_channel_tx_power));
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
 					}
 				}
@@ -160,7 +160,7 @@ void BuildChannelList(
 			for (i=0; i<num; i++) {
 				for (j=0; j<MAX_NUM_OF_CHANNELS; j++) {
 					if (pChannelList[i] == pAd->TxPower[j].Channel) {
-						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct CHANNEL_TX_POWER));
+						memmove(&pAd->ChannelList[index+i], &pAd->TxPower[j], sizeof(struct mt7610_channel_tx_power));
 						pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
 					}
 				}
