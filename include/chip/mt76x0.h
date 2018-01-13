@@ -42,32 +42,6 @@ struct rtmp_adapter;
 #define INT_PA_2G_5G		0x3
 
 /*
-	rsv: Reserved
-	tcp: packet type, tcp : 1, udp:0
-	tups: TCP/UDP header start offset (in unit of DWORD)
-	ips: IP start offset (in unit of byte), base address of ips is the beginning of TXWI
-	mss: Max Segment size (in unit of byte)
-*/
-#ifdef RT_BIG_ENDIAN
-typedef struct _TSO_INFO_{
-	u32 mss:16;
-	u32 ips:8;
-	u32 tups:6;
-	u32 tcp:1;
-	u32 rsv:1;
-}TSO_INFO;
-#else
-typedef struct _TSO_INFO_{
-	u32 rsv:1;
-	u32 tcp:1;
-	u32 tups:6;
-	u32 ips:8;
-	u32 mss:16;
-}TSO_INFO;
-#endif /* RT_BIG_ENDIAN */
-
-
-/*
  * Frequency plan item  for RT85592
  * N: R9[4], R8[7:0]
  * K: R7[7], R9[3:0]
@@ -148,11 +122,6 @@ struct mt7610u_bbp_pair {
 void mt7610u_init(struct rtmp_adapter *pAd);
 int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd);
 
-#ifdef DBG
-void MT76x0_ShowDmaIndexCupIndex(
-	struct rtmp_adapter *pAd);
-#endif /* DBG */
-
 void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset);
 
 void MT76x0_dynamic_vga_tuning(
@@ -164,11 +133,6 @@ void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
 void MT76x0_TempSensor(
 	IN struct rtmp_adapter *pAd);
-
-#ifdef DFS_SUPPORT
-void MT76x0_DFS_CR_Init(
-	IN struct rtmp_adapter *pAd);
-#endif /* DFS_SUPPORT */
 
 void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd);
 
