@@ -2036,7 +2036,7 @@ void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel)
 	return;
 }
 
-void MT76x0_Calibration(struct rtmp_adapter *pAd, u8 Channel)
+void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel)
 {
 	u32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
 	int band_nr = (Channel > 14) ? 1 : 0;

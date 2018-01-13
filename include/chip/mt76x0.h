@@ -160,9 +160,7 @@ void MT76x0_dynamic_vga_tuning(
 
 void mt7610u_vco_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
-void MT76x0_Calibration(
-	IN struct rtmp_adapter *pAd,
-	IN u8 Channel);
+void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel);
 
 void MT76x0_TempSensor(
 	IN struct rtmp_adapter *pAd);
