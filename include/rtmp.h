@@ -5839,7 +5839,7 @@ void RtmpTimerQInit(
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *key, int keylen);
 
-int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
+int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, enum mt_vendor_req request,
 			u16 value, u16 index, void *data, u16 size);
 
 void RTUSBDequeueCmd(struct rtmp_command_queue *cmdq,

@@ -29,14 +29,6 @@
 
 #define MAX_VENDOR_REQ_RETRY_COUNT  10
 
-/* Known USB Vendor Commands */
-#define MT7610U_VENDOR_DEVICE_MODE	0x01
-#define MT7610U_VENDOR_SINGLE_WRITE	0x02
-#define MT7610U_VENDOR_WRITE_MAC	0x06
-#define MT7610U_VENDOR_READ_MAC		0x07
-#define MT7610U_VENDOR_WRITE_EEPROM	0x08	/* Not used */
-#define MT7610U_VENDOR_READ_EEPROM	0x09
-
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 		    u8 *key, int keylen)
 {
@@ -47,7 +39,7 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 
 		mt7610u_vendor_request(pAd,
 				    DEVICE_VENDOR_REQUEST_OUT,
-				    MT7610U_VENDOR_SINGLE_WRITE,
+				    MT_VEND_SINGLE_WRITE,
 				    val, Offset + idx,
 				    NULL, 0);
 
@@ -80,7 +72,7 @@ u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
 
 	status = mt7610u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_IN,
-		MT7610U_VENDOR_READ_MAC,
+		MT_VEND_MULTI_READ,
 		0, Offset,
 		&val, 4);
 
@@ -117,7 +109,7 @@ void mt7610u_write32(
 
 	mt7610u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_OUT,
-			MT7610U_VENDOR_WRITE_MAC,
+			MT_VEND_MULTI_WRITE,
 			0, Offset,
 			&val, 4);
 }
@@ -144,7 +136,7 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 
 	mt7610u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_IN,
-			MT7610U_VENDOR_READ_EEPROM,
+			MT_VEND_READ_EEPROM,
 			0, offset,
 			&localData, 2);
 
@@ -186,7 +178,7 @@ u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
 	========================================================================
 */
 
-int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
+int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, enum mt_vendor_req request,
 			u16 value, u16 index, void *data, u16 size)
 {
 	int ret = 0;
@@ -245,7 +237,7 @@ int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, u8 request,
 			DBGPRINT(RT_DEBUG_ERROR, ("mt7610u_vendor_request failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
 						ret, (requesttype == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), request, index, pAd->Flags));
 
-			if (request == MT7610U_VENDOR_SINGLE_WRITE)
+			if (request == MT_VEND_SINGLE_WRITE)
 				DBGPRINT(RT_DEBUG_ERROR, ("\tRequest Value=0x%04x!\n", value));
 
 			if (ret == -ENODEV)
