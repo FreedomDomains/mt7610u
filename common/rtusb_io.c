@@ -130,7 +130,7 @@ void mt76u_reg_write(
 	========================================================================
 */
 
-u16 mt7610u_read_eeprom16(struct rtmp_adapter *pAd, u16 offset)
+u16 mt76u_read_eeprom(struct rtmp_adapter *pAd, u16 offset)
 {
 	u16 localData;
 

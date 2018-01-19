@@ -1437,7 +1437,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 	mt7610u_mcu_random_write(pAd,  mt7610_mac_cr_table,
 				 ARRAY_SIZE(mt7610_mac_cr_table));
 
-	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
+	trsw_mode = mt76u_read_eeprom(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
 		mt76u_reg_write(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
@@ -1691,7 +1691,7 @@ int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd)
 	ss_offset_g = EEPROM_G_TX_PWR_OFFSET;
 	for (i = 0; i < 7; i++) {
 		idx = i * 2;
-		Power.word = mt7610u_read_eeprom16(pAd, ss_offset_g + idx);
+		Power.word = mt76u_read_eeprom(pAd, ss_offset_g + idx);
 
 		tx_pwr1 = tx_pwr2 = DEFAULT_RF_TX_POWER;
 
@@ -1712,7 +1712,7 @@ int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 36));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + idx);
+		Power.word = mt76u_read_eeprom(pAd, EEPROM_A_TX_PWR_OFFSET + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1728,7 +1728,7 @@ int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd)
 	for (i = 0; i < 8; i++) {
 
 		idx = i * 2;
-		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
+		Power.word = mt76u_read_eeprom(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -1743,7 +1743,7 @@ int mt7610u_read_channel_pwr(struct rtmp_adapter *pAd)
 	ASSERT((pAd->TxPower[choffset].Channel == 149));
 	for (i = 0; i < 6; i++) {
 		idx = i * 2;
-		Power.word = mt7610u_read_eeprom16(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
+		Power.word = mt76u_read_eeprom(pAd, EEPROM_A_TX_PWR_OFFSET + (choffset - 14) + idx);
 
 		if ((Power.field.Byte0 <= 0x3F) && (Power.field.Byte0 >= 0))
 			pAd->TxPower[idx + choffset + 0].Power = Power.field.Byte0;
@@ -2639,7 +2639,7 @@ static void adjust_mp_temp(struct rtmp_adapter *pAd, char *temp_minus_bdy,
 	EEPROM_TX_PWR_STRUC e2p_value;
 	CHAR mp_temp, idx = 0, mp_offset = 0;
 
-	e2p_value.word = mt7610u_read_eeprom16(pAd, 0x10C);
+	e2p_value.word = mt76u_read_eeprom(pAd, 0x10C);
 	mp_temp = e2p_value.field.Byte1;
 
 	if (mp_temp < temp_minus_bdy[1]) {
@@ -2715,7 +2715,7 @@ bool load_temp_tx_alc_table(struct rtmp_adapter *pAd, CHAR band,
 			e2p_idx--;
 		}
 
-		e2p_value = mt7610u_read_eeprom16(pAd, e2p_idx);
+		e2p_value = mt76u_read_eeprom(pAd, e2p_idx);
 
 		if (e2p_idx == e2p_start_addr) {
 			if (table_sign > 0)
@@ -2786,7 +2786,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 	bool status = true;
 	u16 e2p_value = 0;
 
-	e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
+	e2p_value = mt76u_read_eeprom(pAd, 0xD0);
 	e2p_value = (e2p_value & 0xFF00) >> 8;
 	DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
 		__FUNCTION__, e2p_value));
@@ -2803,11 +2803,11 @@ void mt76x0_read_tx_alc_info_from_eeprom(struct rtmp_adapter *pAd)
 		__FUNCTION__, pAd->chipCap.TemperatureOffset));
 
 	if (pAd->bAutoTxAgcG | pAd->bAutoTxAgcA) {
-		e2p_value = mt7610u_read_eeprom16(pAd, 0xD0);
+		e2p_value = mt76u_read_eeprom(pAd, 0xD0);
 		pAd->TssiCalibratedOffset = (e2p_value >> 8);
 
 		/* 5G Tx power compensation channel boundary index */
-		e2p_value = mt7610u_read_eeprom16(pAd, 0x10C);
+		e2p_value = mt76u_read_eeprom(pAd, 0x10C);
 		pAd->ChBndryIdx = (u8)(e2p_value & 0xFF);
 		DBGPRINT(RT_DEBUG_OFF, ("%s(): channel boundary index = %u, temp reference offset = %d\n",
 			__FUNCTION__, pAd->ChBndryIdx, pAd->TssiCalibratedOffset));
