@@ -140,7 +140,7 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
  *	========================================================================
  */
 
-static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
+static void mt76u_vendor_reset(struct rtmp_adapter *pAd)
 {
 	mt76u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
@@ -361,7 +361,7 @@ loadfw_protect:
 	    (cap->IsComboChip))
 		goto error0;
 
-	mt7610u_vendor_reset(ad);
+	mt76u_vendor_reset(ad);
 	mdelay(5);
 
 	/* Get FW information */
