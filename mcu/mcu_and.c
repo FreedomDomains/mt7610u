@@ -270,7 +270,7 @@ static int __mt76u_dma_fw(struct rtmp_adapter *ad,
 	return 0;
 }
 
-static int mt7610u_dma_fw(struct rtmp_adapter *ad,
+static int mt76u_dma_fw(struct rtmp_adapter *ad,
 			  const struct mt7610u_dma_buf *dma_buf,
 			  const void *data, int len, u32 dst_addr)
 {
@@ -416,7 +416,7 @@ loadfw_protect:
 	fw_chunk_len = ilm_len - pos;
 
 	/* Loading ILM */
-	ret = mt7610u_dma_fw(ad, &dma_buf,
+	ret = mt76u_dma_fw(ad, &dma_buf,
 			     fw_image + FW_INFO_SIZE + pos, fw_chunk_len,
 			     pos + cap->ilm_offset);
 
@@ -427,7 +427,7 @@ loadfw_protect:
 	fw_chunk_len = dlm_len - pos;
 
 	/* Loading DLM */
-	ret = mt7610u_dma_fw(ad, &dma_buf,
+	ret = mt76u_dma_fw(ad, &dma_buf,
 			     fw_image + FW_INFO_SIZE + ilm_len + pos, fw_chunk_len,
 			     pos + cap->dlm_offset);
 
