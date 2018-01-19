@@ -1969,7 +1969,7 @@ void ReSyncBeaconTime(
 	*/
 	if (Offset == (BCN_TBTT_OFFSET-2)) {
 		u32 csr;
-		csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+		csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 		csr &= ~MT_BEACON_TIME_CFG_INTVAL;
 		csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
 				  (pAd->CommonCfg.BeaconPeriod << 4) - 1);	/* ASIC register in units of 1/16 TU = 64us*/
@@ -1978,7 +1978,7 @@ void ReSyncBeaconTime(
 		if (Offset == (BCN_TBTT_OFFSET-1)) {
 			u32 csr;
 
-			csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+			csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 			csr &= ~MT_BEACON_TIME_CFG_INTVAL;
 			csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
 					  (pAd->CommonCfg.BeaconPeriod) << 4); /* ASIC register in units of 1/16 TU*/

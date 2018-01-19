@@ -261,7 +261,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	}
 	DBGPRINT(RT_DEBUG_OFF, ("."));
 
-	mac_value = mt7610u_read32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
+	mac_value = mt76u_reg_read(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
 	mac_value++;
 	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
@@ -330,7 +330,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 
 	if (cap->IsComboChip) {
 loadfw_protect:
-		mac_value = mt7610u_read32(ad, SEMAPHORE_00);
+		mac_value = mt76u_reg_read(ad, SEMAPHORE_00);
 		loop++;
 
 		if (((mac_value & 0x01) == 0) &&
@@ -355,7 +355,7 @@ loadfw_protect:
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
-	mac_value = mt7610u_read32(ad, COM_REG0);
+	mac_value = mt76u_reg_read(ad, COM_REG0);
 
 	if (((mac_value & 0x01) == 0x01) &&
 	    (cap->IsComboChip))
@@ -396,7 +396,7 @@ loadfw_protect:
 	/* FCE skip_fs_en */
 	mt7610u_write32(ad, FCE_SKIP_FS, 0x03);
 
-	val = mt7610u_read32(ad, USB_DMA_CFG);
+	val = mt76u_reg_read(ad, USB_DMA_CFG);
 
 	val |= MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
 	mt7610u_write32(ad, USB_DMA_CFG, val);
@@ -441,7 +441,7 @@ loadfw_protect:
 	/* Check MCU if ready */
 	loop = 0;
 	do {
-		mac_value = mt7610u_read32(ad, COM_REG0);
+		mac_value = mt76u_reg_read(ad, COM_REG0);
 		if ((mac_value & 0x01) == 0x01)
 			break;
 		mdelay(10);

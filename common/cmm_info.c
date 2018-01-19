@@ -2769,7 +2769,7 @@ INT Set_LongRetryLimit_Proc(
 	TX_RTY_CFG_STRUC	tx_rty_cfg;
 	u8 			LongRetryLimit = (u8)simple_strtol(arg, 0, 10);
 
-	tx_rty_cfg.word = mt7610u_read32(pAdapter, TX_RTY_CFG);
+	tx_rty_cfg.word = mt76u_reg_read(pAdapter, TX_RTY_CFG);
 	tx_rty_cfg.field.LongRtyLimit = LongRetryLimit;
 	mt7610u_write32(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_LongRetryLimit_Proc::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
@@ -2783,7 +2783,7 @@ INT Set_ShortRetryLimit_Proc(
 	TX_RTY_CFG_STRUC	tx_rty_cfg;
 	u8 			ShortRetryLimit = (u8)simple_strtol(arg, 0, 10);
 
-	tx_rty_cfg.word = mt7610u_read32(pAdapter, TX_RTY_CFG);
+	tx_rty_cfg.word = mt76u_reg_read(pAdapter, TX_RTY_CFG);
 	tx_rty_cfg.field.ShortRtyLimit = ShortRetryLimit;
 	mt7610u_write32(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_ShortRetryLimit_Proc::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));

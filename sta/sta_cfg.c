@@ -158,7 +158,7 @@ INT Set_NetworkType_Proc(
             if (MONITOR_ON(pAd))
             {
                 mt7610u_write32(pAd, RX_FILTR_CFG, STANORMAL);
-                Value = mt7610u_read32(pAd, MAC_SYS_CTRL);
+                Value = mt76u_reg_read(pAd, MAC_SYS_CTRL);
 		Value &= (~0x80);
 		mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
@@ -192,7 +192,7 @@ INT Set_NetworkType_Proc(
             if (MONITOR_ON(pAd))
             {
                 mt7610u_write32(pAd, RX_FILTR_CFG, STANORMAL);
-                Value = mt7610u_read32(pAd, MAC_SYS_CTRL);
+                Value = mt76u_reg_read(pAd, MAC_SYS_CTRL);
 		Value &= (~0x80);
 		mt7610u_write32(pAd, MAC_SYS_CTRL, Value);
                 OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
@@ -276,12 +276,12 @@ INT Set_NetworkType_Proc(
 		/* Enable Rx with promiscuous reception */
 		mt7610u_write32(pAd, RX_FILTR_CFG, 0x3);
 		/* ASIC supporsts sniffer function with replacing RSSI with timestamp. */
-		/* Value = mt7610u_read32(pAdapter, MAC_SYS_CTRL); */
+		/* Value = mt76u_reg_read(pAdapter, MAC_SYS_CTRL); */
 		/*Value |= (0x80); */
 		/*mt7610u_write32(pAdapter, MAC_SYS_CTRL, Value); */
 
 		/* disable sync */
-		csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+		csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 		csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
 			 MT_BEACON_TIME_CFG_TBTT_EN |
 			 MT_BEACON_TIME_CFG_SYNC_MODE);

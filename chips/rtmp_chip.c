@@ -99,7 +99,7 @@ int mt7610u_wait_for_asic_ready(struct rtmp_adapter*pAd)
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			return false;
 
-		mac_val = mt7610u_read32(pAd, MT_MAC_CSR0);
+		mac_val = mt76u_reg_read(pAd, MT_MAC_CSR0);
 		if ((mac_val != 0x00) && (mac_val != 0xFFFFFFFF))
 			return true;
 
@@ -134,7 +134,7 @@ void RtmpChipOpsHook(struct rtmp_adapter*pAd)
 	if (mt7610u_wait_for_asic_ready(pAd) == false)
 		return;
 
-	pAd->mac_rev = mt7610u_read32(pAd, MT_MAC_CSR0);
+	pAd->mac_rev = mt76u_reg_read(pAd, MT_MAC_CSR0);
 	DBGPRINT(RT_DEBUG_OFF, ("mac_rev = 0x%08x\n", pAd->mac_rev));
 
 	mt7610u_init(pAd);

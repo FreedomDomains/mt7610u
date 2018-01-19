@@ -245,7 +245,7 @@ void AsicUpdateProtect(
 	}
 
 	/* Config ASIC RTS threshold register*/
-	MacReg = mt7610u_read32(pAd, TX_RTS_CFG);
+	MacReg = mt76u_reg_read(pAd, TX_RTS_CFG);
 	MacReg &= 0xFF0000FF;
 	/* If the user want disable RtsThreshold and enbale Amsdu/Ralink-Aggregation, set the RtsThreshold as 4096*/
         if ((
@@ -376,15 +376,15 @@ void AsicUpdateProtect(
 				{
 					PROT_CFG_STRUC vht_port_cfg;
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG6);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG7);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG8);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
@@ -416,17 +416,17 @@ void AsicUpdateProtect(
 					// Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
 					PROT_CFG_STRUC vht_port_cfg;
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG6);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG7);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG8);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
@@ -462,16 +462,16 @@ void AsicUpdateProtect(
 				{
 					PROT_CFG_STRUC vht_port_cfg;
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG6);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = 0;
 					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG7);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG8);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
@@ -505,17 +505,17 @@ void AsicUpdateProtect(
 					// Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
 					PROT_CFG_STRUC vht_port_cfg;
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG6);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG7);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
-					vht_port_cfg.word = mt7610u_read32(pAd, TX_PROT_CFG8);
+					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
 					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
@@ -551,7 +551,7 @@ void AsicUpdateProtect(
 	}
 
 	{
-		MacReg = mt7610u_read32(pAd, TX_PROT_CFG8);
+		MacReg = mt76u_reg_read(pAd, TX_PROT_CFG8);
 		MacReg &= (~0x18000000);
 		if (pAd->CommonCfg.vht_bw_signal)
 		{
@@ -735,11 +735,11 @@ void AsicEnableRDG(
 	TX_LINK_CFG_STRUC	TxLinkCfg;
 	u32				Data = 0;
 
-	TxLinkCfg.word = mt7610u_read32(pAd, TX_LINK_CFG);
+	TxLinkCfg.word = mt76u_reg_read(pAd, TX_LINK_CFG);
 	TxLinkCfg.field.TxRDGEn = 1;
 	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
-	Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
+	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 	Data  &= 0xFFFFFF00;
 	Data  |= 0x80;
 	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
@@ -761,11 +761,11 @@ void AsicDisableRDG(
 
 
 
-	TxLinkCfg.word = mt7610u_read32(pAd, TX_LINK_CFG);
+	TxLinkCfg.word = mt76u_reg_read(pAd, TX_LINK_CFG);
 	TxLinkCfg.field.TxRDGEn = 0;
 	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
-	Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
+	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 
 	Data  &= 0xFFFFFF00;
 	/*Data  |= 0x20;*/
@@ -805,7 +805,7 @@ void AsicDisableSync(
 	/*			  that NIC will never wakes up because TSF stops and no more */
 	/*			  TBTT interrupts*/
 	pAd->TbttTickCount = 0;
-	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+	csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 	csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
 		 MT_BEACON_TIME_CFG_TBTT_EN |
                  MT_BEACON_TIME_CFG_SYNC_MODE |
@@ -828,7 +828,7 @@ void AsicEnableBssSync(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableBssSync(INFRA mode)\n"));
 
-	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+	csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 /*	mt7610u_write32(pAd, BCN_TIME_CFG, 0x00000000);*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
@@ -885,7 +885,7 @@ void AsicEnableIbssSync(
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableIbssSync(ADHOC mode. MPDUtotalByteCnt = %d)\n", pAd->BeaconTxWI.MPDUtotalByteCnt));
 
-	csr = mt7610u_read32(pAd, MT_BEACON_TIME_CFG);
+	csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
 	csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
 		 MT_BEACON_TIME_CFG_TBTT_EN |
 		 MT_BEACON_TIME_CFG_TIMER_EN);
@@ -1270,7 +1270,7 @@ void 	AsicSetSlotTime(
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
-	RegValue = mt7610u_read32(pAd, BKOFF_SLOT_CFG);
+	RegValue = mt76u_reg_read(pAd, BKOFF_SLOT_CFG);
 	RegValue = RegValue & 0xFFFFFF00;
 
 	RegValue |= SlotTime;
@@ -1342,7 +1342,7 @@ void AsicAddSharedKeyEntry(struct rtmp_adapter *pAd, u8 BssIndex,
 	}
 
 	/* Update cipher algorithm. WSTA always use BSS0*/
-	csr1.word = mt7610u_read32(pAd, SharedKeyModeBase+4*(BssIndex/2));
+	csr1.word = mt76u_reg_read(pAd, SharedKeyModeBase+4*(BssIndex/2));
 	DBGPRINT(RT_DEBUG_TRACE,("Read: SHARED_KEY_MODE_BASE at this Bss[%d] KeyIdx[%d]= 0x%x \n", BssIndex,KeyIdx, csr1.word));
 	if ((BssIndex % 2) == 0) 	{
 		if (KeyIdx == 0)
@@ -1391,7 +1391,7 @@ void AsicRemoveSharedKeyEntry(
 		SharedKeyModeBase = SHARED_KEY_MODE_BASE;
 	}
 
-	csr1.word = mt7610u_read32(pAd, SharedKeyTableBase+4*(BssIndex/2));
+	csr1.word = mt76u_reg_read(pAd, SharedKeyTableBase+4*(BssIndex/2));
 	if ((BssIndex%2) == 0)
 	{
 		if (KeyIdx == 0)
@@ -1589,7 +1589,7 @@ void AsicAddPairwiseKeyEntry(struct rtmp_adapter *pAd,
 	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4) {
 		u32 Value;
 
-		Value = mt7610u_read32(pAd, offset + i);
+		Value = mt76u_reg_read(pAd, offset + i);
 	}
 
 	offset += MAX_LEN_OF_PEER_KEY;
@@ -1678,7 +1678,7 @@ void AsicEnableRalinkBurstMode(
 {
 	u32				Data = 0;
 
-	Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
+	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 	pAd->CommonCfg.RestoreBurstMode = Data;
 	Data  &= 0xFFF00000;
 	Data  |= 0x86380;
@@ -1698,7 +1698,7 @@ void AsicDisableRalinkBurstMode(
 {
 	u32				Data = 0;
 
-	Data = mt7610u_read32(pAd, EDCA_AC0_CFG);
+	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 
 	Data = pAd->CommonCfg.RestoreBurstMode;
 	Data &= 0xFFFFFF00;
@@ -1719,12 +1719,12 @@ INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, bool enable)
 {
 	u32 val;
 
-	val = mt7610u_read32(pAd, INT_TIMER_CFG);
+	val = mt76u_reg_read(pAd, INT_TIMER_CFG);
 	val &= 0xffff0000;
 	val |= 6 << 4; /* Pre-TBTT is 6ms before TBTT interrupt. 1~10 ms is reasonable. */
 	mt7610u_write32(pAd, INT_TIMER_CFG, val);
 	/* Enable pre-tbtt interrupt */
-	val = mt7610u_read32(pAd, INT_TIMER_EN);
+	val = mt76u_reg_read(pAd, INT_TIMER_EN);
 	val |=0x1;
 	mt7610u_write32(pAd, INT_TIMER_EN, val);
 
@@ -1741,7 +1741,7 @@ bool mt7610u_wait_pdma_usecs(struct rtmp_adapter *pAd, int round, int wait_us)
 
 
 	do {
-		GloCfg.word = mt7610u_read32(pAd, WPDMA_GLO_CFG);
+		GloCfg.word = mt76u_reg_read(pAd, WPDMA_GLO_CFG);
 		if ((GloCfg.field.TxDMABusy == 0)  && (GloCfg.field.RxDMABusy == 0)) {
 			DBGPRINT(RT_DEBUG_TRACE, ("==>  DMAIdle, GloCfg=0x%x\n", GloCfg.word));
 			return true;
@@ -1782,7 +1782,7 @@ INT AsicReadAggCnt(struct rtmp_adapter*pAd, ULONG *aggCnt, int cnt_len)
 	{
 		for (reg_addr = aggReg[i] ; reg_addr <= aggReg[i+1] ; reg_addr += 4)
 		{
-			reg_val.word = mt7610u_read32(pAd, reg_addr);
+			reg_val.word = mt76u_reg_read(pAd, reg_addr);
 			if (cnt < (cnt_len -1)) {
 				aggCnt[cnt] = reg_val.field.AggCnt_x;
 				aggCnt[cnt+1] = reg_val.field.AggCnt_y;

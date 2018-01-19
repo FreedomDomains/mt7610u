@@ -350,7 +350,7 @@ void RTMPDrvSTAOpen(struct rtmp_adapter *pAd)
 	/* Select Q2 to receive command response */
 	mt7610u_mcu_fun_set(pAd, Q_SELECT, RX_RING1);
 
-	reg = mt7610u_read32(pAd, 0x1300);  /* clear garbage interrupts*/
+	reg = mt76u_reg_read(pAd, 0x1300);  /* clear garbage interrupts*/
 	DBGPRINT(RT_DEBUG_OFF, ("0x1300 = %08x\n", reg));
 
 

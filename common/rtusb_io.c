@@ -65,7 +65,7 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 
 	========================================================================
 */
-u32 mt7610u_read32(struct rtmp_adapter *pAd, USHORT Offset)
+u32 mt76u_reg_read(struct rtmp_adapter *pAd, USHORT Offset)
 {
 	int status;
 	u32 val;
@@ -263,7 +263,7 @@ int CheckGPIOHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *CMDQelmt)
 			u32 data;
 			/* Read GPIO pin2 as Hardware controlled radio state*/
 
-			data = mt7610u_read32( pAd, GPIO_CTRL_CFG);
+			data = mt76u_reg_read( pAd, GPIO_CTRL_CFG);
 
 			if (data & 0x04)
 			{
@@ -322,7 +322,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
 			break;
 
-		MACValue = mt7610u_read32(pAd, TXRXQ_PCNT);
+		MACValue = mt76u_reg_read(pAd, TXRXQ_PCNT);
 		if ((MACValue & 0xf00000/*0x800000*/) == 0)
 			break;
 
@@ -330,15 +330,15 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		mdelay(10);
 	}while(Index < 100);
 
-	MACValue = mt7610u_read32(pAd, USB_DMA_CFG);
+	MACValue = mt76u_reg_read(pAd, USB_DMA_CFG);
 
 	/* 2nd, to prevent Read Register error, we check the validity.*/
 	if ((MACValue & 0xc00000) == 0)
-		MACValue = mt7610u_read32(pAd, USB_DMA_CFG);
+		MACValue = mt76u_reg_read(pAd, USB_DMA_CFG);
 
 	/* 3rd, to prevent Read Register error, we check the validity.*/
 	if ((MACValue & 0xc00000) == 0)
-		MACValue = mt7610u_read32(pAd, USB_DMA_CFG);
+		MACValue = mt76u_reg_read(pAd, USB_DMA_CFG);
 
 	MACValue |= 0x80000;
 	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
@@ -600,7 +600,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("1-MACValue= %x,\n", MACValue));
 	mt7610u_write32(pAd, offset, MACValue);
 	/* Read bitmask*/
-	MACValue = mt7610u_read32(pAd, offset+4);
+	MACValue = mt76u_reg_read(pAd, offset+4);
 	if ( SetAsicWcid.DeleteTid != 0xffffffff)
 		MACRValue &= (~SetAsicWcid.DeleteTid);
 	if (SetAsicWcid.SetTid != 0xffffffff)
