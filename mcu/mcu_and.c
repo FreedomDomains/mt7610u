@@ -47,7 +47,7 @@ struct mt7610u_dma_buf {
 	size_t len;
 };
 
-bool mt7610u_usb_alloc_buf(struct rtmp_adapter *ad, size_t len,
+bool mt76u_usb_alloc_buf(struct rtmp_adapter *ad, size_t len,
 			   struct mt7610u_dma_buf *buf)
 {
 	struct usb_device *usb_dev = mt7610u_to_usb_dev(ad);
@@ -405,7 +405,7 @@ loadfw_protect:
 	mt76u_reg_write(ad, USB_DMA_CFG, val);
 
 	/* Allocate TransferBuffer */
-	if (mt7610u_usb_alloc_buf(ad, UPLOAD_FW_UNIT, &dma_buf)) {
+	if (mt76u_usb_alloc_buf(ad, UPLOAD_FW_UNIT, &dma_buf)) {
 		ret = -ENOMEM;
 		goto error0;
 	}
