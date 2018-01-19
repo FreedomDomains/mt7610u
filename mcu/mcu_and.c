@@ -59,7 +59,7 @@ bool mt76u_usb_alloc_buf(struct rtmp_adapter *ad, size_t len,
 	return !buf->urb || !buf->buf;
 }
 
-void mt7610u_usb_free_buf(struct rtmp_adapter *ad, struct mt7610u_dma_buf *buf)
+void mt76u_usb_free_buf(struct rtmp_adapter *ad, struct mt7610u_dma_buf *buf)
 {
 	struct usb_device *usb_dev = mt7610u_to_usb_dev(ad);
 
@@ -455,7 +455,7 @@ loadfw_protect:
 
 error2:
 	/* Free TransferBuffer */
-	mt7610u_usb_free_buf(ad, &dma_buf);
+	mt76u_usb_free_buf(ad, &dma_buf);
 
 error0:
 	release_firmware(fw);
