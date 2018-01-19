@@ -156,7 +156,7 @@ void mt7610u_complete_urb(struct urb *urb)
 	complete(cmpl);
 }
 
-static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
+static int __mt76u_dma_fw(struct rtmp_adapter *ad,
 			    const struct mt7610u_dma_buf *dma_buf,
 			    const void *data, u32 len, u32 dst_addr)
 {
@@ -248,13 +248,13 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	ret = usb_submit_urb(buf.urb, GFP_ATOMIC);
 
 	if (ret) {
-		DBGPRINT(RT_DEBUG_ERROR, ("__mt7610u_dma_fw() submit urb fail\n"));
+		DBGPRINT(RT_DEBUG_ERROR, ("__mt76u_dma_fw() submit urb fail\n"));
 
 	}
 
 	if (!wait_for_completion_timeout(&cmpl,  msecs_to_jiffies(UPLOAD_FW_TIMEOUT))) {
 		usb_kill_urb(buf.urb);
-		DBGPRINT(RT_DEBUG_ERROR, ("__mt7610u_dma_fw() timeout(%dms)\n",
+		DBGPRINT(RT_DEBUG_ERROR, ("__mt76u_dma_fw() timeout(%dms)\n",
 			UPLOAD_FW_TIMEOUT));
 
 		return ret;
@@ -284,7 +284,7 @@ static int mt7610u_dma_fw(struct rtmp_adapter *ad,
 		DBGPRINT(RT_DEBUG_OFF, ("pos = %d\n", pos));
 		DBGPRINT(RT_DEBUG_OFF, ("sent_len = %d\n", sent_len));
 
-		__mt7610u_dma_fw(ad, dma_buf,
+		__mt76u_dma_fw(ad, dma_buf,
 				data + pos, sent_len,
 				dst_addr + pos);
 		if (ret)
