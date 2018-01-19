@@ -37,7 +37,7 @@ void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
 	do {
 		val =(u16)( *key  | (*(key + 1) << 8));
 
-		mt7610u_vendor_request(pAd,
+		mt76u_vendor_request(pAd,
 				    DEVICE_VENDOR_REQUEST_OUT,
 				    MT_VEND_SINGLE_WRITE,
 				    val, Offset + idx,
@@ -70,7 +70,7 @@ u32 mt76u_reg_read(struct rtmp_adapter *pAd, USHORT Offset)
 	int status;
 	u32 val;
 
-	status = mt7610u_vendor_request(pAd,
+	status = mt76u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_IN,
 		MT_VEND_MULTI_READ,
 		0, Offset,
@@ -107,7 +107,7 @@ void mt76u_reg_write(
 
 	/* MT76xx HW has 4 byte alignment constrained */
 
-	mt7610u_vendor_request(pAd,
+	mt76u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_OUT,
 			MT_VEND_MULTI_WRITE,
 			0, Offset,
@@ -134,7 +134,7 @@ u16 mt76u_read_eeprom(struct rtmp_adapter *pAd, u16 offset)
 {
 	u16 localData;
 
-	mt7610u_vendor_request(pAd,
+	mt76u_vendor_request(pAd,
 			DEVICE_VENDOR_REQUEST_IN,
 			MT_VEND_READ_EEPROM,
 			0, offset,
@@ -146,7 +146,7 @@ u16 mt76u_read_eeprom(struct rtmp_adapter *pAd, u16 offset)
 /*
     ========================================================================
  	Routine Description:
-		mt7610u_vendor_request - Builds a ralink specific request, sends it off to USB endpoint zero and waits for completion
+		mt76u_vendor_request - Builds a ralink specific request, sends it off to USB endpoint zero and waits for completion
 
 	Arguments:
 		@pAd:
@@ -173,12 +173,12 @@ u16 mt76u_read_eeprom(struct rtmp_adapter *pAd, u16 offset)
 		TransferBuffer may located in stack region which may not in DMA'able region in some embedded platforms,
 		so need to copy TransferBuffer to vend_buf allocated by kmalloc to do DMA transfer.
 		Use UsbVendorReq_semaphore to protect this region which may be accessed by multi task.
-		Normally, coherent issue is resloved by low-level HC driver, so do not flush this zone by mt7610u_vendor_request.
+		Normally, coherent issue is resloved by low-level HC driver, so do not flush this zone by mt76u_vendor_request.
 
 	========================================================================
 */
 
-int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, enum mt_vendor_req request,
+int mt76u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, enum mt_vendor_req request,
 			u16 value, u16 index, void *data, u16 size)
 {
 	int ret = 0;
@@ -234,7 +234,7 @@ int mt7610u_vendor_request(struct rtmp_adapter *pAd, u8 requesttype, enum mt_ven
 		up(&(pAd->UsbVendorReq_semaphore));
 
 		if (ret < 0) {
-			DBGPRINT(RT_DEBUG_ERROR, ("mt7610u_vendor_request failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
+			DBGPRINT(RT_DEBUG_ERROR, ("mt76u_vendor_request failed(%d), ReqType=%s, Req=0x%x, Idx=0x%x,pAd->Flags=0x%lx\n",
 						ret, (requesttype == DEVICE_VENDOR_REQUEST_OUT ? "OUT" : "IN"), request, index, pAd->Flags));
 
 			if (request == MT_VEND_SINGLE_WRITE)

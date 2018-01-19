@@ -104,13 +104,13 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 
 
 	if (cap->load_iv) {
-		status = mt7610u_vendor_request(ad,
+		status = mt76u_vendor_request(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT_VEND_DEVICE_MODE,
 				 0x12, 0x00,
 				 fw_image + 32, 64);
 	} else {
-		status = mt7610u_vendor_request(ad,
+		status = mt76u_vendor_request(ad,
 				 DEVICE_VENDOR_REQUEST_OUT,
 				 MT_VEND_DEVICE_MODE,
 				 0x12, 0x00,
@@ -142,7 +142,7 @@ static int usb_load_ivb(struct rtmp_adapter *ad, u8 *fw_image)
 
 static void mt7610u_vendor_reset(struct rtmp_adapter *pAd)
 {
-	mt7610u_vendor_request(pAd,
+	mt76u_vendor_request(pAd,
 		DEVICE_VENDOR_REQUEST_OUT,
 		MT_VEND_DEVICE_MODE,
 		0x1, 0,
@@ -181,7 +181,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	value = dst_addr & 0xFFFF;
 
 	/* Set FCE DMA descriptor */
-	ret = mt7610u_vendor_request(ad,
+	ret = mt76u_vendor_request(ad,
 			 DEVICE_VENDOR_REQUEST_OUT,
 			 MT_VEND_WRITE_FCE,
 			 value, 0x230,
@@ -196,7 +196,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	value = ((dst_addr & 0xFFFF0000) >> 16);
 
 	/* Set FCE DMA descriptor */
-	ret = mt7610u_vendor_request(ad,
+	ret = mt76u_vendor_request(ad,
 			 DEVICE_VENDOR_REQUEST_OUT,
 			 MT_VEND_WRITE_FCE,
 			 value, 0x232,
@@ -212,7 +212,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	value = ((len << 16) & 0xFFFF);
 
 	/* Set FCE DMA length */
-	ret = mt7610u_vendor_request(ad,
+	ret = mt76u_vendor_request(ad,
 			 DEVICE_VENDOR_REQUEST_OUT,
 			 MT_VEND_WRITE_FCE,
 			 value, 0x234,
@@ -226,7 +226,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 	value = (((len << 16) & 0xFFFF0000) >> 16);
 
 	/* Set FCE DMA length */
-	ret = mt7610u_vendor_request(ad,
+	ret = mt76u_vendor_request(ad,
 			 DEVICE_VENDOR_REQUEST_OUT,
 			 MT_VEND_WRITE_FCE,
 			 value, 0x236,
