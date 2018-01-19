@@ -184,10 +184,10 @@ void AsicUpdateAutoFallBackTable(
 skipUpdate:
 #endif /* NEW_RATE_ADAPT_SUPPORT */
 
-	mt7610u_write32(pAd, HT_FBK_CFG0, HtCfg0.word);
-	mt7610u_write32(pAd, HT_FBK_CFG1, HtCfg1.word);
-	mt7610u_write32(pAd, LG_FBK_CFG0, LgCfg0.word);
-	mt7610u_write32(pAd, LG_FBK_CFG1, LgCfg1.word);
+	mt76u_reg_write(pAd, HT_FBK_CFG0, HtCfg0.word);
+	mt76u_reg_write(pAd, HT_FBK_CFG1, HtCfg1.word);
+	mt76u_reg_write(pAd, LG_FBK_CFG0, LgCfg0.word);
+	mt76u_reg_write(pAd, LG_FBK_CFG1, LgCfg1.word);
 
 
 }
@@ -260,7 +260,7 @@ void AsicUpdateProtect(
 			MacReg |= (pAd->CommonCfg.RtsThreshold << 8);
         }
 
-	mt7610u_write32(pAd, TX_RTS_CFG, MacReg);
+	mt76u_reg_write(pAd, TX_RTS_CFG, MacReg);
 
 	/* Initial common protection settings*/
 	memset(Protect, 0, sizeof(Protect));
@@ -378,15 +378,15 @@ void AsicUpdateProtect(
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 				break;
 
@@ -419,17 +419,17 @@ void AsicUpdateProtect(
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 
 				break;
@@ -464,17 +464,17 @@ void AsicUpdateProtect(
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = 0;
-					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 				break;
 
@@ -508,17 +508,17 @@ void AsicUpdateProtect(
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG6);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG6, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG6, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG7);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG7, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG7, vht_port_cfg.word);
 
 					vht_port_cfg.word = mt76u_reg_read(pAd, TX_PROT_CFG8);
 					vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
 					vht_port_cfg.field.ProtectNav = ASIC_SHORTNAV;
-					mt7610u_write32(pAd, TX_PROT_CFG8, vht_port_cfg.word);
+					mt76u_reg_write(pAd, TX_PROT_CFG8, vht_port_cfg.word);
 				}
 				break;
 
@@ -546,7 +546,7 @@ void AsicUpdateProtect(
 	{
 		if ((SetMask & (1<< i)))
 		{
-			mt7610u_write32(pAd, offset + i*4, Protect[i]);
+			mt76u_reg_write(pAd, offset + i*4, Protect[i]);
 		}
 	}
 
@@ -560,7 +560,7 @@ void AsicUpdateProtect(
 			else if (pAd->CommonCfg.vht_bw_signal == 2)/* dynamic */
 				MacReg |= 0x18000000;
 		}
-		mt7610u_write32(pAd, TX_PROT_CFG8, MacReg);
+		mt76u_reg_write(pAd, TX_PROT_CFG8, MacReg);
 	}
 }
 
@@ -709,7 +709,7 @@ void AsicSetBssid(
 			(ULONG)(pBssid[1] << 8)  |
 			(ULONG)(pBssid[2] << 16) |
 			(ULONG)(pBssid[3] << 24);
-	mt7610u_write32(pAd, MAC_BSSID_DW0, Addr4);
+	mt76u_reg_write(pAd, MAC_BSSID_DW0, Addr4);
 
 
 	Addr4 = 0;
@@ -717,7 +717,7 @@ void AsicSetBssid(
 	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
 
 
-	mt7610u_write32(pAd, MAC_BSSID_DW1, Addr4);
+	mt76u_reg_write(pAd, MAC_BSSID_DW1, Addr4);
 }
 
 
@@ -737,12 +737,12 @@ void AsicEnableRDG(
 
 	TxLinkCfg.word = mt76u_reg_read(pAd, TX_LINK_CFG);
 	TxLinkCfg.field.TxRDGEn = 1;
-	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt76u_reg_write(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
 	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 	Data  &= 0xFFFFFF00;
 	Data  |= 0x80;
-	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+	mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 }
 
 /*
@@ -763,7 +763,7 @@ void AsicDisableRDG(
 
 	TxLinkCfg.word = mt76u_reg_read(pAd, TX_LINK_CFG);
 	TxLinkCfg.field.TxRDGEn = 0;
-	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt76u_reg_write(pAd, TX_LINK_CFG, TxLinkCfg.word);
 
 	Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 
@@ -781,7 +781,7 @@ void AsicDisableRDG(
 		if (pAd->CommonCfg.bEnableTxBurst)
 		Data |= 0x20;
 	}
-	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+	mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 
 }
 
@@ -810,7 +810,7 @@ void AsicDisableSync(
 		 MT_BEACON_TIME_CFG_TBTT_EN |
                  MT_BEACON_TIME_CFG_SYNC_MODE |
                  MT_BEACON_TIME_CFG_TIMER_EN);
-        mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+        mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*
@@ -829,7 +829,7 @@ void AsicEnableBssSync(
 	DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableBssSync(INFRA mode)\n"));
 
 	csr = mt76u_reg_read(pAd, MT_BEACON_TIME_CFG);
-/*	mt7610u_write32(pAd, BCN_TIME_CFG, 0x00000000);*/
+/*	mt76u_reg_write(pAd, BCN_TIME_CFG, 0x00000000);*/
 #ifdef CONFIG_STA_SUPPORT
 	IF_DEV_CONFIG_OPMODE_ON_STA(pAd) {
 		csr &= ~MT_BEACON_TIME_CFG_INTVAL;
@@ -845,7 +845,7 @@ void AsicEnableBssSync(
 		csr |= MT_BEACON_TIME_CFG_TBTT_EN;
 	}
 #endif /* CONFIG_STA_SUPPORT */
-	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+	mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*
@@ -889,7 +889,7 @@ void AsicEnableIbssSync(
 	csr &= ~(MT_BEACON_TIME_CFG_BEACON_TX |
 		 MT_BEACON_TIME_CFG_TBTT_EN |
 		 MT_BEACON_TIME_CFG_TIMER_EN);
-	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+	mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 	beaconBaseLocation = HW_BEACON_BASE0(pAd);
 
 	/* move BEACON TXD and frame content to on-chip memory*/
@@ -901,7 +901,7 @@ void AsicEnableIbssSync(
 			(*(ptr + 1) << 8);
 			(*(ptr + 2) << 16);
 			(*(ptr + 3) << 24);
-		mt7610u_write32(pAd, HW_BEACON_BASE0(pAd) + i,dword);
+		mt76u_reg_write(pAd, HW_BEACON_BASE0(pAd) + i,dword);
 		ptr += 4;
 	}
 
@@ -916,7 +916,7 @@ void AsicEnableIbssSync(
 			(*(ptr + 2) << 16);
 			(*(ptr + 3) << 24);
 
-		mt7610u_write32(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i,
+		mt76u_reg_write(pAd, HW_BEACON_BASE0(pAd) + TXWISize + i,
 				dword);
 		ptr +=4;
 	}
@@ -925,7 +925,7 @@ void AsicEnableIbssSync(
 	/* For Wi-Fi faily generated beacons between participating stations. */
 	/* Set TBTT phase adaptive adjustment step to 8us (default 16us)*/
 	/* don't change settings 2006-5- by Jerry*/
-	/*mt7610u_write32(pAd, TBTT_SYNC_CFG, 0x00001010);*/
+	/*mt76u_reg_write(pAd, TBTT_SYNC_CFG, 0x00001010);*/
 
 	/* start sending BEACON*/
 	csr &= ~MT_BEACON_TIME_CFG_INTVAL;
@@ -941,7 +941,7 @@ void AsicEnableIbssSync(
 	csr |= FIELD_PREP(MT_BEACON_TIME_CFG_SYNC_MODE, 2);	/* sync TSF in IBSS mode*/
 	csr |= MT_BEACON_TIME_CFG_TBTT_EN;
 	csr |= MT_BEACON_TIME_CFG_BEACON_TX;
-	mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+	mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 }
 
 /*
@@ -993,13 +993,13 @@ void AsicSetEdcaParm(
 		Ac0Cfg |= FIELD_PREP(MT_EDCA_CFG_CWMIN, CW_MIN_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_CWMAX, CW_MAX_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_AIFSN, 2);
-		mt7610u_write32(pAd, EDCA_AC0_CFG, Ac0Cfg);
+		mt76u_reg_write(pAd, EDCA_AC0_CFG, Ac0Cfg);
 
 		Ac1Cfg |= FIELD_PREP(MT_EDCA_CFG_TXOP, 0) |		/* QID_AC_BK*/
 			  FIELD_PREP(MT_EDCA_CFG_CWMIN, CW_MIN_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_CWMAX, CW_MAX_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_AIFSN, 2);
-		mt7610u_write32(pAd, EDCA_AC1_CFG, Ac1Cfg);
+		mt76u_reg_write(pAd, EDCA_AC1_CFG, Ac1Cfg);
 
 		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B)) {
 			Ac2Cfg = FIELD_PREP(MT_EDCA_CFG_TXOP, 192);	/* AC_VI: 192*32us ~= 6ms*/
@@ -1012,20 +1012,20 @@ void AsicSetEdcaParm(
 		Ac2Cfg |= FIELD_PREP(MT_EDCA_CFG_CWMIN, CW_MIN_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_CWMAX, CW_MAX_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_AIFSN, 2);
-		mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg);
+		mt76u_reg_write(pAd, EDCA_AC2_CFG, Ac2Cfg);
 
 		Ac3Cfg |= FIELD_PREP(MT_EDCA_CFG_CWMIN, CW_MIN_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_CWMAX, CW_MAX_IN_BITS) |
 			  FIELD_PREP(MT_EDCA_CFG_AIFSN, 2);
 
-		mt7610u_write32(pAd, EDCA_AC3_CFG, Ac3Cfg);
+		mt76u_reg_write(pAd, EDCA_AC3_CFG, Ac3Cfg);
 
 		/*========================================================*/
 		/*      DMA Register has a copy too.*/
 		/*========================================================*/
 		csr0.field.Ac0Txop = 0;		/* QID_AC_BE*/
 		csr0.field.Ac1Txop = 0;		/* QID_AC_BK*/
-		mt7610u_write32(pAd, WMM_TXOP0_CFG, csr0.word);
+		mt76u_reg_write(pAd, WMM_TXOP0_CFG, csr0.word);
 		if (WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B)) {
 			csr1.field.Ac2Txop = 192;		/* AC_VI: 192*32us ~= 6ms*/
 			csr1.field.Ac3Txop = 96;		/* AC_VO: 96*32us  ~= 3ms*/
@@ -1033,23 +1033,23 @@ void AsicSetEdcaParm(
 			csr1.field.Ac2Txop = 96;		/* AC_VI: 96*32us ~= 3ms*/
 			csr1.field.Ac3Txop = 48;		/* AC_VO: 48*32us ~= 1.5ms*/
 		}
-		mt7610u_write32(pAd, WMM_TXOP1_CFG, csr1.word);
+		mt76u_reg_write(pAd, WMM_TXOP1_CFG, csr1.word);
 
 		CwminCsr.word = 0;
 		CwminCsr.field.Cwmin0 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin1 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin2 = CW_MIN_IN_BITS;
 		CwminCsr.field.Cwmin3 = CW_MIN_IN_BITS;
-		mt7610u_write32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
+		mt76u_reg_write(pAd, WMM_CWMIN_CFG, CwminCsr.word);
 
 		CwmaxCsr.word = 0;
 		CwmaxCsr.field.Cwmax0 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax1 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax2 = CW_MAX_IN_BITS;
 		CwmaxCsr.field.Cwmax3 = CW_MAX_IN_BITS;
-		mt7610u_write32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
+		mt76u_reg_write(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
 
-		mt7610u_write32(pAd, WMM_AIFSN_CFG, 0x00002222);
+		mt76u_reg_write(pAd, WMM_AIFSN_CFG, 0x00002222);
 
 		memset(&pAd->CommonCfg.APEdcaParm, 0, sizeof(EDCA_PARM));
 
@@ -1103,10 +1103,10 @@ void AsicSetEdcaParm(
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-		mt7610u_write32(pAd, EDCA_AC0_CFG, Ac0Cfg);
-		mt7610u_write32(pAd, EDCA_AC1_CFG, Ac1Cfg);
-		mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg);
-		mt7610u_write32(pAd, EDCA_AC3_CFG, Ac3Cfg);
+		mt76u_reg_write(pAd, EDCA_AC0_CFG, Ac0Cfg);
+		mt76u_reg_write(pAd, EDCA_AC1_CFG, Ac1Cfg);
+		mt76u_reg_write(pAd, EDCA_AC2_CFG, Ac2Cfg);
+		mt76u_reg_write(pAd, EDCA_AC3_CFG, Ac3Cfg);
 
 
 		/*========================================================*/
@@ -1114,11 +1114,11 @@ void AsicSetEdcaParm(
 		/*========================================================*/
 		csr0.field.Ac0Txop = FIELD_GET(MT_EDCA_CFG_TXOP, Ac0Cfg);
 		csr0.field.Ac1Txop = FIELD_GET(MT_EDCA_CFG_TXOP, Ac1Cfg);
-		mt7610u_write32(pAd, WMM_TXOP0_CFG, csr0.word);
+		mt76u_reg_write(pAd, WMM_TXOP0_CFG, csr0.word);
 
 		csr1.field.Ac2Txop = FIELD_GET(MT_EDCA_CFG_TXOP, Ac2Cfg);
 		csr1.field.Ac3Txop = FIELD_GET(MT_EDCA_CFG_TXOP, Ac3Cfg);
-		mt7610u_write32(pAd, WMM_TXOP1_CFG, csr1.word);
+		mt76u_reg_write(pAd, WMM_TXOP1_CFG, csr1.word);
 
 		CwminCsr.word = 0;
 		CwminCsr.field.Cwmin0 = pEdcaParm->Cwmin[QID_AC_BE];
@@ -1128,14 +1128,14 @@ void AsicSetEdcaParm(
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 			CwminCsr.field.Cwmin3 = pEdcaParm->Cwmin[QID_AC_VO] - 1; /*for TGn wifi test*/
 #endif /* CONFIG_STA_SUPPORT */
-		mt7610u_write32(pAd, WMM_CWMIN_CFG, CwminCsr.word);
+		mt76u_reg_write(pAd, WMM_CWMIN_CFG, CwminCsr.word);
 
 		CwmaxCsr.word = 0;
 		CwmaxCsr.field.Cwmax0 = pEdcaParm->Cwmax[QID_AC_BE];
 		CwmaxCsr.field.Cwmax1 = pEdcaParm->Cwmax[QID_AC_BK];
 		CwmaxCsr.field.Cwmax2 = pEdcaParm->Cwmax[QID_AC_VI];
 		CwmaxCsr.field.Cwmax3 = pEdcaParm->Cwmax[QID_AC_VO];
-		mt7610u_write32(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
+		mt76u_reg_write(pAd, WMM_CWMAX_CFG, CwmaxCsr.word);
 
 		AifsnCsr.word = 0;
 		AifsnCsr.field.Aifsn0 = FIELD_GET(MT_EDCA_CFG_AIFSN, Ac0Cfg); /*pEdcaParm->Aifsn[QID_AC_BE];*/
@@ -1167,7 +1167,7 @@ void AsicSetEdcaParm(
 			AifsnCsr.field.Aifsn3 = FIELD_GET(MT_EDCA_CFG_AIFSN, Ac3Cfg) - 1; /*pEdcaParm->Aifsn[QID_AC_VO]; for TGn wifi test*/
 		}
 #endif /* CONFIG_STA_SUPPORT */
-		mt7610u_write32(pAd, WMM_AIFSN_CFG, AifsnCsr.word);
+		mt76u_reg_write(pAd, WMM_AIFSN_CFG, AifsnCsr.word);
 
 		memmove(&pAd->CommonCfg.APEdcaParm, pEdcaParm, sizeof(EDCA_PARM));
 		if (!ADHOC_ON(pAd))
@@ -1275,7 +1275,7 @@ void 	AsicSetSlotTime(
 
 	RegValue |= SlotTime;
 
-	mt7610u_write32(pAd, BKOFF_SLOT_CFG, RegValue);
+	mt76u_reg_write(pAd, BKOFF_SLOT_CFG, RegValue);
 }
 
 /*
@@ -1364,7 +1364,7 @@ void AsicAddSharedKeyEntry(struct rtmp_adapter *pAd, u8 BssIndex,
 			csr1.field.Bss1Key3CipherAlg = CipherAlg;
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
-	mt7610u_write32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
+	mt76u_reg_write(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
 }
 
 /*	IRQL = DISPATCH_LEVEL*/
@@ -1415,7 +1415,7 @@ void AsicRemoveSharedKeyEntry(
 			csr1.field.Bss1Key3CipherAlg = 0;
 	}
 	DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
-	mt7610u_write32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
+	mt76u_reg_write(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
 	ASSERT(BssIndex < 4);
 	ASSERT(KeyIdx < 4);
 
@@ -1431,8 +1431,8 @@ void AsicUpdateWCIDIVEIV(
 
 	offset = MAC_IVEIV_TABLE_BASE + (WCID * HW_IVEIV_ENTRY_SIZE);
 
-	mt7610u_write32(pAd, offset, uIV);
-	mt7610u_write32(pAd, offset + 4, uEIV);
+	mt76u_reg_write(pAd, offset, uIV);
+	mt76u_reg_write(pAd, offset + 4, uEIV);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx \n",
 									__FUNCTION__, WCID, uIV, uEIV));
@@ -1449,9 +1449,9 @@ void AsicUpdateRxWCIDTable(
 
 	offset = MAC_WCID_BASE + (WCID * HW_WCID_ENTRY_SIZE);
 	Addr = pAddr[0] + (pAddr[1] << 8) +(pAddr[2] << 16) +(pAddr[3] << 24);
-	mt7610u_write32(pAd, offset, Addr);
+	mt76u_reg_write(pAd, offset, Addr);
 	Addr = pAddr[4] + (pAddr[5] << 8);
-	mt7610u_write32(pAd, offset + 4, Addr);
+	mt76u_reg_write(pAd, offset + 4, Addr);
 }
 
 
@@ -1510,7 +1510,7 @@ void AsicUpdateWcidAttributeEntry(
 
 	/* Update related information to ASIC */
 	offset = MAC_WCID_ATTRIBUTE_BASE + (Wcid * HW_WCID_ATTRI_SIZE);
-	mt7610u_write32(pAd, offset, WCIDAttri.word);
+	mt76u_reg_write(pAd, offset, WCIDAttri.word);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s : WCID #%d, KeyIndex #%d, Alg=%s\n", __FUNCTION__, Wcid, KeyIdx, CipherName[CipherAlg]));
 	DBGPRINT(RT_DEBUG_TRACE, ("		WCIDAttri = 0x%x \n", WCIDAttri.word));
@@ -1549,13 +1549,13 @@ void AsicDelWcidTab(struct rtmp_adapter*pAd, u8 wcid_idx)
 	for (cnt = cnt_s; cnt_s <= cnt_e; cnt_s++)
 	{
 		offset = MAC_WCID_BASE + cnt * HW_WCID_ENTRY_SIZE;
-		mt7610u_write32(pAd, offset, 0x0);
-		mt7610u_write32(pAd, offset + 4, 0x0);
+		mt76u_reg_write(pAd, offset, 0x0);
+		mt76u_reg_write(pAd, offset + 4, 0x0);
 #ifdef MCS_LUT_SUPPORT
 		if (mcs_tb_offset) {
 			offset += mcs_tb_offset;
-			mt7610u_write32(pAd, offset, 0x0);
-			mt7610u_write32(pAd, offset + 4, 0x0);
+			mt76u_reg_write(pAd, offset, 0x0);
+			mt76u_reg_write(pAd, offset + 4, 0x0);
 		}
 #endif /* MCS_LUT_SUPPORT */
 	}
@@ -1682,7 +1682,7 @@ void AsicEnableRalinkBurstMode(
 	pAd->CommonCfg.RestoreBurstMode = Data;
 	Data  &= 0xFFF00000;
 	Data  |= 0x86380;
-	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+	mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 }
 
 /*
@@ -1712,7 +1712,7 @@ void AsicDisableRalinkBurstMode(
 		else if (pAd->CommonCfg.bEnableTxBurst)
 			Data |= 0x20;
 	}
-	mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+	mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 }
 
 INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, bool enable)
@@ -1722,11 +1722,11 @@ INT AsicSetPreTbttInt(struct rtmp_adapter*pAd, bool enable)
 	val = mt76u_reg_read(pAd, INT_TIMER_CFG);
 	val &= 0xffff0000;
 	val |= 6 << 4; /* Pre-TBTT is 6ms before TBTT interrupt. 1~10 ms is reasonable. */
-	mt7610u_write32(pAd, INT_TIMER_CFG, val);
+	mt76u_reg_write(pAd, INT_TIMER_CFG, val);
 	/* Enable pre-tbtt interrupt */
 	val = mt76u_reg_read(pAd, INT_TIMER_EN);
 	val |=0x1;
-	mt7610u_write32(pAd, INT_TIMER_EN, val);
+	mt76u_reg_write(pAd, INT_TIMER_EN, val);
 
 	return true;
 }
@@ -1839,14 +1839,14 @@ void AsicSetApCliBssid(
 			(u32)(pBssid[1] << 8)  |
 			(u32)(pBssid[2] << 16) |
 			(u32)(pBssid[3] << 24);
-	mt7610u_write32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
+	mt76u_reg_write(pAd, MAC_APCLI_BSSID_DW0, Addr4);
 
 	Addr4 = 0;
 	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 
-	mt7610u_write32(pAd, MAC_APCLI_BSSID_DW1, Addr4);
+	mt76u_reg_write(pAd, MAC_APCLI_BSSID_DW1, Addr4);
 }
 
 #ifdef MAC_REPEATER_SUPPORT
@@ -1873,14 +1873,14 @@ void AsicSetExtendedMacAddr(
 			(u32)(pMacAddr[1] << 8)  |
 			(u32)(pMacAddr[2] << 16) |
 			(u32)(pMacAddr[3] << 24);
-	mt7610u_write32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
+	mt76u_reg_write(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
 
 	Addr4 = 0;
 	Addr4 = (ULONG)(pMacAddr[4]) | (ULONG)(pMacAddr[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 
-	mt7610u_write32(pAd, MAC_ADDR_EXT0_47_32 + (Idx*8), Addr4);
+	mt76u_reg_write(pAd, MAC_ADDR_EXT0_47_32 + (Idx*8), Addr4);
 }
 #endif /* MAC_REPEATER_SUPPORT */
 

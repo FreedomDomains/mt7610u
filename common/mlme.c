@@ -468,7 +468,7 @@ void MlmeHalt(
 			LedCfg.field.RLedMode = 0;
 			LedCfg.field.GLedMode = 0;
 			LedCfg.field.YLedMode = 0;
-			mt7610u_write32(pAd, LED_CFG, LedCfg.word);
+			mt76u_reg_write(pAd, LED_CFG, LedCfg.word);
 		}
 #endif /* LED_CONTROL_SUPPORT */
 
@@ -575,7 +575,7 @@ void MlmePeriodicExec(void *FunctionContext)
 				txop_cfg = 0x243f;
 				pAd->CommonCfg.IOTestParm.bToggle = false;
 			}
-			mt7610u_write32(pAd, TXOP_CTRL_CFG, txop_cfg);
+			mt76u_reg_write(pAd, TXOP_CTRL_CFG, txop_cfg);
 		}
 	}
 #endif /* CONFIG_STA_SUPPORT */
@@ -714,7 +714,7 @@ void MlmePeriodicExec(void *FunctionContext)
 			MacReg = mt76u_reg_read(pAd, 0x10F4);
 			if (((MacReg & 0x20000000) && (MacReg & 0x80)) || ((MacReg & 0x20000000) && (MacReg & 0x20)))
 			{
-				mt7610u_write32(pAd, MAC_SYS_CTRL, 0x1);
+				mt76u_reg_write(pAd, MAC_SYS_CTRL, 0x1);
 				udelay(1);
 				MacReg = 0;
 				{
@@ -722,7 +722,7 @@ void MlmePeriodicExec(void *FunctionContext)
 				}
 
 				if (MacReg)
-					mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
+					mt76u_reg_write(pAd, MAC_SYS_CTRL, MacReg);
 
 				DBGPRINT(RT_DEBUG_WARN,("Warning, MAC specific condition occurs \n"));
 			}
@@ -936,7 +936,7 @@ void STAMlmePeriodicExec(
 				if (FIELD_GET(MT_EDCA_CFG_AIFSN, Ac2Cfg) !=0xc) {
 					Ac2Cfg &= ~MT_EDCA_CFG_AIFSN;
 					Ac2Cfg |= FIELD_PREP(MT_EDCA_CFG_AIFSN, 0xc);
-					mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg);
+					mt76u_reg_write(pAd, EDCA_AC2_CFG, Ac2Cfg);
 				}
 			}
 			else if ((pAd->RalinkCounters.OneSecOsTxCount[QID_AC_VO] == 0) &&
@@ -951,14 +951,14 @@ void STAMlmePeriodicExec(
 						Ac0Cfg |= FIELD_PREP(MT_EDCA_CFG_AIFSN, 3);
 					if (FIELD_GET(MT_EDCA_CFG_TXOP, Ac0Cfg) !=0)
 						Ac0Cfg |= FIELD_PREP(MT_EDCA_CFG_TXOP, 0);
-					mt7610u_write32(pAd, EDCA_AC0_CFG, Ac0Cfg);
+					mt76u_reg_write(pAd, EDCA_AC0_CFG, Ac0Cfg);
 				}
 
 			/* restore default parameter of VI*/
 				if (FIELD_GET(MT_EDCA_CFG_AIFSN, Ac2Cfg) != 0x3) {
 					Ac2Cfg &= ~MT_EDCA_CFG_AIFSN;
 					Ac2Cfg |= FIELD_PREP(MT_EDCA_CFG_AIFSN, 0x3);
-					mt7610u_write32(pAd, EDCA_AC2_CFG, Ac2Cfg);
+					mt76u_reg_write(pAd, EDCA_AC2_CFG, Ac2Cfg);
 				}
 
 			}
@@ -1560,7 +1560,7 @@ void MlmeSetTxPreamble(
 		csr4.field.AutoResponderPreamble = 1;
 	}
 
-	mt7610u_write32(pAd, AUTO_RSP_CFG, csr4.word);
+	mt76u_reg_write(pAd, AUTO_RSP_CFG, csr4.word);
 }
 
 /*
@@ -1797,7 +1797,7 @@ void MlmeUpdateTxRates(
 			MinSupport = Rate;
 	}
 
-	mt7610u_write32(pAd, LEGACY_BASIC_RATE, BasicRateBitmap);
+	mt76u_reg_write(pAd, LEGACY_BASIC_RATE, BasicRateBitmap);
 
 	for (i=0; i<MAX_LEN_OF_SUPPORTED_RATES; i++)
 	{
@@ -4775,7 +4775,7 @@ void RTMPSetPiggyBack(
 	TxLinkCfg.word = mt76u_reg_read(pAd, TX_LINK_CFG);
 
 	TxLinkCfg.field.TxCFAckEn = bPiggyBack;
-	mt7610u_write32(pAd, TX_LINK_CFG, TxLinkCfg.word);
+	mt76u_reg_write(pAd, TX_LINK_CFG, TxLinkCfg.word);
 }
 
 /*

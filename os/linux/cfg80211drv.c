@@ -277,7 +277,7 @@ bool CFG80211DRV_OpsSetChannel(
 	{
 		/* reset monitor mode in the new channel */
 		Set_NetworkType_Proc(pAd, "Monitor");
-		mt7610u_write32(pAd, RX_FILTR_CFG, pChan->MonFilterFlag);
+		mt76u_reg_write(pAd, RX_FILTR_CFG, pChan->MonFilterFlag);
 	} /* End of if */
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -348,7 +348,7 @@ bool CFG80211DRV_OpsChgVirtualInf(
 				Filter = Filter | 0x08;
 			/* End of if */
 
-			mt7610u_write32(pAd, RX_FILTR_CFG, Filter);
+			mt76u_reg_write(pAd, RX_FILTR_CFG, Filter);
 			*(u32 *)pFlgFilter = Filter;
 		} /* End of if */
 

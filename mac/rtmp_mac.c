@@ -385,7 +385,7 @@ void mt7610u_mac_set_ctrlch(struct rtmp_adapter*pAd, int extch)
 	}
 
 	if (val != band_cfg)
-		mt7610u_write32(pAd, TX_BAND_CFG, val);
+		mt76u_reg_write(pAd, TX_BAND_CFG, val);
 }
 
 
@@ -401,7 +401,7 @@ INT rtmp_mac_set_mmps(struct rtmp_adapter*pAd, INT ReduceCorePower)
 		mac_val &= ~0x09;
 
 	if (mac_val != org_val)
-		mt7610u_write32(pAd, 0x1210, mac_val);
+		mt76u_reg_write(pAd, 0x1210, mac_val);
 
 	return true;
 }

@@ -285,7 +285,7 @@ int rt28xx_init(struct rtmp_adapter *pAd)
 
 	/* auto-fall back settings */
 #ifdef RANGE_EXTEND
-	mt7610u_write32(pAd, HT_FBK_CFG1, 0xedcba980);
+	mt76u_reg_write(pAd, HT_FBK_CFG1, 0xedcba980);
 #endif // RANGE_EXTEND //
 
 

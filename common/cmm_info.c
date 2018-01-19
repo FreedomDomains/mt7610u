@@ -2771,7 +2771,7 @@ INT Set_LongRetryLimit_Proc(
 
 	tx_rty_cfg.word = mt76u_reg_read(pAdapter, TX_RTY_CFG);
 	tx_rty_cfg.field.LongRtyLimit = LongRetryLimit;
-	mt7610u_write32(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
+	mt76u_reg_write(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_LongRetryLimit_Proc::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
 	return true;
 }
@@ -2785,7 +2785,7 @@ INT Set_ShortRetryLimit_Proc(
 
 	tx_rty_cfg.word = mt76u_reg_read(pAdapter, TX_RTY_CFG);
 	tx_rty_cfg.field.ShortRtyLimit = ShortRetryLimit;
-	mt7610u_write32(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
+	mt76u_reg_write(pAdapter, TX_RTY_CFG, tx_rty_cfg.word);
 	DBGPRINT(RT_DEBUG_TRACE, ("IF Set_ShortRetryLimit_Proc::(tx_rty_cfg=0x%x)\n", tx_rty_cfg.word));
 	return true;
 }
@@ -3189,7 +3189,7 @@ INT set_force_ext_cca(struct rtmp_adapter*pAd, char *arg)
 		mac_val = 0x0410243f;
 	else
 		mac_val = 0x583f;
-	mt7610u_write32(pAd, TXOP_CTRL_CFG, mac_val);
+	mt76u_reg_write(pAd, TXOP_CTRL_CFG, mac_val);
 
 	return true;
 }

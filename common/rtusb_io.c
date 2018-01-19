@@ -98,7 +98,7 @@ u32 mt76u_reg_read(struct rtmp_adapter *pAd, USHORT Offset)
 
 	========================================================================
 */
-void mt7610u_write32(
+void mt76u_reg_write(
 	struct rtmp_adapter *pAd,
 	USHORT Offset,
 	u32 _val)
@@ -341,13 +341,13 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		MACValue = mt76u_reg_read(pAd, USB_DMA_CFG);
 
 	MACValue |= 0x80000;
-	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
+	mt76u_reg_write(pAd, USB_DMA_CFG, MACValue);
 
 	/* Wait 1ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
 	mdelay(1);
 
 	MACValue &= (~0x80000);
-	mt7610u_write32(pAd, USB_DMA_CFG, MACValue);
+	mt76u_reg_write(pAd, USB_DMA_CFG, MACValue);
 	DBGPRINT(RT_DEBUG_TRACE, ("\tSet 0x2a0 bit19. Clear USB DMA TX path\n"));
 
 	/* Wait 5ms to prevent next URB to bulkout before HW reset. by MAXLEE 12-25-2007*/
@@ -598,7 +598,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 	MACValue = (pAd->MacTab.Content[SetAsicWcid.WCID].Addr[3]<<24)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[2]<<16)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[1]<<8)+(pAd->MacTab.Content[SetAsicWcid.WCID].Addr[0]);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("1-MACValue= %x,\n", MACValue));
-	mt7610u_write32(pAd, offset, MACValue);
+	mt76u_reg_write(pAd, offset, MACValue);
 	/* Read bitmask*/
 	MACValue = mt76u_reg_read(pAd, offset+4);
 	if ( SetAsicWcid.DeleteTid != 0xffffffff)
@@ -609,7 +609,7 @@ static int SetAsicWcidHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem *
 	MACRValue &= 0xffff0000;
 	MACValue = (pAd->MacTab.Content[SetAsicWcid.WCID].Addr[5]<<8)+pAd->MacTab.Content[SetAsicWcid.WCID].Addr[4];
 	MACValue |= MACRValue;
-	mt7610u_write32(pAd, offset+4, MACValue);
+	mt76u_reg_write(pAd, offset+4, MACValue);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("2-MACValue= %x,\n", MACValue));
 

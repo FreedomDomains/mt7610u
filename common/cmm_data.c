@@ -1099,7 +1099,7 @@ void RTMPSuspendMsduTransmission(
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
 	/* abort all TX rings */
-	/*mt7610u_write32(pAd, TX_CNTL_CSR, 0x000f0000);	*/
+	/*mt76u_reg_write(pAd, TX_CNTL_CSR, 0x000f0000);	*/
 }
 
 
@@ -1973,7 +1973,7 @@ void ReSyncBeaconTime(
 		csr &= ~MT_BEACON_TIME_CFG_INTVAL;
 		csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
 				  (pAd->CommonCfg.BeaconPeriod << 4) - 1);	/* ASIC register in units of 1/16 TU = 64us*/
-		mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+		mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 	} else {
 		if (Offset == (BCN_TBTT_OFFSET-1)) {
 			u32 csr;
@@ -1982,7 +1982,7 @@ void ReSyncBeaconTime(
 			csr &= ~MT_BEACON_TIME_CFG_INTVAL;
 			csr |= FIELD_PREP(MT_BEACON_TIME_CFG_INTVAL,
 					  (pAd->CommonCfg.BeaconPeriod) << 4); /* ASIC register in units of 1/16 TU*/
-			mt7610u_write32(pAd, MT_BEACON_TIME_CFG, csr);
+			mt76u_reg_write(pAd, MT_BEACON_TIME_CFG, csr);
 		}
 	}
 }

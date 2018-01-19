@@ -711,7 +711,7 @@ void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 	WPDMA_GLO_CFG_STRUC GloCfg;
 	u32 val;
 
-	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x4);
+	mt76u_reg_write(pAd, MAC_SYS_CTRL, 0x4);
 
 	if (mt7610u_wait_pdma_usecs(pAd, 200, 1000) == false) {
 		if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
@@ -731,9 +731,9 @@ void RT28XXDMAEnable(struct rtmp_adapter*pAd)
 		val |= MT_USB_DMA_CFG_RX_BULK_AGG_EN;
 
 
-	mt7610u_write32(pAd, USB_DMA_CFG, val);
+	mt76u_reg_write(pAd, USB_DMA_CFG, val);
 
-	//mt7610u_write32(pAd, USB_DMA_CFG, UsbCfg.word);
+	//mt76u_reg_write(pAd, USB_DMA_CFG, UsbCfg.word);
 }
 
 /********************************************************************
@@ -1084,8 +1084,8 @@ bool AsicCheckCommandOk(
 			ret = true;
 	}
 
-	mt7610u_write32(pAd, H2M_MAILBOX_STATUS, 0xffffffff);
-	mt7610u_write32(pAd, H2M_MAILBOX_CID, 0xffffffff);
+	mt76u_reg_write(pAd, H2M_MAILBOX_STATUS, 0xffffffff);
+	mt76u_reg_write(pAd, H2M_MAILBOX_CID, 0xffffffff);
 
 	up(&pAd->reg_atomic);
 

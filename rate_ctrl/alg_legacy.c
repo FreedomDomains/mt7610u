@@ -144,7 +144,7 @@ void MlmeDynamicTxRateSwitching(
 				TxRtyCfgtmp.word = TxRtyCfg.word;
 				TxRtyCfg.field.LongRtyLimit = 0x0;
 				TxRtyCfg.field.ShortRtyLimit = 0x0;
-				mt7610u_write32(pAd, TX_RTY_CFG, TxRtyCfg.word);
+				mt76u_reg_write(pAd, TX_RTY_CFG, TxRtyCfg.word);
 
 				udelay(1);
 
@@ -162,7 +162,7 @@ void MlmeDynamicTxRateSwitching(
 				TxRtyCfg.word = mt76u_reg_read(pAd, TX_RTY_CFG);
 				TxRtyCfg.field.LongRtyLimit = TxRtyCfgtmp.field.LongRtyLimit;
 				TxRtyCfg.field.ShortRtyLimit = TxRtyCfgtmp.field.ShortRtyLimit;
-				mt7610u_write32(pAd, TX_RTY_CFG, TxRtyCfg.word);
+				mt76u_reg_write(pAd, TX_RTY_CFG, TxRtyCfg.word);
 			}
 
 		}

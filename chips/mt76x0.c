@@ -1006,7 +1006,7 @@ static void mt7610u_init_fce(struct rtmp_adapter *ad)
 
 	val = mt76u_reg_read(ad, MT_FCE_L2_STUFF);
 	val &= ~MT_FCE_L2_STUFF_WR_MPDU_LEN_EN;
-	mt7610u_write32(ad, MT_FCE_L2_STUFF, val);
+	mt76u_reg_write(ad, MT_FCE_L2_STUFF, val);
 }
 
 void _mt7610u_phy_set_band(struct rtmp_adapter*pAd, int  band)
@@ -1027,7 +1027,7 @@ void _mt7610u_phy_set_band(struct rtmp_adapter*pAd, int  band)
 	}
 
 	if (val != band_cfg)
-		mt7610u_write32(pAd, TX_BAND_CFG, val);
+		mt76u_reg_write(pAd, TX_BAND_CFG, val);
 }
 
 /*
@@ -1045,8 +1045,8 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 
 		_mt7610u_phy_set_band(pAd, BAND_24G);
 
-		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00050007);
-		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
+		mt76u_reg_write(pAd, TX_ALC_VGA3, 0x00050007);
+		mt76u_reg_write(pAd, TX0_RF_GAIN_CORR, 0x003E0002);
 	} else {
 		/* Select 5GHz */
 		mt7610u_mcu_rf_random_write(pAd,
@@ -1057,8 +1057,8 @@ void mt7610u_phy_set_band(struct rtmp_adapter *pAd, u8 Channel)
 
 		_mt7610u_phy_set_band(pAd, BAND_5G);
 
-		mt7610u_write32(pAd, TX_ALC_VGA3, 0x00000005);
-		mt7610u_write32(pAd, TX0_RF_GAIN_CORR, 0x01010102);
+		mt76u_reg_write(pAd, TX_ALC_VGA3, 0x00000005);
+		mt76u_reg_write(pAd, TX0_RF_GAIN_CORR, 0x01010102);
 	}
 }
 
@@ -1261,7 +1261,7 @@ void mt7610u_rf_set_channel_freq(struct rtmp_adapter *pAd, u8 Channel)
 
 	MacReg = mt76u_reg_read(pAd, RF_MISC);
 	MacReg &= ~(0xC); /* Clear 0x518[3:2] */
-	mt7610u_write32(pAd, RF_MISC, MacReg);
+	mt76u_reg_write(pAd, RF_MISC, MacReg);
 
 	DBGPRINT(RT_DEBUG_INFO, ("\n\n*********** PAType = %d ***********\n\n", pAd->chipCap.PAType));
 	if ((pAd->chipCap.PAType == INT_PA_2G_5G) ||
@@ -1291,11 +1291,11 @@ void mt7610u_rf_set_channel_freq(struct rtmp_adapter *pAd, u8 Channel)
 		if (RfBand & RF_A_BAND) {
 			MacReg = mt76u_reg_read(pAd, RF_MISC);
 			MacReg |= (0x4);
-			mt7610u_write32(pAd, RF_MISC, MacReg);
+			mt76u_reg_write(pAd, RF_MISC, MacReg);
 		} else {
 			MacReg = mt76u_reg_read(pAd, RF_MISC);
 			MacReg |= (0x8);
-			mt7610u_write32(pAd, RF_MISC, MacReg);
+			mt76u_reg_write(pAd, RF_MISC, MacReg);
 		}
 
 		/* External PA */
@@ -1316,17 +1316,17 @@ void mt7610u_rf_set_channel_freq(struct rtmp_adapter *pAd, u8 Channel)
 	}
 
 	if (RfBand & RF_G_BAND) {
-		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
+		mt76u_reg_write(pAd, TX0_RF_GAIN_ATTEN, 0x63707400);
 		/* Set Atten mode = 2 for G band and disable Tx Inc DCOC Cal by Chee's comment */
 		MacReg = mt76u_reg_read(pAd, TX_ALC_CFG_1);
 		MacReg &= 0x896400FF;
-		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
+		mt76u_reg_write(pAd, TX_ALC_CFG_1, MacReg);
 	} else {
-		mt7610u_write32(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
+		mt76u_reg_write(pAd, TX0_RF_GAIN_ATTEN, 0x686A7800);
 		/* Set Atten mode = 0 For Ext A band and disable Tx Inc DCOC Cal by Chee's comment */
 		MacReg = mt76u_reg_read(pAd, TX_ALC_CFG_1);
 		MacReg &= 0x890400FF;
-		mt7610u_write32(pAd, TX_ALC_CFG_1, MacReg);
+		mt76u_reg_write(pAd, TX_ALC_CFG_1, MacReg);
 	}
 
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <--\n", __FUNCTION__));
@@ -1439,7 +1439,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 
 	trsw_mode = mt7610u_read_eeprom16(pAd, 0x24);
 	if (((trsw_mode & ~(0xFFCF)) >> 4) == 0x3) {
-		mt7610u_write32(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
+		mt76u_reg_write(pAd, TX_SW_CFG1, 0x00040200); /* Adjust TR_SW off delay for TRSW mode */
 		DBGPRINT(RT_DEBUG_TRACE, ("%s: TRSW = 0x%x\n", __FUNCTION__, ((trsw_mode & ~(0xFFCF)) >> 4)));
 	}
 
@@ -1449,7 +1449,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 	*/
 	MacReg = mt76u_reg_read(pAd, MAC_SYS_CTRL);
 	MacReg &= ~(0x3);
-	mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
+	mt76u_reg_write(pAd, MAC_SYS_CTRL, MacReg);
 
 
 	/*
@@ -1457,7 +1457,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 	*/
 	MacReg = mt76u_reg_read(pAd, EXT_CCA_CFG);
 	MacReg |= (0x0000F000);
-	mt7610u_write32(pAd, EXT_CCA_CFG, MacReg);
+	mt76u_reg_write(pAd, EXT_CCA_CFG, MacReg);
 
 	mt7610u_init_fce(pAd);
 
@@ -1470,7 +1470,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 	MacReg = mt76u_reg_read(pAd, WMM_CTRL);
 	MacReg &= ~(0x000003FF);
 	MacReg |= (0x00000201);
-	mt7610u_write32(pAd, WMM_CTRL, MacReg);
+	mt76u_reg_write(pAd, WMM_CTRL, MacReg);
 
 #ifdef MCS_LUT_SUPPORT
 	mt76u_reg_read(pAd, TX_FBK_LIMIT, &MacReg);
@@ -1478,7 +1478,7 @@ void mt7610u_init_mac(struct rtmp_adapter *pAd)
 		MacReg |= 0x40000;
 	else
 		MacReg &= (~0x40000);
-	mt7610u_write32(pAd, TX_FBK_LIMIT, MacReg);
+	mt76u_reg_write(pAd, TX_FBK_LIMIT, MacReg);
 #endif /* MCS_LUT_SUPPORT */
 
 	return;
@@ -1510,7 +1510,7 @@ void mt7610u_init_bbp(struct rtmp_adapter *pAd)
 
 	for (IdReg = 0; IdReg < ARRAY_SIZE(mt7610u_bbp_sw_tab); IdReg++) {
 		if (((RF_G_BAND | RF_BW_20) & mt7610u_bbp_sw_tab[IdReg].BwBand) == (RF_G_BAND | RF_BW_20)) {
-			mt7610u_write32(pAd, mt7610u_bbp_sw_tab[IdReg].RegDate.Register,
+			mt76u_reg_write(pAd, mt7610u_bbp_sw_tab[IdReg].RegDate.Register,
 					mt7610u_bbp_sw_tab[IdReg].RegDate.Value);
 		}
 	}
@@ -1576,7 +1576,7 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 		RegValue |= 0x1e4;
 
 	}
-	mt7610u_write32(pAd, EXT_CCA_CFG, RegValue);
+	mt76u_reg_write(pAd, EXT_CCA_CFG, RegValue);
 
 
 	/*
@@ -1603,7 +1603,7 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 		RegValue |= 0x20;
 	else
 		RegValue &= (~0x20);
-	mt7610u_write32(pAd, CORE_R1, RegValue);
+	mt76u_reg_write(pAd, CORE_R1, RegValue);
 
 	for (Index = 0; Index < ARRAY_SIZE(mt7610u_bbp_sw_tab); Index++) {
 		if (((rf_phy_mode | rf_bw) & mt7610u_bbp_sw_tab[Index].BwBand) == (rf_phy_mode | rf_bw)) {
@@ -1620,10 +1620,10 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 				} else
 					eLNAgain -= (pAd->BLNAGain*2);
 
-				mt7610u_write32(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
+				mt76u_reg_write(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
 						(mt7610u_bbp_sw_tab[Index].RegDate.Value&(~0x0000FF00))|(eLNAgain << 8));
 			} else {
-				mt7610u_write32(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
+				mt76u_reg_write(pAd, mt7610u_bbp_sw_tab[Index].RegDate.Register,
 						mt7610u_bbp_sw_tab[Index].RegDate.Value);
 			}
 		}
@@ -1643,14 +1643,14 @@ void mt7610u_chip_switch_channel(struct rtmp_adapter *pAd,
 	Value = Value & (~0x3F3F);
 	Value |= TxPwer;
 	Value |= (0x2F2F << 16);
-	mt7610u_write32(pAd, TX_ALC_CFG_0, Value);
+	mt76u_reg_write(pAd, TX_ALC_CFG_0, Value);
 
 	up(&pAd->hw_atomic);
 
 	if (Channel > 14)
-		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a41010);
+		mt76u_reg_write(pAd, XIFS_TIME_CFG, 0x33a41010);
 	else
-		mt7610u_write32(pAd, XIFS_TIME_CFG, 0x33a4100A);
+		mt76u_reg_write(pAd, XIFS_TIME_CFG, 0x33a4100A);
 
 	return;
 }
@@ -1966,7 +1966,7 @@ void mt7610u_dynamic_vga_tuning(struct rtmp_adapter *pAd)
 	reg_val = mt76u_reg_read(pAd, AGC1_R8);
 	reg_val &= 0xFFFF80FF;
 	reg_val |= (init_vga << 8);
-	mt7610u_write32(pAd, AGC1_R8, reg_val);
+	mt76u_reg_write(pAd, AGC1_R8, reg_val);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s(): RSSI=%d, BBP 2320=0x%x\n", __FUNCTION__, rssi, reg_val));
 }
@@ -2069,12 +2069,12 @@ void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel)
 	mt7610u_vco_calibration(pAd, Channel);
 
 	reg_tx_alc = mt76u_reg_read(pAd, TX_ALC_CFG_0); /* We need to restore 0x13b0 after calibration. */
-	mt7610u_write32(pAd, TX_ALC_CFG_0, 0x0);
+	mt76u_reg_write(pAd, TX_ALC_CFG_0, 0x0);
 	udelay(500);
 
 	reg_val = mt76u_reg_read(pAd, 0x2124); /* We need to restore 0x2124 after calibration. */
 	MacReg = 0xFFFFFF7E; /* Disable 0x2704, 0x2708 controlled by MAC. */
-	mt7610u_write32(pAd, 0x2124, MacReg);
+	mt76u_reg_write(pAd, 0x2124, MacReg);
 
 	/*
 		Do calibration.
@@ -2237,8 +2237,8 @@ void mt7610u_calibration(struct rtmp_adapter *pAd, u8 Channel)
 	*/
 
 	/* Restore 0x2124 & TX_ALC_CFG_0 after calibration completed */
-	mt7610u_write32(pAd, 0x2124, reg_val);
-	mt7610u_write32(pAd, TX_ALC_CFG_0, reg_tx_alc);
+	mt76u_reg_write(pAd, 0x2124, reg_val);
+	mt76u_reg_write(pAd, TX_ALC_CFG_0, reg_tx_alc);
 	mdelay(100); // TODO: check response packet from FW
 
 RXDC_Calibration:
@@ -2293,7 +2293,7 @@ void mt7610u_temp_sensor(struct rtmp_adapter *pAd)
 		4. Select Level meter from ADC.q:
 			WIFI_BBP_CR_WRITE(0x2088,0x00080055)
 	*/
-	mt7610u_write32(pAd, CORE_R34, 0x00080055);
+	mt76u_reg_write(pAd, CORE_R34, 0x00080055);
 
 	/*
 		5. Wait until it's done:
@@ -2308,7 +2308,7 @@ void mt7610u_temp_sensor(struct rtmp_adapter *pAd)
 
 	if (MTxCycle >= 2000) {
 		reg_val &= ~(0x10);
-		mt7610u_write32(pAd, CORE_R34, reg_val);
+		mt76u_reg_write(pAd, CORE_R34, reg_val);
 		goto done;
 	}
 
@@ -2387,7 +2387,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 		4. Select Level meter from ADC.q:
 			WIFI_BBP_CR_WRITE(0x2088,0x00080055)
 	*/
-	mt7610u_write32(pAd, CORE_R34, 0x00080055);
+	mt76u_reg_write(pAd, CORE_R34, 0x00080055);
 
 	/*
 		5. Wait until it's done:
@@ -2402,7 +2402,7 @@ bool mt76x0_get_tssi_report(struct rtmp_adapter *pAd, bool bResetTssiInfo,
 
 	if (wait >= 2000) {
 		reg_val &= ~(0x10);
-		mt7610u_write32(pAd, CORE_R34, reg_val);
+		mt76u_reg_write(pAd, CORE_R34, reg_val);
 		status = false;
 		goto done;
 	}
@@ -2564,7 +2564,7 @@ void mt76x0_temp_tx_alc(struct rtmp_adapter *pAd)
 			*/
 			mac_val = mt76u_reg_read(pAd, TX_ALC_CFG_1);
 			mac_val = (mac_val & (~0x3f)) | delta_pwr;
-			mt7610u_write32(pAd, TX_ALC_CFG_1, mac_val);
+			mt76u_reg_write(pAd, TX_ALC_CFG_1, mac_val);
 
 			DBGPRINT(RT_DEBUG_TRACE,
 				("%s - delta_pwr = %d, TssiCalibratedOffset = %d, TssiMpOffset = %d, 0x13B4 = 0x%08x, %s = %d, DeltaPwrBeforeTempComp = %d, LastTempCompDeltaPwr =%d\n",

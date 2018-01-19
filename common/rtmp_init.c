@@ -320,14 +320,14 @@ void NICReadEEPROMParameters(struct rtmp_adapter*pAd)
 	csr2.field.Byte1 = pAd->CurrentAddress[1];
 	csr2.field.Byte2 = pAd->CurrentAddress[2];
 	csr2.field.Byte3 = pAd->CurrentAddress[3];
-	mt7610u_write32(pAd, MAC_ADDR_DW0, csr2.word);
+	mt76u_reg_write(pAd, MAC_ADDR_DW0, csr2.word);
 	csr3.word = 0;
 	csr3.field.Byte4 = pAd->CurrentAddress[4];
 	{
 		csr3.field.Byte5 = pAd->CurrentAddress[5];
 		csr3.field.U2MeMask = 0xff;
 	}
-	mt7610u_write32(pAd, MAC_ADDR_DW1, csr3.word);
+	mt76u_reg_write(pAd, MAC_ADDR_DW1, csr3.word);
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE,("Current MAC: =%02x:%02x:%02x:%02x:%02x:%02x\n",
 					PRINT_MAC(pAd->CurrentAddress)));
@@ -635,7 +635,7 @@ void NICInitAsicFromEEPROM(
 			{
 				pAd->StaCfg.bHwRadio = false;
 				pAd->StaCfg.bRadio = false;
-/*				mt7610u_write32(pAd, PWR_PIN_CFG, 0x00001818);*/
+/*				mt76u_reg_write(pAd, PWR_PIN_CFG, 0x00001818);*/
 				RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 			}
 		}
@@ -733,7 +733,7 @@ void AsicInitBcnBuf(IN struct rtmp_adapter*pAd)
 		};
 		for (idx = 0; idx < 4; idx ++)
 		{
-			mt7610u_write32(pAd, (USHORT)bcn_mac_reg_tb[idx].Register,
+			mt76u_reg_write(pAd, (USHORT)bcn_mac_reg_tb[idx].Register,
 									bcn_mac_reg_tb[idx].Value);
 		}
 	}
@@ -847,7 +847,7 @@ int	NICInitializeAsic(
 	/* turn on bit13 (set to zero) after rt2860D. This is to solve high-current issue.*/
 	MACValue = mt76u_reg_read(pAd, PBF_SYS_CTRL);
 	MACValue &= (~0x2000);
-	mt7610u_write32(pAd, PBF_SYS_CTRL, MACValue);
+	mt76u_reg_write(pAd, PBF_SYS_CTRL, MACValue);
 
 	mdelay(200);
 
@@ -864,7 +864,7 @@ int	NICInitializeAsic(
 		DBGPRINT(RT_DEBUG_OFF, ("disable usb rx aggregagion\n"));
 	}
 
-	mt7610u_write32(pAd, USB_DMA_CFG, val);
+	mt76u_reg_write(pAd, USB_DMA_CFG, val);
 
 
 	/* check MCU if ready */
@@ -873,15 +873,15 @@ int	NICInitializeAsic(
 	val = mt76u_reg_read(pAd, USB_DMA_CFG);
 
 	val |= MT_USB_DMA_CFG_RX_DROP_OR_PAD;
-	mt7610u_write32(pAd, USB_DMA_CFG, val);
+	mt76u_reg_write(pAd, USB_DMA_CFG, val);
 
 	val &= ~MT_USB_DMA_CFG_RX_DROP_OR_PAD;
-	mt7610u_write32(pAd, USB_DMA_CFG, val);
+	mt76u_reg_write(pAd, USB_DMA_CFG, val);
 
 	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_START_UP);
 
-	mt7610u_write32(pAd, HEADER_TRANS_CTRL_REG, 0x0);
-	mt7610u_write32(pAd, TSO_CTRL, 0x0);
+	mt76u_reg_write(pAd, HEADER_TRANS_CTRL_REG, 0x0);
+	mt76u_reg_write(pAd, TSO_CTRL, 0x0);
 
 	/* Select Q2 to receive command response */
 	mt7610u_mcu_fun_set(pAd, Q_SELECT, RX_RING1);
@@ -921,9 +921,9 @@ int	NICInitializeAsic(
 
 	/* The commands to firmware should be after these commands, these commands will init firmware*/
 	/* PCI and USB are not the same because PCI driver needs to wait for PCI bus ready*/
-		mt7610u_write32(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
-		mt7610u_write32(pAd,H2M_MAILBOX_CSR,0);
-		mt7610u_write32(pAd, H2M_INT_SRC, 0);
+		mt76u_reg_write(pAd, H2M_BBP_AGENT, 0); /* initialize BBP R/W access agent. */
+		mt76u_reg_write(pAd,H2M_MAILBOX_CSR,0);
+		mt76u_reg_write(pAd, H2M_INT_SRC, 0);
 
 	/* Wait to be stable.*/
 	mdelay(1);
@@ -938,7 +938,7 @@ int	NICInitializeAsic(
 
 		csr = mt76u_reg_read(pAd, MAX_LEN_CFG);
 		csr |= 0x3fff;
-		mt7610u_write32(pAd, MAX_LEN_CFG, csr);
+		mt76u_reg_write(pAd, MAX_LEN_CFG, csr);
 	}
 
 {
@@ -959,7 +959,7 @@ int	NICInitializeAsic(
 	{
 		if (pAd->StaCfg.bRadio == false)
 		{
-/*			mt7610u_write32(pAd, PWR_PIN_CFG, 0x00001818);*/
+/*			mt76u_reg_write(pAd, PWR_PIN_CFG, 0x00001818);*/
 			RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 			DBGPRINT(RT_DEBUG_TRACE, ("Set Radio Off\n"));
 		}
@@ -1010,7 +1010,7 @@ int	NICInitializeAsic(
 	Counter = mt76u_reg_read(pAd, USB_CYC_CFG);
 	Counter&=0xffffff00;
 	Counter|=0x000001e;
-	mt7610u_write32(pAd, USB_CYC_CFG, Counter);
+	mt76u_reg_write(pAd, USB_CYC_CFG, Counter);
 	RTUSBBulkReceive(pAd);
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1018,7 +1018,7 @@ int	NICInitializeAsic(
 	{
 		/* for rt2860E and after, init TXOP_CTRL_CFG with 0x583f. This is for extension channel overlapping IOT.*/
 		if ((pAd->mac_rev&0xffff) != 0x0101)
-			mt7610u_write32(pAd, TXOP_CTRL_CFG, 0x583f);
+			mt76u_reg_write(pAd, TXOP_CTRL_CFG, 0x583f);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -2219,20 +2219,20 @@ void RTMPEnableRxTx(
 		rx_filter_flag = APNORMAL;
 
 
-		mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);     /* enable RX of DMA block*/
+		mt76u_reg_write(pAd, RX_FILTR_CFG, rx_filter_flag);     /* enable RX of DMA block*/
 	}
 #ifdef CONFIG_STA_SUPPORT
 	else
 	{
 			rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
-		mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
+		mt76u_reg_write(pAd, RX_FILTR_CFG, rx_filter_flag);
 	}
 #endif /* CONFIG_STA_SUPPORT */
 
 	{
-		mt7610u_write32(pAd, MAC_SYS_CTRL, 0xc);
+		mt76u_reg_write(pAd, MAC_SYS_CTRL, 0xc);
 //+++Add by shiang for debug for pbf_loopback
-//			mt7610u_write32(pAd, MAC_SYS_CTRL, 0x2c);
+//			mt76u_reg_write(pAd, MAC_SYS_CTRL, 0x2c);
 //---Add by shiang for debug
 //+++Add by shiang for debug invalid RxWI->WCID
 //---Add by shiang for  debug invalid RxWI->WCID

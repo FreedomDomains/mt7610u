@@ -81,8 +81,8 @@ void mt7610u_radio_on(struct rtmp_adapter*pAd, u8 Stage)
 
 	rx_filter_flag = STANORMAL;     /* Staion not drop control frame will fail WiFi Certification.*/
 
-	mt7610u_write32(pAd, RX_FILTR_CFG, rx_filter_flag);
-	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
+	mt76u_reg_write(pAd, RX_FILTR_CFG, rx_filter_flag);
+	mt76u_reg_write(pAd, MAC_SYS_CTRL, 0x0c);
 
 	/* 4. Clear idle flag*/
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF);
@@ -105,7 +105,7 @@ void mt7610u_radio_on(struct rtmp_adapter*pAd, u8 Stage)
 		return;
 	}
 
-	mt7610u_write32(pAd, MAC_SYS_CTRL, 0x0c);
+	mt76u_reg_write(pAd, MAC_SYS_CTRL, 0x0c);
 
 	up(&pAd->hw_atomic);
 
@@ -271,7 +271,7 @@ void mt7610u_disbale_txrx(struct rtmp_adapter*pAd)
 			*/
 			MacReg = mt76u_reg_read(pAd, MAC_SYS_CTRL);
 			MacReg &= ~(0x0000000c);
-			mt7610u_write32(pAd, MAC_SYS_CTRL, MacReg);
+			mt76u_reg_write(pAd, MAC_SYS_CTRL, MacReg);
 	}
 
 	/*
@@ -392,12 +392,12 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 			WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_RESET;
 			WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_RESET_RF;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(1) WlanFunCtrl = 0x%x\n", WlanFunCtrl));
-			mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
+			mt76u_reg_write(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 			udelay(20);
 			WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_RESET;
 			WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_RESET_RF;
 			DBGPRINT(RT_DEBUG_TRACE, ("Reset(2) WlanFunCtrl = 0x%x\n", WlanFunCtrl));
-			mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
+			mt76u_reg_write(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 			udelay(20);
 		}
 	}
@@ -420,7 +420,7 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("WlanFunCtrl = 0x%x\n", WlanFunCtrl));
-	mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
+	mt76u_reg_write(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 	udelay(20);
 
 	if (enable) {
@@ -459,13 +459,13 @@ void mt7610u_chip_onoff(struct rtmp_adapter *pAd, bool enable, bool reset)
 				WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
 				WlanFunCtrl &= ~MT_WLAN_FUN_CTRL_WLAN_EN;
 
-				mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
+				mt76u_reg_write(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 				udelay(20);
 
 				WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_CLK_EN;
 				WlanFunCtrl |= MT_WLAN_FUN_CTRL_WLAN_EN;
 
-				mt7610u_write32(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
+				mt76u_reg_write(pAd, MT_WLAN_FUN_CTRL, WlanFunCtrl);
 				udelay(20);
 			} else {
 				break;

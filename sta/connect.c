@@ -1838,13 +1838,13 @@ void LinkUp(
 		if (pEntry->MaxRAmpduFactor == 0) {
 			/* If HT AP doesn't support MaxRAmpduFactor = 1, we need to set max PSDU to 0. */
 			/* Because our Init value is 1 at MACRegTable. */
-			mt7610u_write32(pAd, MAX_LEN_CFG, 0x000A0fff);	/* Default set to 0x1fff. But if one peer can't support 0x1fff, we need to change to 0xfff */
+			mt76u_reg_write(pAd, MAX_LEN_CFG, 0x000A0fff);	/* Default set to 0x1fff. But if one peer can't support 0x1fff, we need to change to 0xfff */
 		} else if (pEntry->MaxRAmpduFactor == 1) {
-			mt7610u_write32(pAd, MAX_LEN_CFG, 0x000A1fff);
+			mt76u_reg_write(pAd, MAX_LEN_CFG, 0x000A1fff);
 		} else if (pEntry->MaxRAmpduFactor == 2) {
-			mt7610u_write32(pAd, MAX_LEN_CFG, 0x000A2fff);
+			mt76u_reg_write(pAd, MAX_LEN_CFG, 0x000A2fff);
 		} else if (pEntry->MaxRAmpduFactor == 3) {
-			mt7610u_write32(pAd, MAX_LEN_CFG, 0x000A3fff);
+			mt76u_reg_write(pAd, MAX_LEN_CFG, 0x000A3fff);
 		}
 		DBGPRINT(RT_DEBUG_TRACE,
 			 ("!!!MaxRAmpduFactor= %d \n",
@@ -1862,7 +1862,7 @@ void LinkUp(
 		 && (pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE)))) {
 		Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
-		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+		mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 1\n"));
 	} else
@@ -1870,13 +1870,13 @@ void LinkUp(
 		Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
 		Data |= 0x60;
-		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+		mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 		pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = true;
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 2\n"));
 	} else {
 		Data = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 		Data &= 0xFFFFFF00;
-		mt7610u_write32(pAd, EDCA_AC0_CFG, Data);
+		mt76u_reg_write(pAd, EDCA_AC0_CFG, Data);
 		DBGPRINT(RT_DEBUG_TRACE, ("Txburst 3\n"));
 	}
 
@@ -1890,7 +1890,7 @@ void LinkUp(
 			/* I didn't change PBF_MAX_PCNT setting. */
 			MACValue = mt76u_reg_read(pAd, EDCA_AC0_CFG);
 			MACValue &= 0xFFFFFF00;
-			mt7610u_write32(pAd, EDCA_AC0_CFG, MACValue);
+			mt76u_reg_write(pAd, EDCA_AC0_CFG, MACValue);
 			pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = false;
 		}
 	} else {
@@ -1932,9 +1932,9 @@ void LinkUp(
 	/* */
 	if (INFRA_ON(pAd) && OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED)
 	    && STA_TKIP_ON(pAd)) {
-		mt7610u_write32(pAd, RX_PARSER_CFG, 0x01);
+		mt76u_reg_write(pAd, RX_PARSER_CFG, 0x01);
 	} else {
-		mt7610u_write32(pAd, RX_PARSER_CFG, 0x00);
+		mt76u_reg_write(pAd, RX_PARSER_CFG, 0x00);
 	}
 
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
@@ -2042,7 +2042,7 @@ void LinkDown(
 		AUTO_WAKEUP_STRUC AutoWakeupCfg;
 		AsicForceWakeup(pAd, true);
 		AutoWakeupCfg.word = 0;
-		mt7610u_write32(pAd, AUTO_WAKEUP_CFG, AutoWakeupCfg.word);
+		mt76u_reg_write(pAd, AUTO_WAKEUP_CFG, AutoWakeupCfg.word);
 		OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_DOZE);
 	}
 
@@ -2275,7 +2275,7 @@ void LinkDown(
 		pAd->ChannelList[i].bEffectedChannel = false;
 	}
 
-	mt7610u_write32(pAd, MAX_LEN_CFG, 0x1fff);
+	mt76u_reg_write(pAd, MAX_LEN_CFG, 0x1fff);
 	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
 /* Allow go to sleep after linkdown steps. */
 

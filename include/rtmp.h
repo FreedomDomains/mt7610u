@@ -5857,7 +5857,7 @@ void RTUSBBssBeaconStart(
 void RTUSBBssBeaconInit(
 	IN struct rtmp_adapter*pAd);
 
-void mt7610u_write32(
+void mt76u_reg_write(
 	IN	struct rtmp_adapter *pAd,
 	IN	USHORT			Offset,
 	IN	u32			Value);

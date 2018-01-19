@@ -263,7 +263,7 @@ static int __mt7610u_dma_fw(struct rtmp_adapter *ad,
 
 	mac_value = mt76u_reg_read(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX);
 	mac_value++;
-	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
+	mt76u_reg_write(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, mac_value);
 
 	mdelay(5);
 
@@ -345,13 +345,13 @@ loadfw_protect:
 		}
 	}
 
-	mt7610u_write32(ad, 0x1004, 0x2c);
+	mt76u_reg_write(ad, 0x1004, 0x2c);
 
 	/* Enable USB_DMA_CFG */
 	val = MT_USB_DMA_CFG_RX_BULK_EN |
 	      MT_USB_DMA_CFG_TX_BULK_EN |
 	      FIELD_PREP(MT_USB_DMA_CFG_RX_BULK_AGG_TOUT, 0x20);
-	mt7610u_write32(ad, USB_DMA_CFG, val);
+	mt76u_reg_write(ad, USB_DMA_CFG, val);
 	//USB_CFG_WRITE(ad, 0x00c00020);
 
 	/* Check MCU if ready */
@@ -382,27 +382,27 @@ loadfw_protect:
 	DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
 
 	/* Enable FCE */
-	mt7610u_write32(ad, FCE_PSE_CTRL, 0x01);
+	mt76u_reg_write(ad, FCE_PSE_CTRL, 0x01);
 
 	/* FCE tx_fs_base_ptr */
-	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230);
+	mt76u_reg_write(ad, TX_CPU_PORT_FROM_FCE_BASE_PTR, 0x400230);
 
 	/* FCE tx_fs_max_cnt */
-	mt7610u_write32(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01);
+	mt76u_reg_write(ad, TX_CPU_PORT_FROM_FCE_MAX_COUNT, 0x01);
 
 	/* FCE pdma enable */
-	mt7610u_write32(ad, FCE_PDMA_GLOBAL_CONF, 0x44);
+	mt76u_reg_write(ad, FCE_PDMA_GLOBAL_CONF, 0x44);
 
 	/* FCE skip_fs_en */
-	mt7610u_write32(ad, FCE_SKIP_FS, 0x03);
+	mt76u_reg_write(ad, FCE_SKIP_FS, 0x03);
 
 	val = mt76u_reg_read(ad, USB_DMA_CFG);
 
 	val |= MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
-	mt7610u_write32(ad, USB_DMA_CFG, val);
+	mt76u_reg_write(ad, USB_DMA_CFG, val);
 
 	val &= ~MT_USB_DMA_CFG_UDMA_TX_WL_DROP;
-	mt7610u_write32(ad, USB_DMA_CFG, val);
+	mt76u_reg_write(ad, USB_DMA_CFG, val);
 
 	/* Allocate TransferBuffer */
 	if (mt7610u_usb_alloc_buf(ad, UPLOAD_FW_UNIT, &dma_buf)) {
@@ -461,9 +461,9 @@ error0:
 	release_firmware(fw);
 
 	if (cap->IsComboChip)
-		mt7610u_write32(ad, SEMAPHORE_00, 0x1);
+		mt76u_reg_write(ad, SEMAPHORE_00, 0x1);
 
-	mt7610u_write32(ad, FCE_PSE_CTRL, 0x01);
+	mt76u_reg_write(ad, FCE_PSE_CTRL, 0x01);
 
 	return ret;
 }
