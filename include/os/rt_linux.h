@@ -343,9 +343,6 @@ do { \
 typedef int (*cast_fn)(void *);
 typedef INT (*RTMP_OS_TASK_CALLBACK)(ULONG);
 
-typedef struct tasklet_struct OS_NET_TASK_STRUCT;
-typedef struct tasklet_struct  *POS_NET_TASK_STRUCT;
-
 /***********************************************************************************
  * Timer related definitions and data structures.
  **********************************************************************************/
@@ -380,20 +377,20 @@ struct os_cookie {
 
 	struct usb_device		*pUsb_Dev;
 
-	RTMP_NET_TASK_STRUCT rx_done_task;
-	RTMP_NET_TASK_STRUCT cmd_rsp_event_task;
-	RTMP_NET_TASK_STRUCT mgmt_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac0_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac1_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac2_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac3_dma_done_task;
-	RTMP_NET_TASK_STRUCT hcca_dma_done_task;
-	RTMP_NET_TASK_STRUCT tbtt_task;
+	struct tasklet_struct rx_done_task;
+	struct tasklet_struct cmd_rsp_event_task;
+	struct tasklet_struct mgmt_dma_done_task;
+	struct tasklet_struct ac0_dma_done_task;
+	struct tasklet_struct ac1_dma_done_task;
+	struct tasklet_struct ac2_dma_done_task;
+	struct tasklet_struct ac3_dma_done_task;
+	struct tasklet_struct hcca_dma_done_task;
+	struct tasklet_struct tbtt_task;
 
 
 
-	RTMP_NET_TASK_STRUCT null_frame_complete_task;
-	RTMP_NET_TASK_STRUCT pspoll_frame_complete_task;
+	struct tasklet_struct null_frame_complete_task;
+	struct tasklet_struct pspoll_frame_complete_task;
 
 	RTMP_OS_PID			apd_pid; /*802.1x daemon pid */
 	unsigned long			apd_pid_nr;

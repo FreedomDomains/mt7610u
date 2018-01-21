@@ -772,17 +772,17 @@ int RtmpNetTaskInit(
 	struct os_cookie *pObj = pAd->OS_Cookie;
 
 	/* Create receive tasklet */
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->rx_done_task, rx_done_tasklet, (ULONG)pAd);
-	//RTMP_OS_TASKLET_INIT(pAd, &pObj->cmd_rsp_event_task, cmd_rsp_event_tasklet, (ULONG)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->mgmt_dma_done_task, rtusb_mgmt_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->ac0_dma_done_task, rtusb_ac0_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->ac1_dma_done_task, rtusb_ac1_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->ac2_dma_done_task, rtusb_ac2_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->ac3_dma_done_task, rtusb_ac3_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->hcca_dma_done_task, rtusb_hcca_dma_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->tbtt_task, tbtt_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->null_frame_complete_task, rtusb_null_frame_done_tasklet, (unsigned long)pAd);
-	RTMP_OS_TASKLET_INIT(pAd, &pObj->pspoll_frame_complete_task, rtusb_pspoll_frame_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->rx_done_task, rx_done_tasklet, (ULONG)pAd);
+	//tasklet_init(pAd, &pObj->cmd_rsp_event_task, cmd_rsp_event_tasklet, (ULONG)pAd);
+	tasklet_init(&pObj->mgmt_dma_done_task, rtusb_mgmt_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->ac0_dma_done_task, rtusb_ac0_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->ac1_dma_done_task, rtusb_ac1_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->ac2_dma_done_task, rtusb_ac2_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->ac3_dma_done_task, rtusb_ac3_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->hcca_dma_done_task, rtusb_hcca_dma_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->tbtt_task, tbtt_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->null_frame_complete_task, rtusb_null_frame_done_tasklet, (unsigned long)pAd);
+	tasklet_init(&pObj->pspoll_frame_complete_task, rtusb_pspoll_frame_done_tasklet, (unsigned long)pAd);
 
 	return NDIS_STATUS_SUCCESS;
 }
@@ -794,17 +794,17 @@ void RtmpNetTaskExit(IN struct rtmp_adapter*pAd)
 
 	pObj = pAd->OS_Cookie;
 
-	RTMP_OS_TASKLET_KILL(&pObj->rx_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->cmd_rsp_event_task);
-	RTMP_OS_TASKLET_KILL(&pObj->mgmt_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->ac0_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->ac1_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->ac2_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->ac3_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->hcca_dma_done_task);
-	RTMP_OS_TASKLET_KILL(&pObj->tbtt_task);
-	RTMP_OS_TASKLET_KILL(&pObj->null_frame_complete_task);
-	RTMP_OS_TASKLET_KILL(&pObj->pspoll_frame_complete_task);
+	tasklet_kill(&pObj->rx_done_task);
+	tasklet_kill(&pObj->cmd_rsp_event_task);
+	tasklet_kill(&pObj->mgmt_dma_done_task);
+	tasklet_kill(&pObj->ac0_dma_done_task);
+	tasklet_kill(&pObj->ac1_dma_done_task);
+	tasklet_kill(&pObj->ac2_dma_done_task);
+	tasklet_kill(&pObj->ac3_dma_done_task);
+	tasklet_kill(&pObj->hcca_dma_done_task);
+	tasklet_kill(&pObj->tbtt_task);
+	tasklet_kill(&pObj->null_frame_complete_task);
+	tasklet_kill(&pObj->pspoll_frame_complete_task);
 }
 
 

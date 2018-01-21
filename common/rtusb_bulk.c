@@ -441,24 +441,24 @@ USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, struct ur
 	switch (BulkOutPipeId)
 	{
 		case EDCA_AC0_PIPE:
-			RTMP_NET_TASK_DATA_ASSIGN(&pObj->ac0_dma_done_task, (unsigned long)pURB);
-			RTMP_OS_TASKLET_SCHE(&pObj->ac0_dma_done_task);
+			(&pObj->ac0_dma_done_task)->data = (unsigned long) pURB;
+			tasklet_hi_schedule(&pObj->ac0_dma_done_task);
 			break;
 		case EDCA_AC1_PIPE:
-			RTMP_NET_TASK_DATA_ASSIGN(&pObj->ac1_dma_done_task, (unsigned long)pURB);
-			RTMP_OS_TASKLET_SCHE(&pObj->ac1_dma_done_task);
+			(&pObj->ac1_dma_done_task)->data = (unsigned long) pURB;
+			tasklet_hi_schedule(&pObj->ac1_dma_done_task);
 			break;
 		case EDCA_AC2_PIPE:
-			RTMP_NET_TASK_DATA_ASSIGN(&pObj->ac2_dma_done_task, (unsigned long)pURB);
-			RTMP_OS_TASKLET_SCHE(&pObj->ac2_dma_done_task);
+			(&pObj->ac2_dma_done_task)->data = (unsigned long) pURB;
+			tasklet_hi_schedule(&pObj->ac2_dma_done_task);
 			break;
 		case EDCA_AC3_PIPE:
-			RTMP_NET_TASK_DATA_ASSIGN(&pObj->ac3_dma_done_task, (unsigned long)pURB);
-			RTMP_OS_TASKLET_SCHE(&pObj->ac3_dma_done_task);
+			(&pObj->ac3_dma_done_task)->data = (unsigned long) pURB;
+			tasklet_hi_schedule(&pObj->ac3_dma_done_task);
 			break;
 		case HCCA_PIPE:
-			RTMP_NET_TASK_DATA_ASSIGN(&pObj->hcca_dma_done_task, (unsigned long)pURB);
-			RTMP_OS_TASKLET_SCHE(&pObj->hcca_dma_done_task);
+			(&pObj->hcca_dma_done_task)->data = (unsigned long) pURB;
+			tasklet_hi_schedule(&pObj->hcca_dma_done_task);
 			break;
 	}
 
@@ -541,8 +541,8 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, struct urb
 	Status 		= pURB->status; /*->rtusb_urb_status;*/
 
 	pObj = pAd->OS_Cookie;
-	RTMP_NET_TASK_DATA_ASSIGN(&pObj->null_frame_complete_task, (unsigned long)pURB);
-	RTMP_OS_TASKLET_SCHE(&pObj->null_frame_complete_task);
+	(&pObj->null_frame_complete_task)->data = (unsigned long)pURB;
+	tasklet_hi_schedule(&pObj->null_frame_complete_task);
 
 }
 
@@ -644,8 +644,8 @@ USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, struct ur
 	Status		= pURB->status;
 	index 		= pMLMEContext->SelfIdx;
 
-	RTMP_NET_TASK_DATA_ASSIGN(&pObj->mgmt_dma_done_task, (unsigned long)pURB);
-	RTMP_OS_TASKLET_SCHE(&pObj->mgmt_dma_done_task);
+	(&pObj->mgmt_dma_done_task)->data = (unsigned long)pURB;
+	tasklet_hi_schedule(&pObj->mgmt_dma_done_task);
 }
 
 
@@ -721,8 +721,8 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, struct urb *p
 	Status =  pURB->status;
 
 	pObj = pAd->OS_Cookie;
-	RTMP_NET_TASK_DATA_ASSIGN(&pObj->pspoll_frame_complete_task, (unsigned long)pURB);
-	RTMP_OS_TASKLET_SCHE(&pObj->pspoll_frame_complete_task);
+	(&pObj->pspoll_frame_complete_task)->data = (unsigned long)pURB;
+	tasklet_hi_schedule(&pObj->pspoll_frame_complete_task);
 
 }
 
@@ -897,8 +897,8 @@ USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, struct urb *pURB, pr
 	pAd 		= pRxContext->pAd;
 	pObj 		= pAd->OS_Cookie;
 
-	RTMP_NET_TASK_DATA_ASSIGN(&pObj->rx_done_task, (unsigned long)pURB);
-	RTMP_OS_TASKLET_SCHE(&pObj->rx_done_task);
+	(&pObj->rx_done_task)->data = (unsigned long)pURB;
+	tasklet_hi_schedule(&pObj->rx_done_task);
 
 }
 

@@ -366,18 +366,18 @@ void RtmpOsSemaWakeUp(struct semaphore *pSemOrg);
 void RtmpOsMlmeUp(RTMP_OS_TASK *pMlmeQTask);
 
 /* OS Task */
-bool RtmpOsTaskletSche(RTMP_NET_TASK_STRUCT *pTasklet);
+bool RtmpOsTaskletSche(struct tasklet_struct *pTasklet);
 
 bool RtmpOsTaskletInit(
-	RTMP_NET_TASK_STRUCT *pTasklet,
+	struct tasklet_struct *pTasklet,
 	void (*pFunc)(unsigned long data),
 	ULONG Data,
 	LIST_HEADER *pTaskletList);
 
-bool RtmpOsTaskletKill(RTMP_NET_TASK_STRUCT *pTasklet);
+bool RtmpOsTaskletKill(struct tasklet_struct *pTasklet);
 
 void RtmpOsTaskletDataAssign(
-	RTMP_NET_TASK_STRUCT *pTasklet,
+	struct tasklet_struct *pTasklet,
 	ULONG Data);
 
 void RtmpOsTaskWakeUp(RTMP_OS_TASK *pTaskOrg);

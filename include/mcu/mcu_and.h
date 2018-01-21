@@ -64,7 +64,7 @@ enum cmd_msg_error_type {
 struct mt7610u_mcu_ctrl {
 	u8 cmd_seq;
 	unsigned long flags;
-	RTMP_NET_TASK_STRUCT cmd_msg_task;
+	struct tasklet_struct cmd_msg_task;
 	spinlock_t txq_lock;
 	DL_LIST txq;
 	spinlock_t rxq_lock;

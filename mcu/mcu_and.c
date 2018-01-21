@@ -901,8 +901,8 @@ static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad)
 
 	tmp = mt7610u_mcu_queue_empty(ctl, &ctl->rx_doneq);
 	if (!tmp) {
-		RTMP_NET_TASK_DATA_ASSIGN(&ctl->cmd_msg_task, (unsigned long)(ad));
-		RTMP_OS_TASKLET_SCHE(&ctl->cmd_msg_task);
+		(&ctl->cmd_msg_task)->data =(unsigned long)(ad);
+		tasklet_hi_schedule(&ctl->cmd_msg_task);
 	}
 }
 
@@ -1044,7 +1044,7 @@ void mt7610u_mcu_ctrl_init(struct rtmp_adapter *ad)
 	}
 
 	ctl->cmd_seq = 0;
-	RTMP_OS_TASKLET_INIT(ad, &ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
+	tasklet_init(&ctl->cmd_msg_task, mt7610u_mcu_cmd_msg_bh, (unsigned long)ad);
 
 	DlListInit(&ctl->txq);
 	DlListInit(&ctl->rxq);
@@ -1083,7 +1083,7 @@ void mt7610u_mcu_ctrl_exit(struct rtmp_adapter *ad)
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->kickq);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->ackq);
 	mt7610u_mcu_usb_unlink_urb(ad, &ctl->rxq);
-	RTMP_OS_TASKLET_KILL(&ctl->cmd_msg_task);
+	tasklet_kill(&ctl->cmd_msg_task);
 	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->txq);
 	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->ackq);
 	mt7610u_mcu_cleanup_cmd_msg(ad, &ctl->rxq);
