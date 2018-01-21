@@ -355,7 +355,7 @@ void mt7610u_disbale_txrx(struct rtmp_adapter*pAd)
  		 * 2. suspend including wow application
  		 * 3. radion off command
  		 */
-		if ((pAd->chipCap.IsComboChip) ||
+		if ((pAd->chipCap.btc_support) ||
 		    RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_SUSPEND) ||
 		    RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_CMD_RADIO_OFF))
 			bResetWLAN = 0;

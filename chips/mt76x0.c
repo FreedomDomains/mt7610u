@@ -1911,9 +1911,9 @@ void mt7610u_init(struct rtmp_adapter *pAd)
 #ifdef CONFIG_ANDES_SUPPORT
 	pChipCap->WlanMemmapOffset = 0x410000;
 	if (IS_MT7610(pAd))
-		pChipCap->IsComboChip = false;
+		pChipCap->btc_support = false;
 	else
-		pChipCap->IsComboChip = true;
+		pChipCap->btc_support = true;
 
 	pChipCap->load_iv = true;
 	pChipCap->ilm_offset = 0x00000;

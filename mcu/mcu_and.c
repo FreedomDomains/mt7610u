@@ -328,7 +328,7 @@ int mt7610u_mcu_usb_loadfw(struct rtmp_adapter *ad)
 
 	dev_info(&udev->dev, "firmware %s loaded\n", cap->fw_name);
 
-	if (cap->IsComboChip) {
+	if (cap->btc_support) {
 loadfw_protect:
 		mac_value = mt76u_reg_read(ad, SEMAPHORE_00);
 		loop++;
@@ -358,7 +358,7 @@ loadfw_protect:
 	mac_value = mt76u_reg_read(ad, COM_REG0);
 
 	if (((mac_value & 0x01) == 0x01) &&
-	    (cap->IsComboChip))
+	    (cap->btc_support))
 		goto error0;
 
 	mt76u_vendor_reset(ad);
@@ -460,7 +460,7 @@ error2:
 error0:
 	release_firmware(fw);
 
-	if (cap->IsComboChip)
+	if (cap->btc_support)
 		mt76u_reg_write(ad, SEMAPHORE_00, 0x1);
 
 	mt76u_reg_write(ad, FCE_PSE_CTRL, 0x01);
