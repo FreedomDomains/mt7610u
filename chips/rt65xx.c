@@ -200,8 +200,6 @@ void mt7610u_disbale_txrx(struct rtmp_adapter*pAd)
 
 	DBGPRINT(RT_DEBUG_TRACE, ("----> %s\n", __FUNCTION__));
 
-	RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_ACTIVE);
-
 	DBGPRINT(RT_DEBUG_TRACE, ("%s Tx success = %ld\n",
 		__FUNCTION__, (ULONG)pAd->WlanCounters.TransmittedFragmentCount.u.LowPart));
 	DBGPRINT(RT_DEBUG_TRACE, ("%s Rx success = %ld\n",
