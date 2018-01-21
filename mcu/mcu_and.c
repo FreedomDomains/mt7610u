@@ -1150,7 +1150,6 @@ static int mt7610u_mcu_send_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg
 {
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 	int ret = 0;
-	bool need_wait = msg->need_wait;
 
 	ret = down_interruptible(&(ad->mcu_atomic));
 	if (ret != 0) {
@@ -1171,7 +1170,7 @@ retransmit:
 	mt7610u_mcu_dequeue_and_kick_out_cmd_msgs(ad);
 
 	/* Wait for response */
-	if (need_wait) {
+	if (msg->need_wait) {
 		enum cmd_msg_state state;
 		unsigned long expire;
 
