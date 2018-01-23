@@ -570,7 +570,7 @@ void mt7610u_bbp_set_txdac(struct rtmp_adapter *pAd, int tx_dac);
 INT rtmp_bbp_set_agc(struct rtmp_adapter *pAd, u8 agc, RX_CHAIN_IDX idx);
 INT rtmp_bbp_get_agc(struct rtmp_adapter *pAd, CHAR *agc, RX_CHAIN_IDX idx);
 
-int NICInitBBP(struct rtmp_adapter *pAd);
+int mt7610u_init_bbp(struct rtmp_adapter *pAd);
 
 #endif /* __RTMP_PHY_H__ */
 

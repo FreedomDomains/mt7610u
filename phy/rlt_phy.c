@@ -44,7 +44,7 @@ static int mt7610u_bbp_is_ready(struct rtmp_adapter *pAd)
 	return (((val == 0xffffffff) || (val == 0x0)) ? false : true);
 }
 
-int NICInitBBP(struct rtmp_adapter*pAd)
+int mt7610u_init_bbp(struct rtmp_adapter *pAd)
 {
 	INT idx;
 
