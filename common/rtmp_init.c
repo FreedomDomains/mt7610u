@@ -1744,9 +1744,6 @@ void UserCfgInit(struct rtmp_adapter*pAd)
 
 	/* dynamic BBP R66:sensibity tuning to overcome background noise*/
 	pAd->BbpTuning.bEnable                = true;
-	pAd->BbpTuning.FalseCcaLowerThreshold = 100;
-	pAd->BbpTuning.FalseCcaUpperThreshold = 512;
-	pAd->BbpTuning.R66Delta               = 4;
 	pAd->Mlme.bEnableAutoAntennaCheck = true;
 
 

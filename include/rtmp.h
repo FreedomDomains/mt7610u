@@ -752,11 +752,7 @@ typedef struct __PRIVATE_STRUC {
 /* structure to tune BBP R66 (BBP TUNING) */
 typedef struct _BBP_R66_TUNING {
 	bool bEnable;
-	USHORT FalseCcaLowerThreshold;	/* default 100 */
-	USHORT FalseCcaUpperThreshold;	/* default 512 */
-	u8 R66Delta;
 	u8 R66CurrentValue;
-	bool R66LowerUpperSelect;	/*Before LinkUp, Used LowerBound or UpperBound as R66 value. */
 } BBP_R66_TUNING, *PBBP_R66_TUNING;
 
 
