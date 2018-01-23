@@ -1499,7 +1499,7 @@ Return Value:
 Note:
 ========================================================================
 */
-void mt7610u_init_bbp(struct rtmp_adapter *pAd)
+void _mt7610u_init_bbp(struct rtmp_adapter *pAd)
 {
 
 	INT IdReg;
