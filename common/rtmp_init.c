@@ -927,7 +927,6 @@ int	NICInitializeAsic(
 
 	/* Wait to be stable.*/
 	mdelay(1);
-	pAd->LastMCUCmd = 0x72;
 
 	mt7610u_init_bbp(pAd);
 
