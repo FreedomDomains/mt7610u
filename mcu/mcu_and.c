@@ -694,6 +694,7 @@ static struct cmd_msg *mt7610u_mcu_dequeue_cmd_msg(struct mt7610u_mcu_ctrl *ctl,
 
 void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_msg)
 {
+	struct usb_device *udev = mt7610u_to_usb_dev(ad);
 	struct sk_buff *skb = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
 	u32 rx_fce = *((u32 *) skb->data);
@@ -711,8 +712,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 
 	if ((rx_fce & MT_RX_FCE_CMD_SELF_GEN) != 0) {
 		/* if have callback function */
-		RTEnqueueInternalCmd(ad, CMDTHREAD_RESPONSE_EVENT_CALLBACK,
-				     skb->data + sizeof(u32), FIELD_GET(MT_RX_FCE_LEN, rx_fce));
+		dev_info(&udev->dev, "MCU self generated message\n");
 	} else {
 		spin_lock_irq(&ctl->ackq_lock);
 
