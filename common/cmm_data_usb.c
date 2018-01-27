@@ -1028,11 +1028,8 @@ struct sk_buff *GetPacketFromRxRing(
 	RTMPDescriptorEndianChange((u8 *)pRxInfo, TYPE_RXINFO);
 #endif /* RT_BIG_ENDIAN */
 
-	memmove((void *)&pRxBlk->hw_rx_info[0], (void *)pRxFceInfo, sizeof(struct mt7610u_rxfce_info_pkt));
-	pRxBlk->pRxFceInfo = (struct mt7610u_rxfce_info_pkt *)&pRxBlk->hw_rx_info[0];
-
-	memmove(&pRxBlk->hw_rx_info[RXINFO_OFFSET], pRxInfo, RXINFO_SIZE);
-	pRxBlk->pRxInfo = (struct mt7610u_rxinfo *)&pRxBlk->hw_rx_info[RXINFO_OFFSET];
+	pRxBlk->pRxFceInfo = pRxFceInfo;
+	pRxBlk->pRxInfo = pRxInfo;
 
 
 	/* update next packet read position.*/

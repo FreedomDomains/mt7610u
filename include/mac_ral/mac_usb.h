@@ -103,21 +103,6 @@
 */
 #define RXDMA_FIELD_SIZE	4
 
-
-/*
-	Rx descriptor format, Rx Ring
-*/
-#ifdef RT_BIG_ENDIAN
-typedef	struct __attribute__ ((packed)) _RXD_STRUC{
-	u32 dma_len;
-}RXD_STRUC, *PRXD_STRUC;
-#else
-typedef	struct __attribute__ ((packed)) _RXD_STRUC{
-	u32 dma_len;
-}RXD_STRUC, *PRXD_STRUC;
-#endif
-
-
 /*
 	Management ring buffer format
 */

@@ -723,7 +723,6 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	int Status;
 	u32 RxProcessed, RxPending;
 	bool bReschedule = false;
-	RXD_STRUC *pRxD;
 	struct mt7610u_rxwi *pRxWI;
 	struct mt7610u_rxinfo *pRxInfo;
 	struct sk_buff *skb;
@@ -767,7 +766,6 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 			continue;
 
 		/* get rx descriptor and buffer */
-		pRxD = (RXD_STRUC *)(&RxBlk.hw_rx_info[0]);
 		pFceInfo = RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
 		pData = skb->data;
