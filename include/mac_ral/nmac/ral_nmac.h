@@ -210,68 +210,33 @@ struct __attribute__ ((packed)) mt7610u_txwi {
 */
 
 
-#ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) mt7610u_rxfce_info_pkt {
-	u32 info_type:2;
-	u32 s_port:3;
-	u32 qsel:2;
-	u32 pcie_intr:1;
+/* ULLI : RX_FCE Format
+ * RX FCE is 32 bit wide and consists of two types
+ * RX FCE info (from MAC)
+ * and
+ * RX FCE CMD (from MCU)
+ */
 
-	u32 mac_len:3;
-	u32 l3l4_done:1;
-	u32 pkt_80211:1;
-	u32 ip_err:1;
-	u32 tcp_err:1;
-	u32 udp_err:1;
+#define MT_RX_FCE_LEN			GENMASK(13, 0)
 
-	u32 rsv:2;
-	u32 pkt_len:14;
-};
-#else
-struct __attribute__ ((packed)) mt7610u_rxfce_info_pkt {
-	u32 pkt_len:14;
-	u32 rsv:2;
+#define MT_RX_FCE_INFO_UDP_ERR		BIT(16)
+#define MT_RX_FCE_INFO_TCP_ERR		BIT(17)
+#define MT_RX_FCE_INFO_IP_ERR		BIT(18)
+#define MT_RX_FCE_INFO_PKT_80211	BIT(19)
+#define MT_RX_FCE_INFO_L314_DONE	BIT(20)
+#define MT_RX_FCE_INFO_MAC_LEN		GENMASK(23, 21)
+#define MT_RX_FCE_INFO_PCIE_INTR	BIT(24)
+#define MT_RX_FCE_INFO_QSEL		GENMASK(26, 25)
+#define MT_RX_FCE_INFO_D_PORT		GENMASK(29, 27)
 
-	u32 udp_err:1;
-	u32 tcp_err:1;
-	u32 ip_err:1;
-	u32 pkt_80211:1;
-	u32 l3l4_done:1;
-	u32 mac_len:3;
+#define MT_RX_FCE_CMD_SELF_GEN		BIT(15)
+#define MT_RX_FCE_CMD_SEQ		GENMASK(19, 16)
+#define MT_RX_FCE_CMD_EVT_TYPE		GENMASK(23, 20)
+#define MT_RX_FCE_CMD_PCIE_INTR		BIT(24)
+#define MT_RX_FCE_CMD_QSEL		GENMASK(26, 25)
+#define MT_RX_FCE_CMD_S_PORT		GENMASK(29, 27)
 
-	u32 pcie_intr:1;
-	u32 qsel:2;
-	u32 s_port:3;
-	u32 info_type:2;
-};
-#endif /* RT_BIG_ENDIAN */
-
-#ifdef RT_BIG_ENDIAN
-struct __attribute__ ((packed)) mt7610u_rxfce_info_cmd {
-	u32 info_type:2;
-	u32 d_port:3;
-	u32 qsel:2;
-	u32 pcie_intr:1;
-	u32 evt_type:4;
-	u32 cmd_seq:4;
-	u32 self_gen:1;
-	u32 rsv:1;
-	u32 pkt_len:14;
-};
-#else
-struct __attribute__ ((packed)) mt7610u_rxfce_info_cmd {
-	u32 pkt_len:14;
-	u32 rsv:1;
-	u32 self_gen:1;
-	u32 cmd_seq:4;
-	u32 evt_type:4;
-	u32 pcie_intr:1;
-	u32 qsel:2;
-	u32 d_port:3;
-	u32 info_type:2;
-};
-#endif
-
+#define MT_RX_FCE_TYPE			GENMASK(31, 30)
 
 /*
 	RXWI wireless information format.

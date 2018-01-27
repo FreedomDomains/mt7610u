@@ -696,7 +696,7 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 {
 	struct sk_buff *skb = rx_msg->skb;
 	struct cmd_msg *msg, *msg_tmp;
-	struct mt7610u_rxfce_info_cmd *rx_info = (struct mt7610u_rxfce_info_cmd *) skb->data;
+	u32 rx_fce = *((u32 *) skb->data);
 	struct mt7610u_mcu_ctrl *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
@@ -704,15 +704,15 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 #endif
 
 
-	if (rx_info->info_type != CMD_PACKET) {
+	if (FIELD_GET(MT_RX_FCE_TYPE, rx_fce)  != CMD_PACKET) {
 		DBGPRINT(RT_DEBUG_ERROR, ("packet is not command response/self event\n"));
 		return;
 	}
 
-	if (rx_info->self_gen) {
+	if ((rx_fce & MT_RX_FCE_CMD_SELF_GEN) != 0) {
 		/* if have callback function */
 		RTEnqueueInternalCmd(ad, CMDTHREAD_RESPONSE_EVENT_CALLBACK,
-				     skb->data + sizeof(*rx_info), rx_info->pkt_len);
+				     skb->data + sizeof(u32), FIELD_GET(MT_RX_FCE_LEN, rx_fce));
 	} else {
 		spin_lock_irq(&ctl->ackq_lock);
 
@@ -720,17 +720,19 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 			&msg->list != &ctl->ackq;
 			msg = msg_tmp, msg_tmp = DlListEntry(msg_tmp->list.Next, struct cmd_msg, list)) {
 
-			if (msg->seq == rx_info->cmd_seq) {
+			if (msg->seq == FIELD_GET(MT_RX_FCE_CMD_SEQ, rx_fce)) {
 				_mt7610u_mcu_unlink_cmd_msg(msg, &ctl->ackq);
 				spin_unlock_irq(&ctl->ackq_lock);
 
-				if ((msg->rsp_payload_len == rx_info->pkt_len) && (msg->rsp_payload_len != 0)) {
-					msg->rsp_handler(msg, skb->data + sizeof(*rx_info), rx_info->pkt_len);
-				} else if ((msg->rsp_payload_len == 0) && (rx_info->pkt_len == 8)) {
+				if ((msg->rsp_payload_len == FIELD_GET(MT_RX_FCE_LEN, rx_fce)) &&
+				    (msg->rsp_payload_len != 0)) {
+					msg->rsp_handler(msg, skb->data + sizeof(u32), FIELD_GET(MT_RX_FCE_LEN, rx_fce));
+				} else if ((msg->rsp_payload_len == 0) &&
+					   (FIELD_GET(MT_RX_FCE_LEN, rx_fce) == 8)) {
 					DBGPRINT(RT_DEBUG_INFO, ("command response(ack) success\n"));
 				} else {
-					DBGPRINT(RT_DEBUG_ERROR, ("expect response len(%d), command response len(%d) invalid\n", msg->rsp_payload_len, rx_info->pkt_len));
-					msg->rsp_payload_len = rx_info->pkt_len;
+					DBGPRINT(RT_DEBUG_ERROR, ("expect response len(%d), command response len(%d) invalid\n", msg->rsp_payload_len, ((int) FIELD_GET(MT_RX_FCE_LEN, rx_fce))));
+					msg->rsp_payload_len = FIELD_GET(MT_RX_FCE_LEN, rx_fce);
 				}
 
 				if (msg->need_wait)

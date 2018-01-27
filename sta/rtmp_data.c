@@ -26,6 +26,16 @@
 
 
 #include "rt_config.h"
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,9,0))
+#include <linux/bitfield.h>
+#else
+/* Force a compilation error if a constant expression is not a power of 2 */
+#define __BUILD_BUG_ON_NOT_POWER_OF_2(n)	\
+	BUILD_BUG_ON(((n) & ((n) - 1)) != 0)
+#define BUILD_BUG_ON_NOT_POWER_OF_2(n)			\
+	BUILD_BUG_ON((n) == 0 || (((n) & ((n) - 1)) != 0))
+#include <bitfield.h>
+#endif
 
 void STARxEAPOLFrameIndicate(
 	IN struct rtmp_adapter *pAd,
@@ -730,7 +740,7 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 	u8 *pData;
 	RX_BLK RxBlk;
 	u8 RXWISize = sizeof(struct mt7610u_rxwi);
-	struct mt7610u_rxfce_info_pkt *pFceInfo;
+	u32 rx_fce;
 	bool bCmdRspPacket = false;
 
 	RxProcessed = RxPending = 0;
@@ -766,15 +776,15 @@ bool STARxDoneInterruptHandle(struct rtmp_adapter*pAd, bool argc)
 			continue;
 
 		/* get rx descriptor and buffer */
-		pFceInfo = RxBlk.pRxFceInfo;
+		rx_fce = *RxBlk.pRxFceInfo;
 		pRxInfo = RxBlk.pRxInfo;
 		pData = skb->data;
 		pRxWI = (struct mt7610u_rxwi *)pData;
 		pHeader = (PHEADER_802_11) (pData + RXWISize);
 
 		// TODO: shiang-6590, handle packet from other ports
-		if ((pFceInfo->info_type != 0) ||
-		    (pFceInfo->pkt_80211 != 1)) {
+		if ((FIELD_GET(MT_RX_FCE_TYPE, rx_fce)!= 0) ||
+		    (FIELD_GET(MT_RX_FCE_INFO_PKT_80211, rx_fce) != 1)) {
 			DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
 			DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
 			DBGPRINT(RT_DEBUG_OFF, ("<==\n"));

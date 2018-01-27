@@ -949,7 +949,7 @@ struct sk_buff *GetPacketFromRxRing(
 	struct mt7610u_rxwi *pRxWI;
 	u8 RXWISize = sizeof(struct mt7610u_rxwi);
 	struct mt7610u_rxinfo *pRxInfo;
-	struct mt7610u_rxfce_info_pkt *pRxFceInfo;
+	u32 *pRxFceInfo;
 
 	*bCmdRspPacket = false;
 
@@ -992,7 +992,7 @@ struct sk_buff *GetPacketFromRxRing(
 	/* skip USB frame length field*/
 	pData += RXDMA_FIELD_SIZE;
 
-	pRxFceInfo = (struct mt7610u_rxfce_info_pkt *)(pData + ThisFrameLen);
+	pRxFceInfo = (u32 *)(pData + ThisFrameLen);
 
 	pRxInfo = (struct mt7610u_rxinfo *)pData;
 
