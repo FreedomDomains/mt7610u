@@ -430,8 +430,7 @@ void RtmpOsDCacheFlush(ULONG AddrStart, ULONG Size);
 void RTMP_SetPeriodicTimer(struct timer_list *pTimerOrg, unsigned long timeout);
 
 void RTMP_OS_Init_Timer(struct timer_list *pTimerOrg,
-			TIMER_FUNCTION function, void *data,
-			LIST_HEADER *pTimerList);
+			TIMER_FUNCTION function, void *data);
 
 void RTMP_OS_Add_Timer(struct timer_list *pTimerOrg, unsigned long timeout);
 

@@ -1973,7 +1973,7 @@ void RTMPInitTimer(
 	pTimer->cookie = (ULONG) pData;
 	pTimer->pAd = pAd;
 
-	RTMP_OS_Init_Timer(&pTimer->TimerObj,	pTimerFunc, (void *) pTimer, &pAd->RscTimerMemList);
+	RTMP_OS_Init_Timer(&pTimer->TimerObj,	pTimerFunc, (void *) pTimer);
 
 	spin_unlock_bh(&TimerSemLock);
 }

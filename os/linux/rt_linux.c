@@ -2609,8 +2609,7 @@ void RTMP_SetPeriodicTimer(struct timer_list *pTimer, unsigned long timeout)
 void RTMP_OS_Init_Timer(
 	struct timer_list *pTimer,
 	TIMER_FUNCTION function,
-	void *data,
-	LIST_HEADER *pTimerList)
+	void *data)
 {
 	if (!timer_pending(pTimer)) {
 		init_timer(pTimer);
