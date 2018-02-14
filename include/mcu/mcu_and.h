@@ -194,7 +194,7 @@ enum mcu_cmd_type {
 /*
  * Event type table
  */
-enum EVENT_TYPE {
+enum mt76_evt_type {
 	CMD_DONE,
 	CMD_ERROR,
 	CMD_RETRY,

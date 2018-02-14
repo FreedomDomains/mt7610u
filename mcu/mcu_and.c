@@ -726,6 +726,13 @@ void mt7610u_mcu_rx_process_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *rx_
 
 				if ((msg->rsp_payload_len == FIELD_GET(MT_RX_FCE_LEN, rx_fce)) &&
 				    (msg->rsp_payload_len != 0)) {
+					u32 evt_type = FIELD_GET(MT_RX_FCE_CMD_EVT_TYPE, rx_fce);
+					u32 len = FIELD_GET(MT_RX_FCE_LEN, rx_fce);
+					u32 seq = FIELD_GET(MT_RX_FCE_CMD_SEQ, rx_fce);
+#if 0
+					pr_info("read_callback() fce %08x type %d seq %d len %d paylen %d\n",
+						rx_fce, evt_type, seq, len, msg->rsp_payload_len);
+#endif
 					msg->rsp_handler(msg, skb->data + sizeof(u32), FIELD_GET(MT_RX_FCE_LEN, rx_fce));
 				} else if ((msg->rsp_payload_len == 0) &&
 					   (FIELD_GET(MT_RX_FCE_LEN, rx_fce) == 8)) {
@@ -1273,7 +1280,9 @@ static void mt7610u_mcu_rf_random_read_callback(struct cmd_msg *msg, char *rsp_p
 	struct mt7610u_rf_entry *reg_pair =
 		(struct mt7610u_rf_entry *)msg->rsp_payload;
 
-	/* ULLI : horrible ..., the magic value 4 is the size of the rxfce/cmd header */
+	/* ULLI : horrible ..., the magic value 4 is the size of the rxfce/cmd header
+	 * no it's the offset of the return value of each RF read reg
+	 */
 
 	for (i = 0; i < msg->rsp_payload_len / 8; i++)
 		memmove(&reg_pair[i].Value, rsp_payload + 8 * i + 4, 1);
