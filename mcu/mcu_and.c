@@ -954,7 +954,7 @@ static int usb_kick_out_cmd_msg(struct rtmp_adapter *ad, struct cmd_msg *msg)
 	/* append four zero bytes padding when usb aggregate enable */
 	memset(skb_put(skb, 4), 0x00, 4);
 
-	pipe = usb_sndbulkpipe(udev, MT_COMMAND_RSP_BULK_IN_ADDR),
+	pipe = usb_sndbulkpipe(udev, MT_COMMAND_RSP_BULK_IN_ADDR);
 	usb_fill_bulk_urb(msg->urb, udev, pipe,
 			  skb->data, 512,
 			  usb_kick_out_cmd_msg_complete, skb);
