@@ -71,63 +71,6 @@ void RtmpUtilInit(void)
 	}
 }
 
-/* timeout -- ms */
-static inline void __RTMP_SetPeriodicTimer(struct timer_list * pTimer,
-					   unsigned long timeout)
-{
-	timeout = ((timeout * OS_HZ) / 1000);
-	pTimer->expires = jiffies + timeout;
-	add_timer(pTimer);
-}
-
-/* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
-static inline void __RTMP_OS_Init_Timer(
-	struct timer_list * pTimer,
-	TIMER_FUNCTION function,
-	void *data)
-{
-	if (!timer_pending(pTimer)) {
-		init_timer(pTimer);
-		pTimer->data = (unsigned long)data;
-		pTimer->function = function;
-	}
-}
-
-static inline void __RTMP_OS_Add_Timer(
-	struct timer_list *pTimer,
-	unsigned long timeout)
-{
-	if (timer_pending(pTimer))
-		return;
-
-	timeout = ((timeout * OS_HZ) / 1000);
-	pTimer->expires = jiffies + timeout;
-	add_timer(pTimer);
-}
-
-static inline void __RTMP_OS_Mod_Timer(
-	struct timer_list *pTimer,
-	unsigned long timeout)
-{
-	timeout = ((timeout * OS_HZ) / 1000);
-	mod_timer(pTimer, jiffies + timeout);
-}
-
-static inline void __RTMP_OS_Del_Timer(
-	struct timer_list *pTimer,
-	bool *pCancelled)
-{
-	if (timer_pending(pTimer))
-		*pCancelled = del_timer_sync(pTimer);
-	else
-		*pCancelled = true;
-}
-
-static inline void __RTMP_OS_Release_Timer(struct timer_list * pTimer)
-{
-	/* nothing to do */
-}
-
 ULONG RTMPMsecsToJiffies(u32 m)
 {
 
@@ -2654,44 +2597,59 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, bool bSet)
 
 
 /* timeout -- ms */
-void RTMP_SetPeriodicTimer(struct timer_list *pTimerOrg, unsigned long timeout)
+void RTMP_SetPeriodicTimer(struct timer_list *pTimer, unsigned long timeout)
 {
-	__RTMP_SetPeriodicTimer(pTimerOrg, timeout);
+	timeout = ((timeout * OS_HZ) / 1000);
+	pTimer->expires = jiffies + timeout;
+	add_timer(pTimer);
 }
 
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
 void RTMP_OS_Init_Timer(
-	struct timer_list *pTimerOrg,
+	struct timer_list *pTimer,
 	TIMER_FUNCTION function,
 	void *data,
 	LIST_HEADER *pTimerList)
 {
-	__RTMP_OS_Init_Timer(pTimerOrg, function, data);
+	if (!timer_pending(pTimer)) {
+		init_timer(pTimer);
+		pTimer->data = (unsigned long)data;
+		pTimer->function = function;
+	}
+
 }
 
 
-void RTMP_OS_Add_Timer(struct timer_list *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Add_Timer(struct timer_list *pTimer, unsigned long timeout)
 {
-	__RTMP_OS_Add_Timer(pTimerOrg, timeout);
+	if (timer_pending(pTimer))
+		return;
+
+	timeout = ((timeout * OS_HZ) / 1000);
+	pTimer->expires = jiffies + timeout;
+	add_timer(pTimer);
 }
 
 
-void RTMP_OS_Mod_Timer(struct timer_list *pTimerOrg, unsigned long timeout)
+void RTMP_OS_Mod_Timer(struct timer_list *pTimer, unsigned long timeout)
 {
-	__RTMP_OS_Mod_Timer(pTimerOrg, timeout);
+	timeout = ((timeout * OS_HZ) / 1000);
+	mod_timer(pTimer, jiffies + timeout);
 }
 
 
-void RTMP_OS_Del_Timer(struct timer_list *pTimerOrg, bool *pCancelled)
+void RTMP_OS_Del_Timer(struct timer_list *pTimer, bool *pCancelled)
 {
-	__RTMP_OS_Del_Timer(pTimerOrg, pCancelled);
+	if (timer_pending(pTimer))
+		*pCancelled = del_timer_sync(pTimer);
+	else
+		*pCancelled = true;
 }
 
 
-void RTMP_OS_Release_Timer(struct timer_list *pTimerOrg)
+void RTMP_OS_Release_Timer(struct timer_list *pTimer)
 {
-	__RTMP_OS_Release_Timer(pTimerOrg);
 }
 
 
