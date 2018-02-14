@@ -2753,7 +2753,7 @@ struct rtmp_adapter {
 	struct mt7610u_txwi NullTxWI;
 	bool TestMulMac;
 
-	struct mt7610u_mcu_ctrl MCUCtrl;
+	struct mt7610u_mcu_ctrl mcu;
 };
 
 
