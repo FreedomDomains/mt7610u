@@ -1,5 +1,10 @@
 <u>**MT7610U for Linux**</u>
 
+**NEWSFLASH**  
+due some rework in mainline kernel,  
+this driver will not compile with >= 4.15  
+This will be fixed in near future hopefully ...
+
 Driver for 802.11ac USB Adapter with  
 MT7610U/MT7630u/MT7650u chipset  
 Only STA/Monitor Mode is supported, no AP.  
