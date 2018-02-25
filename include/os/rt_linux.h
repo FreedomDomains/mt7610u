@@ -243,21 +243,6 @@ struct os_lock  {
 /*  spin_lock enhanced for Nested spin lock */
 /* */
 
-
-/* sample, use semaphore lock to replace IRQ lock, 2007/11/15 */
-
-#define OS_INT_LOCK(__lock, __irqflags)			\
-{												\
-	spin_lock_irqsave((spinlock_t *)__lock, __irqflags);	\
-}
-
-#define OS_INT_UNLOCK(__lock, __irqflag)		\
-{												\
-	spin_unlock_irqrestore((spinlock_t *)(__lock), ((unsigned long)__irqflag));	\
-}
-
-
-
 #ifndef wait_event_interruptible_timeout
 #define __wait_event_interruptible_timeout(wq, condition, ret) \
 do { \

@@ -368,7 +368,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		pHTTXContext = &(pAd->TxContext[pAd->bulkResetPipeid]);
 
 		/*spin_lock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
-		RTMP_INT_LOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+		spin_lock_irqsave(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 		if ( pAd->BulkOutPending[pAd->bulkResetPipeid] == false)
 		{
 			pAd->BulkOutPending[pAd->bulkResetPipeid] = true;
@@ -379,7 +379,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 			RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BULKOUT_RESET);
 
 			/*spin_unlock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
-			RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+			spin_unlock_irqrestore(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 			{
 				RTUSBInitHTTxDesc(pAd, pHTTXContext, pAd->bulkResetPipeid,
@@ -388,17 +388,17 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 
 				if ((ret = usb_submit_urb(pHTTXContext->pUrb, GFP_ATOMIC))!=0)
 				{
-						RTMP_INT_LOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+						spin_lock_irqsave(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 						pAd->BulkOutPending[pAd->bulkResetPipeid] = false;
 						pHTTXContext->IRPPending = false;
 						pAd->watchDogTxPendingCnt[pAd->bulkResetPipeid] = 0;
-						RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+						spin_unlock_irqrestore(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 						DBGPRINT(RT_DEBUG_ERROR, ("CMDTHREAD_RESET_BULK_OUT:Submit Tx URB failed %d\n", ret));
 				}
 				else
 				{
-						RTMP_INT_LOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+						spin_lock_irqsave(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 						DBGPRINT(RT_DEBUG_TRACE,("\tCMDTHREAD_RESET_BULK_OUT: TxContext[%d]:CWPos=%ld, NBPos=%ld, ENBPos=%ld, bCopy=%d, pending=%d!\n",
 											pAd->bulkResetPipeid, pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition,
@@ -407,7 +407,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 						DBGPRINT(RT_DEBUG_TRACE,("\t\tBulkOut Req=0x%lx, Complete=0x%lx, Other=0x%lx\n",
 											pAd->BulkOutReq, pAd->BulkOutComplete, pAd->BulkOutCompleteOther));
 
-						RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+						spin_unlock_irqrestore(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 						DBGPRINT(RT_DEBUG_TRACE, ("\tCMDTHREAD_RESET_BULK_OUT: Submit Tx DATA URB for failed BulkReq(0x%lx) Done, status=%d!\n",
 											pAd->bulkResetReq[pAd->bulkResetPipeid],
@@ -418,7 +418,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 		else
 		{
 			/*spin_unlock_bh(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
-			/*RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);*/
+			/*spin_unlock_irqrestore(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);*/
 
 			DBGPRINT(RT_DEBUG_ERROR, ("CmdThread : TX DATA RECOVER FAIL for BulkReq(0x%lx) because BulkOutPending[%d] is true!\n",
 								pAd->bulkResetReq[pAd->bulkResetPipeid], pAd->bulkResetPipeid));
@@ -448,7 +448,7 @@ static int ResetBulkOutHdlr(IN struct rtmp_adapter *pAd, struct rtmp_queue_elem 
 			/* no matter what, clean the flag*/
 			RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BULKOUT_RESET);
 
-			RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
+			spin_unlock_irqrestore(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
 			RTUSB_SET_BULK_FLAG(pAd, (fRTUSB_BULK_OUT_DATA_NORMAL << pAd->bulkResetPipeid));
 		}

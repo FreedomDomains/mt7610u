@@ -88,7 +88,7 @@ static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 		/* event happened.*/
 		while(pAd->TimerQ.pQHead)
 		{
-			RTMP_INT_LOCK(&pAd->TimerQLock, irqFlag);
+			spin_lock_irqsave(&pAd->TimerQLock, irqFlag);
 			pEntry = pAd->TimerQ.pQHead;
 			if (pEntry)
 			{
@@ -103,7 +103,7 @@ static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 				pEntry->pNext = pAd->TimerQ.pQPollFreeList;
 				pAd->TimerQ.pQPollFreeList = pEntry;
 			}
-			RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlag);
+			spin_unlock_irqrestore(&pAd->TimerQLock, irqFlag);
 
 			if (pTimer)
 			{
@@ -176,7 +176,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 	unsigned long irqFlags;
 	RTMP_OS_TASK	*pTask = &pAd->timerTask;
 
-	RTMP_INT_LOCK(&pAd->TimerQLock, irqFlags);
+	spin_lock_irqsave(&pAd->TimerQLock, irqFlags);
 	if (pAd->TimerQ.status & RTMP_TASK_CAN_DO_INSERT)
 	{
 		if(pAd->TimerQ.pQPollFreeList)
@@ -195,7 +195,7 @@ RTMP_TIMER_TASK_ENTRY *RtmpTimerQInsert(
 				pAd->TimerQ.pQHead = pQNode;
 		}
 	}
-	RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
+	spin_unlock_irqrestore(&pAd->TimerQLock, irqFlags);
 
 	if (pQNode)
 	{
@@ -213,7 +213,7 @@ bool RtmpTimerQRemove(
 	RTMP_TIMER_TASK_ENTRY *pNode, *pPrev = NULL;
 	unsigned long irqFlags;
 
-	RTMP_INT_LOCK(&pAd->TimerQLock, irqFlags);
+	spin_lock_irqsave(&pAd->TimerQLock, irqFlags);
 	if (pAd->TimerQ.status >= RTMP_TASK_STAT_INITED)
 	{
 		pNode = pAd->TimerQ.pQHead;
@@ -240,7 +240,7 @@ bool RtmpTimerQRemove(
 			pAd->TimerQ.pQPollFreeList = pNode;
 		}
 	}
-	RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
+	spin_unlock_irqrestore(&pAd->TimerQLock, irqFlags);
 
 	return true;
 }
@@ -251,7 +251,7 @@ void RtmpTimerQExit(struct rtmp_adapter*pAd)
 	RTMP_TIMER_TASK_ENTRY *pTimerQ;
 	unsigned long irqFlags;
 
-	RTMP_INT_LOCK(&pAd->TimerQLock, irqFlags);
+	spin_lock_irqsave(&pAd->TimerQLock, irqFlags);
 	while (pAd->TimerQ.pQHead)
 	{
 		pTimerQ = pAd->TimerQ.pQHead;
@@ -265,7 +265,7 @@ void RtmpTimerQExit(struct rtmp_adapter*pAd)
 /*#ifndef KTHREAD_SUPPORT*/
 	pAd->TimerQ.status = RTMP_TASK_STAT_STOPED;
 /*#endif*/
-	RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
+	spin_unlock_irqrestore(&pAd->TimerQLock, irqFlags);
 }
 
 
@@ -287,7 +287,7 @@ void RtmpTimerQInit(struct rtmp_adapter*pAd)
 		pQNode = (RTMP_TIMER_TASK_ENTRY *)pAd->TimerQ.pTimerQPoll;
 		memset(pAd->TimerQ.pTimerQPoll, 0, sizeof(RTMP_TIMER_TASK_ENTRY) * TIMER_QUEUE_SIZE_MAX);
 
-		RTMP_INT_LOCK(&pAd->TimerQLock, irqFlags);
+		spin_lock_irqsave(&pAd->TimerQLock, irqFlags);
 		for (i = 0 ;i <TIMER_QUEUE_SIZE_MAX; i++)
 		{
 			pQNode->pNext = pEntry;
@@ -298,7 +298,7 @@ void RtmpTimerQInit(struct rtmp_adapter*pAd)
 		pAd->TimerQ.pQHead = NULL;
 		pAd->TimerQ.pQTail = NULL;
 		pAd->TimerQ.status = RTMP_TASK_STAT_INITED;
-		RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
+		spin_unlock_irqrestore(&pAd->TimerQLock, irqFlags);
 	}
 }
 
