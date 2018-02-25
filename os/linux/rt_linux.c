@@ -31,6 +31,8 @@
 #include "rtmp_comm.h"
 #include "rtmp_osabl.h"
 #include "rt_os_util.h"
+#include "os/timer.h"
+
 
 /* TODO */
 #undef RT_CONFIG_IF_OPMODE_ON_AP
@@ -2595,59 +2597,68 @@ void RtmpOSFSInfoChange(RTMP_OS_FS_INFO *pOSFSInfoOrg, bool bSet)
 	__RtmpOSFSInfoChange(pOSFSInfoOrg, bSet);
 }
 
+struct _timer_list;
 
 /* timeout -- ms */
-void RTMP_SetPeriodicTimer(struct timer_list *pTimer, unsigned long timeout)
+void RTMP_SetPeriodicTimer(struct _timer_list *pTimer, unsigned long timeout)
 {
+	struct timer_list *t = &pTimer->t;
+
 	timeout = ((timeout * OS_HZ) / 1000);
-	pTimer->expires = jiffies + timeout;
-	add_timer(pTimer);
+	t->expires = jiffies + timeout;
+	add_timer(t);
 }
 
 
 /* convert NdisMInitializeTimer --> RTMP_OS_Init_Timer */
-void RTMP_OS_Init_Timer(
-	struct timer_list *pTimer,
-	TIMER_FUNCTION function,
-	void *data)
+void RTMP_OS_Init_Timer(struct _timer_list *pTimer,
+	TIMER_FUNCTION function, void *data)
 {
-	if (!timer_pending(pTimer)) {
-		init_timer(pTimer);
-		pTimer->data = (unsigned long)data;
-		pTimer->function = function;
+	struct timer_list *t = &pTimer->t;
+
+	if (!timer_pending(t)) {
+		init_timer(t);
+		t->data = (unsigned long)data;
+		t->function = function;
 	}
 
 }
 
 
-void RTMP_OS_Add_Timer(struct timer_list *pTimer, unsigned long timeout)
+void RTMP_OS_Add_Timer(struct _timer_list *pTimer, unsigned long timeout)
 {
-	if (timer_pending(pTimer))
+	struct timer_list *t = &pTimer->t;
+
+	if (timer_pending(t))
 		return;
 
 	timeout = ((timeout * OS_HZ) / 1000);
-	pTimer->expires = jiffies + timeout;
-	add_timer(pTimer);
+	t->expires = jiffies + timeout;
+	add_timer(t);
 }
 
 
-void RTMP_OS_Mod_Timer(struct timer_list *pTimer, unsigned long timeout)
+void RTMP_OS_Mod_Timer(struct _timer_list *pTimer, unsigned long timeout)
 {
+	struct timer_list *t = &pTimer->t;
+
 	timeout = ((timeout * OS_HZ) / 1000);
-	mod_timer(pTimer, jiffies + timeout);
+	mod_timer(t, jiffies + timeout);
 }
 
 
-void RTMP_OS_Del_Timer(struct timer_list *pTimer, bool *pCancelled)
+void RTMP_OS_Del_Timer(struct _timer_list *pTimer, bool *pCancelled)
 {
-	if (timer_pending(pTimer))
-		*pCancelled = del_timer_sync(pTimer);
+	struct timer_list *t = &pTimer->t;
+
+	if (timer_pending(t))
+		*pCancelled = del_timer_sync(t);
 	else
 		*pCancelled = true;
 }
 
 
-void RTMP_OS_Release_Timer(struct timer_list *pTimer)
+void RTMP_OS_Release_Timer(struct _timer_list *pTimer)
 {
 }
 
