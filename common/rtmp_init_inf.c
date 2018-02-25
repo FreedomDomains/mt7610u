@@ -311,8 +311,6 @@ err4:
 	RTMP_TimerListRelease(pAd);
 err3:
 	RtmpMgmtTaskExit(pAd);
-#ifdef RTMP_TIMER_TASK_SUPPORT
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 err2:
 	mt7610u_mcu_ctrl_exit(pAd);
 	RTMPResetTxRxRingMemory(pAd);
@@ -477,8 +475,6 @@ void RTMPDrvSTAClose(
 	mdelay(2);
 	RTMP_TimerListRelease(pAd);
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 }
 #endif
 

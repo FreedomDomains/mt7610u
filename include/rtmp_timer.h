@@ -41,9 +41,7 @@
 /*   it's not allowed in Linux USB sub-system to do it ( because of sleep issue when */
 /*  submit to ctrl pipe). So we need a wrapper function to take care it. */
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 typedef void(*RTMP_TIMER_TASK_HANDLE) (void *FunctionContext);
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 typedef struct _RALINK_TIMER_STRUCT {
 	struct timer_list TimerObj;	/* Ndis Timer object */
@@ -54,13 +52,10 @@ typedef struct _RALINK_TIMER_STRUCT {
 	ULONG TimerValue;	/* Timer value in milliseconds */
 	ULONG cookie;		/* os specific object */
 	void *pAd;
-#ifdef RTMP_TIMER_TASK_SUPPORT
 	RTMP_TIMER_TASK_HANDLE handle;
-#endif				/* RTMP_TIMER_TASK_SUPPORT */
 } RALINK_TIMER_STRUCT, *PRALINK_TIMER_STRUCT;
 
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 typedef struct _RTMP_TIMER_TASK_ENTRY_ {
 	RALINK_TIMER_STRUCT *pRaTimer;
 	struct _RTMP_TIMER_TASK_ENTRY_ *pNext;
@@ -88,17 +83,6 @@ void rtmp_timer_##_func(unsigned long data)										\
 	if ((_pQNode == NULL) && (_pAd->TimerQ.status & RTMP_TASK_CAN_DO_INSERT))	\
 		RTMP_OS_Add_Timer(&_pTimer->TimerObj, OS_HZ);               					\
 }
-#else /* !RTMP_TIMER_TASK_SUPPORT */
-#define BUILD_TIMER_FUNCTION(_func)										\
-void rtmp_timer_##_func(unsigned long data)										\
-{																			\
-	PRALINK_TIMER_STRUCT	pTimer = (PRALINK_TIMER_STRUCT) data;				\
-																			\
-	_func((void *) pTimer->cookie); 							\
-	if (pTimer->Repeat)														\
-		RTMP_OS_Add_Timer(&pTimer->TimerObj, pTimer->TimerValue);			\
-}
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 DECLARE_TIMER_FUNCTION(MlmePeriodicExec);
 DECLARE_TIMER_FUNCTION(MlmeRssiReportExec);

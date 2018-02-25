@@ -60,7 +60,6 @@ BUILD_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
 
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 static void RtmpTimerQHandle(struct rtmp_adapter*pAd)
 {
 /*#ifndef KTHREAD_SUPPORT*/
@@ -302,5 +301,4 @@ void RtmpTimerQInit(struct rtmp_adapter*pAd)
 		RTMP_INT_UNLOCK(&pAd->TimerQLock, irqFlags);
 	}
 }
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 

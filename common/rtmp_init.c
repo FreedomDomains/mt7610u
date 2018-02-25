@@ -2127,11 +2127,9 @@ void RTMPCancelTimer(
 		if (*pCancelled == true)
 			pTimer->State = true;
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 		/* We need to go-through the TimerQ to findout this timer handler and remove it if */
 		/*		it's still waiting for execution.*/
 		RtmpTimerQRemove(pTimer->pAd, pTimer);
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
 	}
@@ -2160,11 +2158,9 @@ void RTMPReleaseTimer(
 		if (*pCancelled == true)
 			pTimer->State = true;
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 		/* We need to go-through the TimerQ to findout this timer handler and remove it if */
 		/*		it's still waiting for execution.*/
 		RtmpTimerQRemove(pTimer->pAd, pTimer);
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 		/* release timer */
 		RTMP_OS_Release_Timer(&pTimer->TimerObj);

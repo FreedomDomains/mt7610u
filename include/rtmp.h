@@ -2329,12 +2329,10 @@ struct rtmp_adapter {
 /*      Driver Mgmt related parameters                                                  							  */
 /*****************************************************************************************/
 	RTMP_OS_TASK mlmeTask;
-#ifdef RTMP_TIMER_TASK_SUPPORT
 	/* If you want use timer task to handle the timer related jobs, enable this. */
 	RTMP_TIMER_TASK_QUEUE TimerQ;
 	spinlock_t TimerQLock;
 	RTMP_OS_TASK timerTask;
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 /*****************************************************************************************/
 /*      Tx related parameters                                                           */
@@ -5809,7 +5807,6 @@ void AsicTurnOffRFClk(
 
 
 
-#ifdef RTMP_TIMER_TASK_SUPPORT
 INT RtmpTimerQThread(
 	IN ULONG Context);
 
@@ -5826,7 +5823,6 @@ void RtmpTimerQExit(
 
 void RtmpTimerQInit(
 	IN struct rtmp_adapter*pAd);
-#endif /* RTMP_TIMER_TASK_SUPPORT */
 
 
 void RTUSBMultiWrite(struct rtmp_adapter *pAd, USHORT Offset,
