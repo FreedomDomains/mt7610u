@@ -520,17 +520,17 @@ error0:
 }
 
 static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type,
-				     bool need_wait, bool need_rsp,
+				     bool wait_rsp,
 				     u16 rsp_payload_len,
 				     char *rsp_payload, MSG_RSP_HANDLER rsp_handler)
 {
 	msg->type = type;
-	msg->need_wait = need_wait;
+	msg->need_wait = wait_rsp;
 
-	if (need_wait)
+	if (wait_rsp)
 		init_completion(&msg->ack_done);
 
-	msg->need_rsp = need_rsp;
+	msg->need_rsp = wait_rsp;
 	msg->rsp_payload_len = rsp_payload_len;
 	msg->rsp_payload = rsp_payload;
 	msg->rsp_handler = rsp_handler;
@@ -1243,7 +1243,7 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 
 		}
 
 		mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true,
-					 true, 0, NULL, NULL);
+					 0, NULL, NULL);
 
 		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
 		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
@@ -1306,7 +1306,7 @@ int mt7610u_mcu_rf_random_read(struct rtmp_adapter *ad, struct mt7610u_rf_entry 
 		}
 
 		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_READ, true,
-					 true, receive_len, (char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
+					 receive_len, (char *)&reg_pair[cur_index], mt7610u_mcu_rf_random_read_callback);
 
 		for (i = 0; i < (receive_len) / 8; i++) {
 			value  = cpu2le32(MT_RF_SELECT |
@@ -1355,7 +1355,7 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 		}
 
 		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
-						 true, 0, NULL, NULL);
+					 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			/* Address */
@@ -1401,7 +1401,7 @@ int mt7610u_mcu_rf_random_write(struct rtmp_adapter *ad, struct mt7610u_rf_entry
 		}
 
 		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
-					 true, 0, NULL, NULL);
+					 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			value  = cpu2le32(MT_RF_SELECT |
@@ -1443,10 +1443,10 @@ int mt7610u_mcu_fun_set(struct rtmp_adapter *ad, u32 fun_id, u32 param)
 
 	if (fun_id != Q_SELECT)
 		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, true,
-					 true, 0, NULL, NULL);
+					 0, NULL, NULL);
 	else
 		mt7610u_mcu_init_cmd_msg(msg, CMD_FUN_SET_OP, false,
-					 false, 0, NULL, NULL);
+					 0, NULL, NULL);
 
 	/* Function ID */
 	value = cpu2le32(fun_id);
@@ -1479,7 +1479,7 @@ int mt7610u_mcu_calibration(struct rtmp_adapter *ad, enum mt7610u_mcu_calibratio
 	}
 
 	mt7610u_mcu_init_cmd_msg(msg, CMD_CALIBRATION_OP, true,
-				 true, 0, NULL, NULL);
+				 0, NULL, NULL);
 
 	/* Calibration ID */
 	value = cpu2le32(cal_id);
@@ -1509,7 +1509,7 @@ int mt7610u_mcu_led_op(struct rtmp_adapter *ad, u32 led_idx, u32 link_status)
 	}
 
 	mt7610u_mcu_init_cmd_msg(msg, CMD_LED_MODE_OP, false,
-				 false, 0, NULL, NULL);
+				 0, NULL, NULL);
 
 	/* Led index */
 	value = cpu2le32(led_idx);
