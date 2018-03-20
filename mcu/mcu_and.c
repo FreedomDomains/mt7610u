@@ -1337,7 +1337,6 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 	u32 value, i, cur_index = 0;
 	struct rtmp_chip_cap *cap = &ad->chipCap;
 	int ret = 0;
-	bool last_packet = false;
 
 	if (!reg_pair)
 		return -1;
@@ -1348,10 +1347,6 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 			MT_INBAND_PACKET_MAX_LEN :
 			(var_len - pos);
 
-		if ((sent_len < MT_INBAND_PACKET_MAX_LEN) ||
-		    (pos + MT_INBAND_PACKET_MAX_LEN) == var_len)
-			last_packet = true;
-
 		msg = mt7610u_mcu_alloc_cmd_msg(ad, sent_len);
 
 		if (!msg) {
@@ -1359,12 +1354,8 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 			goto error;
 		}
 
-		if (last_packet)
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
+		mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, true,
 						 true, 0, NULL, NULL);
-		else
-			mt7610u_mcu_init_cmd_msg(msg, CMD_RANDOM_WRITE, false,
-						 false, 0, NULL, NULL);
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			/* Address */
