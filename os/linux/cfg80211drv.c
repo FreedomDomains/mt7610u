@@ -391,7 +391,7 @@ bool CFG80211DRV_OpsJoinIbss(
 	pIbssInfo = (CMD_RTPRIV_IOCTL_80211_IBSS *)pData;
 
 	pAd->CommonCfg.BeaconPeriod = pIbssInfo->BeaconInterval;
-	Set_SSID_Proc(pAd, pIbssInfo->Ssid);
+	Set_SSID_Proc(pAd, pIbssInfo->pSsid);
 #endif /* CONFIG_STA_SUPPORT */
 	return true;
 }
@@ -591,7 +591,7 @@ bool CFG80211DRV_Connect(
 	}
 
 	memset(&SSID, 0, sizeof(SSID));
-	memcpy(SSID, pConnInfo->Ssid, SSIDLen);
+	memcpy(SSID, pConnInfo->pSsid, SSIDLen);
 
 	if (pConnInfo->bWpsConnection)
 	{

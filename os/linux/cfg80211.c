@@ -430,7 +430,7 @@ static int CFG80211_OpsIbssJoin(
 	/* init */
 	memset(&IbssInfo, 0, sizeof(IbssInfo));
 	IbssInfo.BeaconInterval = pParams->beacon_interval;
-	memcpy(IbssInfo.Ssid, pParams->ssid, ETH_ALEN);
+	IbssInfo.pSsid = (char *) pParams->ssid;
 
 	/* ibss join */
 	RTMP_DRIVER_80211_IBSS_JOIN(pAd, &IbssInfo);
@@ -1016,7 +1016,7 @@ static int CFG80211_OpsConnect(
 
 	memcpy(ConnInfo.Key, pSme->key, pSme->key_len);
 	ConnInfo.KeyLen = pSme->key_len;
-	memcpy(ConnInfo.Ssid, pSme->ssid, pSme->ssid_len);
+	ConnInfo.pSsid = (char *) pSme->ssid;
 	ConnInfo.SsidLen = pSme->ssid_len;
 	ConnInfo.KeyIdx = pSme->key_idx;
 	/* YF@20120328: Reset to default */
