@@ -38,6 +38,8 @@
 #include <bitfield.h>
 #endif
 
+#define MT_MCU_MEMMAP_WLAN               0x00410000
+
 static void mt7610u_mcu_bh_schedule(struct rtmp_adapter *ad);
 
 struct mt7610u_dma_buf {
@@ -1245,7 +1247,7 @@ int mt7610u_mcu_burst_write(struct rtmp_adapter *ad, u32 offset, u32 *data, u32 
 		mt7610u_mcu_init_cmd_msg(msg, CMD_BURST_WRITE, true,
 					 0, NULL, NULL);
 
-		value = cpu2le32(offset + cap->WlanMemmapOffset + cur_index * 4);
+		value = cpu2le32(offset + MT_MCU_MEMMAP_WLAN + cur_index * 4);
 		mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 		for (i = 0; i < ((sent_len - 4) / 4); i++) {
@@ -1359,7 +1361,7 @@ int mt7610u_mcu_random_write(struct rtmp_adapter *ad,
 
 		for (i = 0; i < (sent_len / 8); i++) {
 			/* Address */
-			value = cpu2le32(reg_pair[i + cur_index].Register + cap->WlanMemmapOffset);
+			value = cpu2le32(reg_pair[i + cur_index].Register + MT_MCU_MEMMAP_WLAN);
 			mt7610u_mcu_append_cmd_msg(msg, (char *)&value, 4);
 
 			/* UpdateData */

@@ -1909,7 +1909,6 @@ void mt7610u_init(struct rtmp_adapter *pAd)
 	pChipCap->EFUSE_USAGE_MAP_SIZE = 29;
 
 #ifdef CONFIG_ANDES_SUPPORT
-	pChipCap->WlanMemmapOffset = 0x410000;
 	if (IS_MT7610(pAd))
 		pChipCap->btc_support = false;
 	else

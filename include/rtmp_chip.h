@@ -384,7 +384,6 @@ struct rtmp_chip_cap {
 	u8 PAType; /* b'00: 2.4G+5G external PA, b'01: 5G external PA, b'10: 2.4G external PA, b'11: Internal PA */
 
 #ifdef CONFIG_ANDES_SUPPORT
-	u32 WlanMemmapOffset;
 	bool btc_support;
 	u8 load_iv;
 	u32 ilm_offset;
