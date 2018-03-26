@@ -529,8 +529,7 @@ static void mt7610u_mcu_init_cmd_msg(struct cmd_msg *msg, enum mcu_cmd_type type
 	msg->type = type;
 	msg->need_wait = wait_rsp;
 
-	if (wait_rsp)
-		init_completion(&msg->ack_done);
+	init_completion(&msg->ack_done);
 
 	msg->need_rsp = wait_rsp;
 	msg->rsp_payload_len = rsp_payload_len;
