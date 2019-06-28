@@ -1,0 +1,4 @@
+This respository contains the mt7610u wifi driver modified by Ulli Kroll. Instructions for installing this driver for the
+TP-Link AC600 USB wifi adapter on the Orange Pi Prime and Odroid C2 can be found at:
+
+https://github.com/FreedomDomains/TP-Link-AC600
